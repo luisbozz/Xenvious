@@ -8,6 +8,19 @@ backups, copies of other jobs and more.
 
 Works with **GTA V Legacy** and **GTA V Enhanced** on PC.
 
+## Download
+
+Get `Xenvious.exe` from the [latest release](https://github.com/luisbozz/Xenvious/releases/latest).
+It is a single file; later versions are offered inside Xenvious on start
+(Settings → "Check for updates on start").
+
+Every release exe is built by GitHub Actions from the tagged commit. To check
+that a download is exactly that build:
+
+```bat
+gh attestation verify Xenvious.exe --repo luisbozz/Xenvious
+```
+
 ## Build
 
 Windows, Visual Studio 2022 (.NET desktop workload), .NET Framework 4.8, and
@@ -30,3 +43,8 @@ Details: [Getting started](docs/wiki/Getting-Started.md).
 
 Offsets and script patches for each game build are generated with
 [ysc-global-updater](https://github.com/luisbozz/ysc-global-updater).
+
+## License
+
+[GPL-3.0](LICENSE). You may use, change and share Xenvious; if you distribute a
+changed version, its source has to be available under the same license.

@@ -13,6 +13,8 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  id-token: write      # build provenance: signing through GitHub's OIDC token
+  attestations: write  # build provenance: storing the attestation
 
 jobs:
   release-please:
@@ -67,6 +69,13 @@ jobs:
           Copy-Item Xenvious/Xenvious/bin/Release/Xenvious.exe Xenvious.exe
           $hash = (Get-FileHash Xenvious.exe -Algorithm SHA256).Hash.ToLowerInvariant()
           "$hash  Xenvious.exe" | Out-File -FilePath Xenvious.exe.sha256 -Encoding ascii -NoNewline
+
+      # A signed statement that this exe was built here from this commit; anyone can
+      # check it with: gh attestation verify Xenvious.exe --repo <owner>/<repo>
+      - name: Attest the build provenance
+        uses: actions/attest-build-provenance@v4
+        with:
+          subject-path: Xenvious.exe
 
       - name: Attach the exe to the release
         env:
