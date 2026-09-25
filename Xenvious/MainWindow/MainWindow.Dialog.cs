@@ -26,6 +26,8 @@ namespace Xenvious
             _dialogResult?.TrySetResult(false);
             _dialogResult = new TaskCompletionSource<bool>();
             _dialogBusy = false;
+            _dialogAlternative = false;
+            DialogAltContainer.Visibility = Visibility.Collapsed;
             DialogButtons.Visibility = Visibility.Visible;
             DialogProgress.Visibility = Visibility.Collapsed;
             SetDialogDetails(details);
@@ -46,6 +48,30 @@ namespace Xenvious
             DialogOverlay.Focus();
             Keyboard.Focus(DialogOverlay);
             return _dialogResult.Task;
+        }
+
+        public enum DialogChoice { Cancel, Confirm, Alternative }
+
+        private bool _dialogAlternative;
+
+        /// <summary>
+        /// The dialog with a third button between cancel and confirm, for a second way to
+        /// go ahead (for example without a backup first).
+        /// </summary>
+        public async Task<DialogChoice> ChooseAsync(string title, string message, string confirmText, string alternativeText,
+            string cancelText, bool danger = false)
+        {
+            var closed = ConfirmAsync(title, message, confirmText, cancelText, danger);
+            DialogAlt.Content = alternativeText;
+            DialogAltContainer.Visibility = Visibility.Visible;
+            bool confirmed = await closed;
+            return _dialogAlternative ? DialogChoice.Alternative : confirmed ? DialogChoice.Confirm : DialogChoice.Cancel;
+        }
+
+        private void DialogAlt_Click(object sender, RoutedEventArgs e)
+        {
+            _dialogAlternative = true;
+            CloseDialog(false);
         }
 
         private bool _dialogBusy;
