@@ -71,26 +71,32 @@ namespace Xenvious
                 return;
             }
 
-            bool replace = await ConfirmAsync(
+            var choice = await ChooseAsync(
                 TranslateOr("copy_full_confirm_title", "Offenen Job ersetzen?"),
                 string.Format(TranslateOr("copy_full_confirm_text", "GTA lädt „{0}“ und ersetzt dabei alles im offenen Creator. Die Map des offenen Jobs (Props, Dynamic Props, Checkpoints, Templates) sichert Xenvious vorher unter Map Backup."), tbCopyName.Text),
-                TranslateOr("copy_full_confirm", "Sichern und ersetzen"), TranslateOr("dialog_cancel", "Abbrechen"));
-            if (!replace)
+                TranslateOr("copy_full_confirm", "Sichern und ersetzen"),
+                TranslateOr("copy_full_nobackup", "Ohne Sicherung ersetzen"),
+                TranslateOr("dialog_cancel", "Abbrechen"));
+            if (choice == DialogChoice.Cancel)
                 return;
+            bool backup = choice == DialogChoice.Confirm;
 
             BtnCopyJob.IsEnabled = false;
             try
             {
-                try
+                if (backup)
                 {
-                    var snap = SaveCurrentMap();
-                    Log.Info($"copy job: open map saved first ({DescribeSnapshot(snap)})", source: "copyjob");
-                }
-                catch (System.Exception ex)
-                {
-                    Log.Error("copy job: saving the open map failed", ex, "copyjob");
-                    SetCopyStatus(TranslateOr("copy_full_backup_failed", "Die offene Map ließ sich nicht sichern; nichts wurde ersetzt."), true);
-                    return;
+                    try
+                    {
+                        var snap = SaveCurrentMap();
+                        Log.Info($"copy job: open map saved first ({DescribeSnapshot(snap)})", source: "copyjob");
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Log.Error("copy job: saving the open map failed", ex, "copyjob");
+                        SetCopyStatus(TranslateOr("copy_full_backup_failed", "Die offene Map ließ sich nicht sichern; nichts wurde ersetzt."), true);
+                        return;
+                    }
                 }
 
                 SetCopyStatus(TranslateOr("copy_full_loading", "GTA lädt den Job …"), false);

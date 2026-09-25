@@ -12456,6 +12456,9 @@
                             <Border x:Name="DialogCancelContainer" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Height="34" MinWidth="110" Margin="0,0,10,0">
                                 <Button x:Name="DialogCancel" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" FontSize="14" Foreground="{DynamicResource TextColor}" Padding="14,0" Click="DialogCancel_Click"/>
                             </Border>
+                            <Border x:Name="DialogAltContainer" Visibility="Collapsed" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Height="34" MinWidth="110" Margin="0,0,10,0">
+                                <Button x:Name="DialogAlt" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" FontSize="14" Foreground="{DynamicResource TextColor}" Padding="14,0" Click="DialogAlt_Click"/>
+                            </Border>
                             <Border x:Name="DialogConfirmContainer" CornerRadius="5" Background="#FFFAC828" Height="34" MinWidth="130">
                                 <Border.Effect><DropShadowEffect BlurRadius="6" ShadowDepth="2" Opacity="0.5" Color="{DynamicResource ShadowColor}"/></Border.Effect>
                                 <Button x:Name="DialogConfirm" Cursor="Hand" FontSize="14" FontWeight="Bold" Padding="16,0" Click="DialogConfirm_Click">
