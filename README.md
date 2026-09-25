@@ -53,7 +53,7 @@ Bug reports and pull requests are welcome. Read
 [Contributing](https://github.com/luisbozz/Xenvious/wiki/Contributing) first:
 it covers commit messages, code style and how to test in the game.
 
-## Code signing policy
+## Code signing policy (hopefully soon)
 
 Free code signing provided by [SignPath.io](https://about.signpath.io/),
 certificate by [SignPath Foundation](https://signpath.org/).
