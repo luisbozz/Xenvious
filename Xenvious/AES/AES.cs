@@ -14,6 +14,7 @@ namespace Xenvious
     /// </summary>
     public class AES
     {
+        // random string... dont even think about it
         private static string password = "3sc3RLrpd17";
         private static byte[] iv = new byte[16] { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 };
 
