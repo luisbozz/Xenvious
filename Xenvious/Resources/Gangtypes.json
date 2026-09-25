@@ -1,0 +1,472 @@
+[
+  {
+    "Name": "None",
+    "InfoName": "None",
+    "Weapon": "None",
+    "Vehicle": "None",
+    "RandonizedWeapons": "None",
+    "Enemy": "None",
+    "EnemyNumber": 0,
+    "Value": 0
+  },
+  {
+    "Name": "Merrywether",
+    "InfoName": "MC_LSE_MER",
+    "Weapon": "weapon_microsmg",
+    "Vehicle": "patriot",
+    "RandonizedWeapons": "weapon_microsmg,weapon_heavypistol",
+    "Enemy": "s_m_y_blackops_01",
+    "EnemyNumber": 2,
+    "Value": 1
+  },
+  {
+    "Name": "Merrywether",
+    "InfoName": "MC_LSE_MER",
+    "Weapon": "weapon_microsmg",
+    "Vehicle": "mesa3",
+    "RandonizedWeapons": "weapon_microsmg,weapon_heavypistol",
+    "Enemy": "s_m_y_blackops_01",
+    "EnemyNumber": 2,
+    "Value": 12
+  },
+  {
+    "Name": "Lost",
+    "InfoName": "MC_LSE_LOST",
+    "Weapon": "weapon_pistol",
+    "Vehicle": "daemon",
+    "RandonizedWeapons": "weapon_microsmg,weapon_pistol,weapon_sawnoffshotgun",
+    "Enemy": "g_m_y_lost_01",
+    "EnemyNumber": 2,
+    "Value": 2
+  },
+  {
+    "Name": "Lost",
+    "InfoName": "MC_LSE_LOST",
+    "Weapon": "weapon_pistol",
+    "Vehicle": "slamvan2",
+    "RandonizedWeapons": "weapon_microsmg,weapon_pistol,weapon_sawnoffshotgun",
+    "Enemy": "g_m_y_lost_01",
+    "EnemyNumber": 2,
+    "Value": 15
+  },
+  {
+    "Name": "Vagos",
+    "InfoName": "MC_LSE_VAG",
+    "Weapon": "weapon_pistol",
+    "Vehicle": "cavalcade2",
+    "RandonizedWeapons": "weapon_microsmg,weapon_pistol",
+    "Enemy": "g_m_y_mexgoon_02",
+    "EnemyNumber": 2,
+    "Value": 3
+  },
+  {
+    "Name": "Vagos",
+    "InfoName": "MC_LSE_VAG",
+    "Weapon": "weapon_pistol",
+    "Vehicle": "blade",
+    "RandonizedWeapons": "weapon_microsmg,weapon_pistol",
+    "Enemy": "g_m_y_mexgoon_02",
+    "EnemyNumber": 2,
+    "Value": 17
+  },
+  {
+    "Name": "Vagos",
+    "InfoName": "MC_LSE_VAG",
+    "Weapon": "weapon_pistol",
+    "Vehicle": "emperor",
+    "RandonizedWeapons": "weapon_microsmg,weapon_pistol",
+    "Enemy": "g_m_y_mexgoon_02",
+    "EnemyNumber": 2,
+    "Value": 18
+  },
+  {
+    "Name": "Families",
+    "InfoName": "MC_LSE_FAM",
+    "Weapon": "weapon_microsmg",
+    "Vehicle": "baller",
+    "RandonizedWeapons": "weapon_microsmg,weapon_pistol",
+    "Enemy": "g_m_y_famca_01",
+    "EnemyNumber": 2,
+    "Value": 4
+  },
+  {
+    "Name": "Professionals",
+    "InfoName": "MC_LSE_PROF",
+    "Weapon": "weapon_microsmg",
+    "Vehicle": "granger",
+    "RandonizedWeapons": "weapon_microsmg,weapon_combatpistol",
+    "Enemy": "mp_g_m_pros_01",
+    "EnemyNumber": 2,
+    "Value": 5
+  },
+  {
+    "Name": "Professionals",
+    "InfoName": "MC_LSE_PROF",
+    "Weapon": "weapon_microsmg",
+    "Vehicle": "kamacho",
+    "RandonizedWeapons": "weapon_microsmg,weapon_combatpistol",
+    "Enemy": "mp_g_m_pros_01",
+    "EnemyNumber": 2,
+    "Value": 44
+  },
+  {
+    "Name": "Professionals",
+    "InfoName": "MC_LSE_PROF",
+    "Weapon": "weapon_microsmg",
+    "Vehicle": "contender",
+    "RandonizedWeapons": "weapon_microsmg,weapon_combatpistol",
+    "Enemy": "mp_g_m_pros_01",
+    "EnemyNumber": 2,
+    "Value": 45
+  },
+  {
+    "Name": "Ballas",
+    "InfoName": "MC_LSE_BALL",
+    "Weapon": "weapon_microsmg",
+    "Vehicle": "baller",
+    "RandonizedWeapons": "weapon_microsmg,weapon_pistol",
+    "Enemy": "g_m_y_ballaorig_01",
+    "EnemyNumber": 2,
+    "Value": 6
+  },
+  {
+    "Name": "Ballas",
+    "InfoName": "MC_LSE_BALL",
+    "Weapon": "weapon_pistol",
+    "Vehicle": "buccaneer",
+    "RandonizedWeapons": "weapon_microsmg,weapon_pistol",
+    "Enemy": "g_m_y_ballaorig_01",
+    "EnemyNumber": 2,
+    "Value": 19
+  },
+  {
+    "Name": "Salvas",
+    "InfoName": "MC_LSE_SALV",
+    "Weapon": "weapon_microsmg",
+    "Vehicle": "emperor",
+    "RandonizedWeapons": "weapon_microsmg,weapon_snspistol,weapon_pistol",
+    "Enemy": "g_m_y_salvagoon_01",
+    "EnemyNumber": 2,
+    "Value": 7
+  },
+  {
+    "Name": "Altruists",
+    "InfoName": "MC_LSE_ALTR",
+    "Weapon": "weapon_microsmg",
+    "Vehicle": "bodhi2",
+    "RandonizedWeapons": "weapon_vintagepistol,weapon_pistol",
+    "Enemy": "a_m_o_acult_02",
+    "EnemyNumber": 2,
+    "Value": 8
+  },
+  {
+    "Name": "FIB",
+    "InfoName": "MC_LSE_FIB",
+    "Weapon": "weapon_pistol",
+    "Vehicle": "fbi",
+    "RandonizedWeapons": "weapon_heavypistol,weapon_pistol",
+    "Enemy": "s_m_m_fibsec_01",
+    "EnemyNumber": 2,
+    "Value": 9
+  },
+  {
+    "Name": "O'Neil Brothers",
+    "InfoName": "MC_LSE_ONL",
+    "Weapon": "weapon_pistol",
+    "Vehicle": "sandking",
+    "RandonizedWeapons": "weapon_microsmg,weapon_pistol,weapon_snspistol",
+    "Enemy": "a_m_m_hillbilly_01",
+    "EnemyNumber": 2,
+    "Value": 10
+  },
+  {
+    "Name": "Koreans",
+    "InfoName": "MC_LSE_KOR",
+    "Weapon": "weapon_pistol",
+    "Vehicle": "fugitive",
+    "RandonizedWeapons": "weapon_microsmg,weapon_pistol",
+    "Enemy": "g_m_y_korean_01",
+    "EnemyNumber": 2,
+    "Value": 11
+  },
+  {
+    "Name": "Koreans",
+    "InfoName": "MC_LSE_KOR",
+    "Weapon": "weapon_microsmg",
+    "Vehicle": "feltzer2",
+    "RandonizedWeapons": "weapon_microsmg,weapon_combatpistol",
+    "Enemy": "g_m_y_korean_01",
+    "EnemyNumber": 2,
+    "Value": 13
+  },
+  {
+    "Name": "Army",
+    "InfoName": "MC_LSE_ARMY",
+    "Weapon": "weapon_pistol",
+    "Vehicle": "mesa3",
+    "RandonizedWeapons": "weapon_appistol,weapon_pistol",
+    "Enemy": "s_m_y_marine_03",
+    "EnemyNumber": 2,
+    "Value": 14
+  },
+  {
+    "Name": "Army",
+    "InfoName": "MC_LSE_ARMY",
+    "Weapon": "weapon_pistol",
+    "Vehicle": "crusader",
+    "RandonizedWeapons": "weapon_appistol,weapon_pistol",
+    "Enemy": "s_m_y_marine_03",
+    "EnemyNumber": 2,
+    "Value": 16
+  },
+  {
+    "Name": "Unknown",
+    "InfoName": "Unknown",
+    "Weapon": "weapon_microsmg",
+    "Vehicle": "buzzard",
+    "RandonizedWeapons": "weapon_microsmg,weapon_heavypistol",
+    "Enemy": "s_m_y_blackops_01",
+    "EnemyNumber": 2,
+    "Value": 20
+  },
+  {
+    "Name": "Unknown",
+    "InfoName": "Unknown",
+    "Weapon": "weapon_microsmg",
+    "Vehicle": "buzzard2",
+    "RandonizedWeapons": "weapon_smg,weapon_specialcarbine",
+    "Enemy": "s_m_y_swat_01",
+    "EnemyNumber": 2,
+    "Value": 21
+  },
+  {
+    "Name": "Unknown",
+    "InfoName": "Unknown",
+    "Weapon": "weapon_microsmg",
+    "Vehicle": "buzzard",
+    "RandonizedWeapons": "weapon_microsmg,weapon_combatpistol",
+    "Enemy": "mp_g_m_pros_01",
+    "EnemyNumber": 2,
+    "Value": 22
+  },
+  {
+    "Name": "Unknown",
+    "InfoName": "Unknown",
+    "Weapon": "weapon_microsmg",
+    "Vehicle": "polmav",
+    "RandonizedWeapons": "weapon_smg,weapon_specialcarbine",
+    "Enemy": "s_m_y_swat_01",
+    "EnemyNumber": 2,
+    "Value": 23
+  },
+  {
+    "Name": "Unknown",
+    "InfoName": "Unknown",
+    "Weapon": "weapon_microsmg",
+    "Vehicle": "polmav",
+    "RandonizedWeapons": "weapon_smg,weapon_specialcarbine",
+    "Enemy": "s_m_y_cop_01",
+    "EnemyNumber": 2,
+    "Value": 24
+  },
+  {
+    "Name": "Unknown",
+    "InfoName": "Unknown",
+    "Weapon": "weapon_microsmg",
+    "Vehicle": "frogger",
+    "RandonizedWeapons": "weapon_microsmg,weapon_heavypistol",
+    "Enemy": "s_m_y_blackops_01",
+    "EnemyNumber": 2,
+    "Value": 25
+  },
+  {
+    "Name": "Unknown",
+    "InfoName": "Unknown",
+    "Weapon": "weapon_microsmg",
+    "Vehicle": "frogger",
+    "RandonizedWeapons": "weapon_microsmg,weapon_combatpistol",
+    "Enemy": "mp_g_m_pros_01",
+    "EnemyNumber": 2,
+    "Value": 26
+  },
+  {
+    "Name": "Unknown",
+    "InfoName": "Unknown",
+    "Weapon": "weapon_pistol",
+    "Vehicle": "frogger",
+    "RandonizedWeapons": "weapon_microsmg,weapon_pistol,weapon_sawnoffshotgun",
+    "Enemy": "g_m_y_lost_01",
+    "EnemyNumber": 2,
+    "Value": 27
+  },
+  {
+    "Name": "Unknown",
+    "InfoName": "Unknown",
+    "Weapon": "weapon_pistol",
+    "Vehicle": "frogger",
+    "RandonizedWeapons": "weapon_microsmg,weapon_pistol",
+    "Enemy": "g_m_y_mexgoon_02",
+    "EnemyNumber": 2,
+    "Value": 28
+  },
+  {
+    "Name": "Unknown",
+    "InfoName": "Unknown",
+    "Weapon": "weapon_pistol",
+    "Vehicle": "frogger",
+    "RandonizedWeapons": "weapon_microsmg,weapon_pistol",
+    "Enemy": "g_m_y_korean_01",
+    "EnemyNumber": 2,
+    "Value": 29
+  },
+  {
+    "Name": "Unknown",
+    "InfoName": "Unknown",
+    "Weapon": "weapon_microsmg",
+    "Vehicle": "valkyrie2",
+    "RandonizedWeapons": "weapon_microsmg,weapon_heavypistol",
+    "Enemy": "s_m_y_blackops_01",
+    "EnemyNumber": 4,
+    "Value": 30
+  },
+  {
+    "Name": "Unknown",
+    "InfoName": "Unknown",
+    "Weapon": "weapon_microsmg",
+    "Vehicle": "valkyrie2",
+    "RandonizedWeapons": "weapon_microsmg,weapon_combatpistol",
+    "Enemy": "mp_g_m_pros_01",
+    "EnemyNumber": 4,
+    "Value": 31
+  },
+  {
+    "Name": "Unknown",
+    "InfoName": "Unknown",
+    "Weapon": "weapon_microsmg",
+    "Vehicle": "hunter",
+    "RandonizedWeapons": "weapon_microsmg,weapon_heavypistol",
+    "Enemy": "s_m_y_blackops_01",
+    "EnemyNumber": 2,
+    "Value": 32
+  },
+  {
+    "Name": "Unknown",
+    "InfoName": "Unknown",
+    "Weapon": "weapon_microsmg",
+    "Vehicle": "hunter",
+    "RandonizedWeapons": "weapon_microsmg,weapon_combatpistol",
+    "Enemy": "mp_g_m_pros_01",
+    "EnemyNumber": 2,
+    "Value": 33
+  },
+  {
+    "Name": "Unknown",
+    "InfoName": "Unknown",
+    "Weapon": "weapon_microsmg",
+    "Vehicle": "savage",
+    "RandonizedWeapons": "weapon_microsmg,weapon_heavypistol",
+    "Enemy": "s_m_y_blackops_01",
+    "EnemyNumber": 2,
+    "Value": 34
+  },
+  {
+    "Name": "Unknown",
+    "InfoName": "Unknown",
+    "Weapon": "weapon_microsmg",
+    "Vehicle": "savage",
+    "RandonizedWeapons": "weapon_microsmg,weapon_combatpistol",
+    "Enemy": "mp_g_m_pros_01",
+    "EnemyNumber": 2,
+    "Value": 35
+  },
+  {
+    "Name": "Unknown",
+    "InfoName": "Unknown",
+    "Weapon": "weapon_microsmg",
+    "Vehicle": "lazer",
+    "RandonizedWeapons": "weapon_microsmg,weapon_combatpistol",
+    "Enemy": "mp_g_m_pros_01",
+    "EnemyNumber": 2,
+    "Value": 36
+  },
+  {
+    "Name": "Unknown",
+    "InfoName": "Unknown",
+    "Weapon": "weapon_microsmg",
+    "Vehicle": "molotok",
+    "RandonizedWeapons": "weapon_microsmg,weapon_combatpistol",
+    "Enemy": "mp_g_m_pros_01",
+    "EnemyNumber": 2,
+    "Value": 37
+  },
+  {
+    "Name": "enemies",
+    "InfoName": "MC_LSE_BG",
+    "Weapon": "weapon_microsmg",
+    "Vehicle": "nightshark",
+    "RandonizedWeapons": "weapon_microsmg,weapon_pistol",
+    "Enemy": "mp_m_bogdangoon",
+    "EnemyNumber": 2,
+    "Value": 38
+  },
+  {
+    "Name": "enemies",
+    "InfoName": "MC_LSE_BG",
+    "Weapon": "weapon_microsmg",
+    "Vehicle": "insurgent",
+    "RandonizedWeapons": "weapon_microsmg,weapon_pistol",
+    "Enemy": "mp_m_bogdangoon",
+    "EnemyNumber": 2,
+    "Value": 39
+  },
+  {
+    "Name": "enemies",
+    "InfoName": "MC_LSE_BG",
+    "Weapon": "weapon_microsmg",
+    "Vehicle": "insurgent2",
+    "RandonizedWeapons": "weapon_microsmg,weapon_pistol",
+    "Enemy": "mp_m_bogdangoon",
+    "EnemyNumber": 2,
+    "Value": 40
+  },
+  {
+    "Name": "enemies",
+    "InfoName": "MC_LSE_BG",
+    "Weapon": "weapon_microsmg",
+    "Vehicle": "buzzard",
+    "RandonizedWeapons": "weapon_microsmg,weapon_pistol",
+    "Enemy": "mp_m_avongoon",
+    "EnemyNumber": 2,
+    "Value": 41
+  },
+  {
+    "Name": "enemies",
+    "InfoName": "MC_LSE_BG",
+    "Weapon": "weapon_microsmg",
+    "Vehicle": "nightshark",
+    "RandonizedWeapons": "weapon_microsmg,weapon_pistol",
+    "Enemy": "mp_m_avongoon",
+    "EnemyNumber": 2,
+    "Value": 42
+  },
+  {
+    "Name": "enemies",
+    "InfoName": "MC_LSE_BG",
+    "Weapon": "weapon_microsmg",
+    "Vehicle": "dubsta3",
+    "RandonizedWeapons": "weapon_microsmg,weapon_pistol",
+    "Enemy": "mp_m_avongoon",
+    "EnemyNumber": 2,
+    "Value": 43
+  },
+  {
+    "Name": "Hillbillies",
+    "InfoName": "MC_LSE_HILL",
+    "Weapon": "weapon_microsmg",
+    "Vehicle": "caracara2",
+    "RandonizedWeapons": "weapon_microsmg,weapon_pistol",
+    "Enemy": "g_m_m_casrn_01",
+    "EnemyNumber": 2,
+    "Value": 46
+  }
+]

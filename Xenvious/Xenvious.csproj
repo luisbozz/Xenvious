@@ -1,0 +1,580 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Costura.Fody.6.2.0\build\Costura.Fody.props" Condition="Exists('..\packages\Costura.Fody.6.2.0\build\Costura.Fody.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <LangVersion>9.0</LangVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{EB2FBA3E-32C7-40C7-ADCF-32443E3A06EC}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Xenvious</RootNamespace>
+    <AssemblyName>Xenvious</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>favicon256.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Caliburn.Micro.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Caliburn.Micro.Core.5.0.258\lib\netstandard2.0\Caliburn.Micro.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Caliburn.Micro.Platform, Version=5.0.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Caliburn.Micro.5.0.258\lib\net462\Caliburn.Micro.Platform.dll</HintPath>
+    </Reference>
+    <Reference Include="Caliburn.Micro.Platform.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Caliburn.Micro.5.0.258\lib\net462\Caliburn.Micro.Platform.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CommonServiceLocator, Version=2.0.7.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.2.0.7\lib\net48\CommonServiceLocator.dll</HintPath>
+    </Reference>
+    <Reference Include="CommunityToolkit.Mvvm, Version=8.4.0.0, Culture=neutral, PublicKeyToken=4aff67a105548ee2, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommunityToolkit.Mvvm.8.4.2\lib\netstandard2.0\CommunityToolkit.Mvvm.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Extras, Version=5.4.1.0, Culture=neutral, PublicKeyToken=669f0b5e8f868abf, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.Extras.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Platform, Version=5.4.1.0, Culture=neutral, PublicKeyToken=5f873c45e98af8a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
+    </Reference>
+    <Reference Include="LoadingIndicators.WPF, Version=0.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\LoadingIndicators.WPF.0.0.1\lib\LoadingIndicators.WPF.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=10.0.0.6, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.10.0.6\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.142\lib\net462\Microsoft.Xaml.Behaviors.dll</HintPath>
+    </Reference>
+    <Reference Include="mry, Version=1.4.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\mry\mry\bin\x64\Release\mry.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationFramework.Aero" />
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.6.1\lib\net462\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Annotations.5.0.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Pipelines, Version=10.0.0.6, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Pipelines.10.0.6\lib\net462\System.IO.Pipelines.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Management" />
+    <Reference Include="System.Memory, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.6.3\lib\net462\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.6.1\lib\net462\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.1.2\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Runtime.Serialization.Primitives, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.Serialization.Primitives.4.3.0\lib\net46\System.Runtime.Serialization.Primitives.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Text.Encodings.Web, Version=10.0.0.6, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.10.0.6\lib\net462\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=10.0.0.6, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Json.10.0.6\lib\net462\System.Text.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.4.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.6.3\lib\net462\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Creator Classes\VehicleColors.cs" />
+    <Compile Include="Helper Classes\MathF.cs" />
+    <Compile Include="Helper Classes\ModelIdParser.cs" />
+    <Compile Include="Helper Classes\HudColors.cs" />
+    <Compile Include="AES\AES.cs" />
+    <Compile Include="Controls\ComboBoxHelper.cs" />
+    <Compile Include="Controls\CustomPanel.xaml.cs">
+      <DependentUpon>CustomPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CustomTB.xaml.cs">
+      <DependentUpon>CustomTB.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\IPL.xaml.cs">
+      <DependentUpon>IPL.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Logging\LogView.xaml.cs">
+      <DependentUpon>LogView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PropHASList.xaml.cs">
+      <DependentUpon>PropHASList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Creator Classes\CustomCreatorFuncsBuilder.cs" />
+    <Compile Include="Controls\WeaponInventoryControl.xaml.cs">
+      <DependentUpon>WeaponInventoryControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\AdvancedPropPlacementView.xaml.cs">
+      <DependentUpon>AdvancedPropPlacementView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PlacementPreview3D.xaml.cs">
+      <DependentUpon>PlacementPreview3D.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Creator Classes\Gangs.cs" />
+    <Compile Include="Creator Classes\LocalFreezer.cs" />
+    <Compile Include="Creator Classes\GlobalFreezer.cs" />
+    <Compile Include="Creator Classes\JobTime.cs" />
+    <Compile Include="Creator Classes\Kill.cs" />
+    <Compile Include="Creator Classes\ScrPatchesRunner.cs" />
+    <Compile Include="Creator Classes\CreatorMap.cs" />
+    <Compile Include="Creator Classes\PreciseTemplates.cs" />
+    <Compile Include="Creator Classes\ScrProgramScanner.cs" />
+    <Compile Include="Creator Classes\ModdedPropSource.cs" />
+    <Compile Include="Creator Classes\nrcidcopy.cs" />
+    <Compile Include="Creator Classes\Outfit.cs" />
+    <Compile Include="Creator Classes\rspvehs.cs" />
+    <Compile Include="Creator Classes\TeamNames.cs" />
+    <Compile Include="Creator Classes\AdvancedPlacement\DimensionsProvider.cs" />
+    <Compile Include="Creator Classes\AdvancedPlacement\PropPlacementService.cs" />
+    <Compile Include="Creator Classes\AdvancedPlacement\RepeatPlanner.cs" />
+    <Compile Include="Creator Classes\AdvancedPlacement\CreatorTemplateService.cs" />
+    <Compile Include="Creator Classes\AdvancedPlacement\ScriptFeatureMonitor.cs" />
+    <Compile Include="Creator Classes\AdvancedPlacement\PlacementPresets.cs" />
+    <Compile Include="Creator Classes\AdvancedPlacement\JobPatternFinder.cs" />
+    <Compile Include="Helper Classes\NumericNudge.cs" />
+    <Compile Include="Helper Classes\ScrPatchGroup.cs" />
+    <Compile Include="Helper Classes\AdvancedPlacementConverters.cs" />
+    <Compile Include="Logging\Logger.cs" />
+    <Compile Include="ViewModels\AdvancedPropPlacementViewModel.cs" />
+    <Compile Include="ViewModels\AdvancedPropPlacementViewModel.Presets.cs">
+      <DependentUpon>AdvancedPropPlacementViewModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Creator Classes\Vehicle.cs" />
+    <Compile Include="Helper Classes\GlobalFreezeEntry.cs" />
+    <Compile Include="Helper Classes\LocalFreezeEntry.cs" />
+    <Compile Include="Helper Classes\FlexibleDoubleConverter.cs" />
+    <Compile Include="Helper Classes\MenuSwitcherPreset.cs" />
+    <Compile Include="Helper Classes\XenVector3.cs" />
+    <Compile Include="Creator Classes\PropHAS.cs" />
+    <Compile Include="OfflineData\OfflineData.cs" />
+    <Compile Include="OfflineData\StaticData.cs" />
+    <Compile Include="Global.cs" />
+    <Compile Include="Helper Classes\WatermarkSetter.cs" />
+    <Compile Include="Helper Classes\CornerRadiusSetter.cs" />
+    <Compile Include="Functions.cs" />
+    <Compile Include="GameVariant.cs" />
+    <Compile Include="GTA.cs" />
+    <Compile Include="Helper Classes\ini_reader.cs" />
+    <Compile Include="Helper Classes\IniText.cs" />
+    <Compile Include="Helper Classes\AobCache.cs" />
+    <Compile Include="JSON\Converters\JsonDecimalConverter.cs" />
+    <Compile Include="JSON\job_json.cs" />
+    <Compile Include="JSON\job_meta.cs" />
+    <Compile Include="OnlineEnable.cs" />
+    <Compile Include="JSON\Converters\JsonBooleanConverter.cs" />
+    <Compile Include="JSON\jsontest.cs" />
+    <Compile Include="JSON\ModdedPropJSON.cs" />
+    <Compile Include="Startup.cs" />
+    <Compile Include="Helper Classes\PasswordBoxMonitor.cs" />
+    <Compile Include="Translation\Translation.cs" />
+    <Compile Include="Helper Classes\ValueConverter.cs" />
+    <Compile Include="Creator Classes\WeaponInventory.cs" />
+    <Compile Include="Creator Classes\Weapons.cs" />
+    <Compile Include="Helper Classes\WindowBehaviors.cs" />
+    <Page Include="Controls\Slider.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Checkbox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ComboBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\CustomPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\CustomButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\CustomTB.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\IPL.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Logging\LogView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PropHASList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TabItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ListViewItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PasswordBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PopupImage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ScrollViewer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\TitleBarButtons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ToolTip.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Watermark.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\WatermarkOld.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\WeaponInventoryControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\AdvancedPropPlacementView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PlacementPreview3D.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow\MainWindow.MapBackup.cs" />
+    <Compile Include="MainWindow\MainWindow.Navigation.cs" />
+    <Compile Include="MainWindow\MainWindow.AdvancedPropTest.cs" />
+    <Compile Include="MainWindow\MainWindow.PropMove.cs" />
+    <Compile Include="Creator Classes\JobLoader.cs" />
+    <Compile Include="Helper Classes\ChangelogText.cs" />
+    <Compile Include="Helper Classes\ConfigText.cs" />
+    <Compile Include="Helper Classes\Updater.cs" />
+    <Compile Include="MainWindow\MainWindow.Updates.cs" />
+    <Compile Include="Creator Classes\PropMover.cs" />
+    <Compile Include="MainWindow\MainWindow.CopyJobModes.cs" />
+    <Compile Include="MainWindow\MainWindow.LoadedData.cs" />
+    <Compile Include="MainWindow\MainWindow.Actors.cs" />
+    <Compile Include="MainWindow\MainWindow.Capture.cs" />
+    <Compile Include="MainWindow\MainWindow.Converter.cs" />
+    <Compile Include="MainWindow\MainWindow.CreatorLocals.cs" />
+    <Compile Include="MainWindow\MainWindow.DashboardPage.cs" />
+    <Compile Include="MainWindow\MainWindow.DeleteItems.cs" />
+    <Compile Include="MainWindow\MainWindow.Doors.cs" />
+    <Compile Include="MainWindow\MainWindow.DynamicProps.cs" />
+    <Compile Include="MainWindow\MainWindow.Edit.cs" />
+    <Compile Include="MainWindow\MainWindow.Fixtures.cs" />
+    <Compile Include="MainWindow\MainWindow.GlobalLocalEditor.cs" />
+    <Compile Include="MainWindow\MainWindow.Input.cs" />
+    <Compile Include="MainWindow\MainWindow.JobImage.cs" />
+    <Compile Include="MainWindow\MainWindow.Misc.CopyJobs.cs" />
+    <Compile Include="MainWindow\MainWindow.Misc.JobLinks.cs" />
+    <Compile Include="MainWindow\MainWindow.Misc.MapMover.cs" />
+    <Compile Include="MainWindow\MainWindow.Misc.MenuSwitcher.cs" />
+    <Compile Include="MainWindow\MainWindow.Misc.NrcidJobCopy.cs" />
+    <Compile Include="MainWindow\MainWindow.Misc.SCJobs.cs" />
+    <Compile Include="MainWindow\MainWindow.Misc.ScrPatches.cs" />
+    <Compile Include="MainWindow\MainWindow.GameConnection.cs" />
+    <Compile Include="MainWindow\MainWindow.Misc.cs" />
+    <Compile Include="MainWindow\MainWindow.Mission.Blips.cs" />
+    <Compile Include="MainWindow\MainWindow.Mission.Gang.cs" />
+    <Compile Include="MainWindow\MainWindow.Mission.General.cs" />
+    <Compile Include="MainWindow\MainWindow.Mission.Goto.cs" />
+    <Compile Include="MainWindow\MainWindow.Mission.IPL.cs" />
+    <Compile Include="MainWindow\MainWindow.Mission.Inventory.cs" />
+    <Compile Include="MainWindow\MainWindow.Mission.Kill.cs" />
+    <Compile Include="MainWindow\MainWindow.Mission.Menubs.cs" />
+    <Compile Include="MainWindow\MainWindow.Mission.OtZone.cs" />
+    <Compile Include="MainWindow\MainWindow.Mission.PA.cs" />
+    <Compile Include="MainWindow\MainWindow.Mission.PlayerSettings.cs" />
+    <Compile Include="MainWindow\MainWindow.Mission.RA.cs" />
+    <Compile Include="MainWindow\MainWindow.Mission.SMS.cs" />
+    <Compile Include="MainWindow\MainWindow.Mission.TeamSettings.cs" />
+    <Compile Include="MainWindow\MainWindow.Mission.TeleportMarkers.cs" />
+    <Compile Include="MainWindow\MainWindow.Mission.cs" />
+    <Compile Include="MainWindow\MainWindow.ModdedProps.cs" />
+    <Compile Include="Helper Classes\OffsetLoader.cs" />
+    <Compile Include="MainWindow\MainWindow.OnlineEnabler.cs" />
+    <Compile Include="MainWindow\MainWindow.Props.cs" />
+    <Compile Include="MainWindow\MainWindow.Race.AvailableVehicles.cs" />
+    <Compile Include="MainWindow\MainWindow.Race.Checkpoints.cs" />
+    <Compile Include="MainWindow\MainWindow.Race.cs" />
+    <Compile Include="MainWindow\MainWindow.ScreenMessage.cs" />
+    <Compile Include="MainWindow\MainWindow.Settings.cs" />
+    <Compile Include="MainWindow\MainWindow.Survival.cs" />
+    <Compile Include="MainWindow\MainWindow.Teleport.cs" />
+    <Compile Include="MainWindow\MainWindow.Vehicles.cs" />
+    <Compile Include="MainWindow\MainWindow.Weapons.cs" />
+    <Compile Include="MainWindow\MainWindow.Worker.cs" />
+    <Compile Include="MainWindow\MainWindow.Zones.cs" />
+    <Compile Include="MainWindow\MainWindow.Dialog.cs" />
+    <Compile Include="MainWindow\MainWindow.Dashboard.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OfflineData\legacy\offsets.ini" />
+    <EmbeddedResource Include="OfflineData\legacy\scrpatches.json" />
+    <EmbeddedResource Include="OfflineData\legacy\scrpatchesdev.json" />
+    <EmbeddedResource Include="OfflineData\enhanced\offsets.ini" />
+    <EmbeddedResource Include="OfflineData\enhanced\scrpatches.json" />
+    <EmbeddedResource Include="OfflineData\enhanced\scrpatchesdev.json" />
+    <EmbeddedResource Include="OfflineData\props.json" />
+    <EmbeddedResource Include="OfflineData\vehicles.json" />
+    <EmbeddedResource Include="OfflineData\placement_presets.json" />
+    <EmbeddedResource Include="OfflineData\weapons.json" />
+    <EmbeddedResource Include="OfflineData\actors.json" />
+    <None Include=".manifest" />
+    <Resource Include="Fonts\Nunito\Nunito-Black.ttf" />
+    <Resource Include="Fonts\Nunito\Nunito-BlackItalic.ttf" />
+    <Resource Include="Fonts\Nunito\Nunito-Bold.ttf" />
+    <Resource Include="Fonts\Nunito\Nunito-BoldItalic.ttf" />
+    <Resource Include="Fonts\Nunito\Nunito-ExtraBold.ttf" />
+    <Resource Include="Fonts\Nunito\Nunito-ExtraBoldItalic.ttf" />
+    <Resource Include="Fonts\Nunito\Nunito-ExtraLight.ttf" />
+    <Resource Include="Fonts\Nunito\Nunito-ExtraLightItalic.ttf" />
+    <Resource Include="Fonts\Nunito\Nunito-Light.ttf" />
+    <Resource Include="Fonts\Nunito\Nunito-LightItalic.ttf" />
+    <Resource Include="Fonts\Nunito\Nunito-Regular.ttf" />
+    <Resource Include="Fonts\Nunito\Nunito-RegularItalic.ttf" />
+    <Resource Include="Fonts\Nunito\Nunito-SemiBold.ttf" />
+    <Resource Include="Fonts\Nunito\Nunito-SemiBoldItalic.ttf" />
+    <Resource Include="Fonts\Volte Rounded\VolteRounded-Bold.otf" />
+    <Resource Include="Fonts\Volte Rounded\VolteRounded-Light.otf" />
+    <Resource Include="Fonts\Volte Rounded\VolteRounded-Medium.otf" />
+    <Resource Include="Fonts\Volte Rounded\VolteRounded-Regular.otf" />
+    <Resource Include="Fonts\Volte Rounded\VolteRounded-Semibold.otf" />
+    <EmbeddedResource Include="..\CHANGELOG.md">
+      <Link>CHANGELOG.md</Link>
+      <LogicalName>Xenvious.CHANGELOG.md</LogicalName>
+    </EmbeddedResource>
+    <None Include="FodyWeavers.xml" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ogimage256.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\favicon64.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\link-1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\link-4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ogimageb256.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\blank-png-1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\favicon256.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="favicon256.ico" />
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\icons8-arrows-64.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\gtav_map.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.6.1 %28x86 und x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\icons8-minus-30.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\icons8-plus-mathe-30.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\CommunityToolkit.Mvvm.8.4.2\build\CommunityToolkit.Mvvm.targets" Condition="Exists('..\packages\CommunityToolkit.Mvvm.8.4.2\build\CommunityToolkit.Mvvm.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Dieses Projekt verweist auf mindestens ein NuGet-Paket, das auf diesem Computer fehlt. Verwenden Sie die Wiederherstellung von NuGet-Paketen, um die fehlenden Dateien herunterzuladen. Weitere Informationen finden Sie unter "http://go.microsoft.com/fwlink/?LinkID=322105". Die fehlende Datei ist "{0}".</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\CommunityToolkit.Mvvm.8.4.2\build\CommunityToolkit.Mvvm.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CommunityToolkit.Mvvm.8.4.2\build\CommunityToolkit.Mvvm.targets'))" />
+    <Error Condition="!Exists('..\packages\System.ValueTuple.4.6.2\build\net471\System.ValueTuple.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.ValueTuple.4.6.2\build\net471\System.ValueTuple.targets'))" />
+    <Error Condition="!Exists('..\packages\Fody.6.9.3\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.6.9.3\build\Fody.targets'))" />
+    <Error Condition="!Exists('..\packages\Costura.Fody.6.2.0\build\Costura.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.6.2.0\build\Costura.Fody.props'))" />
+    <Error Condition="!Exists('..\packages\Costura.Fody.6.2.0\build\Costura.Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.6.2.0\build\Costura.Fody.targets'))" />
+  </Target>
+  <Import Project="..\packages\System.ValueTuple.4.6.2\build\net471\System.ValueTuple.targets" Condition="Exists('..\packages\System.ValueTuple.4.6.2\build\net471\System.ValueTuple.targets')" />
+  <Import Project="..\packages\Fody.6.9.3\build\Fody.targets" Condition="Exists('..\packages\Fody.6.9.3\build\Fody.targets')" />
+  <Import Project="..\packages\Costura.Fody.6.2.0\build\Costura.Fody.targets" Condition="Exists('..\packages\Costura.Fody.6.2.0\build\Costura.Fody.targets')" />
+</Project>

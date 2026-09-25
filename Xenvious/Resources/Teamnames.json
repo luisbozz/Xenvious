@@ -1,0 +1,34 @@
+[
+  {
+    "Name": "Custom",
+    "Value": "custom"
+  },
+  {
+    "Name": "None",
+    "Value": "None"
+  },
+  {
+    "Name": "Heistcrew",
+    "Value": "TEAM_HEISTCREW"
+  },
+  {
+    "Name": "Team Orange",
+    "Value": "DZ_O_TEAM"
+  },
+  {
+    "Name": "Team Green",
+    "Value": "DZ_G_TEAM"
+  },
+  {
+    "Name": "Team Pink",
+    "Value": "DZ_P_TEAM"
+  },
+  {
+    "Name": "Team Purple",
+    "Value": "DZ_PU_TEAM"
+  },
+  {
+    "Name": "Beasts",
+    "Value": "TEAM_BEASTS"
+  }
+]

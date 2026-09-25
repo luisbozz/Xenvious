@@ -1,0 +1,58 @@
+name: Build
+
+on:
+  push:
+    branches: [main, master, 'feature/**']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Check out Xenvious
+        uses: actions/checkout@v7
+        with:
+          path: Xenvious
+          persist-credentials: false
+
+      # Xenvious.csproj references ..\..\mry\mry\bin\x64\Release\mry.dll, so mry
+      # has to sit next to Xenvious, as on a dev machine. Pinned to mry 1.4, the
+      # version Xenvious references.
+      - name: Check out mry
+        uses: actions/checkout@v7
+        with:
+          repository: luisbozz/mry
+          ref: b792c75c983c51d7c8f2adfe4db4498d000e111d
+          path: mry
+          persist-credentials: false
+
+      - uses: microsoft/setup-msbuild@v3
+
+      - name: Restore mry packages
+        run: nuget restore mry/mry.sln
+
+      - name: Restore Xenvious packages
+        run: nuget restore Xenvious/Xenvious.sln
+
+      - name: Build mry
+        run: msbuild mry/mry.sln /p:Configuration=Release /p:Platform=x64 /m /nologo /verbosity:minimal
+
+      - name: Build Xenvious
+        run: msbuild Xenvious/Xenvious.sln /p:Configuration=Release /p:Platform=x64 /m /nologo /verbosity:minimal
+
+      # Costura embeds the dependencies, so the exe is all a user needs.
+      - name: Upload the build
+        uses: actions/upload-artifact@v7
+        with:
+          name: Xenvious
+          path: Xenvious/Xenvious/bin/Release/Xenvious.exe
+          if-no-files-found: error
+          retention-days: 14

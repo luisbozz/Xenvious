@@ -1,0 +1,614 @@
+[
+    {
+        "patch_name": "dev mode",
+        "script_name": "fm_capture_creator",
+        "pattern": "2D 00 02 00 00 71 2E ? ? 5D ? ? ?",
+        "offset": 5,
+        "bytes_to_patch": "72 2E 00 01",
+        "dev": false
+    },
+    {
+        "patch_name": "show stunt prop item cycle",
+        "script_name": "fm_capture_creator",
+        "pattern": "25 33 61 ? ? ? 64 ? ? ? 3F 41 ? 64 ? ? ?",
+        "offset": 0,
+        "bytes_to_patch": "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00",
+        "dev": false
+    },
+    {
+        "patch_name": "selected spawn veicle stays after testing ends",
+        "script_name": "fm_capture_creator",
+        "pattern": "71 38 0E 38 01",
+        "offset": 0,
+        "bytes_to_patch": "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00",
+        "dev": false
+    },
+    {
+        "patch_name": "fm_capture_creator 80 actors patch",
+        "script_name": "fm_capture_creator",
+        "pattern": "25 ? 39 08 38 02",
+        "offset": 0,
+        "bytes_to_patch": "25 50",
+        "dev": false
+    },
+    {
+        "patch_name": "fm_capture_creator blue fence props fix",
+        "script_name": "fm_capture_creator",
+        "pattern": "39 03 38 03 70 58 ? ? 72",
+        "offset": 0,
+        "bytes_to_patch": "72 2E 01 01",
+        "dev": false
+    },
+    {
+        "patch_name": "dev mode",
+        "script_name": "fm_lts_creator",
+        "pattern": "2D 00 02 00 00 71 2E ? ? 5D ? ? ?",
+        "offset": 5,
+        "bytes_to_patch": "72 2E 00 01",
+        "dev": false
+    },
+    {
+        "patch_name": "show stunt prop item cycle",
+        "script_name": "fm_lts_creator",
+        "pattern": "25 33 61 ? ? ? 64 ? ? ? 3F 41 ? 64 ? ? ?",
+        "offset": 0,
+        "bytes_to_patch": "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00",
+        "dev": false
+    },
+    {
+        "patch_name": "dont force plyl to 1",
+        "script_name": "fm_lts_creator",
+        "pattern": "72 38 02 61 ? ? ? 46 ? ? 49 ? ?",
+        "offset": 0,
+        "bytes_to_patch": "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00"
+    },
+    {
+        "patch_name": "dont force kill rule to 6 and number to 1",
+        "script_name": "fm_lts_creator",
+        "pattern": "77 38 02 71 61 ? ? ?",
+        "offset": 0,
+        "bytes_to_patch": "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00"
+    },
+    {
+        "patch_name": "dont force round pa with dev mode",
+        "script_name": "fm_lts_creator",
+        "pattern": "5D ? ? ? 56 3B 00 71 71",
+        "offset": 0,
+        "bytes_to_patch": "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00"
+    },
+    {
+        "patch_name": "selected spawn veicle stays after testing ends",
+        "script_name": "fm_lts_creator",
+        "pattern": "71 38 0E 38 01",
+        "offset": 0,
+        "bytes_to_patch": "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00",
+        "dev": false
+    },
+    {
+        "patch_name": "dev mode",
+        "script_name": "fm_deathmatch_creator",
+        "pattern": "2D 00 02 00 00 71 2E ? ? 5D ? ? ?",
+        "offset": 5,
+        "bytes_to_patch": "72 2E 00 01",
+        "dev": false
+    },
+    {
+        "patch_name": "dev mode",
+        "script_name": "fm_race_creator",
+        "pattern": "2D 00 02 00 00 71 2E ? ? 5D ? ? ?",
+        "offset": 5,
+        "bytes_to_patch": "72 2E 00 01",
+        "dev": false
+    },
+    {
+        "patch_name": "dev mode",
+        "script_name": "fm_survival_creator",
+        "pattern": "2D 00 02 00 00 71 2E ? ? 5D ? ? ?",
+        "offset": 5,
+        "bytes_to_patch": "72 2E 00 01",
+        "dev": false
+    },
+    {
+        "patch_name": "Access CH Planning Board Solo [Gameplay itself requires changing global/locals]",
+        "script_name": "fmmc_launcher",
+        "pattern": "2D 01 03 00 00 5D ? ? ? 2A 06 56 05 00 5D ? ? ? 20 2A 06 56 05 00 5D",
+        "offset": 5,
+        "bytes_to_patch": "71 2E 01 01",
+        "dev": false
+    },
+    {
+        "patch_name": "cam fix",
+        "script_name": "fm_capture_creator",
+        "pattern": "2D 00 02 00 00 28 E6 2E F0 96 2C ? ? ? 2E 00 01",
+        "offset": 5,
+        "bytes_to_patch": "72 00 00 00 00 00 00 00 00",
+        "dev": false
+    },
+    {
+        "patch_name": "cam fix",
+        "script_name": "fm_lts_creator",
+        "pattern": "2D 00 02 00 00 28 E6 2E F0 96 2C ? ? ? 2E 00 01",
+        "offset": 5,
+        "bytes_to_patch": "72 00 00 00 00 00 00 00 00",
+        "dev": false
+    },
+    {
+        "patch_name": "cam fix",
+        "script_name": "fm_deathmatch_creator",
+        "pattern": "2D 00 02 00 00 28 E6 2E F0 96 2C ? ? ? 2E 00 01",
+        "offset": 5,
+        "bytes_to_patch": "72 00 00 00 00 00 00 00 00",
+        "dev": false
+    },
+    {
+        "patch_name": "cam fix",
+        "script_name": "fm_race_creator",
+        "pattern": "2D 00 02 00 00 28 E6 2E F0 96 2C ? ? ? 2E 00 01",
+        "offset": 5,
+        "bytes_to_patch": "72 00 00 00 00 00 00 00 00",
+        "dev": false
+    },
+    {
+        "patch_name": "cam fix",
+        "script_name": "fm_survival_creator",
+        "pattern": "2D 00 02 00 00 28 E6 2E F0 96 2C ? ? ? 2E 00 01",
+        "offset": 5,
+        "bytes_to_patch": "72 00 00 00 00 00 00 00 00",
+        "dev": false
+    },
+    {
+        "patch_name": "nrl fix",
+        "script_name": "fm_capture_creator",
+        "pattern": "72 38 04 61 ? ? ? 46 ? ? 49 ? ? 42 ? 71",
+        "offset": 0,
+        "bytes_to_patch": "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00",
+        "dev": false
+    },
+    {
+        "patch_name": "nrl fix",
+        "script_name": "fm_lts_creator",
+        "pattern": "72 38 04 61 ? ? ? 46 ? ? 49 ? ? 42 ? 61 ? ? ?",
+        "offset": 0,
+        "bytes_to_patch": "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00",
+        "dev": false
+    },
+    {
+        "patch_name": "set switch camera to caps lock",
+        "script_name": "fm_race_creator",
+        "pattern": "5D ? ? ? 55 04 00 72 2E 01 01",
+        "offset": 29,
+        "bytes_to_patch": "D9"
+    },
+    {
+        "patch_name": "set switch camera to caps lock",
+        "script_name": "fm_lts_creator",
+        "pattern": "5D ? ? ? 55 04 00 72 2E 01 01",
+        "offset": 29,
+        "bytes_to_patch": "D9"
+    },
+    {
+        "patch_name": "set switch camera to caps lock",
+        "script_name": "fm_capture_creator",
+        "pattern": "5D ? ? ? 55 04 00 72 2E 01 01",
+        "offset": 29,
+        "bytes_to_patch": "D9"
+    },
+    {
+        "patch_name": "set switch camera to caps lock",
+        "script_name": "fm_survival_creator",
+        "pattern": "5D ? ? ? 55 04 00 72 2E 01 01",
+        "offset": 29,
+        "bytes_to_patch": "D9"
+    },
+    {
+        "patch_name": "set switch camera to caps lock",
+        "script_name": "fm_deathmatch_creator",
+        "pattern": "5D ? ? ? 55 04 00 72 2E 01 01",
+        "offset": 29,
+        "bytes_to_patch": "D9"
+    },
+    {
+        "patch_name": "nop some func for custom funcs",
+        "category": "customfuncs",
+        "script_name": "fm_lts_creator",
+        "pattern": "2D 04 3A 00 00 38 03",
+        "offset": 0,
+        "bytes_to_patch": "2D 00 03 00 00 62 F4 01 2C 25 00 82 00 56 04 00 5D 54 76 25 62 F4 01 2C 25 01 82 00 56 04 00 5D F7 76 25 62 F4 01 2C 25 02 82 00 56 04 00 5D CB 77 25 62 F4 01 2C 25 03 82 00 56 04 00 5D 76 78 25 62 F4 01 2C 25 04 82 00 56 04 00 5D A9 78 25 2E 00 00 2D 00 02 00 00 62 F6 01 2C 2C 05 01 FB 06 56 03 00 2E 00 00 62 F6 01 2C 61 F7 01 2C 61 FA 01 2C 2C 0C 00 2C 2E 00 00 2D 02 03 00 00 38 01 70 58 38 00 38 01 71 57 08 00 25 0F 2E 02 01 55 5F 00 38 01 72 57 08 00 25 15 2E 02 01 55 51 00 38 01 73 57 08 00 25 18 2E 02 01 55 43 00 38 01 74 57 05 00 25 12 2E 02 01 55 35 00 38 00 71 57 08 00 25 34 2E 02 01 55 27 00 38 00 72 57 08 00 25 0F 2E 02 01 55 19 00 38 00 73 57 08 00 25 14 2E 02 01 55 0B 00 38 00 74 57 05 00 25 1D 2E 02 01 77 2E 02 01 2D 00 08 00 00 71 39 02 38 02 74 5C C3 00 38 02 38 02 61 00 00 48 64 34 0A 02 3F 35 01 5D 7B 76 25 37 04 37 05 37 06 37 07 2C 14 03 93 71 39 03 38 03 25 10 5C 91 00 74 38 03 38 02 61 00 00 48 46 FE 0E 49 6C 69 46 53 0C 34 24 40 10 32 74 38 03 38 02 61 00 00 48 46 FE 0E 49 6C 69 46 53 0C 34 24 40 13 32 38 03 38 02 61 00 00 48 46 FE 0E 49 6C 69 46 53 0C 34 24 41 17 38 04 38 05 38 06 25 62 72 72 5D 7B DD 24 74 74 38 03 38 02 61 00 00 48 46 FE 0E 49 6C 69 46 53 0C 34 24 40 10 32 74 38 03 38 02 61 00 00 48 46 FE 0E 49 6C 69 46 53 0C 34 24 40 13 32 5D CF 19 13 5D A0 DB 24 38 03 3D 01 39 03 55 68 FF 38 02 3D 01 39 02 55 37 FF 2E 00 00 2D 00 08 00 00 71 39 02 38 02 74 5C 9A 00 71 39 03 38 03 25 10 5C 87 00 74 38 03 38 02 61 00 00 48 46 FE 0E 49 6C 69 46 88 1A 34 03 32 74 38 03 38 02 61 00 00 48 46 FE 0E 49 6C 69 46 BC 1A 34 03 32 38 03 38 02 61 00 00 48 46 FE 0E 49 6C 69 46 F0 1A 35 01 25 FF 25 00 25 00 25 62 72 72 5D 7B DD 24 72 74 38 03 38 02 61 00 00 48 46 FE 0E 49 6C 69 46 88 1A 34 03 32 74 38 03 38 02 61 00 00 48 46 FE 0E 49 6C 69 46 BC 1A 34 03 32 5D CF 19 13 5D A0 DB 24 38 03 3D 01 39 03 55 72 FF 38 02 3D 01 39 02 55 60 FF 2E 00 00 2D 00 02 00 00 4F E1 23 41 0D 2C 05 02 6D 2A 56 0B 00 4F E1 23 41 0D 2C 05 01 EB 06 1F 56 03 00 2E 00 00 4F E1 23 41 0D 2C 05 03 42 63 F5 01 2C 2E 00 00 2D 00 02 00 00 5D E1 13 07 2E 00 00 00 00",
+        "dev": true
+    },
+    {
+        "patch_name": "run patched loop func without args",
+        "category": "customfuncs",
+        "script_name": "fm_lts_creator",
+        "pattern": "61 ? ? ? 41 ? 77 58 11 00",
+        "offset": 0,
+        "bytes_to_patch": "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00",
+        "dev": true
+    },
+    {
+        "patch_name": "nop some func for custom funcs",
+        "category": "customfuncs",
+        "script_name": "fm_capture_creator",
+        "pattern": "2D 04 3A 00 00 38 03",
+        "offset": 0,
+        "bytes_to_patch": "2D 00 03 00 00 62 F4 01 2C 71 00 82 56 04 00 5D ED 78 25 62 F4 01 2C 72 00 82 56 04 00 5D 90 79 25 62 F4 01 2C 73 00 82 56 04 00 5D 64 7A 25 62 F4 01 2C 74 00 82 56 04 00 5D 0F 7B 25 62 F4 01 2C 75 00 82 56 04 00 5D 42 7B 25 2E 00 00 2D 00 02 00 00 62 F6 01 2C 2C 05 00 18 06 56 03 00 2E 00 00 62 F6 01 2C 61 F7 01 2C 61 FA 01 2C 2C 0C 03 9D 2E 00 00 2D 02 03 00 00 38 01 70 58 38 00 38 01 71 57 08 00 25 0F 2E 02 01 55 5F 00 38 01 72 57 08 00 25 15 2E 02 01 55 51 00 38 01 73 57 08 00 25 18 2E 02 01 55 43 00 38 01 74 57 05 00 25 12 2E 02 01 55 35 00 38 00 71 57 08 00 25 34 2E 02 01 55 27 00 38 00 72 57 08 00 25 0F 2E 02 01 55 19 00 38 00 73 57 08 00 25 14 2E 02 01 55 0B 00 38 00 74 57 05 00 25 1D 2E 02 01 77 2E 02 01 2D 00 08 00 00 71 39 02 38 02 74 5C C3 00 38 02 38 02 61 00 00 48 64 34 0A 02 3F 35 01 5D 14 79 25 37 04 37 05 37 06 37 07 2C 14 00 BE 71 39 03 38 03 25 10 5C 91 00 74 38 03 38 02 61 00 00 48 46 FE 0E 49 6C 69 46 53 0C 34 24 40 10 32 74 38 03 38 02 61 00 00 48 46 FE 0E 49 6C 69 46 53 0C 34 24 40 13 32 38 03 38 02 61 00 00 48 46 FE 0E 49 6C 69 46 53 0C 34 24 41 17 38 04 38 05 38 06 25 62 72 72 5D 21 E0 24 74 74 38 03 38 02 61 00 00 48 46 FE 0E 49 6C 69 46 53 0C 34 24 40 10 32 74 38 03 38 02 61 00 00 48 46 FE 0E 49 6C 69 46 53 0C 34 24 40 13 32 5D 85 07 13 5D 46 DE 24 38 03 3D 01 39 03 55 68 FF 38 02 3D 01 39 02 55 37 FF 2E 00 00 2D 00 08 00 00 71 39 02 38 02 74 5C 9A 00 71 39 03 38 03 25 10 5C 87 00 74 38 03 38 02 61 00 00 48 46 FE 0E 49 6C 69 46 88 1A 34 03 32 74 38 03 38 02 61 00 00 48 46 FE 0E 49 6C 69 46 BC 1A 34 03 32 38 03 38 02 61 00 00 48 46 FE 0E 49 6C 69 46 F0 1A 35 01 25 FF 25 00 25 00 25 62 72 72 5D 21 E0 24 72 74 38 03 38 02 61 00 00 48 46 FE 0E 49 6C 69 46 88 1A 34 03 32 74 38 03 38 02 61 00 00 48 46 FE 0E 49 6C 69 46 BC 1A 34 03 32 5D 85 07 13 5D 46 DE 24 38 03 3D 01 39 03 55 72 FF 38 02 3D 01 39 02 55 60 FF 2E 00 00 2D 00 02 00 00 4F 76 22 41 0D 2C 05 02 F3 2A 56 0B 00 4F 76 22 41 0D 2C 05 03 07 06 1F 56 03 00 2E 00 00 4F 76 22 41 0D 2C 05 04 03 63 F5 01 2C 2E 00 00 2D 00 02 00 00 5D A5 F6 06 2E 00 00 00 00",
+        "dev": true
+    },
+    {
+        "patch_name": "run patched loop func without args",
+        "category": "customfuncs",
+        "script_name": "fm_capture_creator",
+        "pattern": "61 ? ? ? 41 ? 77 58 11 00",
+        "offset": 0,
+        "bytes_to_patch": "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00",
+        "dev": true
+    },
+    {
+        "patch_name": "nop some func for custom funcs",
+        "category": "customfuncs",
+        "script_name": "fm_race_creator",
+        "pattern": "2D 04 3A 00 00 38 03",
+        "offset": 0,
+        "bytes_to_patch": "2D 00 03 00 00 62 F4 01 2C 71 00 82 56 04 00 5D 59 37 44 62 F4 01 2C 72 00 82 56 04 00 5D FC 37 44 62 F4 01 2C 73 00 82 56 04 00 5D D0 38 44 62 F4 01 2C 74 00 82 56 04 00 5D 7B 39 44 62 F4 01 2C 75 00 82 56 04 00 5D AE 39 44 2E 00 00 2D 00 02 00 00 62 F6 01 2C 2C 05 02 CC 06 56 03 00 2E 00 00 62 F6 01 2C 61 F7 01 2C 61 FA 01 2C 2C 0C 00 BA 2E 00 00 2D 02 03 00 00 38 01 70 58 38 00 38 01 71 57 08 00 25 0F 2E 02 01 55 5F 00 38 01 72 57 08 00 25 15 2E 02 01 55 51 00 38 01 73 57 08 00 25 18 2E 02 01 55 43 00 38 01 74 57 05 00 25 12 2E 02 01 55 35 00 38 00 71 57 08 00 25 34 2E 02 01 55 27 00 38 00 72 57 08 00 25 0F 2E 02 01 55 19 00 38 00 73 57 08 00 25 14 2E 02 01 55 0B 00 38 00 74 57 05 00 25 1D 2E 02 01 77 2E 02 01 2D 00 08 00 00 71 39 02 38 02 74 5C C3 00 38 02 38 02 61 00 00 48 64 34 0A 02 3F 35 01 5D 80 37 44 37 04 37 05 37 06 37 07 2C 14 08 2A 71 39 03 38 03 25 10 5C 91 00 74 38 03 38 02 61 00 00 48 46 FE 0E 49 6C 69 46 53 0C 34 24 40 10 32 74 38 03 38 02 61 00 00 48 46 FE 0E 49 6C 69 46 53 0C 34 24 40 13 32 38 03 38 02 61 00 00 48 46 FE 0E 49 6C 69 46 53 0C 34 24 41 17 38 04 38 05 38 06 25 62 72 72 5D 96 85 42 74 74 38 03 38 02 61 00 00 48 46 FE 0E 49 6C 69 46 53 0C 34 24 40 10 32 74 38 03 38 02 61 00 00 48 46 FE 0E 49 6C 69 46 53 0C 34 24 40 13 32 5D E0 64 3E 5D E1 83 42 38 03 3D 01 39 03 55 68 FF 38 02 3D 01 39 02 55 37 FF 2E 00 00 2D 00 08 00 00 71 39 02 38 02 74 5C 9A 00 71 39 03 38 03 25 10 5C 87 00 74 38 03 38 02 61 00 00 48 46 FE 0E 49 6C 69 46 88 1A 34 03 32 74 38 03 38 02 61 00 00 48 46 FE 0E 49 6C 69 46 BC 1A 34 03 32 38 03 38 02 61 00 00 48 46 FE 0E 49 6C 69 46 F0 1A 35 01 25 FF 25 00 25 00 25 62 72 72 5D 96 85 42 72 74 38 03 38 02 61 00 00 48 46 FE 0E 49 6C 69 46 88 1A 34 03 32 74 38 03 38 02 61 00 00 48 46 FE 0E 49 6C 69 46 BC 1A 34 03 32 5D E0 64 3E 5D E1 83 42 38 03 3D 01 39 03 55 72 FF 38 02 3D 01 39 02 55 60 FF 2E 00 00 2D 00 02 00 00 4F 4B C9 41 0D 2C 05 03 CC 2A 56 0B 00 4F 4B C9 41 0D 2C 05 04 62 06 1F 56 03 00 2E 00 00 4F 4B C9 41 0D 2C 05 08 4E 63 F5 01 2C 2E 00 00 2D 00 02 00 00 5D C6 38 05 2E 00 00 00 00",
+        "dev": true
+    },
+    {
+        "patch_name": "run patched loop func without args",
+        "category": "customfuncs",
+        "script_name": "fm_race_creator",
+        "pattern": "61 ? ? ? 41 ? 77 58 11 00",
+        "offset": 0,
+        "bytes_to_patch": "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00",
+        "dev": true
+    },
+    {
+        "patch_name": "precise templates",
+        "script_name": "fm_race_creator",
+        "pattern": "5D ? ? ? 39 3C 71 39 3E 38 07 72 5D ? ? ? 38 08 2F 76 82 2A 56 ? ? 38 00 47 11 01 75 08 1F 2A 56 ? ? 38 3C 71 0A 1F 56 ? ? 38 08 2F 77 82 06 56 ? ? 38 00 38 07 5D ? ? ?",
+        "offset": 30,
+        "bytes_to_patch": "77 09",
+        "dev": false,
+        "trigger": "templates"
+    },
+    {
+        "patch_name": "precise templates",
+        "script_name": "fm_lts_creator",
+        "pattern": "5D ? ? ? 39 3C 71 39 3E 38 07 72 5D ? ? ? 38 08 2F 76 82 2A 56 ? ? 38 00 47 11 01 75 08 1F 2A 56 ? ? 38 3C 71 0A 1F 56 ? ? 38 08 2F 77 82 06 56 ? ? 38 00 38 07 5D ? ? ?",
+        "offset": 30,
+        "bytes_to_patch": "77 09",
+        "dev": false,
+        "trigger": "templates"
+    },
+    {
+        "patch_name": "precise templates",
+        "script_name": "fm_capture_creator",
+        "pattern": "5D ? ? ? 39 3C 71 39 3E 38 07 72 5D ? ? ? 38 08 2F 76 82 2A 56 ? ? 38 00 47 11 01 75 08 1F 2A 56 ? ? 38 3C 71 0A 1F 56 ? ? 38 08 2F 77 82 06 56 ? ? 38 00 38 07 5D ? ? ?",
+        "offset": 30,
+        "bytes_to_patch": "77 09",
+        "dev": false,
+        "trigger": "templates"
+    },
+    {
+        "patch_name": "precise templates",
+        "script_name": "fm_deathmatch_creator",
+        "pattern": "5D ? ? ? 39 3C 71 39 3E 38 07 72 5D ? ? ? 38 08 2F 76 82 2A 56 ? ? 38 00 47 11 01 75 08 1F 2A 56 ? ? 38 3C 71 0A 1F 56 ? ? 38 08 2F 77 82 06 56 ? ? 38 00 38 07 5D ? ? ?",
+        "offset": 30,
+        "bytes_to_patch": "77 09",
+        "dev": false,
+        "trigger": "templates"
+    },
+    {
+        "patch_name": "precise templates",
+        "script_name": "fm_survival_creator",
+        "pattern": "5D ? ? ? 39 3C 71 39 3E 38 07 72 5D ? ? ? 38 08 2F 76 82 2A 56 ? ? 38 00 47 11 01 75 08 1F 2A 56 ? ? 38 3C 71 0A 1F 56 ? ? 38 08 2F 77 82 06 56 ? ? 38 00 38 07 5D ? ? ?",
+        "offset": 30,
+        "bytes_to_patch": "77 09",
+        "dev": false,
+        "trigger": "templates"
+    },
+    {
+        "patch_name": "precise templates",
+        "script_name": "fm_race_creator",
+        "pattern": "64 ? ? ? 66 38 0B 5D ? ? ? 43 92 03 39 0C 64 ? ? ? 66 37 03 68 10 38 00 47 DF 03 25 40 57 ? ? 77 39 0C 64 ? ? ? 66 37 03 68 10 38 00 77 38 0C 37 03 71 72 5D ? ? ? 5D ? ? ?",
+        "offset": 31,
+        "bytes_to_patch": "64",
+        "dev": false,
+        "trigger": "templates"
+    },
+    {
+        "patch_name": "precise templates",
+        "script_name": "fm_lts_creator",
+        "pattern": "64 ? ? ? 66 38 0B 5D ? ? ? 43 92 03 39 0C 64 ? ? ? 66 37 03 68 10 38 00 47 DF 03 25 40 57 ? ? 77 39 0C 64 ? ? ? 66 37 03 68 10 38 00 77 38 0C 37 03 71 72 5D ? ? ? 5D ? ? ?",
+        "offset": 31,
+        "bytes_to_patch": "64",
+        "dev": false,
+        "trigger": "templates"
+    },
+    {
+        "patch_name": "precise templates",
+        "script_name": "fm_capture_creator",
+        "pattern": "64 ? ? ? 66 38 0B 5D ? ? ? 43 92 03 39 0C 64 ? ? ? 66 37 03 68 10 38 00 47 DF 03 25 40 57 ? ? 77 39 0C 64 ? ? ? 66 37 03 68 10 38 00 77 38 0C 37 03 71 72 5D ? ? ? 5D ? ? ?",
+        "offset": 31,
+        "bytes_to_patch": "64",
+        "dev": false,
+        "trigger": "templates"
+    },
+    {
+        "patch_name": "precise templates",
+        "script_name": "fm_deathmatch_creator",
+        "pattern": "64 ? ? ? 66 38 0B 5D ? ? ? 43 92 03 39 0C 64 ? ? ? 66 37 03 68 10 38 00 47 DF 03 25 40 57 ? ? 77 39 0C 64 ? ? ? 66 37 03 68 10 38 00 77 38 0C 37 03 71 72 5D ? ? ? 5D ? ? ?",
+        "offset": 31,
+        "bytes_to_patch": "64",
+        "dev": false,
+        "trigger": "templates"
+    },
+    {
+        "patch_name": "precise templates",
+        "script_name": "fm_survival_creator",
+        "pattern": "64 ? ? ? 66 38 0B 5D ? ? ? 43 92 03 39 0C 64 ? ? ? 66 37 03 68 10 38 00 47 DF 03 25 40 57 ? ? 77 39 0C 64 ? ? ? 66 37 03 68 10 38 00 77 38 0C 37 03 71 72 5D ? ? ? 5D ? ? ?",
+        "offset": 31,
+        "bytes_to_patch": "64",
+        "dev": false,
+        "trigger": "templates"
+    },
+    {
+        "patch_name": "precise templates",
+        "script_name": "fm_race_creator",
+        "pattern": "2A 56 ? ? 5D ? ? ? 06 1F 2A 56 ? ? 5D ? ? ? 06 1F 2A 56 ? ? 5D ? ? ? 06 1F 56 ? ? 38 00 78 25 28 64 ? ? ? 66 71 72 5D ? ? ? 38 00 47 DF 03 25 40 57 ? ? 38 00 25 08 43 A1 03 64 ? ? ?",
+        "offset": 30,
+        "bytes_to_patch": "00 00 00 38 00 78 25 06 64 {{ 1 }}",
+        "dev": false,
+        "values": [
+            {
+                "id": 1,
+                "pattern": "77 39 0C 64 ? ? ? 66 37 03 68 10",
+                "offset": 4,
+                "bytes_to_read": 3
+            }
+        ],
+        "trigger": "templates"
+    },
+    {
+        "patch_name": "precise templates",
+        "script_name": "fm_lts_creator",
+        "pattern": "2A 56 ? ? 5D ? ? ? 06 1F 2A 56 ? ? 5D ? ? ? 06 1F 2A 56 ? ? 5D ? ? ? 06 1F 56 ? ? 38 00 78 25 28 64 ? ? ? 66 71 72 5D ? ? ? 38 00 47 DF 03 25 40 57 ? ? 38 00 25 08 43 A1 03 64 ? ? ?",
+        "offset": 30,
+        "bytes_to_patch": "00 00 00 38 00 78 25 06 64 {{ 1 }}",
+        "dev": false,
+        "values": [
+            {
+                "id": 1,
+                "pattern": "77 39 0C 64 ? ? ? 66 37 03 68 10",
+                "offset": 4,
+                "bytes_to_read": 3
+            }
+        ],
+        "trigger": "templates"
+    },
+    {
+        "patch_name": "precise templates",
+        "script_name": "fm_capture_creator",
+        "pattern": "2A 56 ? ? 5D ? ? ? 06 1F 2A 56 ? ? 5D ? ? ? 06 1F 2A 56 ? ? 5D ? ? ? 06 1F 56 ? ? 38 00 78 25 28 64 ? ? ? 66 71 72 5D ? ? ? 38 00 47 DF 03 25 40 57 ? ? 38 00 25 08 43 A1 03 64 ? ? ?",
+        "offset": 30,
+        "bytes_to_patch": "00 00 00 38 00 78 25 06 64 {{ 1 }}",
+        "dev": false,
+        "values": [
+            {
+                "id": 1,
+                "pattern": "77 39 0C 64 ? ? ? 66 37 03 68 10",
+                "offset": 4,
+                "bytes_to_read": 3
+            }
+        ],
+        "trigger": "templates"
+    },
+    {
+        "patch_name": "precise templates",
+        "script_name": "fm_deathmatch_creator",
+        "pattern": "2A 56 ? ? 5D ? ? ? 06 1F 2A 56 ? ? 5D ? ? ? 06 1F 2A 56 ? ? 5D ? ? ? 06 1F 56 ? ? 38 00 78 25 28 64 ? ? ? 66 71 72 5D ? ? ? 38 00 47 DF 03 25 40 57 ? ? 38 00 25 08 43 A1 03 64 ? ? ?",
+        "offset": 30,
+        "bytes_to_patch": "00 00 00 38 00 78 25 06 64 {{ 1 }}",
+        "dev": false,
+        "values": [
+            {
+                "id": 1,
+                "pattern": "77 39 0C 64 ? ? ? 66 37 03 68 10",
+                "offset": 4,
+                "bytes_to_read": 3
+            }
+        ],
+        "trigger": "templates"
+    },
+    {
+        "patch_name": "precise templates",
+        "script_name": "fm_survival_creator",
+        "pattern": "2A 56 ? ? 5D ? ? ? 06 1F 2A 56 ? ? 5D ? ? ? 06 1F 2A 56 ? ? 5D ? ? ? 06 1F 56 ? ? 38 00 78 25 28 64 ? ? ? 66 71 72 5D ? ? ? 38 00 47 DF 03 25 40 57 ? ? 38 00 25 08 43 A1 03 64 ? ? ?",
+        "offset": 30,
+        "bytes_to_patch": "00 00 00 38 00 78 25 06 64 {{ 1 }}",
+        "dev": false,
+        "values": [
+            {
+                "id": 1,
+                "pattern": "77 39 0C 64 ? ? ? 66 37 03 68 10",
+                "offset": 4,
+                "bytes_to_read": 3
+            }
+        ],
+        "trigger": "templates"
+    },
+    {
+        "patch_name": "precise templates",
+        "script_name": "fm_race_creator",
+        "pattern": "48 79 0D 38 09 38 03 41 14 58 ? ? 7A 38 02 48 7A 0D 38 09 38 03 42 14 38 02 38 00 2F 38 02 46 81 0D 5D ? ? ? 2E 04 00 38 06 7A 15 56 ? ? 38 02 46 A5 0E 25 0B 2C ? ? ? 38 02 38 01",
+        "offset": 32,
+        "bytes_to_patch": "80",
+        "dev": false,
+        "trigger": "templates"
+    },
+    {
+        "patch_name": "precise templates",
+        "script_name": "fm_lts_creator",
+        "pattern": "48 79 0D 38 09 38 03 41 14 58 ? ? 7A 38 02 48 7A 0D 38 09 38 03 42 14 38 02 38 00 2F 38 02 46 81 0D 5D ? ? ? 2E 04 00 38 06 7A 15 56 ? ? 38 02 46 A5 0E 25 0B 2C ? ? ? 38 02 38 01",
+        "offset": 32,
+        "bytes_to_patch": "80",
+        "dev": false,
+        "trigger": "templates"
+    },
+    {
+        "patch_name": "precise templates",
+        "script_name": "fm_capture_creator",
+        "pattern": "48 79 0D 38 09 38 03 41 14 58 ? ? 7A 38 02 48 7A 0D 38 09 38 03 42 14 38 02 38 00 2F 38 02 46 81 0D 5D ? ? ? 2E 04 00 38 06 7A 15 56 ? ? 38 02 46 A5 0E 25 0B 2C ? ? ? 38 02 38 01",
+        "offset": 32,
+        "bytes_to_patch": "80",
+        "dev": false,
+        "trigger": "templates"
+    },
+    {
+        "patch_name": "precise templates",
+        "script_name": "fm_deathmatch_creator",
+        "pattern": "48 79 0D 38 09 38 03 41 14 58 ? ? 7A 38 02 48 7A 0D 38 09 38 03 42 14 38 02 38 00 2F 38 02 46 81 0D 5D ? ? ? 2E 04 00 38 06 7A 15 56 ? ? 38 02 46 A5 0E 25 0B 2C ? ? ? 38 02 38 01",
+        "offset": 32,
+        "bytes_to_patch": "80",
+        "dev": false,
+        "trigger": "templates"
+    },
+    {
+        "patch_name": "precise templates",
+        "script_name": "fm_survival_creator",
+        "pattern": "48 79 0D 38 09 38 03 41 14 58 ? ? 7A 38 02 48 7A 0D 38 09 38 03 42 14 38 02 38 00 2F 38 02 46 81 0D 5D ? ? ? 2E 04 00 38 06 7A 15 56 ? ? 38 02 46 A5 0E 25 0B 2C ? ? ? 38 02 38 01",
+        "offset": 32,
+        "bytes_to_patch": "80",
+        "dev": false,
+        "trigger": "templates"
+    },
+    {
+        "patch_name": "precise templates",
+        "script_name": "fm_race_creator",
+        "pattern": "46 97 04 25 08 2C ? ? ? 38 05 46 30 0C 71 2C ? ? ? 38 00 38 05 5D ? ? ? 38 00 47 53 01 2C ? ? ? 56 ? ? 38 14 38 00 47 53 01 2C ? ? ? 58 ? ? 38 11 38 00 46 77 01 35 01",
+        "offset": 30,
+        "bytes_to_patch": "52",
+        "dev": false,
+        "trigger": "templates"
+    },
+    {
+        "patch_name": "precise templates",
+        "script_name": "fm_lts_creator",
+        "pattern": "46 97 04 25 08 2C ? ? ? 38 05 46 30 0C 71 2C ? ? ? 38 00 38 05 5D ? ? ? 38 00 47 53 01 2C ? ? ? 56 ? ? 38 14 38 00 47 53 01 2C ? ? ? 58 ? ? 38 11 38 00 46 77 01 35 01",
+        "offset": 30,
+        "bytes_to_patch": "52",
+        "dev": false,
+        "trigger": "templates"
+    },
+    {
+        "patch_name": "precise templates",
+        "script_name": "fm_capture_creator",
+        "pattern": "46 97 04 25 08 2C ? ? ? 38 05 46 30 0C 71 2C ? ? ? 38 00 38 05 5D ? ? ? 38 00 47 53 01 2C ? ? ? 56 ? ? 38 14 38 00 47 53 01 2C ? ? ? 58 ? ? 38 11 38 00 46 77 01 35 01",
+        "offset": 30,
+        "bytes_to_patch": "52",
+        "dev": false,
+        "trigger": "templates"
+    },
+    {
+        "patch_name": "precise templates",
+        "script_name": "fm_deathmatch_creator",
+        "pattern": "46 97 04 25 08 2C ? ? ? 38 05 46 30 0C 71 2C ? ? ? 38 00 38 05 5D ? ? ? 38 00 47 53 01 2C ? ? ? 56 ? ? 38 14 38 00 47 53 01 2C ? ? ? 58 ? ? 38 11 38 00 46 77 01 35 01",
+        "offset": 30,
+        "bytes_to_patch": "52",
+        "dev": false,
+        "trigger": "templates"
+    },
+    {
+        "patch_name": "precise templates",
+        "script_name": "fm_survival_creator",
+        "pattern": "46 97 04 25 08 2C ? ? ? 38 05 46 30 0C 71 2C ? ? ? 38 00 38 05 5D ? ? ? 38 00 47 53 01 2C ? ? ? 56 ? ? 38 14 38 00 47 53 01 2C ? ? ? 58 ? ? 38 11 38 00 46 77 01 35 01",
+        "offset": 30,
+        "bytes_to_patch": "52",
+        "dev": false,
+        "trigger": "templates"
+    },
+    {
+        "patch_name": "nop some func for custom funcs",
+        "category": "customfuncs",
+        "script_name": "fm_lts_creator",
+        "pattern": "38 01 2F 71 5D ? ? ? 5D ? ? ? ",
+        "offset": 0,
+        "bytes_to_patch": "38 01 2F 72 01 71 {{ 1 }} 38 02 71 {{ 1 }} 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00",
+        "dev": false,
+        "values": [
+            {
+                "id": 1,
+                "pattern": "5D ? ? ? 5D ? ? ? 56 0C 00 38 02",
+                "offset": 0,
+                "bytes_to_read": 4
+            }
+        ]
+    },
+    {
+        "patch_name": "nop some func for custom funcs",
+        "category": "customfuncs",
+        "script_name": "fm_capture_creator",
+        "pattern": "38 01 2F 71 5D ? ? ? 5D ? ? ? ",
+        "offset": 0,
+        "bytes_to_patch": "38 01 2F 72 01 71 {{ 1 }} 38 02 71 {{ 1 }} 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00",
+        "dev": false,
+        "values": [
+            {
+                "id": 1,
+                "pattern": "5D ? ? ? 5D ? ? ? 56 0C 00 38 02",
+                "offset": 0,
+                "bytes_to_read": 4
+            }
+        ]
+    },
+    {
+        "patch_name": "nop some func for custom funcs",
+        "category": "customfuncs",
+        "script_name": "fm_race_creator",
+        "pattern": "38 01 2F 71 5D ? ? ? 5D ? ? ? ",
+        "offset": 0,
+        "bytes_to_patch": "38 01 2F 72 01 71 {{ 1 }} 38 02 71 {{ 1 }} 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00",
+        "dev": false,
+        "values": [
+            {
+                "id": 1,
+                "pattern": "5D ? ? ? 5D ? ? ? 56 0C 00 38 02",
+                "offset": 0,
+                "bytes_to_read": 4
+            }
+        ]
+    },
+    {
+        "patch_name": "nop some func for custom funcs",
+        "category": "customfuncs",
+        "script_name": "fm_survival_creator",
+        "pattern": "38 01 2F 71 5D ? ? ? 5D ? ? ? ",
+        "offset": 0,
+        "bytes_to_patch": "38 01 2F 72 01 71 {{ 1 }} 38 02 71 {{ 1 }} 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00",
+        "dev": false,
+        "values": [
+            {
+                "id": 1,
+                "pattern": "5D ? ? ? 5D ? ? ? 56 0C 00 38 02",
+                "offset": 0,
+                "bytes_to_read": 4
+            }
+        ]
+    },
+    {
+        "patch_name": "nop some func for custom funcs",
+        "category": "customfuncs",
+        "script_name": "fm_deathmatch_creator",
+        "pattern": "38 01 2F 71 5D ? ? ? 5D ? ? ? ",
+        "offset": 0,
+        "bytes_to_patch": "38 01 2F 72 01 71 {{ 1 }} 38 02 71 {{ 1 }} 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00",
+        "dev": false,
+        "values": [
+            {
+                "id": 1,
+                "pattern": "5D ? ? ? 5D ? ? ? 56 0C 00 38 02",
+                "offset": 0,
+                "bytes_to_read": 4
+            }
+        ]
+    }
+]

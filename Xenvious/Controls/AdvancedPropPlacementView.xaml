@@ -1,0 +1,912 @@
+﻿<UserControl x:Class="Xenvious.Controls.AdvancedPropPlacementView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:adv="clr-namespace:Xenvious.AdvancedPlacement"
+             xmlns:vm="clr-namespace:Xenvious.ViewModels"
+             xmlns:helpers="clr-namespace:Xenvious.Helper_Classes"
+             xmlns:controls="clr-namespace:Xenvious.Controls"
+             mc:Ignorable="d"
+             d:DesignWidth="1200"
+             d:DesignHeight="760">
+    <UserControl.Resources>
+        <helpers:FlexibleDoubleConverter x:Key="Num"/>
+        <helpers:EqualsToBoolConverter x:Key="Eq"/>
+        <helpers:EqualsToVisibilityConverter x:Key="EqVis"/>
+        <helpers:BoolToVisibilityConverter x:Key="BoolVis"/>
+        <helpers:AtLeastToBoolConverter x:Key="AtLeast"/>
+
+        <Style x:Key="Section" TargetType="Border">
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="Background" Value="{DynamicResource SectionBackgroundBrush}"/>
+            <Setter Property="Padding" Value="14,12"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="H1" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
+        </Style>
+        <Style x:Key="Lbl" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Margin" Value="0,6,0,2"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+        <Style x:Key="Muted" TargetType="TextBlock" BasedOn="{StaticResource Lbl}">
+            <Setter Property="Foreground" Value="#FFA3A6AA"/>
+            <Setter Property="FontSize" Value="12"/>
+        </Style>
+        <Style x:Key="Field" TargetType="TextBox" BasedOn="{StaticResource Watermark}">
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Margin" Value="0,0,6,0"/>
+        </Style>
+
+        <!-- Main action: light fill, like the headers -->
+        <Style x:Key="PrimaryBtn" TargetType="Button">
+            <Setter Property="Foreground" Value="#FF202225"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontFamily" Value="{DynamicResource Volte}"/>
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Padding" Value="22,0"/>
+            <Setter Property="ToolTipService.ShowOnDisabled" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="b" CornerRadius="5" Background="#FFE3E5E8" Padding="{TemplateBinding Padding}">
+                            <Border.Effect><DropShadowEffect BlurRadius="5" ShadowDepth="2" Opacity="0.6" Color="{DynamicResource ShadowColor}"/></Border.Effect>
+                            <ContentPresenter x:Name="c" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="b" Property="Background" Value="#FFFFFFFF"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="c" Property="RenderTransform"><Setter.Value><TranslateTransform Y="1"/></Setter.Value></Setter>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="b" Property="Opacity" Value="0.35"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="SecondaryBtn" TargetType="Button">
+            <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontFamily" Value="{DynamicResource Volte}"/>
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Padding" Value="18,0"/>
+            <Setter Property="ToolTipService.ShowOnDisabled" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="b" CornerRadius="5" Background="#FF36393F" Padding="{TemplateBinding Padding}">
+                            <Border.Effect><DropShadowEffect BlurRadius="5" ShadowDepth="2" Opacity="0.6" Color="{DynamicResource ShadowColor}"/></Border.Effect>
+                            <ContentPresenter x:Name="c" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="b" Property="Background" Value="#FF40444B"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="c" Property="RenderTransform"><Setter.Value><TranslateTransform Y="1"/></Setter.Value></Setter>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="b" Property="Opacity" Value="0.35"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="LivePill" TargetType="ToggleButton">
+            <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontFamily" Value="{DynamicResource Volte}"/>
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="ToolTipService.ShowOnDisabled" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border x:Name="b" CornerRadius="5" Background="#FF36393F" Padding="14,0,18,0">
+                            <Border.Effect><DropShadowEffect BlurRadius="5" ShadowDepth="2" Opacity="0.6" Color="{DynamicResource ShadowColor}"/></Border.Effect>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <Ellipse x:Name="dot" Width="10" Height="10" Fill="#FF72767D" Margin="0,0,8,0"/>
+                                <ContentPresenter VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="b" Property="Background" Value="#FF4F545C"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="dot" Property="Fill" Value="#FF43B581"/>
+                                <Setter TargetName="b" Property="Background" Value="#FF2D4A3A"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="b" Property="Opacity" Value="0.35"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="Btn" TargetType="Button" BasedOn="{StaticResource SecondaryBtn}">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Padding" Value="14,0"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+        <Style x:Key="StepDot" TargetType="Ellipse">
+            <Setter Property="Width" Value="8"/>
+            <Setter Property="Height" Value="8"/>
+            <Setter Property="Margin" Value="4,0"/>
+            <Setter Property="Fill" Value="#FF4F545C"/>
+        </Style>
+        <!-- Toggle used as radio button / tile -->
+        <Style x:Key="Tile" TargetType="ToggleButton">
+            <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
+            <Setter Property="Background" Value="#FF36393F"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="Margin" Value="0,0,6,6"/>
+            <Setter Property="MinHeight" Value="32"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontFamily" Value="{DynamicResource Volte}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border x:Name="b" CornerRadius="5" Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1.5"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="b" Property="Background" Value="#FF40444B"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="b" Property="Background" Value="#FF4F545C"/>
+                                <Setter TargetName="b" Property="BorderBrush" Value="#FFE3E5E8"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.45"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="BigTile" TargetType="ToggleButton" BasedOn="{StaticResource Tile}">
+            <Setter Property="Height" Value="68"/>
+            <Setter Property="Margin" Value="0,0,6,6"/>
+            <Setter Property="Padding" Value="4,6"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- ============ STATUS BAR ============ -->
+        <Border Grid.Row="0" Style="{StaticResource Section}" Margin="15,12,15,6">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- script features -->
+                <Border Grid.Column="0" CornerRadius="5" Background="#FF36393F" Padding="12,6" Margin="0,0,10,0" MaxWidth="560">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Ellipse Grid.Column="0" Width="12" Height="12" Margin="2,0,12,0" VerticalAlignment="Center">
+                            <Ellipse.Style>
+                                <Style TargetType="Ellipse">
+                                    <Setter Property="Fill" Value="#FFD9534F"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding FeatureState}" Value="Active">
+                                            <Setter Property="Fill" Value="#FF43B581"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding FeatureState}" Value="Checking">
+                                            <Setter Property="Fill" Value="#FFFAA61A"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding FeatureState}" Value="Disabled">
+                                            <Setter Property="Fill" Value="#FFFAA61A"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Ellipse.Style>
+                        </Ellipse>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="0,0,14,0">
+                            <TextBlock Foreground="#FFA3A6AA" FontSize="11" Tag="{Binding DataContext.Translation[adv_features_label], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Script-Features'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                            <TextBlock Foreground="{DynamicResource TextColor}" FontSize="15" FontWeight="Bold" TextTrimming="CharacterEllipsis" Text="{Binding FeatureStatusText}"
+                                       ToolTip="{Binding FeatureHintText}"/>
+                        </StackPanel>
+                        <Button Grid.Column="2" Style="{StaticResource PrimaryBtn}" Height="32" FontSize="13" Padding="16,0" Margin="0,0,8,0" Command="{Binding EnableFeaturesCommand}"
+                                Visibility="{Binding CanEnableFeatures, Converter={StaticResource BoolVis}}" Tag="{Binding DataContext.Translation[adv_enable], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Aktivieren'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                        <Button Grid.Column="3" Style="{StaticResource Btn}" Command="{Binding RecheckFeaturesCommand}" Tag="{Binding DataContext.Translation[adv_recheck], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Erneut prüfen'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                    </Grid>
+                </Border>
+
+                <!-- remember -->
+                <Border Grid.Column="1" CornerRadius="5" Background="#FF36393F" Padding="12,6" Margin="0,0,10,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,14,0">
+                            <TextBlock Foreground="#FFA3A6AA" FontSize="11" Tag="{Binding DataContext.Translation[adv_settings_label], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Einstellungen'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                            <TextBlock Foreground="{DynamicResource TextColor}" FontSize="15" FontWeight="Bold" Tag="{Binding DataContext.Translation[adv_remember], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Letzte Einstellungen merken'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                        </StackPanel>
+                        <CheckBox Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding RememberSettings}"/>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Column="2" CornerRadius="5" Background="#FF36393F" Padding="12,6" HorizontalAlignment="Right">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="⌖" FontSize="22" Foreground="#FFFAC828" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="0,0,14,0">
+                            <TextBlock Foreground="#FFA3A6AA" FontSize="11" Tag="{Binding DataContext.Translation[adv_hovered], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Prop unter dem Cursor'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                            <TextBlock Foreground="{DynamicResource TextColor}" FontSize="15" FontWeight="Bold" MaxWidth="330" TextTrimming="CharacterEllipsis" Text="{Binding HoveredText}"/>
+                        </StackPanel>
+                        <Button Grid.Column="2" Style="{StaticResource PrimaryBtn}" Height="32" FontSize="13" Padding="16,0" Command="{Binding UseHoveredCommand}" Tag="{Binding DataContext.Translation[adv_take], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Übernehmen'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- ============ MAIN ============ -->
+        <Grid Grid.Row="1" Margin="15,4,15,12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="430" MinWidth="380"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- LEFT -->
+            <Grid Grid.Column="0" Margin="0,0,12,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- mode switch -->
+                <StackPanel Grid.Row="0" Margin="0,0,0,8">
+                <UniformGrid Columns="2">
+                    <ToggleButton Style="{StaticResource Tile}" Margin="0,0,4,0"
+                                  IsChecked="{Binding ModeIndex, Converter={StaticResource Eq}, ConverterParameter=0}"
+                                  Tag="{Binding DataContext.Translation[adv_mode_quick], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Schnellstart'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                    <ToggleButton Style="{StaticResource Tile}" Margin="4,0,0,0"
+                                  IsChecked="{Binding ModeIndex, Converter={StaticResource Eq}, ConverterParameter=1}"
+                                  Tag="{Binding DataContext.Translation[adv_mode_expert], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Experte'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                </UniformGrid>
+                </StackPanel>
+
+                <!-- ============ QUICK START ============ -->
+                <Border Grid.Row="1" Style="{StaticResource Section}" Margin="0" Padding="16,14"
+                        Visibility="{Binding ModeIndex, Converter={StaticResource EqVis}, ConverterParameter=0}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Style="{StaticResource H1}" Text="{Binding QuickStepTitle}"/>
+
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Focusable="False" Padding="0,0,4,0">
+                        <Border VerticalAlignment="Top">
+                            <Grid>
+                                <!-- step 0: prop -->
+                                <StackPanel Visibility="{Binding QuickStep, Converter={StaticResource EqVis}, ConverterParameter=0}">
+                                    <TextBlock Foreground="{DynamicResource TextColor}" FontSize="15" FontWeight="Bold" Margin="0,0,0,4" Tag="{Binding DataContext.Translation[adv_own_prop_title], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Eigenes Prop'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                    <TextBlock Style="{StaticResource Muted}" Margin="0,0,0,8" Tag="{Binding DataContext.Translation[adv_qs0_help], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Welches Prop soll wiederholt werden? Im Creator auf ein Prop zielen und oben „Übernehmen“ klicken, oder ID bzw. Namen eingeben.'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                    <TextBox Style="{StaticResource Field}" Margin="0"
+                                             Tag="{Binding DataContext.Translation[adv_model_id], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Modell-ID oder Name'}"
+                                             Text="{Binding ModelIdText, UpdateSourceTrigger=PropertyChanged, Delay=400}"/>
+                                    <TextBlock Style="{StaticResource Lbl}" Text="{Binding ModelInfoText}"/>
+                                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                        <Button Style="{StaticResource Btn}" Command="{Binding LoadDimensionsCommand}"
+                                                ToolTip="{Binding FeatureHintText}" Tag="{Binding DataContext.Translation[adv_load_dimensions], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Maße neu laden'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                    </StackPanel>
+                                    <TextBlock Foreground="{DynamicResource TextColor}" FontSize="15" FontWeight="Bold" Margin="0,20,0,4" Tag="{Binding DataContext.Translation[adv_presets_title], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Presets'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                    <TextBlock Style="{StaticResource Muted}" Margin="0,0,0,6" Tag="{Binding DataContext.Translation[adv_presets_help], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Ein Preset setzt Prop, Form und alle Werte auf einmal – danach nur noch Startpunkt wählen.'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                    <WrapPanel>
+                                        <Button Style="{StaticResource Btn}" Margin="0,0,6,0" Command="{Binding LearnCommand}" Tag="{Binding DataContext.Translation[adv_learn], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Aus Job lernen'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                        <Button Style="{StaticResource Btn}" Margin="0,0,6,0" Command="{Binding ImportPresetsCommand}" Tag="{Binding DataContext.Translation[adv_import], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Importieren'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                        <Button Style="{StaticResource Btn}" Command="{Binding ExportPresetsCommand}" Tag="{Binding DataContext.Translation[adv_export], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Exportieren'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                    </WrapPanel>
+                                    <ItemsControl ItemsSource="{Binding Presets}" Margin="0,8,0,0">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate><StackPanel/></ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate DataType="{x:Type vm:PresetCard}">
+                                                <Grid Margin="0,0,4,8">
+                                                    <Button Command="{Binding DataContext.ApplyPresetCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                            CommandParameter="{Binding}" Cursor="Hand" HorizontalContentAlignment="Stretch">
+                                                        <Button.Template>
+                                                            <ControlTemplate TargetType="Button">
+                                                                <Border x:Name="b" CornerRadius="5" Background="#FF36393F" Padding="14,12">
+                                                                    <Border.Effect><DropShadowEffect BlurRadius="5" ShadowDepth="2" Opacity="0.6" Color="{DynamicResource ShadowColor}"/></Border.Effect>
+                                                                    <ContentPresenter/>
+                                                                </Border>
+                                                                <ControlTemplate.Triggers>
+                                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                                        <Setter TargetName="b" Property="Background" Value="#FF40444B"/>
+                                                                    </Trigger>
+                                                                </ControlTemplate.Triggers>
+                                                            </ControlTemplate>
+                                                        </Button.Template>
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="40"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBlock Text="{Binding Icon}" FontSize="24" Foreground="#FFFAC828" VerticalAlignment="Center"/>
+                                                            <StackPanel Grid.Column="1" Margin="0,0,14,0">
+                                                                <TextBlock Foreground="{DynamicResource TextColor}" FontSize="15" FontWeight="Bold" TextTrimming="CharacterEllipsis" Text="{Binding Title}"/>
+                                                                <TextBlock Foreground="#FFA3A6AA" FontSize="12" Margin="0,2,0,0" TextTrimming="CharacterEllipsis" Text="{Binding Subtitle}"/>
+                                                            </StackPanel>
+                                                        </Grid>
+                                                    </Button>
+                                                    <Button HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,2,4,0" Cursor="Hand"
+                                                            Visibility="{Binding IsUser, Converter={StaticResource BoolVis}}"
+                                                            Command="{Binding DataContext.DeletePresetCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                            CommandParameter="{Binding}" ToolTip="{Binding DataContext.Translation[adv_preset_delete], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue=Löschen}">
+                                                        <Button.Template>
+                                                            <ControlTemplate TargetType="Button">
+                                                                <TextBlock x:Name="x" Text="✕" FontSize="13" Foreground="#FF72767D" Padding="6,4"/>
+                                                                <ControlTemplate.Triggers>
+                                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                                        <Setter TargetName="x" Property="Foreground" Value="#FFD9534F"/>
+                                                                    </Trigger>
+                                                                </ControlTemplate.Triggers>
+                                                            </ControlTemplate>
+                                                        </Button.Template>
+                                                    </Button>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+
+                                <!-- step 1: shape -->
+                                <StackPanel Visibility="{Binding QuickStep, Converter={StaticResource EqVis}, ConverterParameter=1}">
+                                    <Border CornerRadius="5" Background="#FF3B3A2A" BorderBrush="#FFFAC828" BorderThickness="1" Padding="12,10" Margin="0,0,0,10"
+                                            Visibility="{Binding IsPresetLocked, Converter={StaticResource BoolVis}}">
+                                        <StackPanel>
+                                            <TextBlock Foreground="{DynamicResource TextColor}" FontSize="13" TextWrapping="Wrap" Text="{Binding LockedPresetText}"/>
+                                            <Button Style="{StaticResource Btn}" HorizontalAlignment="Left" Margin="0,8,0,0" Command="{Binding UnlockPresetCommand}" Tag="{Binding DataContext.Translation[adv_unlock], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Preset lösen'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                        </StackPanel>
+                                    </Border>
+                                    <TextBlock Style="{StaticResource Muted}" Margin="0,0,0,8" Tag="{Binding DataContext.Translation[adv_qs1_help], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Welche Form? Jede Form legt fest, um welche Achse das Prop Stück für Stück gedreht wird.'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                    <UniformGrid Columns="3">
+                                        <ToggleButton Style="{StaticResource BigTile}" IsChecked="{Binding Shape, Converter={StaticResource Eq}, ConverterParameter=Straight}">
+                                            <StackPanel><TextBlock HorizontalAlignment="Center" FontSize="20" Text="━"/><TextBlock HorizontalAlignment="Center" Tag="{Binding DataContext.Translation[adv_shape_straight], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Gerade'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" /></StackPanel>
+                                        </ToggleButton>
+                                        <ToggleButton Style="{StaticResource BigTile}" IsChecked="{Binding Shape, Converter={StaticResource Eq}, ConverterParameter=Curve}">
+                                            <StackPanel><TextBlock HorizontalAlignment="Center" FontSize="20" Text="◠"/><TextBlock HorizontalAlignment="Center" Tag="{Binding DataContext.Translation[adv_shape_curve], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Kurve'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" /></StackPanel>
+                                        </ToggleButton>
+                                        <ToggleButton Style="{StaticResource BigTile}" IsChecked="{Binding Shape, Converter={StaticResource Eq}, ConverterParameter=Wallride}">
+                                            <StackPanel><TextBlock HorizontalAlignment="Center" FontSize="20" Text="◜"/><TextBlock HorizontalAlignment="Center" Tag="{Binding DataContext.Translation[adv_shape_wallride], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Wallride'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" /></StackPanel>
+                                        </ToggleButton>
+                                        <ToggleButton Style="{StaticResource BigTile}" IsChecked="{Binding Shape, Converter={StaticResource Eq}, ConverterParameter=Loop}">
+                                            <StackPanel><TextBlock HorizontalAlignment="Center" FontSize="20" Text="◯"/><TextBlock HorizontalAlignment="Center" Tag="{Binding DataContext.Translation[adv_shape_loop], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Looping'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" /></StackPanel>
+                                        </ToggleButton>
+                                        <ToggleButton Style="{StaticResource BigTile}" IsChecked="{Binding Shape, Converter={StaticResource Eq}, ConverterParameter=Spiral}">
+                                            <StackPanel><TextBlock HorizontalAlignment="Center" FontSize="20" Text="↻"/><TextBlock HorizontalAlignment="Center" Tag="{Binding DataContext.Translation[adv_shape_spiral], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Spirale'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" /></StackPanel>
+                                        </ToggleButton>
+                                        <ToggleButton Style="{StaticResource BigTile}" IsChecked="{Binding Shape, Converter={StaticResource Eq}, ConverterParameter=Corkscrew}">
+                                            <StackPanel><TextBlock HorizontalAlignment="Center" FontSize="20" Text="∿"/><TextBlock HorizontalAlignment="Center" Tag="{Binding DataContext.Translation[adv_shape_corkscrew], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Korkenzieher'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" /></StackPanel>
+                                        </ToggleButton>
+                                    </UniformGrid>
+                                    <StackPanel Visibility="{Binding ShapeIsCurved, Converter={StaticResource BoolVis}}">
+                                        <TextBlock Style="{StaticResource Lbl}" Tag="{Binding DataContext.Translation[adv_direction], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Richtung'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                        <UniformGrid Columns="2">
+                                            <ToggleButton Style="{StaticResource Tile}" Content="{Binding DirectionALabel}"
+                                                          IsChecked="{Binding TurnLeft, Converter={StaticResource Eq}, ConverterParameter=True}"/>
+                                            <ToggleButton Style="{StaticResource Tile}" Content="{Binding DirectionBLabel}"
+                                                          IsChecked="{Binding TurnLeft, Converter={StaticResource Eq}, ConverterParameter=False}"/>
+                                        </UniformGrid>
+                                    </StackPanel>
+                                    <TextBlock Style="{StaticResource Muted}" Margin="0,8,0,0" Visibility="{Binding Shape, Converter={StaticResource EqVis}, ConverterParameter=Straight}" Tag="{Binding DataContext.Translation[adv_shape_straight_help], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Teile hintereinander, optional mit Steigung (Rampe, Treppe).'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                    <TextBlock Style="{StaticResource Muted}" Margin="0,8,0,0" Visibility="{Binding Shape, Converter={StaticResource EqVis}, ConverterParameter=Curve}" Tag="{Binding DataContext.Translation[adv_shape_curve_help], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Flache Kurve um die senkrechte Achse. Mit Höhe pro Teil wird sie zur Rampe.'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                    <TextBlock Style="{StaticResource Muted}" Margin="0,8,0,0" Visibility="{Binding Shape, Converter={StaticResource EqVis}, ConverterParameter=Wallride}" Tag="{Binding DataContext.Translation[adv_shape_wallride_help], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Die Teile lehnen sich in die Kurve, die Kurve selbst bleibt waagerecht. Mit „Anstieg pro Teil“ schraubt sie sich nach oben.'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                    <TextBlock Style="{StaticResource Muted}" Margin="0,8,0,0" Visibility="{Binding Shape, Converter={StaticResource EqVis}, ConverterParameter=Loop}" Tag="{Binding DataContext.Translation[adv_shape_loop_help], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Senkrechter Looping um die Querachse. Mit Seitenversatz läuft er an sich selbst vorbei.'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                    <TextBlock Style="{StaticResource Muted}" Margin="0,8,0,0" Visibility="{Binding Shape, Converter={StaticResource EqVis}, ConverterParameter=Spiral}" Tag="{Binding DataContext.Translation[adv_shape_spiral_help], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Wendel um die senkrechte Achse, jedes Teil etwas höher.'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                    <TextBlock Style="{StaticResource Muted}" Margin="0,8,0,0" Visibility="{Binding Shape, Converter={StaticResource EqVis}, ConverterParameter=Corkscrew}" Tag="{Binding DataContext.Translation[adv_shape_corkscrew_help], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Dreht um die Längsachse des Props und schiebt dabei nach vorn.'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                </StackPanel>
+
+                                <!-- step 2: size -->
+                                <StackPanel Visibility="{Binding QuickStep, Converter={StaticResource EqVis}, ConverterParameter=2}">
+                                    <Border CornerRadius="5" Background="#FF3B3A2A" BorderBrush="#FFFAC828" BorderThickness="1" Padding="12,10" Margin="0,0,0,10"
+                                            Visibility="{Binding IsPresetLocked, Converter={StaticResource BoolVis}}">
+                                        <StackPanel>
+                                            <TextBlock Foreground="{DynamicResource TextColor}" FontSize="13" TextWrapping="Wrap" Text="{Binding LockedPresetText}"/>
+                                            <Button Style="{StaticResource Btn}" HorizontalAlignment="Left" Margin="0,8,0,0" Command="{Binding UnlockPresetCommand}" Tag="{Binding DataContext.Translation[adv_unlock], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Preset lösen'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                        </StackPanel>
+                                    </Border>
+                                    <StackPanel Visibility="{Binding ShapeIsCurved, Converter={StaticResource BoolVis}}">
+                                        <TextBlock Style="{StaticResource Lbl}" Tag="{Binding DataContext.Translation[adv_radius], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Radius (m)'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="80"/></Grid.ColumnDefinitions>
+                                            <Slider Minimum="1" Maximum="400" VerticalAlignment="Center" Value="{Binding Radius, Mode=TwoWay}"/>
+                                            <TextBox Grid.Column="1" Style="{StaticResource Field}" Margin="8,0,0,0" helpers:NumericNudge.Step="0.5" Text="{Binding Radius, Converter={StaticResource Num}, ConverterParameter=2, UpdateSourceTrigger=LostFocus}"/>
+                                        </Grid>
+                                    </StackPanel>
+                                    <StackPanel Visibility="{Binding ShapeIsWallride, Converter={StaticResource BoolVis}}">
+                                        <TextBlock Style="{StaticResource Lbl}" Tag="{Binding DataContext.Translation[adv_bank], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Neigung zur Kurve (°)'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="80"/></Grid.ColumnDefinitions>
+                                            <Slider Minimum="0" Maximum="90" VerticalAlignment="Center" Value="{Binding Bank, Mode=TwoWay}"/>
+                                            <TextBox Grid.Column="1" Style="{StaticResource Field}" Margin="8,0,0,0" helpers:NumericNudge.Step="1" Text="{Binding Bank, Converter={StaticResource Num}, ConverterParameter=2, UpdateSourceTrigger=LostFocus}"/>
+                                        </Grid>
+                                    </StackPanel>
+                                    <StackPanel>
+                                        <TextBlock Style="{StaticResource Lbl}" Text="{Binding RiseLabel}"/>
+                                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="80"/></Grid.ColumnDefinitions>
+                                            <Slider Minimum="-50" Maximum="50" VerticalAlignment="Center" Value="{Binding Rise, Mode=TwoWay}"/>
+                                            <TextBox Grid.Column="1" Style="{StaticResource Field}" Margin="8,0,0,0" helpers:NumericNudge.Step="0.1" Text="{Binding Rise, Converter={StaticResource Num}, ConverterParameter=2, UpdateSourceTrigger=LostFocus}"/>
+                                        </Grid>
+                                        <StackPanel Orientation="Horizontal" Margin="0,8,0,0" Visibility="{Binding ShapeSupportsAutoPitch, Converter={StaticResource BoolVis}}">
+                                            <CheckBox VerticalAlignment="Center" IsChecked="{Binding AutoPitch}"/>
+                                            <TextBlock Style="{StaticResource Lbl}" Margin="8,0,0,0" VerticalAlignment="Center" Tag="{Binding DataContext.Translation[adv_autopitch], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Neigung (Pitch) dem Anstieg anpassen'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <TextBlock Style="{StaticResource Lbl}" Tag="{Binding DataContext.Translation[adv_fit], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Anschluss'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                    <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="80"/></Grid.ColumnDefinitions>
+                                        <Slider Minimum="-3" Maximum="0.95" TickFrequency="0.05" IsSnapToTickEnabled="True" VerticalAlignment="Center" Value="{Binding Overlap, Mode=TwoWay}"/>
+                                        <TextBox Grid.Column="1" Style="{StaticResource Field}" Margin="8,0,0,0" helpers:NumericNudge.Step="0.05" Text="{Binding Overlap, Converter={StaticResource Num}, ConverterParameter=2, UpdateSourceTrigger=LostFocus}"/>
+                                    </Grid>
+                                    <Grid Margin="0,0,88,0">
+                                        <TextBlock Style="{StaticResource Muted}" HorizontalAlignment="Left" Tag="{Binding DataContext.Translation[adv_fit_gap], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Lücke'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                        <TextBlock Style="{StaticResource Muted}" HorizontalAlignment="Center" Foreground="{DynamicResource TextColor}" Text="{Binding OverlapText}"/>
+                                        <TextBlock Style="{StaticResource Muted}" HorizontalAlignment="Right" Tag="{Binding DataContext.Translation[adv_fit_overlap], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='ineinander'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                    </Grid>
+                                    <TextBlock Style="{StaticResource Lbl}" Margin="0,10,0,0" FontWeight="Bold" Text="{Binding QuickSummary}"/>
+                                </StackPanel>
+
+                                <!-- step 3: start and orientation -->
+                                <StackPanel Visibility="{Binding QuickStep, Converter={StaticResource EqVis}, ConverterParameter=3}">
+                                    <TextBlock Style="{StaticResource Muted}" Margin="0,0,0,6" Tag="{Binding DataContext.Translation[adv_qs3_help], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Wo beginnt die Reihe? An der Cursor-Position, oder als Fortsetzung eines platzierten Props (dessen Lage wird übernommen).'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                    <UniformGrid Columns="3">
+                                        <ToggleButton Style="{StaticResource Tile}" IsChecked="{Binding StartSource, Converter={StaticResource Eq}, ConverterParameter=Cursor}" Tag="{Binding DataContext.Translation[adv_src_cursor], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Cursor'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                        <ToggleButton Style="{StaticResource Tile}" IsChecked="{Binding StartSource, Converter={StaticResource Eq}, ConverterParameter=LastProp}" Tag="{Binding DataContext.Translation[adv_src_last], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Letztes Prop'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                        <ToggleButton Style="{StaticResource Tile}" IsChecked="{Binding StartSource, Converter={StaticResource Eq}, ConverterParameter=PropIndex}" Tag="{Binding DataContext.Translation[adv_src_index], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Prop Nr.'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                    </UniformGrid>
+                                    <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                        <Button Style="{StaticResource Btn}" Command="{Binding UseCursorCommand}" Visibility="{Binding StartSource, Converter={StaticResource EqVis}, ConverterParameter=Cursor}" Tag="{Binding DataContext.Translation[adv_use_cursor], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Cursor-Position übernehmen'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                        <TextBox Style="{StaticResource Field}" Width="70" helpers:NumericNudge.Step="1" Visibility="{Binding StartSource, Converter={StaticResource EqVis}, ConverterParameter=PropIndex}" Text="{Binding StartPropIndex, UpdateSourceTrigger=LostFocus}"/>
+                                        <Button Style="{StaticResource Btn}" Command="{Binding ReadStartPropCommand}" Visibility="{Binding StartSource, Converter={StaticResource EqVis}, ConverterParameter=LastProp PropIndex}" Tag="{Binding DataContext.Translation[adv_read_prop], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Prop einlesen'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                    </StackPanel>
+                                    <TextBlock Style="{StaticResource Lbl}" Margin="0,12,0,2" Tag="{Binding DataContext.Translation[adv_orientation], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Ausrichtung des ersten Teils'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                    <TextBlock Style="{StaticResource Muted}" Tag="{Binding DataContext.Translation[adv_pitch], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Neigen (Pitch)'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                    <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="80"/></Grid.ColumnDefinitions>
+                                        <Slider Minimum="-90" Maximum="90" VerticalAlignment="Center" Value="{Binding StartPitch, Mode=TwoWay}"/>
+                                        <TextBox Grid.Column="1" Style="{StaticResource Field}" Margin="8,0,0,0" helpers:NumericNudge.Step="1" Text="{Binding StartPitch, Converter={StaticResource Num}, ConverterParameter=2, UpdateSourceTrigger=LostFocus}"/>
+                                    </Grid>
+                                    <TextBlock Style="{StaticResource Muted}" Tag="{Binding DataContext.Translation[adv_roll], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Rollen (Roll)'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                    <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="80"/></Grid.ColumnDefinitions>
+                                        <Slider Minimum="-180" Maximum="180" VerticalAlignment="Center" Value="{Binding StartRoll, Mode=TwoWay}"/>
+                                        <TextBox Grid.Column="1" Style="{StaticResource Field}" Margin="8,0,0,0" helpers:NumericNudge.Step="1" Text="{Binding StartRoll, Converter={StaticResource Num}, ConverterParameter=2, UpdateSourceTrigger=LostFocus}"/>
+                                    </Grid>
+                                    <TextBlock Style="{StaticResource Muted}" Tag="{Binding DataContext.Translation[adv_yaw], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Drehen (Yaw)'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                    <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="80"/></Grid.ColumnDefinitions>
+                                        <Slider Minimum="-180" Maximum="180" VerticalAlignment="Center" Value="{Binding StartYaw, Mode=TwoWay}"/>
+                                        <TextBox Grid.Column="1" Style="{StaticResource Field}" Margin="8,0,0,0" helpers:NumericNudge.Step="1" Text="{Binding StartYaw, Converter={StaticResource Num}, ConverterParameter=2, UpdateSourceTrigger=LostFocus}"/>
+                                    </Grid>
+                                </StackPanel>
+
+                                <!-- step 4: done -->
+                                <StackPanel Visibility="{Binding QuickStep, Converter={StaticResource EqVis}, ConverterParameter=4}">
+                                    <TextBlock Style="{StaticResource Lbl}" FontWeight="Bold" Text="{Binding QuickSummary}"/>
+                                    <TextBlock Style="{StaticResource Lbl}" Text="{Binding PlanInfoText}"/>
+                                    <TextBlock Style="{StaticResource Muted}" Margin="0,10,0,0" Tag="{Binding DataContext.Translation[adv_qs4_help], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Unter der Vorschau platzieren, live anpassen oder als Creator-Template speichern. Feinschliff Zahl für Zahl geht in der Experten-Ansicht – sie übernimmt alles von hier.'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                    <Button Style="{StaticResource Btn}" HorizontalAlignment="Left" Margin="0,10,0,0" Command="{Binding OpenInExpertCommand}" Tag="{Binding DataContext.Translation[adv_open_expert], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='In Experte öffnen'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </ScrollViewer>
+
+                    <!-- piece count: adjustable in every step -->
+                    <Border Grid.Row="2" CornerRadius="5" Background="#FF36393F" Padding="14,8" Margin="0,10,0,0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="70"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Foreground="{DynamicResource TextColor}" FontSize="13" FontWeight="Bold" Margin="0,0,12,0" VerticalAlignment="Center" Tag="{Binding DataContext.Translation[adv_count], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Anzahl Teile'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                            <Slider Grid.Column="1" Minimum="1" Maximum="{Binding PropLimit, Mode=OneWay}" TickFrequency="1" IsSnapToTickEnabled="True" VerticalAlignment="Center" Value="{Binding PieceCount, Mode=TwoWay}"/>
+                            <TextBox Grid.Column="2" Style="{StaticResource Field}" Margin="8,0,0,0" helpers:NumericNudge.Step="1" Text="{Binding PieceCount, UpdateSourceTrigger=LostFocus}"/>
+                        </Grid>
+                    </Border>
+
+                    <Grid Grid.Row="3" Margin="0,8,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Style="{StaticResource SecondaryBtn}" Command="{Binding PreviousStepCommand}" Tag="{Binding DataContext.Translation[adv_back], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Zurück'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Ellipse>
+                                <Ellipse.Style>
+                                    <Style TargetType="Ellipse" BasedOn="{StaticResource StepDot}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding QuickStep, Converter={StaticResource AtLeast}, ConverterParameter=0}" Value="True">
+                                                <Setter Property="Fill" Value="#FFE3E5E8"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Ellipse.Style>
+                            </Ellipse>
+                            <Ellipse>
+                                <Ellipse.Style>
+                                    <Style TargetType="Ellipse" BasedOn="{StaticResource StepDot}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding QuickStep, Converter={StaticResource AtLeast}, ConverterParameter=1}" Value="True">
+                                                <Setter Property="Fill" Value="#FFE3E5E8"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Ellipse.Style>
+                            </Ellipse>
+                            <Ellipse>
+                                <Ellipse.Style>
+                                    <Style TargetType="Ellipse" BasedOn="{StaticResource StepDot}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding QuickStep, Converter={StaticResource AtLeast}, ConverterParameter=2}" Value="True">
+                                                <Setter Property="Fill" Value="#FFE3E5E8"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Ellipse.Style>
+                            </Ellipse>
+                            <Ellipse>
+                                <Ellipse.Style>
+                                    <Style TargetType="Ellipse" BasedOn="{StaticResource StepDot}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding QuickStep, Converter={StaticResource AtLeast}, ConverterParameter=3}" Value="True">
+                                                <Setter Property="Fill" Value="#FFE3E5E8"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Ellipse.Style>
+                            </Ellipse>
+                            <Ellipse>
+                                <Ellipse.Style>
+                                    <Style TargetType="Ellipse" BasedOn="{StaticResource StepDot}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding QuickStep, Converter={StaticResource AtLeast}, ConverterParameter=4}" Value="True">
+                                                <Setter Property="Fill" Value="#FFE3E5E8"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Ellipse.Style>
+                            </Ellipse>
+                        </StackPanel>
+                        <Button Grid.Column="2" Style="{StaticResource PrimaryBtn}" Command="{Binding NextStepCommand}" Tag="{Binding DataContext.Translation[adv_next], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Weiter'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                    </Grid>
+                </Grid>
+                </Border>
+
+                <!-- ============ EXPERT ============ -->
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Focusable="False" Padding="0,0,4,0"
+                              Visibility="{Binding ModeIndex, Converter={StaticResource EqVis}, ConverterParameter=1}">
+                    <StackPanel>
+                        <!-- model -->
+                        <Border Style="{StaticResource Section}">
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource H1}" Tag="{Binding DataContext.Translation[adv_ex_model], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Prop'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                <Grid>
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                    <TextBox Style="{StaticResource Field}"
+                                             Tag="{Binding DataContext.Translation[adv_model_id], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Modell-ID oder Name'}"
+                                             Text="{Binding ModelIdText, UpdateSourceTrigger=PropertyChanged, Delay=400}"/>
+                                    <Button Grid.Column="1" Style="{StaticResource Btn}" Command="{Binding LoadDimensionsCommand}" ToolTip="{Binding FeatureHintText}" Tag="{Binding DataContext.Translation[adv_load_dimensions], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Maße neu laden'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                </Grid>
+                                <TextBlock Style="{StaticResource Muted}" Text="{Binding ModelInfoText}"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- start -->
+                        <Border Style="{StaticResource Section}">
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource H1}" Tag="{Binding DataContext.Translation[adv_ex_start], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Start'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                <UniformGrid Columns="3">
+                                    <ToggleButton Style="{StaticResource Tile}" IsChecked="{Binding StartSource, Converter={StaticResource Eq}, ConverterParameter=Cursor}" Tag="{Binding DataContext.Translation[adv_src_cursor], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Cursor'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                    <ToggleButton Style="{StaticResource Tile}" IsChecked="{Binding StartSource, Converter={StaticResource Eq}, ConverterParameter=LastProp}" Tag="{Binding DataContext.Translation[adv_src_last], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Letztes Prop'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                    <ToggleButton Style="{StaticResource Tile}" IsChecked="{Binding StartSource, Converter={StaticResource Eq}, ConverterParameter=PropIndex}" Tag="{Binding DataContext.Translation[adv_src_index], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Prop Nr.'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                </UniformGrid>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Style="{StaticResource Btn}" Command="{Binding UseCursorCommand}" Visibility="{Binding StartSource, Converter={StaticResource EqVis}, ConverterParameter=Cursor}" Tag="{Binding DataContext.Translation[adv_use_cursor], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Cursor-Position übernehmen'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                    <TextBox Style="{StaticResource Field}" Width="70" helpers:NumericNudge.Step="1" Visibility="{Binding StartSource, Converter={StaticResource EqVis}, ConverterParameter=PropIndex}" Text="{Binding StartPropIndex, UpdateSourceTrigger=LostFocus}"/>
+                                    <Button Style="{StaticResource Btn}" Command="{Binding ReadStartPropCommand}" Visibility="{Binding StartSource, Converter={StaticResource EqVis}, ConverterParameter=LastProp PropIndex}" Tag="{Binding DataContext.Translation[adv_read_prop], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Prop einlesen'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                </StackPanel>
+                                <UniformGrid Columns="3" Margin="0,8,0,0">
+                                    <StackPanel><TextBlock Style="{StaticResource Muted}" Text="X"/><TextBox Style="{StaticResource Field}" helpers:NumericNudge.Step="0.1" Text="{Binding StartX, Converter={StaticResource Num}, ConverterParameter=4, UpdateSourceTrigger=LostFocus}"/></StackPanel>
+                                    <StackPanel><TextBlock Style="{StaticResource Muted}" Text="Y"/><TextBox Style="{StaticResource Field}" helpers:NumericNudge.Step="0.1" Text="{Binding StartY, Converter={StaticResource Num}, ConverterParameter=4, UpdateSourceTrigger=LostFocus}"/></StackPanel>
+                                    <StackPanel><TextBlock Style="{StaticResource Muted}" Text="Z"/><TextBox Style="{StaticResource Field}" Margin="0" helpers:NumericNudge.Step="0.1" Text="{Binding StartZ, Converter={StaticResource Num}, ConverterParameter=4, UpdateSourceTrigger=LostFocus}"/></StackPanel>
+                                </UniformGrid>
+                                <UniformGrid Columns="3">
+                                    <StackPanel><TextBlock Style="{StaticResource Muted}" Text="Pitch (X)"/><TextBox Style="{StaticResource Field}" helpers:NumericNudge.Step="1" Text="{Binding StartPitch, Converter={StaticResource Num}, ConverterParameter=2, UpdateSourceTrigger=LostFocus}"/></StackPanel>
+                                    <StackPanel><TextBlock Style="{StaticResource Muted}" Text="Roll (Y)"/><TextBox Style="{StaticResource Field}" helpers:NumericNudge.Step="1" Text="{Binding StartRoll, Converter={StaticResource Num}, ConverterParameter=2, UpdateSourceTrigger=LostFocus}"/></StackPanel>
+                                    <StackPanel><TextBlock Style="{StaticResource Muted}" Text="Yaw (Z)"/><TextBox Style="{StaticResource Field}" Margin="0" helpers:NumericNudge.Step="1" Text="{Binding StartYaw, Converter={StaticResource Num}, ConverterParameter=2, UpdateSourceTrigger=LostFocus}"/></StackPanel>
+                                </UniformGrid>
+                                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                    <CheckBox VerticalAlignment="Center" IsChecked="{Binding IncludeStart}"/>
+                                    <TextBlock Style="{StaticResource Lbl}" Margin="8,0,0,0" VerticalAlignment="Center" Tag="{Binding DataContext.Translation[adv_include_start], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Auch am Startpunkt ein Teil setzen'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- step -->
+                        <Border Style="{StaticResource Section}">
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource H1}" Tag="{Binding DataContext.Translation[adv_ex_step], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Schritt (pro Teil)'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                <TextBlock Style="{StaticResource Muted}" Margin="0,0,0,6" Tag="{Binding DataContext.Translation[adv_ex_step_help], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Jedes Teil entsteht aus dem vorigen: um die Achse drehen (durch den Drehpunkt), dann entlang der Achse verschieben, dann um den Zusatz-Versatz. Drehpunkt und Versatz gelten im Koordinatensystem des Teils (X rechts, Y vorn, Z oben).'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                <TextBlock Style="{StaticResource Lbl}" Tag="{Binding DataContext.Translation[adv_axis], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Drehachse'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                <ComboBox Height="30" ItemsSource="{Binding AxisChoices}" SelectedValuePath="Value" SelectedValue="{Binding Axis, Mode=TwoWay}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate><TextBlock Text="{Binding Label}"/></DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                                <UniformGrid Columns="2" Visibility="{Binding AxisIsCustom, Converter={StaticResource BoolVis}}">
+                                    <StackPanel><TextBlock Style="{StaticResource Muted}" Tag="{Binding DataContext.Translation[adv_axis_yaw], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Achse: Richtung (°)'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" /><TextBox Style="{StaticResource Field}" helpers:NumericNudge.Step="1" Text="{Binding CustomAxisYaw, Converter={StaticResource Num}, ConverterParameter=4, UpdateSourceTrigger=LostFocus}"/></StackPanel>
+                                    <StackPanel><TextBlock Style="{StaticResource Muted}" Tag="{Binding DataContext.Translation[adv_axis_pitch], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Achse: Neigung (°)'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" /><TextBox Style="{StaticResource Field}" Margin="0" helpers:NumericNudge.Step="1" Text="{Binding CustomAxisPitch, Converter={StaticResource Num}, ConverterParameter=4, UpdateSourceTrigger=LostFocus}"/></StackPanel>
+                                </UniformGrid>
+                                <TextBlock Style="{StaticResource Lbl}" Tag="{Binding DataContext.Translation[adv_pivot], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Drehpunkt (lokal, m)'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                <UniformGrid Columns="3">
+                                    <StackPanel><TextBlock Style="{StaticResource Muted}" Text="X"/><TextBox Style="{StaticResource Field}" helpers:NumericNudge.Step="0.5" Text="{Binding PivotX, Converter={StaticResource Num}, ConverterParameter=4, UpdateSourceTrigger=LostFocus}"/></StackPanel>
+                                    <StackPanel><TextBlock Style="{StaticResource Muted}" Text="Y"/><TextBox Style="{StaticResource Field}" helpers:NumericNudge.Step="0.5" Text="{Binding PivotY, Converter={StaticResource Num}, ConverterParameter=4, UpdateSourceTrigger=LostFocus}"/></StackPanel>
+                                    <StackPanel><TextBlock Style="{StaticResource Muted}" Text="Z"/><TextBox Style="{StaticResource Field}" Margin="0" helpers:NumericNudge.Step="0.5" Text="{Binding PivotZ, Converter={StaticResource Num}, ConverterParameter=4, UpdateSourceTrigger=LostFocus}"/></StackPanel>
+                                </UniformGrid>
+                                <UniformGrid Columns="3" Margin="0,6,0,0">
+                                    <StackPanel><TextBlock Style="{StaticResource Muted}" Tag="{Binding DataContext.Translation[adv_angle], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Winkel/Teil (°)'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" /><TextBox Style="{StaticResource Field}" helpers:NumericNudge.Step="0.5" Text="{Binding AngleDeg, Converter={StaticResource Num}, ConverterParameter=4, UpdateSourceTrigger=LostFocus}"/></StackPanel>
+                                    <StackPanel><TextBlock Style="{StaticResource Muted}" Tag="{Binding DataContext.Translation[adv_advance], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Entlang Achse (m)'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" /><TextBox Style="{StaticResource Field}" helpers:NumericNudge.Step="0.1" Text="{Binding Advance, Converter={StaticResource Num}, ConverterParameter=4, UpdateSourceTrigger=LostFocus}"/></StackPanel>
+                                    <StackPanel><TextBlock Style="{StaticResource Muted}" Tag="{Binding DataContext.Translation[adv_count_short], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Anzahl'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" /><TextBox Style="{StaticResource Field}" Margin="0" helpers:NumericNudge.Step="1" Text="{Binding Count, UpdateSourceTrigger=LostFocus}"/></StackPanel>
+                                </UniformGrid>
+                                <TextBlock Style="{StaticResource Lbl}" Tag="{Binding DataContext.Translation[adv_offset], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Zusatz-Versatz (lokal, m)'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                <UniformGrid Columns="3">
+                                    <StackPanel><TextBlock Style="{StaticResource Muted}" Text="X"/><TextBox Style="{StaticResource Field}" helpers:NumericNudge.Step="0.1" Text="{Binding OffsetX, Converter={StaticResource Num}, ConverterParameter=4, UpdateSourceTrigger=LostFocus}"/></StackPanel>
+                                    <StackPanel><TextBlock Style="{StaticResource Muted}" Text="Y"/><TextBox Style="{StaticResource Field}" helpers:NumericNudge.Step="0.1" Text="{Binding OffsetY, Converter={StaticResource Num}, ConverterParameter=4, UpdateSourceTrigger=LostFocus}"/></StackPanel>
+                                    <StackPanel><TextBlock Style="{StaticResource Muted}" Text="Z"/><TextBox Style="{StaticResource Field}" Margin="0" helpers:NumericNudge.Step="0.1" Text="{Binding OffsetZ, Converter={StaticResource Num}, ConverterParameter=4, UpdateSourceTrigger=LostFocus}"/></StackPanel>
+                                </UniformGrid>
+                                <TextBlock Style="{StaticResource Muted}" Margin="0,8,0,0" Tag="{Binding DataContext.Translation[adv_nudge_help], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Zahlenfelder: Mausrad oder Pfeiltasten ändern den Wert (Umschalt fein, Strg grob).'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- detect -->
+                        <Border Style="{StaticResource Section}">
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource H1}" Tag="{Binding DataContext.Translation[adv_ex_detect], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Aus zwei Props erkennen'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                <TextBlock Style="{StaticResource Muted}" Margin="0,0,0,6" Tag="{Binding DataContext.Translation[adv_ex_detect_help], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Zwei aufeinanderfolgende Teile einer bestehenden Reihe angeben: Achse, Drehpunkt, Winkel und Versatz werden berechnet, und die Reihe wird hinter dem zweiten Teil fortgesetzt.'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Style="{StaticResource Lbl}" VerticalAlignment="Center" Margin="0,0,6,0" Text="A"/>
+                                    <TextBox Style="{StaticResource Field}" Width="70" helpers:NumericNudge.Step="1" Text="{Binding DetectA, UpdateSourceTrigger=LostFocus}"/>
+                                    <TextBlock Style="{StaticResource Lbl}" VerticalAlignment="Center" Margin="6,0,6,0" Text="B"/>
+                                    <TextBox Style="{StaticResource Field}" Width="70" helpers:NumericNudge.Step="1" Text="{Binding DetectB, UpdateSourceTrigger=LostFocus}"/>
+                                    <Button Style="{StaticResource Btn}" Margin="6,0,0,0" Command="{Binding DetectCommand}" Tag="{Binding DataContext.Translation[adv_detect], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Erkennen'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- result table -->
+                        <Border Style="{StaticResource Section}">
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource H1}" Tag="{Binding DataContext.Translation[adv_ex_result], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Ergebnis'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                <Grid Margin="0,0,0,4" TextElement.Foreground="#FFA3A6AA" TextElement.FontSize="12">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="32"/><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="52"/><ColumnDefinition Width="52"/><ColumnDefinition Width="52"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="#"/><TextBlock Grid.Column="1" Text="X"/><TextBlock Grid.Column="2" Text="Y"/><TextBlock Grid.Column="3" Text="Z"/>
+                                    <TextBlock Grid.Column="4" Text="Pitch"/><TextBlock Grid.Column="5" Text="Roll"/><TextBlock Grid.Column="6" Text="Yaw"/>
+                                </Grid>
+                                <ScrollViewer MaxHeight="260" VerticalScrollBarVisibility="Auto">
+                                    <ItemsControl ItemsSource="{Binding Rows}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate DataType="{x:Type vm:PlanRow}">
+                                                <Grid TextElement.Foreground="{DynamicResource TextColor}" TextElement.FontSize="12" Margin="0,1">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="32"/><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="52"/><ColumnDefinition Width="52"/><ColumnDefinition Width="52"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="{Binding Index}" Foreground="#FFA3A6AA"/>
+                                                    <TextBlock Grid.Column="1" Text="{Binding X}"/><TextBlock Grid.Column="2" Text="{Binding Y}"/><TextBlock Grid.Column="3" Text="{Binding Z}"/>
+                                                    <TextBlock Grid.Column="4" Text="{Binding Pitch}"/><TextBlock Grid.Column="5" Text="{Binding Roll}"/><TextBlock Grid.Column="6" Text="{Binding Yaw}"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </ScrollViewer>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+
+            <!-- RIGHT: preview + actions -->
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Border Grid.Row="0" Style="{StaticResource Section}" Padding="8">
+                    <controls:PlacementPreview3D DataContext="{Binding}" MinHeight="320"/>
+                </Border>
+                <Border Grid.Row="1" Style="{StaticResource Section}" Margin="0" Padding="16,14">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Style="{StaticResource PrimaryBtn}" Command="{Binding PlaceCommand}" ToolTip="{Binding FeatureHintText}" Tag="{Binding DataContext.Translation[adv_place], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Platzieren'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                        <ToggleButton Grid.Column="1" Style="{StaticResource LivePill}" Margin="10,0,0,0" IsChecked="{Binding LiveChanges}" IsEnabled="{Binding CanPlace}"
+                                      ToolTip="{Binding DataContext.Translation[adv_live_tip], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Jede Änderung wird sofort in GTA gesetzt (die vorige Live-Platzierung wird dabei ersetzt).'}"
+                                      Tag="{Binding DataContext.Translation[adv_live], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Live'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                        <Button Grid.Column="2" Style="{StaticResource SecondaryBtn}" Margin="10,0,0,0" Command="{Binding UndoCommand}" Tag="{Binding DataContext.Translation[adv_undo], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Rückgängig'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                        <Button Grid.Column="4" Style="{StaticResource SecondaryBtn}" Margin="0,0,10,0" Command="{Binding SavePresetCommand}" Tag="{Binding DataContext.Translation[adv_save_preset], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Als Preset speichern'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                        <Button Grid.Column="5" Style="{StaticResource SecondaryBtn}" Command="{Binding OpenTemplatesCommand}" IsEnabled="{Binding CanUseTemplates}" ToolTip="{Binding FeatureHintText}" Tag="{Binding DataContext.Translation[adv_copy_templates], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='In Templates kopieren'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                        <StackPanel Grid.Row="1" Grid.ColumnSpan="6" Margin="2,12,0,0">
+                            <TextBlock Foreground="#FFA3A6AA" FontSize="12" Text="{Binding PlanInfoText}"/>
+                            <TextBlock Foreground="{DynamicResource TextColor}" FontSize="13" Margin="0,3,0,0" TextWrapping="Wrap" Text="{Binding Status}"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+
+        <!-- ============ TEMPLATE DIALOG ============ -->
+        <Grid Grid.RowSpan="2" Background="#B0101114" Visibility="{Binding IsTemplateDialogOpen, Converter={StaticResource BoolVis}}">
+            <Border Style="{StaticResource Section}" Width="620" MaxHeight="640" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="20">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Style="{StaticResource H1}" Tag="{Binding DataContext.Translation[adv_tpl_title], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='In Creator-Templates kopieren'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                    <Grid Grid.Row="1" Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                        <StackPanel Margin="0,0,8,0">
+                            <TextBlock Style="{StaticResource Muted}" Tag="{Binding DataContext.Translation[adv_tpl_name], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Name (max. 15 Zeichen)'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                            <TextBox Style="{StaticResource Field}" MaxLength="15" Text="{Binding TemplateName, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1">
+                            <TextBlock Style="{StaticResource Muted}" Tag="{Binding DataContext.Translation[adv_tpl_anchor], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Start-Prop (wird danach gelöscht)'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                            <TextBox Style="{StaticResource Field}" Margin="0" Text="{Binding AnchorModelText, UpdateSourceTrigger=PropertyChanged, Delay=300}"/>
+                        </StackPanel>
+                    </Grid>
+                    <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+                        <ItemsControl ItemsSource="{Binding TemplateSlots}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate><UniformGrid Columns="2"/></ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="{x:Type vm:TemplateSlotRow}">
+                                    <Button Command="{Binding DataContext.SelectTemplateSlotCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                            CommandParameter="{Binding}" Cursor="Hand" Margin="0,0,6,6">
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border x:Name="b" CornerRadius="5" Background="#FF36393F" BorderBrush="Transparent" BorderThickness="1.5" Padding="10,6">
+                                                    <ContentPresenter/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="b" Property="Background" Value="#FF40444B"/>
+                                                    </Trigger>
+                                                    <DataTrigger Binding="{Binding IsTarget}" Value="True">
+                                                        <Setter TargetName="b" Property="Background" Value="#FF4F545C"/>
+                                                        <Setter TargetName="b" Property="BorderBrush" Value="#FFE3E5E8"/>
+                                                    </DataTrigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                        <StackPanel HorizontalAlignment="Left">
+                                            <TextBlock Foreground="{DynamicResource TextColor}" FontSize="13" Text="{Binding Title}"/>
+                                            <TextBlock Foreground="#FFA3A6AA" FontSize="11" Text="{Binding Detail}"/>
+                                        </StackPanel>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                    <TextBlock Grid.Row="3" Style="{StaticResource Lbl}" Margin="0,10,0,0" Text="{Binding TemplatePlanText}"/>
+                    <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+                        <Button Style="{StaticResource SecondaryBtn}" Margin="0,0,10,0" Command="{Binding CancelTemplatesCommand}" Tag="{Binding DataContext.Translation[adv_cancel], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Abbrechen'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                        <Button Style="{StaticResource PrimaryBtn}" Command="{Binding ConfirmTemplatesCommand}" IsEnabled="{Binding TemplatePlanValid}" Tag="{Binding DataContext.Translation[adv_tpl_write], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Schreiben'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- ============ SAVE PRESET DIALOG ============ -->
+        <Grid Grid.RowSpan="2" Background="#B0101114" Visibility="{Binding IsSavePresetOpen, Converter={StaticResource BoolVis}}">
+            <Border Style="{StaticResource Section}" Width="460" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="20">
+                <StackPanel>
+                    <TextBlock Style="{StaticResource H1}" Tag="{Binding DataContext.Translation[adv_save_preset], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Als Preset speichern'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                    <TextBlock Style="{StaticResource Muted}" Tag="{Binding DataContext.Translation[adv_preset_name], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Name'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                    <TextBox Style="{StaticResource Field}" Margin="0" Text="{Binding NewPresetName, UpdateSourceTrigger=PropertyChanged}"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
+                        <Button Style="{StaticResource SecondaryBtn}" Margin="0,0,10,0" Command="{Binding CancelSavePresetCommand}" Tag="{Binding DataContext.Translation[adv_cancel], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Abbrechen'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                        <Button Style="{StaticResource PrimaryBtn}" Command="{Binding ConfirmSavePresetCommand}" Tag="{Binding DataContext.Translation[adv_save], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Speichern'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- ============ LEARN FROM JOB DIALOG ============ -->
+        <Grid Grid.RowSpan="2" Background="#B0101114" Visibility="{Binding IsLearnOpen, Converter={StaticResource BoolVis}}">
+            <Border Style="{StaticResource Section}" Width="640" MaxHeight="640" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="20">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Style="{StaticResource H1}" Tag="{Binding DataContext.Translation[adv_learn], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Aus Job lernen'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                    <TextBlock Grid.Row="1" Style="{StaticResource Muted}" Margin="0,0,0,10" Text="{Binding LearnText}"/>
+                    <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Focusable="False">
+                        <ItemsControl ItemsSource="{Binding LearnedRows}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="{x:Type vm:LearnedRow}">
+                                    <Border CornerRadius="5" Background="#FF36393F" Padding="12,8" Margin="0,0,4,6">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel VerticalAlignment="Center">
+                                                <TextBlock Foreground="{DynamicResource TextColor}" FontSize="13" FontWeight="Bold" Text="{Binding Title}"/>
+                                                <TextBlock Foreground="#FFA3A6AA" FontSize="11" Text="{Binding Detail}"/>
+                                            </StackPanel>
+                                            <Button Grid.Column="1" Style="{StaticResource Btn}" Margin="8,0,0,0"
+                                                    Command="{Binding DataContext.ContinueLearnedCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}"
+                                                    Tag="{Binding DataContext.Translation[adv_learn_continue], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Weiterbauen'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                            <Button Grid.Column="2" Style="{StaticResource Btn}" Margin="8,0,0,0"
+                                                    Command="{Binding DataContext.SaveLearnedCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}"
+                                                    Tag="{Binding DataContext.Translation[adv_learn_save], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Als Preset'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                    <Button Grid.Row="3" Style="{StaticResource SecondaryBtn}" HorizontalAlignment="Right" Margin="0,12,0,0" Command="{Binding CloseLearnCommand}" Tag="{Binding DataContext.Translation[adv_close], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Schließen'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

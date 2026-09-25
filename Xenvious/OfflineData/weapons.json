@@ -1,0 +1,758 @@
+[
+    {
+		"Native": "WEAPON_TACTICALRIFLE",
+		"Category": "Rifle",
+		"Int32": -774507221,
+		"UInt32": 3520460075,
+		"Hex": "D1D5F52B"
+	},
+	{
+		"Native": "WEAPON_PRECISIONRIFLE",
+		"Category": "Rifle",
+		"Int32": 1853742572,
+		"UInt32": 1853742572,
+		"Hex": "6E7DDDEC"
+	},
+	{
+		"Native": "WEAPON_METALDETECTOR",
+		"Category": "Special",
+		"Int32": -610080759,
+		"UInt32": 3684886537,
+		"Hex": "DBA2E809"
+	},
+    {
+        "Native": "PICKUP_AMMO_BULLET_MP",
+        "Category": "Ammo",
+        "Hex": "550447A9",
+        "Int32": 1426343849,
+        "UInt32": 1426343849
+    },
+    {
+        "Native": "PICKUP_AMMO_FIREWORK",
+        "Category": "Ammo",
+        "Hex": "F92F486C",
+        "Int32": -114341780,
+        "UInt32": 4180625516
+    },
+    {
+        "Native": "PICKUP_AMMO_FIREWORK_MP",
+        "Category": "Ammo",
+        "Hex": "602941D0",
+        "Int32": 1613316560,
+        "UInt32": 1613316560
+    },
+    {
+        "Native": "PICKUP_AMMO_FLAREGUN",
+        "Category": "Ammo",
+        "Hex": "E013E01C",
+        "Int32": -535568356,
+        "UInt32": 3759398940
+    },
+    {
+        "Native": "PICKUP_AMMO_GRENADELAUNCHER",
+        "Category": "Ammo",
+        "Hex": "881AB0A8",
+        "Int32": -2011516760,
+        "UInt32": 2283450536
+    },
+    {
+        "Native": "PICKUP_AMMO_GRENADELAUNCHER_MP",
+        "Category": "Ammo",
+        "Hex": "A421A532",
+        "Int32": -1541298894,
+        "UInt32": 2753668402
+    },
+    {
+        "Native": "PICKUP_AMMO_HOMINGLAUNCHER",
+        "Category": "Ammo",
+        "Hex": "5C517D97",
+        "Int32": 1548844439,
+        "UInt32": 1548844439
+    },
+    {
+        "Native": "PICKUP_AMMO_MG",
+        "Category": "Ammo",
+        "Hex": "DE58E0B3",
+        "Int32": -564600653,
+        "UInt32": 3730366643
+    },
+    {
+        "Native": "PICKUP_AMMO_MINIGUN",
+        "Category": "Ammo",
+        "Hex": "F25A01B9",
+        "Int32": -228982343,
+        "UInt32": 4065984953
+    },
+    {
+        "Native": "PICKUP_AMMO_MISSILE_MP",
+        "Category": "Ammo",
+        "Hex": "F99E15D0",
+        "Int32": -107080240,
+        "UInt32": 4187887056
+    },
+    {
+        "Native": "PICKUP_AMMO_PISTOL",
+        "Category": "Ammo",
+        "Hex": "20796A82",
+        "Int32": 544828034,
+        "UInt32": 544828034
+    },
+    {
+        "Native": "PICKUP_AMMO_RIFLE",
+        "Category": "Ammo",
+        "Hex": "E4BD2FC6",
+        "Int32": -457363514,
+        "UInt32": 3837603782
+    },
+    {
+        "Native": "PICKUP_AMMO_RPG",
+        "Category": "Ammo",
+        "Hex": "84837FD7",
+        "Int32": -2071756841,
+        "UInt32": 2223210455
+    },
+    {
+        "Native": "PICKUP_AMMO_SHOTGUN",
+        "Category": "Ammo",
+        "Hex": "77F3F2DD",
+        "Int32": 2012476125,
+        "UInt32": 2012476125
+    },
+    {
+        "Native": "PICKUP_AMMO_SMG",
+        "Category": "Ammo",
+        "Hex": "116FC4E6",
+        "Int32": 292537574,
+        "UInt32": 292537574
+    },
+    {
+        "Native": "PICKUP_AMMO_SNIPER",
+        "Category": "Ammo",
+        "Hex": "C02CF125",
+        "Int32": -1070796507,
+        "UInt32": 3224170789
+    },
+    {
+        "Native": "PICKUP_ARMOUR_STANDARD",
+        "Category": "Misc",
+        "Hex": "4BFB42D1",
+        "Int32": 1274757841,
+        "UInt32": 1274757841
+    },
+    {
+        "Native": "PICKUP_CAMERA",
+        "Category": "Misc",
+        "Hex": "E33D8630",
+        "Int32": -482507216,
+        "UInt32": 3812460080
+    },
+    {
+        "Native": "PICKUP_CUSTOM_SCRIPT",
+        "Category": "Misc",
+        "Hex": "2C014CA6",
+        "Int32": 738282662,
+        "UInt32": 738282662
+    },
+    {
+        "Native": "PICKUP_GANG_ATTACK_MONEY",
+        "Category": "Misc",
+        "Hex": "E175C698",
+        "Int32": -512375144,
+        "UInt32": 3782592152
+    },
+    {
+        "Native": "PICKUP_HANDCUFF_KEY",
+        "Category": "Misc",
+        "Hex": "094AA1CF",
+        "Int32": 155886031,
+        "UInt32": 155886031
+    },
+    {
+        "Native": "PICKUP_HEALTH_SNACK",
+        "Category": "Health",
+        "Hex": "1CD2CF66",
+        "Int32": 483577702,
+        "UInt32": 483577702
+    },
+    {
+        "Native": "PICKUP_HEALTH_STANDARD",
+        "Category": "Health",
+        "Hex": "8F707C18",
+        "Int32": -1888453608,
+        "UInt32": 2406513688
+    },
+    {
+        "Native": "PICKUP_MONEY_CASE",
+        "Category": "Misc",
+        "Hex": "CE6FDD6B",
+        "Int32": -831529621,
+        "UInt32": 3463437675
+    },
+    {
+        "Native": "PICKUP_MONEY_DEP_BAG",
+        "Category": "Misc",
+        "Hex": "20893292",
+        "Int32": 545862290,
+        "UInt32": 545862290
+    },
+    {
+        "Native": "PICKUP_MONEY_MED_BAG",
+        "Category": "Misc",
+        "Hex": "14568F28",
+        "Int32": 341217064,
+        "UInt32": 341217064
+    },
+    {
+        "Native": "PICKUP_MONEY_PAPER_BAG",
+        "Category": "Misc",
+        "Hex": "711D02A4",
+        "Int32": 1897726628,
+        "UInt32": 1897726628
+    },
+    {
+        "Native": "PICKUP_MONEY_PURSE",
+        "Category": "Misc",
+        "Hex": "1E9A99F8",
+        "Int32": 513448440,
+        "UInt32": 513448440
+    },
+    {
+        "Native": "PICKUP_MONEY_SECURITY_CASE",
+        "Category": "Misc",
+        "Hex": "DE78F17E",
+        "Int32": -562499202,
+        "UInt32": 3732468094
+    },
+    {
+        "Native": "PICKUP_MONEY_VARIABLE",
+        "Category": "Misc",
+        "Hex": "FE18F3AF",
+        "Int32": -31919185,
+        "UInt32": 4263048111
+    },
+    {
+        "Native": "PICKUP_MONEY_WALLET",
+        "Category": "Misc",
+        "Hex": "5DE0AD3E",
+        "Int32": 1575005502,
+        "UInt32": 1575005502
+    },
+    {
+        "Native": "PICKUP_PARACHUTE",
+        "Category": "Misc",
+        "Hex": "6773257D",
+        "Int32": 1735599485,
+        "UInt32": 1735599485
+    },
+    {
+        "Native": "PICKUP_PORTABLE_CRATE_UNFIXED",
+        "Category": "Misc",
+        "Hex": "6E717A95",
+        "Int32": 1852930709,
+        "UInt32": 1852930709
+    },
+    {
+        "Native": "PICKUP_PORTABLE_CRATE_UNFIXED_INCAR",
+        "Category": "Misc",
+        "Hex": "4B5259BE",
+        "Int32": 1263688126,
+        "UInt32": 1263688126
+    },
+    {
+        "Native": "PICKUP_PORTABLE_DLC_VEHICLE_PACKAGE",
+        "Category": "Misc",
+        "Hex": "31EA45C9",
+        "Int32": 837436873,
+        "UInt32": 837436873
+    },
+    {
+        "Native": "PICKUP_PORTABLE_PACKAGE",
+        "Category": "Misc",
+        "Hex": "80AB931C",
+        "Int32": -2136239332,
+        "UInt32": 2158727964
+    },
+    {
+        "Native": "PICKUP_SUBMARINE",
+        "Category": "Misc",
+        "Hex": "E7CF07CC",
+        "Int32": -405862452,
+        "UInt32": 3889104844
+    },
+    {
+        "Native": "PICKUP_VEHICLE_ARMOUR_STANDARD",
+        "Category": "Vehicle",
+        "Hex": "4316CC09",
+        "Int32": 1125567497,
+        "UInt32": 1125567497
+    },
+    {
+        "Native": "PICKUP_VEHICLE_CUSTOM_SCRIPT",
+        "Category": "Vehicle",
+        "Hex": "A5B8CAA9",
+        "Int32": -1514616151,
+        "UInt32": 2780351145
+    },
+    {
+        "Native": "PICKUP_VEHICLE_HEALTH_STANDARD",
+        "Category": "Vehicle",
+        "Hex": "098D79EF",
+        "Int32": 160266735,
+        "UInt32": 160266735
+    },
+    {
+        "Native": "PICKUP_VEHICLE_MONEY_VARIABLE",
+        "Category": "Vehicle",
+        "Hex": "65948212",
+        "Int32": 1704231442,
+        "UInt32": 1704231442
+    },
+    {
+        "Native": "PICKUP_VEHICLE_WEAPON_APPISTOL",
+        "Category": "Vehicle",
+        "Hex": "CC8B3905",
+        "Int32": -863291131,
+        "UInt32": 3431676165
+    },
+    {
+        "Native": "PICKUP_VEHICLE_WEAPON_ASSAULTSMG",
+        "Category": "Vehicle",
+        "Hex": "68605A36",
+        "Int32": 1751145014,
+        "UInt32": 1751145014
+    },
+    {
+        "Native": "PICKUP_VEHICLE_WEAPON_COMBATPISTOL",
+        "Category": "Vehicle",
+        "Hex": "D0AACEF7",
+        "Int32": -794112265,
+        "UInt32": 3500855031
+    },
+    {
+        "Native": "PICKUP_VEHICLE_WEAPON_GRENADE",
+        "Category": "Vehicle",
+        "Hex": "A717F898",
+        "Int32": -1491601256,
+        "UInt32": 2803366040
+    },
+    {
+        "Native": "PICKUP_VEHICLE_WEAPON_MICROSMG",
+        "Category": "Vehicle",
+        "Hex": "B86AEE5B",
+        "Int32": -1200951717,
+        "UInt32": 3094015579
+    },
+    {
+        "Native": "PICKUP_VEHICLE_WEAPON_MOLOTOV",
+        "Category": "Vehicle",
+        "Hex": "84D676D4",
+        "Int32": -2066319660,
+        "UInt32": 2228647636
+    },
+    {
+        "Native": "PICKUP_VEHICLE_WEAPON_PISTOL",
+        "Category": "Vehicle",
+        "Hex": "A54AE7B7",
+        "Int32": -1521817673,
+        "UInt32": 2773149623
+    },
+    {
+        "Native": "PICKUP_VEHICLE_WEAPON_PISTOL50",
+        "Category": "Vehicle",
+        "Hex": "D3A39366",
+        "Int32": -744254618,
+        "UInt32": 3550712678
+    },
+    {
+        "Native": "PICKUP_VEHICLE_WEAPON_SAWNOFF",
+        "Category": "Vehicle",
+        "Hex": "2E071B5A",
+        "Int32": 772217690,
+        "UInt32": 772217690
+    },
+    {
+        "Native": "PICKUP_VEHICLE_WEAPON_SMG",
+        "Category": "Vehicle",
+        "Hex": "CC7CCD1B",
+        "Int32": -864236261,
+        "UInt32": 3430731035
+    },
+    {
+        "Native": "PICKUP_VEHICLE_WEAPON_SMOKEGRENADE",
+        "Category": "Vehicle",
+        "Hex": "65A7D8E9",
+        "Int32": 1705498857,
+        "UInt32": 1705498857
+    },
+    {
+        "Native": "PICKUP_VEHICLE_WEAPON_STICKYBOMB",
+        "Category": "Vehicle",
+        "Hex": "2C804FE3",
+        "Int32": 746606563,
+        "UInt32": 746606563
+    },
+    {
+        "Native": "PICKUP_WEAPON_ADVANCEDRIFLE",
+        "Category": "Rifle",
+        "Hex": "B2B5325E",
+        "Int32": -1296747938,
+        "UInt32": 2998219358
+    },
+    {
+        "Native": "PICKUP_WEAPON_APPISTOL",
+        "Category": "Pistol",
+        "Hex": "3B662889",
+        "Int32": 996550793,
+        "UInt32": 996550793
+    },
+    {
+        "Native": "PICKUP_WEAPON_ASSAULTRIFLE",
+        "Category": "Rifle",
+        "Hex": "F33C83B0",
+        "Int32": -214137936,
+        "UInt32": 4080829360
+    },
+    {
+        "Native": "PICKUP_WEAPON_ASSAULTSHOTGUN",
+        "Category": "Shotgun",
+        "Hex": "9299C95B",
+        "Int32": -1835415205,
+        "UInt32": 2459552091
+    },
+    {
+        "Native": "PICKUP_WEAPON_ASSAULTSMG",
+        "Category": "MG",
+        "Hex": "741C684A",
+        "Int32": 1948018762,
+        "UInt32": 1948018762
+    },
+    {
+        "Native": "PICKUP_WEAPON_BAT",
+        "Category": "Meele",
+        "Hex": "81EE601E",
+        "Int32": -2115084258,
+        "UInt32": 2179883038
+    },
+    {
+        "Native": "PICKUP_WEAPON_BOTTLE",
+        "Category": "Meele",
+        "Hex": "FA51ABF5",
+        "Int32": -95310859,
+        "UInt32": 4199656437
+    },
+    {
+        "Native": "PICKUP_WEAPON_BULLPUPRIFLE",
+        "Category": "Rifle",
+        "Hex": "815D66E8",
+        "Int32": -2124585240,
+        "UInt32": 2170382056
+    },
+    {
+        "Native": "PICKUP_WEAPON_BULLPUPSHOTGUN",
+        "Category": "Shotgun",
+        "Hex": "6E4E65C2",
+        "Int32": 1850631618,
+        "UInt32": 1850631618
+    },
+    {
+        "Native": "PICKUP_WEAPON_CARBINERIFLE",
+        "Category": "Rifle",
+        "Hex": "DF711959",
+        "Int32": -546236071,
+        "UInt32": 3748731225
+    },
+    {
+        "Native": "PICKUP_WEAPON_COMBATMG",
+        "Category": "MG",
+        "Hex": "B2930A14",
+        "Int32": -1298986476,
+        "UInt32": 2995980820
+    },
+    {
+        "Native": "PICKUP_WEAPON_COMBATPDW",
+        "Category": "Rifle",
+        "Hex": "789576E2",
+        "Int32": 2023061218,
+        "UInt32": 2023061218
+    },
+    {
+        "Native": "PICKUP_WEAPON_COMBATPISTOL",
+        "Category": "Pistol",
+        "Hex": "8967B4F3",
+        "Int32": -1989692173,
+        "UInt32": 2305275123
+    },
+    {
+        "Native": "PICKUP_WEAPON_CROWBAR",
+        "Category": "Meele",
+        "Hex": "872DC888",
+        "Int32": -2027042680,
+        "UInt32": 2267924616
+    },
+    {
+        "Native": "PICKUP_WEAPON_DAGGER",
+        "Category": "Meele",
+        "Hex": "BFEE6C3B",
+        "Int32": -1074893765,
+        "UInt32": 3220073531
+    },
+    {
+        "Native": "PICKUP_WEAPON_FIREEXTINGUISHER",
+        "Category": "Meele",
+        "Hex": "CB13D282",
+        "Int32": -887893374,
+        "UInt32": 3407073922
+    },
+    {
+        "Native": "PICKUP_WEAPON_FIREWORK",
+        "Category": "Special",
+        "Hex": "22B15640",
+        "Int32": 582047296,
+        "UInt32": 582047296
+    },
+    {
+        "Native": "PICKUP_WEAPON_FLAREGUN",
+        "Category": "Pistol",
+        "Hex": "BD4DE242",
+        "Int32": -1118969278,
+        "UInt32": 3175998018
+    },
+    {
+        "Native": "PICKUP_WEAPON_GolfClub",
+        "Category": "Meele",
+        "Hex": "88EAACA7",
+        "Int32": -1997886297,
+        "UInt32": 2297080999
+    },
+    {
+        "Native": "PICKUP_WEAPON_GRENADE",
+        "Category": "Meele",
+        "Hex": "5E0683A1",
+        "Int32": 1577485217,
+        "UInt32": 1577485217
+    },
+    {
+        "Native": "PICKUP_WEAPON_GRENADELAUNCHER",
+        "Category": "Special",
+        "Hex": "2E764125",
+        "Int32": 779501861,
+        "UInt32": 779501861
+    },
+    {
+        "Native": "PICKUP_WEAPON_GUSENBERG",
+        "Category": "MG",
+        "Hex": "5307A4EC",
+        "Int32": 1393009900,
+        "UInt32": 1393009900
+    },
+    {
+        "Native": "PICKUP_WEAPON_HAMMER",
+        "Category": "Meele",
+        "Hex": "295691A9",
+        "Int32": 693539241,
+        "UInt32": 693539241
+    },
+    {
+        "Native": "PICKUP_WEAPON_HEAVYPISTOL",
+        "Category": "Pistol",
+        "Hex": "9CF13918",
+        "Int32": -1661912808,
+        "UInt32": 2633054488
+    },
+    {
+        "Native": "PICKUP_WEAPON_HEAVYSHOTGUN",
+        "Category": "Shotgun",
+        "Hex": "BED46EC5",
+        "Int32": -1093374267,
+        "UInt32": 3201593029
+    },
+    {
+        "Native": "PICKUP_WEAPON_HEAVYSNIPER",
+        "Category": "Sniper",
+        "Hex": "693583AD",
+        "Int32": 1765114797,
+        "UInt32": 1765114797
+    },
+    {
+        "Native": "PICKUP_WEAPON_HOMINGLAUNCHER",
+        "Category": "Special",
+        "Hex": "C01EB678",
+        "Int32": -1071729032,
+        "UInt32": 3223238264
+    },
+    {
+        "Native": "PICKUP_WEAPON_KNIFE",
+        "Category": "Meele",
+        "Hex": "278D8734",
+        "Int32": 663586612,
+        "UInt32": 663586612
+    },
+    {
+        "Native": "PICKUP_WEAPON_KNUCKLE",
+        "Category": "Meele",
+        "Hex": "FD9CAEDE",
+        "Int32": -40063266,
+        "UInt32": 4254904030
+    },
+    {
+        "Native": "PICKUP_WEAPON_MARKSMANPISTOL",
+        "Category": "Pistol",
+        "Hex": "8ADDEC75",
+        "Int32": -1965167499,
+        "UInt32": 2329799797
+    },
+    {
+        "Native": "PICKUP_WEAPON_MARKSMANRIFLE",
+        "Category": "Rifle",
+        "Hex": "079284A9",
+        "Int32": 127042729,
+        "UInt32": 127042729
+    },
+    {
+        "Native": "PICKUP_WEAPON_MG",
+        "Category": "MG",
+        "Hex": "85CAA9B1",
+        "Int32": -2050315855,
+        "UInt32": 2244651441
+    },
+    {
+        "Native": "PICKUP_WEAPON_MICROSMG",
+        "Category": "MG",
+        "Hex": "1D9588D3",
+        "Int32": 496339155,
+        "UInt32": 496339155
+    },
+    {
+        "Native": "PICKUP_WEAPON_MINIGUN",
+        "Category": "Special",
+        "Hex": "2F36B434",
+        "Int32": 792114228,
+        "UInt32": 792114228
+    },
+    {
+        "Native": "PICKUP_WEAPON_MOLOTOV",
+        "Category": "Meele",
+        "Hex": "2DD30479",
+        "Int32": 768803961,
+        "UInt32": 768803961
+    },
+    {
+        "Native": "PICKUP_WEAPON_MUSKET",
+        "Category": "Shotgun",
+        "Hex": "763F7121",
+        "Int32": 1983869217,
+        "UInt32": 1983869217
+    },
+    {
+        "Native": "PICKUP_WEAPON_NIGHTSTICK",
+        "Category": "Meele",
+        "Hex": "5EA16D74",
+        "Int32": 1587637620,
+        "UInt32": 1587637620
+    },
+    {
+        "Native": "PICKUP_WEAPON_PETROLCAN",
+        "Category": "Meele",
+        "Hex": "C69DE3FF",
+        "Int32": -962731009,
+        "UInt32": 3332236287
+    },
+    {
+        "Native": "PICKUP_WEAPON_PISTOL",
+        "Category": "Pistol",
+        "Hex": "F9AFB48F",
+        "Int32": -105925489,
+        "UInt32": 4189041807
+    },
+    {
+        "Native": "PICKUP_WEAPON_PISTOL50",
+        "Category": "Pistol",
+        "Hex": "6C5B941A",
+        "Int32": 1817941018,
+        "UInt32": 1817941018
+    },
+    {
+        "Native": "PICKUP_WEAPON_PROXMINE",
+        "Category": "Meele",
+        "Hex": "624F7213",
+        "Int32": 1649373715,
+        "UInt32": 1649373715
+    },
+    {
+        "Native": "PICKUP_WEAPON_PUMPSHOTGUN",
+        "Category": "Shotgun",
+        "Hex": "A9355DCD",
+        "Int32": -1456120371,
+        "UInt32": 2838846925
+    },
+    {
+        "Native": "PICKUP_WEAPON_RPG",
+        "Category": "Special",
+        "Hex": "4D36C349",
+        "Int32": 1295434569,
+        "UInt32": 1295434569
+    },
+    {
+        "Native": "PICKUP_WEAPON_SAWNOFFSHOTGUN",
+        "Category": "Shotgun",
+        "Hex": "96B412A3",
+        "Int32": -1766583645,
+        "UInt32": 2528383651
+    },
+    {
+        "Native": "PICKUP_WEAPON_SMG",
+        "Category": "MG",
+        "Hex": "3A4C2AD2",
+        "Int32": 978070226,
+        "UInt32": 978070226
+    },
+    {
+        "Native": "PICKUP_WEAPON_SMOKEGRENADE",
+        "Category": "Meele",
+        "Hex": "1CD604C7",
+        "Int32": 483787975,
+        "UInt32": 483787975
+    },
+    {
+        "Native": "PICKUP_WEAPON_SNIPERRIFLE",
+        "Category": "Rifle",
+        "Hex": "FE2A352C",
+        "Int32": -30788308,
+        "UInt32": 4264178988
+    },
+    {
+        "Native": "PICKUP_WEAPON_SNSPISTOL",
+        "Category": "Pistol",
+        "Hex": "C5B72713",
+        "Int32": -977852653,
+        "UInt32": 3317114643
+    },
+    {
+        "Native": "PICKUP_WEAPON_SPECIALCARBINE",
+        "Category": "Rifle",
+        "Hex": "0968339D",
+        "Int32": 157823901,
+        "UInt32": 157823901
+    },
+    {
+        "Native": "PICKUP_WEAPON_STICKYBOMB",
+        "Category": "Meele",
+        "Hex": "7C119D58",
+        "Int32": 2081529176,
+        "UInt32": 2081529176
+    },
+    {
+        "Native": "PICKUP_WEAPON_STUNGUN",
+        "Category": "Pistol",
+        "Hex": "FD16169E",
+        "Int32": -48884066,
+        "UInt32": 4246083230
+    },
+    {
+        "Native": "PICKUP_WEAPON_VINTAGEPISTOL",
+        "Category": "Pistol",
+        "Hex": "EBF89D5F",
+        "Int32": -336028321,
+        "UInt32": 3958938975
+    }
+]

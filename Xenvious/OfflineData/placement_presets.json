@@ -1,0 +1,7 @@
+[
+  {"name": "Gerade · Stunt-Strecke", "nameKey": "adv_preset_straight", "kind": "quick", "shape": "Straight", "model": 1670637843, "count": 10, "overlap": 0},
+  {"name": "Wallride · Container", "nameKey": "adv_preset_wallride", "kind": "quick", "shape": "Wallride", "model": -1363788725, "count": 18, "radius": 63.6, "bank": 0, "overlap": 0.3},
+  {"name": "Holzblock-Wallride (geneigt)", "nameKey": "adv_preset_block", "kind": "expert", "shape": "Wallride", "model": -151113999, "count": 17, "pitch": 12.4, "roll": 5.5, "axis": "LocalZ", "pivot": [-17.53, 1.88, 0], "angle": 8.26, "advance": 0},
+  {"name": "Barge-Spirale", "nameKey": "adv_preset_barge_spiral", "kind": "expert", "shape": "Spiral", "model": -1669978330, "count": 25, "pitch": 20.641, "roll": -30.172, "axis": "Custom", "customAxis": [0.4226, -0.9063, -0.0001], "pivot": [0.1832, 0.0838, 19.264], "angle": 5.8598, "advance": -4},
+  {"name": "Barge-Korkenzieher", "nameKey": "adv_preset_barge_cork", "kind": "expert", "shape": "Corkscrew", "model": 487569140, "count": 16, "pitch": 12.995, "roll": 100.278, "axis": "LocalY", "pivot": [-12.1898, 0, -1.0737], "angle": 11.2733, "advance": -2.5461}
+]

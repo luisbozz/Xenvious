@@ -1,0 +1,110 @@
+<UserControl x:Class="Xenvious.Controls.PlacementPreview3D"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="400">
+    <UserControl.Resources>
+        <Style x:Key="ViewBtn" TargetType="Button">
+            <Setter Property="Foreground" Value="#FFE3E5E8"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="4,0,0,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="b" CornerRadius="12" Background="#CC2F3136" Padding="10,3">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="b" Property="Background" Value="#FF4F545C"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="Legend" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#B0FFFFFF"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="4,0,12,0"/>
+        </Style>
+    </UserControl.Resources>
+    <Border CornerRadius="6"
+            Background="#FF15171C"
+            ClipToBounds="True">
+        <Grid x:Name="InputSurface"
+              Background="Transparent"
+              Cursor="SizeAll"
+              MouseDown="OnMouseDown"
+              MouseMove="OnMouseMove"
+              MouseUp="OnMouseUp"
+              MouseWheel="OnMouseWheel"
+              Focusable="True"
+              FocusVisualStyle="{x:Null}"
+              KeyDown="OnKeyDown">
+            <Viewport3D x:Name="PreviewViewport" IsHitTestVisible="False">
+                <Viewport3D.Camera>
+                    <PerspectiveCamera x:Name="PreviewCamera"
+                                       Position="20,-20,20"
+                                       LookDirection="-1,1,-1"
+                                       UpDirection="0,0,1"
+                                       FieldOfView="50"
+                                       NearPlaneDistance="0.1"
+                                       FarPlaneDistance="20000" />
+                </Viewport3D.Camera>
+                <ModelVisual3D x:Name="PreviewModels" />
+            </Viewport3D>
+
+            <!-- view presets -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,10,0">
+                <Button Style="{StaticResource ViewBtn}" Click="OnViewTop"
+                        Tag="{Binding DataContext.Translation[adv_view_top], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue=Von oben}"
+                        Content="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+                <Button Style="{StaticResource ViewBtn}" Click="OnViewSide"
+                        Tag="{Binding DataContext.Translation[adv_view_side], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue=Von der Seite}"
+                        Content="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+                <Button Style="{StaticResource ViewBtn}" Click="OnView3D" Content="3D"/>
+                <Button Style="{StaticResource ViewBtn}" Click="OnFitClick"
+                        Tag="{Binding DataContext.Translation[adv_preview_fit], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue=Einpassen}"
+                        Content="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+            </StackPanel>
+
+            <!-- legend + hint -->
+            <StackPanel VerticalAlignment="Bottom" Margin="12,0,12,10">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                    <Rectangle Width="12" Height="12" Fill="#FF28C8B4" VerticalAlignment="Center"/>
+                    <TextBlock Style="{StaticResource Legend}"
+                               Tag="{Binding DataContext.Translation[adv_legend_first], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue=erstes Teil}"
+                               Text="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+                    <Rectangle Width="12" Height="12" Fill="#FFF03CDC" VerticalAlignment="Center"/>
+                    <TextBlock Style="{StaticResource Legend}"
+                               Tag="{Binding DataContext.Translation[adv_legend_last], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue=letztes Teil}"
+                               Text="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+                    <Rectangle Width="10" Height="10" Fill="#FFFAC828" VerticalAlignment="Center">
+                        <Rectangle.LayoutTransform><RotateTransform Angle="45"/></Rectangle.LayoutTransform>
+                    </Rectangle>
+                    <TextBlock Style="{StaticResource Legend}"
+                               Tag="{Binding DataContext.Translation[adv_legend_start], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue=Startpunkt (Template)}"
+                               Text="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+                    <Rectangle Width="10" Height="10" Fill="#FF78AAFF" VerticalAlignment="Center">
+                        <Rectangle.LayoutTransform><RotateTransform Angle="45"/></Rectangle.LayoutTransform>
+                    </Rectangle>
+                    <TextBlock Style="{StaticResource Legend}"
+                               Tag="{Binding DataContext.Translation[adv_legend_pivot], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue=Drehpunkt und Achse}"
+                               Text="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+                    <Rectangle Width="14" Height="2" Fill="#80C8CDD7" VerticalAlignment="Center"/>
+                    <TextBlock Style="{StaticResource Legend}"
+                               Tag="{Binding DataContext.Translation[adv_legend_ground], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue=Boden am Startpunkt}"
+                               Text="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+                </StackPanel>
+                <TextBlock Foreground="#80FFFFFF" FontSize="11" TextWrapping="Wrap"
+                           Tag="{Binding DataContext.Translation[adv_preview_hint], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Linke Maus: verschieben · Rechte Maus: drehen · Mausrad: zoomen · W A S D / Q E: bewegen'}"
+                           Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>

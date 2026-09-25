@@ -1,0 +1,5889 @@
+[
+	{
+		"native": "brioso3",
+		"category": "The Criminal Enterprises",
+		"hex": "0x00E827DE",
+		"int32": 15214558,
+		"uint32": 15214558
+	},
+	{
+		"native": "conada",
+		"category": "The Criminal Enterprises",
+		"hex": "0xE384DD25",
+		"int32": -477831899,
+		"uint32": 3817135397
+	},
+	{
+		"native": "corsita",
+		"category": "The Criminal Enterprises",
+		"hex": "0xD3046147",
+		"int32": -754687673,
+		"uint32": 3540279623
+	},
+	{
+		"native": "draugur",
+		"category": "The Criminal Enterprises",
+		"hex": "0xD235A4A6",
+		"int32": -768236378,
+		"uint32": 3526730918
+	},
+	{
+		"native": "greenwood",
+		"category": "The Criminal Enterprises",
+		"hex": "0x026ED430",
+		"int32": 40817712,
+		"uint32": 40817712
+	},
+	{
+		"native": "kanjosj",
+		"category": "The Criminal Enterprises",
+		"hex": "0xFC2E479A",
+		"int32": -64075878,
+		"uint32": 4230891418
+	},
+	{
+		"native": "lm87",
+		"category": "The Criminal Enterprises",
+		"hex": "0xFF5968CD",
+		"int32": -10917683,
+		"uint32": 4284049613
+	},
+	{
+		"native": "omnisegt",
+		"category": "The Criminal Enterprises",
+		"hex": "0xE1E2E6D7",
+		"int32": -505223465,
+		"uint32": 3789743831
+	},
+	{
+		"native": "postlude",
+		"category": "The Criminal Enterprises",
+		"hex": "0xEE6F8F79",
+		"int32": -294678663,
+		"uint32": 4000288633
+	},
+	{
+		"native": "rhinehart",
+		"category": "The Criminal Enterprises",
+		"hex": "0x91673D0E",
+		"int32": -1855505138,
+		"uint32": 2439462158
+	},
+	{
+		"native": "ruiner4",
+		"category": "The Criminal Enterprises",
+		"hex": "0x65BDEBFC",
+		"int32": 1706945532,
+		"uint32": 1706945532
+	},
+	{
+		"native": "sentinel4",
+		"category": "The Criminal Enterprises",
+		"hex": "0xAF1FA439",
+		"int32": -1356880839,
+		"uint32": 2938086457
+	},
+	{
+		"native": "sm722",
+		"category": "The Criminal Enterprises",
+		"hex": "0x2E3967B0",
+		"int32": 775514032,
+		"uint32": 775514032
+	},
+	{
+		"native": "tenf",
+		"category": "The Criminal Enterprises",
+		"hex": "0xCAB6E261",
+		"int32": -893984159,
+		"uint32": 3400983137
+	},
+	{
+		"native": "tenf2",
+		"category": "The Criminal Enterprises",
+		"hex": "0x10635A0E",
+		"int32": 274946574,
+		"uint32": 274946574
+	},
+	{
+		"native": "torero2",
+		"category": "The Criminal Enterprises",
+		"hex": "0xF62446BA",
+		"int32": -165394758,
+		"uint32": 4129572538
+	},
+	{
+		"native": "vigero2",
+		"category": "The Criminal Enterprises",
+		"hex": "0x973141FC",
+		"int32": -1758379524,
+		"uint32": 2536587772
+	},
+	{
+		"native": "weevil2",
+		"category": "The Criminal Enterprises",
+		"hex": "0xC4BB1908",
+		"int32": -994371320,
+		"uint32": 3300595976
+	},
+	{
+		"native": "coquette4",
+		"category": "Summer Special",
+		"hex": "0x98F65A5E",
+		"int32": -1728685474,
+		"uint32": 2566281822
+	},
+	{
+		"native": "club",
+		"category": "Summer Special",
+		"hex": "0x82E47E85",
+		"int32": -2098954619,
+		"uint32": 2196012677
+	},
+	{
+		"native": "dukes3",
+		"category": "Summer Special",
+		"hex": "0x7F3415E3",
+		"int32": 2134119907,
+		"uint32": 2134119907
+	},
+	{
+		"native": "gauntlet5",
+		"category": "Summer Special",
+		"hex": "0x817AFAAD",
+		"int32": -2122646867,
+		"uint32": 2172320429
+	},
+	{
+		"native": "glendale2",
+		"category": "Summer Special",
+		"hex": "0xC98BBAD6",
+		"int32": -913589546,
+		"uint32": 3381377750
+	},
+	{
+		"native": "landstalker2",
+		"category": "Summer Special",
+		"hex": "0xCE0B9F22",
+		"int32": -838099166,
+		"uint32": 3456868130
+	},
+	{
+		"native": "manana2",
+		"category": "Summer Special",
+		"hex": "0x665F785D",
+		"int32": 1717532765,
+		"uint32": 1717532765
+	},
+	{
+		"native": "openwheel1",
+		"category": "Summer Special",
+		"hex": "0x58F77553",
+		"int32": 1492612435,
+		"uint32": 1492612435
+	},
+	{
+		"native": "openwheel2",
+		"category": "Summer Special",
+		"hex": "0x4669D038",
+		"int32": 1181339704,
+		"uint32": 1181339704
+	},
+	{
+		"native": "penumbra2",
+		"category": "Summer Special",
+		"hex": "0xDA5EC7DA",
+		"int32": -631322662,
+		"uint32": 3663644634
+	},
+	{
+		"native": "peyote3",
+		"category": "Summer Special",
+		"hex": "0x4201A843",
+		"int32": 1107404867,
+		"uint32": 1107404867
+	},
+	{
+		"native": "seminole2",
+		"category": "Summer Special",
+		"hex": "0x94114926",
+		"int32": -1810806490,
+		"uint32": 2484160806
+	},
+	{
+		"native": "tigon",
+		"category": "Summer Special",
+		"hex": "0xAF0B8D48",
+		"int32": -1358197432,
+		"uint32": 2936769864
+	},
+	{
+		"native": "yosemite3",
+		"category": "Summer Special",
+		"hex": "0x0409D787",
+		"int32": 67753863,
+		"uint32": 67753863
+	},
+	{
+		"native": "youga3",
+		"category": "Summer Special",
+		"hex": "0x6B73A9BE",
+		"int32": 1802742206,
+		"uint32": 1802742206
+	},
+	{
+		"native": "asbo",
+		"category": "Casino Heist",
+		"hex": "0x42ACA95F",
+		"int32": 1118611807,
+		"uint32": 1118611807
+	},
+	{
+		"native": "everon",
+		"category": "Casino Heist",
+		"hex": "0x97553C28",
+		"int32": -1756021720,
+		"uint32": 2538945576
+	},
+	{
+		"native": "formula",
+		"category": "Casino Heist",
+		"hex": "0x1446590A",
+		"int32": 340154634,
+		"uint32": 340154634
+	},
+	{
+		"native": "formula2",
+		"category": "Casino Heist",
+		"hex": "0x8B213907",
+		"int32": -1960756985,
+		"uint32": 2334210311
+	},
+	{
+		"native": "furia",
+		"category": "Casino Heist",
+		"hex": "0x3944D5A0",
+		"int32": 960812448,
+		"uint32": 960812448
+	},
+	{
+		"native": "imorgon",
+		"category": "Casino Heist",
+		"hex": "0xBC7C0A00",
+		"int32": -1132721664,
+		"uint32": 3162245632
+	},
+	{
+		"native": "jb7002",
+		"category": "Casino Heist",
+		"hex": "0x177DA45C",
+		"int32": 394110044,
+		"uint32": 394110044
+	},
+	{
+		"native": "kanjo",
+		"category": "Casino Heist",
+		"hex": "0x18619B7E",
+		"int32": 409049982,
+		"uint32": 409049982
+	},
+	{
+		"native": "komoda",
+		"category": "Casino Heist",
+		"hex": "0xCE44C4B9",
+		"int32": -834353991,
+		"uint32": 3460613305
+	},
+	{
+		"native": "minitank",
+		"category": "Casino Heist",
+		"hex": "0xB53C6C52",
+		"int32": -1254331310,
+		"uint32": 3040635986
+	},
+	{
+		"native": "outlaw",
+		"category": "Casino Heist",
+		"hex": "0x185E2FF3",
+		"int32": 408825843,
+		"uint32": 408825843
+	},
+	{
+		"native": "rebla",
+		"category": "Casino Heist",
+		"hex": "0x04F48FC4",
+		"int32": 83136452,
+		"uint32": 83136452
+	},
+	{
+		"native": "retinue2",
+		"category": "Casino Heist",
+		"hex": "0x79178F0A",
+		"int32": 2031587082,
+		"uint32": 2031587082
+	},
+	{
+		"native": "stryder",
+		"category": "Casino Heist",
+		"hex": "0x11F58A5A",
+		"int32": 301304410,
+		"uint32": 301304410
+	},
+	{
+		"native": "sugoi",
+		"category": "Casino Heist",
+		"hex": "0x3ADB9758",
+		"int32": 987469656,
+		"uint32": 987469656
+	},
+	{
+		"native": "sultan2",
+		"category": "Casino Heist",
+		"hex": "0x3404691C",
+		"int32": 872704284,
+		"uint32": 872704284
+	},
+	{
+		"native": "vagrant",
+		"category": "Casino Heist",
+		"hex": "0x2C1FEA99",
+		"int32": 740289177,
+		"uint32": 740289177
+	},
+	{
+		"native": "vstr",
+		"category": "Casino Heist",
+		"hex": "0x56CDEE7D",
+		"int32": 1456336509,
+		"uint32": 1456336509
+	},
+	{
+		"native": "yosemite2",
+		"category": "Casino Heist",
+		"hex": "0x64F49967",
+		"int32": 1693751655,
+		"uint32": 1693751655
+	},
+	{
+		"native": "zhaba",
+		"category": "Casino Heist",
+		"hex": "0x4C8DBA51",
+		"int32": 1284356689,
+		"uint32": 1284356689
+	},
+	{
+		"native": "caracara2",
+		"category": "Offroad",
+		"hex": "0xAF966F3C",
+		"int32": -1349095620,
+		"uint32": 2945871676
+	},
+	{
+		"native": "drafter",
+		"category": "Sport",
+		"hex": "0x28EAB80F",
+		"int32": 686471183,
+		"uint32": 686471183
+	},
+	{
+		"native": "dynasty",
+		"category": "Sports Classic",
+		"hex": "0x127E90D5",
+		"int32": 310284501,
+		"uint32": 310284501
+	},
+	{
+		"native": "emerus",
+		"category": "Super",
+		"hex": "0x4EE74355",
+		"int32": 1323778901,
+		"uint32": 1323778901
+	},
+	{
+		"native": "gauntlet3",
+		"category": "Muscle",
+		"hex": "0x2B0C4DCD",
+		"int32": 722226637,
+		"uint32": 722226637
+	},
+	{
+		"native": "gauntlet4",
+		"category": "Muscle",
+		"hex": "0x734C5E50",
+		"int32": 1934384720,
+		"uint32": 1934384720
+	},
+	{
+		"native": "hellion",
+		"category": "Offroad",
+		"hex": "0xEA6A047F",
+		"int32": -362150785,
+		"uint32": 3932816511
+	},
+	{
+		"native": "issi7",
+		"category": "Sport",
+		"hex": "0x6E8DA4F7",
+		"int32": 1854776567,
+		"uint32": 1854776567
+	},
+	{
+		"native": "jugular",
+		"category": "Sport",
+		"hex": "0xF38C4245",
+		"int32": -208911803,
+		"uint32": 4086055493
+	},
+	{
+		"native": "krieger",
+		"category": "Super",
+		"hex": "0xD86A0247",
+		"int32": -664141241,
+		"uint32": 3630826055
+	},
+	{
+		"native": "locust",
+		"category": "Sport",
+		"hex": "0xC7E55211",
+		"int32": -941272559,
+		"uint32": 3353694737
+	},
+	{
+		"native": "nebula",
+		"category": "Sports Classic",
+		"hex": "0xCB642637",
+		"int32": -882629065,
+		"uint32": 3412338231
+	},
+	{
+		"native": "neo",
+		"category": "Sport",
+		"hex": "0x9F6ED5A2",
+		"int32": -1620126302,
+		"uint32": 2674840994
+	},
+	{
+		"native": "novak",
+		"category": "SUV",
+		"hex": "0x92F5024E",
+		"int32": -1829436850,
+		"uint32": 2465530446
+	},
+	{
+		"native": "paragon",
+		"category": "Sport",
+		"hex": "0xE550775B",
+		"int32": -447711397,
+		"uint32": 3847255899
+	},
+	{
+		"native": "paragon2",
+		"category": "Sport",
+		"hex": "0x546D8EEE",
+		"int32": 1416466158,
+		"uint32": 1416466158
+	},
+	{
+		"native": "peyote2",
+		"category": "Muscle",
+		"hex": "0x9472CD24",
+		"int32": -1804415708,
+		"uint32": 2490551588
+	},
+	{
+		"native": "rrocket",
+		"category": "Motorcycle",
+		"hex": "0x36A167E0",
+		"int32": 916547552,
+		"uint32": 916547552
+	},
+	{
+		"native": "s80",
+		"category": "Super",
+		"hex": "0xECA6B6A3",
+		"int32": -324618589,
+		"uint32": 3970348707
+	},
+	{
+		"native": "thrax",
+		"category": "Super",
+		"hex": "0x3E3D1F59",
+		"int32": 1044193113,
+		"uint32": 1044193113
+	},
+	{
+		"native": "zion3",
+		"category": "Sports Classic",
+		"hex": "0x6F039A67",
+		"int32": 1862507111,
+		"uint32": 1862507111
+	},
+	{
+		"native": "zorrusso",
+		"category": "Super",
+		"hex": "0xD757D97D",
+		"int32": -682108547,
+		"uint32": 3612858749
+	},
+	{
+		"native": "adder",
+		"category": "Super",
+		"hex": "0xB779A091",
+		"int32": -1216765807,
+		"uint32": 3078201489
+	},
+	{
+		"native": "airbus",
+		"category": "Service",
+		"hex": "0x4C80EB0E",
+		"int32": 1283517198,
+		"uint32": 1283517198
+	},
+	{
+		"native": "airtug",
+		"category": "Service",
+		"hex": "0x5D0AAC8F",
+		"int32": 1560980623,
+		"uint32": 1560980623
+	},
+	{
+		"native": "akula",
+		"category": "Helicopter",
+		"hex": "0x46699F47",
+		"int32": 1181327175,
+		"uint32": 1181327175
+	},
+	{
+		"native": "akuma",
+		"category": "Motorcycle",
+		"hex": "0x63ABADE7",
+		"int32": 1672195559,
+		"uint32": 1672195559
+	},
+	{
+		"native": "alpha",
+		"category": "Sport",
+		"hex": "0x2DB8D1AA",
+		"int32": 767087018,
+		"uint32": 767087018
+	},
+	{
+		"native": "alphaz1",
+		"category": "Plane",
+		"hex": "0xA52F6866",
+		"int32": -1523619738,
+		"uint32": 2771347558
+	},
+	{
+		"native": "ambulance",
+		"category": "Emergency",
+		"hex": "0x45D56ADA",
+		"int32": 1171614426,
+		"uint32": 1171614426
+	},
+	{
+		"native": "annihilator",
+		"category": "Helicopter",
+		"hex": "0x31F0B376",
+		"int32": 837858166,
+		"uint32": 837858166
+	},
+	{
+		"native": "apc",
+		"category": "Military",
+		"hex": "0x2189D250",
+		"int32": 562680400,
+		"uint32": 562680400
+	},
+	{
+		"native": "ardent",
+		"category": "Sports Classic",
+		"hex": "0x097E5533",
+		"int32": 159274291,
+		"uint32": 159274291
+	},
+	{
+		"native": "armytanker",
+		"category": "Trailer",
+		"hex": "0xB8081009",
+		"int32": -1207431159,
+		"uint32": 3087536137
+	},
+	{
+		"native": "armytrailer",
+		"category": "Trailer",
+		"hex": "0xA7FF33F5",
+		"int32": -1476447243,
+		"uint32": 2818520053
+	},
+	{
+		"native": "armytrailer2",
+		"category": "Trailer",
+		"hex": "0x9E6B14D6",
+		"int32": -1637149482,
+		"uint32": 2657817814
+	},
+	{
+		"native": "asea",
+		"category": "Sedan",
+		"hex": "0x94204D89",
+		"int32": -1809822327,
+		"uint32": 2485144969
+	},
+	{
+		"native": "asea2",
+		"category": "Sedan",
+		"hex": "0x9441D8D5",
+		"int32": -1807623979,
+		"uint32": 2487343317
+	},
+	{
+		"native": "asterope",
+		"category": "Sedan",
+		"hex": "0x8E9254FB",
+		"int32": -1903012613,
+		"uint32": 2391954683
+	},
+	{
+		"native": "autarch",
+		"category": "Super",
+		"hex": "0xED552C74",
+		"int32": -313185164,
+		"uint32": 3981782132
+	},
+	{
+		"native": "avarus",
+		"category": "Motorcycle",
+		"hex": "0x81E38F7F",
+		"int32": -2115793025,
+		"uint32": 2179174271
+	},
+	{
+		"native": "avenger",
+		"category": "Plane",
+		"hex": "0x81BD2ED0",
+		"int32": -2118308144,
+		"uint32": 2176659152
+	},
+	{
+		"native": "avenger2",
+		"category": "Plane",
+		"hex": "0x18606535",
+		"int32": 408970549,
+		"uint32": 408970549
+	},
+	{
+		"native": "bagger",
+		"category": "Motorcycle",
+		"hex": "0x806B9CC3",
+		"int32": -2140431165,
+		"uint32": 2154536131
+	},
+	{
+		"native": "baletrailer",
+		"category": "Trailer",
+		"hex": "0xE82AE656",
+		"int32": -399841706,
+		"uint32": 3895125590
+	},
+	{
+		"native": "baller",
+		"category": "SUV",
+		"hex": "0xCFCA3668",
+		"int32": -808831384,
+		"uint32": 3486135912
+	},
+	{
+		"native": "baller2",
+		"category": "SUV",
+		"hex": "0x08852855",
+		"int32": 142944341,
+		"uint32": 142944341
+	},
+	{
+		"native": "baller3",
+		"category": "SUV",
+		"hex": "0x6FF0F727",
+		"int32": 1878062887,
+		"uint32": 1878062887
+	},
+	{
+		"native": "baller4",
+		"category": "SUV",
+		"hex": "0x25CBE2E2",
+		"int32": 634118882,
+		"uint32": 634118882
+	},
+	{
+		"native": "baller5",
+		"category": "SUV",
+		"hex": "0x1C09CF5E",
+		"int32": 470404958,
+		"uint32": 470404958
+	},
+	{
+		"native": "baller6",
+		"category": "SUV",
+		"hex": "0x27B4E6B0",
+		"int32": 666166960,
+		"uint32": 666166960
+	},
+	{
+		"native": "banshee",
+		"category": "Sport",
+		"hex": "0xC1E908D2",
+		"int32": -1041692462,
+		"uint32": 3253274834
+	},
+	{
+		"native": "banshee2",
+		"category": "Super",
+		"hex": "0x25C5AF13",
+		"int32": 633712403,
+		"uint32": 633712403
+	},
+	{
+		"native": "barracks",
+		"category": "Emergency",
+		"hex": "0xCEEA3F4B",
+		"int32": -823509173,
+		"uint32": 3471458123
+	},
+	{
+		"native": "barracks2",
+		"category": "Emergency",
+		"hex": "0x4008EABB",
+		"int32": 1074326203,
+		"uint32": 1074326203
+	},
+	{
+		"native": "barracks3",
+		"category": "Emergency",
+		"hex": "0x2592B5CF",
+		"int32": 630371791,
+		"uint32": 630371791
+	},
+	{
+		"native": "barrage",
+		"category": "Military",
+		"hex": "0xF34DFB25",
+		"int32": -212993243,
+		"uint32": 4081974053
+	},
+	{
+		"native": "bati",
+		"category": "Motorcycle",
+		"hex": "0xF9300CC5",
+		"int32": -114291515,
+		"uint32": 4180675781
+	},
+	{
+		"native": "bati2",
+		"category": "Motorcycle",
+		"hex": "0xCADD5D2D",
+		"int32": -891462355,
+		"uint32": 3403504941
+	},
+	{
+		"native": "benson",
+		"category": "Truck",
+		"hex": "0x7A61B330",
+		"int32": 2053223216,
+		"uint32": 2053223216
+	},
+	{
+		"native": "besra",
+		"category": "Plane",
+		"hex": "0x6CBD1D6D",
+		"int32": 1824333165,
+		"uint32": 1824333165
+	},
+	{
+		"native": "bestiagts",
+		"category": "Sport",
+		"hex": "0x4BFCF28B",
+		"int32": 1274868363,
+		"uint32": 1274868363
+	},
+	{
+		"native": "bf400",
+		"category": "Motorcycle",
+		"hex": "0x05283265",
+		"int32": 86520421,
+		"uint32": 86520421
+	},
+	{
+		"native": "bfinjection",
+		"category": "Offroad",
+		"hex": "0x432AA566",
+		"int32": 1126868326,
+		"uint32": 1126868326
+	},
+	{
+		"native": "biff",
+		"category": "Truck",
+		"hex": "0x32B91AE8",
+		"int32": 850991848,
+		"uint32": 850991848
+	},
+	{
+		"native": "bifta",
+		"category": "Offroad",
+		"hex": "0xEB298297",
+		"int32": -349601129,
+		"uint32": 3945366167
+	},
+	{
+		"native": "bison",
+		"category": "Pickup",
+		"hex": "0xFEFD644F",
+		"int32": -16948145,
+		"uint32": 4278019151
+	},
+	{
+		"native": "bison2",
+		"category": "Pickup",
+		"hex": "0x7B8297C5",
+		"int32": 2072156101,
+		"uint32": 2072156101
+	},
+	{
+		"native": "bison3",
+		"category": "Pickup",
+		"hex": "0x67B3F020",
+		"int32": 1739845664,
+		"uint32": 1739845664
+	},
+	{
+		"native": "bjxl",
+		"category": "SUV",
+		"hex": "0x32B29A4B",
+		"int32": 850565707,
+		"uint32": 850565707
+	},
+	{
+		"native": "blade",
+		"category": "Muscle",
+		"hex": "0xB820ED5E",
+		"int32": -1205801634,
+		"uint32": 3089165662
+	},
+	{
+		"native": "blazer",
+		"category": "Offroad",
+		"hex": "0x8125BCF9",
+		"int32": -2128233223,
+		"uint32": 2166734073
+	},
+	{
+		"native": "blazer2",
+		"category": "Offroad",
+		"hex": "0xFD231729",
+		"int32": -48031959,
+		"uint32": 4246935337
+	},
+	{
+		"native": "blazer3",
+		"category": "Offroad",
+		"hex": "0xB44F0582",
+		"int32": -1269889662,
+		"uint32": 3025077634
+	},
+	{
+		"native": "blazer4",
+		"category": "Offroad",
+		"hex": "0xE5BA6858",
+		"int32": -440768424,
+		"uint32": 3854198872
+	},
+	{
+		"native": "blazer5",
+		"category": "Offroad",
+		"hex": "0xA1355F67",
+		"int32": -1590337689,
+		"uint32": 2704629607
+	},
+	{
+		"native": "blimp",
+		"category": "Helicopter",
+		"hex": "0xF7004C86",
+		"int32": -150975354,
+		"uint32": 4143991942
+	},
+	{
+		"native": "blimp2",
+		"category": "Helicopter",
+		"hex": "0xDB6B4924",
+		"int32": -613725916,
+		"uint32": 3681241380
+	},
+	{
+		"native": "blimp3",
+		"category": "Plane",
+		"hex": "0xEDA4ED97",
+		"int32": -307958377,
+		"uint32": 3987008919
+	},
+	{
+		"native": "blista",
+		"category": "Compact",
+		"hex": "0xEB70965F",
+		"int32": -344943009,
+		"uint32": 3950024287
+	},
+	{
+		"native": "blista2",
+		"category": "Sport",
+		"hex": "0x3DEE5EDA",
+		"int32": 1039032026,
+		"uint32": 1039032026
+	},
+	{
+		"native": "blista3",
+		"category": "Sport",
+		"hex": "0xDCBC1C3B",
+		"int32": -591651781,
+		"uint32": 3703315515
+	},
+	{
+		"native": "bmx",
+		"category": "Bicycle",
+		"hex": "0x43779C54",
+		"int32": 1131912276,
+		"uint32": 1131912276
+	},
+	{
+		"native": "boattrailer",
+		"category": "Trailer",
+		"hex": "0x1F3D44B5",
+		"int32": 524108981,
+		"uint32": 524108981
+	},
+	{
+		"native": "bobcatxl",
+		"category": "Pickup",
+		"hex": "0x3FC5D440",
+		"int32": 1069929536,
+		"uint32": 1069929536
+	},
+	{
+		"native": "bodhi2",
+		"category": "Offroad",
+		"hex": "0xAA699BB6",
+		"int32": -1435919434,
+		"uint32": 2859047862
+	},
+	{
+		"native": "bombushka",
+		"category": "Plane",
+		"hex": "0xFE0A508C",
+		"int32": -32878452,
+		"uint32": 4262088844
+	},
+	{
+		"native": "boxville",
+		"category": "Truck",
+		"hex": "0x898ECCEA",
+		"int32": -1987130134,
+		"uint32": 2307837162
+	},
+	{
+		"native": "boxville2",
+		"category": "Truck",
+		"hex": "0xF21B33BE",
+		"int32": -233098306,
+		"uint32": 4061868990
+	},
+	{
+		"native": "boxville3",
+		"category": "Truck",
+		"hex": "0x07405E08",
+		"int32": 121658888,
+		"uint32": 121658888
+	},
+	{
+		"native": "boxville4",
+		"category": "Truck",
+		"hex": "0x1A79847A",
+		"int32": 444171386,
+		"uint32": 444171386
+	},
+	{
+		"native": "boxville5",
+		"category": "Truck",
+		"hex": "0x28AD20E1",
+		"int32": 682434785,
+		"uint32": 682434785
+	},
+	{
+		"native": "brawler",
+		"category": "Offroad",
+		"hex": "0xA7CE1BC5",
+		"int32": -1479664699,
+		"uint32": 2815302597
+	},
+	{
+		"native": "brickade",
+		"category": "Service",
+		"hex": "0xEDC6F847",
+		"int32": -305727417,
+		"uint32": 3989239879
+	},
+	{
+		"native": "brioso",
+		"category": "Compact",
+		"hex": "0x5C55CB39",
+		"int32": 1549126457,
+		"uint32": 1549126457
+	},
+	{
+		"native": "bruiser",
+		"category": "Offroad",
+		"hex": "0x27D79225",
+		"int32": 668439077,
+		"uint32": 668439077
+	},
+	{
+		"native": "bruiser2",
+		"category": "Offroad",
+		"hex": "0x9B065C9E",
+		"int32": -1694081890,
+		"uint32": 2600885406
+	},
+	{
+		"native": "bruiser3",
+		"category": "Offroad",
+		"hex": "0x8644331A",
+		"int32": -2042350822,
+		"uint32": 2252616474
+	},
+	{
+		"native": "brutus",
+		"category": "Offroad",
+		"hex": "0x7F81A829",
+		"int32": 2139203625,
+		"uint32": 2139203625
+	},
+	{
+		"native": "brutus2",
+		"category": "Offroad",
+		"hex": "0x8F49AE28",
+		"int32": -1890996696,
+		"uint32": 2403970600
+	},
+	{
+		"native": "brutus3",
+		"category": "Offroad",
+		"hex": "0x798682A2",
+		"int32": 2038858402,
+		"uint32": 2038858402
+	},
+	{
+		"native": "btype",
+		"category": "Sports Classic",
+		"hex": "0x06FF6914",
+		"int32": 117401876,
+		"uint32": 117401876
+	},
+	{
+		"native": "btype2",
+		"category": "Muscle",
+		"hex": "0xCE6B35A4",
+		"int32": -831834716,
+		"uint32": 3463132580
+	},
+	{
+		"native": "btype3",
+		"category": "Sports Classic",
+		"hex": "0xDC19D101",
+		"int32": -602287871,
+		"uint32": 3692679425
+	},
+	{
+		"native": "buccaneer",
+		"category": "Muscle",
+		"hex": "0xD756460C",
+		"int32": -682211828,
+		"uint32": 3612755468
+	},
+	{
+		"native": "buccaneer2",
+		"category": "Muscle",
+		"hex": "0xC397F748",
+		"int32": -1013450936,
+		"uint32": 3281516360
+	},
+	{
+		"native": "buffalo",
+		"category": "Sport",
+		"hex": "0xEDD516C6",
+		"int32": -304802106,
+		"uint32": 3990165190
+	},
+	{
+		"native": "buffalo2",
+		"category": "Sport",
+		"hex": "0x2BEC3CBE",
+		"int32": 736902334,
+		"uint32": 736902334
+	},
+	{
+		"native": "buffalo3",
+		"category": "Sport",
+		"hex": "0x0E2C013E",
+		"int32": 237764926,
+		"uint32": 237764926
+	},
+	{
+		"native": "bulldozer",
+		"category": "Service",
+		"hex": "0x7074F39D",
+		"int32": 1886712733,
+		"uint32": 1886712733
+	},
+	{
+		"native": "bullet",
+		"category": "Super",
+		"hex": "0x9AE6DDA1",
+		"int32": -1696146015,
+		"uint32": 2598821281
+	},
+	{
+		"native": "burrito",
+		"category": "Van",
+		"hex": "0xAFBB2CA4",
+		"int32": -1346687836,
+		"uint32": 2948279460
+	},
+	{
+		"native": "burrito2",
+		"category": "Van",
+		"hex": "0xC9E8FF76",
+		"int32": -907477130,
+		"uint32": 3387490166
+	},
+	{
+		"native": "burrito3",
+		"category": "Van",
+		"hex": "0x98171BD3",
+		"int32": -1743316013,
+		"uint32": 2551651283
+	},
+	{
+		"native": "burrito4",
+		"category": "Van",
+		"hex": "0x353B561D",
+		"int32": 893081117,
+		"uint32": 893081117
+	},
+	{
+		"native": "burrito5",
+		"category": "Van",
+		"hex": "0x437CF2A0",
+		"int32": 1132262048,
+		"uint32": 1132262048
+	},
+	{
+		"native": "bus",
+		"category": "Service",
+		"hex": "0xD577C962",
+		"int32": -713569950,
+		"uint32": 3581397346
+	},
+	{
+		"native": "buzzard",
+		"category": "Helicopter",
+		"hex": "0x2F03547B",
+		"int32": 788747387,
+		"uint32": 788747387
+	},
+	{
+		"native": "buzzard2",
+		"category": "Helicopter",
+		"hex": "0x2C75F0DD",
+		"int32": 745926877,
+		"uint32": 745926877
+	},
+	{
+		"native": "cablecar",
+		"category": "Service",
+		"hex": "0xC6C3242D",
+		"int32": -960289747,
+		"uint32": 3334677549
+	},
+	{
+		"native": "caddy",
+		"category": "Service",
+		"hex": "0x44623884",
+		"int32": 1147287684,
+		"uint32": 1147287684
+	},
+	{
+		"native": "caddy2",
+		"category": "Service",
+		"hex": "0xDFF0594C",
+		"int32": -537896628,
+		"uint32": 3757070668
+	},
+	{
+		"native": "caddy3",
+		"category": "Utility",
+		"hex": "0xD227BDBB",
+		"int32": -769147461,
+		"uint32": 3525819835
+	},
+	{
+		"native": "camper",
+		"category": "Van",
+		"hex": "0x6FD95F68",
+		"int32": 1876516712,
+		"uint32": 1876516712
+	},
+	{
+		"native": "caracara",
+		"category": "Offroad",
+		"hex": "0x4ABEBF23",
+		"int32": 1254014755,
+		"uint32": 1254014755
+	},
+	{
+		"native": "carbonizzare",
+		"category": "Sport",
+		"hex": "0x7B8AB45F",
+		"int32": 2072687711,
+		"uint32": 2072687711
+	},
+	{
+		"native": "carbonrs",
+		"category": "Motorcycle",
+		"hex": "0x00ABB0C0",
+		"int32": 11251904,
+		"uint32": 11251904
+	},
+	{
+		"native": "cargobob",
+		"category": "Helicopter",
+		"hex": "0xFCFCB68B",
+		"int32": -50547061,
+		"uint32": 4244420235
+	},
+	{
+		"native": "cargobob2",
+		"category": "Helicopter",
+		"hex": "0x60A7EA10",
+		"int32": 1621617168,
+		"uint32": 1621617168
+	},
+	{
+		"native": "cargobob3",
+		"category": "Helicopter",
+		"hex": "0x53174EEF",
+		"int32": 1394036463,
+		"uint32": 1394036463
+	},
+	{
+		"native": "cargobob4",
+		"category": "Helicopter",
+		"hex": "0x78BC1A3C",
+		"int32": 2025593404,
+		"uint32": 2025593404
+	},
+	{
+		"native": "cargoplane",
+		"category": "Plane",
+		"hex": "0x15F27762",
+		"int32": 368211810,
+		"uint32": 368211810
+	},
+	{
+		"native": "casco",
+		"category": "Sports Classic",
+		"hex": "0x3822BDFE",
+		"int32": 941800958,
+		"uint32": 941800958
+	},
+	{
+		"native": "cavalcade",
+		"category": "SUV",
+		"hex": "0x779F23AA",
+		"int32": 2006918058,
+		"uint32": 2006918058
+	},
+	{
+		"native": "cavalcade2",
+		"category": "SUV",
+		"hex": "0xD0EB2BE5",
+		"int32": -789894171,
+		"uint32": 3505073125
+	},
+	{
+		"native": "cerberus",
+		"category": "Commercial",
+		"hex": "0xD039510B",
+		"int32": -801550069,
+		"uint32": 3493417227
+	},
+	{
+		"native": "cerberus2",
+		"category": "Commercial",
+		"hex": "0x287FA449",
+		"int32": 679453769,
+		"uint32": 679453769
+	},
+	{
+		"native": "cerberus3",
+		"category": "Commercial",
+		"hex": "0x71D3B6F0",
+		"int32": 1909700336,
+		"uint32": 1909700336
+	},
+	{
+		"native": "cheburek",
+		"category": "Sports Classic",
+		"hex": "0xC514AAE0",
+		"int32": -988501280,
+		"uint32": 3306466016
+	},
+	{
+		"native": "cheetah",
+		"category": "Super",
+		"hex": "0xB1D95DA0",
+		"int32": -1311154784,
+		"uint32": 2983812512
+	},
+	{
+		"native": "cheetah2",
+		"category": "Sports Classic",
+		"hex": "0x0D4E5F4D",
+		"int32": 223240013,
+		"uint32": 223240013
+	},
+	{
+		"native": "chernobog",
+		"category": "Military",
+		"hex": "0xD6BC7523",
+		"int32": -692292317,
+		"uint32": 3602674979
+	},
+	{
+		"native": "chimera",
+		"category": "Motorcycle",
+		"hex": "0x00675ED7",
+		"int32": 6774487,
+		"uint32": 6774487
+	},
+	{
+		"native": "chino",
+		"category": "Muscle",
+		"hex": "0x14D69010",
+		"int32": 349605904,
+		"uint32": 349605904
+	},
+	{
+		"native": "chino2",
+		"category": "Muscle",
+		"hex": "0xAED64A63",
+		"int32": -1361687965,
+		"uint32": 2933279331
+	},
+	{
+		"native": "cliffhanger",
+		"category": "Motorcycle",
+		"hex": "0x17420102",
+		"int32": 390201602,
+		"uint32": 390201602
+	},
+	{
+		"native": "clique",
+		"category": "Muscle",
+		"hex": "0xA29F78B0",
+		"int32": -1566607184,
+		"uint32": 2728360112
+	},
+	{
+		"native": "coach",
+		"category": "Service",
+		"hex": "0x84718D34",
+		"int32": -2072933068,
+		"uint32": 2222034228
+	},
+	{
+		"native": "cog55",
+		"category": "Sedan",
+		"hex": "0x360A438E",
+		"int32": 906642318,
+		"uint32": 906642318
+	},
+	{
+		"native": "cog552",
+		"category": "Sedan",
+		"hex": "0x29FCD3E4",
+		"int32": 704435172,
+		"uint32": 704435172
+	},
+	{
+		"native": "cogcabrio",
+		"category": "Coupe",
+		"hex": "0x13B57D8A",
+		"int32": 330661258,
+		"uint32": 330661258
+	},
+	{
+		"native": "cognoscenti",
+		"category": "Sedan",
+		"hex": "0x86FE0B60",
+		"int32": -2030171296,
+		"uint32": 2264796000
+	},
+	{
+		"native": "cognoscenti2",
+		"category": "Sedan",
+		"hex": "0xDBF2D57A",
+		"int32": -604842630,
+		"uint32": 3690124666
+	},
+	{
+		"native": "comet2",
+		"category": "Sport",
+		"hex": "0xC1AE4D16",
+		"int32": -1045541610,
+		"uint32": 3249425686
+	},
+	{
+		"native": "comet3",
+		"category": "Sport",
+		"hex": "0x877358AD",
+		"int32": -2022483795,
+		"uint32": 2272483501
+	},
+	{
+		"native": "comet4",
+		"category": "Sport",
+		"hex": "0x5D1903F9",
+		"int32": 1561920505,
+		"uint32": 1561920505
+	},
+	{
+		"native": "comet5",
+		"category": "Sport",
+		"hex": "0x276D98A3",
+		"int32": 661493923,
+		"uint32": 661493923
+	},
+	{
+		"native": "contender",
+		"category": "Pickup",
+		"hex": "0x28B67ACA",
+		"int32": 683047626,
+		"uint32": 683047626
+	},
+	{
+		"native": "coquette",
+		"category": "Sport",
+		"hex": "0x067BC037",
+		"int32": 108773431,
+		"uint32": 108773431
+	},
+	{
+		"native": "coquette2",
+		"category": "Sports Classic",
+		"hex": "0x3C4E2113",
+		"int32": 1011753235,
+		"uint32": 1011753235
+	},
+	{
+		"native": "coquette3",
+		"category": "Sports Classic",
+		"hex": "0x2EC385FE",
+		"int32": 784565758,
+		"uint32": 784565758
+	},
+	{
+		"native": "cruiser",
+		"category": "Bicycle",
+		"hex": "0x1ABA13B5",
+		"int32": 448402357,
+		"uint32": 448402357
+	},
+	{
+		"native": "crusader",
+		"category": "Emergency",
+		"hex": "0x132D5A1A",
+		"int32": 321739290,
+		"uint32": 321739290
+	},
+	{
+		"native": "cuban800",
+		"category": "Plane",
+		"hex": "0xD9927FE3",
+		"int32": -644710429,
+		"uint32": 3650256867
+	},
+	{
+		"native": "cutter",
+		"category": "Truck",
+		"hex": "0xC3FBA120",
+		"int32": -1006919392,
+		"uint32": 3288047904
+	},
+	{
+		"native": "cyclone",
+		"category": "Super",
+		"hex": "0x52FF9437",
+		"int32": 1392481335,
+		"uint32": 1392481335
+	},
+	{
+		"native": "daemon",
+		"category": "Motorcycle",
+		"hex": "0x77934CEE",
+		"int32": 2006142190,
+		"uint32": 2006142190
+	},
+	{
+		"native": "daemon2",
+		"category": "Motorcycle",
+		"hex": "0xAC4E93C9",
+		"int32": -1404136503,
+		"uint32": 2890830793
+	},
+	{
+		"native": "deathbike",
+		"category": "Motorcycle",
+		"hex": "0xFE5F0722",
+		"int32": -27326686,
+		"uint32": 4267640610
+	},
+	{
+		"native": "deathbike2",
+		"category": "Motorcycle",
+		"hex": "0x93F09558",
+		"int32": -1812949672,
+		"uint32": 2482017624
+	},
+	{
+		"native": "deathbike3",
+		"category": "Motorcycle",
+		"hex": "0xAE12C99C",
+		"int32": -1374500452,
+		"uint32": 2920466844
+	},
+	{
+		"native": "defiler",
+		"category": "Motorcycle",
+		"hex": "0x30FF0190",
+		"int32": 822018448,
+		"uint32": 822018448
+	},
+	{
+		"native": "deluxo",
+		"category": "Sports Classic",
+		"hex": "0x586765FB",
+		"int32": 1483171323,
+		"uint32": 1483171323
+	},
+	{
+		"native": "deveste",
+		"category": "Super",
+		"hex": "0x5EE005DA",
+		"int32": 1591739866,
+		"uint32": 1591739866
+	},
+	{
+		"native": "deviant",
+		"category": "Muscle",
+		"hex": "0x4C3FFF49",
+		"int32": 1279262537,
+		"uint32": 1279262537
+	},
+	{
+		"native": "diablous",
+		"category": "Motorcycle",
+		"hex": "0xF1B44F44",
+		"int32": -239841468,
+		"uint32": 4055125828
+	},
+	{
+		"native": "diablous2",
+		"category": "Motorcycle",
+		"hex": "0x6ABDF65E",
+		"int32": 1790834270,
+		"uint32": 1790834270
+	},
+	{
+		"native": "dilettante",
+		"category": "Compact",
+		"hex": "0xBC993509",
+		"int32": -1130810103,
+		"uint32": 3164157193
+	},
+	{
+		"native": "dilettante2",
+		"category": "Compact",
+		"hex": "0x64430650",
+		"int32": 1682114128,
+		"uint32": 1682114128
+	},
+	{
+		"native": "dinghy",
+		"category": "Boat",
+		"hex": "0x3D961290",
+		"int32": 1033245328,
+		"uint32": 1033245328
+	},
+	{
+		"native": "dinghy2",
+		"category": "Boat",
+		"hex": "0x107F392C",
+		"int32": 276773164,
+		"uint32": 276773164
+	},
+	{
+		"native": "dinghy3",
+		"category": "Boat",
+		"hex": "0x1E5E54EA",
+		"int32": 509498602,
+		"uint32": 509498602
+	},
+	{
+		"native": "dinghy4",
+		"category": "Boat",
+		"hex": "0x33B47F96",
+		"int32": 867467158,
+		"uint32": 867467158
+	},
+	{
+		"native": "dloader",
+		"category": "Offroad",
+		"hex": "0x698521E3",
+		"int32": 1770332643,
+		"uint32": 1770332643
+	},
+	{
+		"native": "docktrailer",
+		"category": "Trailer",
+		"hex": "0x806EFBEE",
+		"int32": -2140210194,
+		"uint32": 2154757102
+	},
+	{
+		"native": "docktug",
+		"category": "Truck",
+		"hex": "0xCB44B1CA",
+		"int32": -884690486,
+		"uint32": 3410276810
+	},
+	{
+		"native": "dodo",
+		"category": "Plane",
+		"hex": "0xCA495705",
+		"int32": -901163259,
+		"uint32": 3393804037
+	},
+	{
+		"native": "dominator",
+		"category": "Muscle",
+		"hex": "0x04CE68AC",
+		"int32": 80636076,
+		"uint32": 80636076
+	},
+	{
+		"native": "dominator2",
+		"category": "Muscle",
+		"hex": "0xC96B73D9",
+		"int32": -915704871,
+		"uint32": 3379262425
+	},
+	{
+		"native": "dominator3",
+		"category": "Muscle",
+		"hex": "0xC52C6B93",
+		"int32": -986944621,
+		"uint32": 3308022675
+	},
+	{
+		"native": "dominator4",
+		"category": "Muscle",
+		"hex": "0xD6FB0F30",
+		"int32": -688189648,
+		"uint32": 3606777648
+	},
+	{
+		"native": "dominator5",
+		"category": "Muscle",
+		"hex": "0xAE0A3D4F",
+		"int32": -1375060657,
+		"uint32": 2919906639
+	},
+	{
+		"native": "dominator6",
+		"category": "Muscle",
+		"hex": "0xB2E046FB",
+		"int32": -1293924613,
+		"uint32": 3001042683
+	},
+	{
+		"native": "double",
+		"category": "Motorcycle",
+		"hex": "0x9C669788",
+		"int32": -1670998136,
+		"uint32": 2623969160
+	},
+	{
+		"native": "dubsta",
+		"category": "SUV",
+		"hex": "0x462FE277",
+		"int32": 1177543287,
+		"uint32": 1177543287
+	},
+	{
+		"native": "dubsta2",
+		"category": "SUV",
+		"hex": "0xE882E5F6",
+		"int32": -394074634,
+		"uint32": 3900892662
+	},
+	{
+		"native": "dubsta3",
+		"category": "Offroad",
+		"hex": "0xB6410173",
+		"int32": -1237253773,
+		"uint32": 3057713523
+	},
+	{
+		"native": "dukes",
+		"category": "Muscle",
+		"hex": "0x2B26F456",
+		"int32": 723973206,
+		"uint32": 723973206
+	},
+	{
+		"native": "dukes2",
+		"category": "Muscle",
+		"hex": "0xEC8F7094",
+		"int32": -326143852,
+		"uint32": 3968823444
+	},
+	{
+		"native": "dump",
+		"category": "Truck",
+		"hex": "0x810369E2",
+		"int32": -2130482718,
+		"uint32": 2164484578
+	},
+	{
+		"native": "dune",
+		"category": "Offroad",
+		"hex": "0x9CF21E0F",
+		"int32": -1661854193,
+		"uint32": 2633113103
+	},
+	{
+		"native": "dune2",
+		"category": "Offroad",
+		"hex": "0x1FD824AF",
+		"int32": 534258863,
+		"uint32": 534258863
+	},
+	{
+		"native": "dune3",
+		"category": "Offroad",
+		"hex": "0x711D4738",
+		"int32": 1897744184,
+		"uint32": 1897744184
+	},
+	{
+		"native": "dune4",
+		"category": "Offroad",
+		"hex": "0xCEB28249",
+		"int32": -827162039,
+		"uint32": 3467805257
+	},
+	{
+		"native": "dune5",
+		"category": "Offroad",
+		"hex": "0xED62BFA9",
+		"int32": -312295511,
+		"uint32": 3982671785
+	},
+	{
+		"native": "duster",
+		"category": "Plane",
+		"hex": "0x39D6779E",
+		"int32": 970356638,
+		"uint32": 970356638
+	},
+	{
+		"native": "elegy",
+		"category": "Sport",
+		"hex": "0x0BBA2261",
+		"int32": 196747873,
+		"uint32": 196747873
+	},
+	{
+		"native": "elegy2",
+		"category": "Sport",
+		"hex": "0xDE3D9D22",
+		"int32": -566387422,
+		"uint32": 3728579874
+	},
+	{
+		"native": "ellie",
+		"category": "Muscle",
+		"hex": "0xB472D2B5",
+		"int32": -1267543371,
+		"uint32": 3027423925
+	},
+	{
+		"native": "emperor",
+		"category": "Sedan",
+		"hex": "0xD7278283",
+		"int32": -685276541,
+		"uint32": 3609690755
+	},
+	{
+		"native": "emperor2",
+		"category": "Sedan",
+		"hex": "0x8FC3AADC",
+		"int32": -1883002148,
+		"uint32": 2411965148
+	},
+	{
+		"native": "emperor3",
+		"category": "Sedan",
+		"hex": "0xB5FCF74E",
+		"int32": -1241712818,
+		"uint32": 3053254478
+	},
+	{
+		"native": "enduro",
+		"category": "Motorcycle",
+		"hex": "0x6882FA73",
+		"int32": 1753414259,
+		"uint32": 1753414259
+	},
+	{
+		"native": "entity2",
+		"category": "Super",
+		"hex": "0x8198AEDC",
+		"int32": -2120700196,
+		"uint32": 2174267100
+	},
+	{
+		"native": "entityxf",
+		"category": "Super",
+		"hex": "0xB2FE5CF9",
+		"int32": -1291952903,
+		"uint32": 3003014393
+	},
+	{
+		"native": "esskey",
+		"category": "Motorcycle",
+		"hex": "0x794CB30C",
+		"int32": 2035069708,
+		"uint32": 2035069708
+	},
+	{
+		"native": "exemplar",
+		"category": "Coupe",
+		"hex": "0xFFB15B5E",
+		"int32": -5153954,
+		"uint32": 4289813342
+	},
+	{
+		"native": "f620",
+		"category": "Coupe",
+		"hex": "0xDCBCBE48",
+		"int32": -591610296,
+		"uint32": 3703357000
+	},
+	{
+		"native": "faction",
+		"category": "Coupe",
+		"hex": "0x81A9CDDF",
+		"int32": -2119578145,
+		"uint32": 2175389151
+	},
+	{
+		"native": "faction2",
+		"category": "Coupe",
+		"hex": "0x95466BDB",
+		"int32": -1790546981,
+		"uint32": 2504420315
+	},
+	{
+		"native": "faction3",
+		"category": "Muscle",
+		"hex": "0x866BCE26",
+		"int32": -2039755226,
+		"uint32": 2255212070
+	},
+	{
+		"native": "fagaloa",
+		"category": "Sports Classic",
+		"hex": "0x6068AD86",
+		"int32": 1617472902,
+		"uint32": 1617472902
+	},
+	{
+		"native": "faggio",
+		"category": "Motorcycle",
+		"hex": "0x9229E4EB",
+		"int32": -1842748181,
+		"uint32": 2452219115
+	},
+	{
+		"native": "faggio2",
+		"category": "Motorcycle",
+		"hex": "0x0350D1AB",
+		"int32": 55628203,
+		"uint32": 55628203
+	},
+	{
+		"native": "faggio3",
+		"category": "Motorcycle",
+		"hex": "0xB328B188",
+		"int32": -1289178744,
+		"uint32": 3005788552
+	},
+	{
+		"native": "faggion",
+		"category": "Motorcycle",
+		"hex": "0x7F384994",
+		"int32": 2134395284,
+		"uint32": 2134395284
+	},
+	{
+		"native": "fbi",
+		"category": "Emergency",
+		"hex": "0x432EA949",
+		"int32": 1127131465,
+		"uint32": 1127131465
+	},
+	{
+		"native": "fbi2",
+		"category": "Emergency",
+		"hex": "0x9DC66994",
+		"int32": -1647941228,
+		"uint32": 2647026068
+	},
+	{
+		"native": "fcr",
+		"category": "Motorcycle",
+		"hex": "0x25676EAF",
+		"int32": 627535535,
+		"uint32": 627535535
+	},
+	{
+		"native": "fcr2",
+		"category": "Motorcycle",
+		"hex": "0xD2D5E00E",
+		"int32": -757735410,
+		"uint32": 3537231886
+	},
+	{
+		"native": "felon",
+		"category": "Coupe",
+		"hex": "0xE8A8BDA8",
+		"int32": -391594584,
+		"uint32": 3903372712
+	},
+	{
+		"native": "felon2",
+		"category": "Coupe",
+		"hex": "0xFAAD85EE",
+		"int32": -89291282,
+		"uint32": 4205676014
+	},
+	{
+		"native": "feltzer2",
+		"category": "Sport",
+		"hex": "0x8911B9F5",
+		"int32": -1995326987,
+		"uint32": 2299640309
+	},
+	{
+		"native": "feltzer3",
+		"category": "Sports Classic",
+		"hex": "0xA29D6D10",
+		"int32": -1566741232,
+		"uint32": 2728226064
+	},
+	{
+		"native": "firetruk",
+		"category": "Emergency",
+		"hex": "0x73920F8E",
+		"int32": 1938952078,
+		"uint32": 1938952078
+	},
+	{
+		"native": "fixter",
+		"category": "Bicycle",
+		"hex": "0xCE23D3BF",
+		"int32": -836512833,
+		"uint32": 3458454463
+	},
+	{
+		"native": "flashgt",
+		"category": "Sport",
+		"hex": "0xB4F32118",
+		"int32": -1259134696,
+		"uint32": 3035832600
+	},
+	{
+		"native": "flatbed",
+		"category": "Truck",
+		"hex": "0x50B0215A",
+		"int32": 1353720154,
+		"uint32": 1353720154
+	},
+	{
+		"native": "fmj",
+		"category": "Super",
+		"hex": "0x5502626C",
+		"int32": 1426219628,
+		"uint32": 1426219628
+	},
+	{
+		"native": "forklift",
+		"category": "Service",
+		"hex": "0x58E49664",
+		"int32": 1491375716,
+		"uint32": 1491375716
+	},
+	{
+		"native": "fq2",
+		"category": "SUV",
+		"hex": "0xBC32A33B",
+		"int32": -1137532101,
+		"uint32": 3157435195
+	},
+	{
+		"native": "freecrawler",
+		"category": "Offroad",
+		"hex": "0xFCC2F483",
+		"int32": -54332285,
+		"uint32": 4240635011
+	},
+	{
+		"native": "freight",
+		"category": "Train",
+		"hex": "0x3D6AAA9B",
+		"int32": 1030400667,
+		"uint32": 1030400667
+	},
+	{
+		"native": "freightcar",
+		"category": "Train",
+		"hex": "0x0AFD22A6",
+		"int32": 184361638,
+		"uint32": 184361638
+	},
+	{
+		"native": "freightcont1",
+		"category": "Train",
+		"hex": "0x36DCFF98",
+		"int32": 920453016,
+		"uint32": 920453016
+	},
+	{
+		"native": "freightcont2",
+		"category": "Train",
+		"hex": "0x0E512E79",
+		"int32": 240201337,
+		"uint32": 240201337
+	},
+	{
+		"native": "freightgrain",
+		"category": "Train",
+		"hex": "0x264D9262",
+		"int32": 642617954,
+		"uint32": 642617954
+	},
+	{
+		"native": "freighttrailer",
+		"category": "Trailer",
+		"hex": "0xD1ABB666",
+		"int32": -777275802,
+		"uint32": 3517691494
+	},
+	{
+		"native": "frogger",
+		"category": "Helicopter",
+		"hex": "0x2C634FBD",
+		"int32": 744705981,
+		"uint32": 744705981
+	},
+	{
+		"native": "frogger2",
+		"category": "Helicopter",
+		"hex": "0x742E9AC0",
+		"int32": 1949211328,
+		"uint32": 1949211328
+	},
+	{
+		"native": "fugitive",
+		"category": "Sedan",
+		"hex": "0x71CB2FFB",
+		"int32": 1909141499,
+		"uint32": 1909141499
+	},
+	{
+		"native": "furoregt",
+		"category": "Sport",
+		"hex": "0xBF1691E0",
+		"int32": -1089039904,
+		"uint32": 3205927392
+	},
+	{
+		"native": "fusilade",
+		"category": "Sport",
+		"hex": "0x1DC0BA53",
+		"int32": 499169875,
+		"uint32": 499169875
+	},
+	{
+		"native": "futo",
+		"category": "Sport",
+		"hex": "0x7836CE2F",
+		"int32": 2016857647,
+		"uint32": 2016857647
+	},
+	{
+		"native": "gargoyle",
+		"category": "Motorcycle",
+		"hex": "0x2C2C2324",
+		"int32": 741090084,
+		"uint32": 741090084
+	},
+	{
+		"native": "gauntlet",
+		"category": "Muscle",
+		"hex": "0x94B395C5",
+		"int32": -1800170043,
+		"uint32": 2494797253
+	},
+	{
+		"native": "gauntlet2",
+		"category": "Muscle",
+		"hex": "0x14D22159",
+		"int32": 349315417,
+		"uint32": 349315417
+	},
+	{
+		"native": "gb200",
+		"category": "Sport",
+		"hex": "0x71CBEA98",
+		"int32": 1909189272,
+		"uint32": 1909189272
+	},
+	{
+		"native": "gburrito",
+		"category": "Van",
+		"hex": "0x97FA4F36",
+		"int32": -1745203402,
+		"uint32": 2549763894
+	},
+	{
+		"native": "gburrito2",
+		"category": "Van",
+		"hex": "0x11AA0E14",
+		"int32": 296357396,
+		"uint32": 296357396
+	},
+	{
+		"native": "glendale",
+		"category": "Sedan",
+		"hex": "0x047A6BC1",
+		"int32": 75131841,
+		"uint32": 75131841
+	},
+	{
+		"native": "gp1",
+		"category": "Super",
+		"hex": "0x4992196C",
+		"int32": 1234311532,
+		"uint32": 1234311532
+	},
+	{
+		"native": "graintrailer",
+		"category": "Trailer",
+		"hex": "0x3CC7F596",
+		"int32": 1019737494,
+		"uint32": 1019737494
+	},
+	{
+		"native": "granger",
+		"category": "SUV",
+		"hex": "0x9628879C",
+		"int32": -1775728740,
+		"uint32": 2519238556
+	},
+	{
+		"native": "gresley",
+		"category": "SUV",
+		"hex": "0xA3FC0F4D",
+		"int32": -1543762099,
+		"uint32": 2751205197
+	},
+	{
+		"native": "gt500",
+		"category": "Sports Classic",
+		"hex": "0x8408F33A",
+		"int32": -2079788230,
+		"uint32": 2215179066
+	},
+	{
+		"native": "guardian",
+		"category": "Offroad",
+		"hex": "0x825A9F4C",
+		"int32": -2107990196,
+		"uint32": 2186977100
+	},
+	{
+		"native": "habanero",
+		"category": "SUV",
+		"hex": "0x34B7390F",
+		"int32": 884422927,
+		"uint32": 884422927
+	},
+	{
+		"native": "hakuchou",
+		"category": "Motorcycle",
+		"hex": "0x4B6C568A",
+		"int32": 1265391242,
+		"uint32": 1265391242
+	},
+	{
+		"native": "hakuchou2",
+		"category": "Motorcycle",
+		"hex": "0xF0C2A91F",
+		"int32": -255678177,
+		"uint32": 4039289119
+	},
+	{
+		"native": "halftrack",
+		"category": "Military",
+		"hex": "0xFE141DA6",
+		"int32": -32236122,
+		"uint32": 4262731174
+	},
+	{
+		"native": "handler",
+		"category": "Truck",
+		"hex": "0x1A7FCEFA",
+		"int32": 444583674,
+		"uint32": 444583674
+	},
+	{
+		"native": "hauler",
+		"category": "Truck",
+		"hex": "0x5A82F9AE",
+		"int32": 1518533038,
+		"uint32": 1518533038
+	},
+	{
+		"native": "hauler2",
+		"category": "Commercial",
+		"hex": "0x171C92C4",
+		"int32": 387748548,
+		"uint32": 387748548
+	},
+	{
+		"native": "havok",
+		"category": "Helicopter",
+		"hex": "0x89BA59F5",
+		"int32": -1984275979,
+		"uint32": 2310691317
+	},
+	{
+		"native": "hermes",
+		"category": "Muscle",
+		"hex": "0x00E83C17",
+		"int32": 15219735,
+		"uint32": 15219735
+	},
+	{
+		"native": "hexer",
+		"category": "Motorcycle",
+		"hex": "0x11F76C14",
+		"int32": 301427732,
+		"uint32": 301427732
+	},
+	{
+		"native": "hotknife",
+		"category": "Muscle",
+		"hex": "0x0239E390",
+		"int32": 37348240,
+		"uint32": 37348240
+	},
+	{
+		"native": "hotring",
+		"category": "Sport",
+		"hex": "0x42836BE5",
+		"int32": 1115909093,
+		"uint32": 1115909093
+	},
+	{
+		"native": "howard",
+		"category": "Plane",
+		"hex": "0xC3F25753",
+		"int32": -1007528109,
+		"uint32": 3287439187
+	},
+	{
+		"native": "hunter",
+		"category": "Helicopter",
+		"hex": "0xFD707EDE",
+		"int32": -42959138,
+		"uint32": 4252008158
+	},
+	{
+		"native": "huntley",
+		"category": "SUV",
+		"hex": "0x1D06D681",
+		"int32": 486987393,
+		"uint32": 486987393
+	},
+	{
+		"native": "hustler",
+		"category": "Muscle",
+		"hex": "0x23CA25F2",
+		"int32": 600450546,
+		"uint32": 600450546
+	},
+	{
+		"native": "hydra",
+		"category": "Plane",
+		"hex": "0x39D6E83F",
+		"int32": 970385471,
+		"uint32": 970385471
+	},
+	{
+		"native": "impaler",
+		"category": "Muscle",
+		"hex": "0x83070B62",
+		"int32": -2096690334,
+		"uint32": 2198276962
+	},
+	{
+		"native": "impaler2",
+		"category": "Muscle",
+		"hex": "0x3C26BD0C",
+		"int32": 1009171724,
+		"uint32": 1009171724
+	},
+	{
+		"native": "impaler3",
+		"category": "Muscle",
+		"hex": "0x8D45DF49",
+		"int32": -1924800695,
+		"uint32": 2370166601
+	},
+	{
+		"native": "impaler4",
+		"category": "Muscle",
+		"hex": "0x9804F4C7",
+		"int32": -1744505657,
+		"uint32": 2550461639
+	},
+	{
+		"native": "imperator",
+		"category": "Muscle",
+		"hex": "0x1A861243",
+		"int32": 444994115,
+		"uint32": 444994115
+	},
+	{
+		"native": "imperator2",
+		"category": "Muscle",
+		"hex": "0x619C1B82",
+		"int32": 1637620610,
+		"uint32": 1637620610
+	},
+	{
+		"native": "imperator3",
+		"category": "Muscle",
+		"hex": "0xD2F77E37",
+		"int32": -755532233,
+		"uint32": 3539435063
+	},
+	{
+		"native": "infernus",
+		"category": "Super",
+		"hex": "0x18F25AC7",
+		"int32": 418536135,
+		"uint32": 418536135
+	},
+	{
+		"native": "infernus2",
+		"category": "Sport",
+		"hex": "0xAC33179C",
+		"int32": -1405937764,
+		"uint32": 2889029532
+	},
+	{
+		"native": "ingot",
+		"category": "Sedan",
+		"hex": "0xB3206692",
+		"int32": -1289722222,
+		"uint32": 3005245074
+	},
+	{
+		"native": "innovation",
+		"category": "Motorcycle",
+		"hex": "0xF683EACA",
+		"int32": -159126838,
+		"uint32": 4135840458
+	},
+	{
+		"native": "insurgent",
+		"category": "Offroad",
+		"hex": "0x9114EADA",
+		"int32": -1860900134,
+		"uint32": 2434067162
+	},
+	{
+		"native": "insurgent2",
+		"category": "Offroad",
+		"hex": "0x7B7E56F0",
+		"int32": 2071877360,
+		"uint32": 2071877360
+	},
+	{
+		"native": "insurgent3",
+		"category": "Offroad",
+		"hex": "0x8D4B7A8A",
+		"int32": -1924433270,
+		"uint32": 2370534026
+	},
+	{
+		"native": "intruder",
+		"category": "Sedan",
+		"hex": "0x34DD8AA1",
+		"int32": 886934177,
+		"uint32": 886934177
+	},
+	{
+		"native": "issi2",
+		"category": "Compact",
+		"hex": "0xB9CB3B69",
+		"int32": -1177863319,
+		"uint32": 3117103977
+	},
+	{
+		"native": "issi3",
+		"category": "Compact",
+		"hex": "0x378236E1",
+		"int32": 931280609,
+		"uint32": 931280609
+	},
+	{
+		"native": "issi4",
+		"category": "Compact",
+		"hex": "0x256E92BA",
+		"int32": 628003514,
+		"uint32": 628003514
+	},
+	{
+		"native": "issi5",
+		"category": "Compact",
+		"hex": "0x5BA0FF1E",
+		"int32": 1537277726,
+		"uint32": 1537277726
+	},
+	{
+		"native": "issi6",
+		"category": "Compact",
+		"hex": "0x49E25BA1",
+		"int32": 1239571361,
+		"uint32": 1239571361
+	},
+	{
+		"native": "italigtb",
+		"category": "Super",
+		"hex": "0x85E8E76B",
+		"int32": -2048333973,
+		"uint32": 2246633323
+	},
+	{
+		"native": "italigtb2",
+		"category": "Super",
+		"hex": "0xE33A477B",
+		"int32": -482719877,
+		"uint32": 3812247419
+	},
+	{
+		"native": "italigto",
+		"category": "Sport",
+		"hex": "0xEC3E3404",
+		"int32": -331467772,
+		"uint32": 3963499524
+	},
+	{
+		"native": "jackal",
+		"category": "Coupe",
+		"hex": "0xDAC67112",
+		"int32": -624529134,
+		"uint32": 3670438162
+	},
+	{
+		"native": "jb700",
+		"category": "Sports Classic",
+		"hex": "0x3EAB5555",
+		"int32": 1051415893,
+		"uint32": 1051415893
+	},
+	{
+		"native": "jester",
+		"category": "Sport",
+		"hex": "0xB2A716A3",
+		"int32": -1297672541,
+		"uint32": 2997294755
+	},
+	{
+		"native": "jester2",
+		"category": "Sport",
+		"hex": "0xBE0E6126",
+		"int32": -1106353882,
+		"uint32": 3188613414
+	},
+	{
+		"native": "jester3",
+		"category": "Sports Classic",
+		"hex": "0xF330CB6A",
+		"int32": -214906006,
+		"uint32": 4080061290
+	},
+	{
+		"native": "jet",
+		"category": "Plane",
+		"hex": "0x3F119114",
+		"int32": 1058115860,
+		"uint32": 1058115860
+	},
+	{
+		"native": "jetmax",
+		"category": "Boat",
+		"hex": "0x33581161",
+		"int32": 861409633,
+		"uint32": 861409633
+	},
+	{
+		"native": "journey",
+		"category": "Van",
+		"hex": "0xF8D48E7A",
+		"int32": -120287622,
+		"uint32": 4174679674
+	},
+	{
+		"native": "kalahari",
+		"category": "Offroad",
+		"hex": "0x05852838",
+		"int32": 92612664,
+		"uint32": 92612664
+	},
+	{
+		"native": "kamacho",
+		"category": "Offroad",
+		"hex": "0xF8C2E0E7",
+		"int32": -121446169,
+		"uint32": 4173521127
+	},
+	{
+		"native": "khamelion",
+		"category": "Sport",
+		"hex": "0x206D1B68",
+		"int32": 544021352,
+		"uint32": 544021352
+	},
+	{
+		"native": "khanjali",
+		"category": "Military",
+		"hex": "0xAA6F980A",
+		"int32": -1435527158,
+		"uint32": 2859440138
+	},
+	{
+		"native": "kuruma",
+		"category": "Sport",
+		"hex": "0xAE2BFE94",
+		"int32": -1372848492,
+		"uint32": 2922118804
+	},
+	{
+		"native": "kuruma2",
+		"category": "Sport",
+		"hex": "0x187D938D",
+		"int32": 410882957,
+		"uint32": 410882957
+	},
+	{
+		"native": "landstalker",
+		"category": "SUV",
+		"hex": "0x4BA4E8DC",
+		"int32": 1269098716,
+		"uint32": 1269098716
+	},
+	{
+		"native": "lazer",
+		"category": "Plane",
+		"hex": "0xB39B0AE6",
+		"int32": -1281684762,
+		"uint32": 3013282534
+	},
+	{
+		"native": "le7b",
+		"category": "Super",
+		"hex": "0xB6846A55",
+		"int32": -1232836011,
+		"uint32": 3062131285
+	},
+	{
+		"native": "lectro",
+		"category": "Motorcycle",
+		"hex": "0x26321E67",
+		"int32": 640818791,
+		"uint32": 640818791
+	},
+	{
+		"native": "lguard",
+		"category": "Emergency",
+		"hex": "0x1BF8D381",
+		"int32": 469291905,
+		"uint32": 469291905
+	},
+	{
+		"native": "limo2",
+		"category": "Sedan",
+		"hex": "0xF92AEC4D",
+		"int32": -114627507,
+		"uint32": 4180339789
+	},
+	{
+		"native": "lurcher",
+		"category": "Sports Classic",
+		"hex": "0x7B47A6A7",
+		"int32": 2068293287,
+		"uint32": 2068293287
+	},
+	{
+		"native": "luxor",
+		"category": "Plane",
+		"hex": "0x250B0C5E",
+		"int32": 621481054,
+		"uint32": 621481054
+	},
+	{
+		"native": "luxor2",
+		"category": "Plane",
+		"hex": "0xB79F589E",
+		"int32": -1214293858,
+		"uint32": 3080673438
+	},
+	{
+		"native": "lynx",
+		"category": "Sport",
+		"hex": "0x1CBDC10B",
+		"int32": 482197771,
+		"uint32": 482197771
+	},
+	{
+		"native": "mamba",
+		"category": "Sport",
+		"hex": "0x9CFFFC56",
+		"int32": -1660945322,
+		"uint32": 2634021974
+	},
+	{
+		"native": "mammatus",
+		"category": "Plane",
+		"hex": "0x97E55D11",
+		"int32": -1746576111,
+		"uint32": 2548391185
+	},
+	{
+		"native": "manana",
+		"category": "Sports Classic",
+		"hex": "0x81634188",
+		"int32": -2124201592,
+		"uint32": 2170765704
+	},
+	{
+		"native": "manchez",
+		"category": "Motorcycle",
+		"hex": "0xA5325278",
+		"int32": -1523428744,
+		"uint32": 2771538552
+	},
+	{
+		"native": "marquis",
+		"category": "Boat",
+		"hex": "0xC1CE1183",
+		"int32": -1043459709,
+		"uint32": 3251507587
+	},
+	{
+		"native": "marshall",
+		"category": "Offroad",
+		"hex": "0x49863E9C",
+		"int32": 1233534620,
+		"uint32": 1233534620
+	},
+	{
+		"native": "massacro",
+		"category": "Sport",
+		"hex": "0xF77ADE32",
+		"int32": -142942670,
+		"uint32": 4152024626
+	},
+	{
+		"native": "massacro2",
+		"category": "Sport",
+		"hex": "0xDA5819A3",
+		"int32": -631760477,
+		"uint32": 3663206819
+	},
+	{
+		"native": "maverick",
+		"category": "Helicopter",
+		"hex": "0x9D0450CA",
+		"int32": -1660661558,
+		"uint32": 2634305738
+	},
+	{
+		"native": "menacer",
+		"category": "Offroad",
+		"hex": "0x79DD18AE",
+		"int32": 2044532910,
+		"uint32": 2044532910
+	},
+	{
+		"native": "mesa",
+		"category": "SUV",
+		"hex": "0x36848602",
+		"int32": 914654722,
+		"uint32": 914654722
+	},
+	{
+		"native": "mesa2",
+		"category": "SUV",
+		"hex": "0xD36A4B44",
+		"int32": -748008636,
+		"uint32": 3546958660
+	},
+	{
+		"native": "mesa3",
+		"category": "Offroad",
+		"hex": "0x84F42E51",
+		"int32": -2064372143,
+		"uint32": 2230595153
+	},
+	{
+		"native": "metrotrain",
+		"category": "Train",
+		"hex": "0x33C9E158",
+		"int32": 868868440,
+		"uint32": 868868440
+	},
+	{
+		"native": "michelli",
+		"category": "Sports Classic",
+		"hex": "0x3E5BD8D9",
+		"int32": 1046206681,
+		"uint32": 1046206681
+	},
+	{
+		"native": "microlight",
+		"category": "Plane",
+		"hex": "0x96E24857",
+		"int32": -1763555241,
+		"uint32": 2531412055
+	},
+	{
+		"native": "miljet",
+		"category": "Plane",
+		"hex": "0x09D80F93",
+		"int32": 165154707,
+		"uint32": 165154707
+	},
+	{
+		"native": "minivan",
+		"category": "Van",
+		"hex": "0xED7EADA4",
+		"int32": -310465116,
+		"uint32": 3984502180
+	},
+	{
+		"native": "minivan2",
+		"category": "Muscle",
+		"hex": "0xBCDE91F0",
+		"int32": -1126264336,
+		"uint32": 3168702960
+	},
+	{
+		"native": "mixer",
+		"category": "Truck",
+		"hex": "0xD138A6BB",
+		"int32": -784816453,
+		"uint32": 3510150843
+	},
+	{
+		"native": "mixer2",
+		"category": "Truck",
+		"hex": "0x1C534995",
+		"int32": 475220373,
+		"uint32": 475220373
+	},
+	{
+		"native": "mogul",
+		"category": "Plane",
+		"hex": "0xD35698EF",
+		"int32": -749299473,
+		"uint32": 3545667823
+	},
+	{
+		"native": "molotok",
+		"category": "Plane",
+		"hex": "0x5D56F01B",
+		"int32": 1565978651,
+		"uint32": 1565978651
+	},
+	{
+		"native": "monroe",
+		"category": "Sports Classic",
+		"hex": "0xE62B361B",
+		"int32": -433375717,
+		"uint32": 3861591579
+	},
+	{
+		"native": "monster",
+		"category": "Offroad",
+		"hex": "0xCD93A7DB",
+		"int32": -845961253,
+		"uint32": 3449006043
+	},
+	{
+		"native": "monster3",
+		"category": "Offroad",
+		"hex": "0x669EB40A",
+		"int32": 1721676810,
+		"uint32": 1721676810
+	},
+	{
+		"native": "monster4",
+		"category": "Offroad",
+		"hex": "0x32174AFC",
+		"int32": 840387324,
+		"uint32": 840387324
+	},
+	{
+		"native": "monster5",
+		"category": "Offroad",
+		"hex": "0xD556917C",
+		"int32": -715746948,
+		"uint32": 3579220348
+	},
+	{
+		"native": "moonbeam",
+		"category": "Van",
+		"hex": "0x1F52A43F",
+		"int32": 525509695,
+		"uint32": 525509695
+	},
+	{
+		"native": "moonbeam2",
+		"category": "Van",
+		"hex": "0x710A2B9B",
+		"int32": 1896491931,
+		"uint32": 1896491931
+	},
+	{
+		"native": "mower",
+		"category": "Service",
+		"hex": "0x6A4BD8F6",
+		"int32": 1783355638,
+		"uint32": 1783355638
+	},
+	{
+		"native": "mule",
+		"category": "Truck",
+		"hex": "0x35ED670B",
+		"int32": 904750859,
+		"uint32": 904750859
+	},
+	{
+		"native": "mule2",
+		"category": "Truck",
+		"hex": "0xC1632BEB",
+		"int32": -1050465301,
+		"uint32": 3244501995
+	},
+	{
+		"native": "mule3",
+		"category": "Truck",
+		"hex": "0x85A5B471",
+		"int32": -2052737935,
+		"uint32": 2242229361
+	},
+	{
+		"native": "mule4",
+		"category": "Commercial",
+		"hex": "0x73F4110E",
+		"int32": 1945374990,
+		"uint32": 1945374990
+	},
+	{
+		"native": "nemesis",
+		"category": "Motorcycle",
+		"hex": "0xDA288376",
+		"int32": -634879114,
+		"uint32": 3660088182
+	},
+	{
+		"native": "neon",
+		"category": "Sport",
+		"hex": "0x91CA96EE",
+		"int32": -1848994066,
+		"uint32": 2445973230
+	},
+	{
+		"native": "nero",
+		"category": "Super",
+		"hex": "0x3DA47243",
+		"int32": 1034187331,
+		"uint32": 1034187331
+	},
+	{
+		"native": "nero2",
+		"category": "Super",
+		"hex": "0x4131F378",
+		"int32": 1093792632,
+		"uint32": 1093792632
+	},
+	{
+		"native": "nightblade",
+		"category": "Motorcycle",
+		"hex": "0xA0438767",
+		"int32": -1606187161,
+		"uint32": 2688780135
+	},
+	{
+		"native": "nightshade",
+		"category": "Muscle",
+		"hex": "0x8C2BD0DC",
+		"int32": -1943285540,
+		"uint32": 2351681756
+	},
+	{
+		"native": "nightshark",
+		"category": "Offroad",
+		"hex": "0x19DD9ED1",
+		"int32": 433954513,
+		"uint32": 433954513
+	},
+	{
+		"native": "nimbus",
+		"category": "Plane",
+		"hex": "0xB2CF7250",
+		"int32": -1295027632,
+		"uint32": 2999939664
+	},
+	{
+		"native": "ninef",
+		"category": "Sport",
+		"hex": "0x3D8FA25C",
+		"int32": 1032823388,
+		"uint32": 1032823388
+	},
+	{
+		"native": "ninef2",
+		"category": "Sport",
+		"hex": "0xA8E38B01",
+		"int32": -1461482751,
+		"uint32": 2833484545
+	},
+	{
+		"native": "nokota",
+		"category": "Plane",
+		"hex": "0x3DC92356",
+		"int32": 1036591958,
+		"uint32": 1036591958
+	},
+	{
+		"native": "omnis",
+		"category": "Sport",
+		"hex": "0xD1AD4937",
+		"int32": -777172681,
+		"uint32": 3517794615
+	},
+	{
+		"native": "oppressor",
+		"category": "Motorcycle",
+		"hex": "0x34B82784",
+		"int32": 884483972,
+		"uint32": 884483972
+	},
+	{
+		"native": "oppressor2",
+		"category": "Motorcycle",
+		"hex": "0x7B54A9D3",
+		"int32": 2069146067,
+		"uint32": 2069146067
+	},
+	{
+		"native": "oracle",
+		"category": "Sedan",
+		"hex": "0x506434F6",
+		"int32": 1348744438,
+		"uint32": 1348744438
+	},
+	{
+		"native": "oracle2",
+		"category": "Sedan",
+		"hex": "0xE18195B2",
+		"int32": -511601230,
+		"uint32": 3783366066
+	},
+	{
+		"native": "osiris",
+		"category": "Super",
+		"hex": "0x767164D6",
+		"int32": 1987142870,
+		"uint32": 1987142870
+	},
+	{
+		"native": "packer",
+		"category": "Truck",
+		"hex": "0x21EEE87D",
+		"int32": 569305213,
+		"uint32": 569305213
+	},
+	{
+		"native": "panto",
+		"category": "Compact",
+		"hex": "0xE644E480",
+		"int32": -431692672,
+		"uint32": 3863274624
+	},
+	{
+		"native": "paradise",
+		"category": "Van",
+		"hex": "0x58B3979C",
+		"int32": 1488164764,
+		"uint32": 1488164764
+	},
+	{
+		"native": "pariah",
+		"category": "Sport",
+		"hex": "0x33B98FE2",
+		"int32": 867799010,
+		"uint32": 867799010
+	},
+	{
+		"native": "patriot",
+		"category": "SUV",
+		"hex": "0xCFCFEB3B",
+		"int32": -808457413,
+		"uint32": 3486509883
+	},
+	{
+		"native": "patriot2",
+		"category": "SUV",
+		"hex": "0xE6E967F8",
+		"int32": -420911112,
+		"uint32": 3874056184
+	},
+	{
+		"native": "pbus",
+		"category": "Emergency",
+		"hex": "0x885F3671",
+		"int32": -2007026063,
+		"uint32": 2287941233
+	},
+	{
+		"native": "pbus2",
+		"category": "Service",
+		"hex": "0x149BD32A",
+		"int32": 345756458,
+		"uint32": 345756458
+	},
+	{
+		"native": "pcj",
+		"category": "Motorcycle",
+		"hex": "0xC9CEAF06",
+		"int32": -909201658,
+		"uint32": 3385765638
+	},
+	{
+		"native": "penetrator",
+		"category": "Super",
+		"hex": "0x9734F3EA",
+		"int32": -1758137366,
+		"uint32": 2536829930
+	},
+	{
+		"native": "penumbra",
+		"category": "Sport",
+		"hex": "0xE9805550",
+		"int32": -377465520,
+		"uint32": 3917501776
+	},
+	{
+		"native": "peyote",
+		"category": "Sports Classic",
+		"hex": "0x6D19CCBC",
+		"int32": 1830407356,
+		"uint32": 1830407356
+	},
+	{
+		"native": "pfister811",
+		"category": "Super",
+		"hex": "0x92EF6E04",
+		"int32": -1829802492,
+		"uint32": 2465164804
+	},
+	{
+		"native": "phantom",
+		"category": "Truck",
+		"hex": "0x809AA4CB",
+		"int32": -2137348917,
+		"uint32": 2157618379
+	},
+	{
+		"native": "phantom2",
+		"category": "Truck",
+		"hex": "0x9DAE1398",
+		"int32": -1649536104,
+		"uint32": 2645431192
+	},
+	{
+		"native": "phantom3",
+		"category": "Commercial",
+		"hex": "0x0A90ED5C",
+		"int32": 177270108,
+		"uint32": 177270108
+	},
+	{
+		"native": "phoenix",
+		"category": "Muscle",
+		"hex": "0x831A21D5",
+		"int32": -2095439403,
+		"uint32": 2199527893
+	},
+	{
+		"native": "picador",
+		"category": "Muscle",
+		"hex": "0x59E0FBF3",
+		"int32": 1507916787,
+		"uint32": 1507916787
+	},
+	{
+		"native": "pigalle",
+		"category": "Sports Classic",
+		"hex": "0x404B6381",
+		"int32": 1078682497,
+		"uint32": 1078682497
+	},
+	{
+		"native": "police",
+		"category": "Emergency",
+		"hex": "0x79FBB0C5",
+		"int32": 2046537925,
+		"uint32": 2046537925
+	},
+	{
+		"native": "police2",
+		"category": "Emergency",
+		"hex": "0x9F05F101",
+		"int32": -1627000575,
+		"uint32": 2667966721
+	},
+	{
+		"native": "police3",
+		"category": "Emergency",
+		"hex": "0x71FA16EA",
+		"int32": 1912215274,
+		"uint32": 1912215274
+	},
+	{
+		"native": "police4",
+		"category": "Emergency",
+		"hex": "0x8A63C7B9",
+		"int32": -1973172295,
+		"uint32": 2321795001
+	},
+	{
+		"native": "policeb",
+		"category": "Emergency",
+		"hex": "0xFDEFAEC3",
+		"int32": -34623805,
+		"uint32": 4260343491
+	},
+	{
+		"native": "policeold1",
+		"category": "Emergency",
+		"hex": "0xA46462F7",
+		"int32": -1536924937,
+		"uint32": 2758042359
+	},
+	{
+		"native": "policeold2",
+		"category": "Emergency",
+		"hex": "0x95F4C618",
+		"int32": -1779120616,
+		"uint32": 2515846680
+	},
+	{
+		"native": "policet",
+		"category": "Emergency",
+		"hex": "0x1B38E955",
+		"int32": 456714581,
+		"uint32": 456714581
+	},
+	{
+		"native": "polmav",
+		"category": "Helicopter",
+		"hex": "0x1517D4D9",
+		"int32": 353883353,
+		"uint32": 353883353
+	},
+	{
+		"native": "pony",
+		"category": "Van",
+		"hex": "0xF8DE29A8",
+		"int32": -119658072,
+		"uint32": 4175309224
+	},
+	{
+		"native": "pony2",
+		"category": "Van",
+		"hex": "0x38408341",
+		"int32": 943752001,
+		"uint32": 943752001
+	},
+	{
+		"native": "pounder",
+		"category": "Truck",
+		"hex": "0x7DE35E7D",
+		"int32": 2112052861,
+		"uint32": 2112052861
+	},
+	{
+		"native": "pounder2",
+		"category": "Commercial",
+		"hex": "0x6290F15B",
+		"int32": 1653666139,
+		"uint32": 1653666139
+	},
+	{
+		"native": "prairie",
+		"category": "Compact",
+		"hex": "0xA988D3A2",
+		"int32": -1450650718,
+		"uint32": 2844316578
+	},
+	{
+		"native": "pranger",
+		"category": "Emergency",
+		"hex": "0x2C33B46E",
+		"int32": 741586030,
+		"uint32": 741586030
+	},
+	{
+		"native": "predator",
+		"category": "Boat",
+		"hex": "0xE2E7D4AB",
+		"int32": -488123221,
+		"uint32": 3806844075
+	},
+	{
+		"native": "premier",
+		"category": "Sedan",
+		"hex": "0x8FB66F9B",
+		"int32": -1883869285,
+		"uint32": 2411098011
+	},
+	{
+		"native": "primo",
+		"category": "Sedan",
+		"hex": "0xBB6B404F",
+		"int32": -1150599089,
+		"uint32": 3144368207
+	},
+	{
+		"native": "primo2",
+		"category": "Sedan",
+		"hex": "0x86618EDA",
+		"int32": -2040426790,
+		"uint32": 2254540506
+	},
+	{
+		"native": "proptrailer",
+		"category": "Trailer",
+		"hex": "0x153E1B0A",
+		"int32": 356391690,
+		"uint32": 356391690
+	},
+	{
+		"native": "prototipo",
+		"category": "Super",
+		"hex": "0x7E8F677F",
+		"int32": 2123327359,
+		"uint32": 2123327359
+	},
+	{
+		"native": "pyro",
+		"category": "Plane",
+		"hex": "0xAD6065C0",
+		"int32": -1386191424,
+		"uint32": 2908775872
+	},
+	{
+		"native": "radi",
+		"category": "SUV",
+		"hex": "0x9D96B45B",
+		"int32": -1651067813,
+		"uint32": 2643899483
+	},
+	{
+		"native": "raiden",
+		"category": "Sport",
+		"hex": "0xA4D99B7D",
+		"int32": -1529242755,
+		"uint32": 2765724541
+	},
+	{
+		"native": "raketrailer",
+		"category": "Trailer",
+		"hex": "0x174CB172",
+		"int32": 390902130,
+		"uint32": 390902130
+	},
+	{
+		"native": "rallytruck",
+		"category": "Truck",
+		"hex": "0x829A3C44",
+		"int32": -2103821244,
+		"uint32": 2191146052
+	},
+	{
+		"native": "rancherxl",
+		"category": "Offroad",
+		"hex": "0x6210CBB0",
+		"int32": 1645267888,
+		"uint32": 1645267888
+	},
+	{
+		"native": "rancherxl2",
+		"category": "Offroad",
+		"hex": "0x7341576B",
+		"int32": 1933662059,
+		"uint32": 1933662059
+	},
+	{
+		"native": "rapidgt",
+		"category": "Sport",
+		"hex": "0x8CB29A14",
+		"int32": -1934452204,
+		"uint32": 2360515092
+	},
+	{
+		"native": "rapidgt2",
+		"category": "Sport",
+		"hex": "0x679450AF",
+		"int32": 1737773231,
+		"uint32": 1737773231
+	},
+	{
+		"native": "rapidgt3",
+		"category": "Sports Classic",
+		"hex": "0x7A2EF5E4",
+		"int32": 2049897956,
+		"uint32": 2049897956
+	},
+	{
+		"native": "raptor",
+		"category": "Sport",
+		"hex": "0xD7C56D39",
+		"int32": -674927303,
+		"uint32": 3620039993
+	},
+	{
+		"native": "ratbike",
+		"category": "Motorcycle",
+		"hex": "0x6FACDF31",
+		"int32": 1873600305,
+		"uint32": 1873600305
+	},
+	{
+		"native": "ratloader",
+		"category": "Pickup",
+		"hex": "0xD83C13CE",
+		"int32": -667151410,
+		"uint32": 3627815886
+	},
+	{
+		"native": "ratloader2",
+		"category": "Pickup",
+		"hex": "0xDCE1D9F7",
+		"int32": -589178377,
+		"uint32": 3705788919
+	},
+	{
+		"native": "rcbandito",
+		"category": "Offroad",
+		"hex": "0xEEF345EC",
+		"int32": -286046740,
+		"uint32": 4008920556
+	},
+	{
+		"native": "reaper",
+		"category": "Super",
+		"hex": "0x0DF381E5",
+		"int32": 234062309,
+		"uint32": 234062309
+	},
+	{
+		"native": "rebel",
+		"category": "Offroad",
+		"hex": "0xB802DD46",
+		"int32": -1207771834,
+		"uint32": 3087195462
+	},
+	{
+		"native": "rebel2",
+		"category": "Offroad",
+		"hex": "0x8612B64B",
+		"int32": -2045594037,
+		"uint32": 2249373259
+	},
+	{
+		"native": "regina",
+		"category": "Sedan",
+		"hex": "0xFF22D208",
+		"int32": -14495224,
+		"uint32": 4280472072
+	},
+	{
+		"native": "rentalbus",
+		"category": "Service",
+		"hex": "0xBE819C63",
+		"int32": -1098802077,
+		"uint32": 3196165219
+	},
+	{
+		"native": "retinue",
+		"category": "Sports Classic",
+		"hex": "0x6DBD6C0A",
+		"int32": 1841130506,
+		"uint32": 1841130506
+	},
+	{
+		"native": "revolter",
+		"category": "Sport",
+		"hex": "0xE78CC3D9",
+		"int32": -410205223,
+		"uint32": 3884762073
+	},
+	{
+		"native": "rhapsody",
+		"category": "Compact",
+		"hex": "0x322CF98F",
+		"int32": 841808271,
+		"uint32": 841808271
+	},
+	{
+		"native": "rhino",
+		"category": "Emergency",
+		"hex": "0x2EA68690",
+		"int32": 782665360,
+		"uint32": 782665360
+	},
+	{
+		"native": "riata",
+		"category": "Offroad",
+		"hex": "0xA4A4E453",
+		"int32": -1532697517,
+		"uint32": 2762269779
+	},
+	{
+		"native": "riot",
+		"category": "Emergency",
+		"hex": "0xB822A1AA",
+		"int32": -1205689942,
+		"uint32": 3089277354
+	},
+	{
+		"native": "riot2",
+		"category": "Emergency",
+		"hex": "0x9B16A3B4",
+		"int32": -1693015116,
+		"uint32": 2601952180
+	},
+	{
+		"native": "ripley",
+		"category": "Service",
+		"hex": "0xCD935EF9",
+		"int32": -845979911,
+		"uint32": 3448987385
+	},
+	{
+		"native": "rocoto",
+		"category": "SUV",
+		"hex": "0x7F5C91F1",
+		"int32": 2136773105,
+		"uint32": 2136773105
+	},
+	{
+		"native": "rogue",
+		"category": "Plane",
+		"hex": "0xC5DD6967",
+		"int32": -975345305,
+		"uint32": 3319621991
+	},
+	{
+		"native": "romero",
+		"category": "Sedan",
+		"hex": "0x2560B2FC",
+		"int32": 627094268,
+		"uint32": 627094268
+	},
+	{
+		"native": "rubble",
+		"category": "Truck",
+		"hex": "0x9A5B1DCC",
+		"int32": -1705304628,
+		"uint32": 2589662668
+	},
+	{
+		"native": "ruffian",
+		"category": "Motorcycle",
+		"hex": "0xCABD11E8",
+		"int32": -893578776,
+		"uint32": 3401388520
+	},
+	{
+		"native": "ruiner",
+		"category": "Muscle",
+		"hex": "0xF26CEFF9",
+		"int32": -227741703,
+		"uint32": 4067225593
+	},
+	{
+		"native": "ruiner2",
+		"category": "Sport",
+		"hex": "0x381E10BD",
+		"int32": 941494461,
+		"uint32": 941494461
+	},
+	{
+		"native": "ruiner3",
+		"category": "Sport",
+		"hex": "0x2E5AFD37",
+		"int32": 777714999,
+		"uint32": 777714999
+	},
+	{
+		"native": "rumpo",
+		"category": "Van",
+		"hex": "0x4543B74D",
+		"int32": 1162065741,
+		"uint32": 1162065741
+	},
+	{
+		"native": "rumpo2",
+		"category": "Van",
+		"hex": "0x961AFEF7",
+		"int32": -1776615689,
+		"uint32": 2518351607
+	},
+	{
+		"native": "rumpo3",
+		"category": "Van",
+		"hex": "0x57F682AF",
+		"int32": 1475773103,
+		"uint32": 1475773103
+	},
+	{
+		"native": "ruston",
+		"category": "Sport",
+		"hex": "0x2AE524A8",
+		"int32": 719660200,
+		"uint32": 719660200
+	},
+	{
+		"native": "sabregt",
+		"category": "Muscle",
+		"hex": "0x9B909C94",
+		"int32": -1685021548,
+		"uint32": 2609945748
+	},
+	{
+		"native": "sabregt2",
+		"category": "Muscle",
+		"hex": "0x0D4EA603",
+		"int32": 223258115,
+		"uint32": 223258115
+	},
+	{
+		"native": "sadler",
+		"category": "Pickup",
+		"hex": "0xDC434E51",
+		"int32": -599568815,
+		"uint32": 3695398481
+	},
+	{
+		"native": "sadler2",
+		"category": "Pickup",
+		"hex": "0x2BC345D1",
+		"int32": 734217681,
+		"uint32": 734217681
+	},
+	{
+		"native": "sanchez",
+		"category": "Motorcycle",
+		"hex": "0x2EF89E46",
+		"int32": 788045382,
+		"uint32": 788045382
+	},
+	{
+		"native": "sanchez2",
+		"category": "Motorcycle",
+		"hex": "0xA960B13E",
+		"int32": -1453280962,
+		"uint32": 2841686334
+	},
+	{
+		"native": "sanctus",
+		"category": "Motorcycle",
+		"hex": "0x58E316C7",
+		"int32": 1491277511,
+		"uint32": 1491277511
+	},
+	{
+		"native": "sandking",
+		"category": "Offroad",
+		"hex": "0xB9210FD0",
+		"int32": -1189015600,
+		"uint32": 3105951696
+	},
+	{
+		"native": "sandking2",
+		"category": "Offroad",
+		"hex": "0x3AF8C345",
+		"int32": 989381445,
+		"uint32": 989381445
+	},
+	{
+		"native": "savage",
+		"category": "Helicopter",
+		"hex": "0xFB133A17",
+		"int32": -82626025,
+		"uint32": 4212341271
+	},
+	{
+		"native": "savestra",
+		"category": "Sports Classic",
+		"hex": "0x35DED0DD",
+		"int32": 903794909,
+		"uint32": 903794909
+	},
+	{
+		"native": "sc1",
+		"category": "Super",
+		"hex": "0x5097F589",
+		"int32": 1352136073,
+		"uint32": 1352136073
+	},
+	{
+		"native": "scarab",
+		"category": "Military",
+		"hex": "0xBBA2A2F7",
+		"int32": -1146969353,
+		"uint32": 3147997943
+	},
+	{
+		"native": "scarab2",
+		"category": "Military",
+		"hex": "0x5BEB3CE0",
+		"int32": 1542143200,
+		"uint32": 1542143200
+	},
+	{
+		"native": "scarab3",
+		"category": "Military",
+		"hex": "0xDD71BFEB",
+		"int32": -579747861,
+		"uint32": 3715219435
+	},
+	{
+		"native": "schafter2",
+		"category": "Sedan",
+		"hex": "0xB52B5113",
+		"int32": -1255452397,
+		"uint32": 3039514899
+	},
+	{
+		"native": "schafter3",
+		"category": "Sedan",
+		"hex": "0xA774B5A6",
+		"int32": -1485523546,
+		"uint32": 2809443750
+	},
+	{
+		"native": "schafter4",
+		"category": "Sedan",
+		"hex": "0x58CF185C",
+		"int32": 1489967196,
+		"uint32": 1489967196
+	},
+	{
+		"native": "schafter5",
+		"category": "Sedan",
+		"hex": "0xCB0E7CD9",
+		"int32": -888242983,
+		"uint32": 3406724313
+	},
+	{
+		"native": "schafter6",
+		"category": "Sedan",
+		"hex": "0x72934BE4",
+		"int32": 1922255844,
+		"uint32": 1922255844
+	},
+	{
+		"native": "schlagen",
+		"category": "Sport",
+		"hex": "0xE1C03AB0",
+		"int32": -507495760,
+		"uint32": 3787471536
+	},
+	{
+		"native": "schwarzer",
+		"category": "Sport",
+		"hex": "0xD37B7976",
+		"int32": -746882698,
+		"uint32": 3548084598
+	},
+	{
+		"native": "scorcher",
+		"category": "Bicycle",
+		"hex": "0xF4E1AA15",
+		"int32": -186537451,
+		"uint32": 4108429845
+	},
+	{
+		"native": "scramjet",
+		"category": "Super",
+		"hex": "0xD9F0503D",
+		"int32": -638562243,
+		"uint32": 3656405053
+	},
+	{
+		"native": "scrap",
+		"category": "Truck",
+		"hex": "0x9A9FD3DF",
+		"int32": -1700801569,
+		"uint32": 2594165727
+	},
+	{
+		"native": "seabreeze",
+		"category": "Plane",
+		"hex": "0xE8983F9F",
+		"int32": -392675425,
+		"uint32": 3902291871
+	},
+	{
+		"native": "seashark",
+		"category": "Boat",
+		"hex": "0xC2974024",
+		"int32": -1030275036,
+		"uint32": 3264692260
+	},
+	{
+		"native": "seashark2",
+		"category": "Boat",
+		"hex": "0xDB4388E4",
+		"int32": -616331036,
+		"uint32": 3678636260
+	},
+	{
+		"native": "seashark3",
+		"category": "Boat",
+		"hex": "0xED762D49",
+		"int32": -311022263,
+		"uint32": 3983945033
+	},
+	{
+		"native": "seasparrow",
+		"category": "Helicopter",
+		"hex": "0xD4AE63D9",
+		"int32": -726768679,
+		"uint32": 3568198617
+	},
+	{
+		"native": "seminole",
+		"category": "SUV",
+		"hex": "0x48CECED3",
+		"int32": 1221512915,
+		"uint32": 1221512915
+	},
+	{
+		"native": "sentinel",
+		"category": "Coupe",
+		"hex": "0x50732C82",
+		"int32": 1349725314,
+		"uint32": 1349725314
+	},
+	{
+		"native": "sentinel2",
+		"category": "Coupe",
+		"hex": "0x3412AE2D",
+		"int32": 873639469,
+		"uint32": 873639469
+	},
+	{
+		"native": "sentinel3",
+		"category": "Sport",
+		"hex": "0x41D149AA",
+		"int32": 1104234922,
+		"uint32": 1104234922
+	},
+	{
+		"native": "serrano",
+		"category": "SUV",
+		"hex": "0x4FB1A214",
+		"int32": 1337041428,
+		"uint32": 1337041428
+	},
+	{
+		"native": "seven70",
+		"category": "Sport",
+		"hex": "0x97398A4B",
+		"int32": -1757836725,
+		"uint32": 2537130571
+	},
+	{
+		"native": "shamal",
+		"category": "Plane",
+		"hex": "0xB79C1BF5",
+		"int32": -1214505995,
+		"uint32": 3080461301
+	},
+	{
+		"native": "sheava",
+		"category": "Super",
+		"hex": "0x30D3F6D8",
+		"int32": 819197656,
+		"uint32": 819197656
+	},
+	{
+		"native": "sheriff",
+		"category": "Emergency",
+		"hex": "0x9BAA707C",
+		"int32": -1683328900,
+		"uint32": 2611638396
+	},
+	{
+		"native": "sheriff2",
+		"category": "Emergency",
+		"hex": "0x72935408",
+		"int32": 1922257928,
+		"uint32": 1922257928
+	},
+	{
+		"native": "shotaro",
+		"category": "Motorcycle",
+		"hex": "0xE7D2A16E",
+		"int32": -405626514,
+		"uint32": 3889340782
+	},
+	{
+		"native": "skylift",
+		"category": "Helicopter",
+		"hex": "0x3E48BF23",
+		"int32": 1044954915,
+		"uint32": 1044954915
+	},
+	{
+		"native": "slamvan",
+		"category": "Muscle",
+		"hex": "0x2B7F9DE3",
+		"int32": 729783779,
+		"uint32": 729783779
+	},
+	{
+		"native": "slamvan2",
+		"category": "Muscle",
+		"hex": "0x31ADBBFC",
+		"int32": 833469436,
+		"uint32": 833469436
+	},
+	{
+		"native": "slamvan3",
+		"category": "Muscle",
+		"hex": "0x42BC5E19",
+		"int32": 1119641113,
+		"uint32": 1119641113
+	},
+	{
+		"native": "slamvan4",
+		"category": "Muscle",
+		"hex": "0x8526E2F5",
+		"int32": -2061049099,
+		"uint32": 2233918197
+	},
+	{
+		"native": "slamvan5",
+		"category": "Muscle",
+		"hex": "0x163F8520",
+		"int32": 373261600,
+		"uint32": 373261600
+	},
+	{
+		"native": "slamvan6",
+		"category": "Muscle",
+		"hex": "0x67D52852",
+		"int32": 1742022738,
+		"uint32": 1742022738
+	},
+	{
+		"native": "sovereign",
+		"category": "Motorcycle",
+		"hex": "0x2C509634",
+		"int32": 743478836,
+		"uint32": 743478836
+	},
+	{
+		"native": "specter",
+		"category": "Sport",
+		"hex": "0x706E2B40",
+		"int32": 1886268224,
+		"uint32": 1886268224
+	},
+	{
+		"native": "specter2",
+		"category": "Sport",
+		"hex": "0x400F5147",
+		"int32": 1074745671,
+		"uint32": 1074745671
+	},
+	{
+		"native": "speeder",
+		"category": "Boat",
+		"hex": "0x0DC60D2B",
+		"int32": 231083307,
+		"uint32": 231083307
+	},
+	{
+		"native": "speeder2",
+		"category": "Boat",
+		"hex": "0x1A144F2A",
+		"int32": 437538602,
+		"uint32": 437538602
+	},
+	{
+		"native": "speedo",
+		"category": "Van",
+		"hex": "0xCFB3870C",
+		"int32": -810318068,
+		"uint32": 3484649228
+	},
+	{
+		"native": "speedo2",
+		"category": "Van",
+		"hex": "0x2B6DC64A",
+		"int32": 728614474,
+		"uint32": 728614474
+	},
+	{
+		"native": "speedo4",
+		"category": "Van",
+		"hex": "0x0D17099D",
+		"int32": 219613597,
+		"uint32": 219613597
+	},
+	{
+		"native": "squalo",
+		"category": "Boat",
+		"hex": "0x17DF5EC2",
+		"int32": 400514754,
+		"uint32": 400514754
+	},
+	{
+		"native": "stafford",
+		"category": "Sedan",
+		"hex": "0x1324E960",
+		"int32": 321186144,
+		"uint32": 321186144
+	},
+	{
+		"native": "stalion",
+		"category": "Muscle",
+		"hex": "0x72A4C31E",
+		"int32": 1923400478,
+		"uint32": 1923400478
+	},
+	{
+		"native": "stalion2",
+		"category": "Muscle",
+		"hex": "0xE80F67EE",
+		"int32": -401643538,
+		"uint32": 3893323758
+	},
+	{
+		"native": "stanier",
+		"category": "Sedan",
+		"hex": "0xA7EDE74D",
+		"int32": -1477580979,
+		"uint32": 2817386317
+	},
+	{
+		"native": "starling",
+		"category": "Plane",
+		"hex": "0x9A9EB7DE",
+		"int32": -1700874274,
+		"uint32": 2594093022
+	},
+	{
+		"native": "stinger",
+		"category": "Sports Classic",
+		"hex": "0x5C23AF9B",
+		"int32": 1545842587,
+		"uint32": 1545842587
+	},
+	{
+		"native": "stingergt",
+		"category": "Sports Classic",
+		"hex": "0x82E499FA",
+		"int32": -2098947590,
+		"uint32": 2196019706
+	},
+	{
+		"native": "stockade",
+		"category": "Truck",
+		"hex": "0x6827CF72",
+		"int32": 1747439474,
+		"uint32": 1747439474
+	},
+	{
+		"native": "stockade3",
+		"category": "Truck",
+		"hex": "0xF337AB36",
+		"int32": -214455498,
+		"uint32": 4080511798
+	},
+	{
+		"native": "stratum",
+		"category": "Sedan",
+		"hex": "0x66B4FC45",
+		"int32": 1723137093,
+		"uint32": 1723137093
+	},
+	{
+		"native": "streiter",
+		"category": "Sport",
+		"hex": "0x67D2B389",
+		"int32": 1741861769,
+		"uint32": 1741861769
+	},
+	{
+		"native": "stretch",
+		"category": "Sedan",
+		"hex": "0x8B13F083",
+		"int32": -1961627517,
+		"uint32": 2333339779
+	},
+	{
+		"native": "strikeforce",
+		"category": "Plane",
+		"hex": "0x64DE07A1",
+		"int32": 1692272545,
+		"uint32": 1692272545
+	},
+	{
+		"native": "stromberg",
+		"category": "Sports Classic",
+		"hex": "0x34DBA661",
+		"int32": 886810209,
+		"uint32": 886810209
+	},
+	{
+		"native": "stunt",
+		"category": "Plane",
+		"hex": "0x81794C70",
+		"int32": -2122757008,
+		"uint32": 2172210288
+	},
+	{
+		"native": "submersible",
+		"category": "Boat",
+		"hex": "0x2DFF622F",
+		"int32": 771711535,
+		"uint32": 771711535
+	},
+	{
+		"native": "submersible2",
+		"category": "Boat",
+		"hex": "0xC07107EE",
+		"int32": -1066334226,
+		"uint32": 3228633070
+	},
+	{
+		"native": "sultan",
+		"category": "Sport",
+		"hex": "0x39DA2754",
+		"int32": 970598228,
+		"uint32": 970598228
+	},
+	{
+		"native": "sultanrs",
+		"category": "Super",
+		"hex": "0xEE6024BC",
+		"int32": -295689028,
+		"uint32": 3999278268
+	},
+	{
+		"native": "suntrap",
+		"category": "Boat",
+		"hex": "0xEF2295C9",
+		"int32": -282946103,
+		"uint32": 4012021193
+	},
+	{
+		"native": "superd",
+		"category": "Sedan",
+		"hex": "0x42F2ED16",
+		"int32": 1123216662,
+		"uint32": 1123216662
+	},
+	{
+		"native": "supervolito",
+		"category": "Helicopter",
+		"hex": "0x2A54C47D",
+		"int32": 710198397,
+		"uint32": 710198397
+	},
+	{
+		"native": "supervolito2",
+		"category": "Helicopter",
+		"hex": "0x9C5E5644",
+		"int32": -1671539132,
+		"uint32": 2623428164
+	},
+	{
+		"native": "surano",
+		"category": "Sport",
+		"hex": "0x16E478C1",
+		"int32": 384071873,
+		"uint32": 384071873
+	},
+	{
+		"native": "surfer",
+		"category": "Van",
+		"hex": "0x29B0DA97",
+		"int32": 699456151,
+		"uint32": 699456151
+	},
+	{
+		"native": "surfer2",
+		"category": "Van",
+		"hex": "0xB1D80E06",
+		"int32": -1311240698,
+		"uint32": 2983726598
+	},
+	{
+		"native": "surge",
+		"category": "Sedan",
+		"hex": "0x8F0E3594",
+		"int32": -1894894188,
+		"uint32": 2400073108
+	},
+	{
+		"native": "swift",
+		"category": "Helicopter",
+		"hex": "0xEBC24DF2",
+		"int32": -339587598,
+		"uint32": 3955379698
+	},
+	{
+		"native": "swift2",
+		"category": "Helicopter",
+		"hex": "0x4019CB4C",
+		"int32": 1075432268,
+		"uint32": 1075432268
+	},
+	{
+		"native": "swinger",
+		"category": "Sports Classic",
+		"hex": "0x1DD4C0FF",
+		"int32": 500482303,
+		"uint32": 500482303
+	},
+	{
+		"native": "t20",
+		"category": "Super",
+		"hex": "0x6322B39A",
+		"int32": 1663218586,
+		"uint32": 1663218586
+	},
+	{
+		"native": "taco",
+		"category": "Van",
+		"hex": "0x744CA80D",
+		"int32": 1951180813,
+		"uint32": 1951180813
+	},
+	{
+		"native": "tailgater",
+		"category": "Sedan",
+		"hex": "0xC3DDFDCE",
+		"int32": -1008861746,
+		"uint32": 3286105550
+	},
+	{
+		"native": "taipan",
+		"category": "Super",
+		"hex": "0xBC5DC07E",
+		"int32": -1134706562,
+		"uint32": 3160260734
+	},
+	{
+		"native": "tampa",
+		"category": "Muscle",
+		"hex": "0x39F9C898",
+		"int32": 972671128,
+		"uint32": 972671128
+	},
+	{
+		"native": "tampa2",
+		"category": "Muscle",
+		"hex": "0xC0240885",
+		"int32": -1071380347,
+		"uint32": 3223586949
+	},
+	{
+		"native": "tampa3",
+		"category": "Muscle",
+		"hex": "0xB7D9F7F1",
+		"int32": -1210451983,
+		"uint32": 3084515313
+	},
+	{
+		"native": "tanker",
+		"category": "Trailer",
+		"hex": "0xD46F4737",
+		"int32": -730904777,
+		"uint32": 3564062519
+	},
+	{
+		"native": "tanker2",
+		"category": "Trailer",
+		"hex": "0x74998082",
+		"int32": 1956216962,
+		"uint32": 1956216962
+	},
+	{
+		"native": "tankercar",
+		"category": "Train",
+		"hex": "0x22EDDC30",
+		"int32": 586013744,
+		"uint32": 586013744
+	},
+	{
+		"native": "taxi",
+		"category": "Sedan",
+		"hex": "0xC703DB5F",
+		"int32": -956048545,
+		"uint32": 3338918751
+	},
+	{
+		"native": "technical",
+		"category": "Offroad",
+		"hex": "0x83051506",
+		"int32": -2096818938,
+		"uint32": 2198148358
+	},
+	{
+		"native": "technical2",
+		"category": "Offroad",
+		"hex": "0x4662BCBB",
+		"int32": 1180875963,
+		"uint32": 1180875963
+	},
+	{
+		"native": "technical3",
+		"category": "Offroad",
+		"hex": "0x50D4D19F",
+		"int32": 1356124575,
+		"uint32": 1356124575
+	},
+	{
+		"native": "tempesta",
+		"category": "Super",
+		"hex": "0x1044926F",
+		"int32": 272929391,
+		"uint32": 272929391
+	},
+	{
+		"native": "terbyte",
+		"category": "Commercial",
+		"hex": "0x897AFC65",
+		"int32": -1988428699,
+		"uint32": 2306538597
+	},
+	{
+		"native": "tezeract",
+		"category": "Super",
+		"hex": "0x3D7C6410",
+		"int32": 1031562256,
+		"uint32": 1031562256
+	},
+	{
+		"native": "thrust",
+		"category": "Motorcycle",
+		"hex": "0x6D6F8F43",
+		"int32": 1836027715,
+		"uint32": 1836027715
+	},
+	{
+		"native": "thruster",
+		"category": "Military",
+		"hex": "0x58CDAF30",
+		"int32": 1489874736,
+		"uint32": 1489874736
+	},
+	{
+		"native": "tiptruck",
+		"category": "Truck",
+		"hex": "0x02E19879",
+		"int32": 48339065,
+		"uint32": 48339065
+	},
+	{
+		"native": "tiptruck2",
+		"category": "Truck",
+		"hex": "0xC7824E5E",
+		"int32": -947761570,
+		"uint32": 3347205726
+	},
+	{
+		"native": "titan",
+		"category": "Plane",
+		"hex": "0x761E2AD3",
+		"int32": 1981688531,
+		"uint32": 1981688531
+	},
+	{
+		"native": "torero",
+		"category": "Sports Classic",
+		"hex": "0x59A9E570",
+		"int32": 1504306544,
+		"uint32": 1504306544
+	},
+	{
+		"native": "tornado",
+		"category": "Sports Classic",
+		"hex": "0x1BB290BC",
+		"int32": 464687292,
+		"uint32": 464687292
+	},
+	{
+		"native": "tornado2",
+		"category": "Sports Classic",
+		"hex": "0x5B42A5C4",
+		"int32": 1531094468,
+		"uint32": 1531094468
+	},
+	{
+		"native": "tornado3",
+		"category": "Sports Classic",
+		"hex": "0x690A4153",
+		"int32": 1762279763,
+		"uint32": 1762279763
+	},
+	{
+		"native": "tornado4",
+		"category": "Sports Classic",
+		"hex": "0x86CF7CDD",
+		"int32": -2033222435,
+		"uint32": 2261744861
+	},
+	{
+		"native": "tornado5",
+		"category": "Muscle",
+		"hex": "0x94DA98EF",
+		"int32": -1797613329,
+		"uint32": 2497353967
+	},
+	{
+		"native": "tornado6",
+		"category": "Muscle",
+		"hex": "0xA31CB573",
+		"int32": -1558399629,
+		"uint32": 2736567667
+	},
+	{
+		"native": "toro",
+		"category": "Boat",
+		"hex": "0x3FD5AA2F",
+		"int32": 1070967343,
+		"uint32": 1070967343
+	},
+	{
+		"native": "toro2",
+		"category": "Boat",
+		"hex": "0x362CAC6D",
+		"int32": 908897389,
+		"uint32": 908897389
+	},
+	{
+		"native": "toros",
+		"category": "SUV",
+		"hex": "0xBA5334AC",
+		"int32": -1168952148,
+		"uint32": 3126015148
+	},
+	{
+		"native": "tourbus",
+		"category": "Service",
+		"hex": "0x73B1C3CB",
+		"int32": 1941029835,
+		"uint32": 1941029835
+	},
+	{
+		"native": "towtruck",
+		"category": "Truck",
+		"hex": "0xB12314E0",
+		"int32": -1323100960,
+		"uint32": 2971866336
+	},
+	{
+		"native": "towtruck2",
+		"category": "Truck",
+		"hex": "0xE5A2D6C6",
+		"int32": -442313018,
+		"uint32": 3852654278
+	},
+	{
+		"native": "tr2",
+		"category": "Trailer",
+		"hex": "0x7BE032C6",
+		"int32": 2078290630,
+		"uint32": 2078290630
+	},
+	{
+		"native": "tr3",
+		"category": "Trailer",
+		"hex": "0x6A59902D",
+		"int32": 1784254509,
+		"uint32": 1784254509
+	},
+	{
+		"native": "tr4",
+		"category": "Trailer",
+		"hex": "0x7CAB34D0",
+		"int32": 2091594960,
+		"uint32": 2091594960
+	},
+	{
+		"native": "tractor",
+		"category": "Service",
+		"hex": "0x61D6BA8C",
+		"int32": 1641462412,
+		"uint32": 1641462412
+	},
+	{
+		"native": "tractor2",
+		"category": "Service",
+		"hex": "0x843B73DE",
+		"int32": -2076478498,
+		"uint32": 2218488798
+	},
+	{
+		"native": "tractor3",
+		"category": "Service",
+		"hex": "0x562A97BD",
+		"int32": 1445631933,
+		"uint32": 1445631933
+	},
+	{
+		"native": "trailerlarge",
+		"category": "Utility",
+		"hex": "0x5993F939",
+		"int32": 1502869817,
+		"uint32": 1502869817
+	},
+	{
+		"native": "trailerlogs",
+		"category": "Trailer",
+		"hex": "0x782A236D",
+		"int32": 2016027501,
+		"uint32": 2016027501
+	},
+	{
+		"native": "trailers",
+		"category": "Trailer",
+		"hex": "0xCBB2BE0E",
+		"int32": -877478386,
+		"uint32": 3417488910
+	},
+	{
+		"native": "trailers2",
+		"category": "Trailer",
+		"hex": "0xA1DA3C91",
+		"int32": -1579533167,
+		"uint32": 2715434129
+	},
+	{
+		"native": "trailers3",
+		"category": "Trailer",
+		"hex": "0x8548036D",
+		"int32": -2058878099,
+		"uint32": 2236089197
+	},
+	{
+		"native": "trailers4",
+		"category": "Utility",
+		"hex": "0xBE66F5AA",
+		"int32": -1100548694,
+		"uint32": 3194418602
+	},
+	{
+		"native": "trailersmall",
+		"category": "Trailer",
+		"hex": "0x2A72BEAB",
+		"int32": 712162987,
+		"uint32": 712162987
+	},
+	{
+		"native": "trailersmall2",
+		"category": "Military",
+		"hex": "0x8FD54EBB",
+		"int32": -1881846085,
+		"uint32": 2413121211
+	},
+	{
+		"native": "trash",
+		"category": "Service",
+		"hex": "0x72435A19",
+		"int32": 1917016601,
+		"uint32": 1917016601
+	},
+	{
+		"native": "trash2",
+		"category": "Service",
+		"hex": "0xB527915C",
+		"int32": -1255698084,
+		"uint32": 3039269212
+	},
+	{
+		"native": "trflat",
+		"category": "Trailer",
+		"hex": "0xAF62F6B2",
+		"int32": -1352468814,
+		"uint32": 2942498482
+	},
+	{
+		"native": "tribike",
+		"category": "Bicycle",
+		"hex": "0x4339CD69",
+		"int32": 1127861609,
+		"uint32": 1127861609
+	},
+	{
+		"native": "tribike2",
+		"category": "Bicycle",
+		"hex": "0xB67597EC",
+		"int32": -1233807380,
+		"uint32": 3061159916
+	},
+	{
+		"native": "tribike3",
+		"category": "Bicycle",
+		"hex": "0xE823FB48",
+		"int32": -400295096,
+		"uint32": 3894672200
+	},
+	{
+		"native": "trophytruck",
+		"category": "Offroad",
+		"hex": "0x0612F4B6",
+		"int32": 101905590,
+		"uint32": 101905590
+	},
+	{
+		"native": "trophytruck2",
+		"category": "Offroad",
+		"hex": "0xD876DBE2",
+		"int32": -663299102,
+		"uint32": 3631668194
+	},
+	{
+		"native": "tropic",
+		"category": "Boat",
+		"hex": "0x1149422F",
+		"int32": 290013743,
+		"uint32": 290013743
+	},
+	{
+		"native": "tropic2",
+		"category": "Boat",
+		"hex": "0x56590FE9",
+		"int32": 1448677353,
+		"uint32": 1448677353
+	},
+	{
+		"native": "tropos",
+		"category": "Sport",
+		"hex": "0x707E63A4",
+		"int32": 1887331236,
+		"uint32": 1887331236
+	},
+	{
+		"native": "tug",
+		"category": "Boat",
+		"hex": "0x82CAC433",
+		"int32": -2100640717,
+		"uint32": 2194326579
+	},
+	{
+		"native": "tula",
+		"category": "Plane",
+		"hex": "0x3E2E4F8A",
+		"int32": 1043222410,
+		"uint32": 1043222410
+	},
+	{
+		"native": "tulip",
+		"category": "Muscle",
+		"hex": "0x56D42971",
+		"int32": 1456744817,
+		"uint32": 1456744817
+	},
+	{
+		"native": "turismo2",
+		"category": "Super",
+		"hex": "0xC575DF11",
+		"int32": -982130927,
+		"uint32": 3312836369
+	},
+	{
+		"native": "turismor",
+		"category": "Super",
+		"hex": "0x185484E1",
+		"int32": 408192225,
+		"uint32": 408192225
+	},
+	{
+		"native": "tvtrailer",
+		"category": "Trailer",
+		"hex": "0x967620BE",
+		"int32": -1770643266,
+		"uint32": 2524324030
+	},
+	{
+		"native": "tyrant",
+		"category": "Super",
+		"hex": "0xE99011C2",
+		"int32": -376434238,
+		"uint32": 3918533058
+	},
+	{
+		"native": "tyrus",
+		"category": "Super",
+		"hex": "0x7B406EFB",
+		"int32": 2067820283,
+		"uint32": 2067820283
+	},
+	{
+		"native": "utillitruck",
+		"category": "Service",
+		"hex": "0x1ED0A534",
+		"int32": 516990260,
+		"uint32": 516990260
+	},
+	{
+		"native": "utillitruck2",
+		"category": "Service",
+		"hex": "0x34E6BF6B",
+		"int32": 887537515,
+		"uint32": 887537515
+	},
+	{
+		"native": "utillitruck3",
+		"category": "Service",
+		"hex": "0x7F2153DF",
+		"int32": 2132890591,
+		"uint32": 2132890591
+	},
+	{
+		"native": "vacca",
+		"category": "Super",
+		"hex": "0x142E0DC3",
+		"int32": 338562499,
+		"uint32": 338562499
+	},
+	{
+		"native": "vader",
+		"category": "Motorcycle",
+		"hex": "0xF79A00F7",
+		"int32": -140902153,
+		"uint32": 4154065143
+	},
+	{
+		"native": "vagner",
+		"category": "Super",
+		"hex": "0x7397224C",
+		"int32": 1939284556,
+		"uint32": 1939284556
+	},
+	{
+		"native": "valkyrie",
+		"category": "Helicopter",
+		"hex": "0xA09E15FD",
+		"int32": -1600252419,
+		"uint32": 2694714877
+	},
+	{
+		"native": "valkyrie2",
+		"category": "Helicopter",
+		"hex": "0x5BFA5C4B",
+		"int32": 1543134283,
+		"uint32": 1543134283
+	},
+	{
+		"native": "vamos",
+		"category": "Muscle",
+		"hex": "0xFD128DFD",
+		"int32": -49115651,
+		"uint32": 4245851645
+	},
+	{
+		"native": "velum",
+		"category": "Plane",
+		"hex": "0x9C429B6A",
+		"int32": -1673356438,
+		"uint32": 2621610858
+	},
+	{
+		"native": "velum2",
+		"category": "Plane",
+		"hex": "0x403820E8",
+		"int32": 1077420264,
+		"uint32": 1077420264
+	},
+	{
+		"native": "verlierer2",
+		"category": "Sport",
+		"hex": "0x41B77FA4",
+		"int32": 1102544804,
+		"uint32": 1102544804
+	},
+	{
+		"native": "vestra",
+		"category": "Plane",
+		"hex": "0x4FF77E37",
+		"int32": 1341619767,
+		"uint32": 1341619767
+	},
+	{
+		"native": "vigero",
+		"category": "Muscle",
+		"hex": "0xCEC6B9B7",
+		"int32": -825837129,
+		"uint32": 3469130167
+	},
+	{
+		"native": "vigilante",
+		"category": "Military",
+		"hex": "0xB5EF4C33",
+		"int32": -1242608589,
+		"uint32": 3052358707
+	},
+	{
+		"native": "vindicator",
+		"category": "Motorcycle",
+		"hex": "0xAF599F01",
+		"int32": -1353081087,
+		"uint32": 2941886209
+	},
+	{
+		"native": "virgo",
+		"category": "Muscle",
+		"hex": "0xE2504942",
+		"int32": -498054846,
+		"uint32": 3796912450
+	},
+	{
+		"native": "virgo2",
+		"category": "Muscle",
+		"hex": "0xCA62927A",
+		"int32": -899509638,
+		"uint32": 3395457658
+	},
+	{
+		"native": "virgo3",
+		"category": "Muscle",
+		"hex": "0x00FDFFB0",
+		"int32": 16646064,
+		"uint32": 16646064
+	},
+	{
+		"native": "viseris",
+		"category": "Sports Classic",
+		"hex": "0xE8A8BA94",
+		"int32": -391595372,
+		"uint32": 3903371924
+	},
+	{
+		"native": "visione",
+		"category": "Super",
+		"hex": "0xC4810400",
+		"int32": -998177792,
+		"uint32": 3296789504
+	},
+	{
+		"native": "volatol",
+		"category": "Plane",
+		"hex": "0x1AAD0DED",
+		"int32": 447548909,
+		"uint32": 447548909
+	},
+	{
+		"native": "volatus",
+		"category": "Helicopter",
+		"hex": "0x920016F1",
+		"int32": -1845487887,
+		"uint32": 2449479409
+	},
+	{
+		"native": "voltic",
+		"category": "Super",
+		"hex": "0x9F4B77BE",
+		"int32": -1622444098,
+		"uint32": 2672523198
+	},
+	{
+		"native": "voltic2",
+		"category": "Super",
+		"hex": "0x3AF76F4A",
+		"int32": 989294410,
+		"uint32": 989294410
+	},
+	{
+		"native": "voodoo",
+		"category": "Muscle",
+		"hex": "0x779B4F2D",
+		"int32": 2006667053,
+		"uint32": 2006667053
+	},
+	{
+		"native": "voodoo2",
+		"category": "Muscle",
+		"hex": "0x1F3766E3",
+		"int32": 523724515,
+		"uint32": 523724515
+	},
+	{
+		"native": "vortex",
+		"category": "Motorcycle",
+		"hex": "0xDBA9DBFC",
+		"int32": -609625092,
+		"uint32": 3685342204
+	},
+	{
+		"native": "warrener",
+		"category": "Sedan",
+		"hex": "0x51D83328",
+		"int32": 1373123368,
+		"uint32": 1373123368
+	},
+	{
+		"native": "washington",
+		"category": "Sedan",
+		"hex": "0x69F06B57",
+		"int32": 1777363799,
+		"uint32": 1777363799
+	},
+	{
+		"native": "wastelander",
+		"category": "Super",
+		"hex": "0x8E08EC82",
+		"int32": -1912017790,
+		"uint32": 2382949506
+	},
+	{
+		"native": "windsor",
+		"category": "Coupe",
+		"hex": "0x5E4327C8",
+		"int32": 1581459400,
+		"uint32": 1581459400
+	},
+	{
+		"native": "windsor2",
+		"category": "Coupe",
+		"hex": "0x8CF5CAE1",
+		"int32": -1930048799,
+		"uint32": 2364918497
+	},
+	{
+		"native": "wolfsbane",
+		"category": "Motorcycle",
+		"hex": "0xDB20A373",
+		"int32": -618617997,
+		"uint32": 3676349299
+	},
+	{
+		"native": "xa21",
+		"category": "Super",
+		"hex": "0x36B4A8A9",
+		"int32": 917809321,
+		"uint32": 917809321
+	},
+	{
+		"native": "xls",
+		"category": "SUV",
+		"hex": "0x47BBCF2E",
+		"int32": 1203490606,
+		"uint32": 1203490606
+	},
+	{
+		"native": "xls2",
+		"category": "SUV",
+		"hex": "0xE6401328",
+		"int32": -432008408,
+		"uint32": 3862958888
+	},
+	{
+		"native": "yosemite",
+		"category": "Muscle",
+		"hex": "0x6F946279",
+		"int32": 1871995513,
+		"uint32": 1871995513
+	},
+	{
+		"native": "youga",
+		"category": "Van",
+		"hex": "0x03E5F6B8",
+		"int32": 65402552,
+		"uint32": 65402552
+	},
+	{
+		"native": "youga2",
+		"category": "Van",
+		"hex": "0x3D29CD2B",
+		"int32": 1026149675,
+		"uint32": 1026149675
+	},
+	{
+		"native": "z190",
+		"category": "Sports Classic",
+		"hex": "0x3201DD49",
+		"int32": 838982985,
+		"uint32": 838982985
+	},
+	{
+		"native": "zentorno",
+		"category": "Super",
+		"hex": "0xAC5DF515",
+		"int32": -1403128555,
+		"uint32": 2891838741
+	},
+	{
+		"native": "zion",
+		"category": "Coupe",
+		"hex": "0xBD1B39C3",
+		"int32": -1122289213,
+		"uint32": 3172678083
+	},
+	{
+		"native": "zion2",
+		"category": "Coupe",
+		"hex": "0xB8E2AE18",
+		"int32": -1193103848,
+		"uint32": 3101863448
+	},
+	{
+		"native": "zombiea",
+		"category": "Motorcycle",
+		"hex": "0xC3D7C72B",
+		"int32": -1009268949,
+		"uint32": 3285698347
+	},
+	{
+		"native": "zombieb",
+		"category": "Motorcycle",
+		"hex": "0xDE05FB87",
+		"int32": -570033273,
+		"uint32": 3724934023
+	},
+	{
+		"native": "zr380",
+		"category": "Sport",
+		"hex": "0x20314B42",
+		"int32": 540101442,
+		"uint32": 540101442
+	},
+	{
+		"native": "zr3802",
+		"category": "Sport",
+		"hex": "0xBE11EFC6",
+		"int32": -1106120762,
+		"uint32": 3188846534
+	},
+	{
+		"native": "zr3803",
+		"category": "Sport",
+		"hex": "0xA7DCC35C",
+		"int32": -1478704292,
+		"uint32": 2816263004
+	},
+	{
+		"native": "ztype",
+		"category": "Sports Classic",
+		"hex": "0x2D3BD401",
+		"int32": 758895617,
+		"uint32": 758895617
+	},
+	{
+		"native": "aleutian",
+		"category": "SUV",
+		"hex": "0xFDAEBF27",
+		"int32": -38879449,
+		"uint32": 4256087847
+	},
+	{
+		"native": "alkonost",
+		"category": "Plane",
+		"hex": "0xEA313705",
+		"int32": -365873403,
+		"uint32": 3929093893
+	},
+	{
+		"native": "annihilator2",
+		"category": "Helicopter",
+		"hex": "0x11962E49",
+		"int32": 295054921,
+		"uint32": 295054921
+	},
+	{
+		"native": "arbitergt",
+		"category": "Muscle",
+		"hex": "0x5C54030C",
+		"int32": 1549009676,
+		"uint32": 1549009676
+	},
+	{
+		"native": "asterope2",
+		"category": "Sedan",
+		"hex": "0xD3D366B1",
+		"int32": -741120335,
+		"uint32": 3553846961
+	},
+	{
+		"native": "astron",
+		"category": "SUV",
+		"hex": "0x258C9364",
+		"int32": 629969764,
+		"uint32": 629969764
+	},
+	{
+		"native": "astron2",
+		"category": "SUV",
+		"hex": "0xA71D0D4F",
+		"int32": -1491268273,
+		"uint32": 2803699023
+	},
+	{
+		"native": "avenger3",
+		"category": "Plane",
+		"hex": "0xE68D8190",
+		"int32": -426933872,
+		"uint32": 3868033424
+	},
+	{
+		"native": "avenger4",
+		"category": "Plane",
+		"hex": "0xFBDEAC32",
+		"int32": -69293006,
+		"uint32": 4225674290
+	},
+	{
+		"native": "avisa",
+		"category": "Boat",
+		"hex": "0x9A474B5E",
+		"int32": -1706603682,
+		"uint32": 2588363614
+	},
+	{
+		"native": "baller7",
+		"category": "SUV",
+		"hex": "0x1573422D",
+		"int32": 359875117,
+		"uint32": 359875117
+	},
+	{
+		"native": "baller8",
+		"category": "SUV",
+		"hex": "0xCC8A305C",
+		"int32": -863358884,
+		"uint32": 3431608412
+	},
+	{
+		"native": "benson2",
+		"category": "Commercial",
+		"hex": "0x2B69BEA7",
+		"int32": 728350375,
+		"uint32": 728350375
+	},
+	{
+		"native": "boor",
+		"category": "Offroad",
+		"hex": "0x3B639C8D",
+		"int32": 996383885,
+		"uint32": 996383885
+	},
+	{
+		"native": "boxville6",
+		"category": "Van",
+		"hex": "0xCDC46B21",
+		"int32": -842765535,
+		"uint32": 3452201761
+	},
+	{
+		"native": "brickade2",
+		"category": "Service",
+		"hex": "0xA2073353",
+		"int32": -1576586413,
+		"uint32": 2718380883
+	},
+	{
+		"native": "brigham",
+		"category": "Muscle",
+		"hex": "0xD8FD24D1",
+		"int32": -654498607,
+		"uint32": 3640468689
+	},
+	{
+		"native": "brioso2",
+		"category": "Compact",
+		"hex": "0x55365079",
+		"int32": 1429622905,
+		"uint32": 1429622905
+	},
+	{
+		"native": "broadway",
+		"category": "Muscle",
+		"hex": "0x8CC51028",
+		"int32": -1933242328,
+		"uint32": 2361724968
+	},
+	{
+		"native": "buffalo4",
+		"category": "Muscle",
+		"hex": "0xDB0C9B04",
+		"int32": -619930876,
+		"uint32": 3675036420
+	},
+	{
+		"native": "buffalo5",
+		"category": "Muscle",
+		"hex": "0x09E478B3",
+		"int32": 165968051,
+		"uint32": 165968051
+	},
+	{
+		"native": "calico",
+		"category": "Sport",
+		"hex": "0xB8D657AD",
+		"int32": -1193912403,
+		"uint32": 3101054893
+	},
+	{
+		"native": "cargoplane2",
+		"category": "Plane",
+		"hex": "0x8B4864E1",
+		"int32": -1958189855,
+		"uint32": 2336777441
+	},
+	{
+		"native": "cavalcade3",
+		"category": "SUV",
+		"hex": "0xC29F8F4E",
+		"int32": -1029730482,
+		"uint32": 3265236814
+	},
+	{
+		"native": "champion",
+		"category": "Super",
+		"hex": "0xC972A155",
+		"int32": -915234475,
+		"uint32": 3379732821
+	},
+	{
+		"native": "cinquemila",
+		"category": "Sedan",
+		"hex": "0xA4F52C13",
+		"int32": -1527436269,
+		"uint32": 2767531027
+	},
+	{
+		"native": "clique2",
+		"category": "Muscle",
+		"hex": "0xC5A12E61",
+		"int32": -979292575,
+		"uint32": 3315674721
+	},
+	{
+		"native": "comet6",
+		"category": "Sport",
+		"hex": "0x991EFC04",
+		"int32": -1726022652,
+		"uint32": 2568944644
+	},
+	{
+		"native": "comet7",
+		"category": "Sport",
+		"hex": "0x440851D8",
+		"int32": 1141395928,
+		"uint32": 1141395928
+	},
+	{
+		"native": "conada2",
+		"category": "Helicopter",
+		"hex": "0x9D1D9872",
+		"int32": -1659004814,
+		"uint32": 2635962482
+	},
+	{
+		"native": "coureur",
+		"category": "Sport",
+		"hex": "0x24626C26",
+		"int32": 610429990,
+		"uint32": 610429990
+	},
+	{
+		"native": "cyclone2",
+		"category": "Super",
+		"hex": "0x170341C2",
+		"int32": 386089410,
+		"uint32": 386089410
+	},
+	{
+		"native": "cypher",
+		"category": "Sport",
+		"hex": "0x68A5D1EF",
+		"int32": 1755697647,
+		"uint32": 1755697647
+	},
+	{
+		"native": "deity",
+		"category": "Sedan",
+		"hex": "0x5B531351",
+		"int32": 1532171089,
+		"uint32": 1532171089
+	},
+	{
+		"native": "dinghy5",
+		"category": "Boat",
+		"hex": "0xC58DA34A",
+		"int32": -980573366,
+		"uint32": 3314393930
+	},
+	{
+		"native": "dominator7",
+		"category": "Muscle",
+		"hex": "0x196F9418",
+		"int32": 426742808,
+		"uint32": 426742808
+	},
+	{
+		"native": "dominator8",
+		"category": "Muscle",
+		"hex": "0x2BE8B90A",
+		"int32": 736672010,
+		"uint32": 736672010
+	},
+	{
+		"native": "dominator9",
+		"category": "Muscle",
+		"hex": "0xE5B3ACA1",
+		"int32": -441209695,
+		"uint32": 3853757601
+	},
+	{
+		"native": "dorado",
+		"category": "SUV",
+		"hex": "0xD2389392",
+		"int32": -768044142,
+		"uint32": 3526923154
+	},
+	{
+		"native": "drifteuros",
+		"category": "Sport",
+		"hex": "0x30F15228",
+		"int32": 821121576,
+		"uint32": 821121576
+	},
+	{
+		"native": "driftfr36",
+		"category": "Coupe",
+		"hex": "0xA7C9F9A7",
+		"int32": -1479935577,
+		"uint32": 2815031719
+	},
+	{
+		"native": "driftfuto",
+		"category": "Sport",
+		"hex": "0xF52D92EE",
+		"int32": -181562642,
+		"uint32": 4113404654
+	},
+	{
+		"native": "driftjester",
+		"category": "Sport",
+		"hex": "0x96E6932D",
+		"int32": -1763273939,
+		"uint32": 2531693357
+	},
+	{
+		"native": "driftremus",
+		"category": "Sport",
+		"hex": "0x9F3273F4",
+		"int32": -1624083468,
+		"uint32": 2670883828
+	},
+	{
+		"native": "drifttampa",
+		"category": "Sport",
+		"hex": "0x9AE43988",
+		"int32": -1696319096,
+		"uint32": 2598648200
+	},
+	{
+		"native": "driftyosemite",
+		"category": "Muscle",
+		"hex": "0x9BC400EF",
+		"int32": -1681653521,
+		"uint32": 2613313775
+	},
+	{
+		"native": "driftzr350",
+		"category": "Sport",
+		"hex": "0x72A6CEBE",
+		"int32": 1923534526,
+		"uint32": 1923534526
+	},
+	{
+		"native": "entity3",
+		"category": "Super",
+		"hex": "0x6838FC1D",
+		"int32": 1748565021,
+		"uint32": 1748565021
+	},
+	{
+		"native": "eudora",
+		"category": "Muscle",
+		"hex": "0xB581BF9A",
+		"int32": -1249788006,
+		"uint32": 3045179290
+	},
+	{
+		"native": "euros",
+		"category": "Sport",
+		"hex": "0x7980BDD5",
+		"int32": 2038480341,
+		"uint32": 2038480341
+	},
+	{
+		"native": "everon2",
+		"category": "Sport",
+		"hex": "0xF82BC92E",
+		"int32": -131348178,
+		"uint32": 4163619118
+	},
+	{
+		"native": "fr36",
+		"category": "Coupe",
+		"hex": "0xE43C11E5",
+		"int32": -465825307,
+		"uint32": 3829141989
+	},
+	{
+		"native": "freightcar2",
+		"category": "Train",
+		"hex": "0xBDEC3D99",
+		"int32": -1108591207,
+		"uint32": 3186376089
+	},
+	{
+		"native": "futo2",
+		"category": "Sport",
+		"hex": "0xA6297CC8",
+		"int32": -1507230520,
+		"uint32": 2787736776
+	},
+	{
+		"native": "gauntlet6",
+		"category": "Sport",
+		"hex": "0x4FA9970B",
+		"int32": 1336514315,
+		"uint32": 1336514315
+	},
+	{
+		"native": "granger2",
+		"category": "SUV",
+		"hex": "0xF06C29C7",
+		"int32": -261346873,
+		"uint32": 4033620423
+	},
+	{
+		"native": "growler",
+		"category": "Sport",
+		"hex": "0x4DC079D7",
+		"int32": 1304459735,
+		"uint32": 1304459735
+	},
+	{
+		"native": "ignus",
+		"category": "Super",
+		"hex": "0xA9EC907B",
+		"int32": -1444114309,
+		"uint32": 2850852987
+	},
+	{
+		"native": "ignus2",
+		"category": "Super",
+		"hex": "0x39085F47",
+		"int32": 956849991,
+		"uint32": 956849991
+	},
+	{
+		"native": "impaler5",
+		"category": "Muscle",
+		"hex": "0xE3788BB1",
+		"int32": -478639183,
+		"uint32": 3816328113
+	},
+	{
+		"native": "impaler6",
+		"category": "Muscle",
+		"hex": "0xF55D2F7A",
+		"int32": -178442374,
+		"uint32": 4116524922
+	},
+	{
+		"native": "inductor",
+		"category": "Bicycle",
+		"hex": "0xCA7C4AE9",
+		"int32": -897824023,
+		"uint32": 3397143273
+	},
+	{
+		"native": "inductor2",
+		"category": "Bicycle",
+		"hex": "0x89C45478",
+		"int32": -1983622024,
+		"uint32": 2311345272
+	},
+	{
+		"native": "issi8",
+		"category": "SUV",
+		"hex": "0x5C6C00B4",
+		"int32": 1550581940,
+		"uint32": 1550581940
+	},
+	{
+		"native": "italirsx",
+		"category": "Sport",
+		"hex": "0xBB78956A",
+		"int32": -1149725334,
+		"uint32": 3145241962
+	},
+	{
+		"native": "iwagen",
+		"category": "SUV",
+		"hex": "0x27816B7E",
+		"int32": 662793086,
+		"uint32": 662793086
+	},
+	{
+		"native": "jester4",
+		"category": "Sport",
+		"hex": "0xA1B3A871",
+		"int32": -1582061455,
+		"uint32": 2712905841
+	},
+	{
+		"native": "journey2",
+		"category": "Van",
+		"hex": "0x9F04C481",
+		"int32": -1627077503,
+		"uint32": 2667889793
+	},
+	{
+		"native": "jubilee",
+		"category": "SUV",
+		"hex": "0x1B8165D3",
+		"int32": 461465043,
+		"uint32": 461465043
+	},
+	{
+		"native": "kosatka",
+		"category": "Boat",
+		"hex": "0x4FAF0D70",
+		"int32": 1336872304,
+		"uint32": 1336872304
+	},
+	{
+		"native": "l35",
+		"category": "Offroad",
+		"hex": "0x96E0736B",
+		"int32": -1763675285,
+		"uint32": 2531292011
+	},
+	{
+		"native": "longfin",
+		"category": "Boat",
+		"hex": "0x6EF89CCC",
+		"int32": 1861786828,
+		"uint32": 1861786828
+	},
+	{
+		"native": "manchez2",
+		"category": "Motorcycle",
+		"hex": "0x40C332A3",
+		"int32": 1086534307,
+		"uint32": 1086534307
+	},
+	{
+		"native": "manchez3",
+		"category": "Motorcycle",
+		"hex": "0x5285D628",
+		"int32": 1384502824,
+		"uint32": 1384502824
+	},
+	{
+		"native": "monstrociti",
+		"category": "Offroad",
+		"hex": "0x2FDA9E05",
+		"int32": 802856453,
+		"uint32": 802856453
+	},
+	{
+		"native": "mule5",
+		"category": "Commercial",
+		"hex": "0x501AC93C",
+		"int32": 1343932732,
+		"uint32": 1343932732
+	},
+	{
+		"native": "panthere",
+		"category": "Sport",
+		"hex": "0x7D326F04",
+		"int32": 2100457220,
+		"uint32": 2100457220
+	},
+	{
+		"native": "patriot3",
+		"category": "Offroad",
+		"hex": "0xD80F4A44",
+		"int32": -670086588,
+		"uint32": 3624880708
+	},
+	{
+		"native": "patrolboat",
+		"category": "Boat",
+		"hex": "0xEF813606",
+		"int32": -276744698,
+		"uint32": 4018222598
+	},
+	{
+		"native": "polgauntlet",
+		"category": "Emergency",
+		"hex": "0xB67633E6",
+		"int32": -1233767450,
+		"uint32": 3061199846
+	},
+	{
+		"native": "police5",
+		"category": "Emergency",
+		"hex": "0x9C32EB57",
+		"int32": -1674384553,
+		"uint32": 2620582743
+	},
+	{
+		"native": "powersurge",
+		"category": "Motorcycle",
+		"hex": "0xAD5E30D7",
+		"int32": -1386336041,
+		"uint32": 2908631255
+	},
+	{
+		"native": "previon",
+		"category": "Coupe",
+		"hex": "0x546DA331",
+		"int32": 1416471345,
+		"uint32": 1416471345
+	},
+	{
+		"native": "r300",
+		"category": "Sport",
+		"hex": "0x402586F8",
+		"int32": 1076201208,
+		"uint32": 1076201208
+	},
+	{
+		"native": "raiju",
+		"category": "Plane",
+		"hex": "0x0E4C8C4D",
+		"int32": 239897677,
+		"uint32": 239897677
+	},
+	{
+		"native": "ratel",
+		"category": "Offroad",
+		"hex": "0xE00BADAB",
+		"int32": -536105557,
+		"uint32": 3758861739
+	},
+	{
+		"native": "reever",
+		"category": "Motorcycle",
+		"hex": "0x76D7C404",
+		"int32": 1993851908,
+		"uint32": 1993851908
+	},
+	{
+		"native": "remus",
+		"category": "Sport",
+		"hex": "0x5216AD5E",
+		"int32": 1377217886,
+		"uint32": 1377217886
+	},
+	{
+		"native": "rt3000",
+		"category": "Sport",
+		"hex": "0xE505CF99",
+		"int32": -452604007,
+		"uint32": 3842363289
+	},
+	{
+		"native": "s95",
+		"category": "Sport",
+		"hex": "0x438F6593",
+		"int32": 1133471123,
+		"uint32": 1133471123
+	},
+	{
+		"native": "seasparrow2",
+		"category": "Helicopter",
+		"hex": "0x494752F7",
+		"int32": 1229411063,
+		"uint32": 1229411063
+	},
+	{
+		"native": "seasparrow3",
+		"category": "Helicopter",
+		"hex": "0x5F017E6B",
+		"int32": 1593933419,
+		"uint32": 1593933419
+	},
+	{
+		"native": "shinobi",
+		"category": "Motorcycle",
+		"hex": "0x50A6FB9C",
+		"int32": 1353120668,
+		"uint32": 1353120668
+	},
+	{
+		"native": "slamtruck",
+		"category": "Utility",
+		"hex": "0xC1A8A914",
+		"int32": -1045911276,
+		"uint32": 3249056020
+	},
+	{
+		"native": "speedo5",
+		"category": "Van",
+		"hex": "0xFD546A18",
+		"int32": -44799464,
+		"uint32": 4250167832
+	},
+	{
+		"native": "squaddie",
+		"category": "SUV",
+		"hex": "0xF9E67C05",
+		"int32": -102335483,
+		"uint32": 4192631813
+	},
+	{
+		"native": "stingertt",
+		"category": "Sport",
+		"hex": "0x5649FF41",
+		"int32": 1447690049,
+		"uint32": 1447690049
+	},
+	{
+		"native": "streamer216",
+		"category": "Plane",
+		"hex": "0x0B706A72",
+		"int32": 191916658,
+		"uint32": 191916658
+	},
+	{
+		"native": "sultan3",
+		"category": "Sport",
+		"hex": "0xEEA75E63",
+		"int32": -291021213,
+		"uint32": 4003946083
+	},
+	{
+		"native": "surfer3",
+		"category": "Van",
+		"hex": "0xC247AEE5",
+		"int32": -1035489563,
+		"uint32": 3259477733
+	},
+	{
+		"native": "tahoma",
+		"category": "Muscle",
+		"hex": "0xE478B977",
+		"int32": -461850249,
+		"uint32": 3833117047
+	},
+	{
+		"native": "tailgater2",
+		"category": "Sedan",
+		"hex": "0xB5D306A4",
+		"int32": -1244461404,
+		"uint32": 3050505892
+	},
+	{
+		"native": "terminus",
+		"category": "Offroad",
+		"hex": "0x09FC300D",
+		"int32": 167522317,
+		"uint32": 167522317
+	},
+	{
+		"native": "toreador",
+		"category": "Sports Classic",
+		"hex": "0x56C8A5EF",
+		"int32": 1455990255,
+		"uint32": 1455990255
+	},
+	{
+		"native": "tulip2",
+		"category": "Muscle",
+		"hex": "0x1004EDA4",
+		"int32": 268758436,
+		"uint32": 268758436
+	},
+	{
+		"native": "turismo3",
+		"category": "Super",
+		"hex": "0xF8AB457B",
+		"int32": -122993285,
+		"uint32": 4171974011
+	},
+	{
+		"native": "vectre",
+		"category": "Sport",
+		"hex": "0xA42FC3A5",
+		"int32": -1540373595,
+		"uint32": 2754593701
+	},
+	{
+		"native": "verus",
+		"category": "Offroad",
+		"hex": "0x11CBC051",
+		"int32": 298565713,
+		"uint32": 298565713
+	},
+	{
+		"native": "vetir",
+		"category": "Military",
+		"hex": "0x780FFBD2",
+		"int32": 2014313426,
+		"uint32": 2014313426
+	},
+	{
+		"native": "veto",
+		"category": "Sport",
+		"hex": "0xCCE5C8FA",
+		"int32": -857356038,
+		"uint32": 3437611258
+	},
+	{
+		"native": "veto2",
+		"category": "Sport",
+		"hex": "0xA703E4A9",
+		"int32": -1492917079,
+		"uint32": 2802050217
+	},
+	{
+		"native": "vigero3",
+		"category": "Muscle",
+		"hex": "0x1635C007",
+		"int32": 372621319,
+		"uint32": 372621319
+	},
+	{
+		"native": "virtue",
+		"category": "Super",
+		"hex": "0x27E34161",
+		"int32": 669204833,
+		"uint32": 669204833
+	},
+	{
+		"native": "vivanite",
+		"category": "SUV",
+		"hex": "0xAE2CC02A",
+		"int32": -1372798934,
+		"uint32": 2922168362
+	},
+	{
+		"native": "warrener2",
+		"category": "Sedan",
+		"hex": "0x2290C50A",
+		"int32": 579912970,
+		"uint32": 579912970
+	},
+	{
+		"native": "weevil",
+		"category": "Compact",
+		"hex": "0x61FE4D6A",
+		"int32": 1644055914,
+		"uint32": 1644055914
+	},
+	{
+		"native": "winky",
+		"category": "Offroad",
+		"hex": "0xF376F1E6",
+		"int32": -210308634,
+		"uint32": 4084658662
+	},
+	{
+		"native": "youga4",
+		"category": "Van",
+		"hex": "0x589A840C",
+		"int32": 1486521356,
+		"uint32": 1486521356
+	},
+	{
+		"native": "zeno",
+		"category": "Super",
+		"hex": "0x2714AA93",
+		"int32": 655665811,
+		"uint32": 655665811
+	},
+	{
+		"native": "zr350",
+		"category": "Sport",
+		"hex": "0x91373058",
+		"int32": -1858654120,
+		"uint32": 2436313176
+	}
+]

@@ -1,0 +1,98 @@
+[
+  {
+    "Native": "p_spinning_anus_s",
+    "Name": "UFO (Big Hitbox)",
+    "Category": "Special",
+    "Integer": -1268267712,
+    "UInt": 3026699584,
+    "Hex": "B467C540"
+  },
+  {
+    "Native": "imp_prop_ship_01a",
+    "Name": "UFO (Normal Hitbox)",
+    "Category": "Special",
+    "Integer": 1241740398,
+    "UInt": 1241740398,
+    "Hex": "4A03746E"
+  },
+  {
+    "Native": "gr_prop_damship_01a",
+    "Name": "UFO Destroyed",
+    "Category": "Special",
+    "Integer": -320283514,
+    "UInt": 3974683782,
+    "Hex": "ECE8DC86"
+  },
+  {
+    "Native": "prop_jet_bloodsplat_01",
+    "Name": "Bloodsplat from Jet",
+    "Category": "Special",
+    "Integer": -1281648158,
+    "UInt": 3013319138,
+    "Hex": "B39B99E2"
+  },
+  {
+    "Native": "prop_chall_lamp_01n",
+    "Name": "Blue Light (Only Nighttime)",
+    "Category": "Special",
+    "Integer": -1720704599,
+    "UInt": 2574262697,
+    "Hex": "997021A9"
+  },
+  {
+    "Native": "prop_chall_lamp_02",
+    "Name": "White Light",
+    "Category": "Special",
+    "Integer": -1529607874,
+    "UInt": 2765359422,
+    "Hex": "A4D4093E"
+  },
+  {
+    "Native": "prop_traffic_02a",
+    "Name": "Wierd Traffic Light",
+    "Category": "Special",
+    "Integer": -730685616,
+    "UInt": 3564281680,
+    "Hex": "D4729F50"
+  },
+  {
+    "Native": "p_tram_crash_s",
+    "Name": "Train",
+    "Category": "Special",
+    "Integer": 774425122,
+    "UInt": 774425122,
+    "Hex": "2E28CA22"
+  },
+  {
+    "Native": "p_hw1_22_table_s",
+    "Name": "Bright Green Animated Table",
+    "Category": "Special",
+    "Integer": -1001571795,
+    "UInt": 3293395501,
+    "Hex": "C44D3A2D"
+  },
+  {
+    "Native": "ch_prop_casino_diamonds_02a",
+    "Name": "Diamonds",
+    "Category": "Special",
+    "Integer": -1208111944,
+    "UInt": 3086855352,
+    "Hex": "B7FDACB8"
+  },
+  {
+    "Native": "prop_skid_pillar_01",
+    "Name": "Pillar",
+    "Category": "Special",
+    "Integer": -204585309,
+    "UInt": 4090381987,
+    "Hex": "F3CE46A3"
+  },
+  {
+    "Native": "prop_temp_block_blocker",
+    "Name": "Wooden Block",
+    "Category": "Special",
+    "Integer": -151113999,
+    "UInt": 4143853297,
+    "Hex": "F6FE2EF1"
+  }
+]

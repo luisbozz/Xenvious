@@ -1,0 +1,74 @@
+name: Release
+
+# release-please keeps a release PR open that collects the Conventional Commits
+# since the last release, updates CHANGELOG.md and the version in AssemblyInfo.cs.
+# Merging it tags the release and creates it on GitHub; the second job then
+# builds that exact commit and attaches Xenvious.exe and its SHA256, which the
+# in-app updater downloads and checks. Both live in one workflow because a
+# release created with the workflow token does not start other workflows.
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+    steps:
+      - id: release
+        uses: googleapis/release-please-action@v5
+        with:
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+  build:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.release_created == 'true' }}
+    runs-on: windows-latest
+    steps:
+      - name: Check out Xenvious at the release tag
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.release-please.outputs.tag_name }}
+          path: Xenvious
+          persist-credentials: false
+
+      # Same layout and mry version as build.yml.
+      - name: Check out mry
+        uses: actions/checkout@v7
+        with:
+          repository: luisbozz/mry
+          ref: b792c75c983c51d7c8f2adfe4db4498d000e111d
+          path: mry
+          persist-credentials: false
+
+      - uses: microsoft/setup-msbuild@v3
+
+      - name: Restore packages
+        run: |
+          nuget restore mry/mry.sln
+          nuget restore Xenvious/Xenvious.sln
+
+      - name: Build mry
+        run: msbuild mry/mry.sln /p:Configuration=Release /p:Platform=x64 /m /nologo /verbosity:minimal
+
+      - name: Build Xenvious
+        run: msbuild Xenvious/Xenvious.sln /p:Configuration=Release /p:Platform=x64 /m /nologo /verbosity:minimal
+
+      - name: Write the checksum
+        shell: pwsh
+        run: |
+          Copy-Item Xenvious/Xenvious/bin/Release/Xenvious.exe Xenvious.exe
+          $hash = (Get-FileHash Xenvious.exe -Algorithm SHA256).Hash.ToLowerInvariant()
+          "$hash  Xenvious.exe" | Out-File -FilePath Xenvious.exe.sha256 -Encoding ascii -NoNewline
+
+      - name: Attach the exe to the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "${{ needs.release-please.outputs.tag_name }}" Xenvious.exe Xenvious.exe.sha256 --repo "${{ github.repository }}" --clobber

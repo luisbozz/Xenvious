@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xenvious", "Xenvious\Xenvious.csproj", "{EB2FBA3E-32C7-40C7-ADCF-32443E3A06EC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|ARM = Debug|ARM
+		Debug|ARM64 = Debug|ARM64
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|ARM = Release|ARM
+		Release|ARM64 = Release|ARM64
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EB2FBA3E-32C7-40C7-ADCF-32443E3A06EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB2FBA3E-32C7-40C7-ADCF-32443E3A06EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB2FBA3E-32C7-40C7-ADCF-32443E3A06EC}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{EB2FBA3E-32C7-40C7-ADCF-32443E3A06EC}.Debug|ARM.Build.0 = Debug|Any CPU
+		{EB2FBA3E-32C7-40C7-ADCF-32443E3A06EC}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{EB2FBA3E-32C7-40C7-ADCF-32443E3A06EC}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{EB2FBA3E-32C7-40C7-ADCF-32443E3A06EC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EB2FBA3E-32C7-40C7-ADCF-32443E3A06EC}.Debug|x64.Build.0 = Debug|Any CPU
+		{EB2FBA3E-32C7-40C7-ADCF-32443E3A06EC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EB2FBA3E-32C7-40C7-ADCF-32443E3A06EC}.Debug|x86.Build.0 = Debug|Any CPU
+		{EB2FBA3E-32C7-40C7-ADCF-32443E3A06EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB2FBA3E-32C7-40C7-ADCF-32443E3A06EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB2FBA3E-32C7-40C7-ADCF-32443E3A06EC}.Release|ARM.ActiveCfg = Release|Any CPU
+		{EB2FBA3E-32C7-40C7-ADCF-32443E3A06EC}.Release|ARM.Build.0 = Release|Any CPU
+		{EB2FBA3E-32C7-40C7-ADCF-32443E3A06EC}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{EB2FBA3E-32C7-40C7-ADCF-32443E3A06EC}.Release|ARM64.Build.0 = Release|Any CPU
+		{EB2FBA3E-32C7-40C7-ADCF-32443E3A06EC}.Release|x64.ActiveCfg = Release|Any CPU
+		{EB2FBA3E-32C7-40C7-ADCF-32443E3A06EC}.Release|x64.Build.0 = Release|Any CPU
+		{EB2FBA3E-32C7-40C7-ADCF-32443E3A06EC}.Release|x86.ActiveCfg = Release|Any CPU
+		{EB2FBA3E-32C7-40C7-ADCF-32443E3A06EC}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A6BC81EA-55CF-4052-9034-D0FF9C98EA1D}
+	EndGlobalSection
+EndGlobal

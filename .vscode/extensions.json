@@ -1,0 +1,10 @@
+{
+    // Empfohlene Erweiterungen fuer dieses .NET Framework 4.8 WPF-Projekt.
+    // Hinweis: die klassische C#-Erweiterung (OmniSharp) unterstuetzt non-SDK/Framework
+    // besser als das C# Dev Kit - daher bewusst ms-dotnettools.csharp.
+    "recommendations": [
+        "ms-dotnettools.csharp",
+        "github.copilot",
+        "github.copilot-chat"
+    ]
+}

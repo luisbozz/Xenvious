@@ -1,0 +1,650 @@
+[
+  {
+    "Name": "Custom",
+    "id": -1
+  },
+  {
+    "Name": "Black",
+    "id": 0
+  },
+  {
+    "Name": "Graphite",
+    "id": 1
+  },
+  {
+    "Name": "Black Steel",
+    "id": 2
+  },
+  {
+    "Name": "Dark Steel",
+    "id": 3
+  },
+  {
+    "Name": "Silver",
+    "id": 4
+  },
+  {
+    "Name": "Bluish Silver",
+    "id": 5
+  },
+  {
+    "Name": "Rolled Steel",
+    "id": 6
+  },
+  {
+    "Name": "Shadow Silver",
+    "id": 7
+  },
+  {
+    "Name": "Stone Silver",
+    "id": 8
+  },
+  {
+    "Name": "Midnight Silver",
+    "id": 9
+  },
+  {
+    "Name": "Util Black Poly",
+    "id": 16
+  },
+  {
+    "Name": "Util Dark silver",
+    "id": 17
+  },
+  {
+    "Name": "Util Silver",
+    "id": 18
+  },
+  {
+    "Name": "Util Gun Metal",
+    "id": 19
+  },
+  {
+    "Name": "Util Shadow Silver",
+    "id": 20
+  },
+  {
+    "Name": "Worn Black",
+    "id": 21
+  },
+  {
+    "Name": "Worn Graphite",
+    "id": 22
+  },
+  {
+    "Name": "Worn Silver Grey",
+    "id": 23
+  },
+  {
+    "Name": "Worn Silver",
+    "id": 24
+  },
+  {
+    "Name": "Worn Blue Silver",
+    "id": 25
+  },
+  {
+    "Name": "Garnet Red",
+    "id": 32
+  },
+  {
+    "Name": "Sunset Red",
+    "id": 33
+  },
+  {
+    "Name": "Cabernet Red",
+    "id": 34
+  },
+  {
+    "Name": "Candy Red",
+    "id": 35
+  },
+  {
+    "Name": "Sunrise Orange",
+    "id": 36
+  },
+  {
+    "Name": "Gold",
+    "id": 37
+  },
+  {
+    "Name": "Orange",
+    "id": 38
+  },
+  {
+    "Name": "Red Matte",
+    "id": 39
+  },
+  {
+    "Name": "Dark Red",
+    "id": 40
+  },
+  {
+    "Name": "Orange Matte",
+    "id": 41
+  },
+  {
+    "Name": "Worn Dark Red",
+    "id": 48
+  },
+  {
+    "Name": "Dark Green Metallic",
+    "id": 49
+  },
+  {
+    "Name": "Racing Green Metallic",
+    "id": 50
+  },
+  {
+    "Name": "Sea Green",
+    "id": 51
+  },
+  {
+    "Name": "Olive Green",
+    "id": 52
+  },
+  {
+    "Name": "Bright Green",
+    "id": 53
+  },
+  {
+    "Name": "Gasoline Blue Green Metallic",
+    "id": 54
+  },
+  {
+    "Name": "Lime Green Matte",
+    "id": 55
+  },
+  {
+    "Name": "Dark Green Utility",
+    "id": 56
+  },
+  {
+    "Name": "Worn Green",
+    "id": 57
+  },
+  {
+    "Name": "Blue",
+    "id": 64
+  },
+  {
+    "Name": "Mariner Blue",
+    "id": 65
+  },
+  {
+    "Name": "Harbor Blue",
+    "id": 66
+  },
+  {
+    "Name": "Diamond Blue",
+    "id": 67
+  },
+  {
+    "Name": "Surf Blue",
+    "id": 68
+  },
+  {
+    "Name": "Nautical Blue",
+    "id": 69
+  },
+  {
+    "Name": "Ultra Blue /Bright Blue",
+    "id": 70
+  },
+  {
+    "Name": "Schafter Purple",
+    "id": 71
+  },
+  {
+    "Name": "Ultra Blue Metallic",
+    "id": 72
+  },
+  {
+    "Name": "Racing Blue",
+    "id": 73
+  },
+  {
+    "Name": "Util Bright Blue",
+    "id": 80
+  },
+  {
+    "Name": "Slate Blue",
+    "id": 81
+  },
+  {
+    "Name": "Dark Blue",
+    "id": 82
+  },
+  {
+    "Name": "Blue Matte",
+    "id": 83
+  },
+  {
+    "Name": "Midnight Blue Matte",
+    "id": 84
+  },
+  {
+    "Name": "Worn Dark blue",
+    "id": 85
+  },
+  {
+    "Name": "Worn Blue",
+    "id": 86
+  },
+  {
+    "Name": "Baby Blue",
+    "id": 87
+  },
+  {
+    "Name": "Yellow Taxi",
+    "id": 88
+  },
+  {
+    "Name": "Race Yellow",
+    "id": 89
+  },
+  {
+    "Name": "Chocolate Brown",
+    "id": 96
+  },
+  {
+    "Name": "Maple Brown",
+    "id": 97
+  },
+  {
+    "Name": "Saddle Brown",
+    "id": 98
+  },
+  {
+    "Name": "Straw Brown",
+    "id": 99
+  },
+  {
+    "Name": "Moss Brown",
+    "id": 100
+  },
+  {
+    "Name": "Bison Brown",
+    "id": 101
+  },
+  {
+    "Name": "WoodBeech Brown",
+    "id": 102
+  },
+  {
+    "Name": "BeechWood Brown",
+    "id": 103
+  },
+  {
+    "Name": "Straw Brown /Choco Orange",
+    "id": 104
+  },
+  {
+    "Name": "Sandy Brown",
+    "id": 105
+  },
+  {
+    "Name": "Frost White",
+    "id": 112
+  },
+  {
+    "Name": "Worn Honey Beige",
+    "id": 113
+  },
+  {
+    "Name": "Worn Brown",
+    "id": 114
+  },
+  {
+    "Name": "Dark Brown",
+    "id": 115
+  },
+  {
+    "Name": "Worn straw beige",
+    "id": 116
+  },
+  {
+    "Name": "Brushed Steel",
+    "id": 117
+  },
+  {
+    "Name": "Brushed Black steel",
+    "id": 118
+  },
+  {
+    "Name": "Brushed Aluminum",
+    "id": 119
+  },
+  {
+    "Name": "Chrome",
+    "id": 120
+  },
+  {
+    "Name": "Worn Off White",
+    "id": 121
+  },
+  {
+    "Name": "Green Dark/Army",
+    "id": 128
+  },
+  {
+    "Name": "Matte Brown",
+    "id": 129
+  },
+  {
+    "Name": "Worn Orange",
+    "id": 130
+  },
+  {
+    "Name": "Ice White Matte",
+    "id": 131
+  },
+  {
+    "Name": "Worn White",
+    "id": 132
+  },
+  {
+    "Name": "Worn Olive Army Green",
+    "id": 133
+  },
+  {
+    "Name": "Pure White",
+    "id": 134
+  },
+  {
+    "Name": "Hot Pink",
+    "id": 135
+  },
+  {
+    "Name": "Salmon Pink",
+    "id": 136
+  },
+  {
+    "Name": "Pfister Pink",
+    "id": 137
+  },
+  {
+    "Name": "Hunter Green",
+    "id": 144
+  },
+  {
+    "Name": "Bright Purple",
+    "id": 145
+  },
+  {
+    "Name": "Midnight Purple / V Dark Blue",
+    "id": 146
+  },
+  {
+    "Name": "Carbon Black",
+    "id": 147
+  },
+  {
+    "Name": "Matte Purple",
+    "id": 148
+  },
+  {
+    "Name": "Matte Dark Purple",
+    "id": 149
+  },
+  {
+    "Name": "Lava Red Metallic",
+    "id": 150
+  },
+  {
+    "Name": "Olive Green Matte Forest",
+    "id": 151
+  },
+  {
+    "Name": "Olive Drab Matte",
+    "id": 152
+  },
+  {
+    "Name": "Dark Earth",
+    "id": 153
+  },
+  {
+    "Name": "Cast Iron Silver",
+    "id": 10
+  },
+  {
+    "Name": "Anthracite Black",
+    "id": 11
+  },
+  {
+    "Name": "Black Matte",
+    "id": 12
+  },
+  {
+    "Name": "Gray Matte",
+    "id": 13
+  },
+  {
+    "Name": "Light Gray",
+    "id": 14
+  },
+  {
+    "Name": "Util Black",
+    "id": 15
+  },
+  {
+    "Name": "Worn Shadow Silver",
+    "id": 26
+  },
+  {
+    "Name": "Red Metallic",
+    "id": 27
+  },
+  {
+    "Name": "Torino Red",
+    "id": 28
+  },
+  {
+    "Name": "Formula Red",
+    "id": 29
+  },
+  {
+    "Name": "Blaze Red",
+    "id": 30
+  },
+  {
+    "Name": "Grace Red",
+    "id": 31
+  },
+  {
+    "Name": "Yellow Matte",
+    "id": 42
+  },
+  {
+    "Name": "Util Red",
+    "id": 43
+  },
+  {
+    "Name": "Util Bright Red",
+    "id": 44
+  },
+  {
+    "Name": "Util Garnet Red",
+    "id": 45
+  },
+  {
+    "Name": "Worn Red",
+    "id": 46
+  },
+  {
+    "Name": "Worn Golden Red",
+    "id": 47
+  },
+  {
+    "Name": "Worn Sea Wash",
+    "id": 58
+  },
+  {
+    "Name": "Midnight Blue Metallic",
+    "id": 59
+  },
+  {
+    "Name": "Dark Blue Metallic",
+    "id": 60
+  },
+  {
+    "Name": "Galaxy Blue",
+    "id": 61
+  },
+  {
+    "Name": "Dark Blue",
+    "id": 62
+  },
+  {
+    "Name": "Saxon Blue",
+    "id": 63
+  },
+  {
+    "Name": "Light Blue",
+    "id": 74
+  },
+  {
+    "Name": "Util Midnight Blue",
+    "id": 75
+  },
+  {
+    "Name": "Util Blue",
+    "id": 76
+  },
+  {
+    "Name": "Util Sea Foam Blue",
+    "id": 77
+  },
+  {
+    "Name": "Util Lightning blue",
+    "id": 78
+  },
+  {
+    "Name": "Util Maui Blue Poly",
+    "id": 79
+  },
+  {
+    "Name": "Bronze",
+    "id": 90
+  },
+  {
+    "Name": "Yellow Bird",
+    "id": 91
+  },
+  {
+    "Name": "Lime Metallic",
+    "id": 92
+  },
+  {
+    "Name": "Metallic Champagne",
+    "id": 93
+  },
+  {
+    "Name": "Feltzer Brown",
+    "id": 94
+  },
+  {
+    "Name": "Creek Brown",
+    "id": 95
+  },
+  {
+    "Name": "Bleached Brown",
+    "id": 106
+  },
+  {
+    "Name": "Cream",
+    "id": 107
+  },
+  {
+    "Name": "Util Brown",
+    "id": 108
+  },
+  {
+    "Name": "Util Medium Brown",
+    "id": 109
+  },
+  {
+    "Name": "Util Light Brown",
+    "id": 110
+  },
+  {
+    "Name": "Ice White",
+    "id": 111
+  },
+  {
+    "Name": "Util Off White",
+    "id": 122
+  },
+  {
+    "Name": "Worn Orange",
+    "id": 123
+  },
+  {
+    "Name": "Worn Light Orange",
+    "id": 124
+  },
+  {
+    "Name": "Pea Green",
+    "id": 125
+  },
+  {
+    "Name": "Worn Taxi Yellow",
+    "id": 126
+  },
+  {
+    "Name": "Police Blue",
+    "id": 127
+  },
+  {
+    "Name": "Bright Orange",
+    "id": 138
+  },
+  {
+    "Name": "Green Bright",
+    "id": 139
+  },
+  {
+    "Name": "Flourescent Blue",
+    "id": 140
+  },
+  {
+    "Name": "Midnight Blue",
+    "id": 141
+  },
+  {
+    "Name": "Midnight Purple",
+    "id": 142
+  },
+  {
+    "Name": "Wine Red",
+    "id": 143
+  },
+  {
+    "Name": "Desert Tan",
+    "id": 154
+  },
+  {
+    "Name": "Foilage Green Matte",
+    "id": 155
+  },
+  {
+    "Name": "DEFAULT ALLOY COLOR",
+    "id": 156
+  },
+  {
+    "Name": "Epsilon Blue",
+    "id": 157
+  },
+  {
+    "Name": "Brushed Gold",
+    "id": 159
+  },
+  {
+    "Name": "MP100",
+    "id": 160
+  },
+  {
+    "Name": "Pure Gold",
+    "id": 158
+  }
+]

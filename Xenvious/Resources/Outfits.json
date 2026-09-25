@@ -1,0 +1,134 @@
+[
+  {
+    "Name": "Custom",
+    "Value": 9999
+  },
+  {
+    "Name": "None",
+    "Value": 0
+  },
+  {
+    "Name": "Deadline Purple",
+    "Value": 898
+  },
+  {
+    "Name": "Deadline Orange",
+    "Value": 899
+  },
+  {
+    "Name": "Deadline Pink",
+    "Value": 900
+  },
+  {
+    "Name": "Deadline Green",
+    "Value": 901
+  },
+  {
+    "Name": "Juggernaut Purple",
+    "Value": 1013
+  },
+  {
+    "Name": "Juggernaut Orange",
+    "Value": 1006
+  },
+  {
+    "Name": "Juggernaut Pink",
+    "Value": 1088
+  },
+  {
+    "Name": "Juggernaut Green",
+    "Value": 1089
+  },
+  {
+    "Name": "Parademic Blue (Long)",
+    "Value": 1195
+  },
+  {
+    "Name": "Paramedic Blue (Polo)",
+    "Value": 1196
+  },
+  {
+    "Name": "Parademic Green (Long)",
+    "Value": 1197
+  },
+  {
+    "Name": "Paramedic Green (Polo)",
+    "Value": 1198
+  },
+  {
+    "Name": "Police (without Hat)",
+    "Value": 99
+  },
+  {
+    "Name": "Police (with Hat)",
+    "Value": 198
+  },
+  {
+    "Name": "Space Ranger",
+    "Value": 1481
+  },
+  {
+    "Name": "Cyborg (White)",
+    "Value": 1478
+  },
+  {
+    "Name": "Misc 1",
+    "Value": 1479
+  },
+  {
+    "Name": "Misc 2",
+    "Value": 1480
+  },
+  {
+    "Name": "Drop Zone Green",
+    "Value": 778
+  },
+  {
+    "Name": "Drop Zone Orange",
+    "Value": 779
+  },
+  {
+    "Name": "Drop Zone Purple",
+    "Value": 780
+  },
+  {
+    "Name": "Drop Zone Pink",
+    "Value": 781
+  },
+  {
+    "Name": "Police",
+    "Value": 1577
+  },
+  {
+    "Name": "N.O.O.S.E",
+    "Value": 1575
+  },
+  {
+    "Name": "The Anti Riot",
+    "Value": 1272
+  },
+  {
+    "Name": "The Start-of-the-Art Gray",
+    "Value": 1275
+  },
+  {
+    "Name": "The Start-of-the-Art White",
+    "Value": 1274
+  },
+  {
+    "Name": "The Start-of-the-Art Red",
+    "Value": 1273
+  },
+  {
+    "Name": "The Start-of-the-Art White Army",
+    "Value": 1276
+  },
+  {
+    "Name": "Armor 1",
+    "Value": 641
+  },
+  {
+    "Name": "Armor 2",
+    "Value": 640
+  }
+]
