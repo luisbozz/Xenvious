@@ -1,21 +1,29 @@
 # Changelog
 
-## [1.73.0](https://github.com/luisbozz/Xenvious/compare/v2.71.11...v1.73.0) (2026-09-25)
+## [1.73.0](https://github.com/luisbozz/Xenvious/releases/tag/v1.73.0) (2026-09-25)
 
+First public release of Xenvious. What's new since 2.71.11:
 
-### Features
+### Highlights
 
-* **copyjob:** replace the open job without a backup first ([4411729](https://github.com/luisbozz/Xenvious/commit/4411729a8ec29233b6096064b5f19b2ea19ad3be))
-* **copyjob:** replace the open job without a backup first ([dfc3d4b](https://github.com/luisbozz/Xenvious/commit/dfc3d4ba81164ec966ce772b8dbb9d1baebedf94))
-* first public release of Xenvious ([993abd8](https://github.com/luisbozz/Xenvious/commit/993abd8eb1b0152e4c4edfaae97ba7aed6abc50a))
+- **GTA V Enhanced** support next to Legacy, updated for GTA 1.73
+- **Free, no server:** no login, no accounts, every feature unlocked, all game data built in
+- **Self-updating:** Xenvious finds new releases on GitHub, updates itself and shows what's new
+- **One single exe**, nothing else to install
 
+### Creator
 
-### Bug Fixes
+- **Copy Jobs** has its own page: paste a link or job ID, load the complete job (vehicles, actors and zones included) or only selected parts, then just copy, save or publish. Saving creates your own new job. Loading a complete job can skip the backup of the open map.
+- **Advanced prop placement** rebuilt: quick-start wizard for straights, curves, loops, spirals, corkscrews and wallrides, a free-flying 3D preview, and the full 300-prop limit on Enhanced
+- **Precise templates** on both editions
+- **Map backup:** save props, dynamic props, checkpoints and templates to a file and load them back
+- Move props between the static and the dynamic list
+- Map rebuilds keep the creator's menu and camera
+- **Dashboard:** launch or leave a creator with one click, even a stuck one, plus a live status strip
+- **Script patches page:** every patch as a card with a description, filterable by script
+- 47 new vehicles from the 1.73 race creator, prop lists refreshed for 1.73
 
-* **comment:** Add comment about password in AES class ([2ee4a68](https://github.com/luisbozz/Xenvious/commit/2ee4a68f8a9f244574da2074ecbda068c303870f))
-* **comment:** Add comment about password in AES class ([d33fef5](https://github.com/luisbozz/Xenvious/commit/d33fef55632717b01133535ecabaea31ae30d735))
+### Under the hood
 
-
-### Miscellaneous Chores
-
-* **release:** number versions after the GTA update, from 1.73.0 ([3dca0ac](https://github.com/luisbozz/Xenvious/commit/3dca0ac22de1edcaaac2f84552994c2b2e205e3f))
+- Faster start and smoother UI (cached pattern scans, GPU rendering)
+- Dialogs inside Xenvious instead of pop-ups that pull you out of the game
