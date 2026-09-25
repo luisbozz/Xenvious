@@ -10,10 +10,9 @@ namespace Xenvious
     /// the creator offers no way to do.
     ///
     /// The prop is appended to the other list with every field both lists share
-    /// (position, rotation, heading, model, team rules, colour, LOD, ...) and zero for
-    /// the rest, then removed from its list the way the creator deletes a prop (the
-    /// entries after it move down one slot). GTA.Defaults.Prop/DProp are not used: they
-    /// were taken from an older layout (163/255 values for 170/271 slots). A rebuild makes the creator show
+    /// (position, rotation, heading, model, team rules, colour, LOD, ...) on top of the
+    /// creator's working entry, then removed from its list the way the creator deletes a
+    /// prop (the entries after it move down one slot). A rebuild makes the creator show
     /// the result; it deletes and recreates every entity from the job data.
     /// </summary>
     public static class PropMover
@@ -98,8 +97,11 @@ namespace Xenvious
             int toCount = new Global(to.Count).Get<int>();
             byte[] source = CreatorMap.ReadSlots(from.First + index * from.Stride, (int)from.Stride);
 
-            // New entry: every shared field, zero elsewhere.
-            byte[] entry = new byte[to.Stride * 8];
+            // The slot after the last entry is the creator's working entry: what it copies
+            // into the list when the player places a prop, already holding the creator's
+            // defaults (-1 for "none" in several fields). The new entry starts from it,
+            // takes every shared field from the moved prop, and drops the bit fields.
+            byte[] entry = CreatorMap.ReadSlots(to.First + toCount * to.Stride, (int)to.Stride);
             foreach (var (s, d) in SharedFields())
             {
                 long src = toDynamic ? s : d;
@@ -108,17 +110,29 @@ namespace Xenvious
                     Buffer.BlockCopy(source, (int)src * 8, entry, (int)dst * 8, 8);
             }
             Array.Clear(entry, (int)to.BitsField * 8, 8);
+            // A dynamic prop's obref is the index of a linked mission object, -1 for none.
+            // 0 links it to object 0, and the creator hangs when it cleans that link up on
+            // leaving the job.
+            if (toDynamic && GTA.Offsets.Editor.DProps.obref != 0)
+                Buffer.BlockCopy(BitConverter.GetBytes(-1L), 0, entry,
+                    (int)(GTA.Offsets.Editor.DProps.obref - GTA.Offsets.Editor.DProps.loc) * 8, 8);
             CreatorMap.WriteSlots(to.First + toCount * to.Stride, entry);
             new Global(to.Count).SetInt(toCount + 1);
 
-            // Remove from the source list: later entries move down, the last slot is cleared.
+            // Remove from the source list the way the creator deletes a prop: later entries
+            // move down one slot. The freed last slot gets the working entry, which moves
+            // down with them, so the defaults stay behind the last entry.
+            int capacity = from.Capacity;
+            byte[] working = fromCount < capacity
+                ? CreatorMap.ReadSlots(from.First + fromCount * from.Stride, (int)from.Stride)
+                : null;
             int after = fromCount - index - 1;
             if (after > 0)
             {
                 byte[] rest = CreatorMap.ReadSlots(from.First + (index + 1) * from.Stride, (int)(after * from.Stride));
                 CreatorMap.WriteSlots(from.First + index * from.Stride, rest);
             }
-            CreatorMap.WriteSlots(from.First + (fromCount - 1) * from.Stride, new byte[from.Stride * 8]);
+            CreatorMap.WriteSlots(from.First + (fromCount - 1) * from.Stride, working ?? new byte[from.Stride * 8]);
             new Global(from.Count).SetInt(fromCount - 1);
 
             return await CreatorMap.RebuildAsync().ConfigureAwait(true);
