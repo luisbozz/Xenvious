@@ -53,6 +53,29 @@ Bug reports and pull requests are welcome. Read
 [Contributing](https://github.com/luisbozz/Xenvious/wiki/Contributing) first:
 it covers commit messages, code style and how to test in the game.
 
+## Code signing policy
+
+Free code signing provided by [SignPath.io](https://about.signpath.io/),
+certificate by [SignPath Foundation](https://signpath.org/).
+
+- Committers and reviewers: [luisbozz](https://github.com/luisbozz)
+- Approvers: [luisbozz](https://github.com/luisbozz)
+
+Only release builds made by `.github/workflows/release.yml` from a tagged commit
+on `main` are signed; nothing built on a personal machine is.
+
+## Privacy
+
+Xenvious collects no personal data and sends nothing about you anywhere. It
+only connects to the internet for these features:
+
+- **Update check** (on start, can be turned off in Settings): asks the GitHub
+  API for the latest release of this repository and downloads it if you choose
+  to update.
+- **Copy Jobs** (when you load a job): asks the Rockstar Social Club API and
+  Rockstar's cloud for the job you entered.
+- **Preview images** of props and outfits, loaded from public image hosts.
+
 ## License
 
 [GPL-3.0](LICENSE). You may use, change and share Xenvious; if you distribute a
