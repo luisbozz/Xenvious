@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.73.1](https://github.com/luisbozz/Xenvious/compare/v1.73.0...v1.73.1) (2026-09-25)
+
+
+### Bug Fixes
+
+* **props:** moving a prop to dynamic no longer bricks the creator ([5fa87db](https://github.com/luisbozz/Xenvious/commit/5fa87db4f9c07ca3e371862a187a7c21fd28a08c))
+* **props:** moving a prop to dynamic no longer bricks the creator ([b497d37](https://github.com/luisbozz/Xenvious/commit/b497d374658b656d304c3ec2c23a016522f11513))
+
 ## [1.73.0](https://github.com/luisbozz/Xenvious/releases/tag/v1.73.0) (2026-09-25)
 
 First public release of Xenvious. What's new since 2.71.11:
