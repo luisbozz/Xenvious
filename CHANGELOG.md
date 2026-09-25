@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.73.0](https://github.com/luisbozz/Xenvious/compare/v3.74.0...v3.73.0) (2026-09-25)
+
+
+### Features
+
+* **copyjob:** replace the open job without a backup first ([4411729](https://github.com/luisbozz/Xenvious/commit/4411729a8ec29233b6096064b5f19b2ea19ad3be))
+* **copyjob:** replace the open job without a backup first ([dfc3d4b](https://github.com/luisbozz/Xenvious/commit/dfc3d4ba81164ec966ce772b8dbb9d1baebedf94))
+* first public release of Xenvious ([993abd8](https://github.com/luisbozz/Xenvious/commit/993abd8eb1b0152e4c4edfaae97ba7aed6abc50a))
+
 ## [3.74.0](https://github.com/luisbozz/Xenvious/compare/v3.73.0...v3.74.0) (2026-09-25)
 
 
