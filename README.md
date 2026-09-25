@@ -14,6 +14,22 @@ Get `Xenvious.exe` from the [latest release](https://github.com/luisbozz/Xenviou
 It is a single file; later versions are offered inside Xenvious on start
 (Settings → "Check for updates on start").
 
+Or paste this into PowerShell. It puts the latest release into
+`%LOCALAPPDATA%\Programs\Xenvious`, adds Xenvious to the Start menu and starts
+it:
+
+```powershell
+$dir = "$env:LOCALAPPDATA\Programs\Xenvious"
+New-Item -ItemType Directory -Force $dir | Out-Null
+curl.exe -fL -o "$dir\Xenvious.exe" https://github.com/luisbozz/Xenvious/releases/latest/download/Xenvious.exe
+if ($LASTEXITCODE -eq 0) {
+    $link = (New-Object -ComObject WScript.Shell).CreateShortcut("$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Xenvious.lnk")
+    $link.TargetPath = "$dir\Xenvious.exe"
+    $link.Save()
+    Start-Process "$dir\Xenvious.exe"
+}
+```
+
 Every release exe is built by GitHub Actions from the tagged commit. To check
 that a download is exactly that build:
 
@@ -21,28 +37,21 @@ that a download is exactly that build:
 gh attestation verify Xenvious.exe --repo luisbozz/Xenvious
 ```
 
-## Build
-
-Windows, Visual Studio 2022 (.NET desktop workload), .NET Framework 4.8, and
-the [mry](https://github.com/luisbozz/mry) memory library built next to this
-repository.
-
-```bat
-nuget restore Xenvious.sln
-msbuild Xenvious.sln /p:Configuration=Release /p:Platform=x64
-```
-
-Details: [Getting started](docs/wiki/Getting-Started.md).
-
 ## Documentation
 
-- [Wiki](docs/wiki/Home.md): architecture, game memory, offsets, script
-  patches, creator internals, translations, game updates
-- [Contributing](docs/wiki/Contributing.md)
+- [Wiki](https://github.com/luisbozz/Xenvious/wiki): building from source,
+  architecture, game memory, offsets, script patches, creator internals,
+  translations, game updates
 - [AGENTS.md](AGENTS.md): short guide for AI coding agents
 
 Offsets and script patches for each game build are generated with
 [ysc-global-updater](https://github.com/luisbozz/ysc-global-updater).
+
+## Contributing
+
+Bug reports and pull requests are welcome. Read
+[Contributing](https://github.com/luisbozz/Xenvious/wiki/Contributing) first:
+it covers commit messages, code style and how to test in the game.
 
 ## License
 
