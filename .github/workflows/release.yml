@@ -44,7 +44,7 @@ jobs:
         uses: actions/checkout@v7
         with:
           repository: luisbozz/mry
-          ref: b792c75c983c51d7c8f2adfe4db4498d000e111d
+          ref: v1.4
           path: mry
           persist-credentials: false
 

@@ -25,12 +25,12 @@ jobs:
 
       # Xenvious.csproj references ..\..\mry\mry\bin\x64\Release\mry.dll, so mry
       # has to sit next to Xenvious, as on a dev machine. Pinned to mry 1.4, the
-      # version Xenvious references.
+      # version Xenvious references (tag v1.4).
       - name: Check out mry
         uses: actions/checkout@v7
         with:
           repository: luisbozz/mry
-          ref: b792c75c983c51d7c8f2adfe4db4498d000e111d
+          ref: v1.4
           path: mry
           persist-credentials: false
 
