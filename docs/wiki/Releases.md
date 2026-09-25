@@ -10,7 +10,7 @@ changelog by hand.
    pull request "chore(main): release X.Y.Z" open that collects them, updates
    `CHANGELOG.md` and the version in `Xenvious/Properties/AssemblyInfo.cs`
    (the lines marked `// x-release-please-version`).
-2. The version is `3.<GTA>.<n>`: the middle number follows the GTA V update
+2. The version is `1.<GTA>.<n>`: the middle number follows the GTA V update
    (73 for GTA 1.73), the last one counts Xenvious releases for it. So every
    release, `feat` or `fix`, only raises the last number
    (`"versioning": "always-bump-patch"` in `release-please-config.json`).
@@ -27,11 +27,16 @@ changelog by hand.
 
 The manifest (`.release-please-manifest.json`) starts at 2.71.11, the last
 version before the public repository. To make the first public release
-3.73.0, the commit that starts it carries this footer:
+1.73.0, the commit that starts it carries this footer:
 
 ```
-Release-As: 3.73.0
+Release-As: 1.73.0
 ```
+
+Xenvious only offers a release whose version is higher than its own
+(`Helper Classes/Updater.cs`), so versions must only go up. Exes numbered 2.x
+or 3.73.0 from before this scheme never offer 1.73.x; replace them by hand
+once.
 
 ## Repository setting
 
@@ -46,7 +51,7 @@ the version in the footer of the commit that adds the new offsets, for example
 for GTA 1.74:
 
 ```
-Release-As: 3.74.0
+Release-As: 1.74.0
 ```
 
 1. `python3 update_xenvious.py --variant both --new <build>` in
