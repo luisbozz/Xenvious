@@ -149,20 +149,21 @@
                             AllowsTransparency="True" 
                             Focusable="False"
                             PopupAnimation="Slide">
+                            <!-- Exactly as wide as the box: a wider list gets pushed left at the
+                                 screen edge and no longer lines up with the box. -->
                             <Border 
                                 x:Name="DropDownBorder"
+                                Width="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
                                 Background="{DynamicResource ComboBoxBackground}"
                                 CornerRadius="{TemplateBinding local:CornerRadiusSetter.CornerRadius}"
                                 BorderThickness="1"
-                                Padding="3"
-                                Margin="0,3,0,0"
+                                Margin="0,2,0,0"
                                 BorderBrush="{TemplateBinding BorderBrush}">
                                 <Grid Name="DropDown"
                                     SnapsToDevicePixels="True"                
-                                    MinWidth="{TemplateBinding ActualWidth}"
-                                    MaxHeight="{TemplateBinding MaxDropDownHeight}" Margin="0,0,-2,0">
+                                    MaxHeight="{TemplateBinding MaxDropDownHeight}">
                                     <ScrollViewer Margin="0" SnapsToDevicePixels="True">
-                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained"/>
+                                        <StackPanel Margin="3" IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained"/>
                                     </ScrollViewer>
                                 </Grid>
                             </Border>
