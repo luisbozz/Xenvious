@@ -42,6 +42,7 @@
                 <ResourceDictionary Source="Controls/Slider.xaml" />
                 <ResourceDictionary Source="Controls/ToolTip.xaml" />
                 <ResourceDictionary Source="Controls/CustomButton.xaml" />
+                <ResourceDictionary Source="Controls/NavBar.xaml" />
                 <ResourceDictionary Source="Controls/PopupImage.xaml" />
                 <ResourceDictionary Source="Controls/TitleBarButtons.xaml" />
                 <ResourceDictionary Source="Controls/Checkbox.xaml" />

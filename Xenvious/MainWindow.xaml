@@ -212,31 +212,66 @@
                     </Grid>
 
                     <ScrollViewer HorizontalScrollBarVisibility="Auto" Grid.Column="1" x:Name="panelTopSwitcher" VerticalScrollBarVisibility="Disabled" Focusable="False">
-                        <StackPanel Orientation="Horizontal" Margin="10,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                        <StackPanel Orientation="Horizontal" Margin="12,0,0,0" VerticalAlignment="Center">
 
-                            <Border Width="100" CornerRadius="0" Background="{DynamicResource SectionBackgroundBrush}" BorderThickness="0">
-                                <Button x:Name="Btndashboard" Style="{DynamicResource CustomButton}" Content="{Binding Translation[dashboard], FallbackValue=Dashboard}" Click="Btndashboard_Click"/>
+                            <!-- Pages that work on the open job -->
+                            <Border Style="{StaticResource NavGroup}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Button x:Name="Btndashboard" Style="{StaticResource NavButton}" Click="Btndashboard_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Viewbox Style="{StaticResource NavIconBox}"><Canvas Width="24" Height="24"><Path Style="{StaticResource NavIcon}" Data="{StaticResource NavIconDashboard}"/></Canvas></Viewbox>
+                                            <TextBlock Text="{Binding Translation[dashboard], FallbackValue=Dashboard}" Style="{StaticResource NavLabel}"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button x:Name="BtnEdit" Style="{StaticResource NavButton}" Click="BtnEdit_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Viewbox Style="{StaticResource NavIconBox}"><Canvas Width="24" Height="24"><Path Style="{StaticResource NavIcon}" Data="{StaticResource NavIconEdit}"/></Canvas></Viewbox>
+                                            <TextBlock Text="{Binding Translation[edit], FallbackValue=Edit}" Style="{StaticResource NavLabel}"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button x:Name="BtnCopyJobs" Style="{StaticResource NavButton}" Click="BtnCopyJobs_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Viewbox Style="{StaticResource NavIconBox}"><Canvas Width="24" Height="24"><Path Style="{StaticResource NavIcon}" Data="{StaticResource NavIconCopy}"/></Canvas></Viewbox>
+                                            <TextBlock Text="{Binding Translation[copyjobs], FallbackValue=Copy Jobs}" Style="{StaticResource NavLabel}"/>
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
                             </Border>
-                            <Border Width="100" CornerRadius="0" Background="{DynamicResource SectionBackgroundBrush}" BorderThickness="0">
-                                <Button x:Name="BtnEdit" Style="{DynamicResource CustomButton}" Content="{Binding Translation[edit], FallbackValue=Edit}" Click="BtnEdit_Click"/>
-                            </Border>
-                            <Border Width="100" CornerRadius="0" Background="{DynamicResource SectionBackgroundBrush}" BorderThickness="0">
-                                <Button x:Name="BtnCopyJobs" Style="{DynamicResource CustomButton}" Content="{Binding Translation[copyjobs], FallbackValue=Copy Jobs}" Click="BtnCopyJobs_Click"/>
-                            </Border>
-                            <Border Width="100" CornerRadius="0" Background="{DynamicResource SectionBackgroundBrush}" BorderThickness="0">
-                                <Button x:Name="BtnConverter" Style="{DynamicResource CustomButton}" Content="{Binding Translation[converter], FallbackValue=Converter}" Click="BtnConverter_Click"/>
-                            </Border>
-                            <Border Width="100" CornerRadius="0" Background="{DynamicResource SectionBackgroundBrush}" BorderThickness="0">
-                                <Button x:Name="BtnTeleport" Style="{DynamicResource CustomButton}" Content="{Binding Translation[teleport], FallbackValue=Teleport}" Click="BtnTeleport_Click"/>
-                            </Border>
-                            <Border Width="100" CornerRadius="0" Background="{DynamicResource SectionBackgroundBrush}" BorderThickness="0" Visibility="{Binding ElementName=BtnGEditor, Path=Visibility}">
-                                <Button x:Name="BtnGEditor" Style="{DynamicResource CustomButton}" Click="BtnGEditor_Click" Visibility="Visible" Content="{Binding Translation[geditor], FallbackValue='Global/Local Editor'}"/>
-                            </Border>
-                            <Border Width="100" CornerRadius="0" Background="{DynamicResource SectionBackgroundBrush}" BorderThickness="0" Visibility="{Binding ElementName=BtnMod, Path=Visibility}">
-                                <Button x:Name="BtnMod" Style="{DynamicResource CustomButton}" Content="Misc" Click="BtnMod_Click" Visibility="Visible"/>
-                            </Border>
-                            <Border Width="100" CornerRadius="0" Background="{DynamicResource SectionBackgroundBrush}" BorderThickness="0">
-                                <Button x:Name="BtnSettings" Style="{DynamicResource CustomButton}" Content="{Binding Translation[settings], FallbackValue=Settings}" Click="BtnSettings_Click"/>
+
+                            <!-- Tools -->
+                            <Border Style="{StaticResource NavGroup}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Button x:Name="BtnConverter" Style="{StaticResource NavButton}" Click="BtnConverter_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Viewbox Style="{StaticResource NavIconBox}"><Canvas Width="24" Height="24"><Path Style="{StaticResource NavIcon}" Data="{StaticResource NavIconConvert}"/></Canvas></Viewbox>
+                                            <TextBlock Text="{Binding Translation[converter], FallbackValue=Converter}" Style="{StaticResource NavLabel}"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button x:Name="BtnTeleport" Style="{StaticResource NavButton}" Click="BtnTeleport_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Viewbox Style="{StaticResource NavIconBox}"><Canvas Width="24" Height="24"><Path Style="{StaticResource NavIcon}" Data="{StaticResource NavIconTeleport}"/></Canvas></Viewbox>
+                                            <TextBlock Text="{Binding Translation[teleport], FallbackValue=Teleport}" Style="{StaticResource NavLabel}"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button x:Name="BtnGEditor" Style="{StaticResource NavButton}" Click="BtnGEditor_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Viewbox Style="{StaticResource NavIconBox}"><Canvas Width="24" Height="24"><Path Style="{StaticResource NavIcon}" Data="{StaticResource NavIconEditor}"/></Canvas></Viewbox>
+                                            <TextBlock Text="{Binding Translation[geditor], FallbackValue='Global/Local Editor'}" Style="{StaticResource NavLabel}"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button x:Name="BtnMod" Style="{StaticResource NavButton}" Click="BtnMod_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Viewbox Style="{StaticResource NavIconBox}"><Canvas Width="24" Height="24"><Path Style="{StaticResource NavIcon}" Data="{StaticResource NavIconMisc}"/></Canvas></Viewbox>
+                                            <TextBlock Text="Misc" Style="{StaticResource NavLabel}"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button x:Name="BtnSettings" Style="{StaticResource NavButton}" Click="BtnSettings_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Viewbox Style="{StaticResource NavIconBox}"><Canvas Width="24" Height="24"><Path Style="{StaticResource NavIcon}" Data="{StaticResource NavIconSettings}"/></Canvas></Viewbox>
+                                            <TextBlock Text="{Binding Translation[settings], FallbackValue=Settings}" Style="{StaticResource NavLabel}"/>
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
                             </Border>
 
                         </StackPanel>

@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 
 namespace Xenvious
 {
@@ -40,47 +39,15 @@ namespace Xenvious
 
         private void MainPages_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Btndashboard.Background = (SolidColorBrush)Resources["SectionBackgroundBrush"];
-            BtnEdit.Background = (SolidColorBrush)Resources["SectionBackgroundBrush"];
-            BtnSettings.Background = (SolidColorBrush)Resources["SectionBackgroundBrush"];
-            BtnConverter.Background = (SolidColorBrush)Resources["SectionBackgroundBrush"];
-            BtnTeleport.Background = (SolidColorBrush)Resources["SectionBackgroundBrush"];
-            BtnGEditor.Background = (SolidColorBrush)Resources["SectionBackgroundBrush"];
-            BtnMod.Background = (SolidColorBrush)Resources["SectionBackgroundBrush"];
-            BtnCopyJobs.Background = (SolidColorBrush)Resources["SectionBackgroundBrush"];
-
-            if (MainPages.SelectedItem == PageDashboard)
+            // NavButton (Controls/NavBar.xaml) draws the button tagged "active" as the open page.
+            var pages = new (Button Button, TabItem Page)[]
             {
-                Btndashboard.Background = (SolidColorBrush)Resources["ButtonHoverBackgroundBrush"];
-            }
-            else if (MainPages.SelectedItem == PageEdit)
-            {
-                BtnEdit.Background = (SolidColorBrush)Resources["ButtonHoverBackgroundBrush"];
-            }
-            else if (MainPages.SelectedItem == PageSettings)
-            {
-                BtnSettings.Background = (SolidColorBrush)Resources["ButtonHoverBackgroundBrush"];
-            }
-            else if (MainPages.SelectedItem == PageConverter)
-            {
-                BtnConverter.Background = (SolidColorBrush)Resources["ButtonHoverBackgroundBrush"];
-            }
-            else if (MainPages.SelectedItem == PageTeleport)
-            {
-                BtnTeleport.Background = (SolidColorBrush)Resources["ButtonHoverBackgroundBrush"];
-            }
-            else if (MainPages.SelectedItem == PageGEditor)
-            {
-                BtnGEditor.Background = (SolidColorBrush)Resources["ButtonHoverBackgroundBrush"];
-            }
-            else if (MainPages.SelectedItem == PageMod)
-            {
-                BtnMod.Background = (SolidColorBrush)Resources["ButtonHoverBackgroundBrush"];
-            }
-            else if (MainPages.SelectedItem == PageCopyJobs)
-            {
-                BtnCopyJobs.Background = (SolidColorBrush)Resources["ButtonHoverBackgroundBrush"];
-            }
+                (Btndashboard, PageDashboard), (BtnEdit, PageEdit), (BtnCopyJobs, PageCopyJobs),
+                (BtnConverter, PageConverter), (BtnTeleport, PageTeleport), (BtnGEditor, PageGEditor),
+                (BtnMod, PageMod), (BtnSettings, PageSettings),
+            };
+            foreach (var (button, page) in pages)
+                button.Tag = MainPages.SelectedItem == page ? "active" : null;
 
             if (!m.IsProcOpen && SGTAMessage != null)
             {
