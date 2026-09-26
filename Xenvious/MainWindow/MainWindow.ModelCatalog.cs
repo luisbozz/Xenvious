@@ -60,6 +60,8 @@ namespace Xenvious
 
         private void UpdateModelCacheSettings()
         {
+            if (cbModelCache == null || tbModelCacheUsage == null)
+                return;
             _updatingCacheSettings = true;
             cbModelCache.IsChecked = ModelImageCache.Enabled;
             _updatingCacheSettings = false;

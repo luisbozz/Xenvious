@@ -48,7 +48,8 @@ namespace Xenvious
             };
             foreach (var (button, page) in pages)
                 button.Tag = MainPages.SelectedItem == page ? "active" : null;
-            if (MainPages.SelectedItem == PageSettings)
+            // Not while the window is being built: the Settings controls may not exist yet.
+            if (MainPages.SelectedItem == PageSettings && IsLoaded)
                 UpdateModelCacheSettings();
 
             if (!m.IsProcOpen && SGTAMessage != null)
