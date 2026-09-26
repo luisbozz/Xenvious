@@ -62,9 +62,12 @@ namespace Xenvious
                 BuildDashboardCounts(creator);
                 BuildDashboardTeams(creator);
                 bool mission = IsMissionCreator(creator);
-                DashMissionAmbient.Visibility = mission ? Visibility.Visible : Visibility.Collapsed;
-                DashMissionLook.Visibility = mission ? Visibility.Visible : Visibility.Collapsed;
-                DashRaceLobby.Visibility = creator == "fm_race_creator" ? Visibility.Visible : Visibility.Collapsed;
+                // Options of another job type stay visible but greyed out, so the layout does not jump.
+                string onlyMissions = TranslateOr("dash_only_missions", "Only in LTS and Capture");
+                string onlyRaces = TranslateOr("dash_only_races", "Only in races");
+                SetDashOptionsEnabled(DashMissionAmbient, mission, onlyMissions);
+                SetDashOptionsEnabled(DashMissionLook, mission, onlyMissions);
+                SetDashOptionsEnabled(DashRaceLobby, creator == "fm_race_creator", onlyRaces);
                 // The map rebuild is only verified for race, LTS and capture (see CreatorMap).
                 BtnDashReloadMap.IsEnabled = creator == "fm_race_creator" || creator == "fm_lts_creator" || creator == "fm_capture_creator";
             }
@@ -79,6 +82,14 @@ namespace Xenvious
                 GetDashboardMissionAmbient();
             else if (creator == "fm_race_creator")
                 GetDashboardRaceLobby();
+        }
+
+        private static void SetDashOptionsEnabled(FrameworkElement options, bool enabled, string reason)
+        {
+            options.IsEnabled = enabled;
+            options.Opacity = enabled ? 1.0 : 0.4;
+            options.ToolTip = enabled ? null : reason;
+            ToolTipService.SetShowOnDisabled(options, true);
         }
 
         private static string SafeRead(Func<string> read)
@@ -249,8 +260,10 @@ namespace Xenvious
         {
             DashTeamButtons.Children.Clear();
             bool race = creator == "fm_race_creator";
-            int count = creator == "fm_deathmatch_creator" || creator.Length == 0 ? 0 : race ? 2 : 4;
-            DashTeamPanel.Visibility = count == 0 ? Visibility.Collapsed : Visibility.Visible;
+            int count = race ? 2 : 4;
+            // No team test in the deathmatch creator: the toggles stay, greyed out.
+            SetDashOptionsEnabled(DashTeamPanel, creator.Length > 0 && creator != "fm_deathmatch_creator",
+                TranslateOr("dash_no_teamtest", "No team test in this creator"));
             if (ddteamtest.SelectedIndex >= count)
                 ddteamtest.SelectedIndex = 0;
 
