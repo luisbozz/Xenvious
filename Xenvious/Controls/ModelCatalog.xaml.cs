@@ -151,7 +151,15 @@ namespace Xenvious
                     || i.Hash.ToString("X8", CultureInfo.InvariantCulture).Equals(hex.PadLeft(8, '0'), StringComparison.OrdinalIgnoreCase));
             }
             var list = result.ToList();
+            // Keep the selected model when it is still in the list, otherwise select the first,
+            // so the preview and Take always have something after switching the category.
+            var selected = ItemList.SelectedItem as CatalogItem;
             ItemList.ItemsSource = list;
+            if (list.Count > 0)
+            {
+                ItemList.SelectedItem = selected != null && list.Contains(selected) ? selected : list[0];
+                ItemList.ScrollIntoView(ItemList.SelectedItem);
+            }
             HitCount.Text = string.Format(CultureInfo.CurrentCulture, Translate("catalog_hits", "{0} models"), list.Count);
         }
 
