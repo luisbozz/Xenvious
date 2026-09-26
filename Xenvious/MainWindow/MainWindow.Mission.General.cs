@@ -428,10 +428,12 @@ namespace Xenvious
             Functions.Write.writebinary(3, GTA.Offsets.Editor.menubs2, cbmissionplaycm);
         }
 
+        // pol: 0 = normal police, 1 = no police, 2..6 = at most 1..5 stars. The
+        // dropdown lists them in that order.
         private void ddmissionmaxwl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ddmissionmaxwl.SelectedIndex > -1)
-                new Global(GTA.Offsets.Editor.pol).SetInt(ddmissionmaxwl.SelectedIndex + 1);
+                new Global(GTA.Offsets.Editor.pol).SetInt(ddmissionmaxwl.SelectedIndex);
         }
 
         private void tbMissionendtype_TextChanged(object sender, TextChangedEventArgs e)
