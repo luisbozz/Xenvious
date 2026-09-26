@@ -478,7 +478,7 @@
                                     <Setter Property="FontSize" Value="13"/>
                                     <Setter Property="FontWeight" Value="Bold"/>
                                     <Setter Property="Height" Value="34"/>
-                                    <Setter Property="Margin" Value="0,0,6,6"/>
+                                    <Setter Property="Margin" Value="0,0,8,6"/>
                                     <Setter Property="Cursor" Value="Hand"/>
                                     <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
                                     <Setter Property="Template">
@@ -616,7 +616,7 @@
                             <ScrollViewer x:Name="DashScroll" Grid.Row="1" Margin="12,12,12,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="300"/>
+                                        <ColumnDefinition Width="210"/>
                                         <ColumnDefinition Width="*" MinWidth="520"/>
                                         <ColumnDefinition Width="380"/>
                                     </Grid.ColumnDefinitions>
@@ -637,23 +637,25 @@
                                                     <ComboBoxItem Content="3"/>
                                                     <ComboBoxItem Content="4"/>
                                                 </ComboBox>
-                                                <DockPanel Margin="0,0,8,8" Visibility="{Binding ElementName=BtnTestMain, Path=Visibility}">
-                                                    <Border x:Name="DashTeamPanel" DockPanel.Dock="Left" Background="{DynamicResource TextBoxBackground}" CornerRadius="5" Padding="3" Margin="0,0,8,0">
-                                                        <StackPanel Orientation="Horizontal">
-                                                            <TextBlock Text="{Binding Translation[dash_team], FallbackValue=Team}" FontSize="11" FontWeight="Bold" Foreground="{StaticResource NavMutedBrush}" VerticalAlignment="Center" Margin="6,0,6,0"/>
-                                                            <StackPanel x:Name="DashTeamButtons" Orientation="Horizontal"/>
-                                                        </StackPanel>
-                                                    </Border>
-                                                    <Button x:Name="BtnTestMain" Height="34" Style="{StaticResource DashPrimaryButton}" Click="BtnTestMain_Click" Content="{Binding Translation[test], FallbackValue=Test}"/>
-                                                </DockPanel>
-                                                <UniformGrid Columns="2">
-                                                    <Button x:Name="BtnSaveMain" Style="{StaticResource DashButton}" Click="BtnSaveMain_Click" Content="{Binding Translation[save], FallbackValue=Save}"/>
-                                                    <Button x:Name="BtnPublishMain" Style="{StaticResource DashButton}" Click="BtnPublishMain_Click" Content="{Binding Translation[publish], FallbackValue=Publish}"/>
-                                                    <Button x:Name="BtnSkipTest" Style="{StaticResource DashButton}" Click="BtnSkipTest_Click" Content="{Binding Translation[skiptest], FallbackValue='Skip Testing'}"/>
-                                                    <Button x:Name="BtnTryFixBlackScreen" Style="{StaticResource DashButton}" Click="BtnTryFixBlackScreen_Click" Content="{Binding Translation[dash_fixblack], FallbackValue='Fix Black Screen'}"/>
-                                                    <Button x:Name="BtnDashBackupMap" Style="{StaticResource DashButton}" Click="BtnDashBackupMap_Click" Content="{Binding Translation[dash_backupmap], FallbackValue='Backup Map'}"/>
-                                                    <Button x:Name="BtnDashReloadMap" Style="{StaticResource DashButton}" Click="BtnDashReloadMap_Click" Content="{Binding Translation[dash_reloadmap], FallbackValue='Reload Map'}"/>
-                                                </UniformGrid>
+                                                <!-- One action per row; the team (race: route) toggles sit above Test. -->
+                                                <Border x:Name="DashTeamPanel" HorizontalAlignment="Left" Background="{DynamicResource TextBoxBackground}" CornerRadius="5" Padding="3" Margin="0,0,8,6"
+                                                        Visibility="{Binding ElementName=BtnTestMain, Path=Visibility}">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="{Binding Translation[dash_team], FallbackValue=Team}" FontSize="11" FontWeight="Bold" Foreground="{StaticResource NavMutedBrush}" VerticalAlignment="Center" Margin="6,0,6,0"/>
+                                                        <StackPanel x:Name="DashTeamButtons" Orientation="Horizontal"/>
+                                                    </StackPanel>
+                                                </Border>
+                                                <Button x:Name="BtnTestMain" Height="36" Margin="0,0,8,8" Style="{StaticResource DashPrimaryButton}" Click="BtnTestMain_Click" Content="{Binding Translation[test], FallbackValue=Test}"/>
+                                                <Rectangle Height="1" Fill="#FF3A3D43" Margin="0,2,8,8"/>
+                                                <Button x:Name="BtnSaveMain" Style="{StaticResource DashButton}" Click="BtnSaveMain_Click" Content="{Binding Translation[save], FallbackValue=Save}"/>
+                                                <Button x:Name="BtnPublishMain" Style="{StaticResource DashButton}" Click="BtnPublishMain_Click" Content="{Binding Translation[publish], FallbackValue=Publish}"/>
+                                                <Rectangle Height="1" Fill="#FF3A3D43" Margin="0,2,8,8"/>
+                                                <Button x:Name="BtnSkipTest" Style="{StaticResource DashButton}" Click="BtnSkipTest_Click" Content="{Binding Translation[skiptest], FallbackValue='Skip Testing'}"/>
+                                                <Button x:Name="BtnTryFixBlackScreen" Style="{StaticResource DashButton}" Click="BtnTryFixBlackScreen_Click" Content="{Binding Translation[dash_fixblack], FallbackValue='Fix Black Screen'}"/>
+                                                <Rectangle Height="1" Fill="#FF3A3D43" Margin="0,2,8,8"/>
+                                                <Button x:Name="BtnDashBackupMap" Style="{StaticResource DashButton}" Click="BtnDashBackupMap_Click" Content="{Binding Translation[dash_backupmap], FallbackValue='Backup Map'}"/>
+                                                <Button x:Name="BtnDashReloadMap" Style="{StaticResource DashButton}" Click="BtnDashReloadMap_Click" Content="{Binding Translation[dash_reloadmap], FallbackValue='Reload Map'}"/>
+                                                <Rectangle Height="1" Fill="#FF3A3D43" Margin="0,2,8,8"/>
 
                                                 <Grid Style="{StaticResource FormRow}" Margin="0,4,8,4">
                                                     <Grid.ColumnDefinitions>
@@ -968,42 +970,8 @@
                                                     </StackPanel>
                                                 </UniformGrid>
 
-                                                <!-- Mission-only values (LTS, Capture): the controller reads them, races and deathmatches do not. -->
-                                                <UniformGrid x:Name="DashMissionAmbient" Columns="2">
-                                                    <StackPanel Margin="0,0,8,10">
-                                                        <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[missionmaxwl], FallbackValue=Police}"/>
-                                                        <ComboBox x:Name="dddashpolice" Height="32" FontFamily="{DynamicResource Volte}" SelectionChanged="dddashpolice_SelectionChanged">
-                                                            <ComboBoxItem Content="{Binding Translation[missionpolnormal], FallbackValue='Normal'}"/>
-                                                            <ComboBoxItem Content="{Binding Translation[off], FallbackValue='off'}"/>
-                                                            <ComboBoxItem Content="1"/>
-                                                            <ComboBoxItem Content="2"/>
-                                                            <ComboBoxItem Content="3"/>
-                                                            <ComboBoxItem Content="4"/>
-                                                            <ComboBoxItem Content="5"/>
-                                                        </ComboBox>
-                                                    </StackPanel>
-                                                    <StackPanel Margin="0,0,0,10">
-                                                        <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[missiontraffic], FallbackValue=Traffic}"/>
-                                                        <ComboBox x:Name="dddashtraffic" Height="32" FontFamily="{DynamicResource Volte}" SelectionChanged="dddashtraffic_SelectionChanged">
-                                                            <ComboBoxItem Content="0%"/>
-                                                            <ComboBoxItem Content="20%"/>
-                                                            <ComboBoxItem Content="50%"/>
-                                                            <ComboBoxItem Content="85%"/>
-                                                            <ComboBoxItem Content="100%"/>
-                                                        </ComboBox>
-                                                    </StackPanel>
-                                                    <StackPanel Margin="0,0,8,10">
-                                                        <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[missionpeds], FallbackValue=Pedestrians}"/>
-                                                        <ComboBox x:Name="dddashpeds" Height="32" FontFamily="{DynamicResource Volte}" SelectionChanged="dddashpeds_SelectionChanged">
-                                                            <ComboBoxItem Content="0%"/>
-                                                            <ComboBoxItem Content="20%"/>
-                                                            <ComboBoxItem Content="50%"/>
-                                                            <ComboBoxItem Content="85%"/>
-                                                            <ComboBoxItem Content="100%"/>
-                                                        </ComboBox>
-                                                    </StackPanel>
-                                                </UniformGrid>
 
+                                                <Rectangle Height="1" Fill="#FF3A3D43" Margin="0,10,0,0"/>
                                                 <TextBlock Style="{StaticResource DashSub}" Text="{Binding Translation[dash_looksound], FallbackValue='Look and sound'}"/>
                                                 <Grid Style="{StaticResource FormRow}">
                                                     <Grid.ColumnDefinitions>
@@ -1021,36 +989,77 @@
                                                     <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[blackoutcity], FallbackValue='Blackout City'}"/>
                                                     <CheckBox x:Name="cb_blackout" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cb_blackout_Checked" Unchecked="cb_blackout_Unchecked"/>
                                                 </Grid>
-                                                <!-- Mission-only switches, shared with Mission > General. -->
-                                                <StackPanel x:Name="DashMissionLook">
-                                                    <Grid Style="{StaticResource FormRow}">
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="*"/>
-                                                            <ColumnDefinition Width="Auto"/>
-                                                        </Grid.ColumnDefinitions>
-                                                        <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[missiondisptod], FallbackValue='Progress Time of Day'}"/>
-                                                        <CheckBox x:Name="cbdashptod" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbdashptod_Checked" Unchecked="cbdashptod_Checked"/>
-                                                    </Grid>
-                                                    <Grid Style="{StaticResource FormRow}" ToolTip="{Binding Translation[missionextinfo], FallbackValue='* not offered by the creator, only through Xenvious'}">
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="*"/>
-                                                            <ColumnDefinition Width="Auto"/>
-                                                        </Grid.ColumnDefinitions>
-                                                        <TextBlock Style="{StaticResource FormLabel}"><Run Text="{Binding Translation[missionextmuteambience], FallbackValue='Mute City and Traffic Sounds', Mode=OneWay}"/><Run Text=" *" Foreground="{DynamicResource DisabledForegroundBrush}"/></TextBlock>
-                                                        <CheckBox x:Name="cbdashmuteambience" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked"/>
-                                                    </Grid>
-                                                    <Grid Style="{StaticResource FormRow}" ToolTip="{Binding Translation[missionextinfo], FallbackValue='* not offered by the creator, only through Xenvious'}">
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="*"/>
-                                                            <ColumnDefinition Width="Auto"/>
-                                                        </Grid.ColumnDefinitions>
-                                                        <TextBlock Style="{StaticResource FormLabel}"><Run Text="{Binding Translation[missionextnoregionvfx], FallbackValue='Disable Region Effects', Mode=OneWay}"/><Run Text=" *" Foreground="{DynamicResource DisabledForegroundBrush}"/></TextBlock>
-                                                        <CheckBox x:Name="cbdashnoregionvfx" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked"/>
-                                                    </Grid>
+                                                <!-- LTS and Capture only; hidden in other creators. -->
+                                                <StackPanel x:Name="DashMissionSection">
+                                                    <Rectangle Height="1" Fill="#FF3A3D43" Margin="0,10,0,0"/>
+                                                    <TextBlock Style="{StaticResource DashSub}" Text="{Binding Translation[mission], FallbackValue=Mission}"/>
+                                                    <!-- The controller reads these, races and deathmatches do not. -->
+                                                    <UniformGrid x:Name="DashMissionAmbient" Columns="2">
+                                                        <StackPanel Margin="0,0,8,10">
+                                                            <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[missionmaxwl], FallbackValue=Police}"/>
+                                                            <ComboBox x:Name="dddashpolice" Height="32" FontFamily="{DynamicResource Volte}" SelectionChanged="dddashpolice_SelectionChanged">
+                                                                <ComboBoxItem Content="{Binding Translation[missionpolnormal], FallbackValue='Normal'}"/>
+                                                                <ComboBoxItem Content="{Binding Translation[off], FallbackValue='off'}"/>
+                                                                <ComboBoxItem Content="1"/>
+                                                                <ComboBoxItem Content="2"/>
+                                                                <ComboBoxItem Content="3"/>
+                                                                <ComboBoxItem Content="4"/>
+                                                                <ComboBoxItem Content="5"/>
+                                                            </ComboBox>
+                                                        </StackPanel>
+                                                        <StackPanel Margin="0,0,0,10">
+                                                            <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[missiontraffic], FallbackValue=Traffic}"/>
+                                                            <ComboBox x:Name="dddashtraffic" Height="32" FontFamily="{DynamicResource Volte}" SelectionChanged="dddashtraffic_SelectionChanged">
+                                                                <ComboBoxItem Content="0%"/>
+                                                                <ComboBoxItem Content="20%"/>
+                                                                <ComboBoxItem Content="50%"/>
+                                                                <ComboBoxItem Content="85%"/>
+                                                                <ComboBoxItem Content="100%"/>
+                                                            </ComboBox>
+                                                        </StackPanel>
+                                                        <StackPanel Margin="0,0,8,10">
+                                                            <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[missionpeds], FallbackValue=Pedestrians}"/>
+                                                            <ComboBox x:Name="dddashpeds" Height="32" FontFamily="{DynamicResource Volte}" SelectionChanged="dddashpeds_SelectionChanged">
+                                                                <ComboBoxItem Content="0%"/>
+                                                                <ComboBoxItem Content="20%"/>
+                                                                <ComboBoxItem Content="50%"/>
+                                                                <ComboBoxItem Content="85%"/>
+                                                                <ComboBoxItem Content="100%"/>
+                                                            </ComboBox>
+                                                        </StackPanel>
+                                                    </UniformGrid>
+                                                    <!-- Shared with Mission > General. -->
+                                                    <StackPanel x:Name="DashMissionLook">
+                                                        <Grid Style="{StaticResource FormRow}">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[missiondisptod], FallbackValue='Progress Time of Day'}"/>
+                                                            <CheckBox x:Name="cbdashptod" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbdashptod_Checked" Unchecked="cbdashptod_Checked"/>
+                                                        </Grid>
+                                                        <Grid Style="{StaticResource FormRow}" ToolTip="{Binding Translation[missionextinfo], FallbackValue='* not offered by the creator, only through Xenvious'}">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBlock Style="{StaticResource FormLabel}"><Run Text="{Binding Translation[missionextmuteambience], FallbackValue='Mute City and Traffic Sounds', Mode=OneWay}"/><Run Text=" *" Foreground="{DynamicResource DisabledForegroundBrush}"/></TextBlock>
+                                                            <CheckBox x:Name="cbdashmuteambience" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked"/>
+                                                        </Grid>
+                                                        <Grid Style="{StaticResource FormRow}" ToolTip="{Binding Translation[missionextinfo], FallbackValue='* not offered by the creator, only through Xenvious'}">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBlock Style="{StaticResource FormLabel}"><Run Text="{Binding Translation[missionextnoregionvfx], FallbackValue='Disable Region Effects', Mode=OneWay}"/><Run Text=" *" Foreground="{DynamicResource DisabledForegroundBrush}"/></TextBlock>
+                                                            <CheckBox x:Name="cbdashnoregionvfx" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked"/>
+                                                        </Grid>
+                                                    </StackPanel>
                                                 </StackPanel>
                                                 <!-- Race only: the lobby options that decide weather, time and traffic (same bits as Race > Online Lobby Options). -->
                                                 <StackPanel x:Name="DashRaceLobby">
-                                                    <TextBlock Style="{StaticResource DashSub}" Text="{Binding Translation[onlinelobby], FallbackValue='Online Lobby Options'}"/>
+                                                    <Rectangle Height="1" Fill="#FF3A3D43" Margin="0,10,0,0"/>
+                                                    <TextBlock Style="{StaticResource DashSub}" Text="{Binding Translation[race], FallbackValue=Race}" ToolTip="{Binding Translation[onlinelobby], FallbackValue='Online Lobby Options'}"/>
                                                     <Grid Style="{StaticResource FormRow}">
                                                         <Grid.ColumnDefinitions>
                                                             <ColumnDefinition Width="*"/>
