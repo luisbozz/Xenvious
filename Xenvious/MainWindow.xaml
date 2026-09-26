@@ -376,14 +376,15 @@
                                     <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                 </Style>
+                                <!-- Section headings inside a card (Details, Placed in this job, Look and sound). -->
                                 <Style x:Key="DashSub" TargetType="{x:Type TextBlock}">
-                                    <Setter Property="FontSize" Value="11"/>
+                                    <Setter Property="FontSize" Value="15"/>
                                     <Setter Property="FontWeight" Value="Bold"/>
-                                    <Setter Property="Foreground" Value="{StaticResource NavMutedBrush}"/>
-                                    <Setter Property="Margin" Value="0,10,0,6"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
+                                    <Setter Property="Margin" Value="0,14,0,8"/>
                                 </Style>
                                 <Style x:Key="DashFieldLabel" TargetType="{x:Type TextBlock}">
-                                    <Setter Property="FontSize" Value="12"/>
+                                    <Setter Property="FontSize" Value="13"/>
                                     <Setter Property="FontWeight" Value="Bold"/>
                                     <Setter Property="Foreground" Value="{StaticResource NavMutedBrush}"/>
                                     <Setter Property="Margin" Value="0,0,0,3"/>
@@ -864,7 +865,7 @@
                                                     </StackPanel>
                                                 </UniformGrid>
 
-                                                <TextBlock Style="{StaticResource DashSub}" Margin="0,4,0,4" Text="{Binding Translation[dash_looksound], FallbackValue='Look and sound'}"/>
+                                                <TextBlock Style="{StaticResource DashSub}" Text="{Binding Translation[dash_looksound], FallbackValue='Look and sound'}"/>
                                                 <Grid Style="{StaticResource FormRow}">
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="*"/>
@@ -910,7 +911,7 @@
                                                 </StackPanel>
                                                 <!-- Race only: the lobby options that decide weather, time and traffic (same bits as Race > Online Lobby Options). -->
                                                 <StackPanel x:Name="DashRaceLobby">
-                                                    <TextBlock Style="{StaticResource DashSub}" Margin="0,10,0,4" Text="{Binding Translation[onlinelobby], FallbackValue='Online Lobby Options'}"/>
+                                                    <TextBlock Style="{StaticResource DashSub}" Text="{Binding Translation[onlinelobby], FallbackValue='Online Lobby Options'}"/>
                                                     <Grid Style="{StaticResource FormRow}">
                                                         <Grid.ColumnDefinitions>
                                                             <ColumnDefinition Width="*"/>
