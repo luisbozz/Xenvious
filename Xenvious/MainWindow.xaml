@@ -1105,65 +1105,62 @@
 
                     <TabItem x:Name="PageEdit" Header="Edit" Height="27" VerticalAlignment="Top">
                         <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="0.20*" MinHeight="150" MaxHeight="250"/>
-                                <RowDefinition Height="0.80*"/>
-                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition x:Name="EditNavColumn" Width="250"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-                            <Border Grid.Row="0" Background="{DynamicResource SectionBackgroundBrush}" CornerRadius="5" Padding="0,0,0,5" Margin="10">
-                                <Border.Effect>
-                                    <DropShadowEffect BlurRadius="13" ShadowDepth="0" Color="{DynamicResource ShadowColor}"/>
-                                </Border.Effect>
+                            <!-- Side list of the Edit pages, built in MainWindow.EditNav.cs: pages of the open
+                                 creator in groups, their sub-pages, a search and the script patch status. -->
+                            <Border Grid.Column="0" Background="{DynamicResource SectionBackgroundBrush}" CornerRadius="5" Margin="10,10,0,10">
+                                <DockPanel Margin="8">
+                                    <DockPanel DockPanel.Dock="Top" Margin="0,0,0,6">
+                                        <Button x:Name="BtnEditNavCollapse" DockPanel.Dock="Left" Style="{StaticResource NavButton}" Padding="7" Margin="0,0,6,0" Click="BtnEditNavCollapse_Click"
+                                                ToolTip="{Binding Translation[editnav_collapse], FallbackValue='Collapse or expand the list'}">
+                                            <Viewbox Style="{StaticResource NavIconBox}" Margin="0">
+                                                <Canvas Width="24" Height="24"><Path x:Name="EditNavCollapseIcon" Style="{StaticResource NavIcon}" Data="{StaticResource EditIconBack}"/></Canvas>
+                                            </Viewbox>
+                                        </Button>
+                                        <TextBox x:Name="tbEditNavSearch" Style="{StaticResource Watermark}" Height="32" FontSize="14" TextChanged="tbEditNavSearch_TextChanged"
+                                                 Tag="{Binding Translation[editnav_search], FallbackValue='Search pages'}"/>
+                                    </DockPanel>
 
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="50"/>
-                                        <RowDefinition Height="*"/>
-                                    </Grid.RowDefinitions>
+                                    <!-- Script patches of the open creator: status only; switching stays in Misc. -->
+                                    <Button x:Name="BtnEditScriptStatus" DockPanel.Dock="Bottom" Style="{StaticResource SideNavButton}" Margin="0,6,0,0" Click="BtnEditScriptStatus_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Ellipse x:Name="EditScriptDot" Width="9" Height="9" Margin="2,0,10,0" VerticalAlignment="Center" Fill="#FF72767D"/>
+                                            <TextBlock x:Name="EditScriptLabel" Style="{StaticResource NavLabel}" Text="{Binding Translation[adv_features_label], FallbackValue='Script features'}"/>
+                                            <TextBlock x:Name="EditScriptSummary" Style="{StaticResource NavLabel}" Margin="10,0,0,0" FontSize="12"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Popup x:Name="EditScriptPopup" DockPanel.Dock="Bottom" PlacementTarget="{Binding ElementName=BtnEditScriptStatus}" Placement="Top"
+                                           StaysOpen="False" AllowsTransparency="True">
+                                        <Border Background="{DynamicResource SeactionHeaderBackgroundBrush}" CornerRadius="6" Padding="12,10" Width="330" Margin="0,0,0,6">
+                                            <StackPanel>
+                                                <TextBlock x:Name="EditScriptPopupTitle" FontSize="12" FontWeight="Bold" Foreground="#FF72767D" Margin="0,0,0,6"/>
+                                                <StackPanel x:Name="EditScriptList"/>
+                                                <DockPanel Margin="0,8,0,0">
+                                                    <Button x:Name="BtnEditScriptRefresh" DockPanel.Dock="Left" Style="{StaticResource NavButton}" Click="BtnEditScriptRefresh_Click">
+                                                        <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[editnav_refresh], FallbackValue='Check again'}"/>
+                                                    </Button>
+                                                    <Button x:Name="BtnEditScriptMisc" HorizontalAlignment="Right" Style="{StaticResource NavButton}" Click="BtnEditScriptMisc_Click">
+                                                        <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[editnav_toscrpatches], FallbackValue='Misc › Script Patches'}"/>
+                                                    </Button>
+                                                </DockPanel>
+                                            </StackPanel>
+                                        </Border>
+                                    </Popup>
 
-                                    <Border Margin="3" CornerRadius="5" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Grid.Row="0">
-                                        <Viewbox VerticalAlignment="Center" HorizontalAlignment="Center">
-                                            <Label x:Name="SectionHeaderLabel" Foreground="{DynamicResource TextColor}" FontFamily="{DynamicResource Volte}" FontWeight="Bold" Content="{Binding Translation[sectionswitcher], FallbackValue=Section Switcher}"/>
-                                        </Viewbox>
-                                    </Border>
-
-                                    <Grid Grid.Row="1" Margin="10">
-
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="0.125*"/>
-                                            <ColumnDefinition Width="0.125*"/>
-                                            <ColumnDefinition Width="0.125*"/>
-                                            <ColumnDefinition Width="0.125*"/>
-                                            <ColumnDefinition Width="0.125*"/>
-                                            <ColumnDefinition Width="0.125*"/>
-                                        </Grid.ColumnDefinitions>
-
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="0.5*"/>
-                                            <RowDefinition Height="0.5*"/>
-                                        </Grid.RowDefinitions>
-
-
-                                        <Button x:Name="BtnSectionProps" Style="{DynamicResource CustomButton}" Click="BtnSectionProps_Click" FontSize="22"           Grid.Column="0" Grid.Row="0" Background="{DynamicResource SeactionHeaderBackgroundBrush}" local:CornerRadiusSetter.CornerRadius="5,0,0,0" Content="{Binding Translation[props], FallbackValue=Props}"/>
-                                        <Button x:Name="BtnSectionVeh" Style="{DynamicResource CustomButton}" Click="BtnSectionVeh_Click" FontSize="22"               Grid.Column="1" Grid.Row="0" Background="{DynamicResource SeactionHeaderBackgroundBrush}" local:CornerRadiusSetter.CornerRadius="0,0,0,0" Content="{Binding Translation[vehicles], FallbackValue=Vehicles}"/>
-                                        <Button x:Name="BtnSectionWeap" Style="{DynamicResource CustomButton}" Click="BtnSectionWeap_Click" FontSize="22"             Grid.Column="2" Grid.Row="0" Background="{DynamicResource SeactionHeaderBackgroundBrush}" local:CornerRadiusSetter.CornerRadius="0,0,0,0" Content="{Binding Translation[weapons], FallbackValue=Weapons}"/>
-                                        <Button x:Name="BtnSectionActor" Style="{DynamicResource CustomButton}" Click="BtnSectionActor_Click" FontSize="22"           Grid.Column="3" Grid.Row="0" Background="{DynamicResource SeactionHeaderBackgroundBrush}" local:CornerRadiusSetter.CornerRadius="0,0,0,5" Content="{Binding Translation[actor], FallbackValue=Actor}"/>
-                                        <Button x:Name="BtnSectionRace" Style="{DynamicResource CustomButton}" Click="BtnSectionRace_Click" FontSize="22"             Grid.Column="4" Grid.Row="0" Background="{DynamicResource SeactionHeaderBackgroundBrush}" local:CornerRadiusSetter.CornerRadius="0,0,0,0" Content="{Binding Translation[race], FallbackValue=Race}"/>
-                                        <Button x:Name="BtnSectionMission" Style="{DynamicResource CustomButton}" Click="BtnSectionMission_Click" FontSize="22"       Grid.Column="5" Grid.Row="0" Background="{DynamicResource SeactionHeaderBackgroundBrush}" local:CornerRadiusSetter.CornerRadius="0,5,0,0" Content="{Binding Translation[mission], FallbackValue=Mission}"/>
-                                        <Button x:Name="BtnSectionZone" Style="{DynamicResource CustomButton}" Click="BtnSectionZone_Click" FontSize="22"             Grid.Column="0" Grid.Row="1" Background="{DynamicResource SeactionHeaderBackgroundBrush}" local:CornerRadiusSetter.CornerRadius="0,0,0,0" Content="{Binding Translation[zones], FallbackValue=Zones}"/>
-                                        <Button x:Name="BtnSectionDoors" Style="{DynamicResource CustomButton}" Click="BtnSectionDoors_Click" FontSize="22"           Grid.Column="1" Grid.Row="1" Background="{DynamicResource SeactionHeaderBackgroundBrush}" local:CornerRadiusSetter.CornerRadius="0,0,0,0" Content="{Binding Translation[doors], FallbackValue=Doors}"/>
-                                        <Button x:Name="BtnSectioncentity" Style="{DynamicResource CustomButton}" Click="BtnSectioncentity_Click" FontSize="22"       Grid.Column="2" Grid.Row="1" Background="{DynamicResource SeactionHeaderBackgroundBrush}" local:CornerRadiusSetter.CornerRadius="0,0,0,0" Content="Fixtures(centitydef)"/>
-                                        <Button x:Name="BtnSectionObj" Style="{DynamicResource CustomButton}" Click="BtnSectionObj_Click" FontSize="22"               Grid.Column="3" Grid.Row="1" Background="{DynamicResource SeactionHeaderBackgroundBrush}" local:CornerRadiusSetter.CornerRadius="0,0,0,0" Content="{Binding Translation[jobsubtype_mission_capture], FallbackValue=Capture}"/>
-                                        <Button x:Name="BtnSectionDeathmatch" Style="{DynamicResource CustomButton}" Click="BtnSectionDeathmatch_Click" FontSize="22" Grid.Column="4" Grid.Row="1" Background="{DynamicResource SeactionHeaderBackgroundBrush}" local:CornerRadiusSetter.CornerRadius="0,0,0,0" Content="{Binding Translation[deathmatch], FallbackValue=Deathmatch}"/>
-                                        <Button x:Name="BtnSectionSurvival" Style="{DynamicResource CustomButton}" Click="BtnSectionSurvival_Click" FontSize="22"     Grid.Column="5" Grid.Row="1" Background="{DynamicResource SeactionHeaderBackgroundBrush}" local:CornerRadiusSetter.CornerRadius="0,0,5,0" Content="{Binding Translation[survival], FallbackValue=Survival}"/>
-
-
-                                    </Grid>
-                                </Grid>
+                                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                        <StackPanel>
+                                            <StackPanel x:Name="EditNavResults"/>
+                                            <StackPanel x:Name="EditNavList"/>
+                                        </StackPanel>
+                                    </ScrollViewer>
+                                </DockPanel>
                             </Border>
 
-
-                            <Border Grid.Row="1" Background="{DynamicResource SectionBackgroundBrush}" CornerRadius="5" Margin="10">
+                            <Border Grid.Column="1" Background="{DynamicResource SectionBackgroundBrush}" CornerRadius="5" Margin="10">
                                 <Border.Effect>
                                     <DropShadowEffect BlurRadius="13" ShadowDepth="0" Color="{DynamicResource ShadowColor}"/>
                                 </Border.Effect>
@@ -1173,10 +1170,20 @@
                                         <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
 
+                                    <!-- Page title; "Back" appears after a jump from the search. -->
                                     <Border Margin="3" CornerRadius="5" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Grid.Row="0">
-                                        <Viewbox VerticalAlignment="Center" HorizontalAlignment="Center">
-                                            <Label x:Name="HeaderLabel" Foreground="{DynamicResource TextColor}" FontFamily="{DynamicResource Volte}" FontWeight="Bold" Content="Section Switcher"/>
-                                        </Viewbox>
+                                        <DockPanel Margin="10,0">
+                                            <Button x:Name="BtnEditBack" DockPanel.Dock="Left" Style="{StaticResource NavButton}" Visibility="Collapsed" Margin="0,0,10,0" Click="BtnEditBack_Click">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Viewbox Style="{StaticResource NavIconBox}">
+                                                        <Canvas Width="24" Height="24"><Path Style="{StaticResource NavIcon}" Data="{StaticResource EditIconBack}"/></Canvas>
+                                                    </Viewbox>
+                                                    <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[editnav_back], FallbackValue=Back}"/>
+                                                </StackPanel>
+                                            </Button>
+                                            <TextBlock x:Name="EditCrumbParent" VerticalAlignment="Center" FontSize="14" FontWeight="Bold" Foreground="#FFA3A6AA"/>
+                                            <TextBlock x:Name="HeaderLabel" VerticalAlignment="Center" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource TextColor}"/>
+                                        </DockPanel>
                                     </Border>
 
                                     <Grid Grid.Row="1">

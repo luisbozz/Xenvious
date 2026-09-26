@@ -426,6 +426,7 @@
     <Compile Include="MainWindow\MainWindow.Dialog.cs" />
     <Compile Include="MainWindow\MainWindow.Dashboard.cs" />
     <Compile Include="MainWindow\MainWindow.DashboardCreator.cs" />
+    <Compile Include="MainWindow\MainWindow.EditNav.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

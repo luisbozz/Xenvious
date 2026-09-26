@@ -64,6 +64,7 @@ namespace Xenvious
                 AdvanceLaunch(game, inCreator);
                 UpdateLaunchButton(inCreator);
                 UpdateStatusStrip(game, inCreator, creatorMenu, creator);
+                UpdateEditNav(inCreator ? creator : "");
                 OfferLaunchInStoryMode(globals, inCreator, creatorMenu);
             }
             catch (Exception ex)

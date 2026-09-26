@@ -178,6 +178,15 @@ namespace Xenvious
             }
         }
 
+        /// <summary>Whether the runner has written this patch into its script.</summary>
+        public static bool IsApplied(ScrPatches patch)
+        {
+            lock (written)
+            {
+                return patch != null && written.ContainsKey(patch);
+            }
+        }
+
         /// <summary>
         /// Put a patch's original bytes back and let it be applied again later.
         ///
