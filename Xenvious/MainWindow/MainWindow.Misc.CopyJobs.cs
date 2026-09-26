@@ -26,6 +26,24 @@ namespace Xenvious
     // Part of MainWindow: Misc / CopyJobs page.
     public partial class MainWindow
     {
+        private void tbCopyJobLink_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (!String.IsNullOrWhiteSpace(full_link))
+                Clipboard.SetText(full_link);
+        }
+
+        private void BtnCopyModeLink_Click(object sender, RoutedEventArgs e) => ShowCopyMode(nrcid: false);
+
+        private void BtnCopyModeNrcid_Click(object sender, RoutedEventArgs e) => ShowCopyMode(nrcid: true);
+
+        private void ShowCopyMode(bool nrcid)
+        {
+            CopyLinkPanel.Visibility = nrcid ? Visibility.Collapsed : Visibility.Visible;
+            CopyNrcidPanel.Visibility = nrcid ? Visibility.Visible : Visibility.Collapsed;
+            BtnCopyModeLink.Tag = nrcid ? null : "active";
+            BtnCopyModeNrcid.Tag = nrcid ? "active" : null;
+        }
+
         public void setDescribtion(string describtion)
         {
             if (m.IsProcOpen)

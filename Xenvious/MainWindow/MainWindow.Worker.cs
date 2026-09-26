@@ -943,13 +943,13 @@ namespace Xenvious
                             {
                                 getjoblinks();
                             }
-                            else if (PageInnerMod.SelectedItem == PageInnerModnrcidjc)
-                            {
-                                if (!tbnrcidjcstartlocx.IsFocused) tbnrcidjcstartlocx.Text = new Global(GTA.Offsets.Editor.start).Get<float>().ToString();
-                                if (!tbnrcidjcstartlocy.IsFocused) tbnrcidjcstartlocy.Text = new Global(GTA.Offsets.Editor.start + 1).Get<float>().ToString();
-                                if (!tbnrcidjcstartlocz.IsFocused) tbnrcidjcstartlocz.Text = new Global(GTA.Offsets.Editor.start + 2).Get<float>().ToString();
-                                getNRCIDValuesJC(false);
-                            }
+                        }
+                        else if (MainPages.SelectedItem == PageCopyJobs && CopyNrcidPanel.Visibility == Visibility.Visible)
+                        {
+                            if (!tbnrcidjcstartlocx.IsFocused) tbnrcidjcstartlocx.Text = new Global(GTA.Offsets.Editor.start).Get<float>().ToString();
+                            if (!tbnrcidjcstartlocy.IsFocused) tbnrcidjcstartlocy.Text = new Global(GTA.Offsets.Editor.start + 1).Get<float>().ToString();
+                            if (!tbnrcidjcstartlocz.IsFocused) tbnrcidjcstartlocz.Text = new Global(GTA.Offsets.Editor.start + 2).Get<float>().ToString();
+                            getNRCIDValuesJC(false);
                         }
                         else if (MainPages.SelectedItem == PageSettings)
                         {

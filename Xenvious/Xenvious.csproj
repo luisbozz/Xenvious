@@ -387,7 +387,6 @@
     <Compile Include="MainWindow\MainWindow.Misc.MapMover.cs" />
     <Compile Include="MainWindow\MainWindow.Misc.MenuSwitcher.cs" />
     <Compile Include="MainWindow\MainWindow.Misc.NrcidJobCopy.cs" />
-    <Compile Include="MainWindow\MainWindow.Misc.SCJobs.cs" />
     <Compile Include="MainWindow\MainWindow.Misc.ScrPatches.cs" />
     <Compile Include="MainWindow\MainWindow.GameConnection.cs" />
     <Compile Include="MainWindow\MainWindow.Misc.cs" />

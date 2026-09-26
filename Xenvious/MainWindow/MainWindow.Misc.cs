@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using static Xenvious.GTA;
 using static Xenvious.GTA.Offsets.Editor;
 
@@ -29,14 +30,24 @@ namespace Xenvious
             }
         }
 
-        private void BtnModnrcidjc_Click(object sender, RoutedEventArgs e)
+        private void BtnModTools_Click(object sender, RoutedEventArgs e)
         {
-            PageInnerMod.SelectedItem = PageInnerModnrcidjc;
+            PageInnerMod.SelectedItem = PageInnerModTools;
         }
 
-        private void BtnModSCJobs_Click(object sender, RoutedEventArgs e)
+        // Marks the open page in the side list, the same way the top navigation does.
+        private void PageInnerMod_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            PageInnerMod.SelectedItem = PageInnerModSCJobs;
+            if (e.Source != PageInnerMod)
+                return;
+            var pages = new (Button Button, TabItem Page)[]
+            {
+                (BtnModMapBackup, PageInnerModMapBackup), (BtnModJobLinks, PageInnerModJL), (BtnModMapMover, PageInnerModMapMover),
+                (BtnModMS, PageMenuSwitcher), (BtnModScrPatches, PageInnerModScrPatches), (BtnModTools, PageInnerModTools),
+                (BtnModLogs, PageInnerModLogs), (BtnModStuff, PageInnerModStuff),
+            };
+            foreach (var (button, page) in pages)
+                button.Tag = PageInnerMod.SelectedItem == page ? "active" : null;
         }
 
         private void BtnModLogs_Click(object sender, RoutedEventArgs e)

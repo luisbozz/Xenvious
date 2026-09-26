@@ -11321,33 +11321,42 @@
                                             <DropShadowEffect BlurRadius="10" ShadowDepth="0" Color="{DynamicResource ShadowColor}"/>                                        </Border.Effect>
                                         <Grid>
                                             <!--Bottom-->
-                                            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top" Grid.Row="1" Margin="8,5,8,5">
-
-                                                <Button x:Name="BtnModJobLinks" Style="{DynamicResource CustomButton}"  Height="45" Content="Job Links" Click="BtnModJobLinks_Click" FontSize="20" Background="{DynamicResource ButtonHoverBackgroundBrush}"/>
-
-                                                <Button x:Name="BtnModMapMover" Style="{DynamicResource CustomButton}" Height="45" Content="Map Mover" Click="BtnModMapMover_Click" FontSize="20" Background="{DynamicResource ButtonHoverBackgroundBrush}"/>
-
-                                                <Button x:Name="BtnModMS" Style="{DynamicResource CustomButton}" Height="45" Content="{Binding Translation[menuswitcher], FallbackValue='Menu Switcher'}" Click="BtnMS_Click" FontSize="20" Background="{DynamicResource ButtonHoverBackgroundBrush}"/>
-
-                                                <Button x:Name="BtnModStuff" Style="{DynamicResource CustomButton}" Height="45" Content="Stuff" Click="BtnModStuff_Click" FontSize="20" Background="{DynamicResource ButtonHoverBackgroundBrush}"/>
-                                                
-                                                <Button x:Name="BtnModnrcidjc" Style="{DynamicResource CustomButton}" Height="45" Content="nrcid Job Copy" Click="BtnModnrcidjc_Click" FontSize="20" Background="{DynamicResource ButtonHoverBackgroundBrush}"/>
-
-                                                <Button x:Name="BtnModSCJobs" Style="{DynamicResource CustomButton}" Height="45" Content="SC User Jobs" Click="BtnModSCJobs_Click" FontSize="20" Background="{DynamicResource ButtonHoverBackgroundBrush}" Visibility="Collapsed"/>
-                                                
-                                                <Button x:Name="BtnModLogs" Style="{DynamicResource CustomButton}" Height="45" Content="Logs" Click="BtnModLogs_Click" FontSize="20" Background="{DynamicResource ButtonHoverBackgroundBrush}" />
-                                                
-                                                <Button x:Name="BtnModScrPatches" Style="{DynamicResource CustomButton}" Height="45" Content="Scr Patches" Click="BtnModScrPatches_Click" FontSize="20" Background="{DynamicResource ButtonHoverBackgroundBrush}" />
-                                                
-                                                <Button x:Name="BtnModMapBackup" Style="{DynamicResource CustomButton}" Height="45" Content="{Binding Translation[map_backup], FallbackValue='Map Backup'}" Click="BtnModMapBackup_Click" FontSize="20" Background="{DynamicResource ButtonHoverBackgroundBrush}" />
-
+                                            <!-- Pages in three groups; PageInnerMod_SelectionChanged marks the open one. -->
+                                            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="8,0,8,5">
+                                                <TextBlock Style="{StaticResource SideNavGroup}" Text="{Binding Translation[misc_grp_jobs], FallbackValue='Jobs'}"/>
+                                                <Button x:Name="BtnModMapBackup" Style="{StaticResource SideNavButton}" Click="BtnModMapBackup_Click">
+                                                    <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[map_backup], FallbackValue='Job Backup'}"/>
+                                                </Button>
+                                                <Button x:Name="BtnModJobLinks" Style="{StaticResource SideNavButton}" Click="BtnModJobLinks_Click">
+                                                    <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[misc_jobslots], FallbackValue='Job Slots'}"/>
+                                                </Button>
+                                                <Button x:Name="BtnModMapMover" Style="{StaticResource SideNavButton}" Click="BtnModMapMover_Click">
+                                                    <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[misc_jobmove], FallbackValue='Move Job'}"/>
+                                                </Button>
+                                                <TextBlock Style="{StaticResource SideNavGroup}" Text="{Binding Translation[misc_grp_creator], FallbackValue='Creator'}"/>
+                                                <Button x:Name="BtnModMS" Style="{StaticResource SideNavButton}" Click="BtnMS_Click">
+                                                    <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[misc_menupresets], FallbackValue='Menu Presets'}"/>
+                                                </Button>
+                                                <Button x:Name="BtnModScrPatches" Style="{StaticResource SideNavButton}" Click="BtnModScrPatches_Click">
+                                                    <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[misc_scrpatches], FallbackValue='Script Patches'}"/>
+                                                </Button>
+                                                <Button x:Name="BtnModTools" Style="{StaticResource SideNavButton}" Click="BtnModTools_Click">
+                                                    <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[misc_creatortools], FallbackValue='Creator Tools'}"/>
+                                                </Button>
+                                                <TextBlock Style="{StaticResource SideNavGroup}" Text="{Binding Translation[misc_grp_dev], FallbackValue='Development'}"/>
+                                                <Button x:Name="BtnModLogs" Style="{StaticResource SideNavButton}" Click="BtnModLogs_Click">
+                                                    <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[logs], FallbackValue='Logs'}"/>
+                                                </Button>
+                                                <Button x:Name="BtnModStuff" Style="{StaticResource SideNavButton}" Click="BtnModStuff_Click">
+                                                    <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[misc_diagnostics], FallbackValue='Diagnostics'}"/>
+                                                </Button>
                                             </StackPanel>
                                         </Grid>
                                     </Border>
 
                                     <Rectangle Grid.Column="1" HorizontalAlignment="center" VerticalAlignment="Stretch" Fill="DimGray" Width="1"/>
 
-                                    <TabControl x:Name="PageInnerMod" Background="Transparent" BorderThickness="0" Grid.Column="2" Margin="10,0,0,0">
+                                    <TabControl x:Name="PageInnerMod" SelectionChanged="PageInnerMod_SelectionChanged" Background="Transparent" BorderThickness="0" Grid.Column="2" Margin="10,0,0,0">
 
                                         <TabItem x:Name="PageInnerModMapMover" Header="Map Mover">
 
@@ -11628,30 +11637,32 @@
                                         </TabItem>
 
 
-                                        <TabItem x:Name="PageInnerModStuff" Header="Stuff">
+                                        <!-- Creator tools that are rarely needed; they used to sit on the dashboard. -->
+                                        <TabItem x:Name="PageInnerModTools" Header="Creator Tools">
+                                            <StackPanel Width="320" HorizontalAlignment="Left" Margin="10">
+                                                <Grid Style="{StaticResource FormRow}">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[3dcam], FallbackValue='3D Cam'}"/>
+                                                    <CheckBox x:Name="cb_3dcam" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cb_3dcam_Checked" Unchecked="cb_3dcam_Checked"/>
+                                                </Grid>
+                                                <Grid Style="{StaticResource FormRow}">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[forcepublish], FallbackValue='Force Publish'}"/>
+                                                    <CheckBox x:Name="cbforce_publish" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbforce_publish_Checked" Unchecked="cbforce_publish_Checked"/>
+                                                </Grid>
+                                            </StackPanel>
+                                        </TabItem>
+
+                                        <TabItem x:Name="PageInnerModStuff" Header="Diagnostics">
                                             <ScrollViewer  VerticalScrollBarVisibility="Auto">
                                                 <Grid Width="290">
                                                     <StackPanel Orientation="Vertical">
-                                                        <!-- Creator tools that are rarely needed; they used to sit on the dashboard. -->
-                                                        <TextBlock FontSize="22" FontWeight="Bold" Text="Creator" Margin="0,0,0,6"/>
-                                                        <Grid Style="{StaticResource FormRow}">
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="*"/>
-                                                                <ColumnDefinition Width="Auto"/>
-                                                            </Grid.ColumnDefinitions>
-                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[3dcam], FallbackValue='3D Cam'}"/>
-                                                            <CheckBox x:Name="cb_3dcam" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cb_3dcam_Checked" Unchecked="cb_3dcam_Checked"/>
-                                                        </Grid>
-                                                        <Grid Style="{StaticResource FormRow}">
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="*"/>
-                                                                <ColumnDefinition Width="Auto"/>
-                                                            </Grid.ColumnDefinitions>
-                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[forcepublish], FallbackValue='Force Publish'}"/>
-                                                            <CheckBox x:Name="cbforce_publish" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbforce_publish_Checked" Unchecked="cbforce_publish_Checked"/>
-                                                        </Grid>
-                                                        <Rectangle Height="1" Fill="DimGray" Margin="0,8,0,12"/>
-
                                                         <TextBox x:Name="tbmodstuffgloablptr" Grid.Row="0" Style="{StaticResource Watermark}" Tag="Global PTR" Height="30" IsReadOnly="True" Margin="0,0,0,5"/>
                                                         <TextBox x:Name="tbmodstuffworldptr" Grid.Row="0" Style="{StaticResource Watermark}" Tag="WORLD PTR" Height="30" IsReadOnly="True" Margin="0,0,0,5"/>
                                                         <TextBox x:Name="tbmodstuffccptr" Grid.Row="0" Style="{StaticResource Watermark}" Tag="Creator PTR" Height="30" IsReadOnly="True" Margin="0,0,0,5"/>
@@ -11684,184 +11695,6 @@
                                                     </StackPanel>
                                                 </Grid>
                                             </ScrollViewer>
-                                        </TabItem>
-
-                                        <TabItem x:Name="PageInnerModnrcidjc" Header="nrcid Job Copy">
-
-                                            <ScrollViewer VerticalScrollBarVisibility="Auto">
-
-                                                <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-
-                                                    <Grid Width="290" Margin="10">
-
-                                                        <StackPanel>
-
-                                                            <Label VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Content="{Binding Translation[step], FallbackValue=Step}" ContentStringFormat="{}{0} 1"  FontWeight="Bold" Height="35"/>
-
-                                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="Please make sure you enter a Capture first before you continue." TextWrapping="Wrap" />
-                                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="Set a Location for the Start Point that is close to the Start Point of the Job you want to Copy!" TextWrapping="Wrap" />
-
-
-                                                            <Grid Grid.Row="0">
-
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="0.88*"/>
-                                                                    <ColumnDefinition Width="0.12*"/>
-                                                                </Grid.ColumnDefinitions>
-
-                                                                <Grid.RowDefinitions>
-                                                                    <RowDefinition Height="43"/>
-                                                                    <RowDefinition Height="33"/>
-                                                                    <RowDefinition Height="33"/>
-                                                                    <RowDefinition Height="33"/>
-                                                                </Grid.RowDefinitions>
-
-                                                                
-                                                                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Text="{Binding Translation[start], FallbackValue=Start}" FontWeight="Bold"/>
-
-                                                                <TextBox x:Name="tbnrcidjcstartlocx" Grid.Row="1" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3x], FallbackValue=X-Component}" Height="30" Margin="0,0,5,0" TextChanged="tbnrcidjcstartlocx_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                                <TextBox x:Name="tbnrcidjcstartlocy" Grid.Row="2" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3y], FallbackValue=Y-Component}" Height="30" Margin="0,0,5,0" TextChanged="tbnrcidjcstartlocy_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                                <TextBox x:Name="tbnrcidjcstartlocz" Grid.Row="3" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3z], FallbackValue=Z-Component}" Height="30" Margin="0,0,5,0" TextChanged="tbnrcidjcstartlocz_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                                <Border Grid.Row="1" Grid.Column="1" Grid.RowSpan="3" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5">
-                                                                    <Border.Effect>
-                                                                        <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>                
-                                                                    </Border.Effect>
-
-                                                                    <Button x:Name="Btnnrcidjcgetloc" Style="{DynamicResource TitleBarButton}" Click="Btnnrcidjcgetloc_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Translation[getcursorloc], FallbackValue=Get Cursor Location}" >
-                                                                        <Path Data="M 12 12 L 12 0 L 6 6 Z" Stretch="Uniform" Stroke="{DynamicResource TextColor}" />
-                                                                    </Button>
-                                                                </Border>
-
-                                                            </Grid>
-
-                                                            <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="#6C7378" Height="1" Margin="20,8,20,8" />
-
-                                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="Insert a Job Link here please that you want to Copy. Also Input how you want to load the Job in nrmtt. (1 = Loading Screen / 2 = Blackscreen)" TextWrapping="Wrap" />
-
-
-                                                            <Grid Grid.Row="3" Visibility="{Binding ElementName=ddmissionnrcidno, Path=Visibility}">
-
-                                                                <Grid.RowDefinitions>
-                                                                    <RowDefinition Height="38"/>
-                                                                    <RowDefinition Height="33"/>
-                                                                    <RowDefinition Height="33"/>
-                                                                </Grid.RowDefinitions>
-
-                                                                
-                                                                <Border Grid.Row="0"  Background="Transparent" Margin="0,0,0,5" Height="30">
-                                                                    <ComboBox x:Name="ddnrcidjcno" FontFamily="{DynamicResource Volte}" SelectionChanged="ddnrcidjcno_SelectionChanged" Tag="{Binding Translation[number], FallbackValue=Number}">
-                                                                        <ComboBoxItem Content="1"/>
-                                                                        <ComboBoxItem Content="2"/>
-                                                                        <ComboBoxItem Content="3"/>
-                                                                        <ComboBoxItem Content="4"/>
-                                                                        <ComboBoxItem Content="5"/>
-                                                                        <ComboBoxItem Content="6"/>
-                                                                    </ComboBox>
-                                                                </Border>
-
-                                                                <TextBox x:Name="tbnrcidjc" Grid.Row="1" Style="{StaticResource Watermark}" Tag="{Binding Translation[nrcid], FallbackValue=nrcid}" Height="30" Margin="0,0,5,0" TextChanged="tbnrcidjc_TextChanged" />
-                                                                <TextBox x:Name="tbnrmttjc" Grid.Row="2" Style="{StaticResource Watermark}" Tag="{Binding Translation[nrmtt], FallbackValue=nrmtt}" Height="30" Margin="0,0,5,0" TextChanged="tbnrmttjc_TextChanged" />
-
-
-                                                            </Grid>
-                                                            
-                                                            <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="#6C7378" Height="1" Margin="20,8,20,8" />
-
-                                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="This will set some values for the Job so that Job Copy works. (You dont need to use this if youve done the steps yourself)" TextWrapping="Wrap" />
-
-                                                            <Border CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5" >
-                                                                <Border.Effect>
-                                                                    <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>            
-                                                                </Border.Effect>
-                                                                <Button x:Name="Btnnrcidprep" Style="{DynamicResource CustomButton}" Content="Perpare Job" local:CornerRadiusSetter.CornerRadius="5" Click="Btnnrcidprep_Click" />
-                                                            </Border>
-
-                                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="Now you can publish your job. You might need to force Publish or use the Save/Publish function under Dashboard." TextWrapping="Wrap" />
-
-
-                                                        </StackPanel>
-                                                        
-                                                    </Grid>
-                                                    <Grid Width="290" Margin="10">
-
-                                                        <StackPanel>
-                                                            <Label VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Content="{Binding Translation[step], FallbackValue=Step}" ContentStringFormat="{}{0} 2"  FontWeight="Bold" Height="35"/>
-
-                                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="Please start your job first before you continue!" TextWrapping="Wrap" />
-                                                            
-                                                            <TextBox x:Name="tbnrcidcopycs" Grid.Row="0" Style="{StaticResource Watermark}" Tag="Creator Start" Height="30" Margin="0,0,0,5"/>
-                                                            <TextBox x:Name="tbnrcidcopyce" Grid.Row="0" Style="{StaticResource Watermark}" Tag="Creator End" Height="30" Margin="0,0,0,5" />
-                                                            
-                                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="Get the current address range of the Creator. Make sure you do this before you try to copy the values. (You can also define your own Range if you would like to only copy specific sections)" TextWrapping="Wrap" />
-
-                                                            <Border CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5" >
-                                                                <Border.Effect>
-                                                                    <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>            
-                                                                </Border.Effect>
-                                                                <Button x:Name="Btnnrcidgetcvalues" Style="{DynamicResource CustomButton}" Content="Get Creator Start/End" local:CornerRadiusSetter.CornerRadius="5" Click="Btnnrcidgetcvalues_Click" />
-                                                            </Border>
-                                                            
-                                                            <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="#6C7378" Height="1" Margin="20,8,20,8" />
-
-                                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="Use this first if the new Job has loaded. This will Copy all bytes in the defined Range into Xenvious. Now you can leave the Job and continue with step 3." TextWrapping="Wrap" />
-
-                                                            <Border CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5" >
-                                                                <Border.Effect>
-                                                                    <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>            
-                                                                </Border.Effect>
-                                                                <Button x:Name="Btnnrcidcopy" Style="{DynamicResource CustomButton}" Content="Copy Values" local:CornerRadiusSetter.CornerRadius="5" Click="Btnnrcidcopy_Click" />
-                                                            </Border>
-
-                                                        </StackPanel>
-                                                        
-                                                    </Grid>
-                                                    <Grid Width="290" Margin="10">
-                                                        <StackPanel>
-                                                            <Label VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Content="{Binding Translation[step], FallbackValue=Step}" ContentStringFormat="{}{0} 3"  FontWeight="Bold" Height="35"/>
-                                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="Please enter Creator again and go into a empty job of the jobtype of the Job you wanted to copy to continue with restoring." TextWrapping="Wrap" />
-
-                                                            <Border CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5" >
-                                                                <Border.Effect>
-                                                                    <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>            
-                                                                </Border.Effect>
-                                                                <Button x:Name="Btnnrcidrestore" Style="{DynamicResource CustomButton}" Content="Restore" local:CornerRadiusSetter.CornerRadius="5" Click="Btnnrcidrestore_Click" />
-                                                            </Border>
-
-                                                            <Label VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Content="Disclaimer" ContentStringFormat="{}{0} 3"  FontWeight="Bold" Height="35"/>
-                                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="Please enter Creator again and go into a empty job of the jobtype of the Job you wanted to copy to continue with restoring." TextWrapping="Wrap" />
-
-                                                        </StackPanel>
-                                                        
-                                                    </Grid>
-                                                    
-                                                </WrapPanel>
-                                                
-                                            </ScrollViewer>
-                                            
-                                        </TabItem>
-
-                                        <TabItem x:Name="PageInnerModSCJobs" Header="SC User Jobs">
-
-                                            <Grid>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="75"/>
-                                                    <RowDefinition Height="*"/>
-                                                </Grid.RowDefinitions>
-
-
-                                                <TextBox x:Name="tbModSCJobsUsername" Height="40" Width="300" Margin="30 0" Style="{StaticResource Watermark}" Grid.Column="0" FontSize="16" Tag="Username" KeyDown="tbModSCJobsUsername_KeyDown" MouseDoubleClick="tbCopyJobLink_MouseDoubleClick"/>
-
-                                                <ScrollViewer VerticalScrollBarVisibility="Auto">
-
-                                                    <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-
-
-
-                                                    </WrapPanel>
-
-                                                </ScrollViewer>
-                                            </Grid>
-
                                         </TabItem>
 
                                         <TabItem x:Name="PageInnerModLogs" Header="Logs">
@@ -12102,6 +11935,168 @@
                                 <TextBlock FontSize="20" FontWeight="Bold" Foreground="{DynamicResource TextColor}" Text="{Binding Translation[copyjobs], FallbackValue='Copy Jobs'}"/>
                                 <TextBlock FontSize="13" Foreground="#FFA3A6AA" Margin="0,4,0,0" TextWrapping="Wrap" Text="{Binding Translation[copy_help], FallbackValue='Lädt einen Job über seinen Social-Club-Link und schreibt die ausgewählten Teile in den offenen Creator. Funktioniert auch mit Rockstar-Jobs und Jobs von der Konsole, kopieren lässt sich nur auf den PC.'}"/>
 
+                                <!-- Two ways to copy: through the Social Club link, or the older nrcid route
+                                     that goes through a published capture. -->
+                                <Border Style="{StaticResource NavGroup}" HorizontalAlignment="Left" Margin="0,14,0,0">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button x:Name="BtnCopyModeLink" Style="{StaticResource NavButton}" Tag="active" Click="BtnCopyModeLink_Click">
+                                            <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[copy_mode_link], FallbackValue='Via link'}"/>
+                                        </Button>
+                                        <Button x:Name="BtnCopyModeNrcid" Style="{StaticResource NavButton}" Click="BtnCopyModeNrcid_Click">
+                                            <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[copy_mode_nrcid], FallbackValue='Via nrcid'}"/>
+                                        </Button>
+                                    </StackPanel>
+                                </Border>
+
+                                <StackPanel x:Name="CopyNrcidPanel" Visibility="Collapsed" Margin="0,8,0,0">
+                                <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+
+                                    <Grid Width="290" Margin="10">
+
+                                        <StackPanel>
+
+                                            <Label VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Content="{Binding Translation[step], FallbackValue=Step}" ContentStringFormat="{}{0} 1"  FontWeight="Bold" Height="35"/>
+
+                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="Please make sure you enter a Capture first before you continue." TextWrapping="Wrap" />
+                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="Set a Location for the Start Point that is close to the Start Point of the Job you want to Copy!" TextWrapping="Wrap" />
+
+
+                                            <Grid Grid.Row="0">
+
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="0.88*"/>
+                                                    <ColumnDefinition Width="0.12*"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="43"/>
+                                                    <RowDefinition Height="33"/>
+                                                    <RowDefinition Height="33"/>
+                                                    <RowDefinition Height="33"/>
+                                                </Grid.RowDefinitions>
+
+                                                
+                                                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Text="{Binding Translation[start], FallbackValue=Start}" FontWeight="Bold"/>
+
+                                                <TextBox x:Name="tbnrcidjcstartlocx" Grid.Row="1" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3x], FallbackValue=X-Component}" Height="30" Margin="0,0,5,0" TextChanged="tbnrcidjcstartlocx_TextChanged" KeyDown="FormatTextForFloat"/>
+                                                <TextBox x:Name="tbnrcidjcstartlocy" Grid.Row="2" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3y], FallbackValue=Y-Component}" Height="30" Margin="0,0,5,0" TextChanged="tbnrcidjcstartlocy_TextChanged" KeyDown="FormatTextForFloat"/>
+                                                <TextBox x:Name="tbnrcidjcstartlocz" Grid.Row="3" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3z], FallbackValue=Z-Component}" Height="30" Margin="0,0,5,0" TextChanged="tbnrcidjcstartlocz_TextChanged" KeyDown="FormatTextForFloat"/>
+                                                <Border Grid.Row="1" Grid.Column="1" Grid.RowSpan="3" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5">
+                                                    <Border.Effect>
+                                                        <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>                
+                                                    </Border.Effect>
+
+                                                    <Button x:Name="Btnnrcidjcgetloc" Style="{DynamicResource TitleBarButton}" Click="Btnnrcidjcgetloc_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Translation[getcursorloc], FallbackValue=Get Cursor Location}" >
+                                                        <Path Data="M 12 12 L 12 0 L 6 6 Z" Stretch="Uniform" Stroke="{DynamicResource TextColor}" />
+                                                    </Button>
+                                                </Border>
+
+                                            </Grid>
+
+                                            <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="#6C7378" Height="1" Margin="20,8,20,8" />
+
+                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="Insert a Job Link here please that you want to Copy. Also Input how you want to load the Job in nrmtt. (1 = Loading Screen / 2 = Blackscreen)" TextWrapping="Wrap" />
+
+
+                                            <Grid Grid.Row="3" Visibility="{Binding ElementName=ddmissionnrcidno, Path=Visibility}">
+
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="38"/>
+                                                    <RowDefinition Height="33"/>
+                                                    <RowDefinition Height="33"/>
+                                                </Grid.RowDefinitions>
+
+                                                
+                                                <Border Grid.Row="0"  Background="Transparent" Margin="0,0,0,5" Height="30">
+                                                    <ComboBox x:Name="ddnrcidjcno" FontFamily="{DynamicResource Volte}" SelectionChanged="ddnrcidjcno_SelectionChanged" Tag="{Binding Translation[number], FallbackValue=Number}">
+                                                        <ComboBoxItem Content="1"/>
+                                                        <ComboBoxItem Content="2"/>
+                                                        <ComboBoxItem Content="3"/>
+                                                        <ComboBoxItem Content="4"/>
+                                                        <ComboBoxItem Content="5"/>
+                                                        <ComboBoxItem Content="6"/>
+                                                    </ComboBox>
+                                                </Border>
+
+                                                <TextBox x:Name="tbnrcidjc" Grid.Row="1" Style="{StaticResource Watermark}" Tag="{Binding Translation[nrcid], FallbackValue=nrcid}" Height="30" Margin="0,0,5,0" TextChanged="tbnrcidjc_TextChanged" />
+                                                <TextBox x:Name="tbnrmttjc" Grid.Row="2" Style="{StaticResource Watermark}" Tag="{Binding Translation[nrmtt], FallbackValue=nrmtt}" Height="30" Margin="0,0,5,0" TextChanged="tbnrmttjc_TextChanged" />
+
+
+                                            </Grid>
+                                            
+                                            <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="#6C7378" Height="1" Margin="20,8,20,8" />
+
+                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="This will set some values for the Job so that Job Copy works. (You dont need to use this if youve done the steps yourself)" TextWrapping="Wrap" />
+
+                                            <Border CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5" >
+                                                <Border.Effect>
+                                                    <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>            
+                                                </Border.Effect>
+                                                <Button x:Name="Btnnrcidprep" Style="{DynamicResource CustomButton}" Content="Perpare Job" local:CornerRadiusSetter.CornerRadius="5" Click="Btnnrcidprep_Click" />
+                                            </Border>
+
+                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="Now you can publish your job. You might need to force Publish or use the Save/Publish function under Dashboard." TextWrapping="Wrap" />
+
+
+                                        </StackPanel>
+                                        
+                                    </Grid>
+                                    <Grid Width="290" Margin="10">
+
+                                        <StackPanel>
+                                            <Label VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Content="{Binding Translation[step], FallbackValue=Step}" ContentStringFormat="{}{0} 2"  FontWeight="Bold" Height="35"/>
+
+                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="Please start your job first before you continue!" TextWrapping="Wrap" />
+                                            
+                                            <TextBox x:Name="tbnrcidcopycs" Grid.Row="0" Style="{StaticResource Watermark}" Tag="Creator Start" Height="30" Margin="0,0,0,5"/>
+                                            <TextBox x:Name="tbnrcidcopyce" Grid.Row="0" Style="{StaticResource Watermark}" Tag="Creator End" Height="30" Margin="0,0,0,5" />
+                                            
+                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="Get the current address range of the Creator. Make sure you do this before you try to copy the values. (You can also define your own Range if you would like to only copy specific sections)" TextWrapping="Wrap" />
+
+                                            <Border CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5" >
+                                                <Border.Effect>
+                                                    <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>            
+                                                </Border.Effect>
+                                                <Button x:Name="Btnnrcidgetcvalues" Style="{DynamicResource CustomButton}" Content="Get Creator Start/End" local:CornerRadiusSetter.CornerRadius="5" Click="Btnnrcidgetcvalues_Click" />
+                                            </Border>
+                                            
+                                            <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="#6C7378" Height="1" Margin="20,8,20,8" />
+
+                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="Use this first if the new Job has loaded. This will Copy all bytes in the defined Range into Xenvious. Now you can leave the Job and continue with step 3." TextWrapping="Wrap" />
+
+                                            <Border CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5" >
+                                                <Border.Effect>
+                                                    <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>            
+                                                </Border.Effect>
+                                                <Button x:Name="Btnnrcidcopy" Style="{DynamicResource CustomButton}" Content="Copy Values" local:CornerRadiusSetter.CornerRadius="5" Click="Btnnrcidcopy_Click" />
+                                            </Border>
+
+                                        </StackPanel>
+                                        
+                                    </Grid>
+                                    <Grid Width="290" Margin="10">
+                                        <StackPanel>
+                                            <Label VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Content="{Binding Translation[step], FallbackValue=Step}" ContentStringFormat="{}{0} 3"  FontWeight="Bold" Height="35"/>
+                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="Please enter Creator again and go into a empty job of the jobtype of the Job you wanted to copy to continue with restoring." TextWrapping="Wrap" />
+
+                                            <Border CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5" >
+                                                <Border.Effect>
+                                                    <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>            
+                                                </Border.Effect>
+                                                <Button x:Name="Btnnrcidrestore" Style="{DynamicResource CustomButton}" Content="Restore" local:CornerRadiusSetter.CornerRadius="5" Click="Btnnrcidrestore_Click" />
+                                            </Border>
+
+                                            <Label VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Content="Disclaimer" ContentStringFormat="{}{0} 3"  FontWeight="Bold" Height="35"/>
+                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="Please enter Creator again and go into a empty job of the jobtype of the Job you wanted to copy to continue with restoring." TextWrapping="Wrap" />
+
+                                        </StackPanel>
+                                        
+                                    </Grid>
+                                    
+                                </WrapPanel>
+                                </StackPanel>
+
+                                <StackPanel x:Name="CopyLinkPanel">
                                 <!-- Link -->
                                 <Grid Margin="0,14,0,0">
                                     <Grid.ColumnDefinitions>
@@ -12222,6 +12217,7 @@
                                         </Grid>
                                     </StackPanel>
                                 </Border>
+                                </StackPanel>
                             </StackPanel>
                         </ScrollViewer>
                     </TabItem>
