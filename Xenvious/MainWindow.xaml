@@ -4945,6 +4945,24 @@
                                                                                         <ComboBoxItem Content="5" FontSize="18"/>
                                                                                     </ComboBox>
                                                                                 </Border>
+                                                                                <Border Background="Transparent" Margin="0,0,0,5" Height="30">
+                                                                                    <ComboBox x:Name="ddmissiontraffic" FontFamily="{DynamicResource Volte}" SelectionChanged="ddmissiontraffic_SelectionChanged" Tag="{Binding Translation[missiontraffic], FallbackValue=Traffic}" ToolTip="{Binding Translation[missiontraffic], FallbackValue=Traffic}">
+                                                                                        <ComboBoxItem Content="0%" FontSize="18"/>
+                                                                                        <ComboBoxItem Content="20%" FontSize="18"/>
+                                                                                        <ComboBoxItem Content="50%" FontSize="18"/>
+                                                                                        <ComboBoxItem Content="85%" FontSize="18"/>
+                                                                                        <ComboBoxItem Content="100%" FontSize="18"/>
+                                                                                    </ComboBox>
+                                                                                </Border>
+                                                                                <Border Background="Transparent" Margin="0,0,0,5" Height="30">
+                                                                                    <ComboBox x:Name="ddmissionpeds" FontFamily="{DynamicResource Volte}" SelectionChanged="ddmissionpeds_SelectionChanged" Tag="{Binding Translation[missionpeds], FallbackValue=Pedestrians}" ToolTip="{Binding Translation[missionpeds], FallbackValue=Pedestrians}">
+                                                                                        <ComboBoxItem Content="0%" FontSize="18"/>
+                                                                                        <ComboBoxItem Content="20%" FontSize="18"/>
+                                                                                        <ComboBoxItem Content="50%" FontSize="18"/>
+                                                                                        <ComboBoxItem Content="85%" FontSize="18"/>
+                                                                                        <ComboBoxItem Content="100%" FontSize="18"/>
+                                                                                    </ComboBox>
+                                                                                </Border>
                                                                                 <Grid Height="30" Margin="0,0,0,5">
                                                                                     <Grid.ColumnDefinitions>
                                                                                         <ColumnDefinition Width="0.87*" />

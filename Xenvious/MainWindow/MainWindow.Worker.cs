@@ -659,6 +659,8 @@ namespace Xenvious
                                         Functions.Read.checkbinary(3, GTA.Offsets.Editor.menubs2, cbmissionplaycm);
                                         int polValue = new Global(GTA.Offsets.Editor.pol).Get<int>();
                                         ddmissionmaxwl.SelectedIndex = polValue >= 0 && polValue < ddmissionmaxwl.Items.Count ? polValue : -1;
+                                        GetMissionDensity(ddmissiontraffic, GTA.Offsets.Editor.traf);
+                                        GetMissionDensity(ddmissionpeds, GTA.Offsets.Editor.apeds);
                                         Functions.Read.checkbinary(6, GTA.Offsets.Editor.twrst, cbmissiondispwd);
                                         Functions.Read.checkbinary(19, GTA.Offsets.Editor.menubs12, cbmissionactorremarmor);
                                         Functions.Read.checkbinary(17, GTA.Offsets.Editor.trel, cbmissionjlwnp);
