@@ -380,6 +380,7 @@ namespace Xenvious
             mWorker.DoWork += new DoWorkEventHandler(worker_DoWork);
 
             StartDashboardStatus();
+            InitModelCards();
         }
 
         public bool globalPtrSanityCheck(long value)

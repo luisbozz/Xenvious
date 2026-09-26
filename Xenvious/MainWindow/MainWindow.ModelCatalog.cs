@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -20,39 +21,43 @@ namespace Xenvious
         private List<CatalogItem> ActorCatalog => _actorCatalog?.Count > 0 ? _actorCatalog : (_actorCatalog = GTA.Editor.ActorList
             .Select(a => new CatalogItem(a.Name, null, a.UInt32, "", "actor")).ToList());
 
-        private void BtnPropCatalog_Click(object sender, RoutedEventArgs e)
+        private void InitModelCards()
         {
-            OpenModelCatalog(TranslateOr("prop", "Props"), PropCatalog, GTA.Offsets.Editor.Props.model, GTA.Offsets.Editor.Props.NEXT, ddpropno.SelectedIndex);
+            Wire(PropModelCard, () => PropCatalog, TranslateOr("prop", "Props"), () => (GTA.Offsets.Editor.Props.model, GTA.Offsets.Editor.Props.NEXT, ddpropno.SelectedIndex));
+            Wire(DPropModelCard, () => PropCatalog, TranslateOr("dprop", "Dynamic Props"), () => (GTA.Offsets.Editor.DProps.model, GTA.Offsets.Editor.DProps.NEXT, dddpropno.SelectedIndex));
+            Wire(ActorModelCard, () => ActorCatalog, TranslateOr("actor", "Actors"), () => (GTA.Offsets.Editor.Actor.model, GTA.Offsets.Editor.Actor.NEXT, ddactorno.SelectedIndex));
         }
 
-        private void BtnDPropCatalog_Click(object sender, RoutedEventArgs e)
+        // Offsets are read when used, because OffsetLoader can load them again for the other edition.
+        private void Wire(ModelCard card, Func<List<CatalogItem>> items, string title, Func<(long Model, long Stride, int Index)> target)
         {
-            OpenModelCatalog(TranslateOr("dprop", "Dynamic Props"), PropCatalog, GTA.Offsets.Editor.DProps.model, GTA.Offsets.Editor.DProps.NEXT, dddpropno.SelectedIndex);
-        }
-
-        private void BtnActorCatalog_Click(object sender, RoutedEventArgs e)
-        {
-            OpenModelCatalog(TranslateOr("actor", "Actors"), ActorCatalog, GTA.Offsets.Editor.Actor.model, GTA.Offsets.Editor.Actor.NEXT, ddactorno.SelectedIndex);
-        }
-
-        // Opens the catalog on the model of the selected entry and writes the chosen one to it;
-        // the page shows it on its next refresh, the same as a pick from its own list.
-        private void OpenModelCatalog(string title, List<CatalogItem> items, long modelOffset, long stride, int index)
-        {
-            uint current = 0;
-            bool canWrite = m.IsProcOpen && index >= 0 && modelOffset != 0;
-            if (canWrite)
-                current = unchecked((uint)new Global(modelOffset + stride * index).Get<int>());
-
-            ModelCatalogOverlay.Show(title, items, current, item =>
+            card.Items = () => items();
+            card.CatalogRequested += (_, __) =>
             {
-                if (!m.IsProcOpen || index < 0 || modelOffset == 0)
-                {
-                    displayScreenMessage(TranslateOr("catalog_noentry", "Select an entry in the creator first."));
-                    return;
-                }
-                new Global(modelOffset + stride * index).SetInt(item.Int32);
-            });
+                var (model, stride, index) = target();
+                uint current = m.IsProcOpen && index >= 0 && model != 0 ? unchecked((uint)new Global(model + stride * index).Get<int>()) : 0;
+                ModelCatalogOverlay.Show(title, items(), current, item => WriteModel(card, target, item));
+            };
+            card.Picked += (_, item) =>
+            {
+                ModelCatalogStore.AddRecent(item.ImageKind, item.Hash);
+                WriteModel(card, target, item);
+            };
+        }
+
+        // Writes the model into the selected entry; the page shows it on its next refresh,
+        // the same as a pick from its own list.
+        private void WriteModel(ModelCard card, Func<(long Model, long Stride, int Index)> target, CatalogItem item)
+        {
+            var (model, stride, index) = target();
+            if (!m.IsProcOpen || index < 0 || model == 0)
+            {
+                displayScreenMessage(TranslateOr("catalog_noentry", "Select an entry in the creator first."));
+                return;
+            }
+            new Global(model + stride * index).SetInt(item.Int32);
+            card.SetModel(item.Hash);
+            card.RefreshChips();
         }
 
         // ----- Settings: picture cache -----

@@ -299,6 +299,7 @@ namespace Xenvious
                 }
 
                 if (!tbpropsmodel.IsFocused || ignore_focus) tbpropsmodel.Text = model.ToString();
+                PropModelCard.SetModel(unchecked((uint)model));
                 if (!tbpropslocx.IsFocused || ignore_focus) tbpropslocx.Text = new Global((GTA.Offsets.Editor.Props.loc + 0 + GTA.Offsets.Editor.Props.NEXT * index)).Get<float>().ToString();
                 if (!tbpropslocy.IsFocused || ignore_focus) tbpropslocy.Text = new Global((GTA.Offsets.Editor.Props.loc + 1 + GTA.Offsets.Editor.Props.NEXT * index)).Get<float>().ToString();
                 if (!tbpropslocz.IsFocused || ignore_focus) tbpropslocz.Text = new Global((GTA.Offsets.Editor.Props.loc + 2 + GTA.Offsets.Editor.Props.NEXT * index)).Get<float>().ToString();

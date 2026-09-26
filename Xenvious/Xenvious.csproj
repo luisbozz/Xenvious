@@ -176,6 +176,9 @@
     <Compile Include="AES\AES.cs" />
     <Compile Include="Controls\ComboBoxHelper.cs" />
     <Compile Include="Controls\JobMap.cs" />
+    <Compile Include="Controls\ModelCard.xaml.cs">
+      <DependentUpon>ModelCard.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ModelCatalog.xaml.cs">
       <DependentUpon>ModelCatalog.xaml</DependentUpon>
     </Compile>
@@ -287,6 +290,10 @@
     <Page Include="Controls\CustomButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ModelCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\ModelCatalog.xaml">
       <SubType>Designer</SubType>
