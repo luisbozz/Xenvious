@@ -66,8 +66,8 @@ namespace Xenvious
                     this.Resources["ComboBoxBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#303339"));
                     this.Resources["ComboBoxBorder"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#131517"));
                     this.Resources["ComboBoxBorderInner"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#232529"));
-                    this.Resources["ComboBoxSelected"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#232529"));
-                    this.Resources["ComboBoxHighlighted"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2A2C30"));
+                    this.Resources["ComboBoxSelected"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#404349"));
+                    this.Resources["ComboBoxHighlighted"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#383B40"));
                     this.Resources["ComboBoxArrow"] = new SolidColorBrush(Colors.White);
                     this.Resources["TextColor"] = new SolidColorBrush(Colors.White);
                     this.Resources["TextBoxForegroundThemeBrush"] = new SolidColorBrush(Colors.White);

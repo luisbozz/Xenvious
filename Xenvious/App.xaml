@@ -28,8 +28,8 @@
             <SolidColorBrush x:Key="ComboBoxBackground" Color="#FF303339" />
             <SolidColorBrush x:Key="ComboBoxBorder" Color="#131517" />
             <SolidColorBrush x:Key="ComboBoxBorderInner" Color="#FF232529" />
-            <SolidColorBrush x:Key="ComboBoxSelected" Color="#FF232529" />
-            <SolidColorBrush x:Key="ComboBoxHighlighted" Color="#FF2A2C30" />
+            <SolidColorBrush x:Key="ComboBoxSelected" Color="#FF404349" />
+            <SolidColorBrush x:Key="ComboBoxHighlighted" Color="#FF383B40" />
             <SolidColorBrush x:Key="ComboBoxArrow" Color="White" />
             <SolidColorBrush x:Key="TextColor" Color="White" />
             <SolidColorBrush x:Key="TextBoxForegroundThemeBrush" Color="#FFFFFFFF" />

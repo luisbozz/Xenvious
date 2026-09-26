@@ -154,8 +154,8 @@
                                 Background="{DynamicResource ComboBoxBackground}"
                                 CornerRadius="{TemplateBinding local:CornerRadiusSetter.CornerRadius}"
                                 BorderThickness="1"
-                                Padding="4"
-                                Margin="0,4,0,0"
+                                Padding="3"
+                                Margin="0,3,0,0"
                                 BorderBrush="{TemplateBinding BorderBrush}">
                                 <Grid Name="DropDown"
                                     SnapsToDevicePixels="True"                
@@ -216,13 +216,13 @@
         <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
         <Setter Property="OverridesDefaultStyle" Value="true"/>
         <Setter Property="FontFamily" Value="{DynamicResource Volte}"/>
-        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontSize" Value="13"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ComboBoxItem}">
-                    <Border Name="Border" CornerRadius="3" Padding="8,6"
+                    <Border Name="Border" CornerRadius="3" Padding="9,4" Margin="0,0,0,1" Background="Transparent"
                               SnapsToDevicePixels="true">
                         <ContentPresenter />
                     </Border>
@@ -232,6 +232,7 @@
                         </Trigger>
                         <Trigger Property="IsSelected" Value="true">
                             <Setter TargetName="Border" Property="Background" Value="{DynamicResource ComboBoxSelected}"/>
+                            <Setter Property="FontWeight" Value="SemiBold"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
                             <Setter Property="Foreground" Value="{DynamicResource DisabledForegroundBrush}"/>
