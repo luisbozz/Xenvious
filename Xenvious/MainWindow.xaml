@@ -4574,6 +4574,8 @@
 
                                                                     <Button x:Name="BtnMissionGeneral" Style="{DynamicResource CustomButton}" Height="45" Content="{Binding Translation[general], FallbackValue=General}" Click="BtnMissionGeneral_Click" FontSize="20" Background="{DynamicResource ButtonHoverBackgroundBrush}"/>
 
+                                                                    <Button x:Name="BtnMissionExtras" Style="{DynamicResource CustomButton}" Height="45" Content="{Binding Translation[missionextheader], FallbackValue='Extra Options'}" Click="BtnMissionExtras_Click" FontSize="20" Background="{DynamicResource ButtonHoverBackgroundBrush}"/>
+
                                                                     <Button x:Name="BtnMissionMenubs" Style="{DynamicResource CustomButton}" Height="45" Content="menubs" Click="BtnMissionMenubs_Click" FontSize="20" Background="{DynamicResource ButtonHoverBackgroundBrush}"/>
 
                                                                     <Button x:Name="BtnMissionInterior" Style="{DynamicResource CustomButton}" Height="45" Content="{Binding Translation[ipl], FallbackValue=Interior}" Click="BtnMissionInterior_Click" FontSize="20" Background="{DynamicResource ButtonHoverBackgroundBrush}"/>
@@ -5257,6 +5259,264 @@
                                                                         </Grid>
 
                                                                     </WrapPanel>
+
+                                                                </ScrollViewer>
+
+                                                            </TabItem>
+
+                                                            <TabItem x:Name="PageInnerMissionExtras" Header="Extras">
+
+                                                                <ScrollViewer VerticalScrollBarVisibility="Auto">
+
+                                                                    <StackPanel VerticalAlignment="Center">
+
+                                                                        <TextBlock HorizontalAlignment="Center" Margin="0,0,0,10" Foreground="{DynamicResource TextColor}" FontSize="16" TextWrapping="Wrap" Text="{Binding Translation[missionextinfo], FallbackValue='Not shown by the creator, meant for LTS'}"/>
+
+                                                                        <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+
+                                                                            <StackPanel Width="290" Height="auto" Margin="0,0,10,0">
+
+                                                                                <Grid>
+
+                                                                                    <Grid.RowDefinitions>
+                                                                                        <RowDefinition Height="43"/>
+                                                                                        <RowDefinition Height="*"/>
+                                                                                    </Grid.RowDefinitions>
+
+                                                                                    <TextBlock Grid.Row="0" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Text="{Binding Translation[missionextworld], FallbackValue='World and Players'}" FontWeight="Bold"/>
+
+                                                                                    <StackPanel Grid.Row="1">
+
+                                                                                        <Grid Height="30" Margin="0,0,0,5">
+                                                                                            <Grid.ColumnDefinitions>
+                                                                                                <ColumnDefinition Width="0.87*" />
+                                                                                                <ColumnDefinition Width="0.13*" />
+                                                                                            </Grid.ColumnDefinitions>
+                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[missionextstartcover], FallbackValue='Start in Cover'}" ToolTip="{Binding Translation[missionextstartcover], FallbackValue='Start in Cover'}" TextTrimming="CharacterEllipsis"/>
+                                                                                            <CheckBox x:Name="cbmissionextstartcover" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" MaxHeight="30"/>
+                                                                                        </Grid>
+                                                                                        <Grid Height="30" Margin="0,0,0,5">
+                                                                                            <Grid.ColumnDefinitions>
+                                                                                                <ColumnDefinition Width="0.87*" />
+                                                                                                <ColumnDefinition Width="0.13*" />
+                                                                                            </Grid.ColumnDefinitions>
+                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[missionextnopv], FallbackValue='No Personal Vehicle'}" ToolTip="{Binding Translation[missionextnopv], FallbackValue='No Personal Vehicle'}" TextTrimming="CharacterEllipsis"/>
+                                                                                            <CheckBox x:Name="cbmissionextnopv" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" MaxHeight="30"/>
+                                                                                        </Grid>
+                                                                                        <Grid Height="30" Margin="0,0,0,5">
+                                                                                            <Grid.ColumnDefinitions>
+                                                                                                <ColumnDefinition Width="0.87*" />
+                                                                                                <ColumnDefinition Width="0.13*" />
+                                                                                            </Grid.ColumnDefinitions>
+                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[missionextnoarmour], FallbackValue='Start Without Armor'}" ToolTip="{Binding Translation[missionextnoarmour], FallbackValue='Start Without Armor'}" TextTrimming="CharacterEllipsis"/>
+                                                                                            <CheckBox x:Name="cbmissionextnoarmour" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" MaxHeight="30"/>
+                                                                                        </Grid>
+                                                                                        <Grid Height="30" Margin="0,0,0,5">
+                                                                                            <Grid.ColumnDefinitions>
+                                                                                                <ColumnDefinition Width="0.87*" />
+                                                                                                <ColumnDefinition Width="0.13*" />
+                                                                                            </Grid.ColumnDefinitions>
+                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[missionextteamheal], FallbackValue='Kill Heals the Team'}" ToolTip="{Binding Translation[missionextteamheal], FallbackValue='Kill Heals the Team'}" TextTrimming="CharacterEllipsis"/>
+                                                                                            <CheckBox x:Name="cbmissionextteamheal" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" MaxHeight="30"/>
+                                                                                        </Grid>
+                                                                                        <Grid Height="30" Margin="0,0,0,5">
+                                                                                            <Grid.ColumnDefinitions>
+                                                                                                <ColumnDefinition Width="0.87*" />
+                                                                                                <ColumnDefinition Width="0.13*" />
+                                                                                            </Grid.ColumnDefinitions>
+                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[missionextindoorsprint], FallbackValue='Sprint Indoors'}" ToolTip="{Binding Translation[missionextindoorsprint], FallbackValue='Sprint Indoors'}" TextTrimming="CharacterEllipsis"/>
+                                                                                            <CheckBox x:Name="cbmissionextindoorsprint" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" MaxHeight="30"/>
+                                                                                        </Grid>
+                                                                                        <Grid Height="30" Margin="0,0,0,5">
+                                                                                            <Grid.ColumnDefinitions>
+                                                                                                <ColumnDefinition Width="0.87*" />
+                                                                                                <ColumnDefinition Width="0.13*" />
+                                                                                            </Grid.ColumnDefinitions>
+                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[missionextnoregionvfx], FallbackValue='Disable Region Effects'}" ToolTip="{Binding Translation[missionextnoregionvfx], FallbackValue='Disable Region Effects'}" TextTrimming="CharacterEllipsis"/>
+                                                                                            <CheckBox x:Name="cbmissionextnoregionvfx" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" MaxHeight="30"/>
+                                                                                        </Grid>
+                                                                                        <Grid Height="30" Margin="0,0,0,5">
+                                                                                            <Grid.ColumnDefinitions>
+                                                                                                <ColumnDefinition Width="0.87*" />
+                                                                                                <ColumnDefinition Width="0.13*" />
+                                                                                            </Grid.ColumnDefinitions>
+                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[missionextmuteambience], FallbackValue='Mute City and Traffic Sounds'}" ToolTip="{Binding Translation[missionextmuteambience], FallbackValue='Mute City and Traffic Sounds'}" TextTrimming="CharacterEllipsis"/>
+                                                                                            <CheckBox x:Name="cbmissionextmuteambience" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" MaxHeight="30"/>
+                                                                                        </Grid>
+
+                                                                                    </StackPanel>
+
+                                                                                </Grid>
+
+                                                                            </StackPanel>
+
+                                                                            <StackPanel Width="290" Height="auto" Margin="0,0,10,0">
+
+                                                                                <Grid>
+
+                                                                                    <Grid.RowDefinitions>
+                                                                                        <RowDefinition Height="43"/>
+                                                                                        <RowDefinition Height="*"/>
+                                                                                    </Grid.RowDefinitions>
+
+                                                                                    <TextBlock Grid.Row="0" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Text="{Binding Translation[weapons], FallbackValue='Weapons'}" FontWeight="Bold"/>
+
+                                                                                    <StackPanel Grid.Row="1">
+
+                                                                                        <Grid Height="30" Margin="0,0,0,5">
+                                                                                            <Grid.ColumnDefinitions>
+                                                                                                <ColumnDefinition Width="0.87*" />
+                                                                                                <ColumnDefinition Width="0.13*" />
+                                                                                            </Grid.ColumnDefinitions>
+                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[missionextbestweap], FallbackValue='Equip Best Weapon'}" ToolTip="{Binding Translation[missionextbestweap], FallbackValue='Equip Best Weapon'}" TextTrimming="CharacterEllipsis"/>
+                                                                                            <CheckBox x:Name="cbmissionextbestweap" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" MaxHeight="30"/>
+                                                                                        </Grid>
+                                                                                        <Grid Height="30" Margin="0,0,0,5">
+                                                                                            <Grid.ColumnDefinitions>
+                                                                                                <ColumnDefinition Width="0.87*" />
+                                                                                                <ColumnDefinition Width="0.13*" />
+                                                                                            </Grid.ColumnDefinitions>
+                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[missionextnodropweap], FallbackValue='No Weapon Drops on Death'}" ToolTip="{Binding Translation[missionextnodropweap], FallbackValue='No Weapon Drops on Death'}" TextTrimming="CharacterEllipsis"/>
+                                                                                            <CheckBox x:Name="cbmissionextnodropweap" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" MaxHeight="30"/>
+                                                                                        </Grid>
+                                                                                        <Grid Height="30" Margin="0,0,0,5">
+                                                                                            <Grid.ColumnDefinitions>
+                                                                                                <ColumnDefinition Width="0.87*" />
+                                                                                                <ColumnDefinition Width="0.13*" />
+                                                                                            </Grid.ColumnDefinitions>
+                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[missionextnodropammo], FallbackValue='Block Dropping Ammo'}" ToolTip="{Binding Translation[missionextnodropammo], FallbackValue='Block Dropping Ammo'}" TextTrimming="CharacterEllipsis"/>
+                                                                                            <CheckBox x:Name="cbmissionextnodropammo" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" MaxHeight="30"/>
+                                                                                        </Grid>
+                                                                                        <Grid Height="30" Margin="0,0,0,5">
+                                                                                            <Grid.ColumnDefinitions>
+                                                                                                <ColumnDefinition Width="0.87*" />
+                                                                                                <ColumnDefinition Width="0.13*" />
+                                                                                            </Grid.ColumnDefinitions>
+                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[missionextnothrowweap], FallbackValue='Block Dropping Weapons'}" ToolTip="{Binding Translation[missionextnothrowweap], FallbackValue='Block Dropping Weapons'}" TextTrimming="CharacterEllipsis"/>
+                                                                                            <CheckBox x:Name="cbmissionextnothrowweap" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" MaxHeight="30"/>
+                                                                                        </Grid>
+
+                                                                                    </StackPanel>
+
+                                                                                </Grid>
+
+                                                                            </StackPanel>
+
+                                                                            <StackPanel Width="290" Height="auto" Margin="0,0,10,0">
+
+                                                                                <Grid>
+
+                                                                                    <Grid.RowDefinitions>
+                                                                                        <RowDefinition Height="43"/>
+                                                                                        <RowDefinition Height="*"/>
+                                                                                    </Grid.RowDefinitions>
+
+                                                                                    <TextBlock Grid.Row="0" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Text="{Binding Translation[vehicles], FallbackValue='Vehicles'}" FontWeight="Bold"/>
+
+                                                                                    <StackPanel Grid.Row="1">
+
+                                                                                        <Grid Height="30" Margin="0,0,0,5">
+                                                                                            <Grid.ColumnDefinitions>
+                                                                                                <ColumnDefinition Width="0.87*" />
+                                                                                                <ColumnDefinition Width="0.13*" />
+                                                                                            </Grid.ColumnDefinitions>
+                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[missionextteamvehexproof], FallbackValue='Team Vehicles Explosion-Proof'}" ToolTip="{Binding Translation[missionextteamvehexproof], FallbackValue='Team Vehicles Explosion-Proof'}" TextTrimming="CharacterEllipsis"/>
+                                                                                            <CheckBox x:Name="cbmissionextteamvehexproof" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" MaxHeight="30"/>
+                                                                                        </Grid>
+                                                                                        <Grid Height="30" Margin="0,0,0,5">
+                                                                                            <Grid.ColumnDefinitions>
+                                                                                                <ColumnDefinition Width="0.87*" />
+                                                                                                <ColumnDefinition Width="0.13*" />
+                                                                                            </Grid.ColumnDefinitions>
+                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[missionextnovehexpdmg], FallbackValue='No Damage From Vehicle Explosions'}" ToolTip="{Binding Translation[missionextnovehexpdmg], FallbackValue='No Damage From Vehicle Explosions'}" TextTrimming="CharacterEllipsis"/>
+                                                                                            <CheckBox x:Name="cbmissionextnovehexpdmg" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" MaxHeight="30"/>
+                                                                                        </Grid>
+                                                                                        <Grid Height="30" Margin="0,0,0,5">
+                                                                                            <Grid.ColumnDefinitions>
+                                                                                                <ColumnDefinition Width="0.87*" />
+                                                                                                <ColumnDefinition Width="0.13*" />
+                                                                                            </Grid.ColumnDefinitions>
+                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[missionextruinernorockets], FallbackValue='Block Ruiner Rockets'}" ToolTip="{Binding Translation[missionextruinernorockets], FallbackValue='Block Ruiner Rockets'}" TextTrimming="CharacterEllipsis"/>
+                                                                                            <CheckBox x:Name="cbmissionextruinernorockets" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" MaxHeight="30"/>
+                                                                                        </Grid>
+                                                                                        <Grid Height="30" Margin="0,0,0,5">
+                                                                                            <Grid.ColumnDefinitions>
+                                                                                                <ColumnDefinition Width="0.87*" />
+                                                                                                <ColumnDefinition Width="0.13*" />
+                                                                                            </Grid.ColumnDefinitions>
+                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[missionextdelvehdeath], FallbackValue='Remove Vehicle After Death'}" ToolTip="{Binding Translation[missionextdelvehdeath], FallbackValue='Remove Vehicle After Death'}" TextTrimming="CharacterEllipsis"/>
+                                                                                            <CheckBox x:Name="cbmissionextdelvehdeath" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" MaxHeight="30"/>
+                                                                                        </Grid>
+                                                                                        <Grid Height="30" Margin="0,0,0,5">
+                                                                                            <Grid.ColumnDefinitions>
+                                                                                                <ColumnDefinition Width="0.87*" />
+                                                                                                <ColumnDefinition Width="0.13*" />
+                                                                                            </Grid.ColumnDefinitions>
+                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[missionextnostuckdestroy], FallbackValue='Never Destroy Stuck Vehicles'}" ToolTip="{Binding Translation[missionextnostuckdestroy], FallbackValue='Never Destroy Stuck Vehicles'}" TextTrimming="CharacterEllipsis"/>
+                                                                                            <CheckBox x:Name="cbmissionextnostuckdestroy" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" MaxHeight="30"/>
+                                                                                        </Grid>
+                                                                                        <Grid Height="30" Margin="0,0,0,5">
+                                                                                            <Grid.ColumnDefinitions>
+                                                                                                <ColumnDefinition Width="0.87*" />
+                                                                                                <ColumnDefinition Width="0.13*" />
+                                                                                            </Grid.ColumnDefinitions>
+                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[missionextconvroofdown], FallbackValue='Convertible Roof Down'}" ToolTip="{Binding Translation[missionextconvroofdown], FallbackValue='Convertible Roof Down'}" TextTrimming="CharacterEllipsis"/>
+                                                                                            <CheckBox x:Name="cbmissionextconvroofdown" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" MaxHeight="30"/>
+                                                                                        </Grid>
+                                                                                        <Grid Height="30" Margin="0,0,0,5">
+                                                                                            <Grid.ColumnDefinitions>
+                                                                                                <ColumnDefinition Width="0.87*" />
+                                                                                                <ColumnDefinition Width="0.13*" />
+                                                                                            </Grid.ColumnDefinitions>
+                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[missionextnoheadlights], FallbackValue='Block Headlight Button'}" ToolTip="{Binding Translation[missionextnoheadlights], FallbackValue='Block Headlight Button'}" TextTrimming="CharacterEllipsis"/>
+                                                                                            <CheckBox x:Name="cbmissionextnoheadlights" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" MaxHeight="30"/>
+                                                                                        </Grid>
+
+                                                                                    </StackPanel>
+
+                                                                                </Grid>
+
+                                                                            </StackPanel>
+
+                                                                            <StackPanel Width="290" Height="auto" Margin="0,0,10,0">
+
+                                                                                <Grid>
+
+                                                                                    <Grid.RowDefinitions>
+                                                                                        <RowDefinition Height="43"/>
+                                                                                        <RowDefinition Height="*"/>
+                                                                                    </Grid.RowDefinitions>
+
+                                                                                    <TextBlock Grid.Row="0" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Text="{Binding Translation[missionexthud], FallbackValue='HUD'}" FontWeight="Bold"/>
+
+                                                                                    <StackPanel Grid.Row="1">
+
+                                                                                        <Grid Height="30" Margin="0,0,0,5">
+                                                                                            <Grid.ColumnDefinitions>
+                                                                                                <ColumnDefinition Width="0.87*" />
+                                                                                                <ColumnDefinition Width="0.13*" />
+                                                                                            </Grid.ColumnDefinitions>
+                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[missionexthidelives], FallbackValue='Hide Lives Counter'}" ToolTip="{Binding Translation[missionexthidelives], FallbackValue='Hide Lives Counter'}" TextTrimming="CharacterEllipsis"/>
+                                                                                            <CheckBox x:Name="cbmissionexthidelives" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" MaxHeight="30"/>
+                                                                                        </Grid>
+                                                                                        <Grid Height="30" Margin="0,0,0,5">
+                                                                                            <Grid.ColumnDefinitions>
+                                                                                                <ColumnDefinition Width="0.87*" />
+                                                                                                <ColumnDefinition Width="0.13*" />
+                                                                                            </Grid.ColumnDefinitions>
+                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[missionexthidereticle], FallbackValue='Hide Reticle'}" ToolTip="{Binding Translation[missionexthidereticle], FallbackValue='Hide Reticle'}" TextTrimming="CharacterEllipsis"/>
+                                                                                            <CheckBox x:Name="cbmissionexthidereticle" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" MaxHeight="30"/>
+                                                                                        </Grid>
+
+                                                                                    </StackPanel>
+
+                                                                                </Grid>
+
+                                                                            </StackPanel>
+
+                                                                        </WrapPanel>
+
+                                                                    </StackPanel>
 
                                                                 </ScrollViewer>
 

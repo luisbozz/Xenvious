@@ -605,6 +605,10 @@ namespace Xenvious
                                         if (!tbmbs32.IsFocused) tbmbs32.Text = new Global(GTA.Offsets.Editor.menubs32).Get<int>().ToString();
 
                                     }
+                                    else if (PageInnerMission.SelectedItem == PageInnerMissionExtras)
+                                    {
+                                        GetMissionExtraValues();
+                                    }
                                     else if (PageInnerMission.SelectedItem == PageInnerMissionPA)
                                     {
                                         GetOUTBValues();

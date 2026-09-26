@@ -82,6 +82,11 @@ namespace Xenvious
             PageInnerMission.SelectedItem = PageInnerMissionGeneral;
         }
 
+        private void BtnMissionExtras_Click(object sender, RoutedEventArgs e)
+        {
+            PageInnerMission.SelectedItem = PageInnerMissionExtras;
+        }
+
         public void InitializeGear()
         {
             if (ddmissiongear != null)
@@ -139,6 +144,7 @@ namespace Xenvious
             }
 
             BtnMissionGeneral.Background = (SolidColorBrush)Resources["SeactionHeaderBackgroundBrush"];
+            BtnMissionExtras.Background = (SolidColorBrush)Resources["SeactionHeaderBackgroundBrush"];
             BtnMissionMenubs.Background = (SolidColorBrush)Resources["SeactionHeaderBackgroundBrush"];
             BtnMissionInterior.Background = (SolidColorBrush)Resources["SeactionHeaderBackgroundBrush"];
             BtnMissionPlayerSettings.Background = (SolidColorBrush)Resources["SeactionHeaderBackgroundBrush"];
@@ -154,6 +160,10 @@ namespace Xenvious
             if (PageInnerMission.SelectedItem == PageInnerMissionGeneral)
             {
                 BtnMissionGeneral.Background = (SolidColorBrush)Resources["ButtonHoverBackgroundBrush"];
+            }
+            else if (PageInnerMission.SelectedItem == PageInnerMissionExtras)
+            {
+                BtnMissionExtras.Background = (SolidColorBrush)Resources["ButtonHoverBackgroundBrush"];
             }
             else if (PageInnerMission.SelectedItem == PageInnerMissionMenubs)
             {
