@@ -57,12 +57,13 @@
                  The app's CheckBox template has no ContentPresenter, so a checkbox
                  never shows its own Content - the label is always a separate TextBlock. -->
             <Style x:Key="FormRow" TargetType="{x:Type Grid}">
-                <Setter Property="Height" Value="38"/>
-                <Setter Property="Margin" Value="0,0,0,4"/>
+                <Setter Property="Height" Value="34"/>
+                <Setter Property="Margin" Value="0,0,0,2"/>
             </Style>
             <Style x:Key="FormLabel" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
                 <Setter Property="Grid.Column" Value="0"/>
-                <Setter Property="FontSize" Value="19"/>
+                <Setter Property="FontSize" Value="15"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
                 <Setter Property="VerticalAlignment" Value="Center"/>
                 <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
             </Style>
@@ -699,6 +700,7 @@
                                                 <UniformGrid x:Name="DashCounts" DockPanel.Dock="Bottom" Rows="1" Margin="0,0,-8,0"/>
                                                 <TextBlock DockPanel.Dock="Bottom" Style="{StaticResource DashSub}" Text="{Binding Translation[dash_placed], FallbackValue='Placed in this job'}"
                                                            ToolTip="{Binding Translation[dash_counts_hint], FallbackValue='Click opens the page in Edit'}"/>
+                                                <Rectangle DockPanel.Dock="Bottom" Height="1" Fill="#FF3A3D43" Margin="0,14,0,0"/>
                                                 <UniformGrid DockPanel.Dock="Bottom" Columns="3" Margin="0,0,-10,0">
                                                     <StackPanel Margin="0,0,10,10">
                                                         <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[jobtype], FallbackValue='Job Type'}"/>
@@ -713,7 +715,7 @@
                                                                 <ComboBoxItem Content="{Binding Translation[race], FallbackValue=Race}"/>
                                                                 <ComboBoxItem Content="{Binding Translation[survival], FallbackValue=Survival}"/>
                                                             </ComboBox>
-                                                            <TextBox x:Name="tbjobtype" Style="{StaticResource Watermark}" FontSize="15" TextChanged="tbjobtype_TextChanged" KeyDown="FormatTextForInteger" Visibility="Hidden"/>
+                                                            <TextBox x:Name="tbjobtype" Style="{StaticResource Watermark}" FontSize="14" TextChanged="tbjobtype_TextChanged" KeyDown="FormatTextForInteger" Visibility="Hidden"/>
                                                             <!-- Switches between the dropdowns and raw numbers for type and subtype. -->
                                                             <Button x:Name="Btnjobtypeswitch" Grid.Column="1" Width="24" Height="24" HorizontalAlignment="Right" Style="{DynamicResource TitleBarButton}" Click="Btnjobtypeswitch_Click" ToolTip="Dropdown / number">
                                                                 <Image x:Name="jobtypeswitchimage" Source="{StaticResource switch}" Width="18" Height="18"/>
@@ -724,31 +726,32 @@
                                                         <Label x:Name="Lbljobsubtype" Content="Type" Padding="0" Margin="0,0,0,3" FontSize="12" FontWeight="Bold" Foreground="{StaticResource NavMutedBrush}"/>
                                                         <Grid Height="32">
                                                             <ComboBox x:Name="ddjobsubtype" FontFamily="{DynamicResource Volte}" SelectionChanged="ddjobsubtype_SelectionChanged"/>
-                                                            <TextBox x:Name="tbjobsubtype" Style="{StaticResource Watermark}" FontSize="15" TextChanged="tbjobsubtype_TextChanged" KeyDown="FormatTextForInteger" Visibility="Hidden"/>
+                                                            <TextBox x:Name="tbjobsubtype" Style="{StaticResource Watermark}" FontSize="14" TextChanged="tbjobsubtype_TextChanged" KeyDown="FormatTextForInteger" Visibility="Hidden"/>
                                                         </Grid>
                                                     </StackPanel>
                                                     <StackPanel Margin="0,0,10,10" Visibility="{Binding ElementName=tbjobracetype, Path=Visibility}">
                                                         <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[subtyperace], FallbackValue='Race subtype'}"/>
-                                                        <TextBox x:Name="tbjobracetype" Style="{StaticResource Watermark}" Height="32" FontSize="15" TextChanged="tbjobracetype_TextChanged" KeyDown="FormatTextForInteger" Visibility="Collapsed"/>
+                                                        <TextBox x:Name="tbjobracetype" Style="{StaticResource Watermark}" Height="32" FontSize="14" TextChanged="tbjobracetype_TextChanged" KeyDown="FormatTextForInteger" Visibility="Collapsed"/>
                                                     </StackPanel>
                                                     <StackPanel Margin="0,0,10,10">
                                                         <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[rounds], FallbackValue=Rounds}"/>
-                                                        <TextBox x:Name="tb_Rounds" Style="{StaticResource Watermark}" Height="32" FontSize="15" ToolTip="{Binding Translation[rounds_info], FallbackValue=Define how many Rounds one has to play to finish the Job.}" TextChanged="tb_Rounds_TextChanged" KeyDown="FormatTextForInteger"/>
+                                                        <TextBox x:Name="tb_Rounds" Style="{StaticResource Watermark}" Height="32" FontSize="14" ToolTip="{Binding Translation[rounds_info], FallbackValue=Define how many Rounds one has to play to finish the Job.}" TextChanged="tb_Rounds_TextChanged" KeyDown="FormatTextForInteger"/>
                                                     </StackPanel>
                                                     <StackPanel Margin="0,0,10,10">
                                                         <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[teams], FallbackValue=Teams}"/>
-                                                        <TextBox x:Name="tb_Teams" Style="{StaticResource Watermark}" Height="32" FontSize="15" ToolTip="{Binding Translation[teams_info], FallbackValue=Define how many Teams your Job has.}" TextChanged="tb_Teams_TextChanged" KeyDown="FormatTextForInteger"/>
+                                                        <TextBox x:Name="tb_Teams" Style="{StaticResource Watermark}" Height="32" FontSize="14" ToolTip="{Binding Translation[teams_info], FallbackValue=Define how many Teams your Job has.}" TextChanged="tb_Teams_TextChanged" KeyDown="FormatTextForInteger"/>
                                                     </StackPanel>
                                                     <StackPanel Margin="0,0,10,10">
                                                         <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[minp], FallbackValue='Minimum Players'}"/>
-                                                        <TextBox x:Name="tb_minp" Style="{StaticResource Watermark}" Height="32" FontSize="15" ToolTip="{Binding Translation[minp_info], FallbackValue=Define the minimum Player count.}" TextChanged="tb_minp_TextChanged" KeyDown="FormatTextForInteger"/>
+                                                        <TextBox x:Name="tb_minp" Style="{StaticResource Watermark}" Height="32" FontSize="14" ToolTip="{Binding Translation[minp_info], FallbackValue=Define the minimum Player count.}" TextChanged="tb_minp_TextChanged" KeyDown="FormatTextForInteger"/>
                                                     </StackPanel>
                                                     <StackPanel Margin="0,0,10,10">
                                                         <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[maxp], FallbackValue='Maximum Players'}"/>
-                                                        <TextBox x:Name="tb_maxp" Style="{StaticResource Watermark}" Height="32" FontSize="15" ToolTip="{Binding Translation[maxp_info], FallbackValue=Define the maximum Player count. (If you make solo Missions make sure to add 1)}" TextChanged="tb_maxp_TextChanged" KeyDown="FormatTextForInteger"/>
+                                                        <TextBox x:Name="tb_maxp" Style="{StaticResource Watermark}" Height="32" FontSize="14" ToolTip="{Binding Translation[maxp_info], FallbackValue=Define the maximum Player count. (If you make solo Missions make sure to add 1)}" TextChanged="tb_maxp_TextChanged" KeyDown="FormatTextForInteger"/>
                                                     </StackPanel>
                                                 </UniformGrid>
                                                 <TextBlock DockPanel.Dock="Bottom" Style="{StaticResource DashSub}" Text="{Binding Translation[detailsheader], FallbackValue=Details}"/>
+                                                <Rectangle DockPanel.Dock="Bottom" Height="1" Fill="#FF3A3D43" Margin="0,14,0,0"/>
                                                 <Grid Height="200">
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="356"/>
@@ -802,7 +805,7 @@
 
                                                     <DockPanel Grid.Column="1">
                                                         <TextBlock DockPanel.Dock="Top" Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[title], FallbackValue=Title}"/>
-                                                        <TextBox x:Name="tb_JobTitle" DockPanel.Dock="Top" Style="{StaticResource Watermark}" Height="32" MaxLength="50" FontSize="15" TextChanged="tb_JobTitle_TextChanged" Margin="0,0,0,8"/>
+                                                        <TextBox x:Name="tb_JobTitle" DockPanel.Dock="Top" Style="{StaticResource Watermark}" Height="32" MaxLength="50" FontSize="14" TextChanged="tb_JobTitle_TextChanged" Margin="0,0,0,8"/>
                                                         <TextBlock DockPanel.Dock="Top" Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[desc], FallbackValue=Describtion}"/>
                                                         <TextBlock x:Name="DashDescBytes" DockPanel.Dock="Bottom" HorizontalAlignment="Right" FontSize="11" FontWeight="Bold" Margin="0,3,0,0" Foreground="{StaticResource NavMutedBrush}" ToolTip="{Binding Translation[dash_desc_bytes], FallbackValue='The creator stores up to 504 bytes; umlauts and emoji take 2-4 bytes each.'}"/>
                                                         <TextBox x:Name="tb_JobDec" Style="{StaticResource WatermarkOld}" MinHeight="80" MaxLength="500" FontSize="14" TextWrapping="Wrap" AcceptsReturn="False" VerticalContentAlignment="Top" ScrollViewer.VerticalScrollBarVisibility="Auto" TextChanged="tb_JobDec_TextChanged"/>
@@ -861,8 +864,8 @@
                                                     <CheckBox x:Name="cb_customdaytime" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cb_customdaytime_Checked" Unchecked="cb_customdaytime_Unchecked"/>
                                                 </Grid>
                                                 <UniformGrid Columns="2" Visibility="{Binding ElementName=tb_cdth, Path=Visibility}">
-                                                    <TextBox x:Name="tb_cdth" Visibility="Collapsed" Height="32" Margin="0,0,8,10" Style="{StaticResource Watermark}" Tag="{Binding Translation[cdt_h], FallbackValue=Hour}" ToolTip="{Binding Translation[cdt_h_info], FallbackValue=Time of Day Hour | Max is 23}" MaxLength="2" FontSize="15" KeyDown="FormatTextForInteger" TextChanged="tb_cdth_TextChanged"/>
-                                                    <TextBox x:Name="tb_cdtm" Visibility="Collapsed" Height="32" Margin="0,0,0,10" Style="{StaticResource Watermark}" Tag="{Binding Translation[cdt_m], FallbackValue=Minute}" ToolTip="{Binding Translation[cdt_m_info], FallbackValue=Time of Day Minute | Max is 59}" MaxLength="2" FontSize="15" KeyDown="FormatTextForInteger" TextChanged="tb_cdtm_TextChanged"/>
+                                                    <TextBox x:Name="tb_cdth" Visibility="Collapsed" Height="32" Margin="0,0,8,10" Style="{StaticResource Watermark}" Tag="{Binding Translation[cdt_h], FallbackValue=Hour}" ToolTip="{Binding Translation[cdt_h_info], FallbackValue=Time of Day Hour | Max is 23}" MaxLength="2" FontSize="14" KeyDown="FormatTextForInteger" TextChanged="tb_cdth_TextChanged"/>
+                                                    <TextBox x:Name="tb_cdtm" Visibility="Collapsed" Height="32" Margin="0,0,0,10" Style="{StaticResource Watermark}" Tag="{Binding Translation[cdt_m], FallbackValue=Minute}" ToolTip="{Binding Translation[cdt_m_info], FallbackValue=Time of Day Minute | Max is 59}" MaxLength="2" FontSize="14" KeyDown="FormatTextForInteger" TextChanged="tb_cdtm_TextChanged"/>
                                                 </UniformGrid>
 
                                                 <UniformGrid Columns="2">
