@@ -1237,7 +1237,10 @@
                                                         <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[editnav_refresh], FallbackValue='Check again'}"/>
                                                     </Button>
                                                     <Button x:Name="BtnEditScriptMisc" HorizontalAlignment="Right" Style="{StaticResource NavButton}" Click="BtnEditScriptMisc_Click">
-                                                        <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[editnav_toscrpatches], FallbackValue='Misc › Script Patches'}"/>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[editnav_toscrpatches], FallbackValue='Misc › Script Patches'}"/>
+                                                            <Path Style="{StaticResource GoToPageIcon}"/>
+                                                        </StackPanel>
                                                     </Button>
                                                 </DockPanel>
                                             </StackPanel>
@@ -1413,10 +1416,12 @@
                                                                     <WrapPanel Orientation="Horizontal" Margin="0,0,0,12">
                                                                         <StackPanel Width="340" Margin="0,0,12,0">
                                                                             <local:ModelCard x:Name="PropModelCard" Margin="0,0,0,12"/>
+                                                                        </StackPanel>
+                                                                        <StackPanel Width="340" Margin="0,0,12,0">
                                                                             <Border Style="{StaticResource DashCard}">
                                                                                 <DockPanel>
                                                                                     <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
-                                                                                        <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[card_position], FallbackValue=Position}"/>
+                                                                                        <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[card_position], FallbackValue=Placement}"/>
                                                                                     </Border>
                                                                                     <StackPanel Margin="14,12,14,4">
                                                                                     <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[loc], FallbackValue=Location}"/>
@@ -1442,9 +1447,9 @@
                                                                                             <TextBlock Style="{StaticResource FieldAxis}" Text="Z"/>
                                                                                             <TextBox x:Name="tbpropslocz" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbpropslocz_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangePropLocationZPlusMinus" Height="30"/>
                                                                                         </StackPanel>
-                                                                                        <Border Grid.Column="6" Width="30" Height="30" VerticalAlignment="Bottom" CornerRadius="4" Background="{DynamicResource SeactionHeaderBackgroundBrush}">
-                                                                                            <Button x:Name="Btnpropsgetloc" Style="{DynamicResource TitleBarButton}" Click="Btnpropsgetloc_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Translation[getcursorloc], FallbackValue=Get Cursor Location}" IsEnabled="False" >
-                                                                                                <Path x:Name="propsgetlocpath"  Data="M 12 12 L 12 0 L 6 6 Z" Stretch="Uniform" Stroke="{DynamicResource TextColor}" />
+                                                                                        <Border Grid.Column="6" Width="30" Height="30" VerticalAlignment="Bottom">
+                                                                                            <Button x:Name="Btnpropsgetloc" Style="{StaticResource FieldIconButton}" Click="Btnpropsgetloc_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Translation[getcursorloc], FallbackValue=Get Cursor Location}" IsEnabled="False" >
+                                                                                                <Path x:Name="propsgetlocpath" Data="M8,1.5 L8,4.5 M8,11.5 L8,14.5 M1.5,8 L4.5,8 M11.5,8 L14.5,8 M8,5 A3,3 0 1 1 7.99,5" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.6" Width="16" Height="16" />
                                                                                             </Button>
                                                                                         </Border>
                                                                                     </Grid>
@@ -1471,9 +1476,9 @@
                                                                                             <TextBlock Style="{StaticResource FieldAxis}" Text="Z"/>
                                                                                             <TextBox x:Name="tbpropsrotz" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbpropsrotz_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
                                                                                         </StackPanel>
-                                                                                        <Border Grid.Column="6" Width="30" Height="30" VerticalAlignment="Bottom" CornerRadius="4" Background="{DynamicResource SeactionHeaderBackgroundBrush}">
-                                                                                            <Button x:Name="Btnpropsrotchain" Style="{DynamicResource TitleBarButton}" Click="Btnpropsrotchain_Click" IsEnabled="False" Padding="0" ToolTip="{Binding Translation[fixedrotn], FallbackValue=The rotation values ​​will not be adopted when adding a new prop.}">
-                                                                                                <Image x:Name="propsrotchain" Source="{StaticResource link2}" RenderTransformOrigin=".5,.5" Width="18" Height="18">
+                                                                                        <Border Grid.Column="6" Width="30" Height="30" VerticalAlignment="Bottom">
+                                                                                            <Button x:Name="Btnpropsrotchain" Style="{StaticResource FieldIconButton}" Click="Btnpropsrotchain_Click" IsEnabled="False" Padding="0" ToolTip="{Binding Translation[fixedrotn], FallbackValue=The rotation values ​​will not be adopted when adding a new prop.}">
+                                                                                                <Image x:Name="propsrotchain" Source="{StaticResource link2}" RenderTransformOrigin=".5,.5" Width="15" Height="15">
                                                                                                     <Image.RenderTransform>
                                                                                                         <RotateTransform Angle="315" />
                                                                                                     </Image.RenderTransform>
@@ -1553,10 +1558,10 @@
                                                                                             <RowDefinition Height="Auto"/>
                                                                                         </Grid.RowDefinitions>
                                                                                         <TextBox x:Name="tbpropshas" Style="{StaticResource Watermark}" ToolTip="{Binding Translation[prophasinfo], FallbackValue='Define an amount of seconds after the prop will get hidden from the start of the Map.'}" IsEnabled="False" TextChanged="tbpropshas_TextChanged" KeyDown="FormatTextForInteger" Cursor="IBeam" Height="30"/>
-                                                                                        <Border Grid.Column="1" Width="30" Height="30" HorizontalAlignment="Right" CornerRadius="4" Background="{DynamicResource SeactionHeaderBackgroundBrush}">
-                                                                                            <Button x:Name="Btnpropshasexpand"  Style="{DynamicResource TitleBarButton}" Click="Btnpropshasexpand_Click" WindowChrome.IsHitTestVisibleInChrome="True" >
+                                                                                        <Border Grid.Column="1" Width="30" Height="30" HorizontalAlignment="Right">
+                                                                                            <Button x:Name="Btnpropshasexpand"  Style="{StaticResource FieldIconButton}" Click="Btnpropshasexpand_Click" WindowChrome.IsHitTestVisibleInChrome="True" >
                                                                                                 <Grid>
-                                                                                                    <Path x:Name="pathpropshasexpand" Data="M 4 0 L 0 4 L 4 8 Z" Stretch="Uniform" Stroke="{DynamicResource TextColor}" Margin="0,2,2,2" Visibility="Visible"/>
+                                                                                                    <Path x:Name="pathpropshasexpand" Data="M 4 0 L 0 4 L 4 8 Z" Stretch="Uniform" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" Width="8" Height="8" Visibility="Visible"/>
                                                                                                 </Grid>
                                                                                             </Button>
                                                                                         </Border>
@@ -1986,10 +1991,12 @@
                                                                     <WrapPanel Orientation="Horizontal" Margin="0,0,0,12">
                                                                         <StackPanel Width="340" Margin="0,0,12,0">
                                                                             <local:ModelCard x:Name="DPropModelCard" Margin="0,0,0,12"/>
+                                                                        </StackPanel>
+                                                                        <StackPanel Width="340" Margin="0,0,12,0">
                                                                             <Border Style="{StaticResource DashCard}">
                                                                                 <DockPanel>
                                                                                     <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
-                                                                                        <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[card_position], FallbackValue=Position}"/>
+                                                                                        <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[card_position], FallbackValue=Placement}"/>
                                                                                     </Border>
                                                                                     <StackPanel Margin="14,12,14,4">
                                                                                     <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[loc], FallbackValue=Location}"/>
@@ -2015,9 +2022,9 @@
                                                                                             <TextBlock Style="{StaticResource FieldAxis}" Text="Z"/>
                                                                                             <TextBox x:Name="tbdpropslocz" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbdpropslocz_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangeDPropLocationZPlusMinus" Height="30"/>
                                                                                         </StackPanel>
-                                                                                        <Border Grid.Column="6" Width="30" Height="30" VerticalAlignment="Bottom" CornerRadius="4" Background="{DynamicResource SeactionHeaderBackgroundBrush}">
-                                                                                            <Button x:Name="Btndpropsgetloc" Style="{DynamicResource TitleBarButton}" Click="Btndpropsgetloc_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Translation[getcursorloc], FallbackValue=Get Cursor Location}" IsEnabled="False" >
-                                                                                                <Path x:Name="dpropsgetlocpath"  Data="M 12 12 L 12 0 L 6 6 Z" Stretch="Uniform" Stroke="{DynamicResource TextColor}" />
+                                                                                        <Border Grid.Column="6" Width="30" Height="30" VerticalAlignment="Bottom">
+                                                                                            <Button x:Name="Btndpropsgetloc" Style="{StaticResource FieldIconButton}" Click="Btndpropsgetloc_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Translation[getcursorloc], FallbackValue=Get Cursor Location}" IsEnabled="False" >
+                                                                                                <Path x:Name="dpropsgetlocpath" Data="M8,1.5 L8,4.5 M8,11.5 L8,14.5 M1.5,8 L4.5,8 M11.5,8 L14.5,8 M8,5 A3,3 0 1 1 7.99,5" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.6" Width="16" Height="16" />
                                                                                             </Button>
                                                                                         </Border>
                                                                                     </Grid>
@@ -2044,9 +2051,9 @@
                                                                                             <TextBlock Style="{StaticResource FieldAxis}" Text="Z"/>
                                                                                             <TextBox x:Name="tbdpropsrotz" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbdpropsrotz_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
                                                                                         </StackPanel>
-                                                                                        <Border Grid.Column="6" Width="30" Height="30" VerticalAlignment="Bottom" CornerRadius="4" Background="{DynamicResource SeactionHeaderBackgroundBrush}">
-                                                                                            <Button x:Name="Btndpropsrotchain" Style="{DynamicResource TitleBarButton}" Click="Btndpropsrotchain_Click" IsEnabled="False" Padding="0" ToolTip="{Binding Translation[fixedrotn], FallbackValue=The rotation values ​​will not be adopted when adding a new prop.}">
-                                                                                                <Image x:Name="dpropsrotchain" Source="{StaticResource link2}" RenderTransformOrigin=".5,.5" Width="18" Height="18">
+                                                                                        <Border Grid.Column="6" Width="30" Height="30" VerticalAlignment="Bottom">
+                                                                                            <Button x:Name="Btndpropsrotchain" Style="{StaticResource FieldIconButton}" Click="Btndpropsrotchain_Click" IsEnabled="False" Padding="0" ToolTip="{Binding Translation[fixedrotn], FallbackValue=The rotation values ​​will not be adopted when adding a new prop.}">
+                                                                                                <Image x:Name="dpropsrotchain" Source="{StaticResource link2}" RenderTransformOrigin=".5,.5" Width="15" Height="15">
                                                                                                     <Image.RenderTransform>
                                                                                                         <RotateTransform Angle="315" />
                                                                                                     </Image.RenderTransform>
@@ -9224,10 +9231,12 @@
                                                         <WrapPanel Orientation="Horizontal" Margin="0,0,0,12">
                                                             <StackPanel Width="340" Margin="0,0,12,0">
                                                                 <local:ModelCard x:Name="ActorModelCard" Margin="0,0,0,12"/>
+                                                            </StackPanel>
+                                                            <StackPanel Width="340" Margin="0,0,12,0">
                                                                 <Border Style="{StaticResource DashCard}">
                                                                     <DockPanel>
                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
-                                                                            <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[card_position], FallbackValue=Position}"/>
+                                                                            <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[card_position], FallbackValue=Placement}"/>
                                                                         </Border>
                                                                         <StackPanel Margin="14,12,14,4">
                                                                         <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[loc], FallbackValue=Location}"/>
@@ -9253,9 +9262,9 @@
                                                                                 <TextBlock Style="{StaticResource FieldAxis}" Text="Z"/>
                                                                                 <TextBox x:Name="tbactorlocz" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbactorlocz_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangeActorLocationZPlusMinus" Height="30"/>
                                                                             </StackPanel>
-                                                                            <Border Grid.Column="6" Width="30" Height="30" VerticalAlignment="Bottom" CornerRadius="4" Background="{DynamicResource SeactionHeaderBackgroundBrush}">
-                                                                                <Button x:Name="Btnactorgetloc" Style="{DynamicResource TitleBarButton}" Click="Btnactorgetloc_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Translation[getcursorloc], FallbackValue=Get Cursor Location}" IsEnabled="False" >
-                                                                                    <Path x:Name="actorgetlocpath"  Data="M 12 12 L 12 0 L 6 6 Z" Stretch="Uniform" Stroke="{DynamicResource TextColor}" />
+                                                                            <Border Grid.Column="6" Width="30" Height="30" VerticalAlignment="Bottom">
+                                                                                <Button x:Name="Btnactorgetloc" Style="{StaticResource FieldIconButton}" Click="Btnactorgetloc_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Translation[getcursorloc], FallbackValue=Get Cursor Location}" IsEnabled="False" >
+                                                                                    <Path x:Name="actorgetlocpath" Data="M8,1.5 L8,4.5 M8,11.5 L8,14.5 M1.5,8 L4.5,8 M11.5,8 L14.5,8 M8,5 A3,3 0 1 1 7.99,5" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.6" Width="16" Height="16" />
                                                                                 </Button>
                                                                             </Border>
                                                                         </Grid>
@@ -9751,9 +9760,9 @@
                                                                                 <TextBlock Style="{StaticResource FieldAxis}" Text="Z"/>
                                                                                 <TextBox x:Name="tbactoractvz" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbactoractvz_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
                                                                             </StackPanel>
-                                                                            <Border Grid.Column="6" Width="30" Height="30" VerticalAlignment="Bottom" CornerRadius="4" Background="{DynamicResource SeactionHeaderBackgroundBrush}">
-                                                                                <Button x:Name="Btnactorgetlocgoto" Style="{DynamicResource TitleBarButton}" Click="Btnactorgetlocgoto_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Translation[getcursorloc], FallbackValue=Get Cursor Location}" IsEnabled="False" >
-                                                                                    <Path Data="M 12 12 L 12 0 L 6 6 Z" Stretch="Uniform" Stroke="{DynamicResource TextColor}" />
+                                                                            <Border Grid.Column="6" Width="30" Height="30" VerticalAlignment="Bottom">
+                                                                                <Button x:Name="Btnactorgetlocgoto" Style="{StaticResource FieldIconButton}" Click="Btnactorgetlocgoto_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Translation[getcursorloc], FallbackValue=Get Cursor Location}" IsEnabled="False" >
+                                                                                    <Path Data="M8,1.5 L8,4.5 M8,11.5 L8,14.5 M1.5,8 L4.5,8 M11.5,8 L14.5,8 M8,5 A3,3 0 1 1 7.99,5" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.6" Width="16" Height="16" />
                                                                                 </Button>
                                                                             </Border>
                                                                         </Grid>
@@ -9828,9 +9837,9 @@
                                                                                 <TextBlock Style="{StaticResource FieldAxis}" Text="Z"/>
                                                                                 <TextBox x:Name="tbactoractvawlz" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbactoractvawlz_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
                                                                             </StackPanel>
-                                                                            <Border Grid.Column="6" Width="30" Height="30" VerticalAlignment="Bottom" CornerRadius="4" Background="{DynamicResource SeactionHeaderBackgroundBrush}">
-                                                                                <Button x:Name="Btnactorgetlocgotoawl" Style="{DynamicResource TitleBarButton}" Click="Btnactorgetlocgotoawl_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Translation[getcursorloc], FallbackValue=Get Cursor Location}" IsEnabled="False" >
-                                                                                    <Path Data="M 12 12 L 12 0 L 6 6 Z" Stretch="Uniform" Stroke="{DynamicResource TextColor}" />
+                                                                            <Border Grid.Column="6" Width="30" Height="30" VerticalAlignment="Bottom">
+                                                                                <Button x:Name="Btnactorgetlocgotoawl" Style="{StaticResource FieldIconButton}" Click="Btnactorgetlocgotoawl_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Translation[getcursorloc], FallbackValue=Get Cursor Location}" IsEnabled="False" >
+                                                                                    <Path Data="M8,1.5 L8,4.5 M8,11.5 L8,14.5 M1.5,8 L4.5,8 M11.5,8 L14.5,8 M8,5 A3,3 0 1 1 7.99,5" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.6" Width="16" Height="16" />
                                                                                 </Button>
                                                                             </Border>
                                                                         </Grid>
