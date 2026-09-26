@@ -117,6 +117,8 @@ namespace Xenvious
 
             string scName = Lbl_SCName.Text;
             DashSCInitial.Text = string.IsNullOrWhiteSpace(scName) ? "" : scName.Trim().Substring(0, 1).ToUpperInvariant();
+            BtnDashSC.IsEnabled = !string.IsNullOrWhiteSpace(scName);
+            UpdateDashboardJobId(inCreator);
 
             // Props and the creator's own count only mean something inside a creator.
             DashTileProps.Visibility = inCreator ? Visibility.Visible : Visibility.Collapsed;

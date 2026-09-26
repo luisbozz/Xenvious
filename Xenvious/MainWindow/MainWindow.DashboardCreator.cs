@@ -1,15 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Xenvious.AdvancedPlacement;
+using Xenvious.Logging;
 
 namespace Xenvious
 {
@@ -40,6 +41,8 @@ namespace Xenvious
 
         private string _dashCreator = "";   // creator script the creator-specific parts were built for
         private readonly List<DashCount> _dashCounts = new List<DashCount>();
+        private readonly List<(ScrPatchGroup Group, Ellipse Dot, FrameworkElement Row)> _dashFeatures =
+            new List<(ScrPatchGroup, Ellipse, FrameworkElement)>();
 
         private static bool IsMissionCreator(string creator)
         {
@@ -58,6 +61,7 @@ namespace Xenvious
                 _dashCreator = creator;
                 BuildDashboardCounts(creator);
                 BuildDashboardFeatures(creator);
+                BuildDashboardTeams(creator);
                 bool mission = IsMissionCreator(creator);
                 DashMissionAmbient.Visibility = mission ? Visibility.Visible : Visibility.Collapsed;
                 DashMissionLook.Visibility = mission ? Visibility.Visible : Visibility.Collapsed;
@@ -70,6 +74,7 @@ namespace Xenvious
 
             foreach (var count in _dashCounts)
                 count.Value.Text = SafeRead(count.Read);
+            UpdateDashboardFeatureStatus(creator);
 
             if (IsMissionCreator(creator))
                 GetDashboardMissionAmbient();
@@ -216,19 +221,16 @@ namespace Xenvious
             return tile;
         }
 
-        // One switch per creator-relevant script patch, bound to the same group the Scr
-        // Patches page uses, so both show the same state.
+        // One status row per creator-relevant script patch. Switching stays on Misc >
+        // Scr Patches; the dashboard only says whether a feature is working.
         private void BuildDashboardFeatures(string creator)
         {
             DashScriptFeatures.Children.Clear();
+            _dashFeatures.Clear();
             DashScriptFeaturesFor.Text = creator.Length == 0 ? "" : CreatorDisplayName(creator);
             if (creator.Length == 0)
             {
-                DashScriptFeatures.Children.Add(new TextBlock
-                {
-                    Text = TranslateOr("dash_features_nocreator", "Open a creator to see its features."),
-                    FontSize = 13, TextWrapping = TextWrapping.Wrap, Foreground = (Brush)FindResource("NavMutedBrush")
-                });
+                DashScriptFeatures.Children.Add(DashMutedText(TranslateOr("dash_features_nocreator", "Open a creator to see its features.")));
                 return;
             }
 
@@ -241,15 +243,124 @@ namespace Xenvious
                 if (group == null || !group.Patches.Any(p => p.script_name == creator))
                     continue;
 
-                var row = new Grid { Style = (Style)FindResource("FormRow") };
-                row.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-                row.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
-                row.Children.Add(new TextBlock { Text = TranslateOr(key, fallback), Style = (Style)FindResource("FormLabel") });
-                var toggle = new CheckBox { Style = (Style)FindResource("FormToggle") };
-                toggle.SetBinding(ToggleButton.IsCheckedProperty, new Binding(nameof(ScrPatchGroup.Enabled)) { Source = group, Mode = BindingMode.TwoWay });
-                Grid.SetColumn(toggle, 1);
-                row.Children.Add(toggle);
+                var dot = new Ellipse { Width = 9, Height = 9, Margin = new Thickness(0, 0, 10, 0), VerticalAlignment = VerticalAlignment.Center, Fill = DotOff };
+                var row = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 3, 0, 3), Background = Brushes.Transparent };
+                row.Children.Add(dot);
+                row.Children.Add(new TextBlock { Text = TranslateOr(key, fallback), FontSize = 14, Foreground = (Brush)FindResource("TextColor"), VerticalAlignment = VerticalAlignment.Center });
                 DashScriptFeatures.Children.Add(row);
+                _dashFeatures.Add((group, dot, row));
+            }
+
+            if (_dashFeatures.Count == 0)
+                DashScriptFeatures.Children.Add(DashMutedText(TranslateOr("dash_features_none", "No script features for this creator.")));
+            UpdateDashboardFeatureStatus(creator);
+        }
+
+        private TextBlock DashMutedText(string text)
+        {
+            return new TextBlock { Text = text, FontSize = 13, TextWrapping = TextWrapping.Wrap, Foreground = (Brush)FindResource("NavMutedBrush") };
+        }
+
+        // Green: written into the creator script. Yellow: switched on, but the runner has
+        // not found its place in the script (yet, or no longer after a game update).
+        // Grey: switched off. The reason sits in the tooltip, not next to the name.
+        private void UpdateDashboardFeatureStatus(string creator)
+        {
+            foreach (var (group, dot, row) in _dashFeatures)
+            {
+                var patches = group.Patches.Where(p => p.script_name == creator).ToList();
+                bool enabled = patches.All(p => p.enabled);
+                bool applied = patches.Any(ScrPatchesRunner.IsApplied);
+                dot.Fill = !enabled ? DotOff : applied ? DotOk : DotWarn;
+                row.ToolTip = !enabled
+                    ? TranslateOr("dash_feat_off", "Off. Switch it on in Misc › Script Patches.")
+                    : applied
+                        ? TranslateOr("dash_feat_on", "Active in this creator.")
+                        : TranslateOr("dash_feat_pending", "On, but not in the script yet. If it stays like this, the pattern no longer matches this game build.");
+            }
+        }
+
+        private void BtnDashScrPatches_Click(object sender, RoutedEventArgs e)
+        {
+            MainPages.SelectedItem = PageMod;
+            BtnModScrPatches_Click(sender, e);
+        }
+
+        // Team to test with. The race creator tests the primary or the secondary route
+        // instead (index 0 / 1, see BtnTestMain_Click); the deathmatch creator has no team test.
+        private void BuildDashboardTeams(string creator)
+        {
+            DashTeamButtons.Children.Clear();
+            bool race = creator == "fm_race_creator";
+            int count = creator == "fm_deathmatch_creator" || creator.Length == 0 ? 0 : race ? 2 : 4;
+            DashTeamPanel.Visibility = count == 0 ? Visibility.Collapsed : Visibility.Visible;
+            if (ddteamtest.SelectedIndex >= count)
+                ddteamtest.SelectedIndex = 0;
+
+            for (int i = 0; i < count; i++)
+            {
+                int index = i;
+                var button = new ToggleButton
+                {
+                    Content = (i + 1).ToString(CultureInfo.InvariantCulture),
+                    Style = (Style)DashTeamPanel.FindResource("DashTeamButton"),
+                    IsChecked = ddteamtest.SelectedIndex == i,
+                    ToolTip = race ? (i == 0 ? TranslateOr("dash_route_primary", "Primary route") : TranslateOr("dash_route_secondary", "Secondary route")) : null
+                };
+                button.Click += (_, __) =>
+                {
+                    ddteamtest.SelectedIndex = index;
+                    foreach (ToggleButton other in DashTeamButtons.Children)
+                        other.IsChecked = other == button;
+                };
+                DashTeamButtons.Children.Add(button);
+            }
+        }
+
+        // The job id in the job card's header: a link once the job is published.
+        private void UpdateDashboardJobId(bool inCreator)
+        {
+            string id = tbjobid.Text?.Trim() ?? "";
+            if (!inCreator || id.Length == 0)
+            {
+                BtnDashJobId.Visibility = Visibility.Collapsed;
+                return;
+            }
+
+            bool published = GTA.Offsets.Editor.jobpublished != 0 && new Global(GTA.Offsets.Editor.jobpublished).Get<int>() != 0;
+            BtnDashJobId.Visibility = Visibility.Visible;
+            BtnDashJobId.IsEnabled = published;
+            DashJobIdIcon.Visibility = published ? Visibility.Visible : Visibility.Collapsed;
+            BtnDashJobId.ToolTip = published
+                ? TranslateOr("dash_jobid_open", "Open the job in the Social Club")
+                : TranslateOr("dash_jobid_draft", "Not published yet");
+            // A disabled button would ignore the tooltip otherwise.
+            ToolTipService.SetShowOnDisabled(BtnDashJobId, true);
+        }
+
+        private void BtnDashJobId_Click(object sender, RoutedEventArgs e)
+        {
+            string id = tbjobid.Text?.Trim() ?? "";
+            if (id.Length > 0)
+                OpenInBrowser("https://socialclub.rockstargames.com/job/gtav/" + Uri.EscapeDataString(id));
+        }
+
+        private void BtnDashSC_Click(object sender, RoutedEventArgs e)
+        {
+            string name = Lbl_SCName.Text?.Trim() ?? "";
+            if (name.Length > 0)
+                OpenInBrowser("https://socialclub.rockstargames.com/member/" + Uri.EscapeDataString(name) + "/");
+        }
+
+        private static void OpenInBrowser(string url)
+        {
+            try
+            {
+                Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+            }
+            catch (Exception ex)
+            {
+                Log.Warn("Could not open " + url + ": " + ex.Message);
             }
         }
 

@@ -388,6 +388,84 @@
                                     <Setter Property="Foreground" Value="{StaticResource NavMutedBrush}"/>
                                     <Setter Property="Margin" Value="0,0,0,3"/>
                                 </Style>
+                                <Style x:Key="DashTileButton" TargetType="{x:Type Button}">
+                                    <Setter Property="Cursor" Value="Hand"/>
+                                    <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type Button}">
+                                                <Border x:Name="b" Background="{DynamicResource SeactionHeaderBackgroundBrush}" CornerRadius="5" Padding="10,6,14,6" MinHeight="50">
+                                                    <ContentPresenter VerticalAlignment="Center"/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="b" Property="Background" Value="#FF40444B"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                                <!-- "Opens outside Xenvious" arrow. -->
+                                <Style x:Key="DashLinkIcon" TargetType="{x:Type Path}">
+                                    <Setter Property="Data" Value="M9,1 L13,1 L13,5 M13,1 L7,7 M11,9 L11,13 L1,13 L1,3 L5,3"/>
+                                    <Setter Property="Stroke" Value="{StaticResource NavMutedBrush}"/>
+                                    <Setter Property="StrokeThickness" Value="1.6"/>
+                                    <Setter Property="Width" Value="14"/>
+                                    <Setter Property="Height" Value="14"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                </Style>
+                                <Style x:Key="DashChipButton" TargetType="{x:Type Button}">
+                                    <Setter Property="Cursor" Value="Hand"/>
+                                    <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                                    <Setter Property="Foreground" Value="{StaticResource NavMutedBrush}"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type Button}">
+                                                <Border x:Name="b" Background="{DynamicResource SectionBackgroundBrush}" CornerRadius="11" Padding="10,3">
+                                                    <ContentPresenter VerticalAlignment="Center"/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="b" Property="Background" Value="#FF40444B"/>
+                                                    </Trigger>
+                                                    <Trigger Property="IsEnabled" Value="False">
+                                                        <Setter Property="Cursor" Value="Arrow"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                                <!-- Team to test: a row of toggles instead of a small dropdown. -->
+                                <Style x:Key="DashTeamButton" TargetType="{x:Type ToggleButton}">
+                                    <Setter Property="Foreground" Value="{StaticResource NavMutedBrush}"/>
+                                    <Setter Property="FontFamily" Value="{DynamicResource Volte}"/>
+                                    <Setter Property="FontSize" Value="15"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="Width" Value="32"/>
+                                    <Setter Property="Height" Value="32"/>
+                                    <Setter Property="Cursor" Value="Hand"/>
+                                    <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                                <Border x:Name="b" Background="Transparent" CornerRadius="4">
+                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
+                                                    </Trigger>
+                                                    <Trigger Property="IsChecked" Value="True">
+                                                        <Setter TargetName="b" Property="Background" Value="{DynamicResource SeactionHeaderBackgroundBrush}"/>
+                                                        <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
                                 <SolidColorBrush x:Key="DashPropBrush" Color="#FF6C5CE7"/>
                                 <SolidColorBrush x:Key="DashDynamicBrush" Color="#FFC08BFF"/>
                                 <!-- Same shapes as Advanced Prop Placement: light main action, grey secondary ones. -->
@@ -458,18 +536,21 @@
                             <Border x:Name="DashboardStatusStrip" Grid.Row="0" Style="{StaticResource DashBar}" Margin="12,8,12,0">
                                 <DockPanel LastChildFill="False">
 
-                                    <Border DockPanel.Dock="Right" Style="{StaticResource DashTile}" Margin="0,0,0,8">
+                                    <!-- The whole tile opens the Social Club profile. -->
+                                    <Button x:Name="BtnDashSC" DockPanel.Dock="Right" Style="{StaticResource DashTileButton}" Margin="0,0,0,8" Click="BtnDashSC_Click"
+                                            ToolTip="{Binding Translation[dash_sc_open], FallbackValue='Open the Social Club profile'}">
                                         <StackPanel Orientation="Horizontal">
                                             <Grid Width="30" Height="30" Margin="0,0,12,0" VerticalAlignment="Center">
                                                 <Ellipse Fill="#FF4F545C"/>
                                                 <TextBlock x:Name="DashSCInitial" FontSize="13" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}"/>
                                             </Grid>
-                                            <StackPanel VerticalAlignment="Center">
+                                            <StackPanel VerticalAlignment="Center" Margin="0,0,14,0">
                                                 <TextBlock Style="{StaticResource DashTileLabel}" Text="Social Club"/>
-                                                <TextBlock x:Name="Lbl_SCName" Style="{StaticResource DashTileValue}" TextTrimming="CharacterEllipsis" MaxWidth="220"/>
+                                                <TextBlock x:Name="Lbl_SCName" Style="{StaticResource DashTileValue}" TextTrimming="CharacterEllipsis" MaxWidth="260"/>
                                             </StackPanel>
+                                            <Path Style="{StaticResource DashLinkIcon}"/>
                                         </StackPanel>
-                                    </Border>
+                                    </Button>
 
                                     <WrapPanel DockPanel.Dock="Left" Orientation="Horizontal">
                                         <Border x:Name="DashTileGame" Style="{StaticResource DashTile}">
@@ -529,123 +610,108 @@
                                 </DockPanel>
                             </Border>
 
-                            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                <Grid Margin="12,12,12,0">
+                            <!-- Layout: actions, job and ambient fill the height, the counts run along the bottom.
+                                 MinHeight keeps the columns as tall as the window; below that the page scrolls. -->
+                            <ScrollViewer x:Name="DashScroll" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                <Grid Margin="12,12,12,0" MinHeight="{Binding ViewportHeight, ElementName=DashScroll}">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="330"/>
-                                        <ColumnDefinition Width="*" MinWidth="360"/>
-                                        <ColumnDefinition Width="330"/>
+                                        <ColumnDefinition Width="320"/>
+                                        <ColumnDefinition Width="*" MinWidth="420"/>
+                                        <ColumnDefinition Width="320"/>
                                     </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
 
-                                    <!-- ===== Left: creator actions and script features ===== -->
-                                    <StackPanel Grid.Column="0" Margin="0,0,12,0">
+                                    <!-- ===== Left: creator actions, with the script features underneath ===== -->
+                                    <Border Grid.Column="0" Style="{StaticResource DashCard}" Margin="0,0,12,12">
+                                        <DockPanel>
+                                            <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                                <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[dash_actions], FallbackValue='Creator Actions'}"/>
+                                            </Border>
+                                            <StackPanel Margin="14,12,6,12">
+                                                <!-- Test: which team (race: primary or secondary slot) and the main action.
+                                                     ddteamtest stays the source of the index; the toggles only set it. -->
+                                                <ComboBox x:Name="ddteamtest" Visibility="Collapsed" SelectionChanged="ddmissionteamno_SelectionChanged">
+                                                    <ComboBoxItem Content="1" Selector.IsSelected="True"/>
+                                                    <ComboBoxItem Content="2"/>
+                                                    <ComboBoxItem Content="3"/>
+                                                    <ComboBoxItem Content="4"/>
+                                                </ComboBox>
+                                                <DockPanel Margin="0,0,8,8" Visibility="{Binding ElementName=BtnTestMain, Path=Visibility}">
+                                                    <Border x:Name="DashTeamPanel" DockPanel.Dock="Left" Background="{DynamicResource TextBoxBackground}" CornerRadius="5" Padding="3" Margin="0,0,8,0">
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock Text="{Binding Translation[dash_team], FallbackValue=Team}" FontSize="11" FontWeight="Bold" Foreground="{StaticResource NavMutedBrush}" VerticalAlignment="Center" Margin="6,0,6,0"/>
+                                                            <StackPanel x:Name="DashTeamButtons" Orientation="Horizontal"/>
+                                                        </StackPanel>
+                                                    </Border>
+                                                    <Button x:Name="BtnTestMain" Height="38" Style="{StaticResource DashPrimaryButton}" Click="BtnTestMain_Click" Content="{Binding Translation[test], FallbackValue=Test}"/>
+                                                </DockPanel>
+                                                <UniformGrid Columns="2">
+                                                    <Button x:Name="BtnSaveMain" Style="{StaticResource DashButton}" Click="BtnSaveMain_Click" Content="{Binding Translation[save], FallbackValue=Save}"/>
+                                                    <Button x:Name="BtnPublishMain" Style="{StaticResource DashButton}" Click="BtnPublishMain_Click" Content="{Binding Translation[publish], FallbackValue=Publish}"/>
+                                                    <Button x:Name="BtnSkipTest" Style="{StaticResource DashButton}" Click="BtnSkipTest_Click" Content="{Binding Translation[skiptest], FallbackValue='Skip Testing'}"/>
+                                                    <Button x:Name="BtnTryFixBlackScreen" Style="{StaticResource DashButton}" Click="BtnTryFixBlackScreen_Click" Content="{Binding Translation[dash_fixblack], FallbackValue='Fix Black Screen'}"/>
+                                                    <Button x:Name="BtnDashBackupMap" Style="{StaticResource DashButton}" Click="BtnDashBackupMap_Click" Content="{Binding Translation[dash_backupmap], FallbackValue='Backup Map'}"/>
+                                                    <Button x:Name="BtnDashReloadMap" Style="{StaticResource DashButton}" Click="BtnDashReloadMap_Click" Content="{Binding Translation[dash_reloadmap], FallbackValue='Reload Map'}"/>
+                                                </UniformGrid>
 
-                                        <Border Style="{StaticResource DashCard}">
-                                            <StackPanel>
-                                                <Border Style="{StaticResource DashCardHeader}">
-                                                    <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[dash_actions], FallbackValue='Creator Actions'}"/>
-                                                </Border>
-                                                <StackPanel Margin="14,12,6,12">
-                                                    <Grid>
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="*"/>
-                                                            <ColumnDefinition Width="*"/>
-                                                        </Grid.ColumnDefinitions>
-                                                        <Grid.RowDefinitions>
-                                                            <RowDefinition Height="Auto"/>
-                                                            <RowDefinition Height="Auto"/>
-                                                            <RowDefinition Height="Auto"/>
-                                                            <RowDefinition Height="Auto"/>
-                                                        </Grid.RowDefinitions>
+                                                <Grid Style="{StaticResource FormRow}" Margin="0,4,8,4">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[developermode], FallbackValue='Developer Mode'}"/>
+                                                    <CheckBox x:Name="cb_dev" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cb_dev_Checked" Unchecked="cb_dev_Checked"/>
+                                                </Grid>
+                                                <Grid Style="{StaticResource FormRow}" Margin="0,0,8,0">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[hidecreatormenu], FallbackValue='Hide Creator Menu'}"/>
+                                                    <CheckBox x:Name="cbhidecreatormenu" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbhidecreatormenu_Checked" Unchecked="cbhidecreatormenu_Checked"/>
+                                                </Grid>
 
-                                                        <!-- Test: slot (race primary/secondary or team) and the main action. -->
-                                                        <Grid Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,8,8" Visibility="{Binding ElementName=BtnTestMain, Path=Visibility}">
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="76"/>
-                                                                <ColumnDefinition Width="*"/>
-                                                            </Grid.ColumnDefinitions>
-                                                            <ComboBox x:Name="ddteamtest" Margin="0,0,8,0" SelectionChanged="ddmissionteamno_SelectionChanged">
-                                                                <ComboBoxItem Content="1" FontSize="18" ToolTip="Race Primary" Selector.IsSelected="True"/>
-                                                                <ComboBoxItem Content="2" FontSize="18" ToolTip="Race Secondary"/>
-                                                                <ComboBoxItem Content="3" FontSize="18"/>
-                                                                <ComboBoxItem Content="4" FontSize="18"/>
-                                                            </ComboBox>
-                                                            <Button x:Name="BtnTestMain" Grid.Column="1" Height="38" Style="{StaticResource DashPrimaryButton}" Click="BtnTestMain_Click" Content="{Binding Translation[test], FallbackValue=Test}"/>
-                                                        </Grid>
-                                                        <Button x:Name="BtnSaveMain" Grid.Row="1" Grid.Column="0" Style="{StaticResource DashButton}" Click="BtnSaveMain_Click" Content="{Binding Translation[save], FallbackValue=Save}"/>
-                                                        <Button x:Name="BtnPublishMain" Grid.Row="1" Grid.Column="1" Style="{StaticResource DashButton}" Click="BtnPublishMain_Click" Content="{Binding Translation[publish], FallbackValue=Publish}"/>
-                                                        <Button x:Name="BtnSkipTest" Grid.Row="2" Grid.Column="0" Style="{StaticResource DashButton}" Click="BtnSkipTest_Click" Content="{Binding Translation[skiptest], FallbackValue='Skip Testing'}"/>
-                                                        <Button x:Name="BtnTryFixBlackScreen" Grid.Row="2" Grid.Column="1" Style="{StaticResource DashButton}" Click="BtnTryFixBlackScreen_Click" Content="{Binding Translation[dash_fixblack], FallbackValue='Fix Black Screen'}"/>
-                                                        <Button x:Name="BtnDashBackupMap" Grid.Row="3" Grid.Column="0" Style="{StaticResource DashButton}" Click="BtnDashBackupMap_Click" Content="{Binding Translation[dash_backupmap], FallbackValue='Backup Map'}"/>
-                                                        <Button x:Name="BtnDashReloadMap" Grid.Row="3" Grid.Column="1" Style="{StaticResource DashButton}" Click="BtnDashReloadMap_Click" Content="{Binding Translation[dash_reloadmap], FallbackValue='Reload Map'}"/>
-                                                    </Grid>
-
-                                                    <Grid Style="{StaticResource FormRow}" Margin="0,4,8,4">
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="*"/>
-                                                            <ColumnDefinition Width="Auto"/>
-                                                        </Grid.ColumnDefinitions>
-                                                        <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[developermode], FallbackValue='Developer Mode'}"/>
-                                                        <CheckBox x:Name="cb_dev" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cb_dev_Checked" Unchecked="cb_dev_Checked"/>
-                                                    </Grid>
-                                                    <Grid Style="{StaticResource FormRow}" Margin="0,0,8,0">
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="*"/>
-                                                            <ColumnDefinition Width="Auto"/>
-                                                        </Grid.ColumnDefinitions>
-                                                        <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[hidecreatormenu], FallbackValue='Hide Creator Menu'}"/>
-                                                        <CheckBox x:Name="cbhidecreatormenu" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbhidecreatormenu_Checked" Unchecked="cbhidecreatormenu_Checked"/>
-                                                    </Grid>
-                                                    <DockPanel Margin="0,4,8,0">
-                                                        <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[jobid], FallbackValue='Current Job Id'}" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                                                        <TextBox x:Name="tbjobid" IsReadOnly="True" FontSize="13" BorderThickness="0" Background="Transparent" Foreground="{StaticResource NavMutedBrush}" VerticalAlignment="Center"/>
-                                                    </DockPanel>
-                                                </StackPanel>
+                                                <!-- Script features of the open creator: a status per feature, switched in Misc. -->
+                                                <DockPanel Margin="0,14,8,6">
+                                                    <TextBlock x:Name="DashScriptFeaturesFor" DockPanel.Dock="Right" FontSize="11" FontWeight="Bold" Foreground="{StaticResource NavMutedBrush}" VerticalAlignment="Center"/>
+                                                    <TextBlock Style="{StaticResource DashFieldLabel}" Margin="0" Text="{Binding Translation[adv_features_label], FallbackValue='Script features'}"/>
+                                                </DockPanel>
+                                                <StackPanel x:Name="DashScriptFeatures" Margin="0,0,8,0"/>
+                                                <Button x:Name="BtnDashScrPatches" HorizontalAlignment="Left" Margin="0,6,0,0" Style="{StaticResource DashChipButton}" Click="BtnDashScrPatches_Click">
+                                                    <TextBlock FontSize="12" FontWeight="Bold" Text="{Binding Translation[dash_features_manage], FallbackValue='Switch in Misc › Script Patches'}"/>
+                                                </Button>
                                             </StackPanel>
-                                        </Border>
-
-                                        <Border Style="{StaticResource DashCard}">
-                                            <StackPanel>
-                                                <Border Style="{StaticResource DashCardHeader}">
-                                                    <DockPanel>
-                                                        <TextBlock x:Name="DashScriptFeaturesFor" DockPanel.Dock="Right" FontSize="12" FontWeight="Bold" Foreground="{StaticResource NavMutedBrush}" VerticalAlignment="Center"/>
-                                                        <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[adv_features_label], FallbackValue='Script Features'}"/>
-                                                    </DockPanel>
-                                                </Border>
-                                                <!-- Rows for the patches of the open creator, built in MainWindow.Dashboard.cs. -->
-                                                <StackPanel Margin="14,10,14,12">
-                                                    <StackPanel x:Name="DashScriptFeatures"/>
-                                                    <TextBlock x:Name="DashScriptFeaturesHint" FontSize="13" TextWrapping="Wrap" Foreground="{StaticResource NavMutedBrush}" Margin="0,6,0,0"
-                                                               Text="{Binding Translation[dash_features_hint], FallbackValue='Technical patches (cam fix, nrl fix, templates, custom functions) stay in Misc.'}"/>
-                                                </StackPanel>
-                                            </StackPanel>
-                                        </Border>
-                                    </StackPanel>
+                                        </DockPanel>
+                                    </Border>
 
                                     <!-- ===== Centre: the job ===== -->
-                                    <Border Grid.Column="1" Style="{StaticResource DashCard}" VerticalAlignment="Top">
-                                        <StackPanel>
-                                            <Border Style="{StaticResource DashCardHeader}">
-                                                <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[infoheader], FallbackValue='Job Information'}"/>
+                                    <Border Grid.Column="1" Style="{StaticResource DashCard}" Margin="0,0,0,12">
+                                        <DockPanel>
+                                            <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                                <DockPanel>
+                                                    <!-- Job id; a link to the job page once the job is published. -->
+                                                    <Button x:Name="BtnDashJobId" DockPanel.Dock="Right" Style="{StaticResource DashChipButton}" Click="BtnDashJobId_Click" VerticalAlignment="Center">
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock x:Name="tbjobid" FontSize="12" FontFamily="Consolas" FontWeight="Bold" VerticalAlignment="Center"/>
+                                                            <Path x:Name="DashJobIdIcon" Style="{StaticResource DashLinkIcon}" Width="11" Height="11" Stretch="Uniform" Margin="7,0,0,0"/>
+                                                        </StackPanel>
+                                                    </Button>
+                                                    <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[infoheader], FallbackValue='Job Information'}"/>
+                                                </DockPanel>
                                             </Border>
 
-                                            <Grid Margin="14,12,14,14">
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="Auto"/>
-                                                </Grid.RowDefinitions>
-
-                                                <Grid Grid.Row="0">
+                                            <StackPanel Margin="14,12,14,14">
+                                                <Grid>
                                                     <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="240"/>
+                                                        <ColumnDefinition Width="340"/>
                                                         <ColumnDefinition Width="*"/>
                                                     </Grid.ColumnDefinitions>
 
                                                     <!-- Job image; hovering shows view / save / change. -->
-                                                    <Grid Grid.Column="0" Height="135" Margin="0,0,14,0" VerticalAlignment="Top">
+                                                    <Grid Grid.Column="0" Height="200" Margin="0,0,14,0" VerticalAlignment="Top">
                                                         <Border CornerRadius="4" Background="{DynamicResource TextBoxBackground}"/>
                                                         <Viewbox MaxWidth="200" MaxHeight="120" Visibility="{Binding ElementName=ImagePremiumNeeded, Path=Visibility}">
                                                             <TextBlock x:Name="ImagePremiumNeeded" Visibility="Collapsed" Text="Not available.&#xA;Premium Version needed!" Foreground="{DynamicResource TextColor}" FontSize="26" TextAlignment="Center" FontWeight="Bold"/>
@@ -693,13 +759,12 @@
                                                         <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[title], FallbackValue=Title}"/>
                                                         <TextBox x:Name="tb_JobTitle" Style="{StaticResource Watermark}" Height="32" MaxLength="50" FontSize="15" TextChanged="tb_JobTitle_TextChanged" Margin="0,0,0,8"/>
                                                         <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[desc], FallbackValue=Describtion}"/>
-                                                        <TextBox x:Name="tb_JobDec" Style="{StaticResource WatermarkOld}" Height="76" MaxLength="500" FontSize="14" TextWrapping="Wrap" AcceptsReturn="False" VerticalContentAlignment="Top" ScrollViewer.VerticalScrollBarVisibility="Auto" TextChanged="tb_JobDec_TextChanged"/>
+                                                        <TextBox x:Name="tb_JobDec" Style="{StaticResource WatermarkOld}" Height="130" MaxLength="500" FontSize="14" TextWrapping="Wrap" AcceptsReturn="False" VerticalContentAlignment="Top" ScrollViewer.VerticalScrollBarVisibility="Auto" TextChanged="tb_JobDec_TextChanged"/>
                                                     </StackPanel>
                                                 </Grid>
 
-                                                <TextBlock Grid.Row="1" Style="{StaticResource DashSub}" Text="{Binding Translation[detailsheader], FallbackValue=Details}"/>
-
-                                                <UniformGrid Grid.Row="2" Columns="3">
+                                                <TextBlock Style="{StaticResource DashSub}" Text="{Binding Translation[detailsheader], FallbackValue=Details}"/>
+                                                <UniformGrid Columns="3" Margin="0,0,-10,0">
                                                     <StackPanel Margin="0,0,10,10">
                                                         <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[jobtype], FallbackValue='Job Type'}"/>
                                                         <Grid Height="32">
@@ -749,15 +814,26 @@
                                                     </StackPanel>
                                                 </UniformGrid>
 
-                                                <TextBlock Grid.Row="3" Style="{StaticResource DashSub}" Text="{Binding Translation[dash_placed], FallbackValue='Placed in this job'}"/>
-                                                <!-- Count tiles for the open creator, built in MainWindow.Dashboard.cs; a click opens the page. -->
-                                                <WrapPanel Grid.Row="4" x:Name="DashCounts" Orientation="Horizontal"/>
-                                            </Grid>
+                                            </StackPanel>
+                                        </DockPanel>
+                                    </Border>
+
+                                    <!-- ===== Bottom: what is placed in the job ===== -->
+                                    <Border Grid.Row="1" Grid.ColumnSpan="3" Style="{StaticResource DashCard}">
+                                        <StackPanel>
+                                            <Border Style="{StaticResource DashCardHeader}">
+                                                <DockPanel>
+                                                    <TextBlock DockPanel.Dock="Right" FontSize="12" FontWeight="Bold" Foreground="{StaticResource NavMutedBrush}" VerticalAlignment="Center" Text="{Binding Translation[dash_counts_hint], FallbackValue='Click opens the page in Edit'}"/>
+                                                    <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[dash_placed], FallbackValue='Placed in this job'}"/>
+                                                </DockPanel>
+                                            </Border>
+                                            <!-- Count tiles for the open creator, built in MainWindow.DashboardCreator.cs; a click opens the page. -->
+                                            <UniformGrid x:Name="DashCounts" Rows="1" Margin="14,12,6,4"/>
                                         </StackPanel>
                                     </Border>
 
                                     <!-- ===== Right: ambient ===== -->
-                                    <Border Grid.Column="2" Style="{StaticResource DashCard}" Margin="12,0,0,12" VerticalAlignment="Top">
+                                    <Border Grid.Column="2" Style="{StaticResource DashCard}" Margin="12,0,0,12">
                                         <StackPanel>
                                             <Border Style="{StaticResource DashCardHeader}">
                                                 <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[ambientheader], FallbackValue='Ambient Settings'}"/>
