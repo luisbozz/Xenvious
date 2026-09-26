@@ -175,15 +175,17 @@ namespace Xenvious
             var vehicles = new DashCount { Label = TranslateOr("vehicles", "Vehicles"), Read = () => CountOf(GTA.Offsets.Editor.Vehicle.number), Open = () => OpenEditPage(PageVehicle) };
             var weapons = new DashCount { Label = TranslateOr("weapons", "Weapons"), Read = () => CountOf(GTA.Offsets.Editor.Weapon.number), Open = () => OpenEditPage(PageWeapon) };
             var zones = new DashCount { Label = TranslateOr("zones", "Zones"), Read = () => CountOf(GTA.Offsets.Editor.Zones.number), Open = () => OpenEditPage(PageZone) };
+            var doors = new DashCount { Label = TranslateOr("doors", "Doors"), Read = () => CountOf(GTA.Offsets.Editor.Doors.number), Open = () => OpenEditPage(PageDoors) };
 
             switch (creator)
             {
+                // Actors and doors exist in every creator except the race creator.
                 case "fm_race_creator": _dashCounts.AddRange(new[] { vehicles, weapons, zones }); break;
-                case "fm_lts_creator": _dashCounts.AddRange(new[] { actors, vehicles, weapons, zones }); break;
-                case "fm_capture_creator": _dashCounts.AddRange(new[] { actors, vehicles, weapons, zones }); break;
-                case "fm_deathmatch_creator": _dashCounts.AddRange(new[] { vehicles, zones }); break;
-                case "fm_survival_creator": _dashCounts.AddRange(new[] { weapons, vehicles }); break;
-                default: _dashCounts.AddRange(new[] { actors, vehicles, weapons, zones }); break;
+                case "fm_lts_creator": _dashCounts.AddRange(new[] { actors, doors, vehicles, weapons, zones }); break;
+                case "fm_capture_creator": _dashCounts.AddRange(new[] { actors, doors, vehicles, weapons, zones }); break;
+                case "fm_deathmatch_creator": _dashCounts.AddRange(new[] { actors, doors, vehicles, zones }); break;
+                case "fm_survival_creator": _dashCounts.AddRange(new[] { actors, doors, weapons, vehicles }); break;
+                default: _dashCounts.AddRange(new[] { actors, doors, vehicles, weapons, zones }); break;
             }
 
             foreach (var count in _dashCounts)
