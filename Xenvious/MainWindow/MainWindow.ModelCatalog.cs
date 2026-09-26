@@ -11,12 +11,13 @@ namespace Xenvious
         private List<CatalogItem> _propCatalog;
         private List<CatalogItem> _actorCatalog;
 
-        // Props and dynamic props share one list, and with it the same pictures.
-        private List<CatalogItem> PropCatalog => _propCatalog ?? (_propCatalog = GTA.Editor.PropList
+        // Props and dynamic props share one list, and with it the same pictures. An empty list
+        // (asked for before the offline data was loaded) is built again next time.
+        private List<CatalogItem> PropCatalog => _propCatalog?.Count > 0 ? _propCatalog : (_propCatalog = GTA.Editor.PropList
             .Select(p => new CatalogItem(p.Name, p.Native, p.UInt, p.Category, "prop")).ToList());
 
         // actors.json has display names only, no model names, so actors have no pictures yet.
-        private List<CatalogItem> ActorCatalog => _actorCatalog ?? (_actorCatalog = GTA.Editor.ActorList
+        private List<CatalogItem> ActorCatalog => _actorCatalog?.Count > 0 ? _actorCatalog : (_actorCatalog = GTA.Editor.ActorList
             .Select(a => new CatalogItem(a.Name, null, a.UInt32, "", "actor")).ToList());
 
         private void BtnPropCatalog_Click(object sender, RoutedEventArgs e)
