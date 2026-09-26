@@ -1335,15 +1335,15 @@
 
                                                             <!-- Entry bar on top, then cards by topic: model and position, look, rules, raw values. -->
                                                             <DockPanel>
-                                                                <Border DockPanel.Dock="Top" Background="{DynamicResource SectionBackgroundBrush}" CornerRadius="5" Padding="12,8" Margin="0,10,0,12">
+                                                                <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,12">
                                                                     <DockPanel>
                                                                         <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-                                                                            <Button x:Name="BtnPropsToDynamic" Content="{Binding Translation[props_to_dynamic], FallbackValue='→ Dynamic'}" Click="BtnPropsToDynamic_Click" ToolTip="{Binding Translation[props_to_dynamic_tip], FallbackValue='Verschiebt den gewählten Prop in die andere Liste.'}" Style="{StaticResource FormButton}" Height="32" Padding="12,0" Margin="0,0,10,0"/>
+                                                                            <Button x:Name="BtnPropsToDynamic" Content="{Binding Translation[props_to_dynamic], FallbackValue='→ Dynamic'}" Click="BtnPropsToDynamic_Click" ToolTip="{Binding Translation[props_to_dynamic_tip], FallbackValue='Verschiebt den gewählten Prop in die andere Liste.'}" Style="{StaticResource FormButton}" Height="32" Padding="14,0" Margin="0,0,10,0"/>
                                                                             <!-- ‹ number › : steps through the entries without opening the list. -->
-                                                                            <Border Background="#FF232529" CornerRadius="5" Padding="3" Margin="0,0,10,0">
+                                                                            <Border Background="{DynamicResource ComboBoxBackground}" BorderBrush="{DynamicResource ComboBoxBorder}" BorderThickness="1" CornerRadius="4" Height="32" Margin="0,0,10,0">
                                                                                 <StackPanel Orientation="Horizontal">
                                                                                     <Button Style="{StaticResource EntryStepButton}" Content="‹" Tag="{Binding ElementName=ddpropno}" CommandParameter="-1" Click="EntryStep_Click" ToolTip="{Binding Translation[entry_prev], FallbackValue=Previous}"/>
-                                                                                    <ComboBox x:Name="ddpropno" FontFamily="{DynamicResource Volte}" SelectionChanged="ddpropno_SelectionChanged" ToolTip="{Binding Translation[pindex], FallbackValue=Prop Index}" Width="96" Height="28" Margin="2,0"/>
+                                                                                    <ComboBox x:Name="ddpropno" FontFamily="{DynamicResource Volte}" SelectionChanged="ddpropno_SelectionChanged" ToolTip="{Binding Translation[pindex], FallbackValue=Prop Index}" Width="84" Height="30" BorderThickness="0"/>
                                                                                     <Button Style="{StaticResource EntryStepButton}" Content="›" Tag="{Binding ElementName=ddpropno}" CommandParameter="1" Click="EntryStep_Click" ToolTip="{Binding Translation[entry_next], FallbackValue=Next}"/>
                                                                                 </StackPanel>
                                                                             </Border>
@@ -1353,7 +1353,7 @@
                                                                             <Button x:Name="BtnPropsAdd" Style="{StaticResource FormButtonPrimary}" Height="32" Padding="10,0,12,0" Click="BtnPropsAdd_Click" ToolTip="{Binding Translation[add], FallbackValue=Add}">
                                                                                 <StackPanel Orientation="Horizontal">
                                                                                     <Path Data="M8,3 L8,13 M3,8 L13,8" Stroke="#FF202225" StrokeThickness="2" Width="16" Height="16" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                                                                                    <TextBlock VerticalAlignment="Center" Text="{Binding Translation[add], FallbackValue=Add}"/>
+                                                                                    <TextBlock VerticalAlignment="Center" Foreground="#FF202225" Text="{Binding Translation[add], FallbackValue=Add}"/>
                                                                                 </StackPanel>
                                                                             </Button>
                                                                         </StackPanel>
@@ -1919,15 +1919,15 @@
 
                                                             <!-- Entry bar on top, then cards by topic: model and position, look, rules, raw values. -->
                                                             <DockPanel>
-                                                                <Border DockPanel.Dock="Top" Background="{DynamicResource SectionBackgroundBrush}" CornerRadius="5" Padding="12,8" Margin="0,10,0,12">
+                                                                <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,12">
                                                                     <DockPanel>
                                                                         <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-                                                                            <Button x:Name="BtnDPropsToStatic" Content="{Binding Translation[props_to_static], FallbackValue='→ Static'}" Click="BtnDPropsToStatic_Click" ToolTip="{Binding Translation[props_to_static_tip], FallbackValue='Verschiebt den gewählten Prop in die andere Liste.'}" Style="{StaticResource FormButton}" Height="32" Padding="12,0" Margin="0,0,10,0"/>
+                                                                            <Button x:Name="BtnDPropsToStatic" Content="{Binding Translation[props_to_static], FallbackValue='→ Static'}" Click="BtnDPropsToStatic_Click" ToolTip="{Binding Translation[props_to_static_tip], FallbackValue='Verschiebt den gewählten Prop in die andere Liste.'}" Style="{StaticResource FormButton}" Height="32" Padding="14,0" Margin="0,0,10,0"/>
                                                                             <!-- ‹ number › : steps through the entries without opening the list. -->
-                                                                            <Border Background="#FF232529" CornerRadius="5" Padding="3" Margin="0,0,10,0">
+                                                                            <Border Background="{DynamicResource ComboBoxBackground}" BorderBrush="{DynamicResource ComboBoxBorder}" BorderThickness="1" CornerRadius="4" Height="32" Margin="0,0,10,0">
                                                                                 <StackPanel Orientation="Horizontal">
                                                                                     <Button Style="{StaticResource EntryStepButton}" Content="‹" Tag="{Binding ElementName=dddpropno}" CommandParameter="-1" Click="EntryStep_Click" ToolTip="{Binding Translation[entry_prev], FallbackValue=Previous}"/>
-                                                                                    <ComboBox x:Name="dddpropno" FontFamily="{DynamicResource Volte}" SelectionChanged="dddpropno_SelectionChanged" ToolTip="{Binding Translation[dpindex], FallbackValue=Dynamic Prop Index}" Width="96" Height="28" Margin="2,0"/>
+                                                                                    <ComboBox x:Name="dddpropno" FontFamily="{DynamicResource Volte}" SelectionChanged="dddpropno_SelectionChanged" ToolTip="{Binding Translation[dpindex], FallbackValue=Dynamic Prop Index}" Width="84" Height="30" BorderThickness="0"/>
                                                                                     <Button Style="{StaticResource EntryStepButton}" Content="›" Tag="{Binding ElementName=dddpropno}" CommandParameter="1" Click="EntryStep_Click" ToolTip="{Binding Translation[entry_next], FallbackValue=Next}"/>
                                                                                 </StackPanel>
                                                                             </Border>
@@ -1937,7 +1937,7 @@
                                                                             <Button x:Name="Btndpropsadd" Style="{StaticResource FormButtonPrimary}" Height="32" Padding="10,0,12,0" Click="Btndpropsadd_Click" ToolTip="{Binding Translation[add], FallbackValue=Add}">
                                                                                 <StackPanel Orientation="Horizontal">
                                                                                     <Path Data="M8,3 L8,13 M3,8 L13,8" Stroke="#FF202225" StrokeThickness="2" Width="16" Height="16" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                                                                                    <TextBlock VerticalAlignment="Center" Text="{Binding Translation[add], FallbackValue=Add}"/>
+                                                                                    <TextBlock VerticalAlignment="Center" Foreground="#FF202225" Text="{Binding Translation[add], FallbackValue=Add}"/>
                                                                                 </StackPanel>
                                                                             </Button>
                                                                         </StackPanel>
@@ -9168,15 +9168,15 @@
 
                                                 <!-- Entry bar on top, then cards by topic: model and position, look, rules, raw values. -->
                                                 <DockPanel Margin="10,0">
-                                                    <Border DockPanel.Dock="Top" Background="{DynamicResource SectionBackgroundBrush}" CornerRadius="5" Padding="12,8" Margin="0,10,0,12">
+                                                    <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,12">
                                                         <DockPanel>
                                                             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-                                                                <Button x:Name="BtnActorDuplicate" Content="{Binding Translation[duplicate], FallbackValue=Duplicate}" Click="BtnActorDuplicate_Click" Style="{StaticResource FormButton}" Height="32" Padding="12,0" Margin="0,0,10,0"/>
+                                                                <Button x:Name="BtnActorDuplicate" Content="{Binding Translation[duplicate], FallbackValue=Duplicate}" Click="BtnActorDuplicate_Click" Style="{StaticResource FormButton}" Height="32" Padding="14,0" Margin="0,0,10,0"/>
                                                                 <!-- ‹ number › : steps through the entries without opening the list. -->
-                                                                <Border Background="#FF232529" CornerRadius="5" Padding="3" Margin="0,0,10,0">
+                                                                <Border Background="{DynamicResource ComboBoxBackground}" BorderBrush="{DynamicResource ComboBoxBorder}" BorderThickness="1" CornerRadius="4" Height="32" Margin="0,0,10,0">
                                                                     <StackPanel Orientation="Horizontal">
                                                                         <Button Style="{StaticResource EntryStepButton}" Content="‹" Tag="{Binding ElementName=ddactorno}" CommandParameter="-1" Click="EntryStep_Click" ToolTip="{Binding Translation[entry_prev], FallbackValue=Previous}"/>
-                                                                        <ComboBox x:Name="ddactorno" FontFamily="{DynamicResource Volte}" SelectionChanged="ddactorno_SelectionChanged" ToolTip="{Binding Translation[aindex], FallbackValue='Actor Index'}" Width="96" Height="28" Margin="2,0"/>
+                                                                        <ComboBox x:Name="ddactorno" FontFamily="{DynamicResource Volte}" SelectionChanged="ddactorno_SelectionChanged" ToolTip="{Binding Translation[aindex], FallbackValue='Actor Index'}" Width="84" Height="30" BorderThickness="0"/>
                                                                         <Button Style="{StaticResource EntryStepButton}" Content="›" Tag="{Binding ElementName=ddactorno}" CommandParameter="1" Click="EntryStep_Click" ToolTip="{Binding Translation[entry_next], FallbackValue=Next}"/>
                                                                     </StackPanel>
                                                                 </Border>
@@ -9186,7 +9186,7 @@
                                                                 <Button x:Name="BtnActorAdd" Style="{StaticResource FormButtonPrimary}" Height="32" Padding="10,0,12,0" Click="BtnActorAdd_Click" ToolTip="{Binding Translation[add], FallbackValue=Add}">
                                                                     <StackPanel Orientation="Horizontal">
                                                                         <Path Data="M8,3 L8,13 M3,8 L13,8" Stroke="#FF202225" StrokeThickness="2" Width="16" Height="16" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                                                                        <TextBlock VerticalAlignment="Center" Text="{Binding Translation[add], FallbackValue=Add}"/>
+                                                                        <TextBlock VerticalAlignment="Center" Foreground="#FF202225" Text="{Binding Translation[add], FallbackValue=Add}"/>
                                                                     </StackPanel>
                                                                 </Button>
                                                             </StackPanel>

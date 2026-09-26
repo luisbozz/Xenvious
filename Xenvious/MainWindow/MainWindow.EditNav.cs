@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -307,7 +307,8 @@ namespace Xenvious
             if (_editNavEntry == null)
                 return;
             string page = TranslateOr(_editNavEntry.Key, _editNavEntry.Fallback);
-            bool hasSub = _editNavSub != null && _editNavEntry.Subs.Count > 1;
+            // "Props › Props" says nothing twice; the parent only shows when the sub page has its own name.
+            bool hasSub = _editNavSub != null && _editNavEntry.Subs.Count > 1 && SubLabel(_editNavSub) != page;
             EditCrumbParent.Text = hasSub ? page + "  ›  " : "";
             HeaderLabel.Text = hasSub ? SubLabel(_editNavSub) : page;
             BtnEditBack.Visibility = _editNavBack.HasValue ? Visibility.Visible : Visibility.Collapsed;

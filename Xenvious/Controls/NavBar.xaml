@@ -153,8 +153,8 @@
         <Setter Property="FontSize" Value="18"/>
         <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="Foreground" Value="{StaticResource NavMutedBrush}"/>
-        <Setter Property="Width" Value="28"/>
-        <Setter Property="Height" Value="28"/>
+        <Setter Property="Width" Value="26"/>
+        <Setter Property="Height" Value="30"/>
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Template">
