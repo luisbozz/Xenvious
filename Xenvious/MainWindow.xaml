@@ -4650,8 +4650,6 @@
 
                                                                     <StackPanel VerticalAlignment="Center">
 
-                                                                        <TextBlock HorizontalAlignment="Center" Margin="0,0,0,10" Foreground="{DynamicResource DisabledForegroundBrush}" FontSize="16" TextWrapping="Wrap" Text="{Binding Translation[missionextinfo], FallbackValue='* not offered by the creator, only through Xenvious'}"/>
-
                                                                         <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
 
                                                                             <StackPanel Width="290" Height="auto" Margin="0,0,10,0">
