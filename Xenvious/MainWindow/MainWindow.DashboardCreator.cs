@@ -26,23 +26,23 @@ namespace Xenvious
             public TextBlock Value;
         }
 
-        // Script patches that change what a creator lets you do, by patch_name in
-        // scrpatches.json. The technical ones (cam fix, nrl fix, templates, custom
-        // functions) stay on Misc > Scr Patches only.
-        private static readonly (string Patch, string Key, string Fallback)[] DashFeaturePatches =
-        {
-            ("show stunt prop item cycle", "dash_feat_cycle", "Stunt prop item cycle"),
-            ("selected spawn veicle stays after testing ends", "dash_feat_keepveh", "Keep spawn vehicle after test"),
-            ("fm_capture_creator 80 actors patch", "dash_feat_actors80", "80 actors"),
-            ("dont force plyl to 1", "dash_feat_lives", "Free player lives"),
-            ("dont force kill rule to 6 and number to 1", "dash_feat_killrule", "Free kill rule"),
-            ("dont force round pa with dev mode", "dash_feat_roundpa", "Free round play area"),
-        };
+        // Race lobby options shown under Ambient: the same bits as Race > Online Lobby
+        // Options (1-based like writebinary). Offsets are read when used, because
+        // OffsetLoader can load them again for the other edition.
+        private (CheckBox Box, Func<long> Bitset, int Bit)[] dashRaceLobbyBits;
+
+        private (CheckBox Box, Func<long> Bitset, int Bit)[] DashRaceLobbyBits =>
+            dashRaceLobbyBits ?? (dashRaceLobbyBits = new (CheckBox, Func<long>, int)[]
+            {
+                (cbdashlocktod, () => GTA.Offsets.Editor.menubs17, 12),
+                (cbdashhidetod, () => GTA.Offsets.Editor.menubs2, 16),
+                (cbdashhideweather, () => GTA.Offsets.Editor.menubs22, 31),
+                (cbdashhidetraffic, () => GTA.Offsets.Editor.menubs20, 10),
+                (cbdashmaxwl, () => GTA.Offsets.Editor.menubs28, 31),
+            });
 
         private string _dashCreator = "";   // creator script the creator-specific parts were built for
         private readonly List<DashCount> _dashCounts = new List<DashCount>();
-        private readonly List<(ScrPatchGroup Group, Ellipse Dot, FrameworkElement Row)> _dashFeatures =
-            new List<(ScrPatchGroup, Ellipse, FrameworkElement)>();
 
         private static bool IsMissionCreator(string creator)
         {
@@ -60,11 +60,11 @@ namespace Xenvious
             {
                 _dashCreator = creator;
                 BuildDashboardCounts(creator);
-                BuildDashboardFeatures(creator);
                 BuildDashboardTeams(creator);
                 bool mission = IsMissionCreator(creator);
                 DashMissionAmbient.Visibility = mission ? Visibility.Visible : Visibility.Collapsed;
                 DashMissionLook.Visibility = mission ? Visibility.Visible : Visibility.Collapsed;
+                DashRaceLobby.Visibility = creator == "fm_race_creator" ? Visibility.Visible : Visibility.Collapsed;
                 // The map rebuild is only verified for race, LTS and capture (see CreatorMap).
                 BtnDashReloadMap.IsEnabled = creator == "fm_race_creator" || creator == "fm_lts_creator" || creator == "fm_capture_creator";
             }
@@ -74,10 +74,11 @@ namespace Xenvious
 
             foreach (var count in _dashCounts)
                 count.Value.Text = SafeRead(count.Read);
-            UpdateDashboardFeatureStatus(creator);
 
             if (IsMissionCreator(creator))
                 GetDashboardMissionAmbient();
+            else if (creator == "fm_race_creator")
+                GetDashboardRaceLobby();
         }
 
         private static string SafeRead(Func<string> read)
@@ -221,69 +222,25 @@ namespace Xenvious
             return tile;
         }
 
-        // One status row per creator-relevant script patch. Switching stays on Misc >
-        // Scr Patches; the dashboard only says whether a feature is working.
-        private void BuildDashboardFeatures(string creator)
+        private void cbDashRaceLobby_Checked(object sender, RoutedEventArgs e)
         {
-            DashScriptFeatures.Children.Clear();
-            _dashFeatures.Clear();
-            DashScriptFeaturesFor.Text = creator.Length == 0 ? "" : CreatorDisplayName(creator);
-            if (creator.Length == 0)
-            {
-                DashScriptFeatures.Children.Add(DashMutedText(TranslateOr("dash_features_nocreator", "Open a creator to see its features.")));
+            if (!m.IsProcOpen)
                 return;
-            }
-
-            if (_scrPatchGroups.Count == 0)
-                LoadScrPatchesPage();
-
-            foreach (var (patch, key, fallback) in DashFeaturePatches)
+            foreach (var (box, bitset, bit) in DashRaceLobbyBits)
             {
-                var group = _scrPatchGroups.FirstOrDefault(g => g.Name == patch);
-                if (group == null || !group.Patches.Any(p => p.script_name == creator))
-                    continue;
-
-                var dot = new Ellipse { Width = 9, Height = 9, Margin = new Thickness(0, 0, 10, 0), VerticalAlignment = VerticalAlignment.Center, Fill = DotOff };
-                var row = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 3, 0, 3), Background = Brushes.Transparent };
-                row.Children.Add(dot);
-                row.Children.Add(new TextBlock { Text = TranslateOr(key, fallback), FontSize = 14, Foreground = (Brush)FindResource("TextColor"), VerticalAlignment = VerticalAlignment.Center });
-                DashScriptFeatures.Children.Add(row);
-                _dashFeatures.Add((group, dot, row));
+                // A key missing from offsets.ini loads as 0, which is not a bitset.
+                if (ReferenceEquals(box, sender) && bitset() != 0)
+                    Functions.Write.writebinary(bit, bitset(), box);
             }
-
-            if (_dashFeatures.Count == 0)
-                DashScriptFeatures.Children.Add(DashMutedText(TranslateOr("dash_features_none", "No script features for this creator.")));
-            UpdateDashboardFeatureStatus(creator);
         }
 
-        private TextBlock DashMutedText(string text)
+        private void GetDashboardRaceLobby()
         {
-            return new TextBlock { Text = text, FontSize = 13, TextWrapping = TextWrapping.Wrap, Foreground = (Brush)FindResource("NavMutedBrush") };
-        }
-
-        // Green: written into the creator script. Yellow: switched on, but the runner has
-        // not found its place in the script (yet, or no longer after a game update).
-        // Grey: switched off. The reason sits in the tooltip, not next to the name.
-        private void UpdateDashboardFeatureStatus(string creator)
-        {
-            foreach (var (group, dot, row) in _dashFeatures)
+            foreach (var (box, bitset, bit) in DashRaceLobbyBits)
             {
-                var patches = group.Patches.Where(p => p.script_name == creator).ToList();
-                bool enabled = patches.All(p => p.enabled);
-                bool applied = patches.Any(ScrPatchesRunner.IsApplied);
-                dot.Fill = !enabled ? DotOff : applied ? DotOk : DotWarn;
-                row.ToolTip = !enabled
-                    ? TranslateOr("dash_feat_off", "Off. Switch it on in Misc › Script Patches.")
-                    : applied
-                        ? TranslateOr("dash_feat_on", "Active in this creator.")
-                        : TranslateOr("dash_feat_pending", "On, but not in the script yet. If it stays like this, the pattern no longer matches this game build.");
+                if (bitset() != 0)
+                    Functions.Read.checkbinary(bit, bitset(), box);
             }
-        }
-
-        private void BtnDashScrPatches_Click(object sender, RoutedEventArgs e)
-        {
-            MainPages.SelectedItem = PageMod;
-            BtnModScrPatches_Click(sender, e);
         }
 
         // Team to test with. The race creator tests the primary or the secondary route

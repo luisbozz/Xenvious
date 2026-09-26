@@ -610,22 +610,23 @@
                                 </DockPanel>
                             </Border>
 
-                            <!-- Layout: actions, job and ambient fill the height, the counts run along the bottom.
-                                 MinHeight keeps the columns as tall as the window; below that the page scrolls. -->
-                            <ScrollViewer x:Name="DashScroll" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                <Grid Margin="12,12,12,0" MinHeight="{Binding ViewportHeight, ElementName=DashScroll}">
+                            <!-- Layout: two columns as tall as the window; below a minimum height the page scrolls.
+                                 The margin sits on the ScrollViewer: on the grid it would add to MinHeight and
+                                 always show a scroll bar. -->
+                            <ScrollViewer x:Name="DashScroll" Grid.Row="1" Margin="12,12,12,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                <Grid MinHeight="{Binding ViewportHeight, ElementName=DashScroll}">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="320"/>
-                                        <ColumnDefinition Width="*" MinWidth="420"/>
-                                        <ColumnDefinition Width="320"/>
+                                        <ColumnDefinition Width="340"/>
+                                        <ColumnDefinition Width="*" MinWidth="520"/>
                                     </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="*"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
 
-                                    <!-- ===== Left: creator actions, with the script features underneath ===== -->
-                                    <Border Grid.Column="0" Style="{StaticResource DashCard}" Margin="0,0,12,12">
+                                    <!-- ===== Left: creator actions, below them the ambient settings ===== -->
+                                    <Grid Grid.Column="0" Margin="0,0,12,0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                    <Border Style="{StaticResource DashCard}">
                                         <DockPanel>
                                             <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
                                                 <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[dash_actions], FallbackValue='Creator Actions'}"/>
@@ -674,166 +675,12 @@
                                                     <CheckBox x:Name="cbhidecreatormenu" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbhidecreatormenu_Checked" Unchecked="cbhidecreatormenu_Checked"/>
                                                 </Grid>
 
-                                                <!-- Script features of the open creator: a status per feature, switched in Misc. -->
-                                                <DockPanel Margin="0,14,8,6">
-                                                    <TextBlock x:Name="DashScriptFeaturesFor" DockPanel.Dock="Right" FontSize="11" FontWeight="Bold" Foreground="{StaticResource NavMutedBrush}" VerticalAlignment="Center"/>
-                                                    <TextBlock Style="{StaticResource DashFieldLabel}" Margin="0" Text="{Binding Translation[adv_features_label], FallbackValue='Script features'}"/>
-                                                </DockPanel>
-                                                <StackPanel x:Name="DashScriptFeatures" Margin="0,0,8,0"/>
-                                                <Button x:Name="BtnDashScrPatches" HorizontalAlignment="Left" Margin="0,6,0,0" Style="{StaticResource DashChipButton}" Click="BtnDashScrPatches_Click">
-                                                    <TextBlock FontSize="12" FontWeight="Bold" Text="{Binding Translation[dash_features_manage], FallbackValue='Switch in Misc › Script Patches'}"/>
-                                                </Button>
                                             </StackPanel>
                                         </DockPanel>
                                     </Border>
 
-                                    <!-- ===== Centre: the job ===== -->
-                                    <Border Grid.Column="1" Style="{StaticResource DashCard}" Margin="0,0,0,12">
-                                        <DockPanel>
-                                            <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
-                                                <DockPanel>
-                                                    <!-- Job id; a link to the job page once the job is published. -->
-                                                    <Button x:Name="BtnDashJobId" DockPanel.Dock="Right" Style="{StaticResource DashChipButton}" Click="BtnDashJobId_Click" VerticalAlignment="Center">
-                                                        <StackPanel Orientation="Horizontal">
-                                                            <TextBlock x:Name="tbjobid" FontSize="12" FontFamily="Consolas" FontWeight="Bold" VerticalAlignment="Center"/>
-                                                            <Path x:Name="DashJobIdIcon" Style="{StaticResource DashLinkIcon}" Width="11" Height="11" Stretch="Uniform" Margin="7,0,0,0"/>
-                                                        </StackPanel>
-                                                    </Button>
-                                                    <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[infoheader], FallbackValue='Job Information'}"/>
-                                                </DockPanel>
-                                            </Border>
-
-                                            <StackPanel Margin="14,12,14,14">
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="340"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                    </Grid.ColumnDefinitions>
-
-                                                    <!-- Job image; hovering shows view / save / change. -->
-                                                    <Grid Grid.Column="0" Height="200" Margin="0,0,14,0" VerticalAlignment="Top">
-                                                        <Border CornerRadius="4" Background="{DynamicResource TextBoxBackground}"/>
-                                                        <Viewbox MaxWidth="200" MaxHeight="120" Visibility="{Binding ElementName=ImagePremiumNeeded, Path=Visibility}">
-                                                            <TextBlock x:Name="ImagePremiumNeeded" Visibility="Collapsed" Text="Not available.&#xA;Premium Version needed!" Foreground="{DynamicResource TextColor}" FontSize="26" TextAlignment="Center" FontWeight="Bold"/>
-                                                        </Viewbox>
-                                                        <Button x:Name="MainImageContainer" Visibility="Visible" FocusVisualStyle="{x:Null}" Focusable="False">
-                                                            <Button.Template>
-                                                                <ControlTemplate>
-                                                                    <Grid Background="Transparent">
-                                                                        <Image x:Name="JobImage" Source="{DynamicResource emptyblank}"/>
-                                                                        <StackPanel Orientation="Vertical" VerticalAlignment="Center" x:Name="BtnJobContainer" Visibility="Collapsed">
-                                                                            <Border CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="10 3" Height="28" Width="170">
-                                                                                <Border.Resources>
-                                                                                    <Style TargetType="Border">
-                                                                                        <Style.Triggers>
-                                                                                            <DataTrigger Binding="{Binding ElementName=JobImage, Path=Source}" Value="{StaticResource emptyblank}">
-                                                                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                                                                            </DataTrigger>
-                                                                                        </Style.Triggers>
-                                                                                    </Style>
-                                                                                </Border.Resources>
-                                                                                <Button x:Name="BtnJobView" Focusable="False" FontSize="14" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" Click="JobImage_MouseLeftButtonDown" Content="{Binding Translation[view], FallbackValue=display}"/>
-                                                                            </Border>
-                                                                            <Border CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="10 3" Height="28" Width="170">
-                                                                                <Button x:Name="BtnJobImageSave" Focusable="False" FontSize="14" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" Click="BtnJobImageSave_Click" Content="{Binding Translation[saveimage], FallbackValue=Save Image}"/>
-                                                                            </Border>
-                                                                            <Border CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="10 3" Height="28" Width="170">
-                                                                                <Button x:Name="BtnJobImage" Focusable="False" FontSize="14" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" Click="BtnJobImage_Click" Content="{Binding Translation[changeimage], FallbackValue=Change Image}"/>
-                                                                            </Border>
-                                                                        </StackPanel>
-                                                                    </Grid>
-                                                                    <ControlTemplate.Triggers>
-                                                                        <Trigger Property="IsMouseOver" Value="true">
-                                                                            <Setter TargetName="BtnJobContainer" Property="Visibility" Value="Visible"/>
-                                                                            <Setter TargetName="BtnJobView" Property="Focusable" Value="True"/>
-                                                                            <Setter TargetName="BtnJobImage" Property="Focusable" Value="True"/>
-                                                                            <Setter TargetName="JobImage" Property="Opacity" Value="0.1"/>
-                                                                        </Trigger>
-                                                                    </ControlTemplate.Triggers>
-                                                                </ControlTemplate>
-                                                            </Button.Template>
-                                                        </Button>
-                                                    </Grid>
-
-                                                    <StackPanel Grid.Column="1">
-                                                        <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[title], FallbackValue=Title}"/>
-                                                        <TextBox x:Name="tb_JobTitle" Style="{StaticResource Watermark}" Height="32" MaxLength="50" FontSize="15" TextChanged="tb_JobTitle_TextChanged" Margin="0,0,0,8"/>
-                                                        <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[desc], FallbackValue=Describtion}"/>
-                                                        <TextBox x:Name="tb_JobDec" Style="{StaticResource WatermarkOld}" Height="130" MaxLength="500" FontSize="14" TextWrapping="Wrap" AcceptsReturn="False" VerticalContentAlignment="Top" ScrollViewer.VerticalScrollBarVisibility="Auto" TextChanged="tb_JobDec_TextChanged"/>
-                                                    </StackPanel>
-                                                </Grid>
-
-                                                <TextBlock Style="{StaticResource DashSub}" Text="{Binding Translation[detailsheader], FallbackValue=Details}"/>
-                                                <UniformGrid Columns="3" Margin="0,0,-10,0">
-                                                    <StackPanel Margin="0,0,10,10">
-                                                        <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[jobtype], FallbackValue='Job Type'}"/>
-                                                        <Grid Height="32">
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="*"/>
-                                                                <ColumnDefinition Width="30"/>
-                                                            </Grid.ColumnDefinitions>
-                                                            <ComboBox x:Name="ddjobtype" FontFamily="{DynamicResource Volte}" SelectionChanged="ddjobtype_SelectionChanged">
-                                                                <ComboBoxItem Content="{Binding Translation[mission], FallbackValue=Mission}" FontSize="18"/>
-                                                                <ComboBoxItem Content="{Binding Translation[deathmatch], FallbackValue=Deathmatch}" FontSize="18"/>
-                                                                <ComboBoxItem Content="{Binding Translation[race], FallbackValue=Race}" FontSize="18"/>
-                                                                <ComboBoxItem Content="{Binding Translation[survival], FallbackValue=Survival}" FontSize="18"/>
-                                                            </ComboBox>
-                                                            <TextBox x:Name="tbjobtype" Style="{StaticResource Watermark}" FontSize="15" TextChanged="tbjobtype_TextChanged" KeyDown="FormatTextForInteger" Visibility="Hidden"/>
-                                                            <!-- Switches between the dropdowns and raw numbers for type and subtype. -->
-                                                            <Button x:Name="Btnjobtypeswitch" Grid.Column="1" Width="24" Height="24" HorizontalAlignment="Right" Style="{DynamicResource TitleBarButton}" Click="Btnjobtypeswitch_Click" ToolTip="Dropdown / number">
-                                                                <Image x:Name="jobtypeswitchimage" Source="{StaticResource switch}" Width="18" Height="18"/>
-                                                            </Button>
-                                                        </Grid>
-                                                    </StackPanel>
-                                                    <StackPanel Margin="0,0,10,10">
-                                                        <Label x:Name="Lbljobsubtype" Content="Type" Padding="0" Margin="0,0,0,3" FontSize="12" FontWeight="Bold" Foreground="{StaticResource NavMutedBrush}"/>
-                                                        <Grid Height="32">
-                                                            <ComboBox x:Name="ddjobsubtype" FontFamily="{DynamicResource Volte}" SelectionChanged="ddjobsubtype_SelectionChanged"/>
-                                                            <TextBox x:Name="tbjobsubtype" Style="{StaticResource Watermark}" FontSize="15" TextChanged="tbjobsubtype_TextChanged" KeyDown="FormatTextForInteger" Visibility="Hidden"/>
-                                                        </Grid>
-                                                    </StackPanel>
-                                                    <StackPanel Margin="0,0,10,10" Visibility="{Binding ElementName=tbjobracetype, Path=Visibility}">
-                                                        <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[subtyperace], FallbackValue='Race subtype'}"/>
-                                                        <TextBox x:Name="tbjobracetype" Style="{StaticResource Watermark}" Height="32" FontSize="15" TextChanged="tbjobracetype_TextChanged" KeyDown="FormatTextForInteger" Visibility="Collapsed"/>
-                                                    </StackPanel>
-                                                    <StackPanel Margin="0,0,10,10">
-                                                        <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[rounds], FallbackValue=Rounds}"/>
-                                                        <TextBox x:Name="tb_Rounds" Style="{StaticResource Watermark}" Height="32" FontSize="15" ToolTip="{Binding Translation[rounds_info], FallbackValue=Define how many Rounds one has to play to finish the Job.}" TextChanged="tb_Rounds_TextChanged" KeyDown="FormatTextForInteger"/>
-                                                    </StackPanel>
-                                                    <StackPanel Margin="0,0,10,10">
-                                                        <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[teams], FallbackValue=Teams}"/>
-                                                        <TextBox x:Name="tb_Teams" Style="{StaticResource Watermark}" Height="32" FontSize="15" ToolTip="{Binding Translation[teams_info], FallbackValue=Define how many Teams your Job has.}" TextChanged="tb_Teams_TextChanged" KeyDown="FormatTextForInteger"/>
-                                                    </StackPanel>
-                                                    <StackPanel Margin="0,0,10,10">
-                                                        <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[minp], FallbackValue='Minimum Players'}"/>
-                                                        <TextBox x:Name="tb_minp" Style="{StaticResource Watermark}" Height="32" FontSize="15" ToolTip="{Binding Translation[minp_info], FallbackValue=Define the minimum Player count.}" TextChanged="tb_minp_TextChanged" KeyDown="FormatTextForInteger"/>
-                                                    </StackPanel>
-                                                    <StackPanel Margin="0,0,10,10">
-                                                        <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[maxp], FallbackValue='Maximum Players'}"/>
-                                                        <TextBox x:Name="tb_maxp" Style="{StaticResource Watermark}" Height="32" FontSize="15" ToolTip="{Binding Translation[maxp_info], FallbackValue=Define the maximum Player count. (If you make solo Missions make sure to add 1)}" TextChanged="tb_maxp_TextChanged" KeyDown="FormatTextForInteger"/>
-                                                    </StackPanel>
-                                                </UniformGrid>
-
-                                            </StackPanel>
-                                        </DockPanel>
-                                    </Border>
-
-                                    <!-- ===== Bottom: what is placed in the job ===== -->
-                                    <Border Grid.Row="1" Grid.ColumnSpan="3" Style="{StaticResource DashCard}">
-                                        <StackPanel>
-                                            <Border Style="{StaticResource DashCardHeader}">
-                                                <DockPanel>
-                                                    <TextBlock DockPanel.Dock="Right" FontSize="12" FontWeight="Bold" Foreground="{StaticResource NavMutedBrush}" VerticalAlignment="Center" Text="{Binding Translation[dash_counts_hint], FallbackValue='Click opens the page in Edit'}"/>
-                                                    <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[dash_placed], FallbackValue='Placed in this job'}"/>
-                                                </DockPanel>
-                                            </Border>
-                                            <!-- Count tiles for the open creator, built in MainWindow.DashboardCreator.cs; a click opens the page. -->
-                                            <UniformGrid x:Name="DashCounts" Rows="1" Margin="14,12,6,4"/>
-                                        </StackPanel>
-                                    </Border>
-
-                                    <!-- ===== Right: ambient ===== -->
-                                    <Border Grid.Column="2" Style="{StaticResource DashCard}" Margin="12,0,0,12">
+                                    <!-- Ambient under the actions, down to the bottom of the window. -->
+                                    <Border Grid.Row="1" Style="{StaticResource DashCard}">
                                         <StackPanel>
                                             <Border Style="{StaticResource DashCardHeader}">
                                                 <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[ambientheader], FallbackValue='Ambient Settings'}"/>
@@ -1063,9 +910,190 @@
                                                         <CheckBox x:Name="cbdashnoregionvfx" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked"/>
                                                     </Grid>
                                                 </StackPanel>
+                                                <!-- Race only: the lobby options that decide weather, time and traffic (same bits as Race > Online Lobby Options). -->
+                                                <StackPanel x:Name="DashRaceLobby">
+                                                    <TextBlock Style="{StaticResource DashSub}" Margin="0,10,0,4" Text="{Binding Translation[onlinelobby], FallbackValue='Online Lobby Options'}"/>
+                                                    <Grid Style="{StaticResource FormRow}">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[ololoacktod], FallbackValue='Lock Time of Day'}"/>
+                                                        <CheckBox x:Name="cbdashlocktod" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbDashRaceLobby_Checked" Unchecked="cbDashRaceLobby_Checked"/>
+                                                    </Grid>
+                                                    <Grid Style="{StaticResource FormRow}">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[olohidetod], FallbackValue='Hide Time of Day'}"/>
+                                                        <CheckBox x:Name="cbdashhidetod" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbDashRaceLobby_Checked" Unchecked="cbDashRaceLobby_Checked"/>
+                                                    </Grid>
+                                                    <Grid Style="{StaticResource FormRow}">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[olohideweth], FallbackValue='Hide Weather (Non Stunt Races)'}"/>
+                                                        <CheckBox x:Name="cbdashhideweather" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbDashRaceLobby_Checked" Unchecked="cbDashRaceLobby_Checked"/>
+                                                    </Grid>
+                                                    <Grid Style="{StaticResource FormRow}">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[olohidetraffic], FallbackValue='Hide Traffic'}"/>
+                                                        <CheckBox x:Name="cbdashhidetraffic" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbDashRaceLobby_Checked" Unchecked="cbDashRaceLobby_Checked"/>
+                                                    </Grid>
+                                                    <Grid Style="{StaticResource FormRow}">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[olohidemaxwl], FallbackValue='Max Wanted Level'}"/>
+                                                        <CheckBox x:Name="cbdashmaxwl" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbDashRaceLobby_Checked" Unchecked="cbDashRaceLobby_Checked"/>
+                                                    </Grid>
+                                                </StackPanel>
                                             </StackPanel>
                                         </StackPanel>
                                     </Border>
+                                    </Grid>
+
+                                    <!-- ===== Centre: the job ===== -->
+                                    <Border Grid.Column="1" Style="{StaticResource DashCard}">
+                                        <DockPanel>
+                                            <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                                <DockPanel>
+                                                    <!-- Job id; a link to the job page once the job is published. -->
+                                                    <Button x:Name="BtnDashJobId" DockPanel.Dock="Right" Style="{StaticResource DashChipButton}" Click="BtnDashJobId_Click" VerticalAlignment="Center">
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock x:Name="tbjobid" FontSize="12" FontFamily="Consolas" FontWeight="Bold" VerticalAlignment="Center"/>
+                                                            <Path x:Name="DashJobIdIcon" Style="{StaticResource DashLinkIcon}" Width="11" Height="11" Stretch="Uniform" Margin="7,0,0,0"/>
+                                                        </StackPanel>
+                                                    </Button>
+                                                    <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[infoheader], FallbackValue='Job Information'}"/>
+                                                </DockPanel>
+                                            </Border>
+
+                                            <!-- Details at the bottom; image, title and description take the rest of the height. -->
+                                            <DockPanel Margin="14,12,14,6">
+                                                <!-- Count tiles for the open creator, built in MainWindow.DashboardCreator.cs; a click opens the page. -->
+                                                <UniformGrid x:Name="DashCounts" DockPanel.Dock="Bottom" Rows="1" Margin="0,0,-8,0"/>
+                                                <TextBlock DockPanel.Dock="Bottom" Style="{StaticResource DashSub}" Text="{Binding Translation[dash_placed], FallbackValue='Placed in this job'}"
+                                                           ToolTip="{Binding Translation[dash_counts_hint], FallbackValue='Click opens the page in Edit'}"/>
+                                                <UniformGrid DockPanel.Dock="Bottom" Columns="3" Margin="0,0,-10,0">
+                                                    <StackPanel Margin="0,0,10,10">
+                                                        <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[jobtype], FallbackValue='Job Type'}"/>
+                                                        <Grid Height="32">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="30"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <ComboBox x:Name="ddjobtype" FontFamily="{DynamicResource Volte}" SelectionChanged="ddjobtype_SelectionChanged">
+                                                                <ComboBoxItem Content="{Binding Translation[mission], FallbackValue=Mission}" FontSize="18"/>
+                                                                <ComboBoxItem Content="{Binding Translation[deathmatch], FallbackValue=Deathmatch}" FontSize="18"/>
+                                                                <ComboBoxItem Content="{Binding Translation[race], FallbackValue=Race}" FontSize="18"/>
+                                                                <ComboBoxItem Content="{Binding Translation[survival], FallbackValue=Survival}" FontSize="18"/>
+                                                            </ComboBox>
+                                                            <TextBox x:Name="tbjobtype" Style="{StaticResource Watermark}" FontSize="15" TextChanged="tbjobtype_TextChanged" KeyDown="FormatTextForInteger" Visibility="Hidden"/>
+                                                            <!-- Switches between the dropdowns and raw numbers for type and subtype. -->
+                                                            <Button x:Name="Btnjobtypeswitch" Grid.Column="1" Width="24" Height="24" HorizontalAlignment="Right" Style="{DynamicResource TitleBarButton}" Click="Btnjobtypeswitch_Click" ToolTip="Dropdown / number">
+                                                                <Image x:Name="jobtypeswitchimage" Source="{StaticResource switch}" Width="18" Height="18"/>
+                                                            </Button>
+                                                        </Grid>
+                                                    </StackPanel>
+                                                    <StackPanel Margin="0,0,10,10">
+                                                        <Label x:Name="Lbljobsubtype" Content="Type" Padding="0" Margin="0,0,0,3" FontSize="12" FontWeight="Bold" Foreground="{StaticResource NavMutedBrush}"/>
+                                                        <Grid Height="32">
+                                                            <ComboBox x:Name="ddjobsubtype" FontFamily="{DynamicResource Volte}" SelectionChanged="ddjobsubtype_SelectionChanged"/>
+                                                            <TextBox x:Name="tbjobsubtype" Style="{StaticResource Watermark}" FontSize="15" TextChanged="tbjobsubtype_TextChanged" KeyDown="FormatTextForInteger" Visibility="Hidden"/>
+                                                        </Grid>
+                                                    </StackPanel>
+                                                    <StackPanel Margin="0,0,10,10" Visibility="{Binding ElementName=tbjobracetype, Path=Visibility}">
+                                                        <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[subtyperace], FallbackValue='Race subtype'}"/>
+                                                        <TextBox x:Name="tbjobracetype" Style="{StaticResource Watermark}" Height="32" FontSize="15" TextChanged="tbjobracetype_TextChanged" KeyDown="FormatTextForInteger" Visibility="Collapsed"/>
+                                                    </StackPanel>
+                                                    <StackPanel Margin="0,0,10,10">
+                                                        <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[rounds], FallbackValue=Rounds}"/>
+                                                        <TextBox x:Name="tb_Rounds" Style="{StaticResource Watermark}" Height="32" FontSize="15" ToolTip="{Binding Translation[rounds_info], FallbackValue=Define how many Rounds one has to play to finish the Job.}" TextChanged="tb_Rounds_TextChanged" KeyDown="FormatTextForInteger"/>
+                                                    </StackPanel>
+                                                    <StackPanel Margin="0,0,10,10">
+                                                        <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[teams], FallbackValue=Teams}"/>
+                                                        <TextBox x:Name="tb_Teams" Style="{StaticResource Watermark}" Height="32" FontSize="15" ToolTip="{Binding Translation[teams_info], FallbackValue=Define how many Teams your Job has.}" TextChanged="tb_Teams_TextChanged" KeyDown="FormatTextForInteger"/>
+                                                    </StackPanel>
+                                                    <StackPanel Margin="0,0,10,10">
+                                                        <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[minp], FallbackValue='Minimum Players'}"/>
+                                                        <TextBox x:Name="tb_minp" Style="{StaticResource Watermark}" Height="32" FontSize="15" ToolTip="{Binding Translation[minp_info], FallbackValue=Define the minimum Player count.}" TextChanged="tb_minp_TextChanged" KeyDown="FormatTextForInteger"/>
+                                                    </StackPanel>
+                                                    <StackPanel Margin="0,0,10,10">
+                                                        <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[maxp], FallbackValue='Maximum Players'}"/>
+                                                        <TextBox x:Name="tb_maxp" Style="{StaticResource Watermark}" Height="32" FontSize="15" ToolTip="{Binding Translation[maxp_info], FallbackValue=Define the maximum Player count. (If you make solo Missions make sure to add 1)}" TextChanged="tb_maxp_TextChanged" KeyDown="FormatTextForInteger"/>
+                                                    </StackPanel>
+                                                </UniformGrid>
+                                                <TextBlock DockPanel.Dock="Bottom" Style="{StaticResource DashSub}" Text="{Binding Translation[detailsheader], FallbackValue=Details}"/>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="0.45*"/>
+                                                        <ColumnDefinition Width="0.55*"/>
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <!-- Job image; hovering shows view / save / change. -->
+                                                    <Grid Grid.Column="0" MinHeight="160" Margin="0,0,14,0">
+                                                        <Border CornerRadius="4" Background="{DynamicResource TextBoxBackground}"/>
+                                                        <Viewbox MaxWidth="200" MaxHeight="120" Visibility="{Binding ElementName=ImagePremiumNeeded, Path=Visibility}">
+                                                            <TextBlock x:Name="ImagePremiumNeeded" Visibility="Collapsed" Text="Not available.&#xA;Premium Version needed!" Foreground="{DynamicResource TextColor}" FontSize="26" TextAlignment="Center" FontWeight="Bold"/>
+                                                        </Viewbox>
+                                                        <Button x:Name="MainImageContainer" Visibility="Visible" FocusVisualStyle="{x:Null}" Focusable="False">
+                                                            <Button.Template>
+                                                                <ControlTemplate>
+                                                                    <Grid Background="Transparent">
+                                                                        <Image x:Name="JobImage" Source="{DynamicResource emptyblank}"/>
+                                                                        <StackPanel Orientation="Vertical" VerticalAlignment="Center" x:Name="BtnJobContainer" Visibility="Collapsed">
+                                                                            <Border CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="10 3" Height="28" Width="170">
+                                                                                <Border.Resources>
+                                                                                    <Style TargetType="Border">
+                                                                                        <Style.Triggers>
+                                                                                            <DataTrigger Binding="{Binding ElementName=JobImage, Path=Source}" Value="{StaticResource emptyblank}">
+                                                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                                                            </DataTrigger>
+                                                                                        </Style.Triggers>
+                                                                                    </Style>
+                                                                                </Border.Resources>
+                                                                                <Button x:Name="BtnJobView" Focusable="False" FontSize="14" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" Click="JobImage_MouseLeftButtonDown" Content="{Binding Translation[view], FallbackValue=display}"/>
+                                                                            </Border>
+                                                                            <Border CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="10 3" Height="28" Width="170">
+                                                                                <Button x:Name="BtnJobImageSave" Focusable="False" FontSize="14" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" Click="BtnJobImageSave_Click" Content="{Binding Translation[saveimage], FallbackValue=Save Image}"/>
+                                                                            </Border>
+                                                                            <Border CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="10 3" Height="28" Width="170">
+                                                                                <Button x:Name="BtnJobImage" Focusable="False" FontSize="14" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" Click="BtnJobImage_Click" Content="{Binding Translation[changeimage], FallbackValue=Change Image}"/>
+                                                                            </Border>
+                                                                        </StackPanel>
+                                                                    </Grid>
+                                                                    <ControlTemplate.Triggers>
+                                                                        <Trigger Property="IsMouseOver" Value="true">
+                                                                            <Setter TargetName="BtnJobContainer" Property="Visibility" Value="Visible"/>
+                                                                            <Setter TargetName="BtnJobView" Property="Focusable" Value="True"/>
+                                                                            <Setter TargetName="BtnJobImage" Property="Focusable" Value="True"/>
+                                                                            <Setter TargetName="JobImage" Property="Opacity" Value="0.1"/>
+                                                                        </Trigger>
+                                                                    </ControlTemplate.Triggers>
+                                                                </ControlTemplate>
+                                                            </Button.Template>
+                                                        </Button>
+                                                    </Grid>
+
+                                                    <DockPanel Grid.Column="1">
+                                                        <TextBlock DockPanel.Dock="Top" Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[title], FallbackValue=Title}"/>
+                                                        <TextBox x:Name="tb_JobTitle" DockPanel.Dock="Top" Style="{StaticResource Watermark}" Height="32" MaxLength="50" FontSize="15" TextChanged="tb_JobTitle_TextChanged" Margin="0,0,0,8"/>
+                                                        <TextBlock DockPanel.Dock="Top" Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[desc], FallbackValue=Describtion}"/>
+                                                        <TextBox x:Name="tb_JobDec" Style="{StaticResource WatermarkOld}" MinHeight="80" MaxLength="500" FontSize="14" TextWrapping="Wrap" AcceptsReturn="False" VerticalContentAlignment="Top" ScrollViewer.VerticalScrollBarVisibility="Auto" TextChanged="tb_JobDec_TextChanged"/>
+                                                    </DockPanel>
+                                                </Grid>
+
+                                            </DockPanel>
+                                        </DockPanel>
+                                    </Border>
+
                                 </Grid>
                             </ScrollViewer>
 
