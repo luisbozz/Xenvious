@@ -67,7 +67,7 @@ namespace Xenvious
         // grows north while image rows grow downwards. These defaults are an estimate;
         // "Kalibrieren" replaces them with numbers measured from two real camera positions
         // and stores them in the roaming config.
-        // Measured once in game with "Calibrate" (Legacy, 420x578 map surface); config.ini overrides it.
+        // Measured once in game with "Calibrate" (420x578 map surface); a calibration in config.ini overrides it.
         private static double _mapOriginX = -4822.4;    // Welt-X am linken Bildrand
         private static double _mapUnitsPerPxX = 23.3424;
         private static double _mapOriginY = 8877.83;    // Welt-Y am oberen Bildrand
