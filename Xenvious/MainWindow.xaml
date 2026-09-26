@@ -1279,6 +1279,11 @@
                                                                                 <Label Foreground="{DynamicResource TextColor}" FontFamily="{DynamicResource Volte}" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Content="{Binding Translation[model], FallbackValue=Model}"/>
                                                                             </Viewbox>
                                                                         </Border>
+                                                                        <!-- Opens the model catalog (pictures, categories, search). -->
+                                                                        <Button x:Name="BtnPropCatalog" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,14,0" Style="{StaticResource NavButton}" Click="BtnPropCatalog_Click"
+                                                                                ToolTip="{Binding Translation[catalog_open], FallbackValue='Open the model catalog'}">
+                                                                            <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[catalog], FallbackValue=Catalog}"/>
+                                                                        </Button>
 
                                                                         <!--Bottom-->
                                                                         <Border Grid.Row="1" CornerRadius="5" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="8">
@@ -1798,6 +1803,11 @@
                                                                                 <Label Foreground="{DynamicResource TextColor}" FontFamily="{DynamicResource Volte}" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Content="{Binding Translation[model], FallbackValue=Model}"/>
                                                                             </Viewbox>
                                                                         </Border>
+                                                                        <!-- Opens the model catalog (pictures, categories, search). -->
+                                                                        <Button x:Name="BtnDPropCatalog" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,14,0" Style="{StaticResource NavButton}" Click="BtnDPropCatalog_Click"
+                                                                                ToolTip="{Binding Translation[catalog_open], FallbackValue='Open the model catalog'}">
+                                                                            <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[catalog], FallbackValue=Catalog}"/>
+                                                                        </Button>
 
                                                                         <!--Bottom-->
                                                                         <Border Grid.Row="1" CornerRadius="5" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="8">
@@ -8981,6 +8991,11 @@
                                                                     <Label Foreground="{DynamicResource TextColor}" FontFamily="{DynamicResource Volte}" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Content="{Binding Translation[model], FallbackValue=Model}"/>
                                                                 </Viewbox>
                                                             </Border>
+                                                            <!-- Opens the model catalog (pictures, categories, search). -->
+                                                            <Button x:Name="BtnActorCatalog" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,14,0" Style="{StaticResource NavButton}" Click="BtnActorCatalog_Click"
+                                                                    ToolTip="{Binding Translation[catalog_open], FallbackValue='Open the model catalog'}">
+                                                                <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[catalog], FallbackValue=Catalog}"/>
+                                                            </Button>
 
                                                             <!--Bottom-->
                                                             <Border Grid.Row="1" CornerRadius="5" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="8">
@@ -11174,6 +11189,22 @@
                                                 <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[gamemodewarning], FallbackValue=Remove Gamemode Warning}"/>
                                                 <CheckBox x:Name="cbgmwarning" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbgmwarning_Checked" Unchecked="cbgmwarning_Checked"/>
                                             </Grid>
+                                            <!-- Pictures of the model catalog: kept on disk after the first view. -->
+                                            <TextBlock Margin="0,18,0,6" Foreground="{DynamicResource TextColor}" FontSize="22" FontWeight="Bold" Text="{Binding Translation[cache_header], FallbackValue='Picture cache'}"/>
+                                            <Grid Style="{StaticResource FormRow}">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="46"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[cache_keep], FallbackValue='Keep catalog pictures on disk'}"/>
+                                                <CheckBox x:Name="cbModelCache" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbModelCache_Changed" Unchecked="cbModelCache_Changed"/>
+                                            </Grid>
+                                            <DockPanel Margin="0,4,0,0">
+                                                <Button x:Name="BtnModelCacheClear" DockPanel.Dock="Right" Style="{StaticResource NavButton}" Click="BtnModelCacheClear_Click">
+                                                    <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[cache_clear], FallbackValue='Clear'}"/>
+                                                </Button>
+                                                <TextBlock x:Name="tbModelCacheUsage" VerticalAlignment="Center" FontSize="13" Foreground="#FFA3A6AA" TextWrapping="Wrap"/>
+                                            </DockPanel>
                                             <Grid Style="{StaticResource FormRow}">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
@@ -12935,6 +12966,8 @@
             </Grid>
 
             <!-- In-app dialog (MainWindow.Dialog.cs): dims and blurs the window behind a card. -->
+            <local:ModelCatalog x:Name="ModelCatalogOverlay" Grid.Row="0" Grid.RowSpan="2"/>
+
             <Grid x:Name="DialogOverlay" Grid.Row="0" Grid.RowSpan="2" Visibility="Collapsed" Background="#99000000" Focusable="True" KeyDown="DialogOverlay_KeyDown">
                 <Border CornerRadius="8" Background="#FF36393F" Padding="26,22" MinWidth="380" MaxWidth="560" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Border.Effect><DropShadowEffect BlurRadius="18" ShadowDepth="4" Opacity="0.75" Color="{DynamicResource ShadowColor}"/></Border.Effect>

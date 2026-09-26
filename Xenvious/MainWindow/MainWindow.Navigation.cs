@@ -48,6 +48,8 @@ namespace Xenvious
             };
             foreach (var (button, page) in pages)
                 button.Tag = MainPages.SelectedItem == page ? "active" : null;
+            if (MainPages.SelectedItem == PageSettings)
+                UpdateModelCacheSettings();
 
             if (!m.IsProcOpen && SGTAMessage != null)
             {

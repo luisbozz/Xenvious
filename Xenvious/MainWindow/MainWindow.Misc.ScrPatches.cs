@@ -141,7 +141,7 @@ namespace Xenvious
                 groups.Count(), groups.Count(g => g.Enabled));
         }
 
-        private string TranslateOr(string key, string fallback)
+        internal string TranslateOr(string key, string fallback)
         {
             if (Translation != null && Translation.TryGetValue(key, out string text))
                 return text;

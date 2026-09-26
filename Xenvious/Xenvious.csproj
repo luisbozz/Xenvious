@@ -176,6 +176,11 @@
     <Compile Include="AES\AES.cs" />
     <Compile Include="Controls\ComboBoxHelper.cs" />
     <Compile Include="Controls\JobMap.cs" />
+    <Compile Include="Controls\ModelCatalog.xaml.cs">
+      <DependentUpon>ModelCatalog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Creator Classes\ModelImageCache.cs" />
+    <Compile Include="MainWindow\MainWindow.ModelCatalog.cs" />
     <Compile Include="Controls\CustomPanel.xaml.cs">
       <DependentUpon>CustomPanel.xaml</DependentUpon>
     </Compile>
@@ -281,6 +286,10 @@
     <Page Include="Controls\CustomButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ModelCatalog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\NavBar.xaml">
       <Generator>MSBuild:Compile</Generator>
