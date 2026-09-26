@@ -87,6 +87,23 @@
                                                         <Border Width="52" Height="40" CornerRadius="3" Background="#FF232529" Margin="0,0,10,0" ClipToBounds="True">
                                                             <Image Source="{Binding Thumb}" Stretch="UniformToFill"/>
                                                         </Border>
+                                                        <!-- Star: add to or remove from the favourites. -->
+                                                        <ToggleButton DockPanel.Dock="Right" IsChecked="{Binding IsFavorite, Mode=TwoWay}" Width="26" Height="26" Cursor="Hand" Focusable="False"
+                                                                      ToolTip="{Binding DataContext.Translation[catalog_favorite], RelativeSource={RelativeSource AncestorType=UserControl}, FallbackValue=Favourite}">
+                                                            <ToggleButton.Template>
+                                                                <ControlTemplate TargetType="ToggleButton">
+                                                                    <TextBlock x:Name="star" Text="★" FontSize="16" Foreground="#FF4F545C" HorizontalAlignment="Center" VerticalAlignment="Center" Background="Transparent"/>
+                                                                    <ControlTemplate.Triggers>
+                                                                        <Trigger Property="IsChecked" Value="True">
+                                                                            <Setter TargetName="star" Property="Foreground" Value="#FFFAC828"/>
+                                                                        </Trigger>
+                                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                                            <Setter TargetName="star" Property="Opacity" Value="0.8"/>
+                                                                        </Trigger>
+                                                                    </ControlTemplate.Triggers>
+                                                                </ControlTemplate>
+                                                            </ToggleButton.Template>
+                                                        </ToggleButton>
                                                         <TextBlock DockPanel.Dock="Right" Text="{Binding Category}" FontSize="11" Foreground="#FF72767D" VerticalAlignment="Center" Margin="8,0,4,0"/>
                                                         <StackPanel VerticalAlignment="Center">
                                                             <TextBlock Text="{Binding Name}" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource TextColor}" TextTrimming="CharacterEllipsis"/>

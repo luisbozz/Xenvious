@@ -7,6 +7,8 @@ namespace Xenvious
     // Part of MainWindow: Edit page.
     public partial class MainWindow
     {
+        private bool _catalogPreloaded;
+
         private void BtnSectionProps_Click(object sender, RoutedEventArgs e)
         {
             EditPages.SelectedItem = PageProps;
@@ -52,7 +54,15 @@ namespace Xenvious
             // Selection changes of dropdowns inside the pages bubble up to here as well.
             // Not while the window is being built: the side list needs the whole page tree.
             if (e.Source == EditPages && IsLoaded)
+            {
                 OnEditPageChanged();
+                // The first time the props page opens, fetch the favourite and recent pictures.
+                if (EditPages.SelectedItem == PageProps && !_catalogPreloaded)
+                {
+                    _catalogPreloaded = true;
+                    ModelCatalog.Preload(PropCatalog);
+                }
+            }
         }
 
         private void BtnSectionZone_Click(object sender, RoutedEventArgs e)

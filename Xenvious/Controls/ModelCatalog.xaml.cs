@@ -35,6 +35,16 @@ namespace Xenvious
         public string Detail => (string.IsNullOrEmpty(Native) || Native == Name ? "" : Native + " · ")
             + "0x" + Hash.ToString("X8", CultureInfo.InvariantCulture);
 
+        public bool IsFavorite
+        {
+            get => ModelCatalogStore.IsFavorite(ImageKind, Hash);
+            set
+            {
+                ModelCatalogStore.SetFavorite(ImageKind, Hash, value);
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsFavorite)));
+            }
+        }
+
         public ImageSource Thumb
         {
             get
@@ -73,7 +83,11 @@ namespace Xenvious
             public string Key { get; set; }   // null: all
         }
 
+        private const string FavoritesKey = "\u0001favorites";
+        private const string RecentKey = "\u0001recent";
+
         private List<CatalogItem> _items = new List<CatalogItem>();
+        private string _kind = "";
         private Action<CatalogItem> _onPick;
 
         public ModelCatalog()
@@ -85,14 +99,20 @@ namespace Xenvious
         {
             _items = items.ToList();
             _onPick = onPick;
+            _kind = _items.FirstOrDefault()?.ImageKind ?? "";
             TitleText.Text = title;
 
-            var categories = new List<Category> { new Category { Name = Translate("catalog_all", "All"), Count = _items.Count } };
+            var categories = new List<Category>
+            {
+                new Category { Name = Translate("catalog_all", "All"), Count = _items.Count },
+                new Category { Name = "★ " + Translate("catalog_favorites", "Favourites"), Key = FavoritesKey, Count = _items.Count(i => i.IsFavorite) },
+                new Category { Name = Translate("catalog_recent", "Recently used"), Key = RecentKey, Count = ModelCatalogStore.RecentHashes(_kind).Count },
+            };
             categories.AddRange(_items.GroupBy(i => i.Category).Where(g => g.Key.Length > 0).OrderBy(g => g.Key)
                 .Select(g => new Category { Name = g.Key, Key = g.Key, Count = g.Count() }));
             CategoryList.ItemsSource = categories;
-            CategoryList.Visibility = categories.Count > 1 ? Visibility.Visible : Visibility.Collapsed;
-            CategoryList.SelectedIndex = 0;
+            // Start on the favourites when there are any, otherwise on everything.
+            CategoryList.SelectedIndex = categories[1].Count > 0 ? 1 : 0;
 
             SearchBox.Text = "";
             Filter();
@@ -111,7 +131,14 @@ namespace Xenvious
             string query = SearchBox.Text.Trim();
             string category = (CategoryList.SelectedItem as Category)?.Key;
             IEnumerable<CatalogItem> result = _items;
-            if (category != null)
+            if (category == FavoritesKey)
+                result = result.Where(i => i.IsFavorite);
+            else if (category == RecentKey)
+            {
+                var recent = ModelCatalogStore.RecentHashes(_kind).ToList();
+                result = result.Where(i => recent.Contains(i.Hash)).OrderBy(i => recent.IndexOf(i.Hash));
+            }
+            else if (category != null)
                 result = result.Where(i => i.Category == category);
             if (query.Length > 0)
             {
@@ -157,6 +184,7 @@ namespace Xenvious
             if (!(ItemList.SelectedItem is CatalogItem item))
                 return;
             Visibility = Visibility.Collapsed;
+            ModelCatalogStore.AddRecent(item.ImageKind, item.Hash);
             _onPick?.Invoke(item);
         }
 
@@ -193,6 +221,17 @@ namespace Xenvious
         private void Backdrop_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) => Visibility = Visibility.Collapsed;
 
         private void Panel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) => e.Handled = true;
+
+        /// <summary>Loads the pictures of the favourites and recently used models in the background,
+        /// so the catalog opens with them ready. Nothing else is fetched ahead.</summary>
+        public static void Preload(IEnumerable<CatalogItem> items)
+        {
+            foreach (var item in items)
+            {
+                if (item.IsFavorite || ModelCatalogStore.RecentHashes(item.ImageKind).Contains(item.Hash))
+                    _ = item.Thumb;
+            }
+        }
 
         private static string Translate(string key, string fallback)
         {

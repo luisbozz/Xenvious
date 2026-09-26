@@ -179,6 +179,7 @@
     <Compile Include="Controls\ModelCatalog.xaml.cs">
       <DependentUpon>ModelCatalog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Creator Classes\ModelCatalogStore.cs" />
     <Compile Include="Creator Classes\ModelImageCache.cs" />
     <Compile Include="MainWindow\MainWindow.ModelCatalog.cs" />
     <Compile Include="Controls\CustomPanel.xaml.cs">
