@@ -804,6 +804,7 @@
                                                         <TextBlock DockPanel.Dock="Top" Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[title], FallbackValue=Title}"/>
                                                         <TextBox x:Name="tb_JobTitle" DockPanel.Dock="Top" Style="{StaticResource Watermark}" Height="32" MaxLength="50" FontSize="15" TextChanged="tb_JobTitle_TextChanged" Margin="0,0,0,8"/>
                                                         <TextBlock DockPanel.Dock="Top" Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[desc], FallbackValue=Describtion}"/>
+                                                        <TextBlock x:Name="DashDescBytes" DockPanel.Dock="Bottom" HorizontalAlignment="Right" FontSize="11" FontWeight="Bold" Margin="0,3,0,0" Foreground="{StaticResource NavMutedBrush}" ToolTip="{Binding Translation[dash_desc_bytes], FallbackValue='The creator stores up to 504 bytes; umlauts and emoji take 2-4 bytes each.'}"/>
                                                         <TextBox x:Name="tb_JobDec" Style="{StaticResource WatermarkOld}" MinHeight="80" MaxLength="500" FontSize="14" TextWrapping="Wrap" AcceptsReturn="False" VerticalContentAlignment="Top" ScrollViewer.VerticalScrollBarVisibility="Auto" TextChanged="tb_JobDec_TextChanged"/>
                                                     </DockPanel>
                                                 </Grid>
@@ -12117,49 +12118,50 @@
                                         <Border.Effect><DropShadowEffect BlurRadius="5" ShadowDepth="2" Opacity="0.6" Color="{DynamicResource ShadowColor}"/></Border.Effect>
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="320"/>
+                                                <ColumnDefinition Width="300"/>
                                                 <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="200"/>
                                             </Grid.ColumnDefinitions>
-                                            <Border CornerRadius="4" Background="{DynamicResource SectionBackgroundBrush}" Height="180" VerticalAlignment="Top" ClipToBounds="True">
-                                                <Grid>
-                                                    <TextBlock Text="{Binding Translation[copy_noimage], FallbackValue='Kein Bild'}" FontSize="13" Foreground="#FF72767D" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                    <Image x:Name="imgCopyJobImage" Stretch="UniformToFill" Cursor="Hand" MouseLeftButtonUp="imgCopyJobImage_MouseLeftButtonUp" Style="{StaticResource PopupImage}"/>
-                                                </Grid>
-                                            </Border>
-                                            <StackPanel Grid.Column="1" Margin="16,0,0,0">
+                                            <!-- Image, below it who made the job and how it is received. -->
+                                            <StackPanel Grid.Column="0">
+                                                <Border CornerRadius="4" Background="{DynamicResource SectionBackgroundBrush}" Height="169" ClipToBounds="True">
+                                                    <Grid>
+                                                        <TextBlock Text="{Binding Translation[copy_noimage], FallbackValue='Kein Bild'}" FontSize="13" Foreground="#FF72767D" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        <Image x:Name="imgCopyJobImage" Stretch="UniformToFill" Cursor="Hand" MouseLeftButtonUp="imgCopyJobImage_MouseLeftButtonUp" Style="{StaticResource PopupImage}"/>
+                                                    </Grid>
+                                                </Border>
+                                                <StackPanel x:Name="CopyMeta" Margin="0,10,0,0" Visibility="Collapsed">
+                                                    <TextBlock x:Name="tbCopyCreator" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource TextColor}" TextTrimming="CharacterEllipsis"/>
+                                                    <TextBlock x:Name="tbCopyCreated" FontSize="12" Foreground="#FFA3A6AA" Margin="0,2,0,6"/>
+                                                    <DockPanel>
+                                                        <TextBlock x:Name="tbCopyLiked" DockPanel.Dock="Right" FontSize="12" FontWeight="Bold" Foreground="#FFA3A6AA"/>
+                                                        <TextBlock x:Name="tbCopyPlayed" FontSize="12" FontWeight="Bold" Foreground="#FFA3A6AA"/>
+                                                    </DockPanel>
+                                                    <!-- Likes against dislikes. -->
+                                                    <Grid Height="5" Margin="0,5,0,0">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition x:Name="CopyLikeShare" Width="1*"/>
+                                                            <ColumnDefinition x:Name="CopyDislikeShare" Width="0*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Border Grid.Column="0" Background="#FF43B581" CornerRadius="2,0,0,2"/>
+                                                        <Border Grid.Column="1" Background="#FFD9534F" CornerRadius="0,2,2,0"/>
+                                                    </Grid>
+                                                </StackPanel>
+                                            </StackPanel>
+                                            <!-- Type, name, the whole description and the numbers that matter for this job type. -->
+                                            <StackPanel Grid.Column="1" Margin="16,0,16,0">
                                                 <Border HorizontalAlignment="Left" CornerRadius="3" Background="#33FAC828" Padding="8,1">
                                                     <Label x:Name="tbCopyJobType" FontSize="12" Padding="0" Foreground="#FFFAC828" Content="–"/>
                                                 </Border>
                                                 <TextBox x:Name="tbCopyName" Text="Job" Margin="0,6,0,0" FontSize="20" FontWeight="Bold" BorderThickness="0" Background="Transparent" Foreground="{DynamicResource TextColor}" IsReadOnly="True" TextWrapping="Wrap"/>
-                                                <TextBox x:Name="tbCopyDesc" Text="" Margin="0,4,0,0" FontSize="13" MaxHeight="72" BorderThickness="0" Background="Transparent" Foreground="#FFA3A6AA" IsReadOnly="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
-                                                <UniformGrid Columns="4" Margin="0,10,0,0">
-                                                    <UniformGrid.Resources>
-                                                        <Style TargetType="Border" x:Key="CopyStat">
-                                                            <Setter Property="CornerRadius" Value="4"/>
-                                                            <Setter Property="Background" Value="{DynamicResource SectionBackgroundBrush}"/>
-                                                            <Setter Property="Padding" Value="10,5"/>
-                                                            <Setter Property="Margin" Value="0,0,8,8"/>
-                                                        </Style>
-                                                        <Style TargetType="TextBlock">
-                                                            <Setter Property="FontSize" Value="11"/>
-                                                            <Setter Property="Foreground" Value="#FFA3A6AA"/>
-                                                        </Style>
-                                                        <Style TargetType="Label">
-                                                            <Setter Property="FontSize" Value="15"/>
-                                                            <Setter Property="FontWeight" Value="Bold"/>
-                                                            <Setter Property="Padding" Value="0"/>
-                                                            <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
-                                                        </Style>
-                                                    </UniformGrid.Resources>
-                                                    <Border Style="{StaticResource CopyStat}"><StackPanel><TextBlock Text="Props"/><Label x:Name="tbCopyPropnum" Content="–"/></StackPanel></Border>
-                                                    <Border Style="{StaticResource CopyStat}"><StackPanel><TextBlock Text="Dynamic Props"/><Label x:Name="tbCopyDPropnum" Content="–"/></StackPanel></Border>
-                                                    <Border Style="{StaticResource CopyStat}"><StackPanel><TextBlock Text="Checkpoints"/><Label x:Name="tbCopyCPnum" Content="–"/></StackPanel></Border>
-                                                    <Border Style="{StaticResource CopyStat}"><StackPanel><TextBlock Text="Actors"/><Label x:Name="tbCopyActornum" Content="–"/></StackPanel></Border>
-                                                    <Border Style="{StaticResource CopyStat}"><StackPanel><TextBlock Text="Vehicles"/><Label x:Name="tbCopyVehnum" Content="–"/></StackPanel></Border>
-                                                    <Border Style="{StaticResource CopyStat}"><StackPanel><TextBlock Text="Weapons"/><Label x:Name="tbCopyWeapnum" Content="–"/></StackPanel></Border>
-                                                    <Border Style="{StaticResource CopyStat}"><StackPanel><TextBlock Text="Weather"/><Label x:Name="tbCopyWeather" Content="–"/></StackPanel></Border>
-                                                    <Border Style="{StaticResource CopyStat}"><StackPanel><TextBlock Text="Time of Day"/><Label x:Name="tbCopyTOD" Content="–"/></StackPanel></Border>
-                                                </UniformGrid>
+                                                <TextBox x:Name="tbCopyDesc" Text="" Margin="0,4,0,0" FontSize="13" BorderThickness="0" Background="Transparent" Foreground="#FFA3A6AA" IsReadOnly="True" TextWrapping="Wrap"/>
+                                                <!-- Tiles built in MainWindow.Misc.CopyJobs.cs; purple labels are specific to the job type. -->
+                                                <UniformGrid x:Name="CopyStats" Columns="4" Margin="0,10,-8,0"/>
+                                            </StackPanel>
+                                            <!-- Where the objects are, from the coordinates in the job file. -->
+                                            <StackPanel Grid.Column="2">
+                                                <local:JobMap x:Name="CopyJobMap" Height="200"/>
+                                                <WrapPanel x:Name="CopyMapLegend" Margin="0,6,0,0"/>
                                             </StackPanel>
                                         </Grid>
                                     </Border>
@@ -12202,6 +12204,13 @@
                                             <StackPanel Orientation="Horizontal"><CheckBox x:Name="cbCopyMenubs"/><TextBlock Text="{Binding Translation[copy_opt_menubs], FallbackValue='Menü-Optionen'}" ToolTip="menubs 1–14: die Schalter der Creator-Menüs"/></StackPanel>
                                             <StackPanel Orientation="Horizontal"><CheckBox x:Name="cbCopyEndcon"/><TextBlock Text="{Binding Translation[copy_opt_endcon], FallbackValue='Endbedingungen'}" ToolTip="endcon: Regeln pro Team (irbs …)"/></StackPanel>
                                         </WrapPanel>
+                                        <!-- "Does the job fit?": limits and the open creator, filled after loading. -->
+                                        <Border CornerRadius="5" Background="{DynamicResource TextBoxBackground}" Padding="12,8" Margin="0,4,0,10">
+                                            <StackPanel>
+                                                <TextBlock FontSize="12" FontWeight="Bold" Foreground="#FF72767D" Text="{Binding Translation[copy_fits], FallbackValue='Does the job fit?'}"/>
+                                                <StackPanel x:Name="CopyChecks" Margin="0,4,0,0"/>
+                                            </StackPanel>
+                                        </Border>
                                         <Grid Margin="0,6,0,0">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>

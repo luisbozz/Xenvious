@@ -74,7 +74,8 @@ namespace Xenvious
 
         private const string MapCalibSection = "MAPMOVER";
 
-        private Point WorldToMap(double wx, double wy)
+        // Also used by JobMap (Copy Jobs), so both follow the same calibration.
+        internal static Point WorldToMap(double wx, double wy)
         {
             return new Point((wx - _mapOriginX) / _mapUnitsPerPxX,
                              (_mapOriginY - wy) / _mapUnitsPerPxY);

@@ -387,27 +387,18 @@ namespace Xenvious
             return (value > 0x10000 && value < 0x7FFFFFF);
         }
 
+        // Reads all 8 description labels: a label shorter than 63 bytes does not end the
+        // text, because labels are cut at character boundaries.
         public string getDescribtion()
         {
-            string describtion = "";
+            var describtion = new StringBuilder();
             try
             {
-
-                for (int i = 0; i < 8; i++)
-                {
-                    if (Encoding.UTF8.GetBytes(new Global((GTA.Offsets.Editor.dec + i * 16)).GetString()).Length < 63)
-                    {
-                        describtion += new Global((GTA.Offsets.Editor.dec + i * 16)).GetString();
-                        break;
-                    }
-                    else
-                    {
-                        describtion += new Global((GTA.Offsets.Editor.dec + i * 16)).GetString();
-                    }
-                }
+                for (int i = 0; i < DescriptionChunks; i++)
+                    describtion.Append(new Global(GTA.Offsets.Editor.dec + i * 16).GetString());
             }
             catch (Exception) { }
-            return describtion;
+            return describtion.ToString();
         }
 
 

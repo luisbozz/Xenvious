@@ -175,6 +175,7 @@
     <Compile Include="Helper Classes\HudColors.cs" />
     <Compile Include="AES\AES.cs" />
     <Compile Include="Controls\ComboBoxHelper.cs" />
+    <Compile Include="Controls\JobMap.cs" />
     <Compile Include="Controls\CustomPanel.xaml.cs">
       <DependentUpon>CustomPanel.xaml</DependentUpon>
     </Compile>

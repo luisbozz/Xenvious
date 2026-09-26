@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -42,88 +43,6 @@ namespace Xenvious
             CopyNrcidPanel.Visibility = nrcid ? Visibility.Visible : Visibility.Collapsed;
             BtnCopyModeLink.Tag = nrcid ? null : "active";
             BtnCopyModeNrcid.Tag = nrcid ? "active" : null;
-        }
-
-        public void setDescribtion(string describtion)
-        {
-            if (m.IsProcOpen)
-            {
-                if (Encoding.UTF8.GetBytes(describtion).Length <= 63)
-                {
-                    new Global(GTA.Offsets.Editor.dec + 16 * 0).SetBytes(Encoding.UTF8.GetBytes(describtion));
-                    new Global(GTA.Offsets.Editor.dec + 16 * 0 + Encoding.UTF8.GetBytes(describtion).Length).SetBytes(new byte[] { 0 });
-                }
-
-                if (Encoding.UTF8.GetBytes(describtion).Length > 62 && Encoding.UTF8.GetBytes(describtion).Length < 127)
-                {
-                    new Global(GTA.Offsets.Editor.dec + 16 * 0).SetBytes(Encoding.UTF8.GetBytes(describtion).Take(63).ToArray());
-                    new Global(GTA.Offsets.Editor.dec + 16 * 1).SetBytes(Encoding.UTF8.GetBytes(describtion).Skip(63).ToArray());
-                    new Global(GTA.Offsets.Editor.dec + 16 * 1 + Encoding.UTF8.GetBytes(describtion).Skip(63).ToArray().Length).SetBytes(new byte[] { 0 });
-                }
-
-                if (Encoding.UTF8.GetBytes(describtion).Length > 125 && Encoding.UTF8.GetBytes(describtion).Length < 190)
-                {
-                    new Global(GTA.Offsets.Editor.dec + 16 * 0).SetBytes(Encoding.UTF8.GetBytes(describtion).Take(63).ToArray());
-                    new Global(GTA.Offsets.Editor.dec + 16 * 1).SetBytes(Encoding.UTF8.GetBytes(describtion).Skip(63).Take(63).ToArray());
-                    new Global(GTA.Offsets.Editor.dec + 16 * 2).SetBytes(Encoding.UTF8.GetBytes(describtion).Skip(126).ToArray());
-                    new Global(GTA.Offsets.Editor.dec + 16 * 2 + Encoding.UTF8.GetBytes(describtion).Skip(126).ToArray().Length).SetBytes(new byte[] { 0 });
-                }
-
-                if (Encoding.UTF8.GetBytes(describtion).Length > 188 && Encoding.UTF8.GetBytes(describtion).Length < 253)
-                {
-                    new Global(GTA.Offsets.Editor.dec + 16 * 0).SetBytes(Encoding.UTF8.GetBytes(describtion).Take(63).ToArray());
-                    new Global(GTA.Offsets.Editor.dec + 16 * 1).SetBytes(Encoding.UTF8.GetBytes(describtion).Skip(63).Take(63).ToArray());
-                    new Global(GTA.Offsets.Editor.dec + 16 * 2).SetBytes(Encoding.UTF8.GetBytes(describtion).Skip(126).Take(63).ToArray());
-                    new Global(GTA.Offsets.Editor.dec + 16 * 3).SetBytes(Encoding.UTF8.GetBytes(describtion).Skip(189).ToArray());
-                    new Global(GTA.Offsets.Editor.dec + 16 * 3 + Encoding.UTF8.GetBytes(describtion).Skip(189).ToArray().Length).SetBytes(new byte[] { 0 });
-                }
-
-                if (Encoding.UTF8.GetBytes(describtion).Length > 251 && Encoding.UTF8.GetBytes(describtion).Length < 316)
-                {
-                    new Global(GTA.Offsets.Editor.dec + 16 * 0).SetBytes(Encoding.UTF8.GetBytes(describtion).Take(63).ToArray());
-                    new Global(GTA.Offsets.Editor.dec + 16 * 1).SetBytes(Encoding.UTF8.GetBytes(describtion).Skip(63).Take(63).ToArray());
-                    new Global(GTA.Offsets.Editor.dec + 16 * 2).SetBytes(Encoding.UTF8.GetBytes(describtion).Skip(126).Take(63).ToArray());
-                    new Global(GTA.Offsets.Editor.dec + 16 * 3).SetBytes(Encoding.UTF8.GetBytes(describtion).Skip(189).Take(63).ToArray());
-                    new Global(GTA.Offsets.Editor.dec + 16 * 4).SetBytes(Encoding.UTF8.GetBytes(describtion).Skip(252).ToArray());
-                    new Global(GTA.Offsets.Editor.dec + 16 * 4 + Encoding.UTF8.GetBytes(describtion).Skip(252).ToArray().Length).SetBytes(new byte[] { 0 });
-                }
-
-                if (Encoding.UTF8.GetBytes(describtion).Length > 314 && Encoding.UTF8.GetBytes(describtion).Length < 379)
-                {
-                    new Global(GTA.Offsets.Editor.dec + 16 * 0).SetBytes(Encoding.UTF8.GetBytes(describtion).Take(63).ToArray());
-                    new Global(GTA.Offsets.Editor.dec + 16 * 1).SetBytes(Encoding.UTF8.GetBytes(describtion).Skip(63).Take(63).ToArray());
-                    new Global(GTA.Offsets.Editor.dec + 16 * 2).SetBytes(Encoding.UTF8.GetBytes(describtion).Skip(126).Take(63).ToArray());
-                    new Global(GTA.Offsets.Editor.dec + 16 * 3).SetBytes(Encoding.UTF8.GetBytes(describtion).Skip(189).Take(63).ToArray());
-                    new Global(GTA.Offsets.Editor.dec + 16 * 4).SetBytes(Encoding.UTF8.GetBytes(describtion).Skip(252).Take(63).ToArray());
-                    new Global(GTA.Offsets.Editor.dec + 16 * 5).SetBytes(Encoding.UTF8.GetBytes(describtion).Skip(315).ToArray());
-                    new Global(GTA.Offsets.Editor.dec + 16 * 5 + Encoding.UTF8.GetBytes(describtion).Skip(315).ToArray().Length).SetBytes(new byte[] { 0 });
-                }
-
-                if (Encoding.UTF8.GetBytes(describtion).Length > 377 && Encoding.UTF8.GetBytes(describtion).Length < 442)
-                {
-                    new Global(GTA.Offsets.Editor.dec + 16 * 0).SetBytes(Encoding.UTF8.GetBytes(describtion).Take(63).ToArray());
-                    new Global(GTA.Offsets.Editor.dec + 16 * 1).SetBytes(Encoding.UTF8.GetBytes(describtion).Skip(63).Take(63).ToArray());
-                    new Global(GTA.Offsets.Editor.dec + 16 * 2).SetBytes(Encoding.UTF8.GetBytes(describtion).Skip(126).Take(63).ToArray());
-                    new Global(GTA.Offsets.Editor.dec + 16 * 3).SetBytes(Encoding.UTF8.GetBytes(describtion).Skip(189).Take(63).ToArray());
-                    new Global(GTA.Offsets.Editor.dec + 16 * 4).SetBytes(Encoding.UTF8.GetBytes(describtion).Skip(252).Take(63).ToArray());
-                    new Global(GTA.Offsets.Editor.dec + 16 * 5).SetBytes(Encoding.UTF8.GetBytes(describtion).Skip(315).Take(63).ToArray());
-                    new Global(GTA.Offsets.Editor.dec + 16 * 6).SetBytes(Encoding.UTF8.GetBytes(describtion).Skip(378).ToArray());
-                    new Global(GTA.Offsets.Editor.dec + 16 * 6 + Encoding.UTF8.GetBytes(describtion).Skip(378).ToArray().Length).SetBytes(new byte[] { 0 });
-                }
-
-                if (Encoding.UTF8.GetBytes(describtion).Length > 440 && Encoding.UTF8.GetBytes(describtion).Length < 505)
-                {
-                    new Global(GTA.Offsets.Editor.dec + 16 * 0).SetBytes(Encoding.UTF8.GetBytes(describtion).Take(63).ToArray());
-                    new Global(GTA.Offsets.Editor.dec + 16 * 1).SetBytes(Encoding.UTF8.GetBytes(describtion).Skip(63).Take(63).ToArray());
-                    new Global(GTA.Offsets.Editor.dec + 16 * 2).SetBytes(Encoding.UTF8.GetBytes(describtion).Skip(126).Take(63).ToArray());
-                    new Global(GTA.Offsets.Editor.dec + 16 * 3).SetBytes(Encoding.UTF8.GetBytes(describtion).Skip(189).Take(63).ToArray());
-                    new Global(GTA.Offsets.Editor.dec + 16 * 4).SetBytes(Encoding.UTF8.GetBytes(describtion).Skip(252).Take(63).ToArray());
-                    new Global(GTA.Offsets.Editor.dec + 16 * 5).SetBytes(Encoding.UTF8.GetBytes(describtion).Skip(315).Take(63).ToArray());
-                    new Global(GTA.Offsets.Editor.dec + 16 * 6).SetBytes(Encoding.UTF8.GetBytes(describtion).Skip(378).Take(63).ToArray());
-                    new Global(GTA.Offsets.Editor.dec + 16 * 7).SetBytes(Encoding.UTF8.GetBytes(describtion).Skip(441).ToArray());
-                    new Global(GTA.Offsets.Editor.dec + 16 * 7 + Encoding.UTF8.GetBytes(describtion).Skip(441).ToArray().Length).SetBytes(new byte[] { 0 });
-                }
-            }
         }
 
         string jobdata = "";
@@ -208,13 +127,6 @@ namespace Xenvious
                     imgCopyJobImage.Source = bitmap;
                 }
 
-                if (jobjson.Mission.Prop.No != null) tbCopyPropnum.Content = jobjson.Mission.Prop.No.ToString();
-                if (jobjson.Mission.Dprop.No != null) tbCopyDPropnum.Content = jobjson.Mission.Dprop.No.ToString();
-                if (jobjson.Mission.Weap.No != null) tbCopyWeapnum.Content = jobjson.Mission.Weap.No.ToString();
-                if (jobjson.Mission.Veh.No != null) tbCopyVehnum.Content = jobjson.Mission.Veh.No.ToString();
-                if (jobjson.Mission.Race != null) if (jobjson.Mission.Race.Chp != null) tbCopyCPnum.Content = jobjson.Mission.Race.Chp.ToString();
-                if (jobjson.Mission.Ene.No != null) tbCopyActornum.Content = jobjson.Mission.Ene.No.ToString();
-
                 //check if meta type is empty
                 if (!String.IsNullOrWhiteSpace(img?.content?.type))
                 {
@@ -292,8 +204,13 @@ namespace Xenvious
                 Array weth = new string[] { "Current", "EXTRASUNNY", "Rain", "Snow", "SMOG", "Halloween", "Halloween 2", "Clear", "Clouds", "Overcast", "Thunder", "Foggy" };
                 Array tod = new string[] { "Current", "Morning", "Noon", "Night", "Really Dark" };
 
-                tbCopyWeather.Content = weth.GetValue(int.Parse(jobjson.Mission.Rule.Weth.ToString())).ToString();
-                tbCopyTOD.Content = tod.GetValue(int.Parse(jobjson.Mission.Rule.Tod.ToString())).ToString();
+                string weather = PickName(weth, jobjson.Mission.Rule?.Weth);
+                string timeOfDay = PickName(tod, jobjson.Mission.Rule?.Tod);
+
+                FillCopyStats(jobjson.Mission, weather, timeOfDay);
+                FillCopyMeta(img, details);
+                FillCopyMap(jobjson.Mission);
+                FillCopyChecks(jobjson.Mission);
 
                 Step("preview filled");
                 return true;
@@ -373,8 +290,233 @@ namespace Xenvious
             tbCopyName.Text = "Job";
             tbCopyDesc.Text = "";
             imgCopyJobImage.Source = null;
-            foreach (var label in new[] { tbCopyJobType, tbCopyPropnum, tbCopyDPropnum, tbCopyCPnum, tbCopyActornum, tbCopyVehnum, tbCopyWeapnum, tbCopyWeather, tbCopyTOD })
-                label.Content = "–";
+            tbCopyJobType.Content = "–";
+            CopyStats.Children.Clear();
+            CopyChecks.Children.Clear();
+            CopyMapLegend.Children.Clear();
+            CopyMeta.Visibility = Visibility.Collapsed;
+            CopyJobMap.SetMarkers(null);
+        }
+
+        private static string PickName(Array names, long? index)
+        {
+            return index.HasValue && index.Value >= 0 && index.Value < names.Length ? names.GetValue(index.Value).ToString() : "–";
+        }
+
+        private static readonly Brush CopyPropBrush = FrozenBrush(0x6C, 0x5C, 0xE7);
+        private static readonly Brush CopyDynamicBrush = FrozenBrush(0xC0, 0x8B, 0xFF);
+        private static readonly Brush CopyCheckpointBrush = FrozenBrush(0xFA, 0xC8, 0x28);
+        private static readonly Brush CopyStartBrush = FrozenBrush(0xE3, 0xE5, 0xE8);
+        private static readonly Brush CopyTypeLabelBrush = FrozenBrush(0xCD, 0xB6, 0xFF);
+
+        private static Brush FrozenBrush(byte r, byte g, byte b)
+        {
+            var brush = new SolidColorBrush(Color.FromRgb(r, g, b));
+            brush.Freeze();
+            return brush;
+        }
+
+        private static bool IsRace(JSON.Mission mission) => mission.Gen?.Type == 2;
+
+        // The tiles under the description: counts for every job, then what matters for
+        // its type (purple label).
+        private void FillCopyStats(JSON.Mission mission, string weather, string timeOfDay)
+        {
+            var tiles = new List<(string Label, string Value, bool TypeSpecific)>
+            {
+                ("Props", Count(mission.Prop?.No), false),
+                ("Dynamic Props", Count(mission.Dprop?.No), false),
+                ("Fixtures", Count(mission.Dhprop?.No), false),
+                ("Vehicles", Count(mission.Veh?.No), false),
+                ("Weapons", Count(mission.Weap?.No), false),
+            };
+            if (IsRace(mission))
+            {
+                int secondary = mission.Race?.Sndchk?.Count(v => v.X != 0 || v.Y != 0 || v.Z != 0) ?? 0;
+                tiles.Add((TranslateOr("checkpoints", "Checkpoints"), Count(mission.Race?.Chp) + (secondary > 0 ? " · " + secondary + " sec." : ""), true));
+                tiles.Add((TranslateOr("rounds", "Rounds"), Count(mission.Race?.Lap), true));
+            }
+            else
+            {
+                tiles.Add(("Actors", Count(mission.Ene?.No), true));
+                tiles.Add((TranslateOr("teams", "Teams"), Count(mission.Gen?.Tnum), true));
+            }
+            string players = mission.Gen?.Min != null && mission.Gen?.Num != null ? mission.Gen.Min + "–" + mission.Gen.Num : "–";
+            tiles.Add((TranslateOr("copy_players", "Players"), players, false));
+            tiles.Add(("Weather", weather, false));
+            tiles.Add(("Time of Day", timeOfDay, false));
+
+            CopyStats.Children.Clear();
+            foreach (var (label, value, typeSpecific) in tiles)
+            {
+                CopyStats.Children.Add(new Border
+                {
+                    CornerRadius = new CornerRadius(4),
+                    Background = (Brush)FindResource("SectionBackgroundBrush"),
+                    Padding = new Thickness(10, 5, 10, 5),
+                    Margin = new Thickness(0, 0, 8, 8),
+                    ToolTip = label + ": " + value,
+                    Child = new StackPanel
+                    {
+                        Children =
+                        {
+                            new TextBlock { Text = label, FontSize = 11, Foreground = typeSpecific ? CopyTypeLabelBrush : (Brush)FindResource("NavMutedBrush") },
+                            new TextBlock { Text = value, FontSize = 15, FontWeight = FontWeights.Bold, Foreground = (Brush)FindResource("TextColor"), TextTrimming = TextTrimming.CharacterEllipsis },
+                        }
+                    }
+                });
+            }
+        }
+
+        private static string Count(long? value) => value?.ToString(CultureInfo.CurrentCulture) ?? "–";
+
+        // Creator, date and platform from the Social Club details; users and crews are
+        // keyed by their ids there, so they are read as plain JSON.
+        private void FillCopyMeta(JSON.META.Rootobject meta, string details)
+        {
+            var content = meta?.content;
+            if (content == null)
+            {
+                CopyMeta.Visibility = Visibility.Collapsed;
+                return;
+            }
+
+            string nickname = "", crewTag = "";
+            try
+            {
+                var root = JObject.Parse(details);
+                nickname = (string)(root["users"] as JObject)?.Properties().FirstOrDefault()?.Value?["nickname"] ?? "";
+                crewTag = (string)(root["crews"] as JObject)?.Properties().FirstOrDefault()?.Value?["tag"] ?? "";
+            }
+            catch (Exception ex)
+            {
+                Log.Debug("copy job: no creator in details: " + ex.Message, source: "copyjob");
+            }
+
+            tbCopyCreator.Text = nickname.Length == 0 ? "–" : crewTag.Length == 0 ? nickname : nickname + " [" + crewTag + "]";
+            tbCopyCreated.Text = content.createdDate.ToString("d", CultureInfo.CurrentCulture)
+                + (string.IsNullOrEmpty(content.platform) ? "" : " · " + content.platform.ToUpperInvariant());
+            tbCopyPlayed.Text = string.Format(CultureInfo.CurrentCulture, TranslateOr("copy_played", "{0:N0} played"), content.playedCount);
+            int votes = content.likeCount + content.dislikeCount;
+            double liked = votes == 0 ? 1 : (double)content.likeCount / votes;
+            tbCopyLiked.Text = votes == 0 ? "–" : string.Format(CultureInfo.CurrentCulture, "{0:P0} 👍", liked);
+            CopyLikeShare.Width = new GridLength(liked, GridUnitType.Star);
+            CopyDislikeShare.Width = new GridLength(1 - liked, GridUnitType.Star);
+            CopyMeta.Visibility = Visibility.Visible;
+        }
+
+        private bool _copyMapCalibrationLoaded;
+
+        // Props, dynamic props and checkpoints (races) or the start point, from the job file.
+        private void FillCopyMap(JSON.Mission mission)
+        {
+            if (!_copyMapCalibrationLoaded)
+            {
+                LoadMapCalibration();
+                _copyMapCalibrationLoaded = true;
+            }
+
+            var markers = new List<JobMap.Marker>();
+            void Add(IEnumerable<XenVector3> points, Brush brush, double size)
+            {
+                if (points == null)
+                    return;
+                foreach (var p in points)
+                {
+                    if (p.X != 0 || p.Y != 0)
+                        markers.Add(new JobMap.Marker(p.X, p.Y, brush, size));
+                }
+            }
+
+            Add(mission.Prop?.Loc, CopyPropBrush, 4);
+            Add(mission.Dprop?.Loc, CopyDynamicBrush, 4);
+            bool race = IsRace(mission);
+            if (race)
+                Add(mission.Race?.Chl, CopyCheckpointBrush, 6);
+            else if (mission.Gen != null)
+                Add(new[] { mission.Gen.Start }, CopyStartBrush, 7);
+            CopyJobMap.SetMarkers(markers);
+
+            CopyMapLegend.Children.Clear();
+            AddLegend("Props", CopyPropBrush);
+            AddLegend("Dynamic", CopyDynamicBrush);
+            AddLegend(race ? TranslateOr("checkpoints", "Checkpoints") : TranslateOr("copy_start", "Start"), race ? CopyCheckpointBrush : CopyStartBrush);
+        }
+
+        private void AddLegend(string text, Brush brush)
+        {
+            CopyMapLegend.Children.Add(new StackPanel
+            {
+                Orientation = Orientation.Horizontal,
+                Margin = new Thickness(0, 0, 10, 0),
+                Children =
+                {
+                    new System.Windows.Shapes.Ellipse { Width = 8, Height = 8, Fill = brush, Margin = new Thickness(0, 0, 5, 0), VerticalAlignment = VerticalAlignment.Center },
+                    new TextBlock { Text = text, FontSize = 12, FontWeight = FontWeights.Bold, Foreground = (Brush)FindResource("NavMutedBrush") },
+                }
+            });
+        }
+
+        // "Does the job fit?": what would go wrong when copying into the open creator.
+        private void FillCopyChecks(JSON.Mission mission)
+        {
+            CopyChecks.Children.Clear();
+
+            long props = mission.Prop?.No ?? 0;
+            int limit = Xenvious.AdvancedPlacement.PropPlacementService.PropLimit;
+            string edition = GameVariant.IsEnhanced ? "Enhanced" : "Legacy";
+            AddCheck(props > limit ? DotBad : DotOk, string.Format(CultureInfo.CurrentCulture,
+                TranslateOr("copy_check_props", "Props: {0} of {1} ({2})."), props, limit, edition));
+
+            long dynamic = mission.Dprop?.No ?? 0;
+            if (dynamic > 32)
+                AddCheck(DotWarn, string.Format(CultureInfo.CurrentCulture,
+                    TranslateOr("copy_check_dynamic", "{0} dynamic props: the creator keeps only 32."), dynamic));
+
+            string needed = CreatorForJob(mission);
+            string open = m != null && m.IsProcOpen && IsInCreator() ? GTA.CurrentCreatorName() : "";
+            if (open.Length == 0)
+                AddCheck(DotWarn, string.Format(CultureInfo.CurrentCulture,
+                    TranslateOr("copy_check_nocreator", "No creator open; this job needs the {0}."), CreatorDisplayName(needed)));
+            else if (open != needed)
+                AddCheck(DotBad, string.Format(CultureInfo.CurrentCulture,
+                    TranslateOr("copy_check_wrongcreator", "The open creator is the {0}; this job needs the {1}."), CreatorDisplayName(open), CreatorDisplayName(needed)));
+            else
+                AddCheck(DotOk, string.Format(CultureInfo.CurrentCulture,
+                    TranslateOr("copy_check_creator", "Fits the open {0}."), CreatorDisplayName(open)));
+        }
+
+        // Job type to creator script: 0 mission (subtype 5 LTS, 6 capture), 1 deathmatch,
+        // 2 race, 3 survival.
+        private static string CreatorForJob(JSON.Mission mission)
+        {
+            switch (mission.Gen?.Type)
+            {
+                case 1: return "fm_deathmatch_creator";
+                case 2: return "fm_race_creator";
+                case 3: return "fm_survival_creator";
+                default:
+                    switch (mission.Gen?.Subtype)
+                    {
+                        case 5: return "fm_lts_creator";
+                        case 6: return "fm_capture_creator";
+                        default: return "fm_mission_creator";
+                    }
+            }
+        }
+
+        private void AddCheck(Brush dot, string text)
+        {
+            CopyChecks.Children.Add(new StackPanel
+            {
+                Orientation = Orientation.Horizontal,
+                Margin = new Thickness(0, 3, 0, 3),
+                Children =
+                {
+                    new System.Windows.Shapes.Ellipse { Width = 9, Height = 9, Fill = dot, Margin = new Thickness(0, 0, 9, 0), VerticalAlignment = VerticalAlignment.Center },
+                    new TextBlock { Text = text, FontSize = 14, Foreground = (Brush)FindResource("TextColor"), TextWrapping = TextWrapping.Wrap },
+                }
+            });
         }
 
         /// <summary>One line under the link box; errors in red, the rest in the accent colour.</summary>
@@ -1508,7 +1650,7 @@ namespace Xenvious
                     if (jobjson.Mission.Gen.Todhr != null) new Global(GTA.Offsets.Editor.todhr).SetInt((int)jobjson.Mission.Gen.Todhr);
                     if (jobjson.Mission.Gen.Todmn != null) new Global(GTA.Offsets.Editor.todmn).SetInt((int)jobjson.Mission.Gen.Todmn);
                     if (jobjson.Mission.Gen.Nm != null) new Global(GTA.Offsets.Editor.nm).SetString(jobjson.Mission.Gen.Nm);
-                    if (jobjson.Mission.Gen.Dec != null && jobjson.Mission.Gen.Dec.Any()) setDescribtion(string.Join("", jobjson.Mission.Gen.Dec));
+                    if (jobjson.Mission.Gen.Dec != null && jobjson.Mission.Gen.Dec.Any()) setDescribtionNew(string.Join("", jobjson.Mission.Gen.Dec));
                 }
 
                 if (cbCopyBasics.IsChecked == true)
