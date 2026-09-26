@@ -189,24 +189,42 @@ namespace Xenvious
 
         private void tb_Rounds_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(tb_Rounds.Text))
+            if (string.IsNullOrWhiteSpace(tb_Rounds.Text) || !m.IsProcOpen)
+                return;
+            if (!int.TryParse(tb_Rounds.Text, out int rounds))
                 return;
 
-            string temp = (int.Parse(tb_Rounds.Text) - (Functions.Read.isMission() ? 0 : 1)).ToString();
+            // The LTS creator offers 1..7 rounds with two teams, 1..5 with three and
+            // 1..3 with four. Anything else is left unwritten.
+            if (Functions.Read.isLTS() && (rounds < 1 || rounds > MaxLTSRounds(new Global(GTA.Offsets.Editor.tnum).Get<int>())))
+                return;
 
-            if (IsValidInt(temp, false) && m.IsProcOpen)
+            string temp = (rounds - (Functions.Read.isMission() ? 0 : 1)).ToString();
+
+            if (IsValidInt(temp, false))
             {
                 new Global(Functions.Read.isMission() ? GTA.Offsets.Editor.numRounds : GTA.Offsets.Editor.Race.Checkpoints.lap).SetInt(temp);
             }
         }
 
+        private static int MaxLTSRounds(int teams)
+        {
+            if (teams >= 4)
+                return 3;
+            return teams == 3 ? 5 : 7;
+        }
+
         private void tb_Teams_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(tb_Teams.Text))
+            if (string.IsNullOrWhiteSpace(tb_Teams.Text) || !m.IsProcOpen)
                 return;
-            if (IsValidInt(tb_Teams.Text, false) && m.IsProcOpen)
+
+            // Team data holds four teams, and LTS needs at least two (the LTS creator
+            // raises a lower count to 2). Anything else is left unwritten.
+            int minTeams = Functions.Read.isLTS() ? 2 : 1;
+            if (int.TryParse(tb_Teams.Text, out int teams) && teams >= minTeams && teams <= 4)
             {
-                new Global(GTA.Offsets.Editor.tnum).SetInt(tb_Teams.Text);
+                new Global(GTA.Offsets.Editor.tnum).SetInt(teams);
             }
         }
 
