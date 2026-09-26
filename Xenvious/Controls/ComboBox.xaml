@@ -7,7 +7,7 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
-                <ColumnDefinition Width="20" />
+                <ColumnDefinition Width="28" />
             </Grid.ColumnDefinitions>
             <Border
                   x:Name="Border" 
@@ -16,20 +16,13 @@
                   Background="{TemplateBinding Background}"
                   BorderBrush="{TemplateBinding BorderBrush}"
                   BorderThickness="{TemplateBinding BorderThickness}" />
-            <Border 
-                  Grid.Column="0"
-                  Margin="2" 
-                  Background="{TemplateBinding Background}"
-                  BorderBrush="{TemplateBinding BorderBrush}"
-                  HorizontalAlignment="Right"
-                  BorderThickness="0,0,1,0" />
             <Path 
                   x:Name="Arrow"
                   Grid.Column="1"     
                   Fill="{DynamicResource ComboBoxArrow}"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
-                  Data="M0,0 L0,2 L4,6 L8,2 L8,0 L4,4 z"
+                  Data="M0,0 L9,0 L4.5,5 z"
                 />
         </Grid>
         <ControlTemplate.Triggers>
@@ -61,8 +54,9 @@
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="BorderBrush" Value="{DynamicResource ComboBoxBorderInner}"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-        <Setter Property="local:CornerRadiusSetter.CornerRadius" Value="2"/>
-        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="local:CornerRadiusSetter.CornerRadius" Value="4"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="ToolTip" Value="{Binding Path=ToolTip, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}"/>
         <!--<EventSetter Event="PreviewMouseWheel" Handler="comboboxScrollWithoutFocusEvent"/>-->
         <Setter Property="Template">
@@ -124,7 +118,7 @@
                             <ContentPresenter Name="ContentSite" IsHitTestVisible="False" Content="{TemplateBinding SelectionBoxItem}"
                                 ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
                                 ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
-                                Margin="7,0,23,0"
+                                Margin="10,0,30,0"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Left"
                                 Grid.Column="2">
@@ -161,6 +155,8 @@
                                 Background="{DynamicResource ComboBoxBackground}"
                                 CornerRadius="{TemplateBinding local:CornerRadiusSetter.CornerRadius}"
                                 BorderThickness="1"
+                                Padding="4"
+                                Margin="0,4,0,0"
                                 BorderBrush="{TemplateBinding BorderBrush}">
                                 <Grid Name="DropDown"
                                     SnapsToDevicePixels="True"                
@@ -221,16 +217,16 @@
         <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
         <Setter Property="OverridesDefaultStyle" Value="true"/>
         <Setter Property="FontFamily" Value="{DynamicResource Volte}"/>
-        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="ContentStringFormat" Value=" {0}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ComboBoxItem}">
-                    <Border Name="Border"
+                    <Border Name="Border" CornerRadius="3" Padding="8,6"
                               SnapsToDevicePixels="true">
-                        <ContentPresenter Margin="2,0,0,0" />
+                        <ContentPresenter />
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsHighlighted" Value="true">
