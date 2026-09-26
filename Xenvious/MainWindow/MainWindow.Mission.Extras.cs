@@ -4,11 +4,12 @@ using System.Windows.Controls;
 
 namespace Xenvious
 {
-    // Part of MainWindow: Mission / Extras page (option bits the creator never shows).
+    // Part of MainWindow: option bits the creator never shows (marked * on Mission / General).
     public partial class MainWindow
     {
         // Bits in the job's option bitsets that fm_mission_controller acts on but the
-        // LTS creator never offers. The creator saves each bitset as a whole, so a bit
+        // LTS and Capture creators never offer. The General page shows them next to
+        // the related creator options. The creator saves each bitset as a whole, so a bit
         // set here stays in the published job. Bit indices are 1-based like
         // writebinary. The bitset offsets are read when used, because OffsetLoader
         // can load them again for the other edition.
