@@ -195,7 +195,8 @@ namespace Xenvious
                 return;
 
             // The LTS creator offers 1..7 rounds with two teams, 1..5 with three and
-            // 1..3 with four. Anything else is left unwritten.
+            // 1..3 with four; one team gets the two-team limit. Anything else is left
+            // unwritten.
             if (Functions.Read.isLTS() && (rounds < 1 || rounds > MaxLTSRounds(new Global(GTA.Offsets.Editor.tnum).Get<int>())))
                 return;
 
@@ -219,10 +220,9 @@ namespace Xenvious
             if (string.IsNullOrWhiteSpace(tb_Teams.Text) || !m.IsProcOpen)
                 return;
 
-            // Team data holds four teams, and LTS needs at least two (the LTS creator
-            // raises a lower count to 2). Anything else is left unwritten.
-            int minTeams = Functions.Read.isLTS() ? 2 : 1;
-            if (int.TryParse(tb_Teams.Text, out int teams) && teams >= minTeams && teams <= 4)
+            // Team data holds four teams. The LTS creator raises a count below 2, but
+            // a one-team LTS is allowed here on purpose. Anything else is left unwritten.
+            if (int.TryParse(tb_Teams.Text, out int teams) && teams >= 1 && teams <= 4)
             {
                 new Global(GTA.Offsets.Editor.tnum).SetInt(teams);
             }
