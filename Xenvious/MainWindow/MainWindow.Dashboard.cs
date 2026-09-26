@@ -111,15 +111,25 @@ namespace Xenvious
                     break;
             }
 
-            // The chip is the Border around the text's StackPanel; only meaningful in a creator.
-            var propsChip = (FrameworkElement)((FrameworkElement)DashStatusProps.Parent).Parent;
-            propsChip.Visibility = inCreator ? Visibility.Visible : Visibility.Collapsed;
+            DashTileGame.ToolTip = string.IsNullOrWhiteSpace(Lblonlineversion?.Text)
+                ? null
+                : TranslateOr("onlineversion", "Online Version") + ": " + Lblonlineversion.Text.Trim();
+
+            string scName = Lbl_SCName.Text;
+            DashSCInitial.Text = string.IsNullOrWhiteSpace(scName) ? "" : scName.Trim().Substring(0, 1).ToUpperInvariant();
+
+            // Props and the creator's own count only mean something inside a creator.
+            DashTileProps.Visibility = inCreator ? Visibility.Visible : Visibility.Collapsed;
+            DashTileMode.Visibility = inCreator ? Visibility.Visible : Visibility.Collapsed;
             if (inCreator)
             {
                 int count = new Global(GTA.Offsets.Editor.Props.number).Get<int>();
                 int limit = PropPlacementService.PropLimit;
-                DashStatusProps.Text = string.Format(CultureInfo.CurrentCulture, "Props {0} / {1}", count, limit);
-                DashStatusPropsDot.Fill = count >= limit ? DotBad : count >= limit * 0.9 ? DotWarn : DotOk;
+                DashStatusProps.Text = string.Format(CultureInfo.CurrentCulture, "{0} / {1}", count, limit);
+                DashStatusDynamic.Text = new Global(GTA.Offsets.Editor.DProps.number).Get<int>().ToString(CultureInfo.CurrentCulture);
+                DashPropsBar.Width = 170.0 * Math.Max(0, Math.Min(count, limit)) / limit;
+                DashPropsBar.Fill = count >= limit ? DotBad : count >= limit * 0.9 ? DotWarn : (Brush)DashTileProps.FindResource("DashPropBrush");
+                UpdateDashboardCreatorCounts(creator);
             }
 
             bool script = cbsettingsexpscrfeat.IsChecked == true;
@@ -127,6 +137,8 @@ namespace Xenvious
                 ? TranslateOr("dash_script_on", "Script-Funktionen an")
                 : TranslateOr("dash_script_off", "Script-Funktionen aus");
             DashStatusScriptDot.Fill = script ? DotOk : DotOff;
+
+            UpdateDashboardForCreator(inCreator ? creator : null);
         }
 
         private static string CreatorDisplayName(string script)

@@ -43,6 +43,9 @@ namespace Xenvious
                         (cbmissionextnovehexpdmg, () => GTA.Offsets.Editor.menubs21, 13),
                         (cbmissionextnostuckdestroy, () => GTA.Offsets.Editor.menubs23, 16),
                         (cbmissionextnothrowweap, () => GTA.Offsets.Editor.menubs31, 26),
+                        // The same two world options on the dashboard.
+                        (cbdashmuteambience, () => GTA.Offsets.Editor.menubs15, 7),
+                        (cbdashnoregionvfx, () => GTA.Offsets.Editor.menubs13, 14),
                     };
                 }
                 return missionExtraBits;

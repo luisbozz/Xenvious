@@ -329,645 +329,674 @@
 
                     <TabItem x:Name="PageDashboard" Header="Dashboard" >
 
-
                         <Grid>
+                            <Grid.Resources>
+                                <!-- Dashboard look: tiles in the status bar, cards below. -->
+                                <Style x:Key="DashBar" TargetType="{x:Type Border}">
+                                    <Setter Property="Background" Value="{DynamicResource SectionBackgroundBrush}"/>
+                                    <Setter Property="CornerRadius" Value="5"/>
+                                    <Setter Property="Padding" Value="8,8,8,0"/>
+                                </Style>
+                                <Style x:Key="DashTile" TargetType="{x:Type Border}">
+                                    <Setter Property="Background" Value="{DynamicResource SeactionHeaderBackgroundBrush}"/>
+                                    <Setter Property="CornerRadius" Value="5"/>
+                                    <Setter Property="Padding" Value="12,6"/>
+                                    <Setter Property="MinHeight" Value="50"/>
+                                    <Setter Property="Margin" Value="0,0,10,8"/>
+                                </Style>
+                                <Style x:Key="DashTileLabel" TargetType="{x:Type TextBlock}">
+                                    <Setter Property="FontSize" Value="11"/>
+                                    <Setter Property="Foreground" Value="{StaticResource NavMutedBrush}"/>
+                                </Style>
+                                <Style x:Key="DashTileValue" TargetType="{x:Type TextBlock}">
+                                    <Setter Property="FontSize" Value="15"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
+                                </Style>
+                                <Style x:Key="DashDot" TargetType="{x:Type Ellipse}">
+                                    <Setter Property="Width" Value="12"/>
+                                    <Setter Property="Height" Value="12"/>
+                                    <Setter Property="Margin" Value="2,0,12,0"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="Fill" Value="#FF72767D"/>
+                                </Style>
+                                <Style x:Key="DashCard" TargetType="{x:Type Border}">
+                                    <Setter Property="Background" Value="{DynamicResource SectionBackgroundBrush}"/>
+                                    <Setter Property="CornerRadius" Value="5"/>
+                                    <Setter Property="Margin" Value="0,0,0,12"/>
+                                </Style>
+                                <Style x:Key="DashCardHeader" TargetType="{x:Type Border}">
+                                    <Setter Property="Background" Value="{DynamicResource SeactionHeaderBackgroundBrush}"/>
+                                    <Setter Property="CornerRadius" Value="5,5,0,0"/>
+                                    <Setter Property="Padding" Value="14,9"/>
+                                </Style>
+                                <Style x:Key="DashCardTitle" TargetType="{x:Type TextBlock}">
+                                    <Setter Property="FontSize" Value="17"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                </Style>
+                                <Style x:Key="DashSub" TargetType="{x:Type TextBlock}">
+                                    <Setter Property="FontSize" Value="11"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="Foreground" Value="{StaticResource NavMutedBrush}"/>
+                                    <Setter Property="Margin" Value="0,10,0,6"/>
+                                </Style>
+                                <Style x:Key="DashFieldLabel" TargetType="{x:Type TextBlock}">
+                                    <Setter Property="FontSize" Value="12"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="Foreground" Value="{StaticResource NavMutedBrush}"/>
+                                    <Setter Property="Margin" Value="0,0,0,3"/>
+                                </Style>
+                                <SolidColorBrush x:Key="DashPropBrush" Color="#FF6C5CE7"/>
+                                <SolidColorBrush x:Key="DashDynamicBrush" Color="#FFC08BFF"/>
+                                <!-- Same shapes as Advanced Prop Placement: light main action, grey secondary ones. -->
+                                <Style x:Key="DashButton" TargetType="{x:Type Button}">
+                                    <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
+                                    <Setter Property="Background" Value="{DynamicResource SeactionHeaderBackgroundBrush}"/>
+                                    <Setter Property="FontFamily" Value="{DynamicResource Volte}"/>
+                                    <Setter Property="FontSize" Value="14"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="Height" Value="38"/>
+                                    <Setter Property="Margin" Value="0,0,8,8"/>
+                                    <Setter Property="Cursor" Value="Hand"/>
+                                    <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type Button}">
+                                                <Border x:Name="b" CornerRadius="5" Background="{TemplateBinding Background}" Padding="10,0">
+                                                    <ContentPresenter x:Name="c" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="b" Property="Background" Value="#FF40444B"/>
+                                                    </Trigger>
+                                                    <Trigger Property="IsPressed" Value="True">
+                                                        <Setter TargetName="c" Property="RenderTransform"><Setter.Value><TranslateTransform Y="1"/></Setter.Value></Setter>
+                                                    </Trigger>
+                                                    <Trigger Property="IsEnabled" Value="False">
+                                                        <Setter TargetName="b" Property="Opacity" Value="0.4"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                                <Style x:Key="DashPrimaryButton" TargetType="{x:Type Button}" BasedOn="{StaticResource DashButton}">
+                                    <Setter Property="Foreground" Value="#FF202225"/>
+                                    <Setter Property="Background" Value="#FFE3E5E8"/>
+                                    <Setter Property="Margin" Value="0"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type Button}">
+                                                <Border x:Name="b" CornerRadius="5" Background="{TemplateBinding Background}" Padding="10,0">
+                                                    <ContentPresenter x:Name="c" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="b" Property="Background" Value="#FFFFFFFF"/>
+                                                    </Trigger>
+                                                    <Trigger Property="IsPressed" Value="True">
+                                                        <Setter TargetName="c" Property="RenderTransform"><Setter.Value><TranslateTransform Y="1"/></Setter.Value></Setter>
+                                                    </Trigger>
+                                                    <Trigger Property="IsEnabled" Value="False">
+                                                        <Setter TargetName="b" Property="Opacity" Value="0.4"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Grid.Resources>
+
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
 
-                            <!-- Small status strip: only what tells at a glance whether Xenvious can work. -->
-                            <WrapPanel x:Name="DashboardStatusStrip" Grid.Row="0" Margin="12,6,12,0">
-                                <Border CornerRadius="10" Background="{DynamicResource SectionBackgroundBrush}" Padding="10,3" Margin="0,0,6,0">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Ellipse x:Name="DashStatusGameDot" Width="7" Height="7" Margin="0,0,6,0" VerticalAlignment="Center" Fill="#FF72767D"/>
-                                        <TextBlock x:Name="DashStatusGame" FontSize="12" Foreground="{DynamicResource TextColor}" VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                </Border>
-                                <Border CornerRadius="10" Background="{DynamicResource SectionBackgroundBrush}" Padding="10,3" Margin="0,0,6,0">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Ellipse x:Name="DashStatusCreatorDot" Width="7" Height="7" Margin="0,0,6,0" VerticalAlignment="Center" Fill="#FF72767D"/>
-                                        <TextBlock x:Name="DashStatusCreator" FontSize="12" Foreground="{DynamicResource TextColor}" VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                </Border>
-                                <Border CornerRadius="10" Background="{DynamicResource SectionBackgroundBrush}" Padding="10,3" Margin="0,0,6,0">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Ellipse x:Name="DashStatusPropsDot" Width="7" Height="7" Margin="0,0,6,0" VerticalAlignment="Center" Fill="#FF72767D"/>
-                                        <TextBlock x:Name="DashStatusProps" FontSize="12" Foreground="{DynamicResource TextColor}" VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                </Border>
-                                <Border CornerRadius="10" Background="{DynamicResource SectionBackgroundBrush}" Padding="10,3" Margin="0,0,6,0">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Ellipse x:Name="DashStatusScriptDot" Width="7" Height="7" Margin="0,0,6,0" VerticalAlignment="Center" Fill="#FF72767D"/>
-                                        <TextBlock x:Name="DashStatusScript" FontSize="12" Foreground="{DynamicResource TextColor}" VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                </Border>
-                            </WrapPanel>
+                            <!-- Status bar: what Xenvious works with right now. Filled in MainWindow.Dashboard.cs. -->
+                            <Border x:Name="DashboardStatusStrip" Grid.Row="0" Style="{StaticResource DashBar}" Margin="12,8,12,0">
+                                <DockPanel LastChildFill="False">
 
-                            <Grid Grid.Row="1">
-                            <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="0.45*" MinHeight="190"/>
-                                <RowDefinition Height="0.55*"/>
-                            </Grid.RowDefinitions>
-
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="0.5*"/>
-                                <ColumnDefinition Width="0.5*"/>
-                                <ColumnDefinition Width="0.5*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <Border Grid.Column="0" Background="{DynamicResource SectionBackgroundBrush}" CornerRadius="5" Padding="0,0,0,5" Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                <Border.Effect>
-                                    <DropShadowEffect BlurRadius="13" ShadowDepth="0" Color="{DynamicResource ShadowColor}"/>
-                                </Border.Effect>
-
-                                <ScrollViewer Grid.Row="1" Margin="10 0" VerticalScrollBarVisibility="Auto">
-                                    <Grid>
-
-                                        <Grid Grid.Row="1" Margin="10 0">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="0.5*"/>
-                                                <ColumnDefinition Width="0.5*"/>
-                                            </Grid.ColumnDefinitions>
-
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="50"/>
-                                                <RowDefinition Height="auto" MaxHeight="40"/>
-                                                <RowDefinition Height="auto" MaxHeight="40"/>
-                                                <RowDefinition Height="auto" MaxHeight="40"/>
-                                                <RowDefinition Height="auto" MaxHeight="40"/>
-                                                <RowDefinition Height="auto" MaxHeight="40"/>
-                                                <RowDefinition Height="auto" MaxHeight="40"/>
-                                                <RowDefinition Height="auto" MaxHeight="40"/>
-                                                <RowDefinition Height="40" MaxHeight="40"/>
-                                                <RowDefinition Height="40" MaxHeight="40"/>
-                                                <RowDefinition Height="40" MaxHeight="40"/>
-                                                <RowDefinition Height="40" MaxHeight="40"/>
-                                                <RowDefinition Height="40" MaxHeight="40"/>
-                                                <RowDefinition Height="40" />
-                                            </Grid.RowDefinitions>
-
-                                            <!--Left-->
-                                            <Viewbox Grid.Row="0" HorizontalAlignment="Left" StretchDirection="DownOnly">
-                                                <Label FontSize="22" Content="{Binding Translation[username], FallbackValue=Username}" ContentStringFormat="Social Club {0}" FontWeight="Bold"/>
-                                            </Viewbox>
-                                            <Viewbox Grid.Row="1" HorizontalAlignment="Left" MaxHeight="40"  StretchDirection="DownOnly">
-                                                <Label FontSize="20" Content="{Binding Translation[developermode], FallbackValue=Developer Mode}" Visibility="{Binding ElementName=cb_dev, Path=Visibility}"/>
-                                            </Viewbox>
-                                            <Viewbox Grid.Row="2" HorizontalAlignment="Left" MaxHeight="40" VerticalAlignment="Bottom" StretchDirection="DownOnly">
-                                                <Label FontSize="20" Content="{Binding Translation[skiptest], FallbackValue=Skip Testing}" Visibility="{Binding ElementName=BtnSkipTest, Path=Visibility}"/>
-                                            </Viewbox>
-                                            <Viewbox Grid.Row="3" HorizontalAlignment="Left" MaxHeight="40" VerticalAlignment="Bottom" StretchDirection="DownOnly">
-                                                <Label FontSize="20" Content="{Binding Translation[test], FallbackValue=Test}" Visibility="{Binding ElementName=BtnTestMain, Path=Visibility}"/>
-                                            </Viewbox>
-                                            <Viewbox Grid.Row="4" HorizontalAlignment="Left" MaxHeight="40" VerticalAlignment="Bottom" StretchDirection="DownOnly">
-                                                <Label FontSize="20" Content="{Binding Translation[save], FallbackValue=Save}" Visibility="{Binding ElementName=BtnSaveMain, Path=Visibility}"/>
-                                            </Viewbox>
-                                            <Viewbox Grid.Row="5" HorizontalAlignment="Left" MaxHeight="40" VerticalAlignment="Bottom" StretchDirection="DownOnly">
-                                                <Label FontSize="20" Content="{Binding Translation[publish], FallbackValue=Publish}" Visibility="{Binding ElementName=BtnPublishMain, Path=Visibility}"/>
-                                            </Viewbox>
-                                            <Viewbox Grid.Row="7" HorizontalAlignment="Left" MaxHeight="40" VerticalAlignment="Bottom" StretchDirection="DownOnly">
-                                                <Label FontSize="20" Content="{Binding Translation[jobid], FallbackValue=Current Job Id}" Visibility="{Binding ElementName=tbjobid, Path=Visibility}"/>
-                                            </Viewbox>
-                                            <Viewbox Grid.Row="8" HorizontalAlignment="Left" MaxHeight="40"  StretchDirection="DownOnly">
-                                                <Label FontSize="20" Content="{Binding Translation[3dcam], FallbackValue=3D Cam}"/>
-                                            </Viewbox>
-                                            <Viewbox Grid.Row="9" HorizontalAlignment="Left" MaxHeight="40"  StretchDirection="DownOnly">
-                                                <Label FontSize="20" Content="{Binding Translation[hidecreatormenu], FallbackValue=Hide Creator Menu}"/>
-                                            </Viewbox>
-                                            <Viewbox Grid.Row="10" HorizontalAlignment="Left" MaxHeight="40"  StretchDirection="DownOnly">
-                                                <Label FontSize="20" Content="{Binding Translation[forcepublish], FallbackValue=Force Publish}"  Visibility="{Binding ElementName=cbforce_publish, Path=Visibility}"/>
-                                            </Viewbox>
-                                            <Viewbox Grid.Row="11" HorizontalAlignment="Left" MaxHeight="40"  StretchDirection="DownOnly">
-                                                <Label FontSize="20" Content="{Binding Translation[onlineversion], FallbackValue=Online Version}"/>
-                                            </Viewbox>
-                                            <Viewbox Grid.Row="12" HorizontalAlignment="Left" MaxHeight="40"  StretchDirection="DownOnly">
-                                                <Label FontSize="20" Content="{Binding Translation[buildversion], FallbackValue=Build Version}"/>
-                                            </Viewbox>
-                                           
-
-
-
-                                            <!--Right-->
-                                            <TextBlock x:Name="Lbl_SCName" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0" Grid.Row="0" Grid.Column="1"  FontFamily="{DynamicResource Volte}" TextTrimming="CharacterEllipsis" FontSize="16" Foreground="{DynamicResource TextColor}"/>
-                                            <CheckBox x:Name="cb_dev" Margin="0,5,2,5" Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right" Checked="cb_dev_Checked" Unchecked="cb_dev_Checked" MaxHeight="40"/>
-                                            <CheckBox x:Name="cb_3dcam" Margin="0,5,2,5" Grid.Column="1" Grid.Row="8" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_3dcam_Checked" Unchecked="cb_3dcam_Checked" MaxHeight="40"/>
-                                            <CheckBox x:Name="cbhidecreatormenu" Margin="0,5,2,5" Grid.Column="1" Grid.Row="9" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbhidecreatormenu_Checked" Unchecked="cbhidecreatormenu_Checked" MaxHeight="40"/>
-                                            <CheckBox x:Name="cbforce_publish" Margin="0,5,2,5" Grid.Column="1" Grid.Row="10" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbforce_publish_Checked" Unchecked="cbforce_publish_Checked" MaxHeight="40"/>
-                                            <TextBlock x:Name="Lblonlineversion" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0" Grid.Row="11" Grid.Column="1"  FontFamily="{DynamicResource Volte}" TextTrimming="CharacterEllipsis" FontSize="16" Foreground="{DynamicResource TextColor}"/>
-                                            <TextBlock x:Name="Lblbuildversion" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0" Grid.Row="12" Grid.Column="1"  FontFamily="{DynamicResource Volte}" TextTrimming="CharacterEllipsis" FontSize="16" Foreground="{DynamicResource TextColor}"/>
-                                            <Border Grid.Row="2" Grid.Column="1" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="4" VerticalAlignment="Bottom" MaxHeight="30">
-                                                <Border.Effect>
-                                                    <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>                                                </Border.Effect>
-                                                <Button x:Name="BtnSkipTest" FontSize="16" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" Click="BtnSkipTest_Click" Content="{Binding Translation[skip], FallbackValue=Skip}" Foreground="{DynamicResource TextColor}" />
-                                            </Border>
-                                            <Grid Grid.Row="3" Grid.Column="1" Margin="4" Visibility="{Binding ElementName=BtnTestMain, Path=Visibility}">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="0.5*"/>
-                                                    <ColumnDefinition Width="0.5*"/>
-                                                </Grid.ColumnDefinitions>
-
-                                                <Border Grid.Column="0" Background="Transparent" Margin="0,0,5,0">
-                                                    <Border.Effect>
-                                                        <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>
-                                                    </Border.Effect>
-                                                    <ComboBox x:Name="ddteamtest" SelectionChanged="ddmissionteamno_SelectionChanged">
-                                                        <ComboBoxItem Content="1" FontSize="18" ToolTip="Race Primary" Selector.IsSelected="True"/>
-                                                        <ComboBoxItem Content="2" FontSize="18" ToolTip="Race Secondary"/>
-                                                        <ComboBoxItem Content="3" FontSize="18"/>
-                                                        <ComboBoxItem Content="4" FontSize="18"/>
-                                                    </ComboBox>
-                                                </Border>
-
-                                                <Border Grid.Column="1" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" MaxHeight="30" Margin="5,0,0,0">
-                                                    <Border.Effect>
-                                                        <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>
-                                                    </Border.Effect>
-                                                    <Button x:Name="BtnTestMain" FontSize="16" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" Click="BtnTestMain_Click" Content="{Binding Translation[test], FallbackValue=Test}" Foreground="{DynamicResource TextColor}" />
-                                                </Border>
+                                    <Border DockPanel.Dock="Right" Style="{StaticResource DashTile}" Margin="0,0,0,8">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Grid Width="30" Height="30" Margin="0,0,12,0" VerticalAlignment="Center">
+                                                <Ellipse Fill="#FF4F545C"/>
+                                                <TextBlock x:Name="DashSCInitial" FontSize="13" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}"/>
                                             </Grid>
-                                            <Border  Grid.Row="4" Grid.Column="1" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="4" VerticalAlignment="Bottom" MaxHeight="30">
-                                                <Border.Effect>
-                                                    <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>                                                </Border.Effect>
-                                                <Button x:Name="BtnSaveMain" FontSize="16" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" Click="BtnSaveMain_Click" Content="{Binding Translation[save], FallbackValue=Save}" Foreground="{DynamicResource TextColor}" />
-                                            </Border>
-                                            <Border  Grid.Row="5" Grid.Column="1" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="4" VerticalAlignment="Bottom" MaxHeight="30">
-                                                <Border.Effect>
-                                                    <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>                                                </Border.Effect>
-                                                <Button x:Name="BtnPublishMain" FontSize="16" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" Click="BtnPublishMain_Click" Content="{Binding Translation[publish], FallbackValue=Publish}" Foreground="{DynamicResource TextColor}" />
-                                            </Border>
-                                            <Border  Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="4" VerticalAlignment="Bottom" MaxHeight="30">
-                                                <Border.Effect>
-                                                    <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>                                                </Border.Effect>
-                                                <Button x:Name="BtnTryFixBlackScreen" FontSize="16" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" Click="BtnTryFixBlackScreen_Click" Content="try to fix back screen" ToolTip="good luck" Foreground="{DynamicResource TextColor}" />
-                                            </Border>
-                                            <TextBox x:Name="tbjobid" IsReadOnly="True" Margin="4,0,4,0" Grid.Row="7" Grid.Column="1" FontFamily="{DynamicResource Volte}" Style="{StaticResource Watermark}" FontSize="16" Foreground="{DynamicResource TextColor}"  BorderThickness="0" Background="{DynamicResource SectionBackgroundBrush}"/>
-
-
-                                        </Grid>
-                                    </Grid>
-                                </ScrollViewer>
-                            </Border>
-
-
-                            <Border Grid.Column="1" Grid.ColumnSpan="2" Background="{DynamicResource SectionBackgroundBrush}" CornerRadius="5" Padding="0,0,0,5" Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                <Border.Effect>
-                                    <DropShadowEffect BlurRadius="13" ShadowDepth="0" Color="{DynamicResource ShadowColor}"/>
-                                </Border.Effect>
-
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="50"/>
-                                        <RowDefinition Height="*"/>
-                                    </Grid.RowDefinitions>
-
-                                    <Border Margin="3" CornerRadius="5" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Grid.Row="0">
-                                        <Viewbox VerticalAlignment="Center" HorizontalAlignment="Center">
-                                            <Label Foreground="{DynamicResource TextColor}" FontFamily="{DynamicResource Volte}" FontWeight="Bold" Content="{Binding Translation[infoheader], FallbackValue=Job Information}"/>
-                                        </Viewbox>
+                                            <StackPanel VerticalAlignment="Center">
+                                                <TextBlock Style="{StaticResource DashTileLabel}" Text="Social Club"/>
+                                                <TextBlock x:Name="Lbl_SCName" Style="{StaticResource DashTileValue}" TextTrimming="CharacterEllipsis" MaxWidth="220"/>
+                                            </StackPanel>
+                                        </StackPanel>
                                     </Border>
 
-                                    <Grid Grid.Row="1" Margin="2">
-
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="0.5*"/>
-                                            <ColumnDefinition Width="0.5*"/>
-                                        </Grid.ColumnDefinitions>
-
-                                        <Grid Grid.Column="0" Margin="10 0" >
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="0.5*"/>
-                                                <ColumnDefinition Width="0.5*"/>
-                                            </Grid.ColumnDefinitions>
-
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="40"/>
-                                                <RowDefinition Height="40"/>
-                                                <RowDefinition Height="*"/>
-                                            </Grid.RowDefinitions>
-
-                                            <TextBox x:Name="tb_JobTitle" Margin="4,2,4,2" local:CornerRadiusSetter.CornerRadius="5,5,0,0" Style="{StaticResource WatermarkOld}" Tag="{Binding Translation[title], FallbackValue=Title}" ToolTip="{Binding Translation[title], FallbackValue=Title}" TextWrapping="Wrap" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" MaxLength="50" FontSize="16" TextChanged="tb_JobTitle_TextChanged"/>
-                                            <TextBox x:Name="tb_JobDec"   Margin="4,2,4,2" local:CornerRadiusSetter.CornerRadius="0,0,5,5" Style="{StaticResource WatermarkOld}" Tag="{Binding Translation[desc], FallbackValue=Describtion}" ToolTip="{Binding Translation[desc], FallbackValue=Describtion}" HorizontalAlignment="Stretch" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto" Grid.Row="1" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="2" MaxLength="500" FontSize="16" TextChanged="tb_JobDec_TextChanged" VerticalContentAlignment="Top"  Padding="0,5,0,0"/>
-
-                                        </Grid>
-
-                                        <Grid Grid.Column="1" Margin="10 0">
-
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="50" />
-                                                <RowDefinition Height="*" />
-                                            </Grid.RowDefinitions>
-                                            
-                                            <TextBlock Grid.Row="0" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Text="{Binding Translation[jobimg], FallbackValue=Job Image}" FontWeight="Bold"/>
-
-                                            <Viewbox MaxWidth="200" MaxHeight="200" Visibility="{Binding ElementName=ImagePremiumNeeded, Path=Visibility}" Margin="0,45,0,0" Grid.RowSpan="2">
-                                                <TextBlock x:Name="ImagePremiumNeeded" Visibility="Collapsed" Text="Not available.&#xA;Premium Version needed!" Foreground="{DynamicResource TextColor}" FontSize="26" TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Center"  FontWeight="Bold"/>
-                                            </Viewbox>
-
-                                            <Button x:Name="MainImageContainer" Visibility="Visible" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FocusVisualStyle="{x:Null}" Focusable="False" Grid.Row="1">
-
-                                                <Button.Template>
-                                                    <ControlTemplate>
-                                                        <Grid>
-
-                                                            <Image x:Name="JobImage" Source="{DynamicResource emptyblank}">
-                                                            </Image>
-
-
-                                                            <StackPanel Orientation="Vertical" VerticalAlignment="Center" x:Name="BtnJobContainer" Visibility="Collapsed">
-
-                                                                <Border CornerRadius="5" Grid.Row="1" Background="{DynamicResource SectionBackgroundBrush}" Margin="10 4" Height="30" Width="200" >
-                                                                    <Border.Effect>
-                                                                        <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>                                                                    
-                                                                    </Border.Effect>
-                                                                    <Border.Resources>
-                                                                        <Style TargetType="Border">
-                                                                            <Style.Triggers>
-                                                                                <DataTrigger Binding="{Binding ElementName=JobImage, Path=Source}" Value="{StaticResource emptyblank}">
-                                                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                                                </DataTrigger>
-                                                                            </Style.Triggers>
-                                                                        </Style>
-                                                                    </Border.Resources>
-                                                                    <Button x:Name="BtnJobView" Focusable="False" FontSize="16" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" Click="JobImage_MouseLeftButtonDown" Content="{Binding Translation[view], FallbackValue=display}" Height="32" VerticalAlignment="Top" />
-                                                                </Border>
-
-
-                                                                <Border CornerRadius="5" Grid.Row="1" Background="{DynamicResource SectionBackgroundBrush}" Margin="10 4" Height="30" Width="200" >
-                                                                    <Border.Effect>
-                                                                        <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>                                                                    
-                                                                    </Border.Effect>
-                                                                    <Button x:Name="BtnJobImageSave" Focusable="False" FontSize="16" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" Click="BtnJobImageSave_Click" Content="{Binding Translation[saveimage], FallbackValue=Save Image}" Height="32" VerticalAlignment="Top" />
-                                                                </Border>
-                                                                
-                                                                <Border CornerRadius="5" Grid.Row="1" Background="{DynamicResource SectionBackgroundBrush}" Margin="10 4" Height="30" Width="200" >
-                                                                    <Border.Effect>
-                                                                        <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>                                                                    
-                                                                    </Border.Effect>
-                                                                    <Button x:Name="BtnJobImage" Focusable="False" FontSize="16" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" Click="BtnJobImage_Click" Content="{Binding Translation[changeimage], FallbackValue=Change Image}" Height="32" VerticalAlignment="Top" />
-                                                                </Border>
-
-                                                            </StackPanel>
-                                                        </Grid>
-                                                        <ControlTemplate.Triggers>
-                                                            <Trigger Property="IsMouseOver" Value="true">
-                                                                <Setter TargetName="BtnJobContainer" Property="Visibility" Value="Visible"/>
-                                                                <Setter TargetName="BtnJobView" Property="Focusable" Value="True"/>
-                                                                <Setter TargetName="BtnJobImage" Property="Focusable" Value="True"/>
-                                                                <Setter TargetName="JobImage" Property="Opacity" Value="0.1"/>
-                                                            </Trigger>
-                                                        </ControlTemplate.Triggers>
-                                                    </ControlTemplate>
-                                                </Button.Template>
-
-                                            </Button>
-                                        </Grid>
-
-                                    </Grid>
-                                </Grid>
+                                    <WrapPanel DockPanel.Dock="Left" Orientation="Horizontal">
+                                        <Border x:Name="DashTileGame" Style="{StaticResource DashTile}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Ellipse x:Name="DashStatusGameDot" Style="{StaticResource DashDot}"/>
+                                                <StackPanel VerticalAlignment="Center">
+                                                    <TextBlock Style="{StaticResource DashTileLabel}" Text="{Binding Translation[dash_game], FallbackValue=Game}"/>
+                                                    <TextBlock x:Name="DashStatusGame" Style="{StaticResource DashTileValue}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </Border>
+                                        <Border Style="{StaticResource DashTile}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Ellipse x:Name="DashStatusCreatorDot" Style="{StaticResource DashDot}"/>
+                                                <StackPanel VerticalAlignment="Center">
+                                                    <TextBlock Style="{StaticResource DashTileLabel}" Text="{Binding Translation[dash_creator_label], FallbackValue=Creator}"/>
+                                                    <TextBlock x:Name="DashStatusCreator" Style="{StaticResource DashTileValue}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </Border>
+                                        <!-- Props and dynamic props in their in-game colours. -->
+                                        <Border x:Name="DashTileProps" Style="{StaticResource DashTile}">
+                                            <StackPanel VerticalAlignment="Center">
+                                                <TextBlock Style="{StaticResource DashTileLabel}" Text="{Binding Translation[dash_props_dynamic], FallbackValue='Props · Dynamic'}"/>
+                                                <StackPanel Orientation="Horizontal" Margin="0,1,0,4">
+                                                    <Ellipse Width="10" Height="10" Fill="{StaticResource DashPropBrush}" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                                    <TextBlock x:Name="DashStatusProps" Style="{StaticResource DashTileValue}" Margin="0,0,14,0"/>
+                                                    <Ellipse Width="10" Height="10" Fill="{StaticResource DashDynamicBrush}" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                                    <TextBlock x:Name="DashStatusDynamic" Style="{StaticResource DashTileValue}"/>
+                                                </StackPanel>
+                                                <!-- Props against the prop limit; dynamic props are counted on their own. -->
+                                                <Border Width="170" Height="6" CornerRadius="3" Background="{DynamicResource TextBoxBackground}" HorizontalAlignment="Left" ClipToBounds="True">
+                                                    <Rectangle x:Name="DashPropsBar" Fill="{StaticResource DashPropBrush}" Width="0" HorizontalAlignment="Left"/>
+                                                </Border>
+                                            </StackPanel>
+                                        </Border>
+                                        <!-- The number that matters most in the open creator (checkpoints, actors, ...). -->
+                                        <Border x:Name="DashTileMode" Style="{StaticResource DashTile}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Ellipse x:Name="DashModeDot" Style="{StaticResource DashDot}" Fill="#FF43B581"/>
+                                                <StackPanel VerticalAlignment="Center">
+                                                    <TextBlock x:Name="DashModeLabel" Style="{StaticResource DashTileLabel}"/>
+                                                    <TextBlock x:Name="DashModeValue" Style="{StaticResource DashTileValue}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </Border>
+                                        <Border Style="{StaticResource DashTile}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Ellipse x:Name="DashStatusScriptDot" Style="{StaticResource DashDot}"/>
+                                                <StackPanel VerticalAlignment="Center">
+                                                    <TextBlock Style="{StaticResource DashTileLabel}" Text="{Binding Translation[adv_features_label], FallbackValue='Script features'}"/>
+                                                    <TextBlock x:Name="DashStatusScript" Style="{StaticResource DashTileValue}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </Border>
+                                    </WrapPanel>
+                                </DockPanel>
                             </Border>
 
-                            <Grid Grid.Row="1" Grid.ColumnSpan="3">
+                            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                <Grid Margin="12,12,12,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="330"/>
+                                        <ColumnDefinition Width="*" MinWidth="360"/>
+                                        <ColumnDefinition Width="330"/>
+                                    </Grid.ColumnDefinitions>
 
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="0.5*"/>
-                                    <ColumnDefinition Width="0.5*"/>
-                                </Grid.ColumnDefinitions>
+                                    <!-- ===== Left: creator actions and script features ===== -->
+                                    <StackPanel Grid.Column="0" Margin="0,0,12,0">
 
-                                <Border Grid.Column="0" Background="{DynamicResource SectionBackgroundBrush}" CornerRadius="5" Padding="0,0,0,5" Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                    <Border.Effect>
-                                        <DropShadowEffect BlurRadius="13" ShadowDepth="0" Color="{DynamicResource ShadowColor}"/>
-                                    </Border.Effect>
+                                        <Border Style="{StaticResource DashCard}">
+                                            <StackPanel>
+                                                <Border Style="{StaticResource DashCardHeader}">
+                                                    <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[dash_actions], FallbackValue='Creator Actions'}"/>
+                                                </Border>
+                                                <StackPanel Margin="14,12,6,12">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="Auto"/>
+                                                            <RowDefinition Height="Auto"/>
+                                                            <RowDefinition Height="Auto"/>
+                                                            <RowDefinition Height="Auto"/>
+                                                        </Grid.RowDefinitions>
 
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="50"/>
-                                            <RowDefinition Height="*"/>
-                                        </Grid.RowDefinitions>
+                                                        <!-- Test: slot (race primary/secondary or team) and the main action. -->
+                                                        <Grid Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,8,8" Visibility="{Binding ElementName=BtnTestMain, Path=Visibility}">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="76"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <ComboBox x:Name="ddteamtest" Margin="0,0,8,0" SelectionChanged="ddmissionteamno_SelectionChanged">
+                                                                <ComboBoxItem Content="1" FontSize="18" ToolTip="Race Primary" Selector.IsSelected="True"/>
+                                                                <ComboBoxItem Content="2" FontSize="18" ToolTip="Race Secondary"/>
+                                                                <ComboBoxItem Content="3" FontSize="18"/>
+                                                                <ComboBoxItem Content="4" FontSize="18"/>
+                                                            </ComboBox>
+                                                            <Button x:Name="BtnTestMain" Grid.Column="1" Height="38" Style="{StaticResource DashPrimaryButton}" Click="BtnTestMain_Click" Content="{Binding Translation[test], FallbackValue=Test}"/>
+                                                        </Grid>
+                                                        <Button x:Name="BtnSaveMain" Grid.Row="1" Grid.Column="0" Style="{StaticResource DashButton}" Click="BtnSaveMain_Click" Content="{Binding Translation[save], FallbackValue=Save}"/>
+                                                        <Button x:Name="BtnPublishMain" Grid.Row="1" Grid.Column="1" Style="{StaticResource DashButton}" Click="BtnPublishMain_Click" Content="{Binding Translation[publish], FallbackValue=Publish}"/>
+                                                        <Button x:Name="BtnSkipTest" Grid.Row="2" Grid.Column="0" Style="{StaticResource DashButton}" Click="BtnSkipTest_Click" Content="{Binding Translation[skiptest], FallbackValue='Skip Testing'}"/>
+                                                        <Button x:Name="BtnTryFixBlackScreen" Grid.Row="2" Grid.Column="1" Style="{StaticResource DashButton}" Click="BtnTryFixBlackScreen_Click" Content="{Binding Translation[dash_fixblack], FallbackValue='Fix Black Screen'}"/>
+                                                        <Button x:Name="BtnDashBackupMap" Grid.Row="3" Grid.Column="0" Style="{StaticResource DashButton}" Click="BtnDashBackupMap_Click" Content="{Binding Translation[dash_backupmap], FallbackValue='Backup Map'}"/>
+                                                        <Button x:Name="BtnDashReloadMap" Grid.Row="3" Grid.Column="1" Style="{StaticResource DashButton}" Click="BtnDashReloadMap_Click" Content="{Binding Translation[dash_reloadmap], FallbackValue='Reload Map'}"/>
+                                                    </Grid>
 
-                                        <Border Margin="3" CornerRadius="5" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Grid.Row="0">
-                                            <Viewbox VerticalAlignment="Center" HorizontalAlignment="Center">
-                                                <Label Foreground="{DynamicResource TextColor}" FontFamily="{DynamicResource Volte}" FontWeight="Bold" Content="{Binding Translation[detailsheader], FallbackValue=Details}"/>
-                                            </Viewbox>
+                                                    <Grid Style="{StaticResource FormRow}" Margin="0,4,8,4">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[developermode], FallbackValue='Developer Mode'}"/>
+                                                        <CheckBox x:Name="cb_dev" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cb_dev_Checked" Unchecked="cb_dev_Checked"/>
+                                                    </Grid>
+                                                    <Grid Style="{StaticResource FormRow}" Margin="0,0,8,0">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[hidecreatormenu], FallbackValue='Hide Creator Menu'}"/>
+                                                        <CheckBox x:Name="cbhidecreatormenu" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbhidecreatormenu_Checked" Unchecked="cbhidecreatormenu_Checked"/>
+                                                    </Grid>
+                                                    <DockPanel Margin="0,4,8,0">
+                                                        <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[jobid], FallbackValue='Current Job Id'}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                                        <TextBox x:Name="tbjobid" IsReadOnly="True" FontSize="13" BorderThickness="0" Background="Transparent" Foreground="{StaticResource NavMutedBrush}" VerticalAlignment="Center"/>
+                                                    </DockPanel>
+                                                </StackPanel>
+                                            </StackPanel>
                                         </Border>
 
-                                        <ScrollViewer Grid.Row="1" Margin="10 0" VerticalScrollBarVisibility="Auto">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="0.5*"/>
-                                                    <ColumnDefinition Width="0.5*"/>
-                                                </Grid.ColumnDefinitions>
+                                        <Border Style="{StaticResource DashCard}">
+                                            <StackPanel>
+                                                <Border Style="{StaticResource DashCardHeader}">
+                                                    <DockPanel>
+                                                        <TextBlock x:Name="DashScriptFeaturesFor" DockPanel.Dock="Right" FontSize="12" FontWeight="Bold" Foreground="{StaticResource NavMutedBrush}" VerticalAlignment="Center"/>
+                                                        <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[adv_features_label], FallbackValue='Script Features'}"/>
+                                                    </DockPanel>
+                                                </Border>
+                                                <!-- Rows for the patches of the open creator, built in MainWindow.Dashboard.cs. -->
+                                                <StackPanel Margin="14,10,14,12">
+                                                    <StackPanel x:Name="DashScriptFeatures"/>
+                                                    <TextBlock x:Name="DashScriptFeaturesHint" FontSize="13" TextWrapping="Wrap" Foreground="{StaticResource NavMutedBrush}" Margin="0,6,0,0"
+                                                               Text="{Binding Translation[dash_features_hint], FallbackValue='Technical patches (cam fix, nrl fix, templates, custom functions) stay in Misc.'}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </Border>
+                                    </StackPanel>
 
+                                    <!-- ===== Centre: the job ===== -->
+                                    <Border Grid.Column="1" Style="{StaticResource DashCard}" VerticalAlignment="Top">
+                                        <StackPanel>
+                                            <Border Style="{StaticResource DashCardHeader}">
+                                                <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[infoheader], FallbackValue='Job Information'}"/>
+                                            </Border>
+
+                                            <Grid Margin="14,12,14,14">
                                                 <Grid.RowDefinitions>
-                                                    <RowDefinition Height="40"/>
-                                                    <RowDefinition Height="40"/>
-                                                    <RowDefinition Height="auto"/>
-                                                    <RowDefinition Height="40"/>
-                                                    <RowDefinition Height="40"/>
-                                                    <RowDefinition Height="40"/>
-                                                    <RowDefinition Height="40"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
 
-                                                <Viewbox Grid.Row="0" HorizontalAlignment="Left">
-                                                    <Label FontSize="18"  Content="{Binding Translation[jobtype], FallbackValue=Job Type}" />
-                                                </Viewbox>
-                                                <Viewbox Grid.Row="1" HorizontalAlignment="Left">
-                                                    <Label x:Name="Lbljobsubtype" FontSize="18"  Content="Type" />
-                                                </Viewbox>
-                                                <!--<Viewbox Grid.Row="2" HorizontalAlignment="Left" Height="38" Visibility="{Binding ElementName=cbenable30transform, Path=Visibility}" Margin="20,0,0,0">
-                                                    <Label FontSize="10" Content="{Binding Translation[enable30transform], FallbackValue=Enable 30 Players}"/>
-                                                </Viewbox>-->
-                                                <Viewbox Grid.Row="2" HorizontalAlignment="Left" Height="38" Visibility="{Binding ElementName=tbjobracetype, Path=Visibility}" >
-                                                    <Label FontSize="18" Content="{Binding Translation[subtyperace], FallbackValue=Race subtype}"/>
-                                                </Viewbox>
-                                                <Viewbox Grid.Row="3" HorizontalAlignment="Left">
-                                                    <Label FontSize="18"  Content="{Binding Translation[rounds], FallbackValue=Rounds}" />
-                                                </Viewbox>
-                                                <Viewbox Grid.Row="4" HorizontalAlignment="Left">
-                                                    <Label FontSize="18"  Content="{Binding Translation[teams], FallbackValue=Teams}" />
-                                                </Viewbox>
-                                                <Viewbox Grid.Row="5" HorizontalAlignment="Left">
-                                                    <Label FontSize="18"  Content="{Binding Translation[minp], FallbackValue=Minimum Players}" />
-                                                </Viewbox>
-                                                <Viewbox Grid.Row="6" HorizontalAlignment="Left">
-                                                    <Label FontSize="18"  Content="{Binding Translation[maxp], FallbackValue=Maximum Players}" />
-                                                </Viewbox>
-
-                                                <Grid Grid.Row="0" Grid.Column="1" Grid.RowSpan="2">
-
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height="0.33*"/>
-                                                        <RowDefinition Height="0.33*"/>
-                                                    </Grid.RowDefinitions>
+                                                <Grid Grid.Row="0">
                                                     <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="0.92*"/>
-                                                        <ColumnDefinition Width="0.08*"/>
+                                                        <ColumnDefinition Width="240"/>
+                                                        <ColumnDefinition Width="*"/>
                                                     </Grid.ColumnDefinitions>
 
-                                                    <Border Grid.Row="0" Grid.Column="0" Margin="3,0,3,5" Background="Transparent">
-                                                        <ComboBox x:Name="ddjobtype" FontFamily="{DynamicResource Volte}" SelectionChanged="ddjobtype_SelectionChanged" >
-                                                            <ComboBoxItem Content="{Binding Translation[mission], FallbackValue=Mission}" FontSize="18"/>
-                                                            <ComboBoxItem Content="{Binding Translation[deathmatch], FallbackValue=Deathmatch}" FontSize="18"/>
-                                                            <ComboBoxItem Content="{Binding Translation[race], FallbackValue=Race}" FontSize="18"/>
-                                                            <ComboBoxItem Content="{Binding Translation[survival], FallbackValue=Survival}" FontSize="18"/>
-                                                        </ComboBox>
-                                                    </Border>
-                                                    <Border Grid.Row="1" Grid.Column="0" Margin="3,0,3,5" Background="Transparent">
-                                                        <ComboBox x:Name="ddjobsubtype" FontFamily="{DynamicResource Volte}" SelectionChanged="ddjobsubtype_SelectionChanged"/>
-                                                    </Border>
-                                                    <TextBox x:Name="tbjobtype" Margin="3,0,0,5" Style="{StaticResource Watermark}" Grid.Row="0" Grid.Column="0" FontSize="16" TextChanged="tbjobtype_TextChanged" KeyDown="FormatTextForInteger" Visibility="Hidden"/>
-                                                    <TextBox x:Name="tbjobsubtype" Margin="3,0,0,5" Style="{StaticResource Watermark}" Grid.Row="1" Grid.Column="0" FontSize="16" TextChanged="tbjobsubtype_TextChanged" KeyDown="FormatTextForInteger"  Visibility="Hidden"/>
-
-                                                    <Border Grid.RowSpan="2" Grid.Column="1" CornerRadius="5"  HorizontalAlignment="Right" Height="25" Width="25">
-                                                        <Border.Background>
-                                                            <SolidColorBrush Color="#36393F" Opacity="0.8"/>
-                                                        </Border.Background>
-                                                        <Button x:Name="Btnjobtypeswitch" Grid.Row="0" Grid.Column="1" Style="{DynamicResource TitleBarButton}" Click="Btnjobtypeswitch_Click" WindowChrome.IsHitTestVisibleInChrome="True">
-                                                            <Image x:Name="jobtypeswitchimage" Source="{StaticResource switch}" RenderTransformOrigin=".5,.5" Width="29" Height="29" Margin="-12"/>
+                                                    <!-- Job image; hovering shows view / save / change. -->
+                                                    <Grid Grid.Column="0" Height="135" Margin="0,0,14,0" VerticalAlignment="Top">
+                                                        <Border CornerRadius="4" Background="{DynamicResource TextBoxBackground}"/>
+                                                        <Viewbox MaxWidth="200" MaxHeight="120" Visibility="{Binding ElementName=ImagePremiumNeeded, Path=Visibility}">
+                                                            <TextBlock x:Name="ImagePremiumNeeded" Visibility="Collapsed" Text="Not available.&#xA;Premium Version needed!" Foreground="{DynamicResource TextColor}" FontSize="26" TextAlignment="Center" FontWeight="Bold"/>
+                                                        </Viewbox>
+                                                        <Button x:Name="MainImageContainer" Visibility="Visible" FocusVisualStyle="{x:Null}" Focusable="False">
+                                                            <Button.Template>
+                                                                <ControlTemplate>
+                                                                    <Grid Background="Transparent">
+                                                                        <Image x:Name="JobImage" Source="{DynamicResource emptyblank}"/>
+                                                                        <StackPanel Orientation="Vertical" VerticalAlignment="Center" x:Name="BtnJobContainer" Visibility="Collapsed">
+                                                                            <Border CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="10 3" Height="28" Width="170">
+                                                                                <Border.Resources>
+                                                                                    <Style TargetType="Border">
+                                                                                        <Style.Triggers>
+                                                                                            <DataTrigger Binding="{Binding ElementName=JobImage, Path=Source}" Value="{StaticResource emptyblank}">
+                                                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                                                            </DataTrigger>
+                                                                                        </Style.Triggers>
+                                                                                    </Style>
+                                                                                </Border.Resources>
+                                                                                <Button x:Name="BtnJobView" Focusable="False" FontSize="14" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" Click="JobImage_MouseLeftButtonDown" Content="{Binding Translation[view], FallbackValue=display}"/>
+                                                                            </Border>
+                                                                            <Border CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="10 3" Height="28" Width="170">
+                                                                                <Button x:Name="BtnJobImageSave" Focusable="False" FontSize="14" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" Click="BtnJobImageSave_Click" Content="{Binding Translation[saveimage], FallbackValue=Save Image}"/>
+                                                                            </Border>
+                                                                            <Border CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="10 3" Height="28" Width="170">
+                                                                                <Button x:Name="BtnJobImage" Focusable="False" FontSize="14" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" Click="BtnJobImage_Click" Content="{Binding Translation[changeimage], FallbackValue=Change Image}"/>
+                                                                            </Border>
+                                                                        </StackPanel>
+                                                                    </Grid>
+                                                                    <ControlTemplate.Triggers>
+                                                                        <Trigger Property="IsMouseOver" Value="true">
+                                                                            <Setter TargetName="BtnJobContainer" Property="Visibility" Value="Visible"/>
+                                                                            <Setter TargetName="BtnJobView" Property="Focusable" Value="True"/>
+                                                                            <Setter TargetName="BtnJobImage" Property="Focusable" Value="True"/>
+                                                                            <Setter TargetName="JobImage" Property="Opacity" Value="0.1"/>
+                                                                        </Trigger>
+                                                                    </ControlTemplate.Triggers>
+                                                                </ControlTemplate>
+                                                            </Button.Template>
                                                         </Button>
-                                                    </Border>
+                                                    </Grid>
 
+                                                    <StackPanel Grid.Column="1">
+                                                        <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[title], FallbackValue=Title}"/>
+                                                        <TextBox x:Name="tb_JobTitle" Style="{StaticResource Watermark}" Height="32" MaxLength="50" FontSize="15" TextChanged="tb_JobTitle_TextChanged" Margin="0,0,0,8"/>
+                                                        <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[desc], FallbackValue=Describtion}"/>
+                                                        <TextBox x:Name="tb_JobDec" Style="{StaticResource WatermarkOld}" Height="76" MaxLength="500" FontSize="14" TextWrapping="Wrap" AcceptsReturn="False" VerticalContentAlignment="Top" ScrollViewer.VerticalScrollBarVisibility="Auto" TextChanged="tb_JobDec_TextChanged"/>
+                                                    </StackPanel>
                                                 </Grid>
 
+                                                <TextBlock Grid.Row="1" Style="{StaticResource DashSub}" Text="{Binding Translation[detailsheader], FallbackValue=Details}"/>
 
-                                                <TextBox x:Name="tbjobracetype" Margin="3,0,0,5" Style="{StaticResource Watermark}" Grid.Row="2" Grid.Column="1" FontSize="16" TextChanged="tbjobracetype_TextChanged" KeyDown="FormatTextForInteger"  Visibility="Collapsed"/>
+                                                <UniformGrid Grid.Row="2" Columns="3">
+                                                    <StackPanel Margin="0,0,10,10">
+                                                        <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[jobtype], FallbackValue='Job Type'}"/>
+                                                        <Grid Height="32">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="30"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <ComboBox x:Name="ddjobtype" FontFamily="{DynamicResource Volte}" SelectionChanged="ddjobtype_SelectionChanged">
+                                                                <ComboBoxItem Content="{Binding Translation[mission], FallbackValue=Mission}" FontSize="18"/>
+                                                                <ComboBoxItem Content="{Binding Translation[deathmatch], FallbackValue=Deathmatch}" FontSize="18"/>
+                                                                <ComboBoxItem Content="{Binding Translation[race], FallbackValue=Race}" FontSize="18"/>
+                                                                <ComboBoxItem Content="{Binding Translation[survival], FallbackValue=Survival}" FontSize="18"/>
+                                                            </ComboBox>
+                                                            <TextBox x:Name="tbjobtype" Style="{StaticResource Watermark}" FontSize="15" TextChanged="tbjobtype_TextChanged" KeyDown="FormatTextForInteger" Visibility="Hidden"/>
+                                                            <!-- Switches between the dropdowns and raw numbers for type and subtype. -->
+                                                            <Button x:Name="Btnjobtypeswitch" Grid.Column="1" Width="24" Height="24" HorizontalAlignment="Right" Style="{DynamicResource TitleBarButton}" Click="Btnjobtypeswitch_Click" ToolTip="Dropdown / number">
+                                                                <Image x:Name="jobtypeswitchimage" Source="{StaticResource switch}" Width="18" Height="18"/>
+                                                            </Button>
+                                                        </Grid>
+                                                    </StackPanel>
+                                                    <StackPanel Margin="0,0,10,10">
+                                                        <Label x:Name="Lbljobsubtype" Content="Type" Padding="0" Margin="0,0,0,3" FontSize="12" FontWeight="Bold" Foreground="{StaticResource NavMutedBrush}"/>
+                                                        <Grid Height="32">
+                                                            <ComboBox x:Name="ddjobsubtype" FontFamily="{DynamicResource Volte}" SelectionChanged="ddjobsubtype_SelectionChanged"/>
+                                                            <TextBox x:Name="tbjobsubtype" Style="{StaticResource Watermark}" FontSize="15" TextChanged="tbjobsubtype_TextChanged" KeyDown="FormatTextForInteger" Visibility="Hidden"/>
+                                                        </Grid>
+                                                    </StackPanel>
+                                                    <StackPanel Margin="0,0,10,10" Visibility="{Binding ElementName=tbjobracetype, Path=Visibility}">
+                                                        <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[subtyperace], FallbackValue='Race subtype'}"/>
+                                                        <TextBox x:Name="tbjobracetype" Style="{StaticResource Watermark}" Height="32" FontSize="15" TextChanged="tbjobracetype_TextChanged" KeyDown="FormatTextForInteger" Visibility="Collapsed"/>
+                                                    </StackPanel>
+                                                    <StackPanel Margin="0,0,10,10">
+                                                        <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[rounds], FallbackValue=Rounds}"/>
+                                                        <TextBox x:Name="tb_Rounds" Style="{StaticResource Watermark}" Height="32" FontSize="15" ToolTip="{Binding Translation[rounds_info], FallbackValue=Define how many Rounds one has to play to finish the Job.}" TextChanged="tb_Rounds_TextChanged" KeyDown="FormatTextForInteger"/>
+                                                    </StackPanel>
+                                                    <StackPanel Margin="0,0,10,10">
+                                                        <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[teams], FallbackValue=Teams}"/>
+                                                        <TextBox x:Name="tb_Teams" Style="{StaticResource Watermark}" Height="32" FontSize="15" ToolTip="{Binding Translation[teams_info], FallbackValue=Define how many Teams your Job has.}" TextChanged="tb_Teams_TextChanged" KeyDown="FormatTextForInteger"/>
+                                                    </StackPanel>
+                                                    <StackPanel Margin="0,0,10,10">
+                                                        <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[minp], FallbackValue='Minimum Players'}"/>
+                                                        <TextBox x:Name="tb_minp" Style="{StaticResource Watermark}" Height="32" FontSize="15" ToolTip="{Binding Translation[minp_info], FallbackValue=Define the minimum Player count.}" TextChanged="tb_minp_TextChanged" KeyDown="FormatTextForInteger"/>
+                                                    </StackPanel>
+                                                    <StackPanel Margin="0,0,10,10">
+                                                        <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[maxp], FallbackValue='Maximum Players'}"/>
+                                                        <TextBox x:Name="tb_maxp" Style="{StaticResource Watermark}" Height="32" FontSize="15" ToolTip="{Binding Translation[maxp_info], FallbackValue=Define the maximum Player count. (If you make solo Missions make sure to add 1)}" TextChanged="tb_maxp_TextChanged" KeyDown="FormatTextForInteger"/>
+                                                    </StackPanel>
+                                                </UniformGrid>
 
-
-                                                <!--<CheckBox x:Name="cbenable30transform" Margin="2" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Right" Checked="cbenable30transform_Checked" Unchecked="cbenable30transform_Checked" Visibility="Collapsed">
-                                                    <CheckBox.Resources>
-                                                        <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
-                                                            <Style.Triggers>
-                                                                <MultiDataTrigger>
-                                                                    <MultiDataTrigger.Conditions>
-                                                                        <Condition Binding="{Binding ElementName=ddjobtype, Path=SelectedIndex}" Value="2"/>
-                                                                        <Condition Binding="{Binding ElementName=ddjobsubtype, Path=SelectedIndex}" Value="7"/>
-                                                                    </MultiDataTrigger.Conditions>
-                                                                    <MultiDataTrigger.Setters>
-                                                                        <Setter Property="Visibility" Value="Visible"/>
-                                                                    </MultiDataTrigger.Setters>
-                                                                </MultiDataTrigger>
-                                                                -->
-                                                <!--<DataTrigger Binding="{Binding ElementName=ddjobsubtype, Path=SelectedIndex}" Value="7">
-                                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                                </DataTrigger>-->
-                                                <!--
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </CheckBox.Resources>
-                                                </CheckBox>-->
-
-                                                <TextBox x:Name="tb_Rounds" Margin="3,0,3,5" Style="{StaticResource Watermark}" ToolTip="{Binding Translation[rounds_info], FallbackValue=Define how many Rounds one has to play to finish the Job.}" Grid.Row="3" Grid.Column="1" FontSize="16" TextChanged="tb_Rounds_TextChanged" KeyDown="FormatTextForInteger"/>
-                                                <TextBox x:Name="tb_Teams"  Margin="3,0,3,5" Style="{StaticResource Watermark}" ToolTip="{Binding Translation[teams_info], FallbackValue=Define how many Teams your Job has.}"                        Grid.Row="4" Grid.Column="1" FontSize="16" TextChanged="tb_Teams_TextChanged"  KeyDown="FormatTextForInteger"/>
-                                                <TextBox x:Name="tb_minp"   Margin="3,0,3,5" Style="{StaticResource Watermark}" ToolTip="{Binding Translation[minp_info], FallbackValue=Define the minimum Player count.}"                            Grid.Row="5" Grid.Column="1" FontSize="16" TextChanged="tb_minp_TextChanged"   KeyDown="FormatTextForInteger"/>
-                                                <TextBox x:Name="tb_maxp"   Margin="3,0,3,5" Style="{StaticResource Watermark}" ToolTip="{Binding Translation[maxp_info], FallbackValue=Define the maximum Player count. (If you make solo Missions make sure to add 1)}"                            Grid.Row="6" Grid.Column="1" FontSize="16" TextChanged="tb_maxp_TextChanged"   KeyDown="FormatTextForInteger"/>
-
+                                                <TextBlock Grid.Row="3" Style="{StaticResource DashSub}" Text="{Binding Translation[dash_placed], FallbackValue='Placed in this job'}"/>
+                                                <!-- Count tiles for the open creator, built in MainWindow.Dashboard.cs; a click opens the page. -->
+                                                <WrapPanel Grid.Row="4" x:Name="DashCounts" Orientation="Horizontal"/>
                                             </Grid>
-                                        </ScrollViewer>
-                                    </Grid>
-                                </Border>
+                                        </StackPanel>
+                                    </Border>
 
-                                <Border Grid.Column="1" Background="{DynamicResource SectionBackgroundBrush}" CornerRadius="5" Padding="0,0,0,5" Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                    <Border.Effect>
-                                        <DropShadowEffect BlurRadius="13" ShadowDepth="0" Color="{DynamicResource ShadowColor}"/>
-                                    </Border.Effect>
+                                    <!-- ===== Right: ambient ===== -->
+                                    <Border Grid.Column="2" Style="{StaticResource DashCard}" Margin="12,0,0,12" VerticalAlignment="Top">
+                                        <StackPanel>
+                                            <Border Style="{StaticResource DashCardHeader}">
+                                                <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[ambientheader], FallbackValue='Ambient Settings'}"/>
+                                            </Border>
+                                            <StackPanel Margin="14,12,14,12">
+                                                <UniformGrid Columns="2">
+                                                    <StackPanel Margin="0,0,8,10">
+                                                        <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[weather], FallbackValue=Weather}"/>
+                                                        <ComboBox x:Name="ddweather" Height="32" FontFamily="{DynamicResource Volte}" SelectionChanged="ddweather_SelectionChanged">
+                                                            <ComboBoxItem Content="{Binding Translation[current], FallbackValue=Current}" FontSize="18"/>
+                                                            <ComboBoxItem Content="{Binding Translation[bright], FallbackValue=EXTRASUNNY}" FontSize="18"/>
+                                                            <ComboBoxItem Content="{Binding Translation[rain], FallbackValue=Rain}" FontSize="18"/>
+                                                            <ComboBoxItem Content="{Binding Translation[snow], FallbackValue=Snow}" FontSize="18"/>
+                                                            <ComboBoxItem Content="{Binding Translation[smog], FallbackValue=SMOG}" FontSize="18"/>
+                                                            <ComboBoxItem Content="{Binding Translation[halloween], FallbackValue=Halloween}" FontSize="18"/>
+                                                            <ComboBoxItem Content="{Binding Translation[halloween2], FallbackValue=Halloween 2}" FontSize="18"/>
+                                                            <ComboBoxItem Content="{Binding Translation[clear], FallbackValue=Clear}" FontSize="18"/>
+                                                            <ComboBoxItem Content="{Binding Translation[clouds], FallbackValue=Clouds}" FontSize="18"/>
+                                                            <ComboBoxItem Content="{Binding Translation[overcast], FallbackValue=Overcast}" FontSize="18"/>
+                                                            <ComboBoxItem Content="{Binding Translation[thunder], FallbackValue=Thunder}" FontSize="18"/>
+                                                            <ComboBoxItem Content="{Binding Translation[foggy], FallbackValue=Foggy}" FontSize="18"/>
+                                                            <ComboBoxItem Content="{Binding Translation[thunder], FallbackValue=Thunder}" ContentStringFormat="{} {0} 2" FontSize="18"/>
+                                                        </ComboBox>
+                                                    </StackPanel>
+                                                    <StackPanel Margin="0,0,0,10">
+                                                        <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[tod], FallbackValue='Time of Day'}"/>
+                                                        <ComboBox x:Name="ddtimeofday" Height="32" FontFamily="{DynamicResource Volte}" SelectionChanged="ddtimeofday_SelectionChanged">
+                                                            <ComboBoxItem Content="{Binding Translation[current], FallbackValue=Current}" FontSize="18"/>
+                                                            <ComboBoxItem Content="{Binding Translation[morning], FallbackValue=Morning}" FontSize="18"/>
+                                                            <ComboBoxItem Content="{Binding Translation[noon], FallbackValue=Noon}" FontSize="18"/>
+                                                            <ComboBoxItem Content="{Binding Translation[night], FallbackValue=Night}" FontSize="18"/>
+                                                            <ComboBoxItem Content="{Binding Translation[midnight], FallbackValue=Midnight}" FontSize="18"/>
+                                                        </ComboBox>
+                                                    </StackPanel>
+                                                </UniformGrid>
 
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="50"/>
-                                            <RowDefinition Height="*"/>
-                                        </Grid.RowDefinitions>
+                                                <Grid Style="{StaticResource FormRow}">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[cdt], FallbackValue='Custom Daytime'}"/>
+                                                    <CheckBox x:Name="cb_customdaytime" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cb_customdaytime_Checked" Unchecked="cb_customdaytime_Unchecked"/>
+                                                </Grid>
+                                                <UniformGrid Columns="2" Visibility="{Binding ElementName=tb_cdth, Path=Visibility}">
+                                                    <TextBox x:Name="tb_cdth" Visibility="Collapsed" Height="32" Margin="0,0,8,10" Style="{StaticResource Watermark}" Tag="{Binding Translation[cdt_h], FallbackValue=Hour}" ToolTip="{Binding Translation[cdt_h_info], FallbackValue=Time of Day Hour | Max is 23}" MaxLength="2" FontSize="15" KeyDown="FormatTextForInteger" TextChanged="tb_cdth_TextChanged"/>
+                                                    <TextBox x:Name="tb_cdtm" Visibility="Collapsed" Height="32" Margin="0,0,0,10" Style="{StaticResource Watermark}" Tag="{Binding Translation[cdt_m], FallbackValue=Minute}" ToolTip="{Binding Translation[cdt_m_info], FallbackValue=Time of Day Minute | Max is 59}" MaxLength="2" FontSize="15" KeyDown="FormatTextForInteger" TextChanged="tb_cdtm_TextChanged"/>
+                                                </UniformGrid>
 
-                                        <Border Margin="3" CornerRadius="5" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Grid.Row="0">
-                                            <Viewbox VerticalAlignment="Center" HorizontalAlignment="Center">
-                                                <Label Foreground="{DynamicResource TextColor}" FontFamily="{DynamicResource Volte}" FontWeight="Bold" Content="{Binding Translation[ambientheader], FallbackValue=Ambient Settings}"/>
-                                            </Viewbox>
-                                        </Border>
+                                                <UniformGrid Columns="2">
+                                                    <StackPanel Margin="0,0,8,10">
+                                                        <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[radio], FallbackValue=Radio}"/>
+                                                        <ComboBox x:Name="ddradio" Height="32" FontFamily="{DynamicResource Volte}" SelectionChanged="ddradio_SelectionChanged" ItemsSource="{x:Static local:GTA+Editor.RadioNames}"/>
+                                                    </StackPanel>
+                                                    <StackPanel Margin="0,0,0,10">
+                                                        <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[music], FallbackValue=Music}"/>
+                                                        <ComboBox x:Name="ddmusic" Height="32" FontFamily="{DynamicResource Volte}" SelectionChanged="ddmusic_SelectionChanged">
+                                                            <ComboBoxItem Content="MP_MC_START" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_START_CITY" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_START_COUNTRY" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_START" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_START_CAR_STEAL_CHIPS_2" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_START_EYE_IN_SKY_3" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_START_FUNK_JAM_3" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_START_FUNK_JAM_TWO_4" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_START_BEYOND_4" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_START_BURNING_BAR_8" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_START_PB1_8" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_START_DARK_ROBBERY_8" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_START_DIAMOND_DIARY_8" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_START_DEBUNKED_8" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_START_PB2_PUSSYFACE_8" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_START_DR_DESTRUCTO_8" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_START_DRAGONER_8" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_START_GREYHOUND_8" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_START_MEATY_8" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_START_MISSION_SEVEN_8" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_START_NINE_BLURT_8" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_START_SCRAP_YARD_8" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_START_SILVER_PUSSY_8" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_START_VODKA_8" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_START_STREETS_OF_FORTUNE_8" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_START_TRACK_EIGHT_8" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_START_VACUUM_8" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_START_VINEGAR_TITS_8" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_START_CITY_8" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_START_GUN_NOVEL_8" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_START_CHOP_8" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_START_NT_ELC_8" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_START_NT_DEF_8" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_START_NT_TKB_4" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_START_HEIST_4" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_START_HEIST_8" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_START_HEIST_FIN_NEW" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_START_HEIST_PREP_NEW" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_START" FontSize="18"/>
+                                                            <ComboBoxItem Content="START_RANDOM" FontSize="18"/>
+                                                            <ComboBoxItem Content="START_URBAN" FontSize="18"/>
+                                                            <ComboBoxItem Content="START_ROCK" FontSize="18"/>
+                                                            <ComboBoxItem Content="START_ELECTRONIC" FontSize="18"/>
+                                                            <ComboBoxItem Content="LOWRIDER_START_MUSIC" FontSize="18"/>
+                                                            <ComboBoxItem Content="LOWRIDER_FINALE_START_MUSIC" FontSize="18"/>
+                                                            <ComboBoxItem Content="HALLOWEEN_START_MUSIC" FontSize="18"/>
+                                                            <ComboBoxItem Content="EXEC1_MP_MC_START_CITY" FontSize="18"/>
+                                                            <ComboBoxItem Content="EXEC1_START_BESPOKE_BROKE" FontSize="18"/>
+                                                            <ComboBoxItem Content="EXEC1_START_CAR_STEAL" FontSize="18"/>
+                                                            <ComboBoxItem Content="EXEC1_START_CLIFF12" FontSize="18"/>
+                                                            <ComboBoxItem Content="EXEC1_START_CLIFF18" FontSize="18"/>
+                                                            <ComboBoxItem Content="EXEC1_START_CLIFF19" FontSize="18"/>
+                                                            <ComboBoxItem Content="EXEC1_START_CLIFF33" FontSize="18"/>
+                                                            <ComboBoxItem Content="EXEC1_START_GET_ON_THE_MOVE" FontSize="18"/>
+                                                            <ComboBoxItem Content="EXEC1_START_PSYCHOPATH" FontSize="18"/>
+                                                            <ComboBoxItem Content="EXEC1_START_RED_SQUARE" FontSize="18"/>
+                                                            <ComboBoxItem Content="EXEC1_START_WHO_CALLED_POPO" FontSize="18"/>
+                                                            <ComboBoxItem Content="BKR_GS_START" FontSize="18"/>
+                                                            <ComboBoxItem Content="BKR_DEADLINE_START_MUSIC" FontSize="18"/>
+                                                            <ComboBoxItem Content="BA_METZ_DEBUNKED" FontSize="18"/>
+                                                            <ComboBoxItem Content="BIKER_LAD_START" FontSize="18"/>
+                                                            <ComboBoxItem Content="IE_TW_START" FontSize="18"/>
+                                                            <ComboBoxItem Content="IE_SVM_START" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_GR_START" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_SMG_START" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_SMGH_START" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_CMH_START" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_CMH_SUB_PREP_START" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_CMH_SUB_FINALE_START" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_CMH_SILO_PREP_START" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_CMH_SILO_FINALE_START" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_CMH_IAA_PREP_START" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_CMH_IAA_FINALE_START" FontSize="18"/>
+                                                            <ComboBoxItem Content="CMH_ADV_START" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_ASSAULT_ADV_START" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_CASINO_BRAWL_START" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_CHF_START" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_SUM20_START" FontSize="18"/>
+                                                            <ComboBoxItem Content="HEI4_FIN_START_STA" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_TUNER_START_MUSIC" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_FIXER_HOLDOUT_START" FontSize="18"/>
+                                                            <ComboBoxItem Content="MP_MC_FIXER_START_MUSIC" FontSize="18"/>
+                                                            <ComboBoxItem Content="DATA_LEAK_GOLF_START_MUSIC" FontSize="18"/>
+                                                            <ComboBoxItem Content="DATA_LEAK_PARTY_PROMO_START_MUSIC" FontSize="18"/>
+                                                            <ComboBoxItem Content="DATA_LEAK_BILLIONAIRE_START_MUSIC" FontSize="18"/>
+                                                            <ComboBoxItem Content="DATA_LEAK_HOOD_PASS_START_MUSIC" FontSize="18"/>
+                                                            <ComboBoxItem Content="DATA_LEAK_FIRE_START_MUSIC" FontSize="18"/>
+                                                            <ComboBoxItem Content="DATA_LEAK_DFWD_START_MUSIC" FontSize="18"/>
+                                                        </ComboBox>
+                                                    </StackPanel>
+                                                </UniformGrid>
 
-                                        <ScrollViewer Grid.Row="1" Margin="10 0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                                            <Grid Margin="10,0,0,0">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="0.5*"/>
-                                                    <ColumnDefinition Width="0.5*"/>
-                                                </Grid.ColumnDefinitions>
+                                                <!-- Mission-only values (LTS, Capture): the controller reads them, races and deathmatches do not. -->
+                                                <UniformGrid x:Name="DashMissionAmbient" Columns="2">
+                                                    <StackPanel Margin="0,0,8,10">
+                                                        <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[missionmaxwl], FallbackValue=Police}"/>
+                                                        <ComboBox x:Name="dddashpolice" Height="32" FontFamily="{DynamicResource Volte}" SelectionChanged="dddashpolice_SelectionChanged">
+                                                            <ComboBoxItem Content="{Binding Translation[missionpolnormal], FallbackValue='Normal'}" FontSize="18"/>
+                                                            <ComboBoxItem Content="{Binding Translation[off], FallbackValue='off'}" FontSize="18"/>
+                                                            <ComboBoxItem Content="1" FontSize="18"/>
+                                                            <ComboBoxItem Content="2" FontSize="18"/>
+                                                            <ComboBoxItem Content="3" FontSize="18"/>
+                                                            <ComboBoxItem Content="4" FontSize="18"/>
+                                                            <ComboBoxItem Content="5" FontSize="18"/>
+                                                        </ComboBox>
+                                                    </StackPanel>
+                                                    <StackPanel Margin="0,0,0,10">
+                                                        <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[missiontraffic], FallbackValue=Traffic}"/>
+                                                        <ComboBox x:Name="dddashtraffic" Height="32" FontFamily="{DynamicResource Volte}" SelectionChanged="dddashtraffic_SelectionChanged">
+                                                            <ComboBoxItem Content="0%" FontSize="18"/>
+                                                            <ComboBoxItem Content="20%" FontSize="18"/>
+                                                            <ComboBoxItem Content="50%" FontSize="18"/>
+                                                            <ComboBoxItem Content="85%" FontSize="18"/>
+                                                            <ComboBoxItem Content="100%" FontSize="18"/>
+                                                        </ComboBox>
+                                                    </StackPanel>
+                                                    <StackPanel Margin="0,0,8,10">
+                                                        <TextBlock Style="{StaticResource DashFieldLabel}" Text="{Binding Translation[missionpeds], FallbackValue=Pedestrians}"/>
+                                                        <ComboBox x:Name="dddashpeds" Height="32" FontFamily="{DynamicResource Volte}" SelectionChanged="dddashpeds_SelectionChanged">
+                                                            <ComboBoxItem Content="0%" FontSize="18"/>
+                                                            <ComboBoxItem Content="20%" FontSize="18"/>
+                                                            <ComboBoxItem Content="50%" FontSize="18"/>
+                                                            <ComboBoxItem Content="85%" FontSize="18"/>
+                                                            <ComboBoxItem Content="100%" FontSize="18"/>
+                                                        </ComboBox>
+                                                    </StackPanel>
+                                                </UniformGrid>
 
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="40"/>
-                                                    <RowDefinition Height="40"/>
-                                                    <RowDefinition Height="40"/>
-                                                    <RowDefinition Height="auto"/>
-                                                    <RowDefinition Height="auto"/>
-                                                    <RowDefinition Height="40"/>
-                                                    <RowDefinition Height="40"/>
-                                                    <RowDefinition Height="40"/>
-                                                    <RowDefinition Height="40"/>
-                                                    <RowDefinition Height="*"/>
-                                                </Grid.RowDefinitions>
+                                                <TextBlock Style="{StaticResource DashSub}" Margin="0,4,0,4" Text="{Binding Translation[dash_looksound], FallbackValue='Look and sound'}"/>
+                                                <Grid Style="{StaticResource FormRow}">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[hdvision], FallbackValue='HD Vision'}"/>
+                                                    <CheckBox x:Name="cb_hdvision" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cb_hdvision_Checked" Unchecked="cb_hdvision_Unchecked"/>
+                                                </Grid>
+                                                <Grid Style="{StaticResource FormRow}">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[blackoutcity], FallbackValue='Blackout City'}"/>
+                                                    <CheckBox x:Name="cb_blackout" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cb_blackout_Checked" Unchecked="cb_blackout_Unchecked"/>
+                                                </Grid>
+                                                <!-- Mission-only switches, shared with Mission > General. -->
+                                                <StackPanel x:Name="DashMissionLook">
+                                                    <Grid Style="{StaticResource FormRow}">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[missiondisptod], FallbackValue='Progress Time of Day'}"/>
+                                                        <CheckBox x:Name="cbdashptod" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbdashptod_Checked" Unchecked="cbdashptod_Checked"/>
+                                                    </Grid>
+                                                    <Grid Style="{StaticResource FormRow}" ToolTip="{Binding Translation[missionextinfo], FallbackValue='* not offered by the creator, only through Xenvious'}">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBlock Style="{StaticResource FormLabel}"><Run Text="{Binding Translation[missionextmuteambience], FallbackValue='Mute City and Traffic Sounds', Mode=OneWay}"/><Run Text=" *" Foreground="{DynamicResource DisabledForegroundBrush}"/></TextBlock>
+                                                        <CheckBox x:Name="cbdashmuteambience" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked"/>
+                                                    </Grid>
+                                                    <Grid Style="{StaticResource FormRow}" ToolTip="{Binding Translation[missionextinfo], FallbackValue='* not offered by the creator, only through Xenvious'}">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBlock Style="{StaticResource FormLabel}"><Run Text="{Binding Translation[missionextnoregionvfx], FallbackValue='Disable Region Effects', Mode=OneWay}"/><Run Text=" *" Foreground="{DynamicResource DisabledForegroundBrush}"/></TextBlock>
+                                                        <CheckBox x:Name="cbdashnoregionvfx" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked"/>
+                                                    </Grid>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+                            </ScrollViewer>
 
-                                                <!--Left-->
-                                                <Viewbox Grid.Row="0" HorizontalAlignment="Left">
-                                                    <Label FontSize="18" Content="{Binding Translation[weather], FallbackValue=Weather}"/>
-                                                </Viewbox>
-                                                <Viewbox Grid.Row="1" HorizontalAlignment="Left">
-                                                    <Label FontSize="18" Content="{Binding Translation[tod], FallbackValue=Time of Day}"/>
-                                                </Viewbox>
-                                                <Viewbox Grid.Row="2" HorizontalAlignment="Left">
-                                                    <Label FontSize="18" Content="{Binding Translation[cdt], FallbackValue=Custom Daytime}"/>
-                                                </Viewbox>
-                                                <Viewbox Grid.Row="5" HorizontalAlignment="Left">
-                                                    <Label FontSize="18" Content="{Binding Translation[hdvision], FallbackValue=HD Vision}"/>
-                                                </Viewbox>
-                                                <Viewbox Grid.Row="6" HorizontalAlignment="Left">
-                                                    <Label FontSize="18" Content="{Binding Translation[blackoutcity], FallbackValue=Blackout City}"/>
-                                                </Viewbox>
-                                                <Viewbox Grid.Row="7" HorizontalAlignment="Left">
-                                                    <Label FontSize="18" Content="{Binding Translation[radio], FallbackValue=Radio}"/>
-                                                </Viewbox>
-                                                <Viewbox Grid.Row="8" HorizontalAlignment="Left">
-                                                    <Label FontSize="18" Content="{Binding Translation[music], FallbackValue=Music}"/>
-                                                </Viewbox>
-
-                                                <Border Grid.Column="1" Grid.Row="0" Background="Transparent" Margin="0 3">
-                                                    <ComboBox x:Name="ddweather" FontFamily="{DynamicResource Volte}" SelectionChanged="ddweather_SelectionChanged" ToolTip="{Binding Translation[weather], FallbackValue=Weather}">
-                                                        <ComboBoxItem Content="{Binding Translation[current], FallbackValue=Current}" FontSize="18"/>
-                                                        <ComboBoxItem Content="{Binding Translation[bright], FallbackValue=EXTRASUNNY}" FontSize="18"/>
-                                                        <ComboBoxItem Content="{Binding Translation[rain], FallbackValue=Rain}" FontSize="18"/>
-                                                        <ComboBoxItem Content="{Binding Translation[snow], FallbackValue=Snow}" FontSize="18"/>
-                                                        <ComboBoxItem Content="{Binding Translation[smog], FallbackValue=SMOG}" FontSize="18"/>
-                                                        <ComboBoxItem Content="{Binding Translation[halloween], FallbackValue=Halloween}" FontSize="18"/>
-                                                        <ComboBoxItem Content="{Binding Translation[halloween2], FallbackValue=Halloween 2}" FontSize="18"/>
-                                                        <ComboBoxItem Content="{Binding Translation[clear], FallbackValue=Clear}" FontSize="18"/>
-                                                        <ComboBoxItem Content="{Binding Translation[clouds], FallbackValue=Clouds}" FontSize="18"/>
-                                                        <ComboBoxItem Content="{Binding Translation[overcast], FallbackValue=Overcast}" FontSize="18"/>
-                                                        <ComboBoxItem Content="{Binding Translation[thunder], FallbackValue=Thunder}" FontSize="18"/>
-                                                        <ComboBoxItem Content="{Binding Translation[foggy], FallbackValue=Foggy}" FontSize="18"/>
-                                                        <ComboBoxItem Content="{Binding Translation[thunder], FallbackValue=Thunder}" ContentStringFormat="{} {0} 2" FontSize="18"/>
-                                                    </ComboBox>
-                                                </Border>
-                                                <Border Grid.Column="1" Grid.Row="1" Background="Transparent" Margin="0 3">
-                                                    <ComboBox x:Name="ddtimeofday" FontFamily="{DynamicResource Volte}" SelectionChanged="ddtimeofday_SelectionChanged" ToolTip="{Binding Translation[tod], FallbackValue=Time of Day}">
-                                                        <ComboBoxItem Content="{Binding Translation[current], FallbackValue=Current}" FontSize="18"/>
-                                                        <ComboBoxItem Content="{Binding Translation[morning], FallbackValue=Morning}" FontSize="18"/>
-                                                        <ComboBoxItem Content="{Binding Translation[noon], FallbackValue=Noon}" FontSize="18"/>
-                                                        <ComboBoxItem Content="{Binding Translation[night], FallbackValue=Night}" FontSize="18"/>
-                                                        <ComboBoxItem Content="{Binding Translation[midnight], FallbackValue=Midnight}" FontSize="18"/>
-                                                    </ComboBox>
-                                                </Border>
-                                                <CheckBox x:Name="cb_customdaytime" Margin="2" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_customdaytime_Checked" Unchecked="cb_customdaytime_Unchecked" MaxHeight="40"/>
-                                                <TextBox x:Name="tb_cdth" Visibility="Collapsed" Margin="0 2" MinHeight="40" Style="{StaticResource Watermark}" Tag="{Binding Translation[cdt_h], FallbackValue=Hour}" ToolTip="{Binding Translation[cdt_h_info], FallbackValue=Time of Day Hour | Max is 23}"  TextWrapping="Wrap" Grid.Row="3" Grid.ColumnSpan="2" MaxLength="2" FontSize="16" KeyDown="FormatTextForInteger" TextChanged="tb_cdth_TextChanged"  />
-                                                <TextBox x:Name="tb_cdtm" Visibility="Collapsed" Margin="0 2" MinHeight="40" Style="{StaticResource Watermark}" Tag="{Binding Translation[cdt_m], FallbackValue=Minute}" ToolTip="{Binding Translation[cdt_m_info], FallbackValue=Time of Day Minute | Max is 59}" TextWrapping="Wrap" Grid.Row="4" Grid.ColumnSpan="2" MaxLength="2" FontSize="16" KeyDown="FormatTextForInteger" TextChanged="tb_cdtm_TextChanged" />
-                                                <CheckBox x:Name="cb_hdvision" Margin="2" Grid.Column="1" Grid.Row="5" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_hdvision_Checked" Unchecked="cb_hdvision_Unchecked"/>
-                                                <CheckBox x:Name="cb_blackout" Margin="2" Grid.Column="1" Grid.Row="6" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_blackout_Checked" Unchecked="cb_blackout_Unchecked"/>
-                                                <Border Grid.Column="1" Grid.Row="7" Background="Transparent" Margin="0 3">
-                                                    <ComboBox x:Name="ddradio" FontFamily="{DynamicResource Volte}" SelectionChanged="ddradio_SelectionChanged" ToolTip="Radio" ItemsSource="{x:Static local:GTA+Editor.RadioNames}"/>
-                                                </Border>
-                                                <Border Grid.Column="1" Grid.Row="8" Background="Transparent" Margin="0 3">
-                                                    <ComboBox x:Name="ddmusic" FontFamily="{DynamicResource Volte}" SelectionChanged="ddmusic_SelectionChanged" ToolTip="Music">
-                                                        <ComboBoxItem Content="MP_MC_START" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_START_CITY" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_START_COUNTRY" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_START" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_START_CAR_STEAL_CHIPS_2" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_START_EYE_IN_SKY_3" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_START_FUNK_JAM_3" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_START_FUNK_JAM_TWO_4" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_START_BEYOND_4" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_START_BURNING_BAR_8" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_START_PB1_8" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_START_DARK_ROBBERY_8" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_START_DIAMOND_DIARY_8" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_START_DEBUNKED_8" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_START_PB2_PUSSYFACE_8" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_START_DR_DESTRUCTO_8" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_START_DRAGONER_8" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_START_GREYHOUND_8" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_START_MEATY_8" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_START_MISSION_SEVEN_8" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_START_NINE_BLURT_8" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_START_SCRAP_YARD_8" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_START_SILVER_PUSSY_8" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_START_VODKA_8" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_START_STREETS_OF_FORTUNE_8" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_START_TRACK_EIGHT_8" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_START_VACUUM_8" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_START_VINEGAR_TITS_8" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_START_CITY_8" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_START_GUN_NOVEL_8" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_START_CHOP_8" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_START_NT_ELC_8" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_START_NT_DEF_8" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_START_NT_TKB_4" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_START_HEIST_4" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_START_HEIST_8" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_START_HEIST_FIN_NEW" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_START_HEIST_PREP_NEW" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_START" FontSize="18"/>
-                                                        <ComboBoxItem Content="START_RANDOM" FontSize="18"/>
-                                                        <ComboBoxItem Content="START_URBAN" FontSize="18"/>
-                                                        <ComboBoxItem Content="START_ROCK" FontSize="18"/>
-                                                        <ComboBoxItem Content="START_ELECTRONIC" FontSize="18"/>
-                                                        <ComboBoxItem Content="LOWRIDER_START_MUSIC" FontSize="18"/>
-                                                        <ComboBoxItem Content="LOWRIDER_FINALE_START_MUSIC" FontSize="18"/>
-                                                        <ComboBoxItem Content="HALLOWEEN_START_MUSIC" FontSize="18"/>
-                                                        <ComboBoxItem Content="EXEC1_MP_MC_START_CITY" FontSize="18"/>
-                                                        <ComboBoxItem Content="EXEC1_START_BESPOKE_BROKE" FontSize="18"/>
-                                                        <ComboBoxItem Content="EXEC1_START_CAR_STEAL" FontSize="18"/>
-                                                        <ComboBoxItem Content="EXEC1_START_CLIFF12" FontSize="18"/>
-                                                        <ComboBoxItem Content="EXEC1_START_CLIFF18" FontSize="18"/>
-                                                        <ComboBoxItem Content="EXEC1_START_CLIFF19" FontSize="18"/>
-                                                        <ComboBoxItem Content="EXEC1_START_CLIFF33" FontSize="18"/>
-                                                        <ComboBoxItem Content="EXEC1_START_GET_ON_THE_MOVE" FontSize="18"/>
-                                                        <ComboBoxItem Content="EXEC1_START_PSYCHOPATH" FontSize="18"/>
-                                                        <ComboBoxItem Content="EXEC1_START_RED_SQUARE" FontSize="18"/>
-                                                        <ComboBoxItem Content="EXEC1_START_WHO_CALLED_POPO" FontSize="18"/>
-                                                        <ComboBoxItem Content="BKR_GS_START" FontSize="18"/>
-                                                        <ComboBoxItem Content="BKR_DEADLINE_START_MUSIC" FontSize="18"/>
-                                                        <ComboBoxItem Content="BA_METZ_DEBUNKED" FontSize="18"/>
-                                                        <ComboBoxItem Content="BIKER_LAD_START" FontSize="18"/>
-                                                        <ComboBoxItem Content="IE_TW_START" FontSize="18"/>
-                                                        <ComboBoxItem Content="IE_SVM_START" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_GR_START" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_SMG_START" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_SMGH_START" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_CMH_START" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_CMH_SUB_PREP_START" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_CMH_SUB_FINALE_START" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_CMH_SILO_PREP_START" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_CMH_SILO_FINALE_START" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_CMH_IAA_PREP_START" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_CMH_IAA_FINALE_START" FontSize="18"/>
-                                                        <ComboBoxItem Content="CMH_ADV_START" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_ASSAULT_ADV_START" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_CASINO_BRAWL_START" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_CHF_START" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_SUM20_START" FontSize="18"/>
-                                                        <ComboBoxItem Content="HEI4_FIN_START_STA" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_TUNER_START_MUSIC" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_FIXER_HOLDOUT_START" FontSize="18"/>
-                                                        <ComboBoxItem Content="MP_MC_FIXER_START_MUSIC" FontSize="18"/>
-                                                        <ComboBoxItem Content="DATA_LEAK_GOLF_START_MUSIC" FontSize="18"/>
-                                                        <ComboBoxItem Content="DATA_LEAK_PARTY_PROMO_START_MUSIC" FontSize="18"/>
-                                                        <ComboBoxItem Content="DATA_LEAK_BILLIONAIRE_START_MUSIC" FontSize="18"/>
-                                                        <ComboBoxItem Content="DATA_LEAK_HOOD_PASS_START_MUSIC" FontSize="18"/>
-                                                        <ComboBoxItem Content="DATA_LEAK_FIRE_START_MUSIC" FontSize="18"/>
-                                                        <ComboBoxItem Content="DATA_LEAK_DFWD_START_MUSIC" FontSize="18"/>
-                                                    </ComboBox>
-                                                </Border>
-
-
-                                            </Grid>
-                                        </ScrollViewer>
-
-                                    </Grid>
-                                </Border>
-
-                            </Grid>
-
+                            <!-- Filled by the worker; the game tile shows both. -->
+                            <TextBlock x:Name="Lblonlineversion" Visibility="Collapsed"/>
+                            <TextBlock x:Name="Lblbuildversion" Visibility="Collapsed"/>
                         </Grid>
-                            </Grid>
-
-                        </Grid>
-
 
                     </TabItem>
 
@@ -11502,6 +11531,26 @@
                                             <ScrollViewer  VerticalScrollBarVisibility="Auto">
                                                 <Grid Width="290">
                                                     <StackPanel Orientation="Vertical">
+                                                        <!-- Creator tools that are rarely needed; they used to sit on the dashboard. -->
+                                                        <TextBlock FontSize="22" FontWeight="Bold" Text="Creator" Margin="0,0,0,6"/>
+                                                        <Grid Style="{StaticResource FormRow}">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[3dcam], FallbackValue='3D Cam'}"/>
+                                                            <CheckBox x:Name="cb_3dcam" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cb_3dcam_Checked" Unchecked="cb_3dcam_Checked"/>
+                                                        </Grid>
+                                                        <Grid Style="{StaticResource FormRow}">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[forcepublish], FallbackValue='Force Publish'}"/>
+                                                            <CheckBox x:Name="cbforce_publish" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbforce_publish_Checked" Unchecked="cbforce_publish_Checked"/>
+                                                        </Grid>
+                                                        <Rectangle Height="1" Fill="DimGray" Margin="0,8,0,12"/>
+
                                                         <TextBox x:Name="tbmodstuffgloablptr" Grid.Row="0" Style="{StaticResource Watermark}" Tag="Global PTR" Height="30" IsReadOnly="True" Margin="0,0,0,5"/>
                                                         <TextBox x:Name="tbmodstuffworldptr" Grid.Row="0" Style="{StaticResource Watermark}" Tag="WORLD PTR" Height="30" IsReadOnly="True" Margin="0,0,0,5"/>
                                                         <TextBox x:Name="tbmodstuffccptr" Grid.Row="0" Style="{StaticResource Watermark}" Tag="Creator PTR" Height="30" IsReadOnly="True" Margin="0,0,0,5"/>
