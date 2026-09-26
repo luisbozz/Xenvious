@@ -1,8 +1,10 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace Xenvious
 {
@@ -23,15 +25,28 @@ namespace Xenvious
 
         private void InitModelCards()
         {
-            Wire(PropModelCard, () => PropCatalog, TranslateOr("prop", "Props"), () => (GTA.Offsets.Editor.Props.model, GTA.Offsets.Editor.Props.NEXT, ddpropno.SelectedIndex));
-            Wire(DPropModelCard, () => PropCatalog, TranslateOr("dprop", "Dynamic Props"), () => (GTA.Offsets.Editor.DProps.model, GTA.Offsets.Editor.DProps.NEXT, dddpropno.SelectedIndex));
-            Wire(ActorModelCard, () => ActorCatalog, TranslateOr("actor", "Actors"), () => (GTA.Offsets.Editor.Actor.model, GTA.Offsets.Editor.Actor.NEXT, ddactorno.SelectedIndex));
+            Wire(PropModelCard, ddpropno, () => PropCatalog, TranslateOr("prop", "Props"), () => (GTA.Offsets.Editor.Props.model, GTA.Offsets.Editor.Props.NEXT, ddpropno.SelectedIndex));
+            Wire(DPropModelCard, dddpropno, () => PropCatalog, TranslateOr("dprop", "Dynamic Props"), () => (GTA.Offsets.Editor.DProps.model, GTA.Offsets.Editor.DProps.NEXT, dddpropno.SelectedIndex));
+            Wire(ActorModelCard, ddactorno, () => ActorCatalog, TranslateOr("actor", "Actors"), () => (GTA.Offsets.Editor.Actor.model, GTA.Offsets.Editor.Actor.NEXT, ddactorno.SelectedIndex));
         }
 
         // Offsets are read when used, because OffsetLoader can load them again for the other edition.
-        private void Wire(ModelCard card, Func<List<CatalogItem>> items, string title, Func<(long Model, long Stride, int Index)> target)
+        private void Wire(ModelCard card, ComboBox entries, Func<List<CatalogItem>> items, string title, Func<(long Model, long Stride, int Index)> target)
         {
             card.Items = () => items();
+
+            // The page only refreshes the card for a selected entry, so the empty states follow the
+            // entry dropdown: no entries means nothing is placed, no selection means none is picked.
+            void UpdateEmpty()
+            {
+                if (entries.Items.Count == 0)
+                    card.ShowEmpty(nothingPlaced: true);
+                else if (entries.SelectedIndex < 0)
+                    card.ShowEmpty(nothingPlaced: false);
+            }
+            entries.SelectionChanged += (_, __) => UpdateEmpty();
+            ((INotifyCollectionChanged)entries.Items).CollectionChanged += (_, __) => UpdateEmpty();
+            UpdateEmpty();
             card.CatalogRequested += (_, __) =>
             {
                 var (model, stride, index) = target();

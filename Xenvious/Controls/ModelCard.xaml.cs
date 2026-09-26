@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -28,12 +28,29 @@ namespace Xenvious
         public event EventHandler CatalogRequested;
         public event EventHandler<CatalogItem> Picked;
 
+        /// <summary>
+        /// Replaces the model with a hint while there is nothing to show: nothing of this kind
+        /// is placed yet, or no entry is selected. The next SetModel shows the model again.
+        /// </summary>
+        public void ShowEmpty(bool nothingPlaced)
+        {
+            _hasModel = false;
+            EmptyPanel.Visibility = Visibility.Visible;
+            ContentPanel.Visibility = Visibility.Collapsed;
+            NothingPlaced.Visibility = nothingPlaced ? Visibility.Visible : Visibility.Collapsed;
+            NothingSelected.Visibility = nothingPlaced ? Visibility.Collapsed : Visibility.Visible;
+            CatalogButton.IsEnabled = false;
+        }
+
         /// <summary>Shows a model; called by the page refresh, so it only redraws on a change.</summary>
         public void SetModel(uint hash)
         {
             if (_hasModel && hash == _hash)
                 return;
             _hasModel = true;
+            EmptyPanel.Visibility = Visibility.Collapsed;
+            ContentPanel.Visibility = Visibility.Visible;
+            CatalogButton.IsEnabled = true;
             _hash = hash;
             var item = Items?.Invoke()?.FirstOrDefault(i => i.Hash == hash);
             NameText.Text = item?.Name ?? (hash == 0 ? "–" : hash.ToString(CultureInfo.InvariantCulture));

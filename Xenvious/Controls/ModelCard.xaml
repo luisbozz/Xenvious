@@ -1,4 +1,4 @@
-<UserControl x:Class="Xenvious.ModelCard"
+﻿<UserControl x:Class="Xenvious.ModelCard"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <!-- The model of the selected entry: picture, name, hash, the catalog button, and the
@@ -36,7 +36,27 @@
                 </DockPanel>
             </Border>
 
-            <StackPanel Margin="12,10">
+            <!-- Shown instead of the model while the creator has no entry of this kind or none is selected. -->
+            <StackPanel x:Name="EmptyPanel" DockPanel.Dock="Top" Margin="16,22" Visibility="Collapsed">
+                <Border Width="40" Height="40" CornerRadius="20" Background="#FF232529" HorizontalAlignment="Center" Margin="0,0,0,10">
+                    <Path Data="M12,2 L22,7 L22,17 L12,22 L2,17 L2,7 Z M2,7 L12,12 L22,7 M12,12 L12,22" Stroke="#FF72767D" StrokeThickness="1.6"
+                          StrokeLineJoin="Round" Stretch="Uniform" Width="18" Height="18"/>
+                </Border>
+                <StackPanel x:Name="NothingPlaced">
+                    <TextBlock FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource TextColor}" TextAlignment="Center" TextWrapping="Wrap"
+                               Text="{Binding Translation[card_noplaced], FallbackValue='Nothing placed yet'}"/>
+                    <TextBlock FontSize="12" Foreground="#FFA3A6AA" TextAlignment="Center" TextWrapping="Wrap" Margin="0,4,0,0"
+                               Text="{Binding Translation[card_noplaced_hint], FallbackValue='Place one in the creator first, then change its model here.'}"/>
+                </StackPanel>
+                <StackPanel x:Name="NothingSelected">
+                    <TextBlock FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource TextColor}" TextAlignment="Center" TextWrapping="Wrap"
+                               Text="{Binding Translation[card_noselect], FallbackValue='No entry selected'}"/>
+                    <TextBlock FontSize="12" Foreground="#FFA3A6AA" TextAlignment="Center" TextWrapping="Wrap" Margin="0,4,0,0"
+                               Text="{Binding Translation[card_noselect_hint], FallbackValue='Select a number above to see and change its model.'}"/>
+                </StackPanel>
+            </StackPanel>
+
+            <StackPanel x:Name="ContentPanel" Margin="12,10">
                 <DockPanel>
                     <Border Width="72" Height="54" CornerRadius="4" Background="#FF1B1D20" ClipToBounds="True" Margin="0,0,10,0">
                         <Image x:Name="Thumb" Stretch="UniformToFill"/>
