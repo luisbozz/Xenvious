@@ -71,6 +71,23 @@
                 <Setter Property="VerticalAlignment" Value="Center"/>
                 <Setter Property="HorizontalAlignment" Value="Right"/>
             </Style>
+            <!-- Cards of the dashboard and the settings: a panel with a header bar. -->
+            <Style x:Key="DashCard" TargetType="{x:Type Border}">
+                <Setter Property="Background" Value="{DynamicResource SectionBackgroundBrush}"/>
+                <Setter Property="CornerRadius" Value="5"/>
+                <Setter Property="Margin" Value="0,0,0,12"/>
+            </Style>
+            <Style x:Key="DashCardHeader" TargetType="{x:Type Border}">
+                <Setter Property="Background" Value="{DynamicResource SeactionHeaderBackgroundBrush}"/>
+                <Setter Property="CornerRadius" Value="5,5,0,0"/>
+                <Setter Property="Padding" Value="14,9"/>
+            </Style>
+            <Style x:Key="DashCardTitle" TargetType="{x:Type TextBlock}">
+                <Setter Property="FontSize" Value="17"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
             <!-- Loading dots. Replaces LoadingIndicators.WPF for the prop panels: that style
                  colours through its own AccentColorBrush and ignores Foreground, and its
                  IsActive was bound to a property that does not exist, so it never showed. -->
@@ -110,8 +127,14 @@
             </ControlTemplate>
             <Style x:Key="SettingsLink" TargetType="{x:Type Hyperlink}">
                 <Setter Property="FontFamily" Value="{DynamicResource Volte}"/>
-                <Setter Property="FontSize" Value="22"/>
+                <Setter Property="FontSize" Value="15"/>
+                <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
                 <Setter Property="TextDecorations" Value="{x:Null}"/>
+            </Style>
+            <Style x:Key="SettingsLinkRow" TargetType="{x:Type TextBlock}">
+                <Setter Property="Height" Value="34"/>
+                <Setter Property="Margin" Value="0,0,0,2"/>
+                <Setter Property="Padding" Value="0,8,0,0"/>
             </Style>
             <!-- Deliberately NOT BasedOn the default TextBlock style: its FontSize and
                  Foreground setters would beat what this TextBlock inherits from the
@@ -360,22 +383,6 @@
                                     <Setter Property="Margin" Value="2,0,12,0"/>
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="Fill" Value="#FF72767D"/>
-                                </Style>
-                                <Style x:Key="DashCard" TargetType="{x:Type Border}">
-                                    <Setter Property="Background" Value="{DynamicResource SectionBackgroundBrush}"/>
-                                    <Setter Property="CornerRadius" Value="5"/>
-                                    <Setter Property="Margin" Value="0,0,0,12"/>
-                                </Style>
-                                <Style x:Key="DashCardHeader" TargetType="{x:Type Border}">
-                                    <Setter Property="Background" Value="{DynamicResource SeactionHeaderBackgroundBrush}"/>
-                                    <Setter Property="CornerRadius" Value="5,5,0,0"/>
-                                    <Setter Property="Padding" Value="14,9"/>
-                                </Style>
-                                <Style x:Key="DashCardTitle" TargetType="{x:Type TextBlock}">
-                                    <Setter Property="FontSize" Value="17"/>
-                                    <Setter Property="FontWeight" Value="Bold"/>
-                                    <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
-                                    <Setter Property="VerticalAlignment" Value="Center"/>
                                 </Style>
                                 <!-- Section headings inside a card (Details, Placed in this job, Look and sound). -->
                                 <Style x:Key="DashSub" TargetType="{x:Type TextBlock}">
@@ -11121,42 +11128,30 @@
 
                     <TabItem x:Name="PageSettings" Header="Settings">
 
-                        <Grid>
+                        <!-- Same look as the dashboard: cards with a header bar, in two columns. -->
+                        <ScrollViewer Margin="12,12,12,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                            <Grid VerticalAlignment="Top">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" MaxWidth="620"/>
+                                    <ColumnDefinition Width="12"/>
+                                    <ColumnDefinition Width="*" MaxWidth="520"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
 
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <Border Grid.Column="0" Background="{DynamicResource SectionBackgroundBrush}" CornerRadius="15" Padding="0,0,0,5" Margin="10"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                <Border.Effect>
-                                    <DropShadowEffect BlurRadius="13" ShadowDepth="0" Color="{DynamicResource ShadowColor}"/>
-                                </Border.Effect>
-
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="50"/>
-                                        <RowDefinition Height="*"/>
-                                    </Grid.RowDefinitions>
-
-                                    <Border Margin="3" CornerRadius="15,15,0,0" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Grid.Row="0">
-                                        <Viewbox VerticalAlignment="Center" HorizontalAlignment="Center">
-                                            <Label Foreground="{DynamicResource TextColor}" FontFamily="{DynamicResource Volte}" FontWeight="Bold" Content="{Binding Translation[settings], FallbackValue=Settings}"/>
-                                        </Viewbox>
-                                    </Border>
-
-                                    <Grid Grid.Row="1" Margin="30">
-
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="0.5*"/>
-                                            <ColumnDefinition Width="0.5*"/>
-                                        </Grid.ColumnDefinitions>
-
-                                        <StackPanel Grid.Column="0" Margin="0,0,15,0">
-                                            <TextBlock Margin="0,0,0,10" Foreground="{DynamicResource TextColor}" FontSize="30" FontWeight="Bold"
-                                                       Text="{Binding Translation[general], FallbackValue=General}" TextTrimming="CharacterEllipsis"/>
-                                            <Border Background="Transparent" Margin="0,0,0,8" Height="44">
-                                                <ComboBox x:Name="ddlanguage" FontFamily="{DynamicResource Volte}" SelectionChanged="ddlanguage_SelectionChanged"
-                                                          Tag="{Binding Translation[language], FallbackValue=Language, Mode=TwoWay}">
+                                <StackPanel Grid.Column="0">
+                                <Border Style="{StaticResource DashCard}">
+                                    <DockPanel>
+                                        <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                            <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[general], FallbackValue=General}"/>
+                                        </Border>
+                                        <StackPanel Margin="14,10,14,12">
+                                            <Grid Style="{StaticResource FormRow}">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="200"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[language], FallbackValue=Language}"/>
+                                                <ComboBox x:Name="ddlanguage" Grid.Column="1" Height="30" SelectionChanged="ddlanguage_SelectionChanged">
                                                     <ComboBoxItem Content="Deutsch"/>
                                                     <ComboBoxItem Content="English"/>
                                                     <ComboBoxItem Content="русский язык"/>
@@ -11164,24 +11159,149 @@
                                                     <ComboBoxItem Content="français"/>
                                                     <ComboBoxItem Content="中国"/>
                                                 </ComboBox>
-                                            </Border>
-                                            <Border Background="Transparent" Margin="0,0,0,8" Height="44">
-                                                <ComboBox x:Name="ddcolor" FontFamily="{DynamicResource Volte}" SelectionChanged="ddcolor_SelectionChanged"
-                                                          Tag="{Binding Translation[color], FallbackValue=Color}">
+                                            </Grid>
+                                            <Grid Style="{StaticResource FormRow}">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="200"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[color], FallbackValue=Color}"/>
+                                                <ComboBox x:Name="ddcolor" Grid.Column="1" Height="30" SelectionChanged="ddcolor_SelectionChanged">
                                                     <ComboBoxItem Content="Gray"/>
                                                     <ComboBoxItem Content="White"/>
                                                 </ComboBox>
-                                            </Border>
+                                            </Grid>
                                             <Grid Style="{StaticResource FormRow}">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="46"/>
-                                            </Grid.ColumnDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="46"/>
+                                                </Grid.ColumnDefinitions>
                                                 <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[gamemodewarning], FallbackValue=Remove Gamemode Warning}"/>
                                                 <CheckBox x:Name="cbgmwarning" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbgmwarning_Checked" Unchecked="cbgmwarning_Checked"/>
                                             </Grid>
-                                            <!-- Pictures of the model catalog: kept on disk after the first view. -->
-                                            <TextBlock Margin="0,18,0,6" Foreground="{DynamicResource TextColor}" FontSize="22" FontWeight="Bold" Text="{Binding Translation[cache_header], FallbackValue='Picture cache'}"/>
+                                        </StackPanel>
+                                    </DockPanel>
+                                </Border>
+
+                                <Border Style="{StaticResource DashCard}">
+                                    <DockPanel>
+                                        <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                            <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[set_creator], FallbackValue=Creator}"/>
+                                        </Border>
+                                        <StackPanel Margin="14,10,14,12">
+                                            <Grid Style="{StaticResource FormRow}">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="46"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[settingslva], FallbackValue=Load values anyway}"/>
+                                                <CheckBox x:Name="cbsettingslva" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                            </Grid>
+                                            <TextBlock Margin="0,-4,52,6" FontSize="12" Foreground="{StaticResource NavMutedBrush}" TextWrapping="Wrap"
+                                                       Text="{Binding Translation[settingslvainfo], FallbackValue='Values will get loaded even if the Player is not in the Creator'}"/>
+                                            <Grid Style="{StaticResource FormRow}">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="46"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[setexp], FallbackValue=Experimental Script Features}"/>
+                                                <CheckBox x:Name="cbsettingsexpscrfeat" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbsettingsexpscrfeat_Checked" Unchecked="cbsettingsexpscrfeat_Checked"/>
+                                            </Grid>
+                                            <Grid Style="{StaticResource FormRow}">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="46"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[setswitchcamkey], FallbackValue=Set Switch Cam to Caps Lock}"/>
+                                                <CheckBox x:Name="cbsettingsswitchcamkey" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbsettingsswitchcamkey_Checked" Unchecked="cbsettingsswitchcamkey_Checked"/>
+                                            </Grid>
+                                            <Grid Style="{StaticResource FormRow}">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="46"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[oldcreatorrefresh], FallbackValue=Old Creator Refresh}"/>
+                                                <CheckBox x:Name="cbsettingsoldcreatorrefresh" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                            </Grid>
+                                        </StackPanel>
+                                    </DockPanel>
+                                </Border>
+
+                                <Border Style="{StaticResource DashCard}">
+                                    <DockPanel>
+                                        <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                            <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[logging], FallbackValue=Logging}"/>
+                                        </Border>
+                                        <StackPanel Margin="14,10,14,12">
+                                            <Grid Style="{StaticResource FormRow}">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="200"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[settingsloglevel], FallbackValue=Log Level}"/>
+                                                <ComboBox x:Name="ddsettingsloglevel" Grid.Column="1" Height="30" SelectionChanged="ddsettingsloglevel_SelectionChanged">
+                                                    <ComboBoxItem Content="Trace"/>
+                                                    <ComboBoxItem Content="Debug"/>
+                                                    <ComboBoxItem Content="Info"/>
+                                                    <ComboBoxItem Content="Warn" Selector.IsSelected="True"/>
+                                                    <ComboBoxItem Content="Error"/>
+                                                    <ComboBoxItem Content="Fatal"/>
+                                                </ComboBox>
+                                            </Grid>
+                                            <Grid Style="{StaticResource FormRow}">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="46"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[writelogstofile], FallbackValue=Write Logs to File}"/>
+                                                <CheckBox x:Name="cbsettingswritelogstofile" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbsettingswritelogstofile_Checked" Unchecked="cbsettingswritelogstofile_Checked"/>
+                                            </Grid>
+                                            <Grid Style="{StaticResource FormRow}">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="46"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[hidegtamessage], FallbackValue=Hide Start GTA Message}"/>
+                                                <CheckBox x:Name="cbsettingshidegtamessage" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbsettingshidegtamessage_Checked" Unchecked="cbsettingshidegtamessage_Checked"/>
+                                            </Grid>
+                                        </StackPanel>
+                                    </DockPanel>
+                                </Border>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="2">
+                                <Border Style="{StaticResource DashCard}">
+                                    <DockPanel>
+                                        <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                            <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[set_updates], FallbackValue=Updates}"/>
+                                        </Border>
+                                        <StackPanel Margin="14,10,14,12">
+                                            <!-- Version (click: changelog) and a manual update check. -->
+                                            <DockPanel Margin="0,2,0,8">
+                                                <Button x:Name="BtnCheckUpdates" DockPanel.Dock="Right" Style="{StaticResource FormButton}" Height="30" Padding="12,0" Click="BtnCheckUpdates_Click"
+                                                        Content="{Binding Translation[update_check_now], FallbackValue=Nach Updates suchen}"/>
+                                                <TextBlock x:Name="tbUpdateVersion" VerticalAlignment="Center" FontSize="14" Foreground="{StaticResource NavMutedBrush}" Cursor="Hand" TextDecorations="Underline"
+                                                           TextTrimming="CharacterEllipsis" Margin="0,0,10,0" MouseLeftButtonUp="TbUpdateVersion_MouseLeftButtonUp"/>
+                                            </DockPanel>
+                                            <Grid Style="{StaticResource FormRow}">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="46"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[update_check_on_start], FallbackValue=Check for updates on start}"/>
+                                                <CheckBox x:Name="cbsettingscheckupdates" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbsettingscheckupdates_Checked" Unchecked="cbsettingscheckupdates_Checked"/>
+                                            </Grid>
+                                        </StackPanel>
+                                    </DockPanel>
+                                </Border>
+
+                                <!-- Pictures of the model catalog: kept on disk after the first view. -->
+                                <Border Style="{StaticResource DashCard}">
+                                    <DockPanel>
+                                        <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                            <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[cache_header], FallbackValue='Picture cache'}"/>
+                                        </Border>
+                                        <StackPanel Margin="14,10,14,12">
                                             <Grid Style="{StaticResource FormRow}">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"/>
@@ -11191,144 +11311,86 @@
                                                 <CheckBox x:Name="cbModelCache" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbModelCache_Changed" Unchecked="cbModelCache_Changed"/>
                                             </Grid>
                                             <DockPanel Margin="0,4,0,0">
-                                                <Button x:Name="BtnModelCacheClear" DockPanel.Dock="Right" Style="{StaticResource NavButton}" Click="BtnModelCacheClear_Click">
-                                                    <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[cache_clear], FallbackValue='Clear'}"/>
-                                                </Button>
-                                                <TextBlock x:Name="tbModelCacheUsage" VerticalAlignment="Center" FontSize="13" Foreground="#FFA3A6AA" TextWrapping="Wrap"/>
+                                                <Button x:Name="BtnModelCacheClear" DockPanel.Dock="Right" Style="{StaticResource FormButton}" Height="30" Padding="12,0" Click="BtnModelCacheClear_Click"
+                                                        Content="{Binding Translation[cache_clear], FallbackValue=Clear}"/>
+                                                <TextBlock x:Name="tbModelCacheUsage" VerticalAlignment="Center" Margin="0,0,10,0" FontSize="13" Foreground="{StaticResource NavMutedBrush}" TextWrapping="Wrap"/>
                                             </DockPanel>
-                                            <Grid Style="{StaticResource FormRow}">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="46"/>
-                                            </Grid.ColumnDefinitions>
-                                                <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[settingslva], FallbackValue=Load values anyway}" ToolTip="{Binding Translation[settingslvainfo], FallbackValue=Values will get loaded even if the Player is not in the Creator}"/>
-                                                <CheckBox x:Name="cbsettingslva" Grid.Column="1" Style="{StaticResource FormToggle}" ToolTip="{Binding Translation[settingslvainfo], FallbackValue=Values will get loaded even if the Player is not in the Creator}"/>
-                                            </Grid>
-                                            <Grid Style="{StaticResource FormRow}">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="46"/>
-                                            </Grid.ColumnDefinitions>
-                                                <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[setexp], FallbackValue=Experimental Script Features}"/>
-                                                <CheckBox x:Name="cbsettingsexpscrfeat" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbsettingsexpscrfeat_Checked" Unchecked="cbsettingsexpscrfeat_Checked"/>
-                                            </Grid>
-                                            <Grid Style="{StaticResource FormRow}">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="46"/>
-                                            </Grid.ColumnDefinitions>
-                                                <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[setswitchcamkey], FallbackValue=Set Switch Cam to Caps Lock}"/>
-                                                <CheckBox x:Name="cbsettingsswitchcamkey" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbsettingsswitchcamkey_Checked" Unchecked="cbsettingsswitchcamkey_Checked"/>
-                                            </Grid>
-                                            <Grid Style="{StaticResource FormRow}">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="46"/>
-                                            </Grid.ColumnDefinitions>
-                                                <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[oldcreatorrefresh], FallbackValue=Old Creator Refresh}"/>
-                                                <CheckBox x:Name="cbsettingsoldcreatorrefresh" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                            </Grid>
-                                            <TextBlock Margin="0,26,0,10" Foreground="{DynamicResource TextColor}" FontSize="30" FontWeight="Bold"
-                                                       Text="{Binding Translation[logging], FallbackValue=Logging}" TextTrimming="CharacterEllipsis"/>
-                                            <Border Background="Transparent" Margin="0,0,0,8" Height="44">
-                                                <ComboBox x:Name="ddsettingsloglevel" FontFamily="{DynamicResource Volte}" SelectionChanged="ddsettingsloglevel_SelectionChanged"
-                                                          Tag="{Binding Translation[settingsloglevel], FallbackValue=Log Level}">
-                                                    <ComboBoxItem Content="Trace"/>
-                                                    <ComboBoxItem Content="Debug"/>
-                                                    <ComboBoxItem Content="Info"/>
-                                                    <ComboBoxItem Content="Warn" Selector.IsSelected="True"/>
-                                                    <ComboBoxItem Content="Error"/>
-                                                    <ComboBoxItem Content="Fatal"/>
-                                                </ComboBox>
-                                            </Border>
-                                            <Grid Style="{StaticResource FormRow}">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="46"/>
-                                            </Grid.ColumnDefinitions>
-                                                <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[writelogstofile], FallbackValue=Write Logs to File}"/>
-                                                <CheckBox x:Name="cbsettingswritelogstofile" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbsettingswritelogstofile_Checked" Unchecked="cbsettingswritelogstofile_Checked"/>
-                                            </Grid>
-                                            <Grid Style="{StaticResource FormRow}">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="46"/>
-                                            </Grid.ColumnDefinitions>
-                                                <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[hidegtamessage], FallbackValue=Hide Start GTA Message}"/>
-                                                <CheckBox x:Name="cbsettingshidegtamessage" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbsettingshidegtamessage_Checked" Unchecked="cbsettingshidegtamessage_Checked"/>
-                                            </Grid>
-                                            <Grid Style="{StaticResource FormRow}">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="46"/>
-                                            </Grid.ColumnDefinitions>
-                                                <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[update_check_on_start], FallbackValue=Check for updates on start}"/>
-                                                <CheckBox x:Name="cbsettingscheckupdates" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbsettingscheckupdates_Checked" Unchecked="cbsettingscheckupdates_Checked"/>
-                                            </Grid>
-                                            <!-- Version (click: changelog) and a manual update check. -->
-                                            <Grid Margin="0,10,0,0">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock x:Name="tbUpdateVersion" VerticalAlignment="Center" FontSize="14" Foreground="#FFA3A6AA" Cursor="Hand" TextDecorations="Underline" MouseLeftButtonUp="TbUpdateVersion_MouseLeftButtonUp"/>
-                                                <Border Grid.Column="1" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Height="32" MinWidth="170">
-                                                    <Border.Effect><DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/></Border.Effect>
-                                                    <Button x:Name="BtnCheckUpdates" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" FontSize="14" Padding="12,0" Foreground="{DynamicResource TextColor}" Click="BtnCheckUpdates_Click" Content="{Binding Translation[update_check_now], FallbackValue=Nach Updates suchen}"/>
-                                                </Border>
-                                            </Grid>
                                         </StackPanel>
+                                    </DockPanel>
+                                </Border>
 
-                                        <StackPanel Grid.Column="1" Margin="15,0,0,0">
-                                            <TextBlock Margin="0,0,0,10" Foreground="{DynamicResource TextColor}" FontSize="30" FontWeight="Bold"
-                                                       Text="{Binding Translation[hlinks], FallbackValue=Helpful links}" TextTrimming="CharacterEllipsis"/>
-                                            <TextBlock Margin="0,0,0,6" Height="36" VerticalAlignment="Center">
+                                <Border Style="{StaticResource DashCard}">
+                                    <DockPanel>
+                                        <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                            <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[hlinks], FallbackValue=Helpful links}"/>
+                                        </Border>
+                                        <StackPanel Margin="14,10,14,12">
+                                            <TextBlock Style="{StaticResource SettingsLinkRow}">
                                                 <Hyperlink x:Name="links_props" Style="{StaticResource SettingsLink}" RequestNavigate="OpenLinkSettings">
-                                                    <InlineUIContainer>
-                                                        <TextBlock Style="{StaticResource SettingsLinkText}" Text="{Binding Translation[props], FallbackValue=Props}"/>
+                                                    <InlineUIContainer BaselineAlignment="Center">
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock Style="{StaticResource SettingsLinkText}" Text="{Binding Translation[props], FallbackValue=Props}"/>
+                                                            <Path Margin="8,0,0,0" Data="M9,1 L13,1 L13,5 M13,1 L7,7 M11,9 L11,13 L1,13 L1,3 L5,3" Stroke="{StaticResource NavMutedBrush}" StrokeThickness="1.6" Width="14" Height="14" VerticalAlignment="Center"/>
+                                                        </StackPanel>
                                                     </InlineUIContainer>
                                                 </Hyperlink>
                                             </TextBlock>
-                                            <TextBlock Margin="0,0,0,6" Height="36" VerticalAlignment="Center">
+                                            <TextBlock Style="{StaticResource SettingsLinkRow}">
                                                 <Hyperlink x:Name="links_propswp" Style="{StaticResource SettingsLink}" RequestNavigate="OpenLinkSettings">
-                                                    <InlineUIContainer>
-                                                        <TextBlock Style="{StaticResource SettingsLinkText}" Text="{Binding Translation[propswp], FallbackValue=Props + Pictures}"/>
+                                                    <InlineUIContainer BaselineAlignment="Center">
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock Style="{StaticResource SettingsLinkText}" Text="{Binding Translation[propswp], FallbackValue=Props + Pictures}"/>
+                                                            <Path Margin="8,0,0,0" Data="M9,1 L13,1 L13,5 M13,1 L7,7 M11,9 L11,13 L1,13 L1,3 L5,3" Stroke="{StaticResource NavMutedBrush}" StrokeThickness="1.6" Width="14" Height="14" VerticalAlignment="Center"/>
+                                                        </StackPanel>
                                                     </InlineUIContainer>
                                                 </Hyperlink>
                                             </TextBlock>
-                                            <TextBlock Margin="0,0,0,6" Height="36" VerticalAlignment="Center">
+                                            <TextBlock Style="{StaticResource SettingsLinkRow}">
                                                 <Hyperlink x:Name="links_veh" Style="{StaticResource SettingsLink}" RequestNavigate="OpenLinkSettings">
-                                                    <InlineUIContainer>
-                                                        <TextBlock Style="{StaticResource SettingsLinkText}" Text="{Binding Translation[vehicles], FallbackValue=Vehicles}"/>
+                                                    <InlineUIContainer BaselineAlignment="Center">
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock Style="{StaticResource SettingsLinkText}" Text="{Binding Translation[vehicles], FallbackValue=Vehicles}"/>
+                                                            <Path Margin="8,0,0,0" Data="M9,1 L13,1 L13,5 M13,1 L7,7 M11,9 L11,13 L1,13 L1,3 L5,3" Stroke="{StaticResource NavMutedBrush}" StrokeThickness="1.6" Width="14" Height="14" VerticalAlignment="Center"/>
+                                                        </StackPanel>
                                                     </InlineUIContainer>
                                                 </Hyperlink>
                                             </TextBlock>
-                                            <TextBlock Margin="0,0,0,6" Height="36" VerticalAlignment="Center">
+                                            <TextBlock Style="{StaticResource SettingsLinkRow}">
                                                 <Hyperlink x:Name="links_weap" Style="{StaticResource SettingsLink}" RequestNavigate="OpenLinkSettings">
-                                                    <InlineUIContainer>
-                                                        <TextBlock Style="{StaticResource SettingsLinkText}" Text="{Binding Translation[weapons], FallbackValue=Weapons}"/>
+                                                    <InlineUIContainer BaselineAlignment="Center">
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock Style="{StaticResource SettingsLinkText}" Text="{Binding Translation[weapons], FallbackValue=Weapons}"/>
+                                                            <Path Margin="8,0,0,0" Data="M9,1 L13,1 L13,5 M13,1 L7,7 M11,9 L11,13 L1,13 L1,3 L5,3" Stroke="{StaticResource NavMutedBrush}" StrokeThickness="1.6" Width="14" Height="14" VerticalAlignment="Center"/>
+                                                        </StackPanel>
                                                     </InlineUIContainer>
                                                 </Hyperlink>
                                             </TextBlock>
-                                            <TextBlock Margin="0,0,0,6" Height="36" VerticalAlignment="Center">
+                                            <TextBlock Style="{StaticResource SettingsLinkRow}">
                                                 <Hyperlink x:Name="links_peds" Style="{StaticResource SettingsLink}" RequestNavigate="OpenLinkSettings">
-                                                    <InlineUIContainer>
-                                                        <TextBlock Style="{StaticResource SettingsLinkText}" Text="{Binding Translation[actor], FallbackValue=Actor}"/>
+                                                    <InlineUIContainer BaselineAlignment="Center">
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock Style="{StaticResource SettingsLinkText}" Text="{Binding Translation[actor], FallbackValue=Actor}"/>
+                                                            <Path Margin="8,0,0,0" Data="M9,1 L13,1 L13,5 M13,1 L7,7 M11,9 L11,13 L1,13 L1,3 L5,3" Stroke="{StaticResource NavMutedBrush}" StrokeThickness="1.6" Width="14" Height="14" VerticalAlignment="Center"/>
+                                                        </StackPanel>
                                                     </InlineUIContainer>
                                                 </Hyperlink>
                                             </TextBlock>
-                                            <TextBlock Margin="0,0,0,6" Height="36" VerticalAlignment="Center">
+                                            <TextBlock Style="{StaticResource SettingsLinkRow}">
                                                 <Hyperlink x:Name="links_cc" Style="{StaticResource SettingsLink}" RequestNavigate="OpenLinkSettings">
-                                                    <InlineUIContainer>
-                                                        <TextBlock Style="{StaticResource SettingsLinkText}" Text="{Binding Translation[link_cc], FallbackValue=Color Codes}"/>
+                                                    <InlineUIContainer BaselineAlignment="Center">
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock Style="{StaticResource SettingsLinkText}" Text="{Binding Translation[link_cc], FallbackValue=Color Codes}"/>
+                                                            <Path Margin="8,0,0,0" Data="M9,1 L13,1 L13,5 M13,1 L7,7 M11,9 L11,13 L1,13 L1,3 L5,3" Stroke="{StaticResource NavMutedBrush}" StrokeThickness="1.6" Width="14" Height="14" VerticalAlignment="Center"/>
+                                                        </StackPanel>
                                                     </InlineUIContainer>
                                                 </Hyperlink>
                                             </TextBlock>
                                         </StackPanel>
-                                    </Grid>
-                                </Grid>
-                            </Border>
-                        </Grid>
+                                    </DockPanel>
+                                </Border>
+                                </StackPanel>
+                            </Grid>
+                        </ScrollViewer>
 
                     </TabItem>
 
