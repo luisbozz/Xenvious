@@ -2720,6 +2720,38 @@
                                                                         <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[veheiw], FallbackValue=Explode in Water}" ToolTip="{Binding Translation[veheiw], FallbackValue=Explode in Water}" TextTrimming="CharacterEllipsis"/>
                                                                         <CheckBox x:Name="cb_veh_explodeinwater" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_veh_explodeinwater_Checked" Unchecked="cb_veh_explodeinwater_Checked" MaxHeight="30" IsEnabled="False"/>
                                                                     </Grid>
+                                                                    <Grid Height="30" Margin="0,0,0,5">
+                                                                        <Grid.ColumnDefinitions>
+                                                                            <ColumnDefinition Width="0.87*" />
+                                                                            <ColumnDefinition Width="0.13*" />
+                                                                        </Grid.ColumnDefinitions>
+                                                                        <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[vehlockteam], StringFormat='{}{0} 1', FallbackValue='Locked for Team 1'}" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" TextTrimming="CharacterEllipsis"/>
+                                                                        <CheckBox x:Name="cb_veh_lockteam1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_veh_lockteam_Checked" Unchecked="cb_veh_lockteam_Checked" MaxHeight="30" IsEnabled="False"/>
+                                                                    </Grid>
+                                                                    <Grid Height="30" Margin="0,0,0,5">
+                                                                        <Grid.ColumnDefinitions>
+                                                                            <ColumnDefinition Width="0.87*" />
+                                                                            <ColumnDefinition Width="0.13*" />
+                                                                        </Grid.ColumnDefinitions>
+                                                                        <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[vehlockteam], StringFormat='{}{0} 2', FallbackValue='Locked for Team 2'}" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" TextTrimming="CharacterEllipsis"/>
+                                                                        <CheckBox x:Name="cb_veh_lockteam2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_veh_lockteam_Checked" Unchecked="cb_veh_lockteam_Checked" MaxHeight="30" IsEnabled="False"/>
+                                                                    </Grid>
+                                                                    <Grid Height="30" Margin="0,0,0,5">
+                                                                        <Grid.ColumnDefinitions>
+                                                                            <ColumnDefinition Width="0.87*" />
+                                                                            <ColumnDefinition Width="0.13*" />
+                                                                        </Grid.ColumnDefinitions>
+                                                                        <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[vehlockteam], StringFormat='{}{0} 3', FallbackValue='Locked for Team 3'}" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" TextTrimming="CharacterEllipsis"/>
+                                                                        <CheckBox x:Name="cb_veh_lockteam3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_veh_lockteam_Checked" Unchecked="cb_veh_lockteam_Checked" MaxHeight="30" IsEnabled="False"/>
+                                                                    </Grid>
+                                                                    <Grid Height="30" Margin="0,0,0,5">
+                                                                        <Grid.ColumnDefinitions>
+                                                                            <ColumnDefinition Width="0.87*" />
+                                                                            <ColumnDefinition Width="0.13*" />
+                                                                        </Grid.ColumnDefinitions>
+                                                                        <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[vehlockteam], StringFormat='{}{0} 4', FallbackValue='Locked for Team 4'}" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" TextTrimming="CharacterEllipsis"/>
+                                                                        <CheckBox x:Name="cb_veh_lockteam4" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_veh_lockteam_Checked" Unchecked="cb_veh_lockteam_Checked" MaxHeight="30" IsEnabled="False"/>
+                                                                    </Grid>
 
                                                                     <Grid>
                                                                         <Grid.ColumnDefinitions>
