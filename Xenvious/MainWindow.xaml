@@ -610,11 +610,9 @@
                                 </DockPanel>
                             </Border>
 
-                            <!-- Layout: two columns as tall as the window; below a minimum height the page scrolls.
-                                 The margin sits on the ScrollViewer: on the grid it would add to MinHeight and
-                                 always show a scroll bar. -->
+                            <!-- Layout: two columns; cards keep their own height instead of stretching with the window. -->
                             <ScrollViewer x:Name="DashScroll" Grid.Row="1" Margin="12,12,12,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                <Grid MinHeight="{Binding ViewportHeight, ElementName=DashScroll}">
+                                <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="400"/>
                                         <ColumnDefinition Width="*" MinWidth="520"/>
@@ -679,8 +677,8 @@
                                         </DockPanel>
                                     </Border>
 
-                                    <!-- Ambient under the actions, down to the bottom of the window. -->
-                                    <Border Grid.Row="1" Style="{StaticResource DashCard}">
+                                    <!-- Ambient under the actions. -->
+                                    <Border Grid.Row="1" Style="{StaticResource DashCard}" VerticalAlignment="Top">
                                         <StackPanel>
                                             <Border Style="{StaticResource DashCardHeader}">
                                                 <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[ambientheader], FallbackValue='Ambient Settings'}"/>
@@ -960,7 +958,7 @@
                                     </Grid>
 
                                     <!-- ===== Centre: the job ===== -->
-                                    <Border Grid.Column="1" Style="{StaticResource DashCard}">
+                                    <Border Grid.Column="1" Style="{StaticResource DashCard}" VerticalAlignment="Top">
                                         <DockPanel>
                                             <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
                                                 <DockPanel>
@@ -975,7 +973,7 @@
                                                 </DockPanel>
                                             </Border>
 
-                                            <!-- Details at the bottom; image, title and description take the rest of the height. -->
+                                            <!-- Details and counts at the bottom; image, title and description on top at a fixed height. -->
                                             <DockPanel Margin="14,12,14,6">
                                                 <!-- Count tiles for the open creator, built in MainWindow.DashboardCreator.cs; a click opens the page. -->
                                                 <UniformGrid x:Name="DashCounts" DockPanel.Dock="Bottom" Rows="1" Margin="0,0,-8,0"/>
@@ -1031,14 +1029,14 @@
                                                     </StackPanel>
                                                 </UniformGrid>
                                                 <TextBlock DockPanel.Dock="Bottom" Style="{StaticResource DashSub}" Text="{Binding Translation[detailsheader], FallbackValue=Details}"/>
-                                                <Grid>
+                                                <Grid Height="200">
                                                     <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="0.45*"/>
-                                                        <ColumnDefinition Width="0.55*"/>
+                                                        <ColumnDefinition Width="356"/>
+                                                        <ColumnDefinition Width="*"/>
                                                     </Grid.ColumnDefinitions>
 
                                                     <!-- Job image; hovering shows view / save / change. -->
-                                                    <Grid Grid.Column="0" MinHeight="160" Margin="0,0,14,0">
+                                                    <Grid Grid.Column="0" Margin="0,0,14,0">
                                                         <Border CornerRadius="4" Background="{DynamicResource TextBoxBackground}"/>
                                                         <Viewbox MaxWidth="200" MaxHeight="120" Visibility="{Binding ElementName=ImagePremiumNeeded, Path=Visibility}">
                                                             <TextBlock x:Name="ImagePremiumNeeded" Visibility="Collapsed" Text="Not available.&#xA;Premium Version needed!" Foreground="{DynamicResource TextColor}" FontSize="26" TextAlignment="Center" FontWeight="Bold"/>
