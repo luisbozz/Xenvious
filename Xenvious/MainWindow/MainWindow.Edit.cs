@@ -50,7 +50,8 @@ namespace Xenvious
         {
             checkSection();
             // Selection changes of dropdowns inside the pages bubble up to here as well.
-            if (e.Source == EditPages)
+            // Not while the window is being built: the side list needs the whole page tree.
+            if (e.Source == EditPages && IsLoaded)
                 OnEditPageChanged();
         }
 

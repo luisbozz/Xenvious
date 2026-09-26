@@ -38,7 +38,7 @@ namespace Xenvious
         // Marks the open page in the side list, the same way the top navigation does.
         private void PageInnerMod_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (e.Source != PageInnerMod)
+            if (e.Source != PageInnerMod || !IsLoaded)
                 return;
             var pages = new (Button Button, TabItem Page)[]
             {
