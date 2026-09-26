@@ -141,11 +141,24 @@ namespace Xenvious
             _innerSwitchersHidden = true;
             foreach (var inner in new[] { PageInnerProps, PageInnerRace, PageInnerMission, PageInnerCapture, PageInnerDM, PageInnerSurvival })
             {
-                if (!(inner.Parent is Grid grid) || grid.ColumnDefinitions.Count < 3 || Grid.GetColumn(inner) != 2)
+                // The page grid is the first ancestor with the three columns (buttons, line, pages);
+                // on Mission the TabControl sits one Grid deeper.
+                FrameworkElement element = inner;
+                Grid grid = null;
+                while (element?.Parent is FrameworkElement parent)
+                {
+                    if (parent is Grid candidate && candidate.ColumnDefinitions.Count >= 3 && Grid.GetColumn(element) == 2)
+                    {
+                        grid = candidate;
+                        break;
+                    }
+                    element = parent;
+                }
+                if (grid == null)
                     continue;
                 grid.ColumnDefinitions[0].Width = new GridLength(0);
                 grid.ColumnDefinitions[1].Width = new GridLength(0);
-                inner.Margin = new Thickness(0);
+                element.Margin = new Thickness(0);
                 foreach (UIElement child in grid.Children)
                 {
                     if (Grid.GetColumn(child) < 2)

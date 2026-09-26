@@ -27,10 +27,10 @@
         </Grid>
         <ControlTemplate.Triggers>
             <Trigger Property="ToggleButton.IsMouseOver" Value="true">
-                <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ComboBoxBorder}" />
+                <Setter TargetName="Border" Property="BorderBrush" Value="#FF4F545C" />
             </Trigger>
             <Trigger Property="ToggleButton.IsChecked" Value="true">
-                <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ComboBoxBorder}" />
+                <Setter TargetName="Border" Property="BorderBrush" Value="#FF4F545C" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="false">
                 <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ComboBoxBorder}" />
@@ -52,11 +52,10 @@
         <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
         <Setter Property="FontFamily" Value="{DynamicResource Volte}"/>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource ComboBoxBorderInner}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ComboBoxBorder}"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="local:CornerRadiusSetter.CornerRadius" Value="4"/>
         <Setter Property="FontSize" Value="14"/>
-        <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="ToolTip" Value="{Binding Path=ToolTip, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}"/>
         <!--<EventSetter Event="PreviewMouseWheel" Handler="comboboxScrollWithoutFocusEvent"/>-->
         <Setter Property="Template">
@@ -218,7 +217,6 @@
         <Setter Property="OverridesDefaultStyle" Value="true"/>
         <Setter Property="FontFamily" Value="{DynamicResource Volte}"/>
         <Setter Property="FontSize" Value="14"/>
-        <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="Template">

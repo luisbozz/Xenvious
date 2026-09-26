@@ -5,10 +5,9 @@
     <Style x:Key="Watermark" TargetType="{x:Type TextBox}">
         <Setter Property="FontFamily" Value="{DynamicResource Volte}"/>
         <Setter Property="FontSize" Value="14.0"/>
-        <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
         <Setter Property="Cursor" Value="IBeam"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource ComboBoxBorderInner}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ComboBoxBorder}"/>
         <Setter Property="CaretBrush" Value="{DynamicResource TextBoxForegroundThemeBrush}"/>
         <Setter Property="Background" Value="{DynamicResource ComboBoxBackground}"/>
         <Setter Property="BorderThickness" Value="1"/>
@@ -57,10 +56,10 @@
                             <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ComboBoxBorder}"/>
                         </Trigger>
                         <Trigger Property="IsFocused" Value="true">
-                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ComboBoxBorder}"/>
+                            <Setter TargetName="Border" Property="BorderBrush" Value="#FF4F545C"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="true">
-                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ComboBoxBorder}" />
+                            <Setter TargetName="Border" Property="BorderBrush" Value="#FF4F545C" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

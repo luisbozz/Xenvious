@@ -111,6 +111,40 @@
         </Setter>
     </Style>
 
+    <!-- A plain filled button for forms (grey, lighter on hover); "Danger" in red. -->
+    <Style x:Key="FormButton" TargetType="{x:Type Button}">
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="FontFamily" Value="{DynamicResource Volte}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
+        <Setter Property="Background" Value="{DynamicResource SeactionHeaderBackgroundBrush}"/>
+        <Setter Property="Height" Value="34"/>
+        <Setter Property="Padding" Value="14,0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="b" CornerRadius="5" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="b" Property="Opacity" Value="0.85"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="b" Property="Opacity" Value="0.4"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="FormButtonDanger" TargetType="{x:Type Button}" BasedOn="{StaticResource FormButton}">
+        <Setter Property="Background" Value="#FF8E2F2C"/>
+    </Style>
+
     <!-- 24x24 outline icons, drawn with the button's foreground. -->
     <Geometry x:Key="NavIconDashboard">M4,4 H11 V11 H4 Z M13,4 H20 V8 H13 Z M13,10 H20 V20 H13 Z M4,13 H11 V20 H4 Z</Geometry>
     <Geometry x:Key="NavIconEdit">M4,20 H8 L19,9 L15,5 L4,16 Z M13,7 L17,11</Geometry>

@@ -63,7 +63,7 @@
             <Style x:Key="FormLabel" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
                 <Setter Property="Grid.Column" Value="0"/>
                 <Setter Property="FontSize" Value="15"/>
-                <Setter Property="FontWeight" Value="SemiBold"/>
+                <Setter Property="FontWeight" Value="Normal"/>
                 <Setter Property="VerticalAlignment" Value="Center"/>
                 <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
             </Style>
@@ -866,8 +866,8 @@
                                                     <CheckBox x:Name="cb_customdaytime" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cb_customdaytime_Checked" Unchecked="cb_customdaytime_Unchecked"/>
                                                 </Grid>
                                                 <UniformGrid Columns="2" Visibility="{Binding ElementName=tb_cdth, Path=Visibility}">
-                                                    <TextBox x:Name="tb_cdth" Visibility="Collapsed" Height="32" Margin="0,0,8,10" Style="{StaticResource Watermark}" Tag="{Binding Translation[cdt_h], FallbackValue=Hour}" ToolTip="{Binding Translation[cdt_h_info], FallbackValue=Time of Day Hour | Max is 23}" MaxLength="2" FontSize="14" KeyDown="FormatTextForInteger" TextChanged="tb_cdth_TextChanged"/>
-                                                    <TextBox x:Name="tb_cdtm" Visibility="Collapsed" Height="32" Margin="0,0,0,10" Style="{StaticResource Watermark}" Tag="{Binding Translation[cdt_m], FallbackValue=Minute}" ToolTip="{Binding Translation[cdt_m_info], FallbackValue=Time of Day Minute | Max is 59}" MaxLength="2" FontSize="14" KeyDown="FormatTextForInteger" TextChanged="tb_cdtm_TextChanged"/>
+                                                    <TextBox x:Name="tb_cdth" TextAlignment="Right" Visibility="Collapsed" Height="32" Margin="0,0,8,10" Style="{StaticResource Watermark}" Tag="{Binding Translation[cdt_h], FallbackValue=Hour}" ToolTip="{Binding Translation[cdt_h_info], FallbackValue=Time of Day Hour | Max is 23}" MaxLength="2" FontSize="14" KeyDown="FormatTextForInteger" TextChanged="tb_cdth_TextChanged"/>
+                                                    <TextBox x:Name="tb_cdtm" TextAlignment="Right" Visibility="Collapsed" Height="32" Margin="0,0,0,10" Style="{StaticResource Watermark}" Tag="{Binding Translation[cdt_m], FallbackValue=Minute}" ToolTip="{Binding Translation[cdt_m_info], FallbackValue=Time of Day Minute | Max is 59}" MaxLength="2" FontSize="14" KeyDown="FormatTextForInteger" TextChanged="tb_cdtm_TextChanged"/>
                                                 </UniformGrid>
 
                                                 <UniformGrid Columns="2">
@@ -11883,93 +11883,51 @@
                                         </TabItem>
 
                     <TabItem x:Name="PageMenuSwitcher" Header="Menu Switcher">
+                        <!-- Jump the creator to any menu by its id, and keep often used menus as presets. -->
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
-                            <Border Grid.Column="1" Background="{DynamicResource SectionBackgroundBrush}" CornerRadius="15" Padding="0,0,0,5" Margin="20" MaxHeight="700" MaxWidth="1200">
-                                <Border.Effect>
-                                    <DropShadowEffect BlurRadius="13" ShadowDepth="0" Color="{DynamicResource ShadowColor}"/>
-                                </Border.Effect>
-
+                            <StackPanel Margin="20,10" HorizontalAlignment="Left" Width="720">
+                                <TextBlock FontSize="22" FontWeight="Bold" Foreground="{DynamicResource TextColor}" Text="{Binding Translation[misc_menupresets], FallbackValue='Menu Presets'}"/>
+                                <TextBlock FontSize="13" Foreground="#FFA3A6AA" Margin="0,4,0,14" TextWrapping="Wrap"
+                                           Text="{Binding Translation[ms_help], FallbackValue='Read the menu the creator shows, switch it to another one, or save it as a preset.'}"/>
                                 <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="50"/>
-                                        <RowDefinition Height="*"/>
-                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="14"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
 
-                                    <Border Margin="3" CornerRadius="15" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Grid.Row="0">
-                                        <Viewbox VerticalAlignment="Center" HorizontalAlignment="Center">
-                                            <Label Foreground="{DynamicResource TextColor}" FontFamily="{DynamicResource Volte}" FontWeight="Bold" Content="Menu Switcher"/>
-                                        </Viewbox>
+                                    <Border Grid.Column="0" Background="{DynamicResource SectionBackgroundBrush}" CornerRadius="6" Padding="14,12" VerticalAlignment="Top">
+                                        <StackPanel>
+                                            <TextBlock FontSize="15" FontWeight="Bold" Foreground="{DynamicResource TextColor}" Margin="0,0,0,10" Text="{Binding Translation[ms_current], FallbackValue='Current menu'}"/>
+                                            <TextBlock FontSize="12" FontWeight="Bold" Foreground="#FFA3A6AA" Margin="0,0,0,3" Text="Menu ID"/>
+                                            <TextBox x:Name="tbmscurr" Style="{StaticResource Watermark}" Height="32" ToolTip="f_267" Margin="0,0,0,8" KeyDown="FormatTextForInteger"/>
+                                            <TextBlock FontSize="12" FontWeight="Bold" Foreground="#FFA3A6AA" Margin="0,0,0,3" Text="Return Menu ID"/>
+                                            <TextBox x:Name="tbmsprev" Style="{StaticResource Watermark}" Height="32" ToolTip="f_268" Margin="0,0,0,12" KeyDown="FormatTextForInteger"/>
+                                            <UniformGrid Columns="2">
+                                                <Button x:Name="Btnmsread" Style="{StaticResource FormButton}" Margin="0,0,4,0" Click="Btnmsread_Click" Content="{Binding Translation[ms_read], FallbackValue=Read}"/>
+                                                <Button x:Name="Btnmschange" Style="{StaticResource FormButton}" Margin="4,0,0,0" Background="#FFE3E5E8" Foreground="#FF202225" Click="Btnmschange_Click" Content="{Binding Translation[ms_set], FallbackValue=Switch}"/>
+                                            </UniformGrid>
+                                        </StackPanel>
                                     </Border>
 
-                                    <WrapPanel Margin="30" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="1" >
-
-                                        <Grid Width="290" Height="auto" Margin="0,0,10,0">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="50"/>
-                                                <RowDefinition Height="*"/>
-                                            </Grid.RowDefinitions>
-
-                                            <!--header-->
-                                            <TextBlock Grid.Row="0" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Text="{Binding Translation[advanced], FallbackValue=Advanced}" FontWeight="Bold"/>
-
-                                            <StackPanel Orientation="Vertical" Grid.Row="1">
-
-                                                <TextBox x:Name="tbmscurr" Style="{StaticResource Watermark}" Height="30" Tag="Menu ID" ToolTip="f_267" Margin="0,0,0,5" KeyDown="FormatTextForInteger" />
-                                                <TextBox x:Name="tbmsprev" Style="{StaticResource Watermark}" Height="30" Tag="Return Menu ID" ToolTip="f_268" Margin="0,0,0,5" KeyDown="FormatTextForInteger"  />
-                                                <TextBox x:Name="tbmsPresetName" Style="{StaticResource Watermark}" Height="30" Tag="Name" Margin="0,0,0,5" />
-
-                                                <ComboBox x:Name="cbmsPresets"
-                                                          Tag="Saved Presets"
-                                                          Margin="0,0,0,5"
-                                                          Height="30"
-                                                          ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=MenuSwitcherPresets}"
-                                                          DisplayMemberPath="Name"
-                                                          SelectedValuePath="MenuId"
-                                                          SelectionChanged="cbmsPresets_SelectionChanged">
-                                                </ComboBox>
-
-                                                <Border CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5">
-                                                    <Border.Effect>
-                                                        <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>
-                                                    </Border.Effect>
-                                                    <Button x:Name="Btnmsread" Style="{DynamicResource CustomButton}" Content="Get" local:CornerRadiusSetter.CornerRadius="5" Click="Btnmsread_Click"/>
-                                                </Border>
-                                                <Border CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5">
-                                                    <Border.Effect>
-                                                        <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>
-                                                    </Border.Effect>
-                                                    <Button x:Name="Btnmschange" Style="{DynamicResource CustomButton}" Content="Set" local:CornerRadiusSetter.CornerRadius="5" Click="Btnmschange_Click"/>
-                                                </Border>
-                                                
-                                                <Rectangle Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="#6C7378" Height="1" Margin="55,6,55,4" />
-
-                                                <Border CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5">
-                                                    <Border.Effect>
-                                                        <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>
-                                                    </Border.Effect>
-                                                    <Button x:Name="BtnmsAddPreset" Style="{DynamicResource CustomButton}" Content="Add Preset" local:CornerRadiusSetter.CornerRadius="5" Click="BtnmsAddPreset_Click"/>
-                                                </Border>
-                                                <Border CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5">
-                                                    <Border.Effect>
-                                                        <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>
-                                                    </Border.Effect>
-                                                    <Button x:Name="BtnmsSavePreset" Style="{DynamicResource CustomButton}" Content="Save Preset" local:CornerRadiusSetter.CornerRadius="5" Click="BtnmsSavePreset_Click"/>
-                                                </Border>
-                                                <Border CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5">
-                                                    <Border.Effect>
-                                                        <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>
-                                                    </Border.Effect>
-                                                    <Button x:Name="BtnmsDeletePreset" Style="{DynamicResource CustomButton}" Content="Delete Preset" local:CornerRadiusSetter.CornerRadius="5" Click="BtnmsDeletePreset_Click"/>
-                                                </Border>
-
-                                            </StackPanel>
-                                            
-                                        </Grid>
-
-                                    </WrapPanel>
-
+                                    <Border Grid.Column="2" Background="{DynamicResource SectionBackgroundBrush}" CornerRadius="6" Padding="14,12" VerticalAlignment="Top">
+                                        <StackPanel>
+                                            <TextBlock FontSize="15" FontWeight="Bold" Foreground="{DynamicResource TextColor}" Margin="0,0,0,10" Text="Presets"/>
+                                            <TextBlock FontSize="12" FontWeight="Bold" Foreground="#FFA3A6AA" Margin="0,0,0,3" Text="{Binding Translation[ms_saved], FallbackValue='Saved presets'}"/>
+                                            <ComboBox x:Name="cbmsPresets" Height="32" Margin="0,0,0,8"
+                                                      ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=MenuSwitcherPresets}"
+                                                      DisplayMemberPath="Name" SelectedValuePath="MenuId" SelectionChanged="cbmsPresets_SelectionChanged"/>
+                                            <TextBlock FontSize="12" FontWeight="Bold" Foreground="#FFA3A6AA" Margin="0,0,0,3" Text="Name"/>
+                                            <TextBox x:Name="tbmsPresetName" Style="{StaticResource Watermark}" Height="32" Margin="0,0,0,12"/>
+                                            <UniformGrid Columns="3">
+                                                <Button x:Name="BtnmsAddPreset" Style="{StaticResource FormButton}" Margin="0,0,4,0" Click="BtnmsAddPreset_Click" Content="{Binding Translation[ms_add], FallbackValue=New}"/>
+                                                <Button x:Name="BtnmsSavePreset" Style="{StaticResource FormButton}" Margin="4,0,4,0" Click="BtnmsSavePreset_Click" Content="{Binding Translation[ms_save], FallbackValue=Save}"/>
+                                                <Button x:Name="BtnmsDeletePreset" Style="{StaticResource FormButtonDanger}" Margin="4,0,0,0" Click="BtnmsDeletePreset_Click" Content="{Binding Translation[ms_delete], FallbackValue=Delete}"/>
+                                            </UniformGrid>
+                                        </StackPanel>
+                                    </Border>
                                 </Grid>
-                            </Border>
+                            </StackPanel>
                         </ScrollViewer>
                     </TabItem>
                                     </TabControl>

@@ -7,18 +7,18 @@
         <Setter Property="FontFamily" Value="{DynamicResource Volte}"/>
         <Setter Property="FontSize" Value="18"/>
         <Setter Property="FontWeight" Value="Bold"/>
-        <Setter Property="Background" Value="{DynamicResource CheckBoxBackground}"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource ComboBoxBorderInner}"/>
+        <Setter Property="Background" Value="{DynamicResource ComboBoxBackground}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ComboBoxBorder}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
-        <Setter Property="Width" Value="30"/>
-        <Setter Property="Height" Value="30"/>
+        <Setter Property="Width" Value="24"/>
+        <Setter Property="Height" Value="24"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
 
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type CheckBox}">
-                    <Border Name="border" BorderThickness="{TemplateBinding BorderThickness}" Padding="4,2" CornerRadius="4" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}">
+                    <Border Name="border" BorderThickness="{TemplateBinding BorderThickness}" Padding="5,4" CornerRadius="4" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}">
                         <Viewbox>
                             <Path Stretch="Uniform" x:Name="content" Fill="{DynamicResource TextColor}" Data="m 161.64461,98.68601 -76.332179,72.5904 -42.282038,-36.2952 8.606079,-11.5995 32.553428,28.43748 67.7261,-64.358501 z" />
 
@@ -31,10 +31,10 @@
                             <Setter TargetName="content" Property="Data" Value=""/>
                         </Trigger>
                         <Trigger Property="IsFocused" Value="true">
-                            <Setter Property="BorderBrush" Value="{DynamicResource ComboBoxBorder}"/>
+                            <Setter Property="BorderBrush" Value="#FF4F545C"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="true">
-                            <Setter Property="BorderBrush" Value="{DynamicResource ComboBoxBorder}"/>
+                            <Setter Property="BorderBrush" Value="#FF4F545C"/>
                         </Trigger>
 
                         <!--<MultiTrigger>
