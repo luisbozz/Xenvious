@@ -1119,20 +1119,20 @@
                                                             <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[missiondisptod], FallbackValue='Progress Time of Day'}"/>
                                                             <CheckBox x:Name="cbdashptod" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbdashptod_Checked" Unchecked="cbdashptod_Checked"/>
                                                         </Grid>
-                                                        <Grid Style="{StaticResource FormRow}" ToolTip="{Binding Translation[missionextinfo], FallbackValue='* not offered by the creator, only through Xenvious'}">
+                                                        <Grid Style="{StaticResource FormRow}">
                                                             <Grid.ColumnDefinitions>
                                                                 <ColumnDefinition Width="*"/>
                                                                 <ColumnDefinition Width="Auto"/>
                                                             </Grid.ColumnDefinitions>
-                                                            <TextBlock Style="{StaticResource FormLabel}"><Run Text="{Binding Translation[missionextmuteambience], FallbackValue='Mute City and Traffic Sounds', Mode=OneWay}"/><Run Text=" *" Foreground="{DynamicResource DisabledForegroundBrush}"/></TextBlock>
+                                                            <TextBlock Style="{StaticResource FormLabel}"><Run Text="{Binding Translation[missionextmuteambience], FallbackValue='Mute City and Traffic Sounds', Mode=OneWay}"/></TextBlock>
                                                             <CheckBox x:Name="cbdashmuteambience" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked"/>
                                                         </Grid>
-                                                        <Grid Style="{StaticResource FormRow}" ToolTip="{Binding Translation[missionextinfo], FallbackValue='* not offered by the creator, only through Xenvious'}">
+                                                        <Grid Style="{StaticResource FormRow}">
                                                             <Grid.ColumnDefinitions>
                                                                 <ColumnDefinition Width="*"/>
                                                                 <ColumnDefinition Width="Auto"/>
                                                             </Grid.ColumnDefinitions>
-                                                            <TextBlock Style="{StaticResource FormLabel}"><Run Text="{Binding Translation[missionextnoregionvfx], FallbackValue='Disable Region Effects', Mode=OneWay}"/><Run Text=" *" Foreground="{DynamicResource DisabledForegroundBrush}"/></TextBlock>
+                                                            <TextBlock Style="{StaticResource FormLabel}"><Run Text="{Binding Translation[missionextnoregionvfx], FallbackValue='Disable Region Effects', Mode=OneWay}"/></TextBlock>
                                                             <CheckBox x:Name="cbdashnoregionvfx" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked"/>
                                                         </Grid>
                                                     </StackPanel>
@@ -5569,20 +5569,20 @@
                                                                                             <CheckBox x:Name="cbmissiondisjipspec" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbmissiondisjipspec_Checked" Unchecked="cbmissiondisjipspec_Checked" MaxHeight="30">
                                                                                             </CheckBox>
                                                                                         </Grid>
-                                                                                        <Grid Height="30" Margin="0,0,0,5" ToolTip="{Binding Translation[missionextinfo], FallbackValue='* not offered by the creator, only through Xenvious'}">
+                                                                                        <Grid Height="30" Margin="0,0,0,5">
                                                                                             <Grid.ColumnDefinitions>
                                                                                                 <ColumnDefinition Width="0.87*" />
                                                                                                 <ColumnDefinition Width="0.13*" />
                                                                                             </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" TextTrimming="CharacterEllipsis"><Run Text="{Binding Translation[missionexthidelives], FallbackValue='Hide Lives Counter', Mode=OneWay}"/><Run Text=" *" Foreground="{DynamicResource DisabledForegroundBrush}"/></TextBlock>
+                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" TextTrimming="CharacterEllipsis"><Run Text="{Binding Translation[missionexthidelives], FallbackValue='Hide Lives Counter', Mode=OneWay}"/></TextBlock>
                                                                                             <CheckBox x:Name="cbmissionexthidelives" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" MaxHeight="30"/>
                                                                                         </Grid>
-                                                                                        <Grid Height="30" Margin="0,0,0,5" ToolTip="{Binding Translation[missionextinfo], FallbackValue='* not offered by the creator, only through Xenvious'}">
+                                                                                        <Grid Height="30" Margin="0,0,0,5">
                                                                                             <Grid.ColumnDefinitions>
                                                                                                 <ColumnDefinition Width="0.87*" />
                                                                                                 <ColumnDefinition Width="0.13*" />
                                                                                             </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" TextTrimming="CharacterEllipsis"><Run Text="{Binding Translation[missionexthidereticle], FallbackValue='Hide Reticle', Mode=OneWay}"/><Run Text=" *" Foreground="{DynamicResource DisabledForegroundBrush}"/></TextBlock>
+                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" TextTrimming="CharacterEllipsis"><Run Text="{Binding Translation[missionexthidereticle], FallbackValue='Hide Reticle', Mode=OneWay}"/></TextBlock>
                                                                                             <CheckBox x:Name="cbmissionexthidereticle" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" MaxHeight="30"/>
                                                                                         </Grid>
                                                                                     </StackPanel>
@@ -5653,36 +5653,36 @@
                                                                                             <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[missionjlwnp], FallbackValue='Job launch without needed Players'}" TextTrimming="CharacterEllipsis" />
                                                                                             <CheckBox x:Name="cbmissionjlwnp" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbmissionjlwnp_Checked" Unchecked="cbmissionjlwnp_Checked" MaxHeight="30" />
                                                                                         </Grid>
-                                                                                        <Grid Height="30" Margin="0,0,0,5" ToolTip="{Binding Translation[missionextinfo], FallbackValue='* not offered by the creator, only through Xenvious'}">
+                                                                                        <Grid Height="30" Margin="0,0,0,5">
                                                                                             <Grid.ColumnDefinitions>
                                                                                                 <ColumnDefinition Width="0.87*" />
                                                                                                 <ColumnDefinition Width="0.13*" />
                                                                                             </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" TextTrimming="CharacterEllipsis"><Run Text="{Binding Translation[missionextstartcover], FallbackValue='Start in Cover', Mode=OneWay}"/><Run Text=" *" Foreground="{DynamicResource DisabledForegroundBrush}"/></TextBlock>
+                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" TextTrimming="CharacterEllipsis"><Run Text="{Binding Translation[missionextstartcover], FallbackValue='Start in Cover', Mode=OneWay}"/></TextBlock>
                                                                                             <CheckBox x:Name="cbmissionextstartcover" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" MaxHeight="30"/>
                                                                                         </Grid>
-                                                                                        <Grid Height="30" Margin="0,0,0,5" ToolTip="{Binding Translation[missionextinfo], FallbackValue='* not offered by the creator, only through Xenvious'}">
+                                                                                        <Grid Height="30" Margin="0,0,0,5">
                                                                                             <Grid.ColumnDefinitions>
                                                                                                 <ColumnDefinition Width="0.87*" />
                                                                                                 <ColumnDefinition Width="0.13*" />
                                                                                             </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" TextTrimming="CharacterEllipsis"><Run Text="{Binding Translation[missionextnoarmour], FallbackValue='Start Without Armor', Mode=OneWay}"/><Run Text=" *" Foreground="{DynamicResource DisabledForegroundBrush}"/></TextBlock>
+                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" TextTrimming="CharacterEllipsis"><Run Text="{Binding Translation[missionextnoarmour], FallbackValue='Start Without Armor', Mode=OneWay}"/></TextBlock>
                                                                                             <CheckBox x:Name="cbmissionextnoarmour" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" MaxHeight="30"/>
                                                                                         </Grid>
-                                                                                        <Grid Height="30" Margin="0,0,0,5" ToolTip="{Binding Translation[missionextinfo], FallbackValue='* not offered by the creator, only through Xenvious'}">
+                                                                                        <Grid Height="30" Margin="0,0,0,5">
                                                                                             <Grid.ColumnDefinitions>
                                                                                                 <ColumnDefinition Width="0.87*" />
                                                                                                 <ColumnDefinition Width="0.13*" />
                                                                                             </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" TextTrimming="CharacterEllipsis"><Run Text="{Binding Translation[missionextteamheal], FallbackValue='Kill Heals the Team', Mode=OneWay}"/><Run Text=" *" Foreground="{DynamicResource DisabledForegroundBrush}"/></TextBlock>
+                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" TextTrimming="CharacterEllipsis"><Run Text="{Binding Translation[missionextteamheal], FallbackValue='Kill Heals the Team', Mode=OneWay}"/></TextBlock>
                                                                                             <CheckBox x:Name="cbmissionextteamheal" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" MaxHeight="30"/>
                                                                                         </Grid>
-                                                                                        <Grid Height="30" Margin="0,0,0,5" ToolTip="{Binding Translation[missionextinfo], FallbackValue='* not offered by the creator, only through Xenvious'}">
+                                                                                        <Grid Height="30" Margin="0,0,0,5">
                                                                                             <Grid.ColumnDefinitions>
                                                                                                 <ColumnDefinition Width="0.87*" />
                                                                                                 <ColumnDefinition Width="0.13*" />
                                                                                             </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" TextTrimming="CharacterEllipsis"><Run Text="{Binding Translation[missionextindoorsprint], FallbackValue='Sprint Indoors', Mode=OneWay}"/><Run Text=" *" Foreground="{DynamicResource DisabledForegroundBrush}"/></TextBlock>
+                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" TextTrimming="CharacterEllipsis"><Run Text="{Binding Translation[missionextindoorsprint], FallbackValue='Sprint Indoors', Mode=OneWay}"/></TextBlock>
                                                                                             <CheckBox x:Name="cbmissionextindoorsprint" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" MaxHeight="30"/>
                                                                                         </Grid>
                                                                                     </StackPanel>
@@ -5762,20 +5762,20 @@
                                                                                             <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[missionactorremarmor], FallbackValue='Remove Actor Armor'}" TextTrimming="CharacterEllipsis" />
                                                                                             <CheckBox x:Name="cbmissionactorremarmor" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbmissionactorremarmor_Checked" Unchecked="cbmissionactorremarmor_Checked" MaxHeight="30" />
                                                                                         </Grid>
-                                                                                        <Grid Height="30" Margin="0,0,0,5" ToolTip="{Binding Translation[missionextinfo], FallbackValue='* not offered by the creator, only through Xenvious'}">
+                                                                                        <Grid Height="30" Margin="0,0,0,5">
                                                                                             <Grid.ColumnDefinitions>
                                                                                                 <ColumnDefinition Width="0.87*" />
                                                                                                 <ColumnDefinition Width="0.13*" />
                                                                                             </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" TextTrimming="CharacterEllipsis"><Run Text="{Binding Translation[missionextnoregionvfx], FallbackValue='Disable Region Effects', Mode=OneWay}"/><Run Text=" *" Foreground="{DynamicResource DisabledForegroundBrush}"/></TextBlock>
+                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" TextTrimming="CharacterEllipsis"><Run Text="{Binding Translation[missionextnoregionvfx], FallbackValue='Disable Region Effects', Mode=OneWay}"/></TextBlock>
                                                                                             <CheckBox x:Name="cbmissionextnoregionvfx" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" MaxHeight="30"/>
                                                                                         </Grid>
-                                                                                        <Grid Height="30" Margin="0,0,0,5" ToolTip="{Binding Translation[missionextinfo], FallbackValue='* not offered by the creator, only through Xenvious'}">
+                                                                                        <Grid Height="30" Margin="0,0,0,5">
                                                                                             <Grid.ColumnDefinitions>
                                                                                                 <ColumnDefinition Width="0.87*" />
                                                                                                 <ColumnDefinition Width="0.13*" />
                                                                                             </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" TextTrimming="CharacterEllipsis"><Run Text="{Binding Translation[missionextmuteambience], FallbackValue='Mute City and Traffic Sounds', Mode=OneWay}"/><Run Text=" *" Foreground="{DynamicResource DisabledForegroundBrush}"/></TextBlock>
+                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" TextTrimming="CharacterEllipsis"><Run Text="{Binding Translation[missionextmuteambience], FallbackValue='Mute City and Traffic Sounds', Mode=OneWay}"/></TextBlock>
                                                                                             <CheckBox x:Name="cbmissionextmuteambience" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" MaxHeight="30"/>
                                                                                         </Grid>
                                                                                     </StackPanel>
@@ -5900,36 +5900,36 @@
                                                                                             <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="13" Text="{Binding Translation[missionrwbs4], FallbackValue='Remove Weapons before Spawn Team 4'}" TextTrimming="CharacterEllipsis" />
                                                                                             <CheckBox x:Name="cbmissionrwbs4" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbmissionrwbs4_Checked" Unchecked="cbmissionrwbs4_Checked" MaxHeight="30" />
                                                                                         </Grid>
-                                                                                        <Grid Height="30" Margin="0,0,0,5" ToolTip="{Binding Translation[missionextinfo], FallbackValue='* not offered by the creator, only through Xenvious'}">
+                                                                                        <Grid Height="30" Margin="0,0,0,5">
                                                                                             <Grid.ColumnDefinitions>
                                                                                                 <ColumnDefinition Width="0.87*" />
                                                                                                 <ColumnDefinition Width="0.13*" />
                                                                                             </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" TextTrimming="CharacterEllipsis"><Run Text="{Binding Translation[missionextbestweap], FallbackValue='Equip Best Weapon', Mode=OneWay}"/><Run Text=" *" Foreground="{DynamicResource DisabledForegroundBrush}"/></TextBlock>
+                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" TextTrimming="CharacterEllipsis"><Run Text="{Binding Translation[missionextbestweap], FallbackValue='Equip Best Weapon', Mode=OneWay}"/></TextBlock>
                                                                                             <CheckBox x:Name="cbmissionextbestweap" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" MaxHeight="30"/>
                                                                                         </Grid>
-                                                                                        <Grid Height="30" Margin="0,0,0,5" ToolTip="{Binding Translation[missionextinfo], FallbackValue='* not offered by the creator, only through Xenvious'}">
+                                                                                        <Grid Height="30" Margin="0,0,0,5">
                                                                                             <Grid.ColumnDefinitions>
                                                                                                 <ColumnDefinition Width="0.87*" />
                                                                                                 <ColumnDefinition Width="0.13*" />
                                                                                             </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" TextTrimming="CharacterEllipsis"><Run Text="{Binding Translation[missionextnodropweap], FallbackValue='No Weapon Drops on Death', Mode=OneWay}"/><Run Text=" *" Foreground="{DynamicResource DisabledForegroundBrush}"/></TextBlock>
+                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" TextTrimming="CharacterEllipsis"><Run Text="{Binding Translation[missionextnodropweap], FallbackValue='No Weapon Drops on Death', Mode=OneWay}"/></TextBlock>
                                                                                             <CheckBox x:Name="cbmissionextnodropweap" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" MaxHeight="30"/>
                                                                                         </Grid>
-                                                                                        <Grid Height="30" Margin="0,0,0,5" ToolTip="{Binding Translation[missionextinfo], FallbackValue='* not offered by the creator, only through Xenvious'}">
+                                                                                        <Grid Height="30" Margin="0,0,0,5">
                                                                                             <Grid.ColumnDefinitions>
                                                                                                 <ColumnDefinition Width="0.87*" />
                                                                                                 <ColumnDefinition Width="0.13*" />
                                                                                             </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" TextTrimming="CharacterEllipsis"><Run Text="{Binding Translation[missionextnodropammo], FallbackValue='Block Dropping Ammo', Mode=OneWay}"/><Run Text=" *" Foreground="{DynamicResource DisabledForegroundBrush}"/></TextBlock>
+                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" TextTrimming="CharacterEllipsis"><Run Text="{Binding Translation[missionextnodropammo], FallbackValue='Block Dropping Ammo', Mode=OneWay}"/></TextBlock>
                                                                                             <CheckBox x:Name="cbmissionextnodropammo" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" MaxHeight="30"/>
                                                                                         </Grid>
-                                                                                        <Grid Height="30" Margin="0,0,0,5" ToolTip="{Binding Translation[missionextinfo], FallbackValue='* not offered by the creator, only through Xenvious'}">
+                                                                                        <Grid Height="30" Margin="0,0,0,5">
                                                                                             <Grid.ColumnDefinitions>
                                                                                                 <ColumnDefinition Width="0.87*" />
                                                                                                 <ColumnDefinition Width="0.13*" />
                                                                                             </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" TextTrimming="CharacterEllipsis"><Run Text="{Binding Translation[missionextnothrowweap], FallbackValue='Block Dropping Weapons', Mode=OneWay}"/><Run Text=" *" Foreground="{DynamicResource DisabledForegroundBrush}"/></TextBlock>
+                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" TextTrimming="CharacterEllipsis"><Run Text="{Binding Translation[missionextnothrowweap], FallbackValue='Block Dropping Weapons', Mode=OneWay}"/></TextBlock>
                                                                                             <CheckBox x:Name="cbmissionextnothrowweap" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" MaxHeight="30"/>
                                                                                         </Grid>
                                                                                     </StackPanel>
@@ -6118,68 +6118,68 @@
                                                                                             <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[missionedw], FallbackValue='Enable Deadline Weapons'}" TextTrimming="CharacterEllipsis" />
                                                                                             <CheckBox x:Name="cbmissionedw" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbmissionedw_Checked" Unchecked="cbmissionedw_Checked" MaxHeight="30" />
                                                                                         </Grid>
-                                                                                        <Grid Height="30" Margin="0,0,0,5" ToolTip="{Binding Translation[missionextinfo], FallbackValue='* not offered by the creator, only through Xenvious'}">
+                                                                                        <Grid Height="30" Margin="0,0,0,5">
                                                                                             <Grid.ColumnDefinitions>
                                                                                                 <ColumnDefinition Width="0.87*" />
                                                                                                 <ColumnDefinition Width="0.13*" />
                                                                                             </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" TextTrimming="CharacterEllipsis"><Run Text="{Binding Translation[missionextnopv], FallbackValue='No Personal Vehicle', Mode=OneWay}"/><Run Text=" *" Foreground="{DynamicResource DisabledForegroundBrush}"/></TextBlock>
+                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" TextTrimming="CharacterEllipsis"><Run Text="{Binding Translation[missionextnopv], FallbackValue='No Personal Vehicle', Mode=OneWay}"/></TextBlock>
                                                                                             <CheckBox x:Name="cbmissionextnopv" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" MaxHeight="30"/>
                                                                                         </Grid>
-                                                                                        <Grid Height="30" Margin="0,0,0,5" ToolTip="{Binding Translation[missionextinfo], FallbackValue='* not offered by the creator, only through Xenvious'}">
+                                                                                        <Grid Height="30" Margin="0,0,0,5">
                                                                                             <Grid.ColumnDefinitions>
                                                                                                 <ColumnDefinition Width="0.87*" />
                                                                                                 <ColumnDefinition Width="0.13*" />
                                                                                             </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" TextTrimming="CharacterEllipsis"><Run Text="{Binding Translation[missionextteamvehexproof], FallbackValue='Team Vehicles Explosion-Proof', Mode=OneWay}"/><Run Text=" *" Foreground="{DynamicResource DisabledForegroundBrush}"/></TextBlock>
+                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" TextTrimming="CharacterEllipsis"><Run Text="{Binding Translation[missionextteamvehexproof], FallbackValue='Team Vehicles Explosion-Proof', Mode=OneWay}"/></TextBlock>
                                                                                             <CheckBox x:Name="cbmissionextteamvehexproof" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" MaxHeight="30"/>
                                                                                         </Grid>
-                                                                                        <Grid Height="30" Margin="0,0,0,5" ToolTip="{Binding Translation[missionextinfo], FallbackValue='* not offered by the creator, only through Xenvious'}">
+                                                                                        <Grid Height="30" Margin="0,0,0,5">
                                                                                             <Grid.ColumnDefinitions>
                                                                                                 <ColumnDefinition Width="0.87*" />
                                                                                                 <ColumnDefinition Width="0.13*" />
                                                                                             </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" TextTrimming="CharacterEllipsis"><Run Text="{Binding Translation[missionextnovehexpdmg], FallbackValue='No Damage From Vehicle Explosions', Mode=OneWay}"/><Run Text=" *" Foreground="{DynamicResource DisabledForegroundBrush}"/></TextBlock>
+                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" TextTrimming="CharacterEllipsis"><Run Text="{Binding Translation[missionextnovehexpdmg], FallbackValue='No Damage From Vehicle Explosions', Mode=OneWay}"/></TextBlock>
                                                                                             <CheckBox x:Name="cbmissionextnovehexpdmg" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" MaxHeight="30"/>
                                                                                         </Grid>
-                                                                                        <Grid Height="30" Margin="0,0,0,5" ToolTip="{Binding Translation[missionextinfo], FallbackValue='* not offered by the creator, only through Xenvious'}">
+                                                                                        <Grid Height="30" Margin="0,0,0,5">
                                                                                             <Grid.ColumnDefinitions>
                                                                                                 <ColumnDefinition Width="0.87*" />
                                                                                                 <ColumnDefinition Width="0.13*" />
                                                                                             </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" TextTrimming="CharacterEllipsis"><Run Text="{Binding Translation[missionextruinernorockets], FallbackValue='Block Ruiner Rockets', Mode=OneWay}"/><Run Text=" *" Foreground="{DynamicResource DisabledForegroundBrush}"/></TextBlock>
+                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" TextTrimming="CharacterEllipsis"><Run Text="{Binding Translation[missionextruinernorockets], FallbackValue='Block Ruiner Rockets', Mode=OneWay}"/></TextBlock>
                                                                                             <CheckBox x:Name="cbmissionextruinernorockets" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" MaxHeight="30"/>
                                                                                         </Grid>
-                                                                                        <Grid Height="30" Margin="0,0,0,5" ToolTip="{Binding Translation[missionextinfo], FallbackValue='* not offered by the creator, only through Xenvious'}">
+                                                                                        <Grid Height="30" Margin="0,0,0,5">
                                                                                             <Grid.ColumnDefinitions>
                                                                                                 <ColumnDefinition Width="0.87*" />
                                                                                                 <ColumnDefinition Width="0.13*" />
                                                                                             </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" TextTrimming="CharacterEllipsis"><Run Text="{Binding Translation[missionextdelvehdeath], FallbackValue='Remove Vehicle After Death', Mode=OneWay}"/><Run Text=" *" Foreground="{DynamicResource DisabledForegroundBrush}"/></TextBlock>
+                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" TextTrimming="CharacterEllipsis"><Run Text="{Binding Translation[missionextdelvehdeath], FallbackValue='Remove Vehicle After Death', Mode=OneWay}"/></TextBlock>
                                                                                             <CheckBox x:Name="cbmissionextdelvehdeath" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" MaxHeight="30"/>
                                                                                         </Grid>
-                                                                                        <Grid Height="30" Margin="0,0,0,5" ToolTip="{Binding Translation[missionextinfo], FallbackValue='* not offered by the creator, only through Xenvious'}">
+                                                                                        <Grid Height="30" Margin="0,0,0,5">
                                                                                             <Grid.ColumnDefinitions>
                                                                                                 <ColumnDefinition Width="0.87*" />
                                                                                                 <ColumnDefinition Width="0.13*" />
                                                                                             </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" TextTrimming="CharacterEllipsis"><Run Text="{Binding Translation[missionextnostuckdestroy], FallbackValue='Never Destroy Stuck Vehicles', Mode=OneWay}"/><Run Text=" *" Foreground="{DynamicResource DisabledForegroundBrush}"/></TextBlock>
+                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" TextTrimming="CharacterEllipsis"><Run Text="{Binding Translation[missionextnostuckdestroy], FallbackValue='Never Destroy Stuck Vehicles', Mode=OneWay}"/></TextBlock>
                                                                                             <CheckBox x:Name="cbmissionextnostuckdestroy" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" MaxHeight="30"/>
                                                                                         </Grid>
-                                                                                        <Grid Height="30" Margin="0,0,0,5" ToolTip="{Binding Translation[missionextinfo], FallbackValue='* not offered by the creator, only through Xenvious'}">
+                                                                                        <Grid Height="30" Margin="0,0,0,5">
                                                                                             <Grid.ColumnDefinitions>
                                                                                                 <ColumnDefinition Width="0.87*" />
                                                                                                 <ColumnDefinition Width="0.13*" />
                                                                                             </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" TextTrimming="CharacterEllipsis"><Run Text="{Binding Translation[missionextconvroofdown], FallbackValue='Convertible Roof Down', Mode=OneWay}"/><Run Text=" *" Foreground="{DynamicResource DisabledForegroundBrush}"/></TextBlock>
+                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" TextTrimming="CharacterEllipsis"><Run Text="{Binding Translation[missionextconvroofdown], FallbackValue='Convertible Roof Down', Mode=OneWay}"/></TextBlock>
                                                                                             <CheckBox x:Name="cbmissionextconvroofdown" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" MaxHeight="30"/>
                                                                                         </Grid>
-                                                                                        <Grid Height="30" Margin="0,0,0,5" ToolTip="{Binding Translation[missionextinfo], FallbackValue='* not offered by the creator, only through Xenvious'}">
+                                                                                        <Grid Height="30" Margin="0,0,0,5">
                                                                                             <Grid.ColumnDefinitions>
                                                                                                 <ColumnDefinition Width="0.87*" />
                                                                                                 <ColumnDefinition Width="0.13*" />
                                                                                             </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" TextTrimming="CharacterEllipsis"><Run Text="{Binding Translation[missionextnoheadlights], FallbackValue='Block Headlight Button', Mode=OneWay}"/><Run Text=" *" Foreground="{DynamicResource DisabledForegroundBrush}"/></TextBlock>
+                                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" TextTrimming="CharacterEllipsis"><Run Text="{Binding Translation[missionextnoheadlights], FallbackValue='Block Headlight Button', Mode=OneWay}"/></TextBlock>
                                                                                             <CheckBox x:Name="cbmissionextnoheadlights" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" MaxHeight="30"/>
                                                                                         </Grid>
                                                                                     </StackPanel>

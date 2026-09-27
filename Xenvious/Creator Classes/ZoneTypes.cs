@@ -9,8 +9,6 @@ namespace Xenvious
     /// cleans up. Types 0-4 and 7 carry Rockstar's own names (FMMC_ZN_TY0..7); the names of
     /// the later DLC types are not in any public label dump, so those are described by what
     /// the controller does. Types not listed here can still be typed in as a number.
-    /// The public Mission Creator (public_mission_creator, Enhanced) only lets players pick
-    /// 0, 9, 12, 23, 37, 40 and 89; those are marked Public.
     /// </summary>
     public static class ZoneTypes
     {
@@ -25,7 +23,6 @@ namespace Xenvious
             public Value UsesValue;
             public string ValueKey;
             public string ValueFallback;
-            public bool Public;
         }
 
         private static ZoneType T(int id, string name, string description, Value value = Value.None, string valueKey = null, string valueFallback = null)
@@ -61,17 +58,8 @@ namespace Xenvious
             T(41, "Hide objects", "Objects in the zone turn transparent and their blips fade out."),
             T(44, "Block NPC paths", "NPCs do not walk through the zone."),
             // Label FMMC_ZN_TYDAD; the controller dump used here has no case for it.
-            T(89, "Type 89", "Offered in the public Mission Creator; what it does is not checked yet."),
+            T(89, "Type 89", "What this type does is not checked yet."),
         };
-
-        // Offered in the public Mission Creator (func_3152 in public_mission_creator).
-        private static readonly int[] PublicIds = { 0, 9, 12, 23, 37, 40, 89 };
-
-        static ZoneTypes()
-        {
-            foreach (var type in All)
-                type.Public = PublicIds.Contains(type.Id);
-        }
 
         public static ZoneType Find(int id) => All.FirstOrDefault(t => t.Id == id);
     }

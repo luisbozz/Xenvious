@@ -221,8 +221,7 @@ namespace Xenvious
             _zoneTypeSync = false;
 
             if (type != null)
-                lblzonetypeinfo.Text = TranslateOr("zt_desc_" + type.Id, type.Description)
-                    + (type.Public ? " " + TranslateOr("zt_public", "Also in the public Mission Creator.") : "");
+                lblzonetypeinfo.Text = TranslateOr("zt_desc_" + type.Id, type.Description);
             else if (known)
                 lblzonetypeinfo.Text = string.Format(TranslateOr("zt_unknown", "Type {0} has no description yet."), id);
             else
