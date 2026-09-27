@@ -128,10 +128,24 @@ namespace Xenvious
             var rules = ExtraObjectives.Rules(slot, _team);
             if (rules.Count == 0)
                 _list.Children.Add(new TextBlock { Text = T("eo_none", "No extra rules for this team."), FontSize = 13, Foreground = (Brush)FindResource("NavMutedBrush"), Margin = new Thickness(0, 2, 0, 4) });
+            int count = ExtraObjectives.TeamRuleCount(_team);
             foreach (var rule in rules)
+            {
                 _list.Children.Add(RuleRow(slot, rule));
+                if (count > 0 && rule.Priority >= count)
+                    _list.Children.Add(Warning(string.Format(CultureInfo.CurrentCulture, T("eo_warn_count", "Team {0} has only {1} rules."), _team + 1, count)));
+            }
+            int own = ExtraObjectives.OwnPriority(_type, Index, _team);
+            if (rules.Count > 0 && (own < 0 || (count > 0 && own >= count)))
+                _list.Children.Add(Warning(string.Format(CultureInfo.CurrentCulture, T("eo_warn_own", "This entity has no own rule for team {0}; its extra rules will not run."), _team + 1)));
             IsEnabled = MainWindow.m != null && MainWindow.m.IsProcOpen && Index >= 0;
         }
+
+        private static UIElement Warning(string text) => new TextBlock
+        {
+            Text = text, FontSize = 12, TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, -2, 0, 6),
+            Foreground = new SolidColorBrush(Color.FromRgb(0xFA, 0xA6, 0x1A)),
+        };
 
         private UIElement RuleRow(int slot, ExtraObjectives.Rule rule)
         {

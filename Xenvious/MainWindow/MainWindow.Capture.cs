@@ -240,6 +240,10 @@ namespace Xenvious
                                 new Global(objbase + d).SetInt(valuesafterdeletedobj[i][d]);
                             }
                         }
+                        // Extra objectives refer to this entity type by index; follow the shift.
+                        ExtraObjectives.OnEntityDeleted(ExtraObjectives.TypeObject, index);
+                        ObjExtraRules.Refresh();
+
                     }
                     catch (Exception)
                     {

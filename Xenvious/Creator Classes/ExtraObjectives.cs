@@ -85,6 +85,27 @@ namespace Xenvious
             return used;
         }
 
+        /// <summary>Number of rules in the team's list (nrl).</summary>
+        public static int TeamRuleCount(int team)
+            => Ready && GTA.Offsets.Editor.nrl != 0 ? new Global(GTA.Offsets.Editor.nrl + team * GTA.Offsets.Editor.team_NEXT).Get<int>() : 0;
+
+        /// <summary>The entity's own rule number (0-based) for the team, -1 when unknown.</summary>
+        public static int OwnPriority(int type, int index, int team)
+        {
+            if (!Ready || index < 0)
+                return -1;
+            long pri, next;
+            switch (type)
+            {
+                case TypePed: pri = GTA.Offsets.Editor.Actor.pri; next = GTA.Offsets.Editor.Actor.NEXT; break;
+                case TypeVehicle: pri = GTA.Offsets.Editor.Vehicle.pri; next = GTA.Offsets.Editor.Vehicle.NEXT; break;
+                case TypeObject: pri = GTA.Offsets.Editor.Objects.pri; next = GTA.Offsets.Editor.Objects.NEXT; break;
+                case TypeGoTo: pri = GTA.Offsets.Editor.Locations.pri; next = GTA.Offsets.Editor.Locations.NEXT; break;
+                default: return -1;
+            }
+            return pri == 0 ? -1 : new Global(pri + team + next * index).Get<int>();
+        }
+
         public static List<Rule> Rules(int slot, int team)
         {
             var list = new List<Rule>();

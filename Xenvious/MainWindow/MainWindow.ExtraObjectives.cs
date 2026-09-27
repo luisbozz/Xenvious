@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System.Globalization;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Xenvious
 {
@@ -8,22 +11,59 @@ namespace Xenvious
         private void InitExtraRules()
         {
             VehExtraRules.Attach(ddvehno, ExtraObjectives.TypeVehicle);
-            VehExtraRules.HelpRequested += (_, __) => ShowExtraRulesHelp();
+            VehExtraRules.HelpRequested += (_, __) => OpenExtraObjectives();
             ActorExtraRules.Attach(ddactorno, ExtraObjectives.TypePed);
-            ActorExtraRules.HelpRequested += (_, __) => ShowExtraRulesHelp();
+            ActorExtraRules.HelpRequested += (_, __) => OpenExtraObjectives();
+            ObjExtraRules.Attach(ddobjno, ExtraObjectives.TypeObject);
+            ObjExtraRules.HelpRequested += (_, __) => OpenExtraObjectives();
+            GotoExtraRules.Attach(ddgotono, ExtraObjectives.TypeGoTo);
+            GotoExtraRules.HelpRequested += (_, __) => OpenExtraObjectives();
         }
 
-        /// <summary>How extra objectives work, with an example; shown from the card's "?".</summary>
-        private async void ShowExtraRulesHelp()
+        /// <summary>Opens the overview: the explanation and all 30 slots.</summary>
+        private void OpenExtraObjectives()
         {
-            await ConfirmAsync(
-                TranslateOr("eo_help_title", "Extra rules"),
-                TranslateOr("eo_help_text",
-                    "Normally a ped, vehicle, object or go-to belongs to one rule of a team. Extra rules let the same entity take part in more rules of the team's rule list.\n\n" +
-                    "Example: vehicle 3 has the rule 1 \"Go to\" for team 1. Add the extra rule 3 \"Collect\": in rule 3 team 1 has to take the same vehicle and bring it to the drop-off.\n\n" +
-                    "Rule no. is the number of the rule in the team's list. The entity needs its own rule for the team, and the rule number has to exist. Up to 30 entities can have extra rules, each up to 13 per team.\n\n" +
-                    "When you delete an entity in Xenvious, the extra rules of the following entities move along with them."),
-                "OK", null);
+            BtnSectionMission_Click(null, null);
+            PageInnerMission.SelectedItem = PageInnerMissionExtra;
+            RefreshExtraOverview();
+        }
+
+        private static readonly string[] TeamColors = { "#FF5865F2", "#FF43B581", "#FFFAA61A", "#FFEB459E" };
+
+        private void RefreshExtraOverview()
+        {
+            ExtraOverviewList.Children.Clear();
+            ExtraOverviewCount.Text = string.Format(CultureInfo.CurrentCulture, TranslateOr("eo_slots", "{0} of 30 used"), ExtraObjectives.UsedSlots());
+            string[] kinds = { "", TranslateOr("eo_k_ped", "Actor"), TranslateOr("eo_k_veh", "Vehicle"), TranslateOr("eo_k_obj", "Object"), TranslateOr("eo_k_goto", "Go-to") };
+            bool any = false;
+            for (int slot = 0; slot < ExtraObjectives.Slots; slot++)
+            {
+                int id = ExtraObjectives.EntityId(slot);
+                int type = ExtraObjectives.EntityType(slot);
+                if (id < 0)
+                    continue;
+                any = true;
+                var row = new WrapPanel { Margin = new Thickness(0, 0, 0, 8) };
+                row.Children.Add(new TextBlock { Width = 150, FontWeight = FontWeights.SemiBold, VerticalAlignment = VerticalAlignment.Center,
+                    Text = $"{slot + 1}.  {(type > 0 && type < kinds.Length ? kinds[type] : type.ToString(CultureInfo.InvariantCulture))} {id + 1}" });
+                for (int team = 0; team < ExtraObjectives.Teams; team++)
+                    foreach (var rule in ExtraObjectives.Rules(slot, team))
+                    {
+                        string name = System.Linq.Enumerable.FirstOrDefault(ExtraObjectives.RuleTypesFor(type), r => r.Value == rule.Type).Name ?? rule.Type.ToString(CultureInfo.InvariantCulture);
+                        var chip = new Border { CornerRadius = new CornerRadius(10), Padding = new Thickness(8, 2, 8, 2), Margin = new Thickness(0, 0, 6, 4),
+                            Background = (Brush)FindResource("SeactionHeaderBackgroundBrush") };
+                        var text = new TextBlock { FontSize = 12.5 };
+                        text.Inlines.Add(new System.Windows.Documents.Run($"T{team + 1} · {rule.Priority + 1} ") { FontWeight = FontWeights.Bold,
+                            Foreground = (Brush)new BrushConverter().ConvertFromString(TeamColors[team]) });
+                        text.Inlines.Add(new System.Windows.Documents.Run(TranslateOr("eo_r_" + rule.Type, name)));
+                        chip.Child = text;
+                        row.Children.Add(chip);
+                    }
+                ExtraOverviewList.Children.Add(row);
+            }
+            if (!any)
+                ExtraOverviewList.Children.Add(new TextBlock { Text = TranslateOr("eo_empty", "No entity has extra rules yet. Add them on the page of an actor, vehicle, object or go-to."),
+                    TextWrapping = TextWrapping.Wrap, Foreground = (Brush)FindResource("NavMutedBrush") });
         }
     }
 }
