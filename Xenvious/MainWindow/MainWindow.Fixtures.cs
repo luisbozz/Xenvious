@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -36,8 +37,8 @@ namespace Xenvious
             tbcdeflocy.IsEnabled = index < 0 ? false : true;
             tbcdeflocz.IsEnabled = index < 0 ? false : true;
             cbcdefadvanced.IsEnabled = index < 0 ? false : true;
-            Btncdefgetmodel.IsEnabled = index < 0 ? false : true;
             Btncdefgetloc.IsEnabled = index < 0 ? false : true;
+            ShowHoveredFixtureModel(index);
 
             if (m.IsProcOpen && index > -1)
             {
@@ -61,6 +62,7 @@ namespace Xenvious
                 }
 
                 if (!tbcdefmodel.IsFocused || ignore_focus) tbcdefmodel.Text = model.ToString();
+                lblcdefmodelname.Text = PropName(model);
                 if (!tbcdeflocx.IsFocused || ignore_focus) tbcdeflocx.Text = locx.ToString();
                 if (!tbcdeflocy.IsFocused || ignore_focus) tbcdeflocy.Text = locy.ToString();
                 if (!tbcdeflocz.IsFocused || ignore_focus) tbcdeflocz.Text = locz.ToString();
@@ -73,6 +75,29 @@ namespace Xenvious
             }
         }
 
+
+        // The prop under the cursor comes from the injected creator script (custom_hovered_model),
+        // so it only changes while the script features are on.
+        private void ShowHoveredFixtureModel(int index)
+        {
+            int hovered = 0;
+            if (m.IsProcOpen && GTA.Offsets.Editor.custom_hovered_model != 0)
+                hovered = new Global(GTA.Offsets.Editor.custom_hovered_model).Get<int>();
+
+            string name = PropName(hovered);
+            lblcdefhovered.Text = hovered == 0
+                ? TranslateOr("adv_hover_none", "— aim at a prop in the creator")
+                : (name.Length == 0 ? hovered.ToString(CultureInfo.InvariantCulture) : $"{name}  ({hovered})");
+            Btncdefgetmodel.IsEnabled = index > -1 && hovered != 0;
+        }
+
+        private static string PropName(int model)
+        {
+            if (model == 0)
+                return "";
+            var prop = GTA.Editor.PropList.FirstOrDefault(x => x.Integer == model);
+            return prop == null ? "" : (string.IsNullOrEmpty(prop.Name) ? prop.Native : prop.Name);
+        }
 
         private void cbcdefhide_Checked(object sender, RoutedEventArgs e)
         {
