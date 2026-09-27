@@ -381,6 +381,7 @@ namespace Xenvious
 
             StartDashboardStatus();
             InitModelCards();
+            InitExtraRules();
         }
 
         public bool globalPtrSanityCheck(long value)

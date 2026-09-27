@@ -2,7 +2,7 @@
 
 Research for a Xenvious page, from Rockstar's source (`D:\decompiled scripts gta 5`,
 `FMMC_header.sch`, `FMMC_Cloud_loader.sch`, `FMMC_Creation.sch`) and the Enhanced
-`public_mission_creator.c`. Nothing of this is built yet.
+`public_mission_creator.c`.
 
 ## What it is
 
@@ -63,3 +63,19 @@ Check the Legacy numbers the same way before use.
 - Hook the shift into the existing delete / duplicate code of those pages.
 - Copy Jobs: import the four keys.
 - Test in the Mission creator (Enhanced first, then Legacy for the Legacy offsets).
+
+## Built so far (not tested in game)
+
+- `eoir` holds the creator's selection value (`ciSELECTION_*`), not the rule logic; the controller
+  converts it with `GET_FMMC_RULE_FROM_CREATOR_RULE`. The rule lists per entity type are in
+  `ExtraObjectives.RuleTypesFor` (names are ours, key `eo_r_<value>`; Rockstar's `FMMC_RLM_*`
+  labels are in no dump on disk).
+- `Creator Classes/ExtraObjectives.cs`: find / add (like the creator) / edit / remove, free a slot
+  when its last rule goes, shift on delete.
+- `Controls/ExtraRulesCard.cs`: the card (team tabs, rule rows, add row, "?" explanation dialog),
+  on the Vehicle and Actor pages; the delete buttons of both pages shift the indices.
+- Explanation with example: `eo_help_text` (dialog from the card's "?").
+
+Next: card for objects and go-tos, the overview page of all 30 slots with the explanation on it
+(the "?" then jumps there), warnings (rule number past the team's rules, entity without own rule
+for the team), duplicate handling.

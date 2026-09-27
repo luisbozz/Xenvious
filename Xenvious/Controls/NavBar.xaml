@@ -150,7 +150,7 @@
         <Setter Property="Foreground" Value="{DynamicResource PrimaryButtonForeground}"/>
     </Style>
     <!-- A choice as a filled tile (like the shape tiles in Advanced Placement): no frame until picked. -->
-    <Style x:Key="ChoiceTile" TargetType="{x:Type RadioButton}">
+    <Style x:Key="ChoiceTile" TargetType="{x:Type ToggleButton}">
         <Setter Property="OverridesDefaultStyle" Value="True"/>
         <Setter Property="FontFamily" Value="{DynamicResource Volte}"/>
         <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
@@ -162,7 +162,7 @@
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type RadioButton}">
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
                     <Border x:Name="b" CornerRadius="5" Background="{TemplateBinding Background}" BorderBrush="Transparent" BorderThickness="1.5" Padding="{TemplateBinding Padding}">
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>

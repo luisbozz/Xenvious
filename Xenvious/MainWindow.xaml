@@ -2786,6 +2786,7 @@
                                                             <StackPanel>
                                                                 <local:ModelCard x:Name="VehModelCard" Margin="0,0,0,12"/>
                                                             </StackPanel>
+                                                            <local:ExtraRulesCard x:Name="VehExtraRules"/>
                                                             <StackPanel>
                                                                 <Border Style="{StaticResource DashCard}">
                                                                     <DockPanel>
@@ -9133,6 +9134,7 @@
                                                             <StackPanel>
                                                                 <local:ModelCard x:Name="ActorModelCard" Margin="0,0,0,12"/>
                                                             </StackPanel>
+<local:ExtraRulesCard x:Name="ActorExtraRules"/>
                                                             <StackPanel>
                                                                 <Border Style="{StaticResource DashCard}">
                                                                     <DockPanel>
