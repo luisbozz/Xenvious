@@ -294,6 +294,8 @@ namespace Xenvious
             _heightRow.Visibility = usesHeight ? Visibility.Visible : Visibility.Collapsed;
             _belowRow.Visibility = usesHeight ? Visibility.Visible : Visibility.Collapsed;
             _widthRow.Visibility = _shape == AreaShape.AxisBox ? Visibility.Collapsed : Visibility.Visible;
+            if (_widthRow is Panel widthPanel && widthPanel.Children[0] is TextBlock widthLabel)
+                widthLabel.Text = _shape == AreaShape.Sphere || _shape == AreaShape.Cylinder ? T("pa_radius", "Radius") : T("width", "Width");
             if (!Read(out var s, out var e, out float width))
             {
                 Draw();

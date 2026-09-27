@@ -179,7 +179,9 @@
     <Compile Include="Controls\MasonryPanel.cs" />
     <Compile Include="Controls\SearchableCombo.cs" />
     <Compile Include="Controls\AreaEditor.cs" />
+    <Compile Include="Controls\EntityPicker.cs" />
     <Compile Include="Controls\ExtraRulesCard.cs" />
+    <Compile Include="Controls\PlayAreaView.cs" />
     <Compile Include="Controls\MenuBitsView.cs" />
     <Compile Include="Controls\VisibilityCard.cs" />
     <Compile Include="Controls\ModelCard.xaml.cs">
@@ -221,6 +223,7 @@
     <Compile Include="Creator Classes\Gangs.cs" />
     <Compile Include="Creator Classes\GangTypes.cs" />
     <Compile Include="Creator Classes\ExtraObjectives.cs" />
+    <Compile Include="Creator Classes\PlayAreas.cs" />
     <Compile Include="Creator Classes\VisibilityGroups.cs" />
     <Compile Include="Creator Classes\ScriptThreadLog.cs" />
     <Compile Include="Creator Classes\LocalFreezer.cs" />
@@ -430,9 +433,7 @@
     <Compile Include="MainWindow\MainWindow.Mission.Kill.cs" />
     <Compile Include="MainWindow\MainWindow.Mission.Menubs.cs" />
     <Compile Include="MainWindow\MainWindow.Mission.OtZone.cs" />
-    <Compile Include="MainWindow\MainWindow.Mission.PA.cs" />
     <Compile Include="MainWindow\MainWindow.Mission.PlayerSettings.cs" />
-    <Compile Include="MainWindow\MainWindow.Mission.RA.cs" />
     <Compile Include="MainWindow\MainWindow.Mission.SMS.cs" />
     <Compile Include="MainWindow\MainWindow.Mission.TeamSettings.cs" />
     <Compile Include="MainWindow\MainWindow.Mission.TeleportMarkers.cs" />
@@ -457,6 +458,7 @@
     <Compile Include="MainWindow\MainWindow.DashboardCreator.cs" />
     <Compile Include="MainWindow\MainWindow.EditNav.cs" />
     <Compile Include="MainWindow\MainWindow.EditSearch.cs" />
+    <Compile Include="MainWindow\MainWindow.PlayArea.cs" />
     <Compile Include="MainWindow\MainWindow.EntryBar.cs" />
     <Compile Include="MainWindow\MainWindow.EditHeaderBar.cs" />
     <Compile Include="MainWindow\MainWindow.RebuildRequest.cs" />

@@ -73,13 +73,6 @@ namespace Xenvious
             new Kill.Values(new int[] { 0,0,0,0 }, new int[] { 99999,99999,99999,99999 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, -1,-1)
         });
         public static List<int> plylfreeze;
-        public static List<List<string>> bfmfreeze = new List<List<string>>
-        {
-            new List<string>{ "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!" },
-            new List<string>{ "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!" },
-            new List<string>{ "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!" },
-            new List<string>{ "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!" }
-        };
         public static nrcidcopy nrcidcopy;
 
         public HashSet<ulong> appliedPatches = new HashSet<ulong>();
@@ -373,6 +366,7 @@ namespace Xenvious
             InitModelCards();
             InitExtraRules();
             InitAreaEditors();
+            InitEntityPicker();
         }
 
         public bool globalPtrSanityCheck(long value)

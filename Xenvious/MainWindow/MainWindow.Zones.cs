@@ -182,9 +182,6 @@ namespace Xenvious
         private void InitAreaEditors()
         {
             zoneArea.Attach(tbzonestartx, tbzonestarty, tbzonestartz, tbzoneendx, tbzoneendy, tbzoneendz, tbzonewidth, tbzoneheight);
-            // Play area and play area 2: the angled box part (the sphere part has no height).
-            paArea.Attach(tbpastartlocx, tbpastartlocy, tbpastartlocz, tbpaendlocx, tbpaendlocy, tbpaendlocz, tbpawidth);
-            bd2Area.Attach(tbbd2pastartlocx, tbbd2pastartlocy, tbbd2pastartlocz, tbbd2paendlocx, tbbd2paendlocy, tbbd2paendlocz, tbbd2pawidth);
             // Gang chase trigger area: IS_ENTITY_IN_ANGLED_AREA(vGangTriggerPos1, vGangTriggerPos2, fGangTriggerWidth).
             gangArea.Attach(tbmissiongangv1locx, tbmissiongangv1locy, tbmissiongangv1locz, tbmissiongangv2locx, tbmissiongangv2locy, tbmissiongangv2locz, tbmissiongbaw);
         }
