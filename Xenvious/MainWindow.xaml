@@ -1302,6 +1302,8 @@
                                                     <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[editnav_back], FallbackValue=Back}"/>
                                                 </StackPanel>
                                             </Button>
+                                            <!-- The entry bar of the open page (count, ‹ number ›, delete, add) moves up here; MainWindow.EditNav.cs. -->
+                                            <ContentControl x:Name="EditHeaderBar" DockPanel.Dock="Right" VerticalAlignment="Center" Focusable="False"/>
                                             <TextBlock x:Name="EditCrumbParent" VerticalAlignment="Center" FontSize="14" FontWeight="Bold" Foreground="#FFA3A6AA"/>
                                             <TextBlock x:Name="HeaderLabel" VerticalAlignment="Center" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource TextColor}"/>
                                         </DockPanel>
@@ -1363,7 +1365,7 @@
 
                                                             <!-- Entry bar on top, then cards by topic: model and position, look, rules, raw values. -->
                                                             <DockPanel>
-                                                                <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,12">
+                                                                <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,12" Tag="EntryBar">
                                                                     <DockPanel>
                                                                         <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                                                                             <Button x:Name="BtnPropsToDynamic" Content="{Binding Translation[props_to_dynamic], FallbackValue='→ Dynamic'}" Click="BtnPropsToDynamic_Click" ToolTip="{Binding Translation[props_to_dynamic_tip], FallbackValue='Verschiebt den gewählten Prop in die andere Liste.'}" Style="{StaticResource FormButton}" Height="32" Padding="14,0" Margin="0,0,10,0"/>
@@ -1969,7 +1971,7 @@
 
                                                             <!-- Entry bar on top, then cards by topic: model and position, look, rules, raw values. -->
                                                             <DockPanel>
-                                                                <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,12">
+                                                                <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,12" Tag="EntryBar">
                                                                     <DockPanel>
                                                                         <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                                                                             <Button x:Name="BtnDPropsToStatic" Content="{Binding Translation[props_to_static], FallbackValue='→ Static'}" Click="BtnDPropsToStatic_Click" ToolTip="{Binding Translation[props_to_static_tip], FallbackValue='Verschiebt den gewählten Prop in die andere Liste.'}" Style="{StaticResource FormButton}" Height="32" Padding="14,0" Margin="0,0,10,0"/>
@@ -2723,7 +2725,7 @@
 
                                                 <!-- Entry bar on top, then cards by topic: model and position, look, rules, raw values. -->
                                                 <DockPanel Margin="10,0">
-                                                    <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,12">
+                                                    <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,12" Tag="EntryBar">
                                                         <DockPanel>
                                                             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                                                                 <!-- ‹ number › : steps through the entries without opening the list. -->
@@ -3488,7 +3490,7 @@
 
                                                 <!-- Entry bar on top, then cards by topic: model and position, look, rules, raw values. -->
                                                 <DockPanel Margin="10,0">
-                                                    <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,12">
+                                                    <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,12" Tag="EntryBar">
                                                         <DockPanel>
                                                             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                                                                 <!-- ‹ number › : steps through the entries without opening the list. -->
@@ -4208,7 +4210,7 @@
 
                                                             <!-- Card layout (docs/handoff/auto_page.py): one card per old column, headings as sub titles. -->
                                                             <DockPanel Margin="10,0">
-                                                                <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,0">
+                                                                <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,0" Tag="EntryBar">
                                                                     <DockPanel>
                                                                         <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                                                                             <TextBlock VerticalAlignment="Center" FontSize="14" Foreground="{StaticResource NavMutedBrush}" Margin="0,0,8,0" Text="{Binding Translation[cpindex], FallbackValue=Checkpoint Index}"/>
@@ -6161,7 +6163,7 @@
 
                                                                 <!-- Card layout (docs/handoff/auto_page.py): one card per old column, headings as sub titles. -->
                                                                 <DockPanel Margin="10,0">
-                                                                    <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,0">
+                                                                    <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,0" Tag="EntryBar">
                                                                         <DockPanel>
                                                                             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                                                                                 <TextBlock VerticalAlignment="Center" FontSize="14" Foreground="{StaticResource NavMutedBrush}" Margin="0,0,8,0" Text="{Binding Translation[plyrindex], FallbackValue=Player Number}"/>
@@ -6297,7 +6299,7 @@
 
                                                                 <!-- Card layout (docs/handoff/auto_page.py): one card per old column, headings as sub titles. -->
                                                                 <DockPanel Margin="10,0">
-                                                                    <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,0">
+                                                                    <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,0" Tag="EntryBar">
                                                                         <DockPanel>
                                                                             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                                                                                 <TextBlock VerticalAlignment="Center" FontSize="14" Foreground="{StaticResource NavMutedBrush}" Margin="0,0,8,0" Text="{Binding Translation[actorteam], FallbackValue=Team}"/>
@@ -7068,7 +7070,7 @@
 
                                                                 <!-- Card layout (docs/handoff/auto_page.py): one card per old column, headings as sub titles. -->
                                                                 <DockPanel Margin="10,0">
-                                                                    <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,0">
+                                                                    <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,0" Tag="EntryBar">
                                                                         <DockPanel>
                                                                             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                                                                                 <TextBlock VerticalAlignment="Center" FontSize="14" Foreground="{StaticResource NavMutedBrush}" Margin="0,0,8,0" Text="{Binding Translation[nrl], FallbackValue=nrl}"/>
@@ -7325,7 +7327,7 @@
 
                                                                 <!-- Card layout (docs/handoff/auto_page.py): one card per old column, headings as sub titles. -->
                                                                 <DockPanel Margin="10,0">
-                                                                    <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,0">
+                                                                    <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,0" Tag="EntryBar">
                                                                         <DockPanel>
                                                                             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                                                                                 <TextBlock VerticalAlignment="Center" FontSize="14" Foreground="{StaticResource NavMutedBrush}" Margin="0,0,8,0" Text="{Binding Translation[nrl], FallbackValue=nrl}"/>
@@ -7570,7 +7572,7 @@
 
                                                                 <!-- Card layout (docs/handoff/auto_page.py): one card per old column, headings as sub titles. -->
                                                                 <DockPanel Margin="10,0">
-                                                                    <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,0">
+                                                                    <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,0" Tag="EntryBar">
                                                                         <DockPanel>
                                                                             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                                                                                 <TextBlock VerticalAlignment="Center" FontSize="14" Foreground="{StaticResource NavMutedBrush}" Margin="0,0,8,0" Text="{Binding Translation[actorteam], FallbackValue=Team}"/>
@@ -7906,7 +7908,7 @@
 
                                                                 <!-- Card layout (docs/handoff/auto_page.py): one card per old column, headings as sub titles. -->
                                                                 <DockPanel Margin="10,0">
-                                                                    <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,0">
+                                                                    <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,0" Tag="EntryBar">
                                                                         <DockPanel>
                                                                             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                                                                                 <TextBlock VerticalAlignment="Center" FontSize="14" Foreground="{StaticResource NavMutedBrush}" Margin="0,0,8,0" Text="{Binding Translation[actorteam], FallbackValue=Team}"/>
@@ -8012,7 +8014,7 @@
 
                                                                 <!-- Card layout (docs/handoff/auto_page.py): one card per old column, headings as sub titles. -->
                                                                 <DockPanel Margin="10,0">
-                                                                    <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,0">
+                                                                    <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,0" Tag="EntryBar">
                                                                         <DockPanel>
                                                                             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                                                                                 <TextBlock VerticalAlignment="Center" FontSize="14" Foreground="{StaticResource NavMutedBrush}" Margin="0,0,8,0" Text="{Binding Translation[actorteam], FallbackValue=Team}"/>
@@ -8210,7 +8212,7 @@
 
                                                                 <!-- Card layout (docs/handoff/auto_page.py): one card per old column, headings as sub titles. -->
                                                                 <DockPanel Margin="10,0">
-                                                                    <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,0">
+                                                                    <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,0" Tag="EntryBar">
                                                                         <DockPanel>
                                                                             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                                                                                 <TextBlock VerticalAlignment="Center" FontSize="14" Foreground="{StaticResource NavMutedBrush}" Margin="0,0,8,0" Text="{Binding Translation[otzoneindex], FallbackValue='otzone Index'}"/>
@@ -8361,7 +8363,7 @@
 
                                                                 <!-- Card layout (docs/handoff/auto_page.py): one card per old column, headings as sub titles. -->
                                                                 <DockPanel Margin="10,0">
-                                                                    <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,0">
+                                                                    <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,0" Tag="EntryBar">
                                                                         <DockPanel>
                                                                             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                                                                                 <TextBlock VerticalAlignment="Center" FontSize="14" Foreground="{StaticResource NavMutedBrush}" Margin="0,0,8,0" Text="{Binding Translation[ddblipindex], FallbackValue='Blip Index'}"/>
@@ -8536,7 +8538,7 @@
 
                                                                 <!-- Card layout (docs/handoff/auto_page.py): one card per old column, headings as sub titles. -->
                                                                 <DockPanel Margin="10,0">
-                                                                    <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,0">
+                                                                    <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,0" Tag="EntryBar">
                                                                         <DockPanel>
                                                                             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                                                                                 <TextBlock VerticalAlignment="Center" FontSize="14" Foreground="{StaticResource NavMutedBrush}" Margin="0,0,8,0" Text="{Binding Translation[smsindex], FallbackValue=SMS Index}"/>
@@ -8765,7 +8767,7 @@
 
                                                                 <!-- Card layout (docs/handoff/auto_page.py): one card per old column, headings as sub titles. -->
                                                                 <DockPanel Margin="10,0">
-                                                                    <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,0">
+                                                                    <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,0" Tag="EntryBar">
                                                                         <DockPanel>
                                                                             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                                                                                 <TextBlock VerticalAlignment="Center" FontSize="14" Foreground="{StaticResource NavMutedBrush}" Margin="0,0,8,0" Text="{Binding Translation[gotoindex], FallbackValue=Goto Number}"/>
@@ -9074,7 +9076,7 @@
 
                                                 <!-- Entry bar on top, then cards by topic: model and position, look, rules, raw values. -->
                                                 <DockPanel Margin="10,0">
-                                                    <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,12">
+                                                    <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,12" Tag="EntryBar">
                                                         <DockPanel>
                                                             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                                                                 <Button x:Name="BtnActorDuplicate" Content="{Binding Translation[duplicate], FallbackValue=Duplicate}" Click="BtnActorDuplicate_Click" Style="{StaticResource FormButton}" Height="32" Padding="14,0" Margin="0,0,10,0"/>
@@ -10083,7 +10085,7 @@
 
                                                 <!-- Entry bar on top, then cards by topic: model and position, look, rules, raw values. -->
                                                 <DockPanel Margin="10,0">
-                                                    <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,12">
+                                                    <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,12" Tag="EntryBar">
                                                         <DockPanel>
                                                             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                                                                 <!-- ‹ number › : steps through the entries without opening the list. -->
@@ -10434,7 +10436,7 @@
 
                                                             <!-- Card layout (docs/handoff/auto_page.py): one card per old column, headings as sub titles. -->
                                                             <DockPanel Margin="10,0">
-                                                                <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,0">
+                                                                <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,0" Tag="EntryBar">
                                                                     <DockPanel>
                                                                         <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                                                                             <TextBlock VerticalAlignment="Center" FontSize="14" Foreground="{StaticResource NavMutedBrush}" Margin="0,0,8,0" Text="{Binding Translation[actorteam], FallbackValue=Team}"/>
@@ -10536,7 +10538,7 @@
 
                                                             <!-- Card layout (docs/handoff/auto_page.py): one card per old column, headings as sub titles. -->
                                                             <DockPanel Margin="10,0">
-                                                                <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,0">
+                                                                <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,0" Tag="EntryBar">
                                                                     <DockPanel>
                                                                         <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                                                                             <TextBlock VerticalAlignment="Center" FontSize="14" Foreground="{StaticResource NavMutedBrush}" Margin="0,0,8,0" Text="{Binding Translation[cindex], FallbackValue=Capture Index}"/>
@@ -10743,7 +10745,7 @@
 
                                                             <!-- Card layout (docs/handoff/auto_page.py): one card per old column, headings as sub titles. -->
                                                             <DockPanel Margin="10,0">
-                                                                <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,0">
+                                                                <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,0" Tag="EntryBar">
                                                                     <DockPanel>
                                                                         <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                                                                             <TextBlock VerticalAlignment="Center" FontSize="14" Foreground="{StaticResource NavMutedBrush}" Margin="0,0,8,0" Text="{Binding Translation[actorteam], FallbackValue=Team}"/>
@@ -10893,7 +10895,7 @@
 
                                                 <!-- Entry bar on top, then cards by topic: model and position, look, rules, raw values. -->
                                                 <DockPanel Margin="10,0">
-                                                    <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,12">
+                                                    <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,12" Tag="EntryBar">
                                                         <DockPanel>
                                                             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                                                                 <!-- ‹ number › : steps through the entries without opening the list. -->
@@ -11071,7 +11073,7 @@
 
                                                 <!-- Entry bar on top, then cards by topic: model and position, look, rules, raw values. -->
                                                 <DockPanel Margin="10,0">
-                                                    <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,12">
+                                                    <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,12" Tag="EntryBar">
                                                         <DockPanel>
                                                             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                                                                 <!-- ‹ number › : steps through the entries without opening the list. -->

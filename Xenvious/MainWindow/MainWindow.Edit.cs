@@ -51,6 +51,9 @@ namespace Xenvious
         private void EditPages_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             checkSection();
+            // The page or one of its inner tabs changed: its entry bar moves into the header.
+            if (e.OriginalSource is TabControl && IsLoaded)
+                QueueEntryBarMove();
             // Selection changes of dropdowns inside the pages bubble up to here as well.
             // Not while the window is being built: the side list needs the whole page tree.
             if (e.Source == EditPages && IsLoaded)
