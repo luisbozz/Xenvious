@@ -56,6 +56,7 @@ namespace Xenvious
         {
             Wire(PropModelCard, ddpropno, () => PropCatalog, TranslateOr("prop", "Props"), () => (GTA.Offsets.Editor.Props.model, GTA.Offsets.Editor.Props.NEXT, ddpropno.SelectedIndex));
             Wire(DPropModelCard, dddpropno, () => PropCatalog, TranslateOr("dprop", "Dynamic Props"), () => (GTA.Offsets.Editor.DProps.model, GTA.Offsets.Editor.DProps.NEXT, dddpropno.SelectedIndex));
+            Wire(ObjModelCard, ddobjno, () => PropCatalog, TranslateOr("capobjects", "Objects"), () => (GTA.Offsets.Editor.Objects.model, GTA.Offsets.Editor.Objects.NEXT, ddobjno.SelectedIndex));
             Wire(VehModelCard, ddvehno, () => VehicleCatalog, TranslateOr("vehicles", "Vehicles"), () => (GTA.Offsets.Editor.Vehicle.model, GTA.Offsets.Editor.Vehicle.NEXT, ddvehno.SelectedIndex));
             Wire(WeapModelCard, ddweapno, () => WeaponCatalog, TranslateOr("weapons", "Weapons"), () => (GTA.Offsets.Editor.Weapon.model, GTA.Offsets.Editor.Weapon.NEXT, ddweapno.SelectedIndex));
             Wire(ActorModelCard, ddactorno, () => ActorCatalog, TranslateOr("actor", "Actors"), () => (GTA.Offsets.Editor.Actor.model, GTA.Offsets.Editor.Actor.NEXT, ddactorno.SelectedIndex));
