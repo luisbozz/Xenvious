@@ -2271,489 +2271,399 @@
 
                                                         <TabItem x:Name="PageInnerModdedProps" Header="Modded Props" >
 
-                                                            <Grid>
-
-                                                                <Border x:Name="mpropspanel" Margin="10,10,10,10" Grid.Column="1" BorderThickness="1" CornerRadius="5" Visibility="Visible" BorderBrush="{DynamicResource SectionBackgroundBrush}" Background="{DynamicResource SectionBackgroundBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
-                                                                    <Border.Effect>
-                                                                        <DropShadowEffect BlurRadius="7" ShadowDepth="0" Color="{DynamicResource ShadowColor}"/>                                                                    
-                                                                    </Border.Effect>
-                                                                    <Grid>
-
-                                                                        <Grid x:Name="mpropspanelmainmain" Visibility="Visible">
-
-                                                                            <Grid x:Name="mpropspanelmain">
-
-                                                                                <Grid.RowDefinitions>
-                                                                                    <RowDefinition Height="0.13*" MinHeight="50" MaxHeight="150"/>
-                                                                                    <RowDefinition Height="*"/>
-                                                                                </Grid.RowDefinitions>
-
-                                                                                <Grid.ColumnDefinitions>
-                                                                                    <ColumnDefinition Width="0.25*"/>
-                                                                                    <ColumnDefinition Width="0.5*"/>
-                                                                                    <ColumnDefinition Width="0.25*"/>
-                                                                                </Grid.ColumnDefinitions>
-
-
-
-
-
-
-                                                                                <Border Grid.Row="0" Grid.Column="0" CornerRadius="5,0,0,0" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="0,0,0,2">
-                                                                                    <Grid>
-                                                                                        <Grid.ColumnDefinitions>
-                                                                                            <ColumnDefinition Width="0.8*"/>
-                                                                                            <ColumnDefinition Width="0.2*"/>
-                                                                                        </Grid.ColumnDefinitions>
-
-
-                                                                                        <Viewbox VerticalAlignment="Stretch" HorizontalAlignment="Left">
-                                                                                            <Label Foreground="{DynamicResource TextColor}" FontFamily="{DynamicResource Volte}" FontWeight="Bold" Content="{Binding Translation[settings], FallbackValue=Settings}"/>
-                                                                                        </Viewbox>
-
-                                                                                    </Grid>
-                                                                                </Border>
-
-                                                                                <Border Grid.Row="1" Grid.Column="0" CornerRadius="0,0,0,5" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="0,2,0,0">
-
-                                                                                    <ScrollViewer Grid.Row="1" Margin="0,5,5,5" VerticalScrollBarVisibility="Auto">
-
-                                                                                        <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10">
-
-                                                                                            <Border Grid.Row="0"  Background="Transparent" Margin="0,0,0,5" Height="30">
-                                                                                                <ComboBox x:Name="ddMPROPSCreator" FontFamily="{DynamicResource Volte}" SelectionChanged="ddMPROPSCreator_SelectionChanged"  Tag="Creator"/>
-                                                                                            </Border>
-
-
-                                                                                            <Border Grid.Row="0"  Background="Transparent" Margin="0,0,0,5" Height="30">
-                                                                                                <ComboBox x:Name="ddMPropsReplaceCategory" FontFamily="{DynamicResource Volte}" SelectionChanged="ddMPropsReplaceCategory_SelectionChanged" Tag="{Binding Translation[category], FallbackValue=Category}" IsEnabled="false">
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_barrier], FallbackValue=Barriers}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_banks], FallbackValue=Banks}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_boje], FallbackValue=Boje}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_cabins], FallbackValue=Cabins}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_bags], FallbackValue=Bags}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_container], FallbackValue=Container}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_kaesten], FallbackValue=Boxes}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_trash_container], FallbackValue=Trash Container}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_machinery], FallbackValue=Machinery}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_ramps], FallbackValue=Ramps}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_signs], FallbackValue=Signs}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_trailer], FallbackValue=Trailer}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_wrecks], FallbackValue=Wrecks}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_trees], FallbackValue=Trees}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_dynamics], FallbackValue=Dynamics}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_hidden], FallbackValue=Hidden}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_special], FallbackValue=Special}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_stunt_tracks], FallbackValue=Stunt Track}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_stunt_tracks_wb], FallbackValue=Stunt Track with Barriers}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_stunt_tracks_high], FallbackValue=Stunt Raised Tracks}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_stunt_barriers], FallbackValue=Stunt Barreirs}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_stunt_tubes], FallbackValue=Stunt Tubes}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_stunt_tubes_neon], FallbackValue=Stunt Neon Tubes}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_stunt_arrow], FallbackValue=Stunt Arrows}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_stunt_tubes_big], FallbackValue=Stunt Air Tubes}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_stunt_cp_rings], FallbackValue=Stunt Checkpoint Rings}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_stunt_air_gates], FallbackValue=Stunt Air Gates}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_stunt_inflateable_gates], FallbackValue=Stunt Inflateable Gates}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_stunt_building_blocks], FallbackValue=Stunt Building Blocks}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_stunt_neon_blocks], FallbackValue=Stunt Neon Blocks}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_stunt_ramps], FallbackValue=Stunt Ramps}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_stunt_set_pieces], FallbackValue=Stunt Set Pieces}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_stunt_signs], FallbackValue=Stunt Signs}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_stunt_special], FallbackValue=Stunt Special}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_stunt_target], FallbackValue=Stunt Targets}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_stunt_targets], FallbackValue=Target Assault}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_race_buildings], FallbackValue=Race Buildings}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_drugs], FallbackValue=Drugs}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_gunrunning], FallbackValue=Gunrunning}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_hidden], FallbackValue=Hidden}" ContentStringFormat=" {0} 2"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_hidden], FallbackValue=Hidden}" ContentStringFormat=" {0} 3"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_hidden], FallbackValue=Hidden}" ContentStringFormat=" {0} 4"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_cctv], FallbackValue=CCTV}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_paintedsigns], FallbackValue=Painted Signs}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_holidays], FallbackValue=Holidays}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_tracksmoothing], FallbackValue=Track Smoothing}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_precision], FallbackValue=Precision}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_hidden], FallbackValue=Hidden}" ContentStringFormat=" {0} 5"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_hidden], FallbackValue=Hidden}" ContentStringFormat=" {0} 6"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_hidden], FallbackValue=Hidden}" ContentStringFormat=" {0} 7"/>
-                                                                                                    <ComboBox.Resources>
-                                                                                                        <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
-                                                                                                            <Style.Triggers>
-                                                                                                                <DataTrigger Binding="{Binding ElementName=ddMPROPSCreator, Path=SelectedIndex}" Value="-1">
-                                                                                                                    <Setter Property="IsEnabled" Value="false"/>
-                                                                                                                </DataTrigger>
-                                                                                                            </Style.Triggers>
-                                                                                                        </Style>
-                                                                                                    </ComboBox.Resources>
-                                                                                                </ComboBox>
-                                                                                            </Border>
-
-                                                                                            <Border Grid.Column="0" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5" Height="34">
-                                                                                                <Border.Effect>
-                                                                                                    <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>                                            
-                                                                                                </Border.Effect>
-                                                                                                <Button x:Name="Btnmpropsrestore" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" Content="Restore to defaults" ToolTip="Shift Click to restore all categorys" Click="Btnmpropsrestore_Click"/>
-                                                                                            </Border>
-
-                                                                                            <Border Grid.Column="0" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5" Height="34">
-                                                                                                <Border.Effect>
-                                                                                                    <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>                                            
-                                                                                                </Border.Effect>
-                                                                                                <Button x:Name="Btnmpropsimport" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" Content="Import" Click="Btnmpropsimport_Click"/>
-                                                                                            </Border>
-
-                                                                                            <Border Grid.Column="0" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5" Height="34">
-                                                                                                <Border.Effect>
-                                                                                                    <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>                                            
-                                                                                                </Border.Effect>
-                                                                                                <Button x:Name="Btnmpropsexport" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" Content="Explort" Click="Btnmpropsexport_Click"/>
-                                                                                            </Border>
-                                                                                        </StackPanel>
-
-                                                                                    </ScrollViewer>
-                                                                                </Border>
-
-
-
-
-
-                                                                                <!--Top-->
-                                                                                <Border Grid.Row="0" Grid.Column="1" CornerRadius="0,0,0,0" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="4,0,0,2">
-                                                                                    <Grid>
-                                                                                        <Grid.ColumnDefinitions>
-                                                                                            <ColumnDefinition Width="0.8*"/>
-                                                                                            <ColumnDefinition Width="0.2*"/>
-                                                                                        </Grid.ColumnDefinitions>
-
-
-                                                                                        <Viewbox VerticalAlignment="Stretch" HorizontalAlignment="Left">
-                                                                                            <Label Foreground="{DynamicResource TextColor}" FontFamily="{DynamicResource Volte}" FontWeight="Bold" Content="{Binding Translation[bulkedit], FallbackValue=Bulk edit}"/>
-                                                                                        </Viewbox>
-
-                                                                                        <CheckBox x:Name="cbmpbulk" Margin="0,0,5,0" Grid.Column="1" VerticalAlignment="Center" Background="{DynamicResource SectionBackgroundBrush}" HorizontalAlignment="Right" Checked="cbmpbulk_Checked" Unchecked="cbmpbulk_Checked" MaxHeight="30"/>
-                                                                                    </Grid>
-                                                                                </Border>
-
-                                                                                <!--Bottom-->
-
-
-
-                                                                                <Border Grid.Row="1" Grid.Column="1" CornerRadius="0,0,0,0" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="4,2,0,0" Padding="10">
-
-                                                                                    <Grid x:Name="mpropsmaingrid" Visibility="Visible">
-                                                                                        <Grid.RowDefinitions>
-                                                                                            <RowDefinition Height="0.6*"/>
-                                                                                            <RowDefinition Height="auto"/>
-                                                                                            <RowDefinition Height="auto"/>
-                                                                                        </Grid.RowDefinitions>
-
-                                                                                        <TextBox x:Name="tbmpropsbulk" Grid.Row="0" Grid.RowSpan="2" Style="{StaticResource WatermarkOld}" Tag="Pro p Model Hash's" Margin="2 5" Visibility="Hidden" VerticalContentAlignment="Top"  Padding="0,5,0,0" HorizontalAlignment="Stretch" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Visible" />
-
-
-                                                                                        <ListView x:Name="mpropModelList" Grid.Row="0" Margin="5,0,0,0" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource TextColor}" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding .,Mode=TwoWay}" SelectionChanged="mpropModelList_SelectionChanged">
-                                                                                            <!-- The app-wide ListViewItem template shows {Binding}, i.e. ToString(), which is
-                                                                                                 evaluated once and ignores DisplayMemberPath. A changed prop then kept its old
-                                                                                                 line. Same look here, but bound to DisplayName, which MPEntry notifies. -->
-                                                                                            <ListView.ItemContainerStyle>
-                                                                                                <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource {x:Type ListViewItem}}">
-                                                                                                    <Setter Property="Template">
-                                                                                                        <Setter.Value>
-                                                                                                            <ControlTemplate TargetType="ListBoxItem">
-                                                                                                                <Border Name="Border" Padding="2" SnapsToDevicePixels="true" Background="Transparent" CornerRadius="2">
-                                                                                                                    <TextBlock Text="{Binding DisplayName}" ToolTip="{Binding DisplayName}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" TextTrimming="CharacterEllipsis" FontFamily="{DynamicResource Volte}" FontSize="{TemplateBinding FontSize}" Foreground="{TemplateBinding Foreground}" FontWeight="Bold"/>
-                                                                                                                </Border>
-                                                                                                                <ControlTemplate.Triggers>
-                                                                                                                    <Trigger Property="IsSelected" Value="true">
-                                                                                                                        <Setter TargetName="Border" Property="Background" Value="{DynamicResource SelectedBackgroundBrush}"/>
-                                                                                                                    </Trigger>
-                                                                                                                    <Trigger Property="IsEnabled" Value="false">
-                                                                                                                        <Setter Property="Foreground" Value="#888"/>
-                                                                                                                    </Trigger>
-                                                                                                                    <MultiTrigger>
-                                                                                                                        <MultiTrigger.Conditions>
-                                                                                                                            <Condition Property="IsMouseOver" Value="true"/>
-                                                                                                                            <Condition Property="IsSelected" Value="false"/>
-                                                                                                                        </MultiTrigger.Conditions>
-                                                                                                                        <MultiTrigger.Setters>
-                                                                                                                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource HoverBackgroundBrush}"/>
-                                                                                                                        </MultiTrigger.Setters>
-                                                                                                                    </MultiTrigger>
-                                                                                                                </ControlTemplate.Triggers>
-                                                                                                            </ControlTemplate>
-                                                                                                        </Setter.Value>
-                                                                                                    </Setter>
+                                                            <!-- Modded props: settings, the model list to swap (bulk edit) and the advanced options as cards.
+                                                                 mpropspanelmainmain is hidden while loading, mpropsdrop is the import overlay. -->
+                                                            <Border x:Name="mpropspanel" Background="Transparent">
+                                                                <Grid>
+                                                                    <Grid x:Name="mpropspanelmainmain">
+                                                                        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                                                            <WrapPanel x:Name="mpropspanelmain" Orientation="Horizontal" Margin="10,12,10,12">
+                                                                                <StackPanel Width="340" Margin="0,0,12,0">
+                                                                                <Border Style="{StaticResource DashCard}">
+                                                                                    <DockPanel>
+                                                                                        <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                                                                            <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[settings], FallbackValue=Settings}"/>
+                                                                                        </Border>
+                                                                                        <StackPanel Margin="14,12,14,4">
+                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[set_creator], FallbackValue=Creator}"/>
+                                                                                        <ComboBox x:Name="ddMPROPSCreator" FontFamily="{DynamicResource Volte}" SelectionChanged="ddMPROPSCreator_SelectionChanged" Height="30" Margin="0,0,0,10"/>
+                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[category], FallbackValue=Category}"/>
+                                                                                        <ComboBox x:Name="ddMPropsReplaceCategory" FontFamily="{DynamicResource Volte}" SelectionChanged="ddMPropsReplaceCategory_SelectionChanged" IsEnabled="false" Height="30" Margin="0,0,0,10">
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_barrier], FallbackValue=Barriers}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_banks], FallbackValue=Banks}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_boje], FallbackValue=Boje}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_cabins], FallbackValue=Cabins}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_bags], FallbackValue=Bags}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_container], FallbackValue=Container}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_kaesten], FallbackValue=Boxes}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_trash_container], FallbackValue=Trash Container}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_machinery], FallbackValue=Machinery}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_ramps], FallbackValue=Ramps}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_signs], FallbackValue=Signs}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_trailer], FallbackValue=Trailer}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_wrecks], FallbackValue=Wrecks}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_trees], FallbackValue=Trees}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_dynamics], FallbackValue=Dynamics}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_hidden], FallbackValue=Hidden}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_special], FallbackValue=Special}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_stunt_tracks], FallbackValue=Stunt Track}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_stunt_tracks_wb], FallbackValue=Stunt Track with Barriers}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_stunt_tracks_high], FallbackValue=Stunt Raised Tracks}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_stunt_barriers], FallbackValue=Stunt Barreirs}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_stunt_tubes], FallbackValue=Stunt Tubes}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_stunt_tubes_neon], FallbackValue=Stunt Neon Tubes}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_stunt_arrow], FallbackValue=Stunt Arrows}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_stunt_tubes_big], FallbackValue=Stunt Air Tubes}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_stunt_cp_rings], FallbackValue=Stunt Checkpoint Rings}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_stunt_air_gates], FallbackValue=Stunt Air Gates}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_stunt_inflateable_gates], FallbackValue=Stunt Inflateable Gates}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_stunt_building_blocks], FallbackValue=Stunt Building Blocks}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_stunt_neon_blocks], FallbackValue=Stunt Neon Blocks}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_stunt_ramps], FallbackValue=Stunt Ramps}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_stunt_set_pieces], FallbackValue=Stunt Set Pieces}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_stunt_signs], FallbackValue=Stunt Signs}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_stunt_special], FallbackValue=Stunt Special}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_stunt_target], FallbackValue=Stunt Targets}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_stunt_targets], FallbackValue=Target Assault}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_race_buildings], FallbackValue=Race Buildings}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_drugs], FallbackValue=Drugs}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_gunrunning], FallbackValue=Gunrunning}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_hidden], FallbackValue=Hidden}" ContentStringFormat=" {0} 2"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_hidden], FallbackValue=Hidden}" ContentStringFormat=" {0} 3"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_hidden], FallbackValue=Hidden}" ContentStringFormat=" {0} 4"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_cctv], FallbackValue=CCTV}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_paintedsigns], FallbackValue=Painted Signs}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_holidays], FallbackValue=Holidays}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_tracksmoothing], FallbackValue=Track Smoothing}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_precision], FallbackValue=Precision}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_hidden], FallbackValue=Hidden}" ContentStringFormat=" {0} 5"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_hidden], FallbackValue=Hidden}" ContentStringFormat=" {0} 6"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[mp_hidden], FallbackValue=Hidden}" ContentStringFormat=" {0} 7"/>
+                                                                                            <ComboBox.Resources>
+                                                                                                <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+                                                                                                    <Style.Triggers>
+                                                                                                        <DataTrigger Binding="{Binding ElementName=ddMPROPSCreator, Path=SelectedIndex}" Value="-1">
+                                                                                                            <Setter Property="IsEnabled" Value="false"/>
+                                                                                                        </DataTrigger>
+                                                                                                    </Style.Triggers>
                                                                                                 </Style>
-                                                                                            </ListView.ItemContainerStyle>
-                                                                                        </ListView>
-
-                                                                                        <TextBox x:Name="tbmpropsmodelchange" Grid.Row="1" Style="{StaticResource Watermark}" Tag="Prop Model Hash (Integer)" ToolTip="Input a Integer for a Prop Model to Replace the current selected Prop in the List above." Height="40" Margin="2 5" local:CornerRadiusSetter.CornerRadius="5" MouseDoubleClick="tbmpropsmodelchange_MouseDoubleClick"/>
-
-                                                                                        <Grid Grid.Row="2" >
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="0.5*"/>
-                                                                                                <ColumnDefinition Width="0.5*"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <Border Grid.Column="0" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5" Height="34">
-                                                                                                <Border.Effect>
-                                                                                                    <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>                                            
-                                                                                                </Border.Effect>
-                                                                                                <Button x:Name="Btnmpropsreplace" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" Content="Replace" ToolTip="Replace Prop Model" Click="Btnmpropsreplace_Click"/>
-                                                                                            </Border>
-                                                                                            <Border Grid.Column="1" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5" Height="34">
-                                                                                                <Border.Effect>
-                                                                                                    <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>                                            
-                                                                                                </Border.Effect>
-                                                                                                <Button x:Name="Btnmpropsreplaceall" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" Content="Replace for all" ToolTip="Replace Prop Modelfor all initialized Creators" Click="Btnmpropsreplaceall_Click"  />
-                                                                                            </Border>
-                                                                                        </Grid>
-
-                                                                                    </Grid>
-
-                                                                                </Border>
-
-
-                                                                                <Border Grid.Row="0" Grid.Column="2" CornerRadius="0,5,0,0" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="4,0,0,2">
-                                                                                    <Grid>
-                                                                                        <Grid.ColumnDefinitions>
-                                                                                            <ColumnDefinition Width="0.8*"/>
-                                                                                            <ColumnDefinition Width="0.2*"/>
-                                                                                        </Grid.ColumnDefinitions>
-
-
-                                                                                        <Viewbox VerticalAlignment="Stretch" HorizontalAlignment="Left">
-                                                                                            <Label Foreground="{DynamicResource TextColor}" FontFamily="{DynamicResource Volte}" FontWeight="Bold" Content="{Binding Translation[advanced], FallbackValue=Advanced}"/>
-                                                                                        </Viewbox>
-
-                                                                                    </Grid>
-                                                                                </Border>
-
-                                                                                <Border Grid.Row="2" Grid.Column="2" CornerRadius="0,0,5,0" Margin="4,2,0,0" Background="{DynamicResource SeactionHeaderBackgroundBrush}">
-
-                                                                                    <Grid Margin="10">
-
-                                                                                        <StackPanel Grid.Row="1" Orientation="Vertical" Margin="0,2,0,0">
-
-                                                                                            <Grid Height="30" Margin="0,0,0,3">
-
-                                                                                                <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="16" Text="Race Creator" Margin="8,0,0,0" TextTrimming="CharacterEllipsis"/>
-                                                                                                <TextBlock x:Name="lblmpropsinitialisedrace" Grid.Column="0" VerticalAlignment="Center" FontSize="14" Text="Not Initialized" Foreground="red" Margin="8,2,0,0" HorizontalAlignment="Right" TextTrimming="CharacterEllipsis"/>
-                                                                                            </Grid>
-                                                                                            <Grid Height="30" Margin="0,0,0,3">
-
-                                                                                                <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="16" Text="LTS Creator" Margin="8,0,0,0" TextTrimming="CharacterEllipsis"/>
-                                                                                                <TextBlock x:Name="lblmpropsinitialisedlts" Grid.Column="0" VerticalAlignment="Center" FontSize="14" Text="Not Initialized" Foreground="red" Margin="8,2,0,0" HorizontalAlignment="Right" TextTrimming="CharacterEllipsis"/>
-                                                                                            </Grid>
-                                                                                            <Grid Height="30" Margin="0,0,0,3">
-                                                                                                <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="16" Text="Capture Creator" Margin="8,0,0,0" TextTrimming="CharacterEllipsis"/>
-                                                                                                <TextBlock x:Name="lblmpropsinitialisedcapture" Grid.Column="0" VerticalAlignment="Center" FontSize="14" Text="Not Initialized" Foreground="red" Margin="8,2,0,0" HorizontalAlignment="Right" TextTrimming="CharacterEllipsis"/>
-                                                                                            </Grid>
-                                                                                            <Grid Height="30" Margin="0,0,0,3">
-                                                                                                <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="16" Text="DM Creator" Margin="8,0,0,0" TextTrimming="CharacterEllipsis"/>
-                                                                                                <TextBlock x:Name="lblmpropsinitialiseddm" Grid.Column="0" VerticalAlignment="Center" FontSize="14" Text="Not Initialized" Foreground="red" Margin="8,2,0,0" HorizontalAlignment="Right" TextTrimming="CharacterEllipsis"/>
-                                                                                            </Grid>
-                                                                                            <Grid Height="30" Margin="0,0,0,3">
-                                                                                                <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="16" Text="Survival Creator" Margin="8,0,0,0" TextTrimming="CharacterEllipsis"/>
-                                                                                                <TextBlock x:Name="lblmpropsinitialisedsurvival" Grid.Column="0" VerticalAlignment="Center" FontSize="14" Text="Not Initialized" Foreground="red" Margin="8,2,0,0" HorizontalAlignment="Right" TextTrimming="CharacterEllipsis"/>
-                                                                                            </Grid>
-
-                                                                                            <Rectangle Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="#6C7378" Height="1" Margin="20,0,20,8" />
-
-
-                                                                                            <Border Grid.Row="0"  Background="Transparent" Margin="0,0,0,5" Height="30">
-                                                                                                <ComboBox x:Name="ddMPropsCategory" FontFamily="{DynamicResource Volte}" SelectionChanged="ddMPropsCategory_SelectionChanged" Tag="{Binding Translation[mpcategory], FallbackValue=Override Prop Category}">
-                                                                                                    <ComboBoxItem Content="Special"/>
-                                                                                                    <ComboBoxItem Content="Targets"/>
-                                                                                                    <ComboBoxItem Content="Drugs"/>
-                                                                                                    <ComboBoxItem Content="Gunrunning"/>
-                                                                                                    <ComboBoxItem Content="Landing Places"/>
-                                                                                                    <ComboBoxItem Content="Hidden"/>
-                                                                                                    <ComboBoxItem Content="Hidden 2"/>
-                                                                                                    <ComboBoxItem Content="Hidden 3"/>
-                                                                                                    <ComboBoxItem Content="Hidden 4"/>
-                                                                                                    <ComboBoxItem Content="Hidden 5"/>
-                                                                                                    <ComboBoxItem Content="Templates"/>
-                                                                                                </ComboBox>
-                                                                                            </Border>
-
-                                                                                            <Grid Height="30">
-                                                                                                <Grid.ColumnDefinitions>
-                                                                                                    <ColumnDefinition Width="0.87*" />
-                                                                                                    <ColumnDefinition Width="30" />
-                                                                                                </Grid.ColumnDefinitions>
-
-                                                                                                <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[mpforcemurica], FallbackValue=Enable Murica Color}" Margin="8,0,0,0" TextTrimming="CharacterEllipsis"/>
-                                                                                                <CheckBox x:Name="cbMPropsForceMurica" Background="{DynamicResource SectionBackgroundBrush}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbMPropsForceMurica_Checked" Unchecked="cbMPropsForceMurica_Checked" MaxHeight="30"/>
-                                                                                            </Grid>
-
+                                                                                            </ComboBox.Resources>
+                                                                                        </ComboBox>
+                                                                                        <Rectangle Height="1" Fill="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="0,4,0,12"/>
+                                                                                        <Button x:Name="Btnmpropsrestore" Content="Restore to defaults" ToolTip="Shift Click to restore all categorys" Click="Btnmpropsrestore_Click" Style="{StaticResource FormButton}" Height="32" Margin="0,0,0,8"/>
+                                                                                        <Button x:Name="Btnmpropsimport" Content="Import" Click="Btnmpropsimport_Click" Style="{StaticResource FormButton}" Height="32" Margin="0,0,0,8"/>
+                                                                                        <Button x:Name="Btnmpropsexport" Content="Explort" Click="Btnmpropsexport_Click" Style="{StaticResource FormButton}" Height="32" Margin="0,0,0,8"/>
                                                                                         </StackPanel>
-
-                                                                                    </Grid>
-
+                                                                                    </DockPanel>
                                                                                 </Border>
-
-                                                                            </Grid>
-
-                                                                            <Grid Background="{DynamicResource BackgroundBrush}" Visibility="Collapsed" x:Name="mpropsdrop" Grid.Row="0" Grid.RowSpan="2" MouseLeftButtonUp="IMGBackground_MouseLeftButtonUp">
-                                                                                <Grid.ColumnDefinitions>
-                                                                                    <ColumnDefinition Width="0.2*"/>
-                                                                                    <ColumnDefinition Width="0.6*"/>
-                                                                                    <ColumnDefinition Width="0.2*"/>
-                                                                                </Grid.ColumnDefinitions>
-
-                                                                                <Grid.RowDefinitions>
-                                                                                    <RowDefinition Height="0.2*"/>
-                                                                                    <RowDefinition Height="0.6*"/>
-                                                                                    <RowDefinition Height="0.2*"/>
-                                                                                </Grid.RowDefinitions>
-                                                                                <Grid.Triggers>
-                                                                                    <EventTrigger RoutedEvent="Grid.Loaded">
-                                                                                        <BeginStoryboard>
-                                                                                            <Storyboard>
-                                                                                                <DoubleAnimation From="0" To="5" Duration="00:00:03" Storyboard.TargetName="blurEffectmprops" Storyboard.TargetProperty="Radius"></DoubleAnimation>
-                                                                                            </Storyboard>
-                                                                                        </BeginStoryboard>
-                                                                                    </EventTrigger>
-                                                                                </Grid.Triggers>
-                                                                                <Border Opacity="0.1" Grid.RowSpan="3" Grid.ColumnSpan="3">
-                                                                                    <Border.Effect>
-                                                                                        <BlurEffect Radius="5" x:Name="blurEffectmprops"/>
-                                                                                    </Border.Effect>
-                                                                                    <Border.Background>
-                                                                                        <VisualBrush  Visual="{Binding ElementName=mpropspanelmain}" Stretch="None" />
-                                                                                    </Border.Background>
+                                                                                </StackPanel>
+                                                                                <StackPanel Width="340" Margin="0,0,12,0">
+                                                                                <Border Style="{StaticResource DashCard}">
+                                                                                    <DockPanel>
+                                                                                        <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                                                                            <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[bulkedit], FallbackValue=Bulk edit}"/>
+                                                                                        </Border>
+                                                                                        <StackPanel Margin="14,12,14,4">
+                                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                                            <Grid.ColumnDefinitions>
+                                                                                                <ColumnDefinition Width="*"/>
+                                                                                                <ColumnDefinition Width="46"/>
+                                                                                            </Grid.ColumnDefinitions>
+                                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[bulkedit], FallbackValue=Bulk edit}" IsEnabled="{Binding ElementName=cbmpbulk, Path=IsEnabled}"/>
+                                                                                            <CheckBox x:Name="cbmpbulk" Background="{DynamicResource SectionBackgroundBrush}" Checked="cbmpbulk_Checked" Unchecked="cbmpbulk_Checked" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                                        </Grid>
+                                                                                        <Grid x:Name="mpropsmaingrid">
+                                                                                            <Grid.RowDefinitions>
+                                                                                                <RowDefinition Height="360"/>
+                                                                                                <RowDefinition Height="Auto"/>
+                                                                                                <RowDefinition Height="Auto"/>
+                                                                                            </Grid.RowDefinitions>
+                                                                                            <TextBox x:Name="tbmpropsbulk" Style="{StaticResource WatermarkOld}" Tag="Pro p Model Hash's" Visibility="Hidden" VerticalContentAlignment="Top"  Padding="0,5,0,0" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Visible" Margin="0,0,0,8"/>
+                                                                                            <ListView x:Name="mpropModelList" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource TextColor}" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding .,Mode=TwoWay}" SelectionChanged="mpropModelList_SelectionChanged" Margin="0,0,0,8">
+                                                                                                <!-- The app-wide ListViewItem template shows {Binding}, i.e. ToString(), which is
+                                                                                                     evaluated once and ignores DisplayMemberPath. A changed prop then kept its old
+                                                                                                     line. Same look here, but bound to DisplayName, which MPEntry notifies. -->
+                                                                                                <ListView.ItemContainerStyle>
+                                                                                                    <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource {x:Type ListViewItem}}">
+                                                                                                        <Setter Property="Template">
+                                                                                                            <Setter.Value>
+                                                                                                                <ControlTemplate TargetType="ListBoxItem">
+                                                                                                                    <Border Name="Border" Padding="2" SnapsToDevicePixels="true" Background="Transparent" CornerRadius="2">
+                                                                                                                        <TextBlock Text="{Binding DisplayName}" ToolTip="{Binding DisplayName}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" TextTrimming="CharacterEllipsis" FontFamily="{DynamicResource Volte}" FontSize="{TemplateBinding FontSize}" Foreground="{TemplateBinding Foreground}" FontWeight="Bold"/>
+                                                                                                                    </Border>
+                                                                                                                    <ControlTemplate.Triggers>
+                                                                                                                        <Trigger Property="IsSelected" Value="true">
+                                                                                                                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource SelectedBackgroundBrush}"/>
+                                                                                                                        </Trigger>
+                                                                                                                        <Trigger Property="IsEnabled" Value="false">
+                                                                                                                            <Setter Property="Foreground" Value="#888"/>
+                                                                                                                        </Trigger>
+                                                                                                                        <MultiTrigger>
+                                                                                                                            <MultiTrigger.Conditions>
+                                                                                                                                <Condition Property="IsMouseOver" Value="true"/>
+                                                                                                                                <Condition Property="IsSelected" Value="false"/>
+                                                                                                                            </MultiTrigger.Conditions>
+                                                                                                                            <MultiTrigger.Setters>
+                                                                                                                                <Setter TargetName="Border" Property="Background" Value="{DynamicResource HoverBackgroundBrush}"/>
+                                                                                                                            </MultiTrigger.Setters>
+                                                                                                                        </MultiTrigger>
+                                                                                                                    </ControlTemplate.Triggers>
+                                                                                                                </ControlTemplate>
+                                                                                                            </Setter.Value>
+                                                                                                        </Setter>
+                                                                                                    </Style>
+                                                                                                </ListView.ItemContainerStyle>
+                                                                                            </ListView>
+                                                                                            <StackPanel Grid.Row="1">
+                                                                                                <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[mp_newmodel], FallbackValue='New model (hash)'}"/>
+                                                                                                <TextBox x:Name="tbmpropsmodelchange" Style="{StaticResource Watermark}" ToolTip="Input a Integer for a Prop Model to Replace the current selected Prop in the List above." local:CornerRadiusSetter.CornerRadius="5" MouseDoubleClick="tbmpropsmodelchange_MouseDoubleClick" Height="30" Margin="0,0,0,10"/>
+                                                                                            </StackPanel>
+                                                                                            <Grid Grid.Row="2">
+                                                                                                <Grid.ColumnDefinitions>
+                                                                                                    <ColumnDefinition Width="*"/>
+                                                                                                    <ColumnDefinition Width="8"/>
+                                                                                                    <ColumnDefinition Width="*"/>
+                                                                                                </Grid.ColumnDefinitions>
+                                                                                                <Button x:Name="Btnmpropsreplace" Content="Replace" ToolTip="Replace Prop Model" Click="Btnmpropsreplace_Click" Style="{StaticResource FormButtonPrimary}" Height="32" Margin="0,0,0,8"/>
+                                                                                                <Button x:Name="Btnmpropsreplaceall" Content="Replace for all" ToolTip="Replace Prop Modelfor all initialized Creators" Click="Btnmpropsreplaceall_Click" Grid.Column="2" Style="{StaticResource FormButton}" Height="32" Margin="0,0,0,8"/>
+                                                                                            </Grid>
+                                                                                        </Grid>
+                                                                                        </StackPanel>
+                                                                                    </DockPanel>
                                                                                 </Border>
-                                                                                <Border Grid.Row="0" Grid.Column="1" CornerRadius="5" Margin="8,5,8,5" Height="40" HorizontalAlignment="Left">
-                                                                                    <Border.Background>
-                                                                                        <SolidColorBrush Color="#36393F" Opacity="0.8"/>
-                                                                                    </Border.Background>
-                                                                                    <TextBlock VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Text="{Binding Translation[propimportheader], FallbackValue=Prop Import}" FontWeight="Bold" Margin="5 0"/>
+                                                                                </StackPanel>
+                                                                                <StackPanel Width="340" Margin="0,0,12,0">
+                                                                                <Border Style="{StaticResource DashCard}">
+                                                                                    <DockPanel>
+                                                                                        <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                                                                            <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[advanced], FallbackValue=Advanced}"/>
+                                                                                        </Border>
+                                                                                        <StackPanel Margin="14,12,14,4">
+                                                                                        <TextBlock Style="{StaticResource CardSub}" Text="{Binding Translation[mp_loaded], FallbackValue=Loaded in}"/>
+                                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                                            <Grid.ColumnDefinitions>
+                                                                                                <ColumnDefinition Width="*"/>
+                                                                                                <ColumnDefinition Width="Auto"/>
+                                                                                            </Grid.ColumnDefinitions>
+                                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="Race Creator"/>
+                                                                                            <TextBlock x:Name="lblmpropsinitialisedrace" Text="Not Initialized" Foreground="red" Grid.Column="1" FontSize="13" VerticalAlignment="Center"/>
+                                                                                        </Grid>
+                                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                                            <Grid.ColumnDefinitions>
+                                                                                                <ColumnDefinition Width="*"/>
+                                                                                                <ColumnDefinition Width="Auto"/>
+                                                                                            </Grid.ColumnDefinitions>
+                                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="LTS Creator"/>
+                                                                                            <TextBlock x:Name="lblmpropsinitialisedlts" Text="Not Initialized" Foreground="red" Grid.Column="1" FontSize="13" VerticalAlignment="Center"/>
+                                                                                        </Grid>
+                                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                                            <Grid.ColumnDefinitions>
+                                                                                                <ColumnDefinition Width="*"/>
+                                                                                                <ColumnDefinition Width="Auto"/>
+                                                                                            </Grid.ColumnDefinitions>
+                                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="Capture Creator"/>
+                                                                                            <TextBlock x:Name="lblmpropsinitialisedcapture" Text="Not Initialized" Foreground="red" Grid.Column="1" FontSize="13" VerticalAlignment="Center"/>
+                                                                                        </Grid>
+                                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                                            <Grid.ColumnDefinitions>
+                                                                                                <ColumnDefinition Width="*"/>
+                                                                                                <ColumnDefinition Width="Auto"/>
+                                                                                            </Grid.ColumnDefinitions>
+                                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="Deathmatch Creator"/>
+                                                                                            <TextBlock x:Name="lblmpropsinitialiseddm" Text="Not Initialized" Foreground="red" Grid.Column="1" FontSize="13" VerticalAlignment="Center"/>
+                                                                                        </Grid>
+                                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                                            <Grid.ColumnDefinitions>
+                                                                                                <ColumnDefinition Width="*"/>
+                                                                                                <ColumnDefinition Width="Auto"/>
+                                                                                            </Grid.ColumnDefinitions>
+                                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="Survival Creator"/>
+                                                                                            <TextBlock x:Name="lblmpropsinitialisedsurvival" Text="Not Initialized" Foreground="red" Grid.Column="1" FontSize="13" VerticalAlignment="Center"/>
+                                                                                        </Grid>
+                                                                                        <Rectangle Height="1" Fill="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="0,4,0,12"/>
+                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[mpcategory], FallbackValue=Override Prop Category}"/>
+                                                                                        <ComboBox x:Name="ddMPropsCategory" FontFamily="{DynamicResource Volte}" SelectionChanged="ddMPropsCategory_SelectionChanged" Height="30" Margin="0,0,0,10">
+                                                                                            <ComboBoxItem Content="Special"/>
+                                                                                            <ComboBoxItem Content="Targets"/>
+                                                                                            <ComboBoxItem Content="Drugs"/>
+                                                                                            <ComboBoxItem Content="Gunrunning"/>
+                                                                                            <ComboBoxItem Content="Landing Places"/>
+                                                                                            <ComboBoxItem Content="Hidden"/>
+                                                                                            <ComboBoxItem Content="Hidden 2"/>
+                                                                                            <ComboBoxItem Content="Hidden 3"/>
+                                                                                            <ComboBoxItem Content="Hidden 4"/>
+                                                                                            <ComboBoxItem Content="Hidden 5"/>
+                                                                                            <ComboBoxItem Content="Templates"/>
+                                                                                        </ComboBox>
+                                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                                            <Grid.ColumnDefinitions>
+                                                                                                <ColumnDefinition Width="*"/>
+                                                                                                <ColumnDefinition Width="46"/>
+                                                                                            </Grid.ColumnDefinitions>
+                                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[mpforcemurica], FallbackValue=Enable Murica Color}" IsEnabled="{Binding ElementName=cbMPropsForceMurica, Path=IsEnabled}"/>
+                                                                                            <CheckBox x:Name="cbMPropsForceMurica" Background="{DynamicResource SectionBackgroundBrush}" Checked="cbMPropsForceMurica_Checked" Unchecked="cbMPropsForceMurica_Checked" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                                        </Grid>
+                                                                                        </StackPanel>
+                                                                                    </DockPanel>
                                                                                 </Border>
-                                                                                <Border Grid.Row="0" Grid.Column="1" CornerRadius="5" Margin="8,5,8,5" HorizontalAlignment="Right" Height="40" Width="40">
-                                                                                    <Border.Background>
-                                                                                        <SolidColorBrush Color="#36393F" Opacity="0.8"/>
-                                                                                    </Border.Background>
-                                                                                    <Button x:Name="Btnmpropsclose" Grid.Row="0" Grid.Column="1" Style="{DynamicResource TitleBarButton}" Click="Btnmpropsclose_Click" WindowChrome.IsHitTestVisibleInChrome="True" >
-                                                                                        <Path x:Name="mpropsclosepath" Data="M0,0 L1,1 M0,1 L1,0" Stretch="Uniform" Stroke="{DynamicResource TextColor}" StrokeThickness="2"/>
-                                                                                    </Button>
-                                                                                </Border>
-                                                                                <Border Grid.Row="0" Grid.Column="1" CornerRadius="5" Margin="8,5,58,5" HorizontalAlignment="Right" Height="40" Width="40">
-                                                                                    <Border.Background>
-                                                                                        <SolidColorBrush Color="#36393F" Opacity="0.8"/>
-                                                                                    </Border.Background>
-                                                                                    <Button x:Name="Btnmpropscycle" Grid.Row="0" Grid.Column="1" Style="{DynamicResource TitleBarButton}" Click="Btnmpropscycle_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="Reset">
-                                                                                        <Path x:Name="mpropscyclepath" Data="M -1,0 A 1,1 0 1 1 1,0 M -1,0 A 1,1 0 1 0 1,0" Stretch="Uniform" Stroke="{DynamicResource TextColor}" StrokeThickness="2"/>
-                                                                                    </Button>
-                                                                                </Border>
+                                                                                </StackPanel>
+                                                                            </WrapPanel>
+                                                                        </ScrollViewer>
+                                                                        <Grid Background="{DynamicResource BackgroundBrush}" Visibility="Collapsed" x:Name="mpropsdrop" MouseLeftButtonUp="IMGBackground_MouseLeftButtonUp">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="0.2*"/>
+                                                                                <ColumnDefinition Width="0.6*"/>
+                                                                                <ColumnDefinition Width="0.2*"/>
+                                                                            </Grid.ColumnDefinitions>
 
-                                                                                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" x:Name="mpropsdropContainer" Margin="0,0,0,25">
+                                                                            <Grid.RowDefinitions>
+                                                                                <RowDefinition Height="0.2*"/>
+                                                                                <RowDefinition Height="0.6*"/>
+                                                                                <RowDefinition Height="0.2*"/>
+                                                                            </Grid.RowDefinitions>
+                                                                            <Grid.Triggers>
+                                                                                <EventTrigger RoutedEvent="Grid.Loaded">
+                                                                                    <BeginStoryboard>
+                                                                                        <Storyboard>
+                                                                                            <DoubleAnimation From="0" To="5" Duration="00:00:03" Storyboard.TargetName="blurEffectmprops" Storyboard.TargetProperty="Radius"></DoubleAnimation>
+                                                                                        </Storyboard>
+                                                                                    </BeginStoryboard>
+                                                                                </EventTrigger>
+                                                                            </Grid.Triggers>
+                                                                            <Border Opacity="0.1" Grid.RowSpan="3" Grid.ColumnSpan="3">
+                                                                                <Border.Effect>
+                                                                                    <BlurEffect Radius="5" x:Name="blurEffectmprops"/>
+                                                                                </Border.Effect>
+                                                                                <Border.Background>
+                                                                                    <VisualBrush  Visual="{Binding ElementName=mpropspanelmain}" Stretch="None" />
+                                                                                </Border.Background>
+                                                                            </Border>
+                                                                            <Border Grid.Row="0" Grid.Column="1" CornerRadius="5" Margin="8,5,8,5" Height="40" HorizontalAlignment="Left">
+                                                                                <Border.Background>
+                                                                                    <SolidColorBrush Color="#36393F" Opacity="0.8"/>
+                                                                                </Border.Background>
+                                                                                <TextBlock VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Text="{Binding Translation[propimportheader], FallbackValue=Prop Import}" FontWeight="Bold" Margin="5 0"/>
+                                                                            </Border>
+                                                                            <Border Grid.Row="0" Grid.Column="1" CornerRadius="5" Margin="8,5,8,5" HorizontalAlignment="Right" Height="40" Width="40">
+                                                                                <Border.Background>
+                                                                                    <SolidColorBrush Color="#36393F" Opacity="0.8"/>
+                                                                                </Border.Background>
+                                                                                <Button x:Name="Btnmpropsclose" Grid.Row="0" Grid.Column="1" Style="{DynamicResource TitleBarButton}" Click="Btnmpropsclose_Click" WindowChrome.IsHitTestVisibleInChrome="True" >
+                                                                                    <Path x:Name="mpropsclosepath" Data="M0,0 L1,1 M0,1 L1,0" Stretch="Uniform" Stroke="{DynamicResource TextColor}" StrokeThickness="2"/>
+                                                                                </Button>
+                                                                            </Border>
+                                                                            <Border Grid.Row="0" Grid.Column="1" CornerRadius="5" Margin="8,5,58,5" HorizontalAlignment="Right" Height="40" Width="40">
+                                                                                <Border.Background>
+                                                                                    <SolidColorBrush Color="#36393F" Opacity="0.8"/>
+                                                                                </Border.Background>
+                                                                                <Button x:Name="Btnmpropscycle" Grid.Row="0" Grid.Column="1" Style="{DynamicResource TitleBarButton}" Click="Btnmpropscycle_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="Reset">
+                                                                                    <Path x:Name="mpropscyclepath" Data="M -1,0 A 1,1 0 1 1 1,0 M -1,0 A 1,1 0 1 0 1,0" Stretch="Uniform" Stroke="{DynamicResource TextColor}" StrokeThickness="2"/>
+                                                                                </Button>
+                                                                            </Border>
 
-                                                                                    <Grid>
+                                                                            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" x:Name="mpropsdropContainer" Margin="0,0,0,25">
+
+                                                                                <Grid>
+                                                                                    <Grid.RowDefinitions>
+                                                                                        <RowDefinition Height="0.7*"/>
+                                                                                        <RowDefinition Height="0.3*"/>
+                                                                                    </Grid.RowDefinitions>
+
+                                                                                    <Border Grid.Row="0" CornerRadius="5" Margin="8,5,8,5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                                                                                        <Border.Background>
+                                                                                            <SolidColorBrush Color="#36393F" Opacity="0.5"/>
+                                                                                        </Border.Background>
+                                                                                        <Grid>
+                                                                                            <TextBox x:Name="tbmpropsimport" Style="{StaticResource WatermarkOld}" Visibility="Collapsed" VerticalContentAlignment="Top"  Padding="0,5,0,0" HorizontalAlignment="Stretch" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto" TextChanged="tbmpropsimport_TextChanged"/>
+                                                                                            <Label x:Name="Lblmpropsimportinitialize" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Visibility="Visible" Foreground="{DynamicResource TextColor}" FontSize="18" FontWeight="Bold" Margin="5 0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" MouseLeftButtonUp="Border_MouseLeftButtonUp">
+                                                                                                <Label.Content>
+                                                                                                    <AccessText TextWrapping="Wrap" TextAlignment="Center" Text="{Binding Translation[propimporttext], FallbackValue=left click to open a windows file dialog and select the .cprp file(works with exported files from jora ermins mod tool)}"/>
+                                                                                                </Label.Content>
+                                                                                            </Label>
+                                                                                        </Grid>
+                                                                                    </Border>
+
+                                                                                    <Grid Grid.Row="1">
+                                                                                        <Grid.ColumnDefinitions>
+                                                                                            <ColumnDefinition Width="0.5*"/>
+                                                                                            <ColumnDefinition Width="0.5*"/>
+                                                                                        </Grid.ColumnDefinitions>
                                                                                         <Grid.RowDefinitions>
-                                                                                            <RowDefinition Height="0.7*"/>
-                                                                                            <RowDefinition Height="0.3*"/>
+                                                                                            <RowDefinition Height="0.5*"/>
+                                                                                            <RowDefinition Height="0.5*"/>
                                                                                         </Grid.RowDefinitions>
 
-                                                                                        <Border Grid.Row="0" CornerRadius="5" Margin="8,5,8,5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                                                                                            <Border.Background>
-                                                                                                <SolidColorBrush Color="#36393F" Opacity="0.5"/>
-                                                                                            </Border.Background>
-                                                                                            <Grid>
-                                                                                                <TextBox x:Name="tbmpropsimport" Style="{StaticResource WatermarkOld}" Visibility="Collapsed" VerticalContentAlignment="Top"  Padding="0,5,0,0" HorizontalAlignment="Stretch" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto" TextChanged="tbmpropsimport_TextChanged"/>
-                                                                                                <Label x:Name="Lblmpropsimportinitialize" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Visibility="Visible" Foreground="{DynamicResource TextColor}" FontSize="18" FontWeight="Bold" Margin="5 0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" MouseLeftButtonUp="Border_MouseLeftButtonUp">
-                                                                                                    <Label.Content>
-                                                                                                        <AccessText TextWrapping="Wrap" TextAlignment="Center" Text="{Binding Translation[propimporttext], FallbackValue=left click to open a windows file dialog and select the .cprp file(works with exported files from jora ermins mod tool)}"/>
-                                                                                                    </Label.Content>
-                                                                                                </Label>
-                                                                                            </Grid>
+                                                                                        <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"  Background="Transparent" Margin="5" Height="30" CornerRadius="5">
+                                                                                            <ComboBox x:Name="ddmpropsimport" FontFamily="{DynamicResource Volte}" SelectionChanged="ddmpropsimport_SelectionChanged" ToolTip="{Binding Translation[propimportcategorys], FallbackValue=Found Props}" Tag="{Binding Translation[propimportcategorys], FallbackValue=Found Props}" IsEnabled="False">
+                                                                                                <ComboBoxItem Content="All"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_barrier], FallbackValue=Barriers}"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_banks], FallbackValue=Banks}"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_boje], FallbackValue=Boje}"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_cabins], FallbackValue=Cabins}"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_bags], FallbackValue=Bags}"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_container], FallbackValue=Container}"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_kaesten], FallbackValue=Boxes}"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_trash_container], FallbackValue=Trash Container}"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_machinery], FallbackValue=Machinery}"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_ramps], FallbackValue=Ramps}"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_signs], FallbackValue=Signs}"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_trailer], FallbackValue=Trailer}"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_wrecks], FallbackValue=Wrecks}"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_dynamics], FallbackValue=Dynamics}"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_trees], FallbackValue=Trees}"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_hidden], FallbackValue=Hidden}"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_special], FallbackValue=Special}"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_stunt_ramps], FallbackValue=Stunt Ramps}"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_stunt_building_blocks], FallbackValue=Stunt Building Blocks}"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_stunt_set_pieces], FallbackValue=Stunt Set Pieces}"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_stunt_special], FallbackValue=Stunt Special}"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_stunt_targets], FallbackValue=Target Assault}"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_stunt_signs], FallbackValue=Stunt Signs}"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_stunt_arrow], FallbackValue=Stunt Arrows}"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_stunt_tracks], FallbackValue=Stunt Track}"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_stunt_tracks_wb], FallbackValue=Stunt Track with Barriers}"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_stunt_tracks_high], FallbackValue=Stunt Raised Tracks}"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_stunt_barriers], FallbackValue=Stunt Barreirs}"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_stunt_tubes], FallbackValue=Stunt Tubes}"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_drugs], FallbackValue=Drugs}"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_gunrunning], FallbackValue=Gunrunning}"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_stunt_tubes_neon], FallbackValue=Stunt Neon Tubes}"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_stunt_neon_blocks], FallbackValue=Stunt Neon Blocks}"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_stunt_target], FallbackValue=Stunt Targets}"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_stunt_tubes_big], FallbackValue=Stunt Air Tubes}"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_stunt_cp_rings], FallbackValue=Stunt Checkpoint Rings}"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_stunt_air_gates], FallbackValue=Stunt Air Gates}"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_stunt_inflateable_gates], FallbackValue=Stunt Inflateable Gates}"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_race_buildings], FallbackValue=Race Buildings}"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_hidden], FallbackValue=Hidden}" ContentStringFormat=" {0} 2"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_hidden], FallbackValue=Hidden}" ContentStringFormat=" {0} 3"/>
+                                                                                                <ComboBoxItem Content="{Binding Translation[mp_hidden], FallbackValue=Hidden}" ContentStringFormat=" {0} 4"/>
+                                                                                            </ComboBox>
                                                                                         </Border>
 
-                                                                                        <Grid Grid.Row="1">
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="0.5*"/>
-                                                                                                <ColumnDefinition Width="0.5*"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <Grid.RowDefinitions>
-                                                                                                <RowDefinition Height="0.5*"/>
-                                                                                                <RowDefinition Height="0.5*"/>
-                                                                                            </Grid.RowDefinitions>
-
-                                                                                            <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"  Background="Transparent" Margin="5" Height="30" CornerRadius="5">
-                                                                                                <ComboBox x:Name="ddmpropsimport" FontFamily="{DynamicResource Volte}" SelectionChanged="ddmpropsimport_SelectionChanged" ToolTip="{Binding Translation[propimportcategorys], FallbackValue=Found Props}" Tag="{Binding Translation[propimportcategorys], FallbackValue=Found Props}" IsEnabled="False">
-                                                                                                    <ComboBoxItem Content="All"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_barrier], FallbackValue=Barriers}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_banks], FallbackValue=Banks}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_boje], FallbackValue=Boje}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_cabins], FallbackValue=Cabins}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_bags], FallbackValue=Bags}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_container], FallbackValue=Container}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_kaesten], FallbackValue=Boxes}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_trash_container], FallbackValue=Trash Container}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_machinery], FallbackValue=Machinery}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_ramps], FallbackValue=Ramps}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_signs], FallbackValue=Signs}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_trailer], FallbackValue=Trailer}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_wrecks], FallbackValue=Wrecks}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_dynamics], FallbackValue=Dynamics}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_trees], FallbackValue=Trees}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_hidden], FallbackValue=Hidden}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_special], FallbackValue=Special}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_stunt_ramps], FallbackValue=Stunt Ramps}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_stunt_building_blocks], FallbackValue=Stunt Building Blocks}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_stunt_set_pieces], FallbackValue=Stunt Set Pieces}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_stunt_special], FallbackValue=Stunt Special}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_stunt_targets], FallbackValue=Target Assault}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_stunt_signs], FallbackValue=Stunt Signs}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_stunt_arrow], FallbackValue=Stunt Arrows}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_stunt_tracks], FallbackValue=Stunt Track}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_stunt_tracks_wb], FallbackValue=Stunt Track with Barriers}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_stunt_tracks_high], FallbackValue=Stunt Raised Tracks}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_stunt_barriers], FallbackValue=Stunt Barreirs}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_stunt_tubes], FallbackValue=Stunt Tubes}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_drugs], FallbackValue=Drugs}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_gunrunning], FallbackValue=Gunrunning}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_stunt_tubes_neon], FallbackValue=Stunt Neon Tubes}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_stunt_neon_blocks], FallbackValue=Stunt Neon Blocks}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_stunt_target], FallbackValue=Stunt Targets}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_stunt_tubes_big], FallbackValue=Stunt Air Tubes}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_stunt_cp_rings], FallbackValue=Stunt Checkpoint Rings}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_stunt_air_gates], FallbackValue=Stunt Air Gates}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_stunt_inflateable_gates], FallbackValue=Stunt Inflateable Gates}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_race_buildings], FallbackValue=Race Buildings}"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_hidden], FallbackValue=Hidden}" ContentStringFormat=" {0} 2"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_hidden], FallbackValue=Hidden}" ContentStringFormat=" {0} 3"/>
-                                                                                                    <ComboBoxItem Content="{Binding Translation[mp_hidden], FallbackValue=Hidden}" ContentStringFormat=" {0} 4"/>
-                                                                                                </ComboBox>
-                                                                                            </Border>
-
-                                                                                            <Border Grid.Row="1" Grid.Column="0" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5" Height="34">
-                                                                                                <Border.Effect>
-                                                                                                    <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>                                            
-                                                                                                </Border.Effect>
-                                                                                                <Button x:Name="Btnmpropsimportreplace" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" Content="Replace" ToolTip="Replace Prop Model" Click="Btnmpropsimportreplace_Click" IsEnabled="False"/>
-                                                                                            </Border>
-                                                                                            <Border Grid.Row="1" Grid.Column="1" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5" Height="34">
-                                                                                                <Border.Effect>
-                                                                                                    <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>                                            
-                                                                                                </Border.Effect>
-                                                                                                <Button x:Name="Btnmpropsimportreplaceall" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" Content="Replace for all" ToolTip="Replace Prop Modelfor all initialized Creators" Click="Btnmpropsimportreplaceall_Click" IsEnabled="False" />
-                                                                                            </Border>
-                                                                                        </Grid>
+                                                                                        <Border Grid.Row="1" Grid.Column="0" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5" Height="34">
+                                                                                            <Border.Effect>
+                                                                                                <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>                                            
+                                                                                            </Border.Effect>
+                                                                                            <Button x:Name="Btnmpropsimportreplace" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" Content="Replace" ToolTip="Replace Prop Model" Click="Btnmpropsimportreplace_Click" IsEnabled="False"/>
+                                                                                        </Border>
+                                                                                        <Border Grid.Row="1" Grid.Column="1" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5" Height="34">
+                                                                                            <Border.Effect>
+                                                                                                <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>                                            
+                                                                                            </Border.Effect>
+                                                                                            <Button x:Name="Btnmpropsimportreplaceall" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" Content="Replace for all" ToolTip="Replace Prop Modelfor all initialized Creators" Click="Btnmpropsimportreplaceall_Click" IsEnabled="False" />
+                                                                                        </Border>
                                                                                     </Grid>
-
                                                                                 </Grid>
+
                                                                             </Grid>
-
                                                                         </Grid>
-
-                                                                        <Grid>
-                                                                            <Control x:Name="mpropsloadanimation" Template="{StaticResource DotsLoader}" Focusable="False" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Visibility="Collapsed"/>
-                                                                        </Grid>
-
                                                                     </Grid>
-                                                                </Border>
-                                                                
-                                                            </Grid>
+                                                                    <Grid>
+                                                                        <Control x:Name="mpropsloadanimation" Template="{StaticResource DotsLoader}" Focusable="False" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Visibility="Collapsed"/>
+                                                                    </Grid>
+                                                                </Grid>
+                                                            </Border>
 
                                                         </TabItem>
 
