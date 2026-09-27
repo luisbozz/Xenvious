@@ -175,6 +175,10 @@ namespace Xenvious
             cb_veh_nottargetable.IsEnabled = index < 0 ? false : true;
             cb_veh_box.IsEnabled = index < 0 ? false : true;
             cb_veh_explodeinwater.IsEnabled = index < 0 ? false : true;
+            cb_veh_lockteam1.IsEnabled = index < 0 ? false : true;
+            cb_veh_lockteam2.IsEnabled = index < 0 ? false : true;
+            cb_veh_lockteam3.IsEnabled = index < 0 ? false : true;
+            cb_veh_lockteam4.IsEnabled = index < 0 ? false : true;
 
             cb_veh_door_close_hood.IsEnabled = index < 0 ? false : true;
             cb_veh_door_close_trunk.IsEnabled = index < 0 ? false : true;
@@ -341,6 +345,10 @@ namespace Xenvious
                 //Functions.Read.checkbinary(26, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cbveharrow);
                 Functions.Read.checkbinary(32, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_nottargetable);
                 Functions.Read.checkbinary(4, GTA.Offsets.Editor.Vehicle.vbs8 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_explodeinwater);
+                Functions.Read.checkbinary(3, GTA.Offsets.Editor.Vehicle.vbs2 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_lockteam1);
+                Functions.Read.checkbinary(4, GTA.Offsets.Editor.Vehicle.vbs2 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_lockteam2);
+                Functions.Read.checkbinary(5, GTA.Offsets.Editor.Vehicle.vbs2 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_lockteam3);
+                Functions.Read.checkbinary(6, GTA.Offsets.Editor.Vehicle.vbs2 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_lockteam4);
 
 
                 Functions.Read.checkbinary(1, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_open_fl);
@@ -487,6 +495,19 @@ namespace Xenvious
         private void cb_veh_engine_Checked(object sender, RoutedEventArgs e)
         {
             Functions.Write.writebinary(1, GTA.Offsets.Editor.Vehicle.vbs2 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_engine);
+        }
+
+        // vbs2 bits 3..6: the mission controller locks the vehicle's doors for
+        // team 1..4.
+        private void cb_veh_lockteam_Checked(object sender, RoutedEventArgs e)
+        {
+            if (ddvehno.SelectedIndex < 0)
+                return;
+
+            CheckBox[] boxes = { cb_veh_lockteam1, cb_veh_lockteam2, cb_veh_lockteam3, cb_veh_lockteam4 };
+            int team = Array.IndexOf(boxes, sender);
+            if (team > -1)
+                Functions.Write.writebinary(3 + team, GTA.Offsets.Editor.Vehicle.vbs2 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, boxes[team]);
         }
 
         private void cb_veh_neon_Checked(object sender, RoutedEventArgs e)

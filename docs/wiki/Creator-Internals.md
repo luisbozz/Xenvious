@@ -26,6 +26,24 @@ Text fields (title, description) are stored in chunks of 63 bytes plus a
 terminator, one chunk every 16 slots; see `setDescribtion` in
 `MainWindow.Misc.CopyJobs.cs`.
 
+## Options the creator does not show
+
+The option bitsets `menubs` to `menubs32` (`Global_4718592.f_12` to `f_43`)
+hold more bits than the creator menus offer. The creator saves each bitset
+as a whole, so a bit set from outside stays in the published job, and the
+mission controller acts on some bits the LTS and Capture creators never set
+(both creators set the same bits). Mission > General shows the ones whose
+effect was found in the decompiled `fm_mission_controller`, the controller LTS
+and Capture jobs run on, sorted in with the related options and marked with
+`*`; `fm_mission_controller_2020` was not checked. The table that drives them
+is in `MainWindow.Mission.Extras.cs`.
+
+To add one, find `BitTest(Global_4718592.f_N, b)` in the controller and read
+what the code does when it is set. `menubsN` is `f_(11+N)`, and script bit `b`
+is Xenvious bit `b + 1` (`writebinary` counts from 1). Per-entity bitsets
+count the same way; for example `vbs2` bits 3 to 6 lock a vehicle for team 1
+to 4.
+
 ## Rebuild: making changes visible
 
 Writing job data changes the saved job, but the creator still shows the old

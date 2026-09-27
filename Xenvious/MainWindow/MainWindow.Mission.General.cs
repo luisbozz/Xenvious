@@ -428,10 +428,40 @@ namespace Xenvious
             Functions.Write.writebinary(3, GTA.Offsets.Editor.menubs2, cbmissionplaycm);
         }
 
+        // pol: 0 = normal police, 1 = no police, 2..6 = at most 1..5 stars. The
+        // dropdown lists them in that order.
         private void ddmissionmaxwl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ddmissionmaxwl.SelectedIndex > -1)
-                new Global(GTA.Offsets.Editor.pol).SetInt(ddmissionmaxwl.SelectedIndex + 1);
+                new Global(GTA.Offsets.Editor.pol).SetInt(ddmissionmaxwl.SelectedIndex);
+        }
+
+        // traf and apeds store an index that the mission controller turns into a
+        // density: 0 = 0, 1 = 0.2, 2 = 0.5, 3 = 1.0, 4 = 0.85. The creator offers
+        // these five; the dropdowns list them from low to high.
+        private static readonly int[] MissionDensityIndex = { 0, 1, 2, 4, 3 };
+
+        private void ddmissiontraffic_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SetMissionDensity(ddmissiontraffic, GTA.Offsets.Editor.traf);
+        }
+
+        private void ddmissionpeds_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SetMissionDensity(ddmissionpeds, GTA.Offsets.Editor.apeds);
+        }
+
+        private void SetMissionDensity(ComboBox box, long offset)
+        {
+            if (box.SelectedIndex > -1 && offset != 0)
+                new Global(offset).SetInt(MissionDensityIndex[box.SelectedIndex]);
+        }
+
+        private void GetMissionDensity(ComboBox box, long offset)
+        {
+            if (offset == 0 || box.IsDropDownOpen)
+                return;
+            box.SelectedIndex = Array.IndexOf(MissionDensityIndex, new Global(offset).Get<int>());
         }
 
         private void tbMissionendtype_TextChanged(object sender, TextChangedEventArgs e)
