@@ -71,6 +71,7 @@ namespace Xenvious
                     this.Resources["ComboBoxArrow"] = new SolidColorBrush(Colors.White);
                     this.Resources["TextColor"] = new SolidColorBrush(Colors.White);
                     this.Resources["TextBoxForegroundThemeBrush"] = new SolidColorBrush(Colors.White);
+                    this.Resources["ScrollThumbBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5A5E66"));
                     this.Resources["PrimaryButtonBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#E3E5E8"));
                     this.Resources["PrimaryButtonForeground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#202225"));
                     this.Resources["ShadowColor"] = Colors.Black;
@@ -98,6 +99,7 @@ namespace Xenvious
                     this.Resources["ComboBoxArrow"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B9BBBE"));
                     this.Resources["TextColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4F5660"));
                     this.Resources["TextBoxForegroundThemeBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4F5660"));
+                    this.Resources["ScrollThumbBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B9BBBE"));
                     this.Resources["PrimaryButtonBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4F5660"));
                     this.Resources["PrimaryButtonForeground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFFFFF"));
                     this.Resources["ShadowColor"] = Colors.White;
@@ -123,6 +125,7 @@ namespace Xenvious
                     this.Resources["ComboBoxArrow"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B9BBBE"));
                     this.Resources["TextColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#90A0BC"));
                     this.Resources["TextBoxForegroundThemeBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#90A0BC"));
+                    this.Resources["ScrollThumbBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4A5680"));
                     this.Resources["PrimaryButtonBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#90A0BC"));
                     this.Resources["PrimaryButtonForeground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#161C32"));
                     this.Resources["ShadowColor"] = Colors.Black;

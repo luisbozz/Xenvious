@@ -90,27 +90,27 @@
             </Style>
             <!-- Inside cards: the label above a field, the X/Y/Z over a vector box, the name of a raw value, a small heading. -->
             <Style x:Key="FieldLabel" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
-                <Setter Property="FontSize" Value="12.5"/>
+                <Setter Property="FontSize" Value="13.5"/>
                 <Setter Property="FontWeight" Value="Normal"/>
                 <Setter Property="Foreground" Value="{StaticResource NavMutedBrush}"/>
                 <Setter Property="Margin" Value="0,0,0,4"/>
                 <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
             </Style>
             <Style x:Key="FieldAxis" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
-                <Setter Property="FontSize" Value="11"/>
+                <Setter Property="FontSize" Value="12"/>
                 <Setter Property="FontWeight" Value="Bold"/>
                 <Setter Property="Foreground" Value="#FF72767D"/>
                 <Setter Property="Margin" Value="2,0,0,3"/>
             </Style>
             <Style x:Key="FieldLabelRaw" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
                 <Setter Property="FontFamily" Value="Consolas"/>
-                <Setter Property="FontSize" Value="11.5"/>
+                <Setter Property="FontSize" Value="12.5"/>
                 <Setter Property="FontWeight" Value="Normal"/>
                 <Setter Property="Foreground" Value="#FF72767D"/>
                 <Setter Property="Margin" Value="0,0,0,4"/>
             </Style>
             <Style x:Key="CardSub" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
-                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="FontSize" Value="15"/>
                 <Setter Property="FontWeight" Value="SemiBold"/>
                 <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
                 <Setter Property="Margin" Value="0,0,0,4"/>
@@ -1437,11 +1437,11 @@
                                                                     </Border>
                                                                 </StackPanel>
                                                                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                                                    <WrapPanel Orientation="Horizontal" Margin="0,0,0,12">
-                                                                        <StackPanel Width="340" Margin="0,0,12,0">
+                                                                    <local:MasonryPanel Margin="0,0,0,12">
+                                                                        <StackPanel>
                                                                             <local:ModelCard x:Name="PropModelCard" Margin="0,0,0,12"/>
                                                                         </StackPanel>
-                                                                        <StackPanel Width="340" Margin="0,0,12,0">
+                                                                        <StackPanel>
                                                                             <Border Style="{StaticResource DashCard}">
                                                                                 <DockPanel>
                                                                                     <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -1546,7 +1546,7 @@
                                                                                 </DockPanel>
                                                                             </Border>
                                                                         </StackPanel>
-                                                                        <StackPanel Width="340" Margin="0,0,12,0">
+                                                                        <StackPanel>
                                                                             <Border Style="{StaticResource DashCard}">
                                                                                 <DockPanel>
                                                                                     <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -1790,7 +1790,7 @@
                                                                                 </DockPanel>
                                                                             </Border>
                                                                         </StackPanel>
-                                                                        <StackPanel Width="340" Margin="0,0,12,0">
+                                                                        <StackPanel>
                                                                             <Border Style="{StaticResource DashCard}">
                                                                                 <DockPanel>
                                                                                     <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -1957,7 +1957,7 @@
                                                                                 </Expander>
                                                                             </Border>
                                                                         </StackPanel>
-                                                                    </WrapPanel>
+                                                                    </local:MasonryPanel>
                                                                 </ScrollViewer>
                                                             </DockPanel>
 
@@ -2032,11 +2032,11 @@
                                                                     </Border>
                                                                 </StackPanel>
                                                                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                                                    <WrapPanel Orientation="Horizontal" Margin="0,0,0,12">
-                                                                        <StackPanel Width="340" Margin="0,0,12,0">
+                                                                    <local:MasonryPanel Margin="0,0,0,12">
+                                                                        <StackPanel>
                                                                             <local:ModelCard x:Name="DPropModelCard" Margin="0,0,0,12"/>
                                                                         </StackPanel>
-                                                                        <StackPanel Width="340" Margin="0,0,12,0">
+                                                                        <StackPanel>
                                                                             <Border Style="{StaticResource DashCard}">
                                                                                 <DockPanel>
                                                                                     <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -2123,7 +2123,7 @@
                                                                                 </DockPanel>
                                                                             </Border>
                                                                         </StackPanel>
-                                                                        <StackPanel Width="340" Margin="0,0,12,0">
+                                                                        <StackPanel>
                                                                             <Border Style="{StaticResource DashCard}">
                                                                                 <DockPanel>
                                                                                     <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -2229,7 +2229,7 @@
                                                                                 </DockPanel>
                                                                             </Border>
                                                                         </StackPanel>
-                                                                        <StackPanel Width="340" Margin="0,0,12,0">
+                                                                        <StackPanel>
                                                                             <Border Style="{StaticResource DashCard}">
                                                                                 <Expander Style="{StaticResource CardExpander}" Header="{Binding Translation[advanced], FallbackValue=Advanced}">
                                                                                     <StackPanel Margin="14,12,14,4">
@@ -2302,7 +2302,7 @@
                                                                                 </Expander>
                                                                             </Border>
                                                                         </StackPanel>
-                                                                    </WrapPanel>
+                                                                    </local:MasonryPanel>
                                                                 </ScrollViewer>
                                                             </DockPanel>
 
@@ -2321,8 +2321,8 @@
                                                                 <Grid>
                                                                     <Grid x:Name="mpropspanelmainmain">
                                                                         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                                                            <WrapPanel x:Name="mpropspanelmain" Orientation="Horizontal" Margin="10,12,10,12">
-                                                                                <StackPanel Width="340" Margin="0,0,12,0">
+                                                                            <local:MasonryPanel x:Name="mpropspanelmain" Margin="10,12,10,12">
+                                                                                <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}">
                                                                                     <DockPanel>
                                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -2401,7 +2401,7 @@
                                                                                     </DockPanel>
                                                                                 </Border>
                                                                                 </StackPanel>
-                                                                                <StackPanel Width="340" Margin="0,0,12,0">
+                                                                                <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}">
                                                                                     <DockPanel>
                                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -2476,7 +2476,7 @@
                                                                                     </DockPanel>
                                                                                 </Border>
                                                                                 </StackPanel>
-                                                                                <StackPanel Width="340" Margin="0,0,12,0">
+                                                                                <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}">
                                                                                     <DockPanel>
                                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -2551,7 +2551,7 @@
                                                                                     </DockPanel>
                                                                                 </Border>
                                                                                 </StackPanel>
-                                                                            </WrapPanel>
+                                                                            </local:MasonryPanel>
                                                                         </ScrollViewer>
                                                                         <Grid Background="{DynamicResource BackgroundBrush}" Visibility="Collapsed" x:Name="mpropsdrop" MouseLeftButtonUp="IMGBackground_MouseLeftButtonUp">
                                                                             <Grid.ColumnDefinitions>
@@ -2782,11 +2782,11 @@
                                                         </Border>
                                                     </StackPanel>
                                                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                                        <WrapPanel Orientation="Horizontal" Margin="0,0,0,12">
-                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                        <local:MasonryPanel Margin="0,0,0,12">
+                                                            <StackPanel>
                                                                 <local:ModelCard x:Name="VehModelCard" Margin="0,0,0,12"/>
                                                             </StackPanel>
-                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                            <StackPanel>
                                                                 <Border Style="{StaticResource DashCard}">
                                                                     <DockPanel>
                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -2864,7 +2864,7 @@
                                                                     </DockPanel>
                                                                 </Border>
                                                             </StackPanel>
-                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                            <StackPanel>
                                                                 <Border Style="{StaticResource DashCard}">
                                                                     <DockPanel>
                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -3049,7 +3049,7 @@
                                                                     </DockPanel>
                                                                 </Border>
                                                             </StackPanel>
-                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                            <StackPanel>
                                                                 <Border Style="{StaticResource DashCard}">
                                                                     <DockPanel>
                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -3183,7 +3183,7 @@
                                                                     </DockPanel>
                                                                 </Border>
                                                             </StackPanel>
-                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                            <StackPanel>
                                                                 <Border Style="{StaticResource DashCard}">
                                                                     <DockPanel>
                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -3476,7 +3476,7 @@
                                                                     </Expander>
                                                                 </Border>
                                                             </StackPanel>
-                                                        </WrapPanel>
+                                                        </local:MasonryPanel>
                                                     </ScrollViewer>
                                                 </DockPanel>
 
@@ -3547,11 +3547,11 @@
                                                         </Border>
                                                     </StackPanel>
                                                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                                        <WrapPanel Orientation="Horizontal" Margin="0,0,0,12">
-                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                        <local:MasonryPanel Margin="0,0,0,12">
+                                                            <StackPanel>
                                                                 <local:ModelCard x:Name="WeapModelCard" Margin="0,0,0,12"/>
                                                             </StackPanel>
-                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                            <StackPanel>
                                                                 <Border Style="{StaticResource DashCard}">
                                                                     <DockPanel>
                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -3650,7 +3650,7 @@
                                                                     </DockPanel>
                                                                 </Border>
                                                             </StackPanel>
-                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                            <StackPanel>
                                                                 <Border Style="{StaticResource DashCard}">
                                                                     <DockPanel>
                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -3724,7 +3724,7 @@
                                                                     </DockPanel>
                                                                 </Border>
                                                             </StackPanel>
-                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                            <StackPanel>
                                                                 <Border Style="{StaticResource DashCard}">
                                                                     <DockPanel>
                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -3926,7 +3926,7 @@
                                                                     </Expander>
                                                                 </Border>
                                                             </StackPanel>
-                                                        </WrapPanel>
+                                                        </local:MasonryPanel>
                                                     </ScrollViewer>
                                                 </DockPanel>
 
@@ -3987,8 +3987,8 @@
                                                             <DockPanel Margin="10,0">
 
                                                                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                                                    <WrapPanel Orientation="Horizontal" Margin="0,12,0,12">
-                                                                        <StackPanel Width="340" Margin="0,0,12,0">
+                                                                    <local:MasonryPanel Margin="0,12,0,12">
+                                                                        <StackPanel>
                                                                             <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                 <DockPanel>
                                                                                     <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -4014,7 +4014,7 @@
                                                                                 </DockPanel>
                                                                             </Border>
                                                                         </StackPanel>
-                                                                        <StackPanel Width="340" Margin="0,0,12,0">
+                                                                        <StackPanel>
                                                                             <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                 <DockPanel>
                                                                                     <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -4057,7 +4057,7 @@
                                                                                 </DockPanel>
                                                                             </Border>
                                                                         </StackPanel>
-                                                                        <StackPanel Width="340" Margin="0,0,12,0">
+                                                                        <StackPanel>
                                                                             <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                 <DockPanel>
                                                                                     <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -4082,7 +4082,7 @@
                                                                                 </DockPanel>
                                                                             </Border>
                                                                         </StackPanel>
-                                                                        <StackPanel Width="340" Margin="0,0,12,0">
+                                                                        <StackPanel>
                                                                             <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                 <DockPanel>
                                                                                     <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -4197,7 +4197,7 @@
                                                                                 </DockPanel>
                                                                             </Border>
                                                                         </StackPanel>
-                                                                    </WrapPanel>
+                                                                    </local:MasonryPanel>
                                                                 </ScrollViewer>
                                                             </DockPanel>
 
@@ -4226,8 +4226,8 @@
                                                                     </DockPanel>
                                                                 </Border>
                                                                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                                                    <WrapPanel Orientation="Horizontal" Margin="0,12,0,12">
-                                                                        <StackPanel Width="340" Margin="0,0,12,0">
+                                                                    <local:MasonryPanel Margin="0,12,0,12">
+                                                                        <StackPanel>
                                                                             <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                 <DockPanel>
                                                                                     <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -4243,7 +4243,7 @@
                                                                                 </DockPanel>
                                                                             </Border>
                                                                         </StackPanel>
-                                                                        <StackPanel Width="340" Margin="0,0,12,0">
+                                                                        <StackPanel>
                                                                             <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                 <DockPanel>
                                                                                     <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -4293,7 +4293,7 @@
                                                                                 </DockPanel>
                                                                             </Border>
                                                                         </StackPanel>
-                                                                        <StackPanel Width="340" Margin="0,0,12,0">
+                                                                        <StackPanel>
                                                                             <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                 <DockPanel>
                                                                                     <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -4386,7 +4386,7 @@
                                                                                 </DockPanel>
                                                                             </Border>
                                                                         </StackPanel>
-                                                                        <StackPanel Width="340" Margin="0,0,12,0">
+                                                                        <StackPanel>
                                                                             <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                 <DockPanel>
                                                                                     <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -4482,7 +4482,7 @@
                                                                                 </DockPanel>
                                                                             </Border>
                                                                         </StackPanel>
-                                                                    </WrapPanel>
+                                                                    </local:MasonryPanel>
                                                                 </ScrollViewer>
                                                             </DockPanel>
 
@@ -4498,8 +4498,8 @@
                                                             <DockPanel Margin="10,0">
 
                                                                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                                                    <WrapPanel Orientation="Horizontal" Margin="0,12,0,12">
-                                                                        <StackPanel Width="340" Margin="0,0,12,0">
+                                                                    <local:MasonryPanel Margin="0,12,0,12">
+                                                                        <StackPanel>
                                                                             <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                 <Expander Style="{StaticResource CardExpander}" Header="{Binding Translation[advanced], FallbackValue=Advanced}">
                                                                                     <StackPanel Margin="14,12,14,4">
@@ -4599,7 +4599,7 @@
                                                                                 </DockPanel>
                                                                             </Border>
                                                                         </StackPanel>
-                                                                        <StackPanel Width="340" Margin="0,0,12,0">
+                                                                        <StackPanel>
                                                                             <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                 <DockPanel>
                                                                                     <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -4691,7 +4691,7 @@
                                                                                 </DockPanel>
                                                                             </Border>
                                                                         </StackPanel>
-                                                                        <StackPanel Width="340" Margin="0,0,12,0">
+                                                                        <StackPanel>
                                                                             <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                 <DockPanel>
                                                                                     <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -4783,7 +4783,7 @@
                                                                                 </DockPanel>
                                                                             </Border>
                                                                         </StackPanel>
-                                                                        <StackPanel Width="340" Margin="0,0,12,0">
+                                                                        <StackPanel>
                                                                             <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                 <DockPanel>
                                                                                     <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -4875,7 +4875,7 @@
                                                                                 </DockPanel>
                                                                             </Border>
                                                                         </StackPanel>
-                                                                    </WrapPanel>
+                                                                    </local:MasonryPanel>
                                                                 </ScrollViewer>
                                                             </DockPanel>
 
@@ -4967,8 +4967,8 @@
                                                                 <DockPanel Margin="10,0">
 
                                                                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                                                        <WrapPanel Orientation="Horizontal" Margin="0,12,0,12">
-                                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                        <local:MasonryPanel Margin="0,12,0,12">
+                                                                            <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <DockPanel>
                                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -5166,7 +5166,7 @@
                                                                                     </DockPanel>
                                                                                 </Border>
                                                                             </StackPanel>
-                                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                            <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <DockPanel>
                                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -5357,7 +5357,7 @@
                                                                                     </DockPanel>
                                                                                 </Border>
                                                                             </StackPanel>
-                                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                            <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <DockPanel>
                                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -5603,7 +5603,7 @@
                                                                                     </DockPanel>
                                                                                 </Border>
                                                                             </StackPanel>
-                                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                            <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <DockPanel>
                                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -5804,7 +5804,7 @@
                                                                                     </Expander>
                                                                                 </Border>
                                                                             </StackPanel>
-                                                                        </WrapPanel>
+                                                                        </local:MasonryPanel>
                                                                     </ScrollViewer>
                                                                 </DockPanel>
 
@@ -5816,8 +5816,8 @@
                                                                 <DockPanel Margin="10,0">
 
                                                                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                                                        <WrapPanel Orientation="Horizontal" Margin="0,12,0,12">
-                                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                        <local:MasonryPanel Margin="0,12,0,12">
+                                                                            <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <DockPanel>
                                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -6068,7 +6068,7 @@
                                                                                     </DockPanel>
                                                                                 </Border>
                                                                             </StackPanel>
-                                                                        </WrapPanel>
+                                                                        </local:MasonryPanel>
                                                                     </ScrollViewer>
                                                                 </DockPanel>
 
@@ -6192,8 +6192,8 @@
                                                                         </DockPanel>
                                                                     </Border>
                                                                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                                                        <WrapPanel Orientation="Horizontal" Margin="0,12,0,12">
-                                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                        <local:MasonryPanel Margin="0,12,0,12">
+                                                                            <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <DockPanel>
                                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -6211,7 +6211,7 @@
                                                                                     </DockPanel>
                                                                                 </Border>
                                                                             </StackPanel>
-                                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                            <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <DockPanel>
                                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -6258,7 +6258,7 @@
                                                                                     </DockPanel>
                                                                                 </Border>
                                                                             </StackPanel>
-                                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                            <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <Expander Style="{StaticResource CardExpander}" Header="{Binding Translation[advanced], FallbackValue=Advanced}">
                                                                                         <StackPanel Margin="14,12,14,4">
@@ -6286,7 +6286,7 @@
                                                                                     </Expander>
                                                                                 </Border>
                                                                             </StackPanel>
-                                                                        </WrapPanel>
+                                                                        </local:MasonryPanel>
                                                                     </ScrollViewer>
                                                                 </DockPanel>
 
@@ -6317,8 +6317,8 @@
                                                                         </DockPanel>
                                                                     </Border>
                                                                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                                                        <WrapPanel Orientation="Horizontal" Margin="0,12,0,12">
-                                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                        <local:MasonryPanel Margin="0,12,0,12">
+                                                                            <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <DockPanel>
                                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -6459,7 +6459,7 @@
                                                                                     </DockPanel>
                                                                                 </Border>
                                                                             </StackPanel>
-                                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                            <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <DockPanel>
                                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -6568,7 +6568,7 @@
                                                                                     </DockPanel>
                                                                                 </Border>
                                                                             </StackPanel>
-                                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                            <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <DockPanel>
                                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -6937,7 +6937,7 @@
                                                                                     </DockPanel>
                                                                                 </Border>
                                                                             </StackPanel>
-                                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                            <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <Expander Style="{StaticResource CardExpander}" Header="{Binding Translation[advanced], FallbackValue=Advanced}">
                                                                                         <StackPanel Margin="14,12,14,4">
@@ -7057,7 +7057,7 @@
                                                                                     </Expander>
                                                                                 </Border>
                                                                             </StackPanel>
-                                                                        </WrapPanel>
+                                                                        </local:MasonryPanel>
                                                                     </ScrollViewer>
                                                                 </DockPanel>
 
@@ -7101,8 +7101,8 @@
                                                                         </DockPanel>
                                                                     </Border>
                                                                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                                                        <WrapPanel x:Name="pawrappanel" Orientation="Horizontal" Margin="0,12,0,12">
-                                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                        <local:MasonryPanel x:Name="pawrappanel" Margin="0,12,0,12">
+                                                                            <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <DockPanel>
                                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -7136,7 +7136,7 @@
                                                                                     </DockPanel>
                                                                                 </Border>
                                                                             </StackPanel>
-                                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                            <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <DockPanel>
                                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -7188,7 +7188,7 @@
                                                                                     </DockPanel>
                                                                                 </Border>
                                                                             </StackPanel>
-                                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                            <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <Expander Style="{StaticResource CardExpander}" Header="{Binding Translation[advanced], FallbackValue=Advanced}">
                                                                                         <StackPanel Margin="14,12,14,4">
@@ -7234,7 +7234,7 @@
                                                                                     </Expander>
                                                                                 </Border>
                                                                             </StackPanel>
-                                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                            <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <DockPanel>
                                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -7314,7 +7314,7 @@
                                                                                     </DockPanel>
                                                                                 </Border>
                                                                             </StackPanel>
-                                                                        </WrapPanel>
+                                                                        </local:MasonryPanel>
                                                                     </ScrollViewer>
                                                                 </DockPanel>
 
@@ -7358,8 +7358,8 @@
                                                                         </DockPanel>
                                                                     </Border>
                                                                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                                                        <WrapPanel x:Name="bd2pawrappanel" Orientation="Horizontal" Margin="0,12,0,12">
-                                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                        <local:MasonryPanel x:Name="bd2pawrappanel" Margin="0,12,0,12">
+                                                                            <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <DockPanel>
                                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -7393,7 +7393,7 @@
                                                                                     </DockPanel>
                                                                                 </Border>
                                                                             </StackPanel>
-                                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                            <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <DockPanel>
                                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -7435,7 +7435,7 @@
                                                                                     </DockPanel>
                                                                                 </Border>
                                                                             </StackPanel>
-                                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                            <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <Expander Style="{StaticResource CardExpander}" Header="{Binding Translation[advanced], FallbackValue=Advanced}">
                                                                                         <StackPanel Margin="14,12,14,4">
@@ -7479,7 +7479,7 @@
                                                                                     </Expander>
                                                                                 </Border>
                                                                             </StackPanel>
-                                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                            <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <DockPanel>
                                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -7559,7 +7559,7 @@
                                                                                     </DockPanel>
                                                                                 </Border>
                                                                             </StackPanel>
-                                                                        </WrapPanel>
+                                                                        </local:MasonryPanel>
                                                                     </ScrollViewer>
                                                                 </DockPanel>
 
@@ -7615,8 +7615,8 @@
                                                                         </DockPanel>
                                                                     </Border>
                                                                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                                                        <WrapPanel Orientation="Horizontal" Margin="0,12,0,12">
-                                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                        <local:MasonryPanel Margin="0,12,0,12">
+                                                                            <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <DockPanel>
                                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -7663,7 +7663,7 @@
                                                                                     </DockPanel>
                                                                                 </Border>
                                                                             </StackPanel>
-                                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                            <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <Expander Style="{StaticResource CardExpander}" Header="{Binding Translation[advanced], FallbackValue=Advanced}">
                                                                                         <StackPanel Margin="14,12,14,4">
@@ -7775,7 +7775,7 @@
                                                                                     </Expander>
                                                                                 </Border>
                                                                             </StackPanel>
-                                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                            <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <DockPanel>
                                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -7895,7 +7895,7 @@
                                                                                     </DockPanel>
                                                                                 </Border>
                                                                             </StackPanel>
-                                                                        </WrapPanel>
+                                                                        </local:MasonryPanel>
                                                                     </ScrollViewer>
                                                                 </DockPanel>
 
@@ -7952,8 +7952,8 @@
                                                                         </DockPanel>
                                                                     </Border>
                                                                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                                                        <WrapPanel Orientation="Horizontal" Margin="0,12,0,12">
-                                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                        <local:MasonryPanel Margin="0,12,0,12">
+                                                                            <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <DockPanel>
                                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -8001,7 +8001,7 @@
                                                                                     </DockPanel>
                                                                                 </Border>
                                                                             </StackPanel>
-                                                                        </WrapPanel>
+                                                                        </local:MasonryPanel>
                                                                     </ScrollViewer>
                                                                 </DockPanel>
 
@@ -8027,11 +8027,11 @@
                                                                                         <Button Style="{StaticResource EntryStepButton}" Content="›" Tag="{Binding ElementName=ddmissiongangteamno}" CommandParameter="1" Click="EntryStep_Click" ToolTip="{Binding Translation[entry_next], FallbackValue=Next}"/>
                                                                                     </StackPanel>
                                                                                 </Border>
-                                                                                <TextBlock VerticalAlignment="Center" FontSize="14" Foreground="{StaticResource NavMutedBrush}" Margin="0,0,8,0" Text="{Binding Translation[gangindex], FallbackValue='Gang Index'}"/>
+                                                                                <TextBlock VerticalAlignment="Center" FontSize="14" Foreground="{StaticResource NavMutedBrush}" Margin="0,0,8,0" Text="{Binding Translation[gangindex], FallbackValue=Rule}"/>
                                                                                 <Border Background="{DynamicResource ComboBoxBackground}" BorderBrush="{DynamicResource ComboBoxBorder}" BorderThickness="1" CornerRadius="4" Height="32" Margin="0,0,16,0">
                                                                                     <StackPanel Orientation="Horizontal">
                                                                                         <Button Style="{StaticResource EntryStepButton}" Content="‹" Tag="{Binding ElementName=ddmissiongangno}" CommandParameter="-1" Click="EntryStep_Click" ToolTip="{Binding Translation[entry_prev], FallbackValue=Previous}"/>
-                                                                                        <ComboBox x:Name="ddmissiongangno" FontFamily="{DynamicResource Volte}" SelectionChanged="ddmissiongangno_SelectionChanged" ToolTip="{Binding Translation[gangindex], FallbackValue='Gang Index'}" Width="84" Height="30" BorderThickness="0">
+                                                                                        <ComboBox x:Name="ddmissiongangno" FontFamily="{DynamicResource Volte}" SelectionChanged="ddmissiongangno_SelectionChanged" ToolTip="{Binding Translation[gangindex], FallbackValue=Rule}" Width="84" Height="30" BorderThickness="0">
                                                                                             <ComboBoxItem Content="1"/>
                                                                                             <ComboBoxItem Content="2"/>
                                                                                             <ComboBoxItem Content="3"/>
@@ -8058,8 +8058,8 @@
                                                                         </DockPanel>
                                                                     </Border>
                                                                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                                                        <WrapPanel Orientation="Horizontal" Margin="0,12,0,12">
-                                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                        <local:MasonryPanel Margin="0,12,0,12">
+                                                                            <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <DockPanel>
                                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -8131,7 +8131,7 @@
                                                                                     </DockPanel>
                                                                                 </Border>
                                                                             </StackPanel>
-                                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                            <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <DockPanel>
                                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -8140,9 +8140,9 @@
                                                                                         <StackPanel Margin="14,12,14,4">
                                                                                         <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[missiongbat], FallbackValue=Area Trigger}"/>
                                                                                         <ComboBox x:Name="ddmissiongbat" FontFamily="{DynamicResource Volte}" SelectionChanged="ddmissiongbat_SelectionChanged" ToolTip="{Binding Translation[missiongbat], FallbackValue=Area Trigger}" Height="30" Margin="0,0,0,10">
-                                                                                            <ComboBoxItem Content="Always"/>
-                                                                                            <ComboBoxItem Content="Enter Area"/>
-                                                                                            <ComboBoxItem Content="Leave Area"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[gb_at_0], FallbackValue='Always'}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[gb_at_1], FallbackValue='Enter Area'}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[gb_at_2], FallbackValue='Leave Area'}"/>
                                                                                         </ComboBox>
                                                                                         <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[gbnum], FallbackValue=Vehicle Intensity}"/>
                                                                                         <TextBox x:Name="tbmissiongbnum" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissiongbnum_TextChanged" KeyDown="FormatTextForInteger" Height="30" Margin="0,0,0,10"/>
@@ -8176,7 +8176,7 @@
                                                                                     </DockPanel>
                                                                                 </Border>
                                                                             </StackPanel>
-                                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                            <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <DockPanel>
                                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -8184,7 +8184,10 @@
                                                                                         </Border>
                                                                                         <StackPanel Margin="14,12,14,4">
                                                                                         <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[gangyype], FallbackValue=Gang Type}"/>
-                                                                                        <ComboBox x:Name="ddmissiongangtype" FontFamily="{DynamicResource Volte}" SelectionChanged="ddmissiongangtype_SelectionChanged" IsEnabled="False" ToolTip="{Binding Translation[gangyype], FallbackValue=Gang Type}" DisplayMemberPath="Name" ItemsSource="{x:Static local:GTA+Editor.GangTypes}" Height="30" Margin="0,0,0,10"/>
+                                                                                        <ComboBox x:Name="ddmissiongangtype" FontFamily="{DynamicResource Volte}" SelectionChanged="ddmissiongangtype_SelectionChanged" IsEnabled="False" ToolTip="{Binding Translation[gangyype], FallbackValue=Gang Type}" DropDownOpened="ddmissiongangtype_DropDownOpened" MaxDropDownHeight="420" Height="30" Margin="0,0,0,10"/>
+                                                                                        <Border Background="{DynamicResource SeactionHeaderBackgroundBrush}" CornerRadius="4" Padding="10,8" Margin="0,0,0,12">
+                                                                                            <TextBlock x:Name="lblgangtypeinfo" TextWrapping="Wrap" FontSize="13" Foreground="{StaticResource NavMutedBrush}"/>
+                                                                                        </Border>
                                                                                         <Grid Style="{StaticResource FormRow}">
                                                                                             <Grid.ColumnDefinitions>
                                                                                                 <ColumnDefinition Width="*"/>
@@ -8198,7 +8201,7 @@
                                                                                     </DockPanel>
                                                                                 </Border>
                                                                             </StackPanel>
-                                                                        </WrapPanel>
+                                                                        </local:MasonryPanel>
                                                                     </ScrollViewer>
                                                                 </DockPanel>
 
@@ -8256,8 +8259,8 @@
                                                                         </DockPanel>
                                                                     </Border>
                                                                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                                                        <WrapPanel Orientation="Horizontal" Margin="0,12,0,12">
-                                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                        <local:MasonryPanel Margin="0,12,0,12">
+                                                                            <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <DockPanel>
                                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -8332,7 +8335,7 @@
                                                                                     </DockPanel>
                                                                                 </Border>
                                                                             </StackPanel>
-                                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                            <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <DockPanel>
                                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -8349,7 +8352,7 @@
                                                                                     </DockPanel>
                                                                                 </Border>
                                                                             </StackPanel>
-                                                                        </WrapPanel>
+                                                                        </local:MasonryPanel>
                                                                     </ScrollViewer>
                                                                 </DockPanel>
 
@@ -8389,8 +8392,8 @@
                                                                         </DockPanel>
                                                                     </Border>
                                                                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                                                        <WrapPanel Orientation="Horizontal" Margin="0,12,0,12">
-                                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                        <local:MasonryPanel Margin="0,12,0,12">
+                                                                            <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <DockPanel>
                                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -8433,7 +8436,7 @@
                                                                                     </DockPanel>
                                                                                 </Border>
                                                                             </StackPanel>
-                                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                            <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <DockPanel>
                                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -8492,7 +8495,7 @@
                                                                                     </DockPanel>
                                                                                 </Border>
                                                                             </StackPanel>
-                                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                            <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <Expander Style="{StaticResource CardExpander}" Header="{Binding Translation[advanced], FallbackValue=Advanced}">
                                                                                         <StackPanel Margin="14,12,14,4">
@@ -8523,7 +8526,7 @@
                                                                                     </Expander>
                                                                                 </Border>
                                                                             </StackPanel>
-                                                                        </WrapPanel>
+                                                                        </local:MasonryPanel>
                                                                     </ScrollViewer>
                                                                 </DockPanel>
 
@@ -8562,8 +8565,8 @@
                                                                         </DockPanel>
                                                                     </Border>
                                                                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                                                        <WrapPanel Orientation="Horizontal" Margin="0,12,0,12">
-                                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                        <local:MasonryPanel Margin="0,12,0,12">
+                                                                            <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <DockPanel>
                                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -8614,7 +8617,7 @@
                                                                                     </DockPanel>
                                                                                 </Border>
                                                                             </StackPanel>
-                                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                            <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <DockPanel>
                                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -8643,7 +8646,7 @@
                                                                                     </DockPanel>
                                                                                 </Border>
                                                                             </StackPanel>
-                                                                        </WrapPanel>
+                                                                        </local:MasonryPanel>
                                                                     </ScrollViewer>
                                                                 </DockPanel>
 
@@ -8657,8 +8660,8 @@
                                                                 <DockPanel Margin="10,0">
 
                                                                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                                                        <WrapPanel Orientation="Horizontal" Margin="0,12,0,12">
-                                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                        <local:MasonryPanel Margin="0,12,0,12">
+                                                                            <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <Expander Style="{StaticResource CardExpander}" Header="{Binding Translation[advanced], FallbackValue=Advanced}">
                                                                                         <StackPanel Margin="14,12,14,4">
@@ -8718,7 +8721,7 @@
                                                                                     </Expander>
                                                                                 </Border>
                                                                             </StackPanel>
-                                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                            <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <DockPanel>
                                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -8753,7 +8756,7 @@
                                                                                     </DockPanel>
                                                                                 </Border>
                                                                             </StackPanel>
-                                                                        </WrapPanel>
+                                                                        </local:MasonryPanel>
                                                                     </ScrollViewer>
                                                                 </DockPanel>
 
@@ -8792,8 +8795,8 @@
                                                                         </DockPanel>
                                                                     </Border>
                                                                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                                                        <WrapPanel Orientation="Horizontal" Margin="0,12,0,12">
-                                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                        <local:MasonryPanel Margin="0,12,0,12">
+                                                                            <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <DockPanel>
                                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -8887,7 +8890,7 @@
                                                                                     </DockPanel>
                                                                                 </Border>
                                                                             </StackPanel>
-                                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                            <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <DockPanel>
                                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -8988,7 +8991,7 @@
                                                                                     </DockPanel>
                                                                                 </Border>
                                                                             </StackPanel>
-                                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                            <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <Expander Style="{StaticResource CardExpander}" Header="{Binding Translation[advanced], FallbackValue=Advanced}">
                                                                                         <StackPanel Margin="14,12,14,4">
@@ -9036,7 +9039,7 @@
                                                                                     </Expander>
                                                                                 </Border>
                                                                             </StackPanel>
-                                                                        </WrapPanel>
+                                                                        </local:MasonryPanel>
                                                                     </ScrollViewer>
                                                                 </DockPanel>
 
@@ -9126,11 +9129,11 @@
                                                         </Border>
                                                     </StackPanel>
                                                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                                        <WrapPanel Orientation="Horizontal" Margin="0,0,0,12">
-                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                        <local:MasonryPanel Margin="0,0,0,12">
+                                                            <StackPanel>
                                                                 <local:ModelCard x:Name="ActorModelCard" Margin="0,0,0,12"/>
                                                             </StackPanel>
-                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                            <StackPanel>
                                                                 <Border Style="{StaticResource DashCard}">
                                                                     <DockPanel>
                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -9250,7 +9253,7 @@
                                                                     </DockPanel>
                                                                 </Border>
                                                             </StackPanel>
-                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                            <StackPanel>
                                                                 <Border Style="{StaticResource DashCard}">
                                                                     <DockPanel>
                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -9397,7 +9400,7 @@
                                                                     </DockPanel>
                                                                 </Border>
                                                             </StackPanel>
-                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                            <StackPanel>
                                                                 <Border Style="{StaticResource DashCard}">
                                                                     <DockPanel>
                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -9601,7 +9604,7 @@
                                                                     </DockPanel>
                                                                 </Border>
                                                             </StackPanel>
-                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                            <StackPanel>
                                                                 <Border Style="{StaticResource DashCard}">
                                                                     <DockPanel>
                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -10070,7 +10073,7 @@
                                                                     </Expander>
                                                                 </Border>
                                                             </StackPanel>
-                                                        </WrapPanel>
+                                                        </local:MasonryPanel>
                                                     </ScrollViewer>
                                                 </DockPanel>
 
@@ -10110,8 +10113,8 @@
                                                         </DockPanel>
                                                     </Border>
                                                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                                        <WrapPanel Orientation="Horizontal" Margin="0,0,0,12">
-                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                        <local:MasonryPanel Margin="0,0,0,12">
+                                                            <StackPanel>
                                                                 <Border Style="{StaticResource DashCard}">
                                                                     <DockPanel>
                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -10125,17 +10128,7 @@
                                                                                 <ColumnDefinition Width="8"/>
                                                                                 <ColumnDefinition Width="64"/>
                                                                             </Grid.ColumnDefinitions>
-                                                                            <ComboBox x:Name="ddzonetype" Height="30" IsEnabled="{Binding ElementName=tbzonezntp, Path=IsEnabled}" SelectionChanged="ddzonetype_SelectionChanged" DropDownOpened="ddzonetype_DropDownOpened" MaxDropDownHeight="420">
-                                                                                <ComboBox.GroupStyle>
-                                                                                    <GroupStyle>
-                                                                                        <GroupStyle.HeaderTemplate>
-                                                                                            <DataTemplate>
-                                                                                                <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="Bold" Foreground="#FF72767D" Margin="8,8,0,2"/>
-                                                                                            </DataTemplate>
-                                                                                        </GroupStyle.HeaderTemplate>
-                                                                                    </GroupStyle>
-                                                                                </ComboBox.GroupStyle>
-                                                                            </ComboBox>
+                                                                            <ComboBox x:Name="ddzonetype" Height="30" IsEnabled="{Binding ElementName=tbzonezntp, Path=IsEnabled}" SelectionChanged="ddzonetype_SelectionChanged" DropDownOpened="ddzonetype_DropDownOpened" MaxDropDownHeight="420"/>
                                                                             <TextBox x:Name="tbzonezntp" IsEnabled="False" Style="{StaticResource Watermark}" TextChanged="tbzonezntp_TextChanged" KeyDown="FormatTextForInteger" Grid.Column="2" Height="30"/>
                                                                         </Grid>
                                                                         <Border Background="{DynamicResource SeactionHeaderBackgroundBrush}" CornerRadius="4" Padding="10,8" Margin="0,0,0,12">
@@ -10156,12 +10149,12 @@
                                                                             <TextBox x:Name="tbzoneznwvd" IsEnabled="False" Style="{StaticResource Watermark}" ToolTip="{Binding Translation[znwvdinfo], FallbackValue=Wave attenuation | ???}" TextChanged="tbzoneznwvd_TextChanged" KeyDown="FormatTextForFloat" Height="30" Margin="0,0,0,10"/>
                                                                             </StackPanel>
                                                                         </Grid>
-                                                                        <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="#FF72767D" Margin="0,0,0,8" Text="{Binding Translation[zt_hint], FallbackValue=Only some types are described. Any number can be typed in the field beside the list.}"/>
+                                                                        <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="#FF72767D" Margin="0,0,0,8" Text="{Binding Translation[zt_hint], FallbackValue='The list has all types 0 to 78 from Rockstar\'s source. The game knows 112; the newer ones can be typed into the field next to it.'}"/>
                                                                         </StackPanel>
                                                                     </DockPanel>
                                                                 </Border>
                                                             </StackPanel>
-                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                            <StackPanel>
                                                                 <Border Style="{StaticResource DashCard}">
                                                                     <DockPanel>
                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -10176,58 +10169,32 @@
                                                                             <ComboBoxItem Content="{Binding Translation[cylinder], FallbackValue=Cylinder}"/>
                                                                         </ComboBox>
                                                                         <!-- Shape as four buttons; they set the hidden dropdown above, which writes the zone. -->
-                                                                        <UniformGrid Columns="4" Margin="0,0,-6,10" IsEnabled="{Binding ElementName=ddzonevariation, Path=IsEnabled}">
+                                                                        <UniformGrid Columns="2" Margin="0,0,-6,10" IsEnabled="{Binding ElementName=ddzonevariation, Path=IsEnabled}">
                                                                             <UniformGrid.Resources>
-                                                                                <Style TargetType="{x:Type RadioButton}">
-                                                                                    <Setter Property="Margin" Value="0,0,6,0"/>
-                                                                                    <Setter Property="Cursor" Value="Hand"/>
-                                                                                    <Setter Property="Foreground" Value="{StaticResource NavMutedBrush}"/>
-                                                                                    <Setter Property="Template">
-                                                                                        <Setter.Value>
-                                                                                            <ControlTemplate TargetType="{x:Type RadioButton}">
-                                                                                                <Border x:Name="bd" Background="{DynamicResource ComboBoxBackground}" BorderBrush="{DynamicResource ComboBoxBorder}" BorderThickness="1" CornerRadius="4" Padding="2,6">
-                                                                                                    <ContentPresenter HorizontalAlignment="Center"/>
-                                                                                                </Border>
-                                                                                                <ControlTemplate.Triggers>
-                                                                                                    <Trigger Property="IsMouseOver" Value="True">
-                                                                                                        <Setter TargetName="bd" Property="Background" Value="{DynamicResource SeactionHeaderBackgroundBrush}"/>
-                                                                                                    </Trigger>
-                                                                                                    <Trigger Property="IsChecked" Value="True">
-                                                                                                        <Setter TargetName="bd" Property="Background" Value="{DynamicResource SeactionHeaderBackgroundBrush}"/>
-                                                                                                        <Setter TargetName="bd" Property="BorderBrush" Value="{DynamicResource TextColor}"/>
-                                                                                                        <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
-                                                                                                    </Trigger>
-                                                                                                    <Trigger Property="IsEnabled" Value="False">
-                                                                                                        <Setter Property="Opacity" Value="0.5"/>
-                                                                                                    </Trigger>
-                                                                                                </ControlTemplate.Triggers>
-                                                                                            </ControlTemplate>
-                                                                                        </Setter.Value>
-                                                                                    </Setter>
-                                                                                </Style>
+                                                                                <Style TargetType="{x:Type RadioButton}" BasedOn="{StaticResource ChoiceTile}"/>
                                                                             </UniformGrid.Resources>
                                                                             <RadioButton x:Name="rbzoneshape0" GroupName="ZoneShape" Tag="0" Checked="ZoneShape_Checked" ToolTip="{Binding Translation[zoneaxis], FallbackValue=Axis Aligned Box}">
                                                                                 <StackPanel>
                                                                                     <Path Data="M5,5 L23,5 L23,17 L5,17 Z" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" StrokeThickness="1.5" Width="28" Height="22" HorizontalAlignment="Center"/>
-                                                                                    <TextBlock Text="{Binding Translation[zs_box], FallbackValue=Box}" FontSize="11" HorizontalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="0,3,0,0"/>
+                                                                                    <TextBlock Text="{Binding Translation[zs_box], FallbackValue=Box}" FontSize="13.5" FontWeight="SemiBold" HorizontalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="0,5,0,0"/>
                                                                                 </StackPanel>
                                                                             </RadioButton>
                                                                             <RadioButton x:Name="rbzoneshape1" GroupName="ZoneShape" Tag="1" Checked="ZoneShape_Checked" ToolTip="{Binding Translation[sphere], FallbackValue=Sphere}">
                                                                                 <StackPanel>
                                                                                     <Path Data="M6,11 A8,8 0 1 1 22,11 A8,8 0 1 1 6,11" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" StrokeThickness="1.5" Width="28" Height="22" HorizontalAlignment="Center"/>
-                                                                                    <TextBlock Text="{Binding Translation[zs_sphere], FallbackValue=Sphere}" FontSize="11" HorizontalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="0,3,0,0"/>
+                                                                                    <TextBlock Text="{Binding Translation[zs_sphere], FallbackValue=Sphere}" FontSize="13.5" FontWeight="SemiBold" HorizontalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="0,5,0,0"/>
                                                                                 </StackPanel>
                                                                             </RadioButton>
                                                                             <RadioButton x:Name="rbzoneshape2" GroupName="ZoneShape" Tag="2" Checked="ZoneShape_Checked" ToolTip="{Binding Translation[zonenonaxis], FallbackValue=Non Axis Aligned Box}">
                                                                                 <StackPanel>
                                                                                     <Path Data="M8,3 L24,8 L20,19 L4,14 Z" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" StrokeThickness="1.5" Width="28" Height="22" HorizontalAlignment="Center"/>
-                                                                                    <TextBlock Text="{Binding Translation[zs_boxrot], FallbackValue=Rotated Box}" FontSize="11" HorizontalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="0,3,0,0"/>
+                                                                                    <TextBlock Text="{Binding Translation[zs_boxrot], FallbackValue=Rotated Box}" FontSize="13.5" FontWeight="SemiBold" HorizontalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="0,5,0,0"/>
                                                                                 </StackPanel>
                                                                             </RadioButton>
                                                                             <RadioButton x:Name="rbzoneshape3" GroupName="ZoneShape" Tag="3" Checked="ZoneShape_Checked" ToolTip="{Binding Translation[cylinder], FallbackValue=Cylinder}">
                                                                                 <StackPanel>
                                                                                     <Path Data="M6,5 A8,3 0 1 1 22,5 A8,3 0 1 1 6,5 M6,5 L6,17 A8,3 0 0 0 22,17 L22,5" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" StrokeThickness="1.5" Width="28" Height="22" HorizontalAlignment="Center"/>
-                                                                                    <TextBlock Text="{Binding Translation[zs_cylinder], FallbackValue=Cylinder}" FontSize="11" HorizontalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="0,3,0,0"/>
+                                                                                    <TextBlock Text="{Binding Translation[zs_cylinder], FallbackValue=Cylinder}" FontSize="13.5" FontWeight="SemiBold" HorizontalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="0,5,0,0"/>
                                                                                 </StackPanel>
                                                                             </RadioButton>
                                                                         </UniformGrid>
@@ -10308,7 +10275,7 @@
                                                                     </DockPanel>
                                                                 </Border>
                                                             </StackPanel>
-                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                            <StackPanel>
                                                                 <Border Style="{StaticResource DashCard}">
                                                                     <Expander Style="{StaticResource CardExpander}" Header="{Binding Translation[advanced], FallbackValue=Advanced}">
                                                                         <StackPanel Margin="14,12,14,4">
@@ -10379,7 +10346,7 @@
                                                                     </Expander>
                                                                 </Border>
                                                             </StackPanel>
-                                                        </WrapPanel>
+                                                        </local:MasonryPanel>
                                                     </ScrollViewer>
                                                 </DockPanel>
 
@@ -10480,8 +10447,8 @@
                                                                     </DockPanel>
                                                                 </Border>
                                                                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                                                    <WrapPanel Orientation="Horizontal" Margin="0,12,0,12">
-                                                                        <StackPanel Width="340" Margin="0,0,12,0">
+                                                                    <local:MasonryPanel Margin="0,12,0,12">
+                                                                        <StackPanel>
                                                                             <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                 <DockPanel>
                                                                                     <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -10496,7 +10463,7 @@
                                                                                 </DockPanel>
                                                                             </Border>
                                                                         </StackPanel>
-                                                                        <StackPanel Width="340" Margin="0,0,12,0">
+                                                                        <StackPanel>
                                                                             <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                 <DockPanel>
                                                                                     <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -10525,7 +10492,7 @@
                                                                                 </DockPanel>
                                                                             </Border>
                                                                         </StackPanel>
-                                                                    </WrapPanel>
+                                                                    </local:MasonryPanel>
                                                                 </ScrollViewer>
                                                             </DockPanel>
 
@@ -10563,8 +10530,8 @@
                                                                     </DockPanel>
                                                                 </Border>
                                                                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                                                    <WrapPanel Orientation="Horizontal" Margin="0,12,0,12">
-                                                                        <StackPanel Width="340" Margin="0,0,12,0">
+                                                                    <local:MasonryPanel Margin="0,12,0,12">
+                                                                        <StackPanel>
                                                                             <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                 <DockPanel>
                                                                                     <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -10639,7 +10606,7 @@
                                                                                 </DockPanel>
                                                                             </Border>
                                                                         </StackPanel>
-                                                                        <StackPanel Width="340" Margin="0,0,12,0">
+                                                                        <StackPanel>
                                                                             <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                 <DockPanel>
                                                                                     <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -10668,7 +10635,7 @@
                                                                                 </DockPanel>
                                                                             </Border>
                                                                         </StackPanel>
-                                                                        <StackPanel Width="340" Margin="0,0,12,0">
+                                                                        <StackPanel>
                                                                             <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                 <Expander Style="{StaticResource CardExpander}" Header="{Binding Translation[advanced], FallbackValue=Advanced}">
                                                                                     <StackPanel Margin="14,12,14,4">
@@ -10732,7 +10699,7 @@
                                                                                 </Expander>
                                                                             </Border>
                                                                         </StackPanel>
-                                                                    </WrapPanel>
+                                                                    </local:MasonryPanel>
                                                                 </ScrollViewer>
                                                             </DockPanel>
 
@@ -10789,8 +10756,8 @@
                                                                     </DockPanel>
                                                                 </Border>
                                                                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                                                    <WrapPanel Orientation="Horizontal" Margin="0,12,0,12">
-                                                                        <StackPanel Width="340" Margin="0,0,12,0">
+                                                                    <local:MasonryPanel Margin="0,12,0,12">
+                                                                        <StackPanel>
                                                                             <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                 <DockPanel>
                                                                                     <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -10855,7 +10822,7 @@
                                                                                 </DockPanel>
                                                                             </Border>
                                                                         </StackPanel>
-                                                                        <StackPanel Width="340" Margin="0,0,12,0">
+                                                                        <StackPanel>
                                                                             <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                 <DockPanel>
                                                                                     <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -10875,7 +10842,7 @@
                                                                                 </DockPanel>
                                                                             </Border>
                                                                         </StackPanel>
-                                                                    </WrapPanel>
+                                                                    </local:MasonryPanel>
                                                                 </ScrollViewer>
                                                             </DockPanel>
 
@@ -10922,8 +10889,8 @@
                                                         <CheckBox x:Name="cbcdefadvanced" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbcdefadvanced_Checked" Unchecked="cbcdefadvanced_Checked" MaxHeight="30" IsChecked="True" IsEnabled="False"/>
                                                     </StackPanel>
                                                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                                        <WrapPanel Orientation="Horizontal" Margin="0,0,0,12">
-                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                        <local:MasonryPanel Margin="0,0,0,12">
+                                                            <StackPanel>
                                                                 <Border Style="{StaticResource DashCard}">
                                                                     <DockPanel>
                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -10989,7 +10956,7 @@
                                                                     </DockPanel>
                                                                 </Border>
                                                             </StackPanel>
-                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                            <StackPanel>
                                                                 <Border Style="{StaticResource DashCard}">
                                                                     <DockPanel>
                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -11060,7 +11027,7 @@
                                                                     </Expander>
                                                                 </Border>
                                                             </StackPanel>
-                                                        </WrapPanel>
+                                                        </local:MasonryPanel>
                                                     </ScrollViewer>
                                                 </DockPanel>
 
@@ -11098,8 +11065,8 @@
                                                         </DockPanel>
                                                     </Border>
                                                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                                        <WrapPanel Orientation="Horizontal" Margin="0,0,0,12">
-                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                        <local:MasonryPanel Margin="0,0,0,12">
+                                                            <StackPanel>
                                                                 <Border Style="{StaticResource DashCard}">
                                                                     <DockPanel>
                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -11192,7 +11159,7 @@
                                                                     </DockPanel>
                                                                 </Border>
                                                             </StackPanel>
-                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                            <StackPanel>
                                                                 <Border Style="{StaticResource DashCard}">
                                                                     <DockPanel>
                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -11307,7 +11274,7 @@
                                                                     </DockPanel>
                                                                 </Border>
                                                             </StackPanel>
-                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                            <StackPanel>
                                                                 <Border Style="{StaticResource DashCard}">
                                                                     <Expander Style="{StaticResource CardExpander}" Header="{Binding Translation[advanced], FallbackValue=Advanced}">
                                                                         <StackPanel Margin="14,12,14,4">
@@ -11441,7 +11408,7 @@
                                                                     </Expander>
                                                                 </Border>
                                                             </StackPanel>
-                                                        </WrapPanel>
+                                                        </local:MasonryPanel>
                                                     </ScrollViewer>
                                                 </DockPanel>
 
@@ -11541,8 +11508,8 @@
                                                             <DockPanel Margin="10,0">
 
                                                                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                                                    <WrapPanel Orientation="Horizontal" Margin="0,12,0,12">
-                                                                        <StackPanel Width="340" Margin="0,0,12,0">
+                                                                    <local:MasonryPanel Margin="0,12,0,12">
+                                                                        <StackPanel>
                                                                             <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                 <DockPanel>
                                                                                     <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -11571,7 +11538,7 @@
                                                                                 </DockPanel>
                                                                             </Border>
                                                                         </StackPanel>
-                                                                    </WrapPanel>
+                                                                    </local:MasonryPanel>
                                                                 </ScrollViewer>
                                                             </DockPanel>
 

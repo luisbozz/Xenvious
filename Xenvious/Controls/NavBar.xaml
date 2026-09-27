@@ -149,6 +149,39 @@
         <Setter Property="Background" Value="{DynamicResource PrimaryButtonBackground}"/>
         <Setter Property="Foreground" Value="{DynamicResource PrimaryButtonForeground}"/>
     </Style>
+    <!-- A choice as a filled tile (like the shape tiles in Advanced Placement): no frame until picked. -->
+    <Style x:Key="ChoiceTile" TargetType="{x:Type RadioButton}">
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="FontFamily" Value="{DynamicResource Volte}"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
+        <Setter Property="Background" Value="{DynamicResource SeactionHeaderBackgroundBrush}"/>
+        <Setter Property="Margin" Value="0,0,6,6"/>
+        <Setter Property="MinHeight" Value="62"/>
+        <Setter Property="Padding" Value="6,8"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RadioButton}">
+                    <Border x:Name="b" CornerRadius="5" Background="{TemplateBinding Background}" BorderBrush="Transparent" BorderThickness="1.5" Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="b" Property="Background" Value="{DynamicResource ButtonHoverBackgroundBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="b" Property="Background" Value="{DynamicResource ComboBoxSelected}"/>
+                            <Setter TargetName="b" Property="BorderBrush" Value="{DynamicResource TextColor}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.45"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <!-- Arrow after the label of a button that opens another page in Xenvious. -->
     <Style x:Key="GoToPageIcon" TargetType="{x:Type Path}">
         <Setter Property="Data" Value="M1,6 L11,6 M7,2 L11,6 L7,10"/>

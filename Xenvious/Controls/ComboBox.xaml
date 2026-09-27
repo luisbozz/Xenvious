@@ -55,7 +55,7 @@
         <Setter Property="BorderBrush" Value="{DynamicResource ComboBoxBorder}"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="local:CornerRadiusSetter.CornerRadius" Value="4"/>
-        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontSize" Value="15"/>
         <Setter Property="ToolTip" Value="{Binding Path=ToolTip, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}"/>
         <!--<EventSetter Event="PreviewMouseWheel" Handler="comboboxScrollWithoutFocusEvent"/>-->
         <Setter Property="Template">
@@ -162,7 +162,8 @@
                                 <Grid Name="DropDown"
                                     SnapsToDevicePixels="True"                
                                     MaxHeight="{TemplateBinding MaxDropDownHeight}">
-                                    <ScrollViewer Margin="0" SnapsToDevicePixels="True">
+                                    <!-- Never a horizontal bar: long entries are trimmed instead. -->
+                                    <ScrollViewer Margin="0" SnapsToDevicePixels="True" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                                         <StackPanel Margin="3" IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained"/>
                                     </ScrollViewer>
                                 </Grid>
@@ -217,7 +218,7 @@
         <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
         <Setter Property="OverridesDefaultStyle" Value="true"/>
         <Setter Property="FontFamily" Value="{DynamicResource Volte}"/>
-        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="FontSize" Value="14"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="Template">
@@ -225,7 +226,13 @@
                 <ControlTemplate TargetType="{x:Type ComboBoxItem}">
                     <Border Name="Border" CornerRadius="3" Padding="9,4" Margin="0,0,0,1" Background="Transparent"
                               SnapsToDevicePixels="true">
-                        <ContentPresenter />
+                        <ContentPresenter>
+                            <ContentPresenter.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                                </Style>
+                            </ContentPresenter.Resources>
+                        </ContentPresenter>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsHighlighted" Value="true">

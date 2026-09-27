@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using Newtonsoft.Json.Linq;
 using static Xenvious.GTA;
 using static Xenvious.GTA.Offsets.Editor;
@@ -107,14 +109,7 @@ namespace Xenvious
                 if (enable)
                 {
                     int gangtype = new Global(GTA.Offsets.Editor.gbtp + index + tindex * GTA.Offsets.Editor.team_NEXT).Get<int>();
-                    try
-                    {
-                        ddmissiongangtype.SelectedItem = ddmissiongangtype.ItemsSource.Cast<Gang>().ToArray().Where(y => y.Value == gangtype).First();
-                    }
-                    catch (Exception)
-                    {
-                        ddmissiongangtype.SelectedIndex = -1;
-                    }
+                    ShowGangType(gangtype);
 
                     ddmissiongbat.SelectedIndex = new Global(GTA.Offsets.Editor.gbat + index + tindex * GTA.Offsets.Editor.team_NEXT).Get<int>();
 
@@ -179,8 +174,77 @@ namespace Xenvious
 
         private void ddmissiongangtype_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (ddmissiongangtype.SelectedIndex > -1)
-                new Global(GTA.Offsets.Editor.gbtp + ddmissiongangno.SelectedIndex + ddmissiongangteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT).SetInt(((Gang)ddmissiongangtype.SelectedItem).Value);
+            if (_gangTypeSync || !(ddmissiongangtype.SelectedItem is GangTypeItem item))
+                return;
+            if (m.IsProcOpen && ddmissiongangno.SelectedIndex > -1 && ddmissiongangteamno.SelectedIndex > -1)
+                new Global(GTA.Offsets.Editor.gbtp + ddmissiongangno.SelectedIndex + ddmissiongangteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT).SetInt(item.Id);
+            ShowGangType(item.Id);
+        }
+
+        // ----- Gang type picker: all 53 types by group, with what each one sends -----
+
+        private bool _gangTypeSync;
+        private string _gangTypeLang;
+
+        public sealed class GangTypeItem
+        {
+            public int Id { get; set; }
+            public string Text { get; set; }
+            public override string ToString() => Text;
+        }
+
+        private static string GangTypeText(GangTypes.GangType t, Func<string, string, string> tr)
+        {
+            string faction = tr("gt_f_" + t.Faction, t.Faction);
+            return t.Vehicle == null ? $"{t.Id}  {faction}" : $"{t.Id}  {faction} · {t.Vehicle}";
+        }
+
+        // Flat list with disabled headers, the same as the zone types (a grouped view shows no items
+        // in the window's ComboBox template). Built again only when the language changed.
+        private void FillGangTypes()
+        {
+            string lang = TranslateOr("gt_f_none", "");
+            if (ddmissiongangtype.ItemsSource != null && lang == _gangTypeLang)
+                return;
+            _gangTypeLang = lang;
+            _gangTypeSync = true;
+            var items = new List<object>();
+            foreach (var group in GangTypes.All.GroupBy(t => t.Group).OrderBy(g => Array.IndexOf(GangTypes.Groups, g.Key)))
+            {
+                if (group.Key != "none")
+                    items.Add(new ComboBoxItem
+                    {
+                        Content = TranslateOr("gt_grp_" + group.Key, group.Key),
+                        IsEnabled = false,
+                        FontSize = 11,
+                        FontWeight = FontWeights.Bold,
+                        Foreground = (Brush)FindResource("NavMutedBrush"),
+                        Margin = new Thickness(0, 8, 0, 0),
+                    });
+                items.AddRange(group.OrderBy(t => t.Id).Select(t => new GangTypeItem { Id = t.Id, Text = GangTypeText(t, TranslateOr) }));
+            }
+            ddmissiongangtype.ItemsSource = items;
+            _gangTypeSync = false;
+        }
+
+        private void ddmissiongangtype_DropDownOpened(object sender, EventArgs e) => FillGangTypes();
+
+        private void ShowGangType(int id)
+        {
+            FillGangTypes();
+            var type = GangTypes.Find(id);
+            _gangTypeSync = true;
+            ddmissiongangtype.SelectedItem = ddmissiongangtype.ItemsSource.OfType<GangTypeItem>().FirstOrDefault(i => i.Id == id);
+            _gangTypeSync = false;
+
+            if (type == null)
+                lblgangtypeinfo.Text = string.Format(TranslateOr("gt_unknown", "Type {0} is not a gang chase type."), id);
+            else if (type.Group == "none")
+                lblgangtypeinfo.Text = TranslateOr("gt_none_info", "No gang chase on this rule.");
+            else if (type.Group == "custom")
+                lblgangtypeinfo.Text = TranslateOr("gt_custom_info", "Uses a gang chase unit the job sets up itself (vehicle, peds and weapon come from there).");
+            else
+                lblgangtypeinfo.Text = string.Format(TranslateOr("gt_info", "{0} with {1} peds ({2}), weapon: {3}."), type.Vehicle, type.Peds, type.Ped, type.Weapon);
         }
 
         private void cbmissiongangnewrule_Checked(object sender, RoutedEventArgs e)

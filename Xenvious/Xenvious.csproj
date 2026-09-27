@@ -176,6 +176,7 @@
     <Compile Include="AES\AES.cs" />
     <Compile Include="Controls\ComboBoxHelper.cs" />
     <Compile Include="Controls\JobMap.cs" />
+    <Compile Include="Controls\MasonryPanel.cs" />
     <Compile Include="Controls\ModelCard.xaml.cs">
       <DependentUpon>ModelCard.xaml</DependentUpon>
     </Compile>
@@ -213,6 +214,8 @@
       <DependentUpon>PlacementPreview3D.xaml</DependentUpon>
     </Compile>
     <Compile Include="Creator Classes\Gangs.cs" />
+    <Compile Include="Creator Classes\GangTypes.cs" />
+    <Compile Include="Creator Classes\ScriptThreadLog.cs" />
     <Compile Include="Creator Classes\LocalFreezer.cs" />
     <Compile Include="Creator Classes\GlobalFreezer.cs" />
     <Compile Include="Creator Classes\JobTime.cs" />
@@ -448,6 +451,7 @@
     <Compile Include="MainWindow\MainWindow.EditNav.cs" />
     <Compile Include="MainWindow\MainWindow.EntryBar.cs" />
     <Compile Include="MainWindow\MainWindow.EditHeaderBar.cs" />
+    <Compile Include="MainWindow\MainWindow.RebuildRequest.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

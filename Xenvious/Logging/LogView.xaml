@@ -69,6 +69,7 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="120"/>
                                 <ColumnDefinition Width="70"/>
+                                <ColumnDefinition Width="130"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="{Binding Timestamp, StringFormat=HH:mm:ss.fff}" Opacity="0.8"/>
@@ -114,9 +115,9 @@
                                     </Style>
                                 </Border.Style>
                             </Border>
-                            <TextBlock Grid.Column="2" TextWrapping="Wrap">
-                                <Run Text="{Binding Source, Mode=OneWay, StringFormat=[{0}], TargetNullValue=''}"/>
-                                <Run Text=" "/>
+                            <!-- Source in its own column, so every message starts at the same place. -->
+                            <TextBlock Grid.Column="2" Text="{Binding Source, Mode=OneWay, StringFormat=[{0}], TargetNullValue=''}" Opacity="0.8" TextTrimming="CharacterEllipsis" ToolTip="{Binding Source}" Margin="0,0,8,0"/>
+                            <TextBlock Grid.Column="3" TextWrapping="Wrap">
                                 <Run Text="{Binding Message, Mode=OneWay}"/>
                                 <Run Text="{Binding ExceptionMessage, Mode=OneWay, TargetNullValue='', StringFormat=  (EX: {0})}"/>
                             </TextBlock>

@@ -414,6 +414,31 @@ namespace Xenvious
             return null;
         }
 
+        /// <summary>
+        /// A slot of the thread list keeps the script hash after its thread ended, so a hash alone
+        /// also finds scripts that are gone (the creator hub after going back to the main menu).
+        /// A live thread has an id and is not in the killed state (2). Without the two offsets for
+        /// this edition every slot counts as live, as before.
+        /// </summary>
+        public static bool IsLiveThread(long listPtr, long slot)
+        {
+            if (GTA.Offsets.Editor.OFFSET_script_id == 0 || GTA.Offsets.Editor.OFFSET_script_state == 0)
+                return true;
+            try
+            {
+                uint id = MainWindow.m.memory(listPtr, new long[] { slot, GTA.Offsets.Editor.OFFSET_script_id }).Get<uint>();
+                uint state = MainWindow.m.memory(listPtr, new long[] { slot, GTA.Offsets.Editor.OFFSET_script_state }).Get<uint>();
+                return id != 0 && state != 2;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>True when a live thread of the script runs.</summary>
+        public static bool IsScriptRunning(string scriptname) => getLocalScriptAddy(scriptname) != null;
+
         public static long[] getLocalScriptAddy(string scriptname)
         {
             long localaddy = getLocalPointer().ToInt64();
@@ -428,10 +453,10 @@ namespace Xenvious
                     // Beliebiges Script, nicht nur Creator: Hash direkt vergleichen.
                     uint hash = 0;
                     try { hash = MainWindow.m.memory(localaddy, new long[] { d, GTA.Offsets.Editor.OFFSET_script_hash }).Get<uint>(); } catch { }
-                    if (hash == wantedHash)
+                    if (hash == wantedHash && IsLiveThread(localaddy, d))
                         return new long[] { localaddy, d };
                 }
-                else if (ReadScriptName(localaddy, d) == wanted)
+                else if (ReadScriptName(localaddy, d) == wanted && IsLiveThread(localaddy, d))
                 {
                     return new long[] { localaddy, d };
                 }
@@ -1376,6 +1401,8 @@ namespace Xenvious
                 public static long templates = 0x0;
                 public static long templates_count = 0x0;
                 public static long OFFSET_script_name = 0x0;
+                public static long OFFSET_script_id = 0x0;
+                public static long OFFSET_script_state = 0x0;
                 // Enhanced keeps no name in the thread, only the joaat hash of its script.
                 // 0 means "match by name" (Legacy).
                 public static long OFFSET_script_hash = 0x0;

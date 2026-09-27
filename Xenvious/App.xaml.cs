@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Threading;
 using System.Threading.Tasks;
 using Xenvious.Logging;
@@ -17,6 +19,16 @@ namespace Xenvious
             DispatcherUnhandledException += OnDispatcherUnhandledException;
             AppDomain.CurrentDomain.UnhandledException += OnCurrentDomainUnhandledException;
             TaskScheduler.UnobservedTaskException += OnTaskSchedulerUnobservedTaskException;
+
+            // An open list scrolls a half-visible entry into view as soon as the mouse is on it;
+            // at the bottom edge that runs on from entry to entry and the list jumps. Only the
+            // keyboard should scroll the list.
+            EventManager.RegisterClassHandler(typeof(ComboBoxItem), FrameworkElement.RequestBringIntoViewEvent,
+                new RequestBringIntoViewEventHandler((sender, e) =>
+                {
+                    if (((ComboBoxItem)sender).IsMouseOver && Mouse.LeftButton == MouseButtonState.Released)
+                        e.Handled = true;
+                }));
         }
 
         private static void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)

@@ -51,6 +51,8 @@ namespace Xenvious
             GTA.Offsets.Editor.OFFSET_script_name = ini.ReadInteger("OFFSETS", "OFFSET_script_name");
             // Fehlt in der Legacy-ini -> 0 -> Abgleich ueber den Namen.
             GTA.Offsets.Editor.OFFSET_script_hash = ini.ReadInteger("OFFSETS", "OFFSET_script_hash");
+            GTA.Offsets.Editor.OFFSET_script_id = ini.ReadInteger("OFFSETS", "OFFSET_script_id");
+            GTA.Offsets.Editor.OFFSET_script_state = ini.ReadInteger("OFFSETS", "OFFSET_script_state");
             GTA.Offsets.Editor.OFFSET_script_local_start = ini.ReadInteger("OFFSETS", "OFFSET_script_local_start");
             GTA.Offsets.Editor.OFFSET_current_creator_worker_survival = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_worker_survival"), 0);
             GTA.Offsets.Editor.OFFSET_current_creator_worker_race = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_worker_race"), 0);

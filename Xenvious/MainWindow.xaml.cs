@@ -480,6 +480,7 @@ namespace Xenvious
             MainPages.SelectedIndex = -1;
             // The first edit page opened without a tab change; its entry bar goes to the header too.
             QueueEntryBarMove();
+            WatchRebuildRequests();
 
             // Offline mode: no authentication, no updater, no roles.
             // Every feature is unlocked for everyone; the default control

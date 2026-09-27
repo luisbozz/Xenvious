@@ -4,7 +4,7 @@
 
     <Style x:Key="Watermark" TargetType="{x:Type TextBox}">
         <Setter Property="FontFamily" Value="{DynamicResource Volte}"/>
-        <Setter Property="FontSize" Value="14.0"/>
+        <Setter Property="FontSize" Value="15"/>
         <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
         <Setter Property="Cursor" Value="IBeam"/>
         <Setter Property="BorderBrush" Value="{DynamicResource ComboBoxBorder}"/>

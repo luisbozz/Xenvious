@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media;
 using Xenvious.JSON;
 using static Xenvious.GTA;
 using static Xenvious.GTA.Offsets.Editor;
@@ -216,18 +217,28 @@ namespace Xenvious
                 return;
             _zoneTypeLang = lang;
             _zoneTypeSync = true;
-            var items = ZoneTypes.All
-                .OrderBy(t => Array.IndexOf(ZoneTypes.Groups, t.Group)).ThenBy(t => t.Id)
-                .Select(t => new ZoneTypeItem
+            // A flat list with disabled headers: the grouped CollectionView showed only the
+            // group headers in the window's ComboBox template, never the items.
+            var items = new List<object>();
+            foreach (var group in ZoneTypes.All.GroupBy(t => t.Group).OrderBy(g => Array.IndexOf(ZoneTypes.Groups, g.Key)))
+            {
+                items.Add(new ComboBoxItem
+                {
+                    Content = TranslateOr("zt_grp_" + group.Key, group.Key),
+                    IsEnabled = false,
+                    FontSize = 11,
+                    FontWeight = FontWeights.Bold,
+                    Foreground = (Brush)FindResource("NavMutedBrush"),
+                    Margin = new Thickness(0, items.Count == 0 ? 2 : 8, 0, 0),
+                });
+                items.AddRange(group.OrderBy(t => t.Id).Select(t => new ZoneTypeItem
                 {
                     Id = t.Id,
                     Text = t.Id + "  " + TranslateOr("zt_name_" + t.Id, t.Name),
-                    Group = TranslateOr("zt_grp_" + t.Group, t.Group),
-                })
-                .ToList();
-            var view = new ListCollectionView(items);
-            view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(ZoneTypeItem.Group)));
-            ddzonetype.ItemsSource = view;
+                    Group = group.Key,
+                }));
+            }
+            ddzonetype.ItemsSource = items;
             _zoneTypeSync = false;
             ShowZoneType();
         }
@@ -258,18 +269,18 @@ namespace Xenvious
             var type = known ? ZoneTypes.Find(id) : null;
 
             _zoneTypeSync = true;
-            ddzonetype.SelectedItem = ddzonetype.ItemsSource.Cast<ZoneTypeItem>().FirstOrDefault(i => type != null && i.Id == type.Id);
+            ddzonetype.SelectedItem = ddzonetype.ItemsSource.OfType<ZoneTypeItem>().FirstOrDefault(i => type != null && i.Id == type.Id);
             _zoneTypeSync = false;
 
             if (type != null)
                 lblzonetypeinfo.Text = TranslateOr("zt_desc_" + type.Id, type.Description);
             else if (known)
-                lblzonetypeinfo.Text = string.Format(TranslateOr("zt_unknown", "Type {0} has no description yet."), id);
+                lblzonetypeinfo.Text = string.Format(TranslateOr("zt_unknown", "Type {0} is newer than Rockstar's source (types 0 to 78); its name and effect are unknown."), id);
             else
                 lblzonetypeinfo.Text = TranslateOr("zt_pick", "Pick a zone type to see what it does.");
 
-            lblzoneznwd.Text = type?.UsesValue == ZoneTypes.Value.Znwd ? TranslateOr(type.ValueKey, type.ValueFallback) + " (znwd)" : "znwd";
-            lblzoneznwvd.Text = type?.UsesValue == ZoneTypes.Value.Znwvd ? TranslateOr(type.ValueKey, type.ValueFallback) + " (znwvd)" : "znwvd";
+            lblzoneznwd.Text = type?.Value1Key != null ? TranslateOr(type.Value1Key, type.Value1Fallback) + " (znwd)" : "znwd";
+            lblzoneznwvd.Text = type?.Value2Key != null ? TranslateOr(type.Value2Key, type.Value2Fallback) + " (znwvd)" : "znwvd";
         }
 
         private void BtnZoneDelete_Click(object sender, RoutedEventArgs e)
