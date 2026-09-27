@@ -10807,464 +10807,453 @@
 
                                                         <TabItem x:Name="PageInnerCaptureGeneral" Header="General">
 
-                                                            <Grid>
-                                                                <Grid.RowDefinitions>
-                                                                    <RowDefinition Height="0.2*" MinHeight="50" MaxHeight="60"/>
-                                                                    <RowDefinition Height="*" MinHeight="205"/>
-                                                                </Grid.RowDefinitions>
-
-                                                                <Grid>
-                                                                    <Grid.ColumnDefinitions>
-                                                                        <ColumnDefinition Width="*"/>
-                                                                        <ColumnDefinition Width="0.30*" MinWidth="80"/>
-                                                                        <ColumnDefinition Width="0.30*" MinWidth="125"/>
-                                                                    </Grid.ColumnDefinitions>
-                                                                    <Border Grid.Column="1" Margin="5 10" Background="Transparent">
-                                                                        <Border.Effect>
-                                                                            <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>                    
-                                                                        </Border.Effect>
-                                                                        <ComboBox x:Name="ddcaptureteamno" HorizontalAlignment="Stretch" Tag="{Binding Translation[actorteam], FallbackValue=Team}" SelectionChanged="ddcaptureteamno_SelectionChanged">
-                                                                            <ComboBoxItem Content="1" Selector.IsSelected="True"/>
-                                                                            <ComboBoxItem Content="2"/>
-                                                                            <ComboBoxItem Content="3"/>
-                                                                            <ComboBoxItem Content="4"/>
-                                                                        </ComboBox>
-                                                                    </Border>
-
-
-                                                                    <Border Grid.Column="2" Margin="5 10" Background="Transparent">
-                                                                        <Border.Effect>
-                                                                            <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>                    
-                                                                        </Border.Effect>
-                                                                        <ComboBox x:Name="ddcaptureno" FontFamily="{DynamicResource Volte}" SelectionChanged="ddcaptureno_SelectionChanged" ToolTip="{Binding Translation[cindex], FallbackValue=Capture Index}" Tag="{Binding Translation[cindex], FallbackValue=Capture Index}">
-                                                                            <ComboBoxItem Content="1"/>
-                                                                            <ComboBoxItem Content="2"/>
-                                                                            <ComboBoxItem Content="3"/>
-                                                                            <ComboBoxItem Content="4"/>
-                                                                            <ComboBoxItem Content="5"/>
-                                                                            <ComboBoxItem Content="6"/>
-                                                                            <ComboBoxItem Content="7"/>
-                                                                            <ComboBoxItem Content="8"/>
-                                                                            <ComboBoxItem Content="9"/>
-                                                                            <ComboBoxItem Content="10"/>
-                                                                            <ComboBoxItem Content="11"/>
-                                                                            <ComboBoxItem Content="12"/>
-                                                                            <ComboBoxItem Content="13"/>
-                                                                            <ComboBoxItem Content="14"/>
-                                                                            <ComboBoxItem Content="15"/>
-                                                                            <ComboBoxItem Content="16"/>
-                                                                            <ComboBoxItem Content="17"/>
-                                                                        </ComboBox>
-                                                                    </Border>
-
-                                                                </Grid>
-
-                                                                <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
-
-                                                                    <WrapPanel Margin="10,0,0,0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Stretch" >
-
-                                                                        <Grid Width="325" Height="auto" Margin="0,0,10,0">
-                                                                            <Grid.RowDefinitions>
-                                                                                <RowDefinition Height="50"/>
-                                                                                <RowDefinition Height="auto"/>
-                                                                                <RowDefinition Height="auto"/>
-                                                                                <RowDefinition Height="35"/>
-                                                                                <RowDefinition Height="*"/>
-                                                                            </Grid.RowDefinitions>
-
-                                                                            <TextBlock Grid.Row="0" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="24" Text="{Binding Translation[options], FallbackValue=Options}" FontWeight="Bold"/>
-
-                                                                            <TextBox x:Name="tbcapturetsc"  Style="{StaticResource Watermark}" Tag="{Binding Translation[capturetargetscore],  FallbackValue=Target Score}"  Grid.Row="1" Height="30" Margin="0,5,3,3" MaxLength="60" TextChanged="tbcapturetsc_TextChanged"/>
-                                                                            <TextBox x:Name="tbcapturemcry" Style="{StaticResource Watermark}" Tag="{Binding Translation[capturecarrylimit], FallbackValue=Carry Limit}" Grid.Row="2" Height="30" Margin="0,5,3,3" MaxLength="60" TextChanged="tbcapturemcry_TextChanged"/>
-
-                                                                        </Grid>
-
-                                                                        <Grid Width="325" Height="auto" Margin="0,0,10,0">
-                                                                            <Grid.RowDefinitions>
-                                                                                <RowDefinition Height="50"/>
-                                                                                <RowDefinition Height="auto"/>
-                                                                                <RowDefinition Height="200"/>
-                                                                            </Grid.RowDefinitions>
-
-                                                                            <TextBlock Grid.Row="0" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="24" Text="{Binding Translation[capturetext], FallbackValue=Capture Texts}" FontWeight="Bold"/>
-
-                                                                            <Border Grid.Row="1" Background="Transparent" Margin="0,5,3,3" Height="30">
-                                                                                <ComboBox x:Name="ddcapturetexts" FontFamily="{DynamicResource Volte}" SelectionChanged="ddcapturetexts_SelectionChanged" Tag="{Binding Translation[texts], FallbackValue=Texts}">
-                                                                                    <ComboBoxItem Content="{Binding Translation[texts_capture], FallbackValue=Capture}"  Selector.IsSelected="True"/>
-                                                                                    <ComboBoxItem Content="{Binding Translation[texts_deliver], FallbackValue=Deliver}"/>
-                                                                                    <ComboBoxItem Content="{Binding Translation[texts_return], FallbackValue=Return}"/>
-                                                                                    <ComboBoxItem Content="{Binding Translation[texts_name], FallbackValue=Name}"/>
-                                                                                    <ComboBoxItem Content="{Binding Translation[texts_nameplural], FallbackValue=Name\, Plural}"/>
-                                                                                    <ComboBoxItem Content="{Binding Translation[texts_marking], FallbackValue=Blip}"/>
-                                                                                </ComboBox>
+                                                            <!-- Card layout (docs/handoff/auto_page.py): one card per old column, headings as sub titles. -->
+                                                            <DockPanel Margin="10,0">
+                                                                <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,0">
+                                                                    <DockPanel>
+                                                                        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                                                                            <TextBlock VerticalAlignment="Center" FontSize="14" Foreground="{StaticResource NavMutedBrush}" Margin="0,0,8,0" Text="{Binding Translation[actorteam], FallbackValue=Team}"/>
+                                                                            <Border Background="{DynamicResource ComboBoxBackground}" BorderBrush="{DynamicResource ComboBoxBorder}" BorderThickness="1" CornerRadius="4" Height="32" Margin="0,0,16,0">
+                                                                                <StackPanel Orientation="Horizontal">
+                                                                                    <Button Style="{StaticResource EntryStepButton}" Content="‹" Tag="{Binding ElementName=ddcaptureteamno}" CommandParameter="-1" Click="EntryStep_Click" ToolTip="{Binding Translation[entry_prev], FallbackValue=Previous}"/>
+                                                                                    <ComboBox x:Name="ddcaptureteamno" SelectionChanged="ddcaptureteamno_SelectionChanged" Width="84" Height="30" BorderThickness="0">
+                                                                                        <ComboBoxItem Content="1" Selector.IsSelected="True"/>
+                                                                                        <ComboBoxItem Content="2"/>
+                                                                                        <ComboBoxItem Content="3"/>
+                                                                                        <ComboBoxItem Content="4"/>
+                                                                                    </ComboBox>
+                                                                                    <Button Style="{StaticResource EntryStepButton}" Content="›" Tag="{Binding ElementName=ddcaptureteamno}" CommandParameter="1" Click="EntryStep_Click" ToolTip="{Binding Translation[entry_next], FallbackValue=Next}"/>
+                                                                                </StackPanel>
                                                                             </Border>
-                                                                            <TextBox x:Name="tbcapturetext" Margin="0,5,32,3" local:CornerRadiusSetter.CornerRadius="0,0,5,5" Style="{StaticResource WatermarkOld}" HorizontalAlignment="Stretch" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto" Grid.Row="2" FontSize="16" TextChanged="tbcapturetext_TextChanged" VerticalContentAlignment="Top"   />
+                                                                            <TextBlock VerticalAlignment="Center" FontSize="14" Foreground="{StaticResource NavMutedBrush}" Margin="0,0,8,0" Text="{Binding Translation[cindex], FallbackValue=Capture Index}"/>
+                                                                            <Border Background="{DynamicResource ComboBoxBackground}" BorderBrush="{DynamicResource ComboBoxBorder}" BorderThickness="1" CornerRadius="4" Height="32" Margin="0,0,16,0">
+                                                                                <StackPanel Orientation="Horizontal">
+                                                                                    <Button Style="{StaticResource EntryStepButton}" Content="‹" Tag="{Binding ElementName=ddcaptureno}" CommandParameter="-1" Click="EntryStep_Click" ToolTip="{Binding Translation[entry_prev], FallbackValue=Previous}"/>
+                                                                                    <ComboBox x:Name="ddcaptureno" FontFamily="{DynamicResource Volte}" SelectionChanged="ddcaptureno_SelectionChanged" ToolTip="{Binding Translation[cindex], FallbackValue=Capture Index}" Width="84" Height="30" BorderThickness="0">
+                                                                                        <ComboBoxItem Content="1"/>
+                                                                                        <ComboBoxItem Content="2"/>
+                                                                                        <ComboBoxItem Content="3"/>
+                                                                                        <ComboBoxItem Content="4"/>
+                                                                                        <ComboBoxItem Content="5"/>
+                                                                                        <ComboBoxItem Content="6"/>
+                                                                                        <ComboBoxItem Content="7"/>
+                                                                                        <ComboBoxItem Content="8"/>
+                                                                                        <ComboBoxItem Content="9"/>
+                                                                                        <ComboBoxItem Content="10"/>
+                                                                                        <ComboBoxItem Content="11"/>
+                                                                                        <ComboBoxItem Content="12"/>
+                                                                                        <ComboBoxItem Content="13"/>
+                                                                                        <ComboBoxItem Content="14"/>
+                                                                                        <ComboBoxItem Content="15"/>
+                                                                                        <ComboBoxItem Content="16"/>
+                                                                                        <ComboBoxItem Content="17"/>
+                                                                                    </ComboBox>
+                                                                                    <Button Style="{StaticResource EntryStepButton}" Content="›" Tag="{Binding ElementName=ddcaptureno}" CommandParameter="1" Click="EntryStep_Click" ToolTip="{Binding Translation[entry_next], FallbackValue=Next}"/>
+                                                                                </StackPanel>
+                                                                            </Border>
+                                                                        </StackPanel>
 
-                                                                            <CheckBox x:Name="cbcapturetextforce" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbcapturetextforce_Checked" Unchecked="cbcapturetextforce_Checked" MaxHeight="30" IsEnabled="True"  ToolTip="{Binding Translation[capturetextsforce], FallbackValue='This forces the first Capture Text for Team 2,3,4'}" Visibility="Visible"/>
-
-                                                                        </Grid>
-
+                                                                    </DockPanel>
+                                                                </Border>
+                                                                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                                                    <WrapPanel Orientation="Horizontal" Margin="0,12,0,12">
+                                                                        <StackPanel Width="340" Margin="0,0,12,0">
+                                                                            <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
+                                                                                <DockPanel>
+                                                                                    <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                                                                        <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[options], FallbackValue=Options}"/>
+                                                                                    </Border>
+                                                                                    <StackPanel Margin="14,12,14,4">
+                                                                                    <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[capturetargetscore],  FallbackValue=Target Score}"/>
+                                                                                    <TextBox x:Name="tbcapturetsc"  Style="{StaticResource Watermark}"  MaxLength="60" TextChanged="tbcapturetsc_TextChanged" Height="30" Margin="0,0,0,10"/>
+                                                                                    <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[capturecarrylimit], FallbackValue=Carry Limit}"/>
+                                                                                    <TextBox x:Name="tbcapturemcry" Style="{StaticResource Watermark}" MaxLength="60" TextChanged="tbcapturemcry_TextChanged" Height="30" Margin="0,0,0,10"/>
+                                                                                    </StackPanel>
+                                                                                </DockPanel>
+                                                                            </Border>
+                                                                        </StackPanel>
+                                                                        <StackPanel Width="340" Margin="0,0,12,0">
+                                                                            <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
+                                                                                <DockPanel>
+                                                                                    <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                                                                        <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[capturetext], FallbackValue=Capture Texts}"/>
+                                                                                    </Border>
+                                                                                    <StackPanel Margin="14,12,14,4">
+                                                                                    <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[texts], FallbackValue=Texts}"/>
+                                                                                    <ComboBox x:Name="ddcapturetexts" FontFamily="{DynamicResource Volte}" SelectionChanged="ddcapturetexts_SelectionChanged" Height="30" Margin="0,0,0,10">
+                                                                                        <ComboBoxItem Content="{Binding Translation[texts_capture], FallbackValue=Capture}"  Selector.IsSelected="True"/>
+                                                                                        <ComboBoxItem Content="{Binding Translation[texts_deliver], FallbackValue=Deliver}"/>
+                                                                                        <ComboBoxItem Content="{Binding Translation[texts_return], FallbackValue=Return}"/>
+                                                                                        <ComboBoxItem Content="{Binding Translation[texts_name], FallbackValue=Name}"/>
+                                                                                        <ComboBoxItem Content="{Binding Translation[texts_nameplural], FallbackValue=Name\, Plural}"/>
+                                                                                        <ComboBoxItem Content="{Binding Translation[texts_marking], FallbackValue=Blip}"/>
+                                                                                    </ComboBox>
+                                                                                    <TextBox x:Name="tbcapturetext" local:CornerRadiusSetter.CornerRadius="0,0,5,5" Style="{StaticResource WatermarkOld}" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto" FontSize="16" TextChanged="tbcapturetext_TextChanged" VerticalContentAlignment="Top" Height="30" Margin="0,0,0,10"/>
+                                                                                    <Grid Style="{StaticResource FormRow}">
+                                                                                        <Grid.ColumnDefinitions>
+                                                                                            <ColumnDefinition Width="*"/>
+                                                                                            <ColumnDefinition Width="46"/>
+                                                                                        </Grid.ColumnDefinitions>
+                                                                                        <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[capturetextsforce], FallbackValue='This forces the first Capture Text for Team 2,3,4'}"/>
+                                                                                        <CheckBox x:Name="cbcapturetextforce" Checked="cbcapturetextforce_Checked" Unchecked="cbcapturetextforce_Checked" IsEnabled="True"  ToolTip="{Binding Translation[capturetextsforce], FallbackValue='This forces the first Capture Text for Team 2,3,4'}" Visibility="Visible" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                                    </Grid>
+                                                                                    </StackPanel>
+                                                                                </DockPanel>
+                                                                            </Border>
+                                                                        </StackPanel>
                                                                     </WrapPanel>
-
                                                                 </ScrollViewer>
-                                                            </Grid>
+                                                            </DockPanel>
 
                                                         </TabItem>
 
                                                         <TabItem x:Name="PageInnerCaptureObjects" Header="Capture Objects">
 
-                                                            <Grid Background="Transparent" Grid.Column="1">
-                                                                <Grid.RowDefinitions>
-                                                                    <RowDefinition Height="0.2*" MinHeight="50" MaxHeight="60"/>
-                                                                    <RowDefinition Height="*" MinHeight="205"/>
-                                                                </Grid.RowDefinitions>
-
-                                                                <Grid Grid.Column="1">
-                                                                    <Grid.ColumnDefinitions>
-                                                                        <ColumnDefinition Width="*"/>
-                                                                        <ColumnDefinition Width="0.20*" MinWidth="80"/>
-                                                                        <ColumnDefinition Width="0.20*" MinWidth="80"/>
-                                                                        <ColumnDefinition Width="0.40*" MinWidth="125"/>
-                                                                    </Grid.ColumnDefinitions>
-
-
-                                                                    <Border  Grid.Column="1" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5 10">
-                                                                        <Border.Effect>
-                                                                            <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>                    
-                                                                        </Border.Effect>
-                                                                        <Button x:Name="BtnobjAdd" Style="{DynamicResource CustomButton}" Content="{Binding Translation[add], FallbackValue=Add}" local:CornerRadiusSetter.CornerRadius="5" ToolTip="{Binding Translation[add], FallbackValue=Add}" Click="BtnobjAdd_Click"/>
-                                                                    </Border>
-                                                                    <Border  Grid.Column="2" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5 10">
-                                                                        <Border.Effect>
-                                                                            <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>                    
-                                                                        </Border.Effect>
-                                                                        <Button x:Name="BtnobjDelete" Style="{DynamicResource CustomButton}" Content="{Binding Translation[delete], FallbackValue=Delete}" local:CornerRadiusSetter.CornerRadius="5" ToolTip="{Binding Translation[delete], FallbackValue=Delete}" Click="BtnobjDelete_Click"/>
-                                                                    </Border>
-                                                                    <Border Grid.Column="3" Margin="5 10" Background="Transparent">
-                                                                        <Border.Effect>
-                                                                            <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>                    
-                                                                        </Border.Effect>
-                                                                        <ComboBox x:Name="ddobjno" FontFamily="{DynamicResource Volte}" SelectionChanged="ddobjno_SelectionChanged" ToolTip="{Binding Translation[cindex], FallbackValue=Capture Index}" Tag="{Binding Translation[cindex], FallbackValue=Capture Index}"/>
-                                                                    </Border>
-
-                                                                </Grid>
-
-                                                                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" >
-
-                                                                    <WrapPanel Margin="10,0,0,0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Stretch" >
-
-                                                                        <Grid Width="290" Height="auto" Margin="0,0,10,0">
-                                                                            <Grid.RowDefinitions>
-                                                                                <RowDefinition Height="85"/>
-                                                                                <RowDefinition Height="50"/>
-                                                                                <RowDefinition Height="*"/>
-                                                                            </Grid.RowDefinitions>
-
-                                                                            <Grid.ColumnDefinitions>
-                                                                                <ColumnDefinition Width="0.5*"/>
-                                                                                <ColumnDefinition Width="0.5*"/>
-                                                                            </Grid.ColumnDefinitions>
-
-                                                                            <!--header-->
-
-                                                                            <TextBox x:Name="tbobjmodel" Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Style="{StaticResource Watermark}" Tag="Model" ToolTip="Model" Height="30" IsEnabled="False" Visibility="Visible" KeyDown="FormatTextForModel" TextChanged="tbobjmodel_TextChanged" />
-
-                                                                            <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Text="{Binding Translation[loc], FallbackValue=Location}" FontWeight="Bold"/>
-
-                                                                            <Grid Grid.Row="2" Grid.ColumnSpan="2">
-                                                                                <Grid.RowDefinitions>
-                                                                                    <RowDefinition Height="34"/>
-                                                                                    <RowDefinition Height="34"/>
-                                                                                    <RowDefinition Height="34"/>
-                                                                                    <RowDefinition Height="50"/>
-                                                                                    <RowDefinition Height="34"/>
-                                                                                    <RowDefinition Height="34"/>
-                                                                                    <RowDefinition Height="34"/>
-                                                                                    <RowDefinition Height="34"/>
-                                                                                </Grid.RowDefinitions>
-                                                                                <Grid.ColumnDefinitions>
-                                                                                    <ColumnDefinition Width="*"/>
-                                                                                    <ColumnDefinition Width="30"/>
-                                                                                </Grid.ColumnDefinitions>
-
-                                                                                <TextBox x:Name="tbobjlocx" Grid.Row="0" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3x], FallbackValue=X-Component}" Height="30" Margin="0,0,5,0" IsEnabled="False" TextChanged="tbobjlocx_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangeOBJLocationXPlusMinus"/>
-                                                                                <TextBox x:Name="tbobjlocy" Grid.Row="1" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3y], FallbackValue=Y-Component}" Height="30" Margin="0,0,5,0" IsEnabled="False" TextChanged="tbobjlocy_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangeOBJLocationYPlusMinus"/>
-                                                                                <TextBox x:Name="tbobjlocz" Grid.Row="2" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3z], FallbackValue=Z-Component}" Height="30" Margin="0,0,5,0" IsEnabled="False" TextChanged="tbobjlocz_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangeOBJLocationZPlusMinus"/>
-                                                                                <Border  Grid.Column="1" Grid.RowSpan="3" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5">
-                                                                                    <Border.Effect>
-                                                                                        <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>                                
-                                                                                    </Border.Effect>
-
-                                                                                    <Button x:Name="Btnobjgetloc" Style="{DynamicResource TitleBarButton}" Click="Btnobjgetloc_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Translation[getcursorloc], FallbackValue=Get Cursor Location}" IsEnabled="False" >
-                                                                                        <Path x:Name="objgetlocpath"  Data="M 12 12 L 12 0 L 6 6 Z" Stretch="Uniform" Stroke="{DynamicResource TextColor}" />
-                                                                                    </Button>
-                                                                                </Border>
-
-                                                                                <TextBlock Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Text="{Binding Translation[vrot], FallbackValue=Rotation}" FontWeight="Bold"/>
-
-                                                                                <TextBox x:Name="tbobjrotx" Grid.Row="4" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3x], FallbackValue=X-Component}" Height="30" Margin="0,0,5,0" IsEnabled="False" TextChanged="tbobjrotx_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                                                <TextBox x:Name="tbobjroty" Grid.Row="5" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3y], FallbackValue=Y-Component}" Height="30" Margin="0,0,5,0" IsEnabled="False" TextChanged="tbobjroty_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                                                <TextBox x:Name="tbobjrotz" Grid.Row="6" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3z], FallbackValue=Z-Component}" Height="30" Margin="0,0,5,0" IsEnabled="False" TextChanged="tbobjrotz_TextChanged" KeyDown="FormatTextForFloat"/>
-
-                                                                                <Border  Grid.Column="1" Grid.Row="4" Grid.RowSpan="3" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5">
-                                                                                    <Border.Effect>
-                                                                                        <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>                                
-                                                                                    </Border.Effect>
-
-                                                                                    <Button x:Name="Btnobjrotchain" Style="{DynamicResource TitleBarButton}" Click="Btnobjrotchain_Click" IsEnabled="False" Padding="0" ToolTip="{Binding Translation[fixedrotn], FallbackValue=The rotation values ​​will not be adopted when adding a new prop.}">
+                                                            <!-- Card layout (docs/handoff/auto_page.py): one card per old column, headings as sub titles. -->
+                                                            <DockPanel Margin="10,0">
+                                                                <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,0">
+                                                                    <DockPanel>
+                                                                        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                                                                            <TextBlock VerticalAlignment="Center" FontSize="14" Foreground="{StaticResource NavMutedBrush}" Margin="0,0,8,0" Text="{Binding Translation[cindex], FallbackValue=Capture Index}"/>
+                                                                            <Border Background="{DynamicResource ComboBoxBackground}" BorderBrush="{DynamicResource ComboBoxBorder}" BorderThickness="1" CornerRadius="4" Height="32" Margin="0,0,16,0">
+                                                                                <StackPanel Orientation="Horizontal">
+                                                                                    <Button Style="{StaticResource EntryStepButton}" Content="‹" Tag="{Binding ElementName=ddobjno}" CommandParameter="-1" Click="EntryStep_Click" ToolTip="{Binding Translation[entry_prev], FallbackValue=Previous}"/>
+                                                                                    <ComboBox x:Name="ddobjno" FontFamily="{DynamicResource Volte}" SelectionChanged="ddobjno_SelectionChanged" ToolTip="{Binding Translation[cindex], FallbackValue=Capture Index}" Width="84" Height="30" BorderThickness="0"/>
+                                                                                    <Button Style="{StaticResource EntryStepButton}" Content="›" Tag="{Binding ElementName=ddobjno}" CommandParameter="1" Click="EntryStep_Click" ToolTip="{Binding Translation[entry_next], FallbackValue=Next}"/>
+                                                                                </StackPanel>
+                                                                            </Border>
+                                                                            <Button x:Name="BtnobjDelete" Style="{StaticResource FormButton}" Width="34" Height="32" Padding="0" Margin="0,0,6,0" Click="BtnobjDelete_Click" ToolTip="{Binding Translation[delete], FallbackValue=Delete}">
+                                                                                <Path Data="M3,4 L13,4 M6,4 L6,2.5 L10,2.5 L10,4 M4.5,4 L5.2,14 L10.8,14 L11.5,4" Stroke="{DynamicResource TextColor}" StrokeThickness="1.5" StrokeLineJoin="Round" Width="16" Height="16"/>
+                                                                            </Button>
+                                                                            <Button x:Name="BtnobjAdd" Style="{StaticResource FormButtonPrimary}" Height="32" Padding="10,0,12,0" Click="BtnobjAdd_Click" ToolTip="{Binding Translation[add], FallbackValue=Add}">
+                                                                                <StackPanel Orientation="Horizontal">
+                                                                                    <Path Data="M8,3 L8,13 M3,8 L13,8" Stroke="#FF202225" StrokeThickness="2" Width="16" Height="16" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                                                                    <TextBlock VerticalAlignment="Center" Foreground="#FF202225" Text="{Binding Translation[add], FallbackValue=Add}"/>
+                                                                                </StackPanel>
+                                                                            </Button>
+                                                                        </StackPanel>
+                                                                        <TextBlock VerticalAlignment="Center" FontSize="14" Foreground="{StaticResource NavMutedBrush}">
+                                                                            <Run FontSize="17" FontWeight="Bold" Foreground="{DynamicResource TextColor}" Text="{Binding Items.Count, ElementName=ddobjno, Mode=OneWay}"/>
+                                                                            <Run Text="{Binding Translation[capobj_placed], FallbackValue=capture objects placed}"/>
+                                                                        </TextBlock>
+                                                                    </DockPanel>
+                                                                </Border>
+                                                                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                                                    <WrapPanel Orientation="Horizontal" Margin="0,12,0,12">
+                                                                        <StackPanel Width="340" Margin="0,0,12,0">
+                                                                            <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
+                                                                                <DockPanel>
+                                                                                    <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                                                                        <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[general], FallbackValue=General}"/>
+                                                                                    </Border>
+                                                                                    <StackPanel Margin="14,12,14,4">
+                                                                                    <TextBlock Style="{StaticResource FieldLabel}" Text="Model"/>
+                                                                                    <TextBox x:Name="tbobjmodel" Style="{StaticResource Watermark}" ToolTip="Model" IsEnabled="False" Visibility="Visible" KeyDown="FormatTextForModel" TextChanged="tbobjmodel_TextChanged" Height="30" Margin="0,0,0,10"/>
+                                                                                    <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[loc], FallbackValue=Location}"/>
+                                                                                    <Grid Margin="0,0,0,10">
+                                                                                        <Grid.ColumnDefinitions>
+                                                                                            <ColumnDefinition Width="*"/>
+                                                                                            <ColumnDefinition Width="6"/>
+                                                                                            <ColumnDefinition Width="*"/>
+                                                                                            <ColumnDefinition Width="6"/>
+                                                                                            <ColumnDefinition Width="*"/>
+                                                                                            <ColumnDefinition Width="6"/>
+                                                                                            <ColumnDefinition Width="30"/>
+                                                                                        </Grid.ColumnDefinitions>
+                                                                                        <StackPanel Grid.Column="0">
+                                                                                            <TextBlock Style="{StaticResource FieldAxis}" Text="X"/>
+                                                                                            <TextBox x:Name="tbobjlocx" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbobjlocx_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangeOBJLocationXPlusMinus" Height="30"/>
+                                                                                        </StackPanel>
+                                                                                        <StackPanel Grid.Column="2">
+                                                                                            <TextBlock Style="{StaticResource FieldAxis}" Text="Y"/>
+                                                                                            <TextBox x:Name="tbobjlocy" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbobjlocy_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangeOBJLocationYPlusMinus" Height="30"/>
+                                                                                        </StackPanel>
+                                                                                        <StackPanel Grid.Column="4">
+                                                                                            <TextBlock Style="{StaticResource FieldAxis}" Text="Z"/>
+                                                                                            <TextBox x:Name="tbobjlocz" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbobjlocz_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangeOBJLocationZPlusMinus" Height="30"/>
+                                                                                        </StackPanel>
+                                                                                        <Border Grid.Column="6" Width="30" Height="30" VerticalAlignment="Bottom">
+                                                                                            <Button x:Name="Btnobjgetloc" Style="{StaticResource FieldIconButton}" Click="Btnobjgetloc_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Translation[getcursorloc], FallbackValue=Get Cursor Location}" IsEnabled="False" >
+                                                                                                <Path x:Name="objgetlocpath" Data="M8,1.5 L8,4.5 M8,11.5 L8,14.5 M1.5,8 L4.5,8 M11.5,8 L14.5,8 M8,5 A3,3 0 1 1 7.99,5" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.6" Width="16" Height="16" />
+                                                                                            </Button>
+                                                                                        </Border>
+                                                                                    </Grid>
+                                                                                    <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[vrot], FallbackValue=Rotation}"/>
+                                                                                    <Grid Margin="0,0,0,10">
+                                                                                        <Grid.ColumnDefinitions>
+                                                                                            <ColumnDefinition Width="*"/>
+                                                                                            <ColumnDefinition Width="6"/>
+                                                                                            <ColumnDefinition Width="*"/>
+                                                                                            <ColumnDefinition Width="6"/>
+                                                                                            <ColumnDefinition Width="*"/>
+                                                                                            <ColumnDefinition Width="6"/>
+                                                                                            <ColumnDefinition Width="30"/>
+                                                                                        </Grid.ColumnDefinitions>
+                                                                                        <StackPanel Grid.Column="0">
+                                                                                            <TextBlock Style="{StaticResource FieldAxis}" Text="X"/>
+                                                                                            <TextBox x:Name="tbobjrotx" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbobjrotx_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
+                                                                                        </StackPanel>
+                                                                                        <StackPanel Grid.Column="2">
+                                                                                            <TextBlock Style="{StaticResource FieldAxis}" Text="Y"/>
+                                                                                            <TextBox x:Name="tbobjroty" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbobjroty_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
+                                                                                        </StackPanel>
+                                                                                        <StackPanel Grid.Column="4">
+                                                                                            <TextBlock Style="{StaticResource FieldAxis}" Text="Z"/>
+                                                                                            <TextBox x:Name="tbobjrotz" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbobjrotz_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
+                                                                                        </StackPanel>
+                                                                                    </Grid>
+                                                                                    <Button x:Name="Btnobjrotchain" Click="Btnobjrotchain_Click" IsEnabled="False" ToolTip="{Binding Translation[fixedrotn], FallbackValue=The rotation values ​​will not be adopted when adding a new prop.}" Style="{StaticResource FormButton}" Height="32" Padding="12,0" Margin="0,0,0,10">
                                                                                         <Image x:Name="objrotchain" Source="{StaticResource link2}" RenderTransformOrigin=".5,.5" Width="18" Height="18">
                                                                                             <Image.RenderTransform>
                                                                                                 <RotateTransform Angle="315" />
                                                                                             </Image.RenderTransform>
                                                                                         </Image>
                                                                                     </Button>
-                                                                                </Border>
-
-                                                                                <TextBox x:Name="tbobjhead" Grid.Row="7" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Style="{StaticResource Watermark}" Tag="{Binding Translation[heading], FallbackValue=Heading}" ToolTip="{Binding Translation[heading], FallbackValue=Heading}" Height="30" IsEnabled="False" Visibility="Visible" KeyDown="FormatTextForFloat" TextChanged="tbobjhead_TextChanged" />
-
-                                                                            </Grid>
-
-                                                                        </Grid>
-
-                                                                        <Grid Width="290" Height="auto" Margin="0,0,10,0">
-                                                                            <Grid.RowDefinitions>
-                                                                                <RowDefinition Height="50"/>
-                                                                                <RowDefinition Height="*"/>
-                                                                            </Grid.RowDefinitions>
-
-                                                                            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Text="{Binding Translation[other], FallbackValue=Other}" FontWeight="Bold"/>
-
-                                                                            <StackPanel Grid.Row="1" Orientation="Vertical" Margin="0,5,0,0">
-
-                                                                                <TextBox x:Name="tbobjrender" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[renderdist], FallbackValue=Render Distance}" ToolTip="{Binding Translation[renderdistinfo], FallbackValue=Render Distance}" IsEnabled="False" TextChanged="tbobjrender_TextChanged" KeyDown="FormatTextForInteger"/>
-                                                                                <Grid Height="30" Margin="0,0,0,5">
-                                                                                    <Grid.ColumnDefinitions>
-                                                                                        <ColumnDefinition Width="0.87*" />
-                                                                                        <ColumnDefinition Width="0.13*" />
-                                                                                    </Grid.ColumnDefinitions>
-
-                                                                                    <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[greenarrow], FallbackValue=Green Arrow}" TextTrimming="CharacterEllipsis"/>
-                                                                                    <CheckBox x:Name="cb_obj_arrow" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_obj_arrow_Checked" Unchecked="cb_obj_arrow_Checked" MaxHeight="30" IsEnabled="False"/>
-                                                                                </Grid>
-                                                                                <Grid Height="30" Margin="0,0,0,5">
-                                                                                    <Grid.ColumnDefinitions>
-                                                                                        <ColumnDefinition Width="0.87*" />
-                                                                                        <ColumnDefinition Width="0.13*" />
-                                                                                    </Grid.ColumnDefinitions>
-
-                                                                                    <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[invisible], FallbackValue=Invisible}" TextTrimming="CharacterEllipsis"/>
-                                                                                    <CheckBox x:Name="cb_obj_invisible" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_obj_invisible_Checked" Unchecked="cb_obj_invisible_Checked" MaxHeight="30" IsEnabled="False"/>
-                                                                                </Grid>
-
-                                                                            </StackPanel>
-
-                                                                        </Grid>
-
-                                                                        <Grid Width="290" Height="auto" Margin="0,0,10,0">
-                                                                            <Grid.RowDefinitions>
-                                                                                <RowDefinition Height="50"/>
-                                                                                <RowDefinition Height="*"/>
-                                                                            </Grid.RowDefinitions>
-
-                                                                            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Text="{Binding Translation[advanced], FallbackValue=Advanced}" FontWeight="Bold"/>
-
-                                                                            <StackPanel Grid.Row="1" Orientation="Vertical" Margin="0,2,0,0">
-
-                                                                                <ComboBox x:Name="ddobjteam" VerticalAlignment="Top" Grid.Row="1" Height="30" HorizontalAlignment="Stretch" Tag="{Binding Translation[actorteam], FallbackValue=Team}" IsEnabled="False" Margin="0,3,0,5" SelectionChanged="ddobjteam_SelectionChanged">
-                                                                                    <ComboBoxItem Content="1" Selector.IsSelected="True"/>
-                                                                                    <ComboBoxItem Content="2"/>
-                                                                                    <ComboBoxItem Content="3"/>
-                                                                                    <ComboBoxItem Content="4"/>
-                                                                                </ComboBox>
-
-                                                                                <TextBox x:Name="tbobjrule" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[rule], FallbackValue=Rule}" IsEnabled="False" TextChanged="tbobjrule_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                                <TextBox x:Name="tbobjpriority" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[priority], FallbackValue=Priority}" IsEnabled="False" TextChanged="tbobjpriority_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                                <TextBox x:Name="tbobjjtop" Style="{StaticResource Watermark}" Tag="{Binding Translation[jtop], FallbackValue=Jump To Objective(Pass)}" Height="30" Margin="0,0,3,5" IsEnabled="False" TextChanged="tbobjjtop_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                                <TextBox x:Name="tbobjjtof" Style="{StaticResource Watermark}" Tag="{Binding Translation[jtof], FallbackValue=Jump To Objective(Fail)}" Height="30" Margin="0,0,3,5" IsEnabled="False" TextChanged="tbobjjtof_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                                <TextBox x:Name="tbobjteam" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[team], FallbackValue=team}" IsEnabled="False" TextChanged="tbobjteam_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                                <TextBox x:Name="tbobjspwn" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[spwn], FallbackValue=spwn}" IsEnabled="False" TextChanged="tbobjspwn_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                                <TextBox x:Name="tbobjobjct" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[objct], FallbackValue=objct}" IsEnabled="False" TextChanged="tbobjobjct_TextChanged" KeyDown="FormatTextForModel"/>
-
-
-                                                                                <Rectangle Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="#6C7378" Height="1" Margin="20,0,20,8" />
-
-
-                                                                                <TextBox x:Name="tbobjbits" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[objbits], FallbackValue=bits}" IsEnabled="False" TextChanged="tbobjbits_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                                <TextBox x:Name="tbobjbits2" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[objbits2], FallbackValue=bits2}" IsEnabled="False" TextChanged="tbobjbits2_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                                <TextBox x:Name="tbobjbits3" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[objbits3], FallbackValue=bits3}" IsEnabled="False" TextChanged="tbobjbits3_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                                <TextBox x:Name="tbobjbits4" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[objbits4], FallbackValue=bits4}" IsEnabled="False" TextChanged="tbobjbits4_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                                <TextBox x:Name="tbobjobjcr" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[objcr], FallbackValue=objcr}" IsEnabled="False" TextChanged="tbobjobjcr_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                                <TextBox x:Name="tbobjvalu" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[objvalu], FallbackValue=valu}" IsEnabled="False" TextChanged="tbobjvalu_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                                <TextBox x:Name="tbobjrsp" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[objrsp], FallbackValue=rsp}" IsEnabled="False" TextChanged="tbobjrsp_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                                <TextBox x:Name="tbobjped" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[objped], FallbackValue=ped}" IsEnabled="False" TextChanged="tbobjped_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                                <TextBox x:Name="tbobjnmfail" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[nmfail], FallbackValue=nmfail}" IsEnabled="False" TextChanged="tbobjnmfail_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                                <TextBox x:Name="tbobjnmpass" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[nmpass], FallbackValue=nmpass}" IsEnabled="False" TextChanged="tbobjnmpass_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                                <TextBox x:Name="tbobjmgbs" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[mgbs], FallbackValue=mgbs}" IsEnabled="False" TextChanged="tbobjmgbs_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                                <TextBox x:Name="tbobjhlt" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[objhlt], FallbackValue=hlt}" IsEnabled="False" TextChanged="tbobjhlt_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                                <TextBox x:Name="tbobjcont" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[objcont], FallbackValue=cont}" IsEnabled="False" TextChanged="tbobjcont_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                                <TextBox x:Name="tbobjobint" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[objobint], FallbackValue=obint}" IsEnabled="False" TextChanged="tbobjobint_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                                <TextBox x:Name="tbobjobb" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[objobb], FallbackValue=obb}" IsEnabled="False" TextChanged="tbobjobb_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                                <TextBox x:Name="tbobjobbc" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[objobbc], FallbackValue=obbc}" IsEnabled="False" TextChanged="tbobjobbc_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                                <TextBox x:Name="tbobjobbs" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[objobbs], FallbackValue=obbs}" IsEnabled="False" TextChanged="tbobjobbs_TextChanged" KeyDown="FormatTextForFloat"/>
-
-                                                                            </StackPanel>
-
-                                                                        </Grid>
-
+                                                                                    <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[heading], FallbackValue=Heading}"/>
+                                                                                    <TextBox x:Name="tbobjhead" Style="{StaticResource Watermark}" ToolTip="{Binding Translation[heading], FallbackValue=Heading}" IsEnabled="False" Visibility="Visible" KeyDown="FormatTextForFloat" TextChanged="tbobjhead_TextChanged" Height="30" Margin="0,0,0,10"/>
+                                                                                    </StackPanel>
+                                                                                </DockPanel>
+                                                                            </Border>
+                                                                        </StackPanel>
+                                                                        <StackPanel Width="340" Margin="0,0,12,0">
+                                                                            <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
+                                                                                <DockPanel>
+                                                                                    <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                                                                        <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[other], FallbackValue=Other}"/>
+                                                                                    </Border>
+                                                                                    <StackPanel Margin="14,12,14,4">
+                                                                                    <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[renderdist], FallbackValue=Render Distance}"/>
+                                                                                    <TextBox x:Name="tbobjrender" Style="{StaticResource Watermark}" ToolTip="{Binding Translation[renderdistinfo], FallbackValue=Render Distance}" IsEnabled="False" TextChanged="tbobjrender_TextChanged" KeyDown="FormatTextForInteger" Height="30" Margin="0,0,0,10"/>
+                                                                                    <Grid Style="{StaticResource FormRow}">
+                                                                                        <Grid.ColumnDefinitions>
+                                                                                            <ColumnDefinition Width="*"/>
+                                                                                            <ColumnDefinition Width="46"/>
+                                                                                        </Grid.ColumnDefinitions>
+                                                                                        <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[greenarrow], FallbackValue=Green Arrow}"/>
+                                                                                        <CheckBox x:Name="cb_obj_arrow" Checked="cb_obj_arrow_Checked" Unchecked="cb_obj_arrow_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                                    </Grid>
+                                                                                    <Grid Style="{StaticResource FormRow}">
+                                                                                        <Grid.ColumnDefinitions>
+                                                                                            <ColumnDefinition Width="*"/>
+                                                                                            <ColumnDefinition Width="46"/>
+                                                                                        </Grid.ColumnDefinitions>
+                                                                                        <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[invisible], FallbackValue=Invisible}"/>
+                                                                                        <CheckBox x:Name="cb_obj_invisible" Checked="cb_obj_invisible_Checked" Unchecked="cb_obj_invisible_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                                    </Grid>
+                                                                                    </StackPanel>
+                                                                                </DockPanel>
+                                                                            </Border>
+                                                                        </StackPanel>
+                                                                        <StackPanel Width="340" Margin="0,0,12,0">
+                                                                            <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
+                                                                                <Expander Style="{StaticResource CardExpander}" Header="{Binding Translation[advanced], FallbackValue=Advanced}">
+                                                                                    <StackPanel Margin="14,12,14,4">
+                                                                                    <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[actorteam], FallbackValue=Team}"/>
+                                                                                    <ComboBox x:Name="ddobjteam" IsEnabled="False" SelectionChanged="ddobjteam_SelectionChanged" Height="30" Margin="0,0,0,10">
+                                                                                        <ComboBoxItem Content="1" Selector.IsSelected="True"/>
+                                                                                        <ComboBoxItem Content="2"/>
+                                                                                        <ComboBoxItem Content="3"/>
+                                                                                        <ComboBoxItem Content="4"/>
+                                                                                    </ComboBox>
+                                                                                    <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[rule], FallbackValue=Rule}"/>
+                                                                                    <TextBox x:Name="tbobjrule" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbobjrule_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                                    <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[priority], FallbackValue=Priority}"/>
+                                                                                    <TextBox x:Name="tbobjpriority" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbobjpriority_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                                    <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[jtop], FallbackValue=Jump To Objective(Pass)}"/>
+                                                                                    <TextBox x:Name="tbobjjtop" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbobjjtop_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                                    <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[jtof], FallbackValue=Jump To Objective(Fail)}"/>
+                                                                                    <TextBox x:Name="tbobjjtof" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbobjjtof_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                                    <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[team], FallbackValue=team}"/>
+                                                                                    <TextBox x:Name="tbobjteam" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbobjteam_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                                    <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[spwn], FallbackValue=spwn}"/>
+                                                                                    <TextBox x:Name="tbobjspwn" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbobjspwn_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                                    <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[objct], FallbackValue=objct}"/>
+                                                                                    <TextBox x:Name="tbobjobjct" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbobjobjct_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                                    <Rectangle Height="1" Fill="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="0,4,0,12"/>
+                                                                                    <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[objbits], FallbackValue=bits}"/>
+                                                                                    <TextBox x:Name="tbobjbits" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbobjbits_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                                    <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[objbits2], FallbackValue=bits2}"/>
+                                                                                    <TextBox x:Name="tbobjbits2" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbobjbits2_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                                    <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[objbits3], FallbackValue=bits3}"/>
+                                                                                    <TextBox x:Name="tbobjbits3" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbobjbits3_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                                    <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[objbits4], FallbackValue=bits4}"/>
+                                                                                    <TextBox x:Name="tbobjbits4" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbobjbits4_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                                    <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[objcr], FallbackValue=objcr}"/>
+                                                                                    <TextBox x:Name="tbobjobjcr" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbobjobjcr_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                                    <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[objvalu], FallbackValue=valu}"/>
+                                                                                    <TextBox x:Name="tbobjvalu" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbobjvalu_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                                    <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[objrsp], FallbackValue=rsp}"/>
+                                                                                    <TextBox x:Name="tbobjrsp" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbobjrsp_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                                    <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[objped], FallbackValue=ped}"/>
+                                                                                    <TextBox x:Name="tbobjped" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbobjped_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                                    <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[nmfail], FallbackValue=nmfail}"/>
+                                                                                    <TextBox x:Name="tbobjnmfail" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbobjnmfail_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                                    <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[nmpass], FallbackValue=nmpass}"/>
+                                                                                    <TextBox x:Name="tbobjnmpass" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbobjnmpass_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                                    <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[mgbs], FallbackValue=mgbs}"/>
+                                                                                    <TextBox x:Name="tbobjmgbs" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbobjmgbs_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                                    <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[objhlt], FallbackValue=hlt}"/>
+                                                                                    <TextBox x:Name="tbobjhlt" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbobjhlt_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                                    <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[objcont], FallbackValue=cont}"/>
+                                                                                    <TextBox x:Name="tbobjcont" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbobjcont_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                                    <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[objobint], FallbackValue=obint}"/>
+                                                                                    <TextBox x:Name="tbobjobint" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbobjobint_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                                    <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[objobb], FallbackValue=obb}"/>
+                                                                                    <TextBox x:Name="tbobjobb" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbobjobb_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                                    <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[objobbc], FallbackValue=obbc}"/>
+                                                                                    <TextBox x:Name="tbobjobbc" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbobjobbc_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                                    <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[objobbs], FallbackValue=obbs}"/>
+                                                                                    <TextBox x:Name="tbobjobbs" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbobjobbs_TextChanged" KeyDown="FormatTextForFloat" Height="30" Margin="0,0,0,10"/>
+                                                                                    </StackPanel>
+                                                                                </Expander>
+                                                                            </Border>
+                                                                        </StackPanel>
                                                                     </WrapPanel>
-
                                                                 </ScrollViewer>
-                                                            </Grid>
+                                                            </DockPanel>
 
                                                         </TabItem>
 
                                                         <TabItem x:Name="PageInnerCaptureDelivery" Header="Delivery Zomes">
 
-                                                            <Grid Background="Transparent" Grid.Column="1">
-                                                                <Grid.RowDefinitions>
-                                                                    <RowDefinition Height="0.2*" MinHeight="50" MaxHeight="60"/>
-                                                                    <RowDefinition Height="*" MinHeight="205"/>
-                                                                </Grid.RowDefinitions>
+                                                            <!-- Card layout (docs/handoff/auto_page.py): one card per old column, headings as sub titles. -->
+                                                            <DockPanel Margin="10,0">
+                                                                <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,0">
+                                                                    <DockPanel>
+                                                                        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                                                                            <TextBlock VerticalAlignment="Center" FontSize="14" Foreground="{StaticResource NavMutedBrush}" Margin="0,0,8,0" Text="{Binding Translation[actorteam], FallbackValue=Team}"/>
+                                                                            <Border Background="{DynamicResource ComboBoxBackground}" BorderBrush="{DynamicResource ComboBoxBorder}" BorderThickness="1" CornerRadius="4" Height="32" Margin="0,0,16,0">
+                                                                                <StackPanel Orientation="Horizontal">
+                                                                                    <Button Style="{StaticResource EntryStepButton}" Content="‹" Tag="{Binding ElementName=dddzteamno}" CommandParameter="-1" Click="EntryStep_Click" ToolTip="{Binding Translation[entry_prev], FallbackValue=Previous}"/>
+                                                                                    <ComboBox x:Name="dddzteamno" SelectionChanged="dddzteamno_SelectionChanged" Width="84" Height="30" BorderThickness="0">
+                                                                                        <ComboBoxItem Content="1" Selector.IsSelected="True"/>
+                                                                                        <ComboBoxItem Content="2"/>
+                                                                                        <ComboBoxItem Content="3"/>
+                                                                                        <ComboBoxItem Content="4"/>
+                                                                                    </ComboBox>
+                                                                                    <Button Style="{StaticResource EntryStepButton}" Content="›" Tag="{Binding ElementName=dddzteamno}" CommandParameter="1" Click="EntryStep_Click" ToolTip="{Binding Translation[entry_next], FallbackValue=Next}"/>
+                                                                                </StackPanel>
+                                                                            </Border>
+                                                                            <TextBlock VerticalAlignment="Center" FontSize="14" Foreground="{StaticResource NavMutedBrush}" Margin="0,0,8,0" Text="{Binding Translation[dzindex], FallbackValue=Delivery Zone Index}"/>
+                                                                            <Border Background="{DynamicResource ComboBoxBackground}" BorderBrush="{DynamicResource ComboBoxBorder}" BorderThickness="1" CornerRadius="4" Height="32" Margin="0,0,16,0">
+                                                                                <StackPanel Orientation="Horizontal">
+                                                                                    <Button Style="{StaticResource EntryStepButton}" Content="‹" Tag="{Binding ElementName=dddzno}" CommandParameter="-1" Click="EntryStep_Click" ToolTip="{Binding Translation[entry_prev], FallbackValue=Previous}"/>
+                                                                                    <ComboBox x:Name="dddzno" FontFamily="{DynamicResource Volte}" SelectionChanged="dddzno_SelectionChanged" ToolTip="{Binding Translation[dzindex], FallbackValue=Delivery Zone Index}" Width="84" Height="30" BorderThickness="0">
+                                                                                        <ComboBoxItem Content="1"/>
+                                                                                        <ComboBoxItem Content="2"/>
+                                                                                        <ComboBoxItem Content="3"/>
+                                                                                        <ComboBoxItem Content="4"/>
+                                                                                        <ComboBoxItem Content="5"/>
+                                                                                        <ComboBoxItem Content="6"/>
+                                                                                        <ComboBoxItem Content="7"/>
+                                                                                        <ComboBoxItem Content="8"/>
+                                                                                        <ComboBoxItem Content="9"/>
+                                                                                        <ComboBoxItem Content="10"/>
+                                                                                        <ComboBoxItem Content="11"/>
+                                                                                        <ComboBoxItem Content="12"/>
+                                                                                        <ComboBoxItem Content="13"/>
+                                                                                        <ComboBoxItem Content="14"/>
+                                                                                        <ComboBoxItem Content="15"/>
+                                                                                        <ComboBoxItem Content="16"/>
+                                                                                        <ComboBoxItem Content="17"/>
+                                                                                    </ComboBox>
+                                                                                    <Button Style="{StaticResource EntryStepButton}" Content="›" Tag="{Binding ElementName=dddzno}" CommandParameter="1" Click="EntryStep_Click" ToolTip="{Binding Translation[entry_next], FallbackValue=Next}"/>
+                                                                                </StackPanel>
+                                                                            </Border>
+                                                                        </StackPanel>
 
-                                                                <Grid Grid.Column="1">
-                                                                    <Grid.ColumnDefinitions>
-                                                                        <ColumnDefinition Width="*"/>
-                                                                        <ColumnDefinition Width="0.30*" MinWidth="80"/>
-                                                                        <ColumnDefinition Width="0.30*" MinWidth="125"/>
-                                                                    </Grid.ColumnDefinitions>
-                                                                    <Border Grid.Column="1" Margin="5 10" Background="Transparent">
-                                                                        <Border.Effect>
-                                                                            <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>                    
-                                                                        </Border.Effect>
-                                                                        <ComboBox x:Name="dddzteamno" HorizontalAlignment="Stretch" Tag="{Binding Translation[actorteam], FallbackValue=Team}" SelectionChanged="dddzteamno_SelectionChanged">
-                                                                            <ComboBoxItem Content="1" Selector.IsSelected="True"/>
-                                                                            <ComboBoxItem Content="2"/>
-                                                                            <ComboBoxItem Content="3"/>
-                                                                            <ComboBoxItem Content="4"/>
-                                                                        </ComboBox>
-                                                                    </Border>
-
-                                                                    <Border Grid.Column="3" Margin="5 10" Background="Transparent">
-                                                                        <Border.Effect>
-                                                                            <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>                    
-                                                                        </Border.Effect>
-                                                                        <ComboBox x:Name="dddzno" FontFamily="{DynamicResource Volte}" SelectionChanged="dddzno_SelectionChanged" ToolTip="{Binding Translation[dzindex], FallbackValue=Delivery Zone Index}" Tag="{Binding Translation[dzindex], FallbackValue=Delivery Zone Index}">
-                                                                            <ComboBoxItem Content="1"/>
-                                                                            <ComboBoxItem Content="2"/>
-                                                                            <ComboBoxItem Content="3"/>
-                                                                            <ComboBoxItem Content="4"/>
-                                                                            <ComboBoxItem Content="5"/>
-                                                                            <ComboBoxItem Content="6"/>
-                                                                            <ComboBoxItem Content="7"/>
-                                                                            <ComboBoxItem Content="8"/>
-                                                                            <ComboBoxItem Content="9"/>
-                                                                            <ComboBoxItem Content="10"/>
-                                                                            <ComboBoxItem Content="11"/>
-                                                                            <ComboBoxItem Content="12"/>
-                                                                            <ComboBoxItem Content="13"/>
-                                                                            <ComboBoxItem Content="14"/>
-                                                                            <ComboBoxItem Content="15"/>
-                                                                            <ComboBoxItem Content="16"/>
-                                                                            <ComboBoxItem Content="17"/>
-                                                                        </ComboBox>
-                                                                    </Border>
-
-                                                                </Grid>
-
-                                                                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" >
-
-                                                                    <WrapPanel Margin="10,0,0,0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Stretch" >
-
-                                                                        <Grid Width="290" Height="auto" Margin="0,0,10,0">
-                                                                            <Grid.RowDefinitions>
-                                                                                <RowDefinition Height="50"/>
-                                                                                <RowDefinition Height="*"/>
-                                                                            </Grid.RowDefinitions>
-
-                                                                            <Grid.ColumnDefinitions>
-                                                                                <ColumnDefinition Width="0.5*"/>
-                                                                                <ColumnDefinition Width="0.5*"/>
-                                                                            </Grid.ColumnDefinitions>
-
-                                                                            <!--header-->
-
-                                                                            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Text="{Binding Translation[pastart], FallbackValue=Startpoint}" FontWeight="Bold"/>
-
-                                                                            <Grid Grid.Row="1" Grid.ColumnSpan="2">
-                                                                                <Grid.RowDefinitions>
-                                                                                    <RowDefinition Height="34"/>
-                                                                                    <RowDefinition Height="34"/>
-                                                                                    <RowDefinition Height="34"/>
-                                                                                    <RowDefinition Height="50"/>
-                                                                                    <RowDefinition Height="34"/>
-                                                                                    <RowDefinition Height="34"/>
-                                                                                    <RowDefinition Height="34"/>
-                                                                                    <RowDefinition Height="34"/>
-                                                                                </Grid.RowDefinitions>
-                                                                                <Grid.ColumnDefinitions>
-                                                                                    <ColumnDefinition Width="*"/>
-                                                                                    <ColumnDefinition Width="30"/>
-                                                                                </Grid.ColumnDefinitions>
-
-                                                                                <TextBox x:Name="tbdzstartx" Grid.Row="0" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3x], FallbackValue=X-Component}" Height="30" Margin="0,0,5,0" IsEnabled="False" TextChanged="tbdzstartx_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                                                <TextBox x:Name="tbdzstarty" Grid.Row="1" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3y], FallbackValue=Y-Component}" Height="30" Margin="0,0,5,0" IsEnabled="False" TextChanged="tbdzstarty_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                                                <TextBox x:Name="tbdzstartz" Grid.Row="2" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3z], FallbackValue=Z-Component}" Height="30" Margin="0,0,5,0" IsEnabled="False" TextChanged="tbdzstartz_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                                                <Border  Grid.Column="1" Grid.RowSpan="3" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5">
-                                                                                    <Border.Effect>
-                                                                                        <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>                                
-                                                                                    </Border.Effect>
-
-                                                                                    <Button x:Name="Btndzgetstart" Style="{DynamicResource TitleBarButton}" Click="Btndzgetstart_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Translation[getcursorloc], FallbackValue=Get Cursor Location}" IsEnabled="False" >
+                                                                    </DockPanel>
+                                                                </Border>
+                                                                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                                                    <WrapPanel Orientation="Horizontal" Margin="0,12,0,12">
+                                                                        <StackPanel Width="340" Margin="0,0,12,0">
+                                                                            <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
+                                                                                <DockPanel>
+                                                                                    <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                                                                        <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[general], FallbackValue=General}"/>
+                                                                                    </Border>
+                                                                                    <StackPanel Margin="14,12,14,4">
+                                                                                    <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[pastart], FallbackValue=Startpoint}"/>
+                                                                                    <Grid Margin="0,0,0,10">
+                                                                                        <Grid.ColumnDefinitions>
+                                                                                            <ColumnDefinition Width="*"/>
+                                                                                            <ColumnDefinition Width="6"/>
+                                                                                            <ColumnDefinition Width="*"/>
+                                                                                            <ColumnDefinition Width="6"/>
+                                                                                            <ColumnDefinition Width="*"/>
+                                                                                            <ColumnDefinition Width="6"/>
+                                                                                            <ColumnDefinition Width="30"/>
+                                                                                        </Grid.ColumnDefinitions>
+                                                                                        <StackPanel Grid.Column="0">
+                                                                                            <TextBlock Style="{StaticResource FieldAxis}" Text="X"/>
+                                                                                            <TextBox x:Name="tbdzstartx" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbdzstartx_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
+                                                                                        </StackPanel>
+                                                                                        <StackPanel Grid.Column="2">
+                                                                                            <TextBlock Style="{StaticResource FieldAxis}" Text="Y"/>
+                                                                                            <TextBox x:Name="tbdzstarty" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbdzstarty_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
+                                                                                        </StackPanel>
+                                                                                        <StackPanel Grid.Column="4">
+                                                                                            <TextBlock Style="{StaticResource FieldAxis}" Text="Z"/>
+                                                                                            <TextBox x:Name="tbdzstartz" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbdzstartz_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
+                                                                                        </StackPanel>
+                                                                                    </Grid>
+                                                                                    <Button x:Name="Btndzgetstart" Click="Btndzgetstart_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Translation[getcursorloc], FallbackValue=Get Cursor Location}" IsEnabled="False"  Style="{StaticResource FormButton}" Height="32" Padding="12,0" Margin="0,0,0,10">
                                                                                         <Path x:Name="dzgetstartpath"  Data="M 12 12 L 12 0 L 6 6 Z" Stretch="Uniform" Stroke="{DynamicResource TextColor}" />
                                                                                     </Button>
-                                                                                </Border>
-
-                                                                                <TextBlock Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Text="{Binding Translation[paend], FallbackValue=Endpoint}" FontWeight="Bold"/>
-
-                                                                                <TextBox x:Name="tbdzendx" Grid.Row="4" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3x], FallbackValue=X-Component}" Height="30" Margin="0,0,5,0" IsEnabled="False" TextChanged="tbdzendx_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                                                <TextBox x:Name="tbdzendy" Grid.Row="5" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3y], FallbackValue=Y-Component}" Height="30" Margin="0,0,5,0" IsEnabled="False" TextChanged="tbdzendy_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                                                <TextBox x:Name="tbdzendz" Grid.Row="6" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3z], FallbackValue=Z-Component}" Height="30" Margin="0,0,5,0" IsEnabled="False" TextChanged="tbdzendz_TextChanged" KeyDown="FormatTextForFloat"/>
-
-                                                                                <Border  Grid.Column="1" Grid.Row="4" Grid.RowSpan="3" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5">
-                                                                                    <Border.Effect>
-                                                                                        <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>                                
-                                                                                    </Border.Effect>
-
-                                                                                    <Button x:Name="Btndzgetend" Style="{DynamicResource TitleBarButton}" Click="Btndzgetend_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Translation[getcursorloc], FallbackValue=Get Cursor Location}" IsEnabled="False" >
+                                                                                    <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[paend], FallbackValue=Endpoint}"/>
+                                                                                    <Grid Margin="0,0,0,10">
+                                                                                        <Grid.ColumnDefinitions>
+                                                                                            <ColumnDefinition Width="*"/>
+                                                                                            <ColumnDefinition Width="6"/>
+                                                                                            <ColumnDefinition Width="*"/>
+                                                                                            <ColumnDefinition Width="6"/>
+                                                                                            <ColumnDefinition Width="*"/>
+                                                                                            <ColumnDefinition Width="6"/>
+                                                                                            <ColumnDefinition Width="30"/>
+                                                                                        </Grid.ColumnDefinitions>
+                                                                                        <StackPanel Grid.Column="0">
+                                                                                            <TextBlock Style="{StaticResource FieldAxis}" Text="X"/>
+                                                                                            <TextBox x:Name="tbdzendx" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbdzendx_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
+                                                                                        </StackPanel>
+                                                                                        <StackPanel Grid.Column="2">
+                                                                                            <TextBlock Style="{StaticResource FieldAxis}" Text="Y"/>
+                                                                                            <TextBox x:Name="tbdzendy" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbdzendy_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
+                                                                                        </StackPanel>
+                                                                                        <StackPanel Grid.Column="4">
+                                                                                            <TextBlock Style="{StaticResource FieldAxis}" Text="Z"/>
+                                                                                            <TextBox x:Name="tbdzendz" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbdzendz_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
+                                                                                        </StackPanel>
+                                                                                    </Grid>
+                                                                                    <Button x:Name="Btndzgetend" Click="Btndzgetend_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Translation[getcursorloc], FallbackValue=Get Cursor Location}" IsEnabled="False"  Style="{StaticResource FormButton}" Height="32" Padding="12,0" Margin="0,0,0,10">
                                                                                         <Path x:Name="dzgetendpath"  Data="M 12 12 L 12 0 L 6 6 Z" Stretch="Uniform" Stroke="{DynamicResource TextColor}" />
                                                                                     </Button>
-                                                                                </Border>
-                                                                            </Grid>
-
-                                                                        </Grid>
-
-                                                                        <Grid Width="290" Height="auto" Margin="0,0,10,0">
-                                                                            <Grid.RowDefinitions>
-                                                                                <RowDefinition Height="50"/>
-                                                                                <RowDefinition Height="*"/>
-                                                                            </Grid.RowDefinitions>
-
-                                                                            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Text="{Binding Translation[other], FallbackValue=Other}" FontWeight="Bold"/>
-
-                                                                            <StackPanel Grid.Row="1" Orientation="Vertical" Margin="0,5,0,0">
-
-                                                                                <TextBox x:Name="tbdzwidth" IsEnabled="False" Grid.Row="1" Style="{StaticResource Watermark}" Tag="{Binding Translation[width], FallbackValue=Width}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" TextChanged="tbdzwidth_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                                                <TextBox x:Name="tbdzheight" IsEnabled="False" Grid.Row="2" Style="{StaticResource Watermark}" Tag="{Binding Translation[height], FallbackValue=Height}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" TextChanged="tbdzheight_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                                                <Border Grid.Row="5"  Background="Transparent" Margin="0,0,0,5" Height="30">
-                                                                                    <ComboBox x:Name="dddzvariation" FontFamily="{DynamicResource Volte}" SelectionChanged="dddzvariation_SelectionChanged" IsEnabled="False" ToolTip="{Binding Translation[variation], FallbackValue=Variation}" Tag="{Binding Translation[variation], FallbackValue=Variation}">
+                                                                                    </StackPanel>
+                                                                                </DockPanel>
+                                                                            </Border>
+                                                                        </StackPanel>
+                                                                        <StackPanel Width="340" Margin="0,0,12,0">
+                                                                            <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
+                                                                                <DockPanel>
+                                                                                    <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                                                                        <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[other], FallbackValue=Other}"/>
+                                                                                    </Border>
+                                                                                    <StackPanel Margin="14,12,14,4">
+                                                                                    <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[width], FallbackValue=Width}"/>
+                                                                                    <TextBox x:Name="tbdzwidth" IsEnabled="False" Style="{StaticResource Watermark}" TextChanged="tbdzwidth_TextChanged" KeyDown="FormatTextForFloat" Height="30" Margin="0,0,0,10"/>
+                                                                                    <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[height], FallbackValue=Height}"/>
+                                                                                    <TextBox x:Name="tbdzheight" IsEnabled="False" Style="{StaticResource Watermark}" TextChanged="tbdzheight_TextChanged" KeyDown="FormatTextForFloat" Height="30" Margin="0,0,0,10"/>
+                                                                                    <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[variation], FallbackValue=Variation}"/>
+                                                                                    <ComboBox x:Name="dddzvariation" FontFamily="{DynamicResource Volte}" SelectionChanged="dddzvariation_SelectionChanged" IsEnabled="False" ToolTip="{Binding Translation[variation], FallbackValue=Variation}" Height="30" Margin="0,0,0,10">
                                                                                         <ComboBoxItem Content="{Binding Translation[zonenonaxis], FallbackValue=Non Axis Aligned Box}"/>
                                                                                         <ComboBoxItem Content="{Binding Translation[sphere], FallbackValue=Sphere}"/>
                                                                                     </ComboBox>
-                                                                                </Border>
-
-                                                                            </StackPanel>
-
-                                                                        </Grid>
-
+                                                                                    </StackPanel>
+                                                                                </DockPanel>
+                                                                            </Border>
+                                                                        </StackPanel>
                                                                     </WrapPanel>
-
                                                                 </ScrollViewer>
-                                                            </Grid>
+                                                            </DockPanel>
 
                                                         </TabItem>
 
