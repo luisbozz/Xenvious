@@ -70,6 +70,7 @@ namespace Xenvious
                         () => GTA.Offsets.Editor.WORLDversion = GTA.getWorldPointer(buff).ToInt64(),
                         () => GTA.Offsets.Editor.GlobalPTRversion = globalptr,
                         () => GTA.Offsets.Editor.dev = GTA.getDEVPointer(buff).ToInt64(),
+                        () => NativePatches.Resolve(buff),
                         () => GTA.Offsets.Editor.camptr = GTA.getCAMPointer(buff).ToInt64(),
                         () => GTA.Offsets.Editor.versionptr = GTA.getVersionPointer(buff).ToInt64(),
                         () => GTA.Offsets.Editor.creator_camptr = GTA.getCreatorCamPointer(buff).ToInt64(),

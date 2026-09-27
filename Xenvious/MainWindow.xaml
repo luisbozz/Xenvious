@@ -742,6 +742,22 @@
                                                     <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[developermode], FallbackValue='Developer Mode'}"/>
                                                     <CheckBox x:Name="cb_dev" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cb_dev_Checked" Unchecked="cb_dev_Checked"/>
                                                 </Grid>
+                                                <Grid Style="{StaticResource FormRow}" Margin="0,0,8,0" ToolTip="{Binding Translation[np_camnocol_tip], FallbackValue='The creator camera passes through walls and the ground.'}">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[np_camnocol], FallbackValue='Creator camera without collision'}"/>
+                                                    <CheckBox x:Name="cbcamnocollision" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Click="NativePatch_Click"/>
+                                                </Grid>
+                                                <Grid Style="{StaticResource FormRow}" Margin="0,0,8,0" ToolTip="{Binding Translation[np_nobudget_tip], FallbackValue='The budget bar stays empty. Too many entities can make the job fail to save or load.'}">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[np_nobudget], FallbackValue='Ignore creator budget'}"/>
+                                                    <CheckBox x:Name="cbnobudget" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Click="NativePatch_Click"/>
+                                                </Grid>
                                                 <Grid Style="{StaticResource FormRow}" Margin="0,0,8,0">
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="*"/>

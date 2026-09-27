@@ -1205,6 +1205,8 @@ namespace Xenvious
             GTA.Offsets.Editor.AOB_camptr = ini.ReadString("AOB", "camptr");
             GTA.Offsets.Editor.AOB_versionptr = ini.ReadString("AOB", "versionptr");
             GTA.Offsets.Editor.AOB_creator_camptr = ini.ReadString("AOB", "creator_camptr");
+            GTA.Offsets.Editor.AOB_creator_cam_nocollision = ini.ReadString("AOB", "creator_cam_nocollision");
+            GTA.Offsets.Editor.AOB_creator_budget = ini.ReadString("AOB", "creator_budget");
             GTA.Offsets.Editor.AOB_nextcp_ptr = ini.ReadString("AOB", "nextcp_ptr");
             GTA.Offsets.Editor.AOB_img_ptr = ini.ReadString("AOB", "img_ptr");
             GTA.Offsets.Editor.AOB_session_ptr = ini.ReadString("AOB", "session_ptr");

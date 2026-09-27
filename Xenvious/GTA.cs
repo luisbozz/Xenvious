@@ -190,6 +190,7 @@ namespace Xenvious
                 GTA.Offsets.Editor.AOB_nextcp_ptr, GTA.Offsets.Editor.AOB_session_ptr, GTA.Offsets.Editor.AOB_img_ptr,
                 GTA.Offsets.Editor.AOB_cursor_ptr, GTA.Offsets.Editor.AOB_scrProgramptr, GTA.Offsets.Editor.AOB_devptr,
                 GTA.Offsets.Editor.AOB_camptr, GTA.Offsets.Editor.AOB_versionptr, GTA.Offsets.Editor.AOB_creator_camptr,
+                GTA.Offsets.Editor.AOB_creator_cam_nocollision, GTA.Offsets.Editor.AOB_creator_budget,
             };
             ulong ignored;
             return patterns.Where(p => !string.IsNullOrWhiteSpace(p)).All(p => AobCache.TryGet(p, out ignored));
@@ -1369,6 +1370,8 @@ namespace Xenvious
                 public static string AOB_camptr = "";
                 public static string AOB_versionptr = "";
                 public static string AOB_creator_camptr = "";
+                public static string AOB_creator_cam_nocollision = "";
+                public static string AOB_creator_budget = "";
                 public static string AOB_nextcp_ptr = "";
                 public static string AOB_img_ptr = "";
                 public static string AOB_session_ptr = "";
