@@ -86,18 +86,27 @@ Status as of 2026-09-26. For a new Claude session: read this file, `AGENTS.md` a
 - Entry number dropdown stays numbers only (user picked variant A).
 - Copy Jobs "missing models" check: dropped, the user does not need it.
 
+## Done in the night of 2026-09-27 (not tested in game)
+
+- Fixtures: card layout, prop under the cursor with a take button (like Advanced Placement),
+  fields explained from fm_mission_controller (hide = CREATE_MODEL_HIDE, wprad only with bit 5/6).
+- All remaining settings pages converted by `docs/handoff/auto_page.py` (page list in
+  `convert_pages.py`): Mission sub-pages, Capture, Race (general, checkpoints, allowed vehicles),
+  Survival. One card per old column, headings as sub titles, X/Y/Z rows, Advanced folded,
+  team / number selectors in a bar on top (Blips, Goto, Capture objects with add/delete).
+- Interior (IPL): interiors as cards (`Controls/IPL.xaml` restyled), raw values folded.
+- Modded Props: settings / bulk edit / advanced as cards (`modded_page.py`).
+- UFO switches for survival props; police and traffic for DM on the dashboard.
+- Research notes for DM and Survival: `docs/handoff/DM-SURVIVAL-RESEARCH.md`.
+
 ## Open todos
 
-1. Card layout for the remaining edit pages: the Mission/Capture/Race/DM/Survival sub-pages, fixtures,
-   modded, interior. Page concept has templates for Capture objects/general, Race checkpoints, Mission team settings.
-2. Dashboard: ambient sections for DM and Survival (check in the scripts which options their
-   controllers read). The overview map is shelved for now (user decision, mockup
-   https://claude.ai/artifact/C6nbeVWAam5wJZwdApWxtr).
-3. Zone type names above 7: need the DLC text labels (FMMC_ZN_TY*, MC_H_ZN_TY*), e.g. exported with OpenIV.
-   The public Mission Creator (Enhanced `public_mission_creator.c`, func_3152) offers only
-   0, 9, 12, 23, 37, 40 and 89, so the user can read those names in game.
-4. Optional: entry bar into the header row; catalog pictures for vehicles/weapons/actors (WebP).
-5. Later: Race handoff, converter and bit handling, new offsets optbs / musmustr / WSBS via ysc-global-updater.
+1. Test everything in game, page by page, and fix what the converter got wrong.
+2. DM and Survival full functions (last): needs new offsets via ysc-global-updater, see research notes.
+3. Zone type names above 7 (user reads the 7 public ones in game).
+4. Race handoff: hidden options, wrong label on cbraceoloosnc, empty handler of cb_race_nononcontact, empty Race Arena tab.
+5. Later: converter and bit handling, offsets optbs / musmustr / WSBS, UserControls per page,
+   entry bar into the header row, catalog pictures (WebP).
 6. PR for `feature/ui-redesign` once the user asks (state what was tested in game).
 
 ## Mockups (claude.ai artifacts, private to the old account)
