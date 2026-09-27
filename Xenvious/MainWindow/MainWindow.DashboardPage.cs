@@ -34,24 +34,6 @@ namespace Xenvious
                 m.memory(GTA.Offsets.Editor.dev).SetInt(cb_dev.IsChecked == true ? GTA.DevPatched : GTA.DevOriginal);
         }
 
-        private void NativePatch_Click(object sender, RoutedEventArgs e)
-        {
-            var box = (System.Windows.Controls.CheckBox)sender;
-            var patch = box == cbcamnocollision ? NativePatches.CameraNoCollision : NativePatches.NoBudget;
-            patch.Set(box.IsChecked == true);
-            box.IsChecked = patch.IsOn;
-        }
-
-        private void RefreshNativePatches()
-        {
-            foreach (var (box, patch) in new[] { (cbcamnocollision, NativePatches.CameraNoCollision), (cbnobudget, NativePatches.NoBudget) })
-            {
-                box.IsEnabled = patch.Available;
-                if (!box.IsFocused)
-                    box.IsChecked = patch.IsOn;
-            }
-        }
-
         public void IntegerPasteHandler(object sender, DataObjectPastingEventArgs e)
         {
             if (e.DataObject.GetDataPresent(typeof(string)) && sender is TextBox)

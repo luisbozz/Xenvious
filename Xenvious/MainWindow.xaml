@@ -742,22 +742,6 @@
                                                     <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[developermode], FallbackValue='Developer Mode'}"/>
                                                     <CheckBox x:Name="cb_dev" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cb_dev_Checked" Unchecked="cb_dev_Checked"/>
                                                 </Grid>
-                                                <Grid Style="{StaticResource FormRow}" Margin="0,0,8,0" ToolTip="{Binding Translation[np_camnocol_tip], FallbackValue='The creator camera passes through walls and the ground.'}">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[np_camnocol], FallbackValue='Creator camera without collision'}"/>
-                                                    <CheckBox x:Name="cbcamnocollision" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Click="NativePatch_Click"/>
-                                                </Grid>
-                                                <Grid Style="{StaticResource FormRow}" Margin="0,0,8,0" ToolTip="{Binding Translation[np_nobudget_tip], FallbackValue='The budget bar stays empty. Too many entities can make the job fail to save or load.'}">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[np_nobudget], FallbackValue='Ignore creator budget'}"/>
-                                                    <CheckBox x:Name="cbnobudget" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Click="NativePatch_Click"/>
-                                                </Grid>
                                                 <Grid Style="{StaticResource FormRow}" Margin="0,0,8,0">
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="*"/>
@@ -11968,66 +11952,42 @@
                                         </TabItem>
 
                                         <TabItem x:Name="PageInnerModScrPatches" Header="Scr Patches">
-                                            <Grid Margin="10">
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="*"/>
-                                                </Grid.RowDefinitions>
-
-                                                <StackPanel Grid.Row="0" Margin="0,0,0,8">
-                                                <StackPanel Orientation="Horizontal">
-                                                    <TextBlock x:Name="tbscrpatchesinfo" VerticalAlignment="Center"
-                                                               Foreground="{DynamicResource TextColor}"
-                                                               FontFamily="{DynamicResource Volte}" FontSize="14"/>
-                                                    <Button x:Name="BtnScrPatchesRefresh" Content="Refresh" Margin="15,0,0,0"
-                                                            Width="90" Height="26" Click="BtnScrPatchesRefresh_Click"
-                                                            Style="{DynamicResource CustomButton}"
-                                                            local:CornerRadiusSetter.CornerRadius="5"
-                                                            Foreground="{DynamicResource TextColor}"/>
+                                            <!-- Game and script patches on one page; cards are built in MainWindow.Misc.ScrPatches.cs. -->
+                                            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                                <StackPanel x:Name="patchesPage" Margin="20,12" MaxWidth="1080">
+                                                    <Border Style="{StaticResource DashCard}" Padding="14,8" Margin="0,0,0,16">
+                                                        <DockPanel>
+                                                            <Button DockPanel.Dock="Right" Style="{StaticResource FormButton}" Margin="14,0,0,0" Padding="12,0" Click="BtnPatchesApply_Click"
+                                                                    Content="{Binding Translation[patches_reload], FallbackValue='Reload'}"/>
+                                                            <Border x:Name="patchesSearchHost" DockPanel.Dock="Right"/>
+                                                            <TextBlock x:Name="patchesMeta" VerticalAlignment="Center" FontSize="13" Foreground="{DynamicResource MutedTextBrush}"/>
+                                                        </DockPanel>
+                                                    </Border>
+                                                    <DockPanel Margin="0,0,0,8">
+                                                        <TextBlock DockPanel.Dock="Right" VerticalAlignment="Bottom" FontSize="12" Foreground="{DynamicResource FaintTextBrush}"
+                                                                   Text="{Binding Translation[patches_game_hint], FallbackValue='Found when Xenvious connects; stay until switched off or GTA restarts'}"/>
+                                                        <TextBlock FontSize="15" FontWeight="Bold" Foreground="{DynamicResource TextColor}">
+                                                            <Run Text="{Binding Translation[patches_game], FallbackValue=Game, Mode=OneWay}"/><Run Text="  "/><Run x:Name="patchesExe" FontSize="12" FontWeight="Normal" FontFamily="Consolas" Foreground="{DynamicResource FaintTextBrush}"/>
+                                                        </TextBlock>
+                                                    </DockPanel>
+                                                    <UniformGrid x:Name="patchesNative" Columns="3" Margin="0,0,-10,12"/>
+                                                    <DockPanel Margin="0,4,0,8">
+                                                        <WrapPanel x:Name="scrPatchesFilter" DockPanel.Dock="Right" VerticalAlignment="Bottom"/>
+                                                        <TextBlock FontSize="15" FontWeight="Bold" Foreground="{DynamicResource TextColor}" VerticalAlignment="Center">
+                                                            <Run Text="{Binding Translation[patches_scripts], FallbackValue=Scripts, Mode=OneWay}"/><Run Text="  "/><Run x:Name="patchesScriptCount" FontSize="12" FontWeight="Normal" Foreground="{DynamicResource FaintTextBrush}"/>
+                                                        </TextBlock>
+                                                    </DockPanel>
+                                                    <StackPanel x:Name="patchesScripts"/>
+                                                    <Border x:Name="patchesDev" Style="{StaticResource DashCard}" Margin="0,4,0,0">
+                                                        <Expander Style="{StaticResource CardExpander}" IsExpanded="False">
+                                                            <Expander.Header>
+                                                                <TextBlock x:Name="patchesDevHeader" FontWeight="Bold"/>
+                                                            </Expander.Header>
+                                                            <UniformGrid x:Name="patchesDevList" Columns="2" Margin="14,12,4,4"/>
+                                                        </Expander>
+                                                    </Border>
                                                 </StackPanel>
-                                                <!-- Script filter chips, filled in LoadScrPatchesPage. -->
-                                                <WrapPanel x:Name="scrPatchesFilter" Margin="0,10,0,0"/>
-                                                </StackPanel>
-
-                                                <!-- ItemsControl, not ListView: the app's ListViewItem template ignores
-                                                     ItemTemplate and would only show ToString(). -->
-                                                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                                <ItemsControl x:Name="scrPatchesList" Background="Transparent"
-                                                              Foreground="{DynamicResource TextColor}">
-                                                    <ItemsControl.ItemTemplate>
-                                                        <DataTemplate>
-                                                            <Border CornerRadius="5" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Padding="14,12" Margin="0,0,8,8" MaxWidth="760" HorizontalAlignment="Left">
-                                                                <Border.Effect><DropShadowEffect BlurRadius="5" ShadowDepth="2" Opacity="0.6" Color="{DynamicResource ShadowColor}"/></Border.Effect>
-                                                                <Grid>
-                                                                    <Grid.ColumnDefinitions>
-                                                                        <ColumnDefinition Width="36"/>
-                                                                        <ColumnDefinition Width="*"/>
-                                                                    </Grid.ColumnDefinitions>
-                                                                    <CheckBox VerticalAlignment="Top" Margin="0,2,0,0" IsChecked="{Binding Enabled, Mode=TwoWay}"/>
-                                                                    <StackPanel Grid.Column="1">
-                                                                        <TextBlock Foreground="{DynamicResource TextColor}" FontSize="15" FontWeight="Bold" TextWrapping="Wrap" Text="{Binding Name}"/>
-                                                                        <TextBlock Foreground="{DynamicResource MutedTextBrush}" FontSize="12" Margin="0,3,0,0" TextWrapping="Wrap" Text="{Binding Description}"
-                                                                                   Visibility="{Binding HasDescription, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                                                                        <ItemsControl ItemsSource="{Binding Tags}" Margin="0,8,0,0">
-                                                                            <ItemsControl.ItemsPanel>
-                                                                                <ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate>
-                                                                            </ItemsControl.ItemsPanel>
-                                                                            <ItemsControl.ItemTemplate>
-                                                                                <DataTemplate>
-                                                                                    <Border CornerRadius="9" Background="{DynamicResource HoverBackgroundBrush}" Padding="8,2" Margin="0,0,6,4">
-                                                                                        <TextBlock Text="{Binding}" FontSize="11" Foreground="{DynamicResource HighlightBrush}"/>
-                                                                                    </Border>
-                                                                                </DataTemplate>
-                                                                            </ItemsControl.ItemTemplate>
-                                                                        </ItemsControl>
-                                                                    </StackPanel>
-                                                                </Grid>
-                                                            </Border>
-                                                        </DataTemplate>
-                                                    </ItemsControl.ItemTemplate>
-                                                </ItemsControl>
-                                                </ScrollViewer>
-                                            </Grid>
+                                            </ScrollViewer>
                                         </TabItem>
 
                     <TabItem x:Name="PageMenuSwitcher" Header="Menu Switcher">

@@ -108,7 +108,6 @@ namespace Xenvious
                                 //Functions.Read.checkbinary(21, GTA.Offsets.Editor.menubs2, cbprogtod);
 
                                 if (!cb_dev.IsFocused) cb_dev.IsChecked = m.memory(GTA.Offsets.Editor.dev).Get<int>() == GTA.DevPatched;
-                                RefreshNativePatches();
 
 
                                 if (!tbjobtype.IsFocused) tbjobtype.Text = new Global(GTA.Offsets.Editor.type).Get<int>().ToString();
@@ -911,7 +910,6 @@ namespace Xenvious
                             Lblonlineversion.Text = GTA.getOnlineVersion();
                             Lblbuildversion.Text = GTA.getBuildVersion();
                             if (!cb_dev.IsFocused) cb_dev.IsChecked = m.memory(GTA.Offsets.Editor.dev).Get<int>() == GTA.DevPatched ? true : false;
-                            RefreshNativePatches();
                             tbjobid.Text = new Global(GTA.Offsets.Editor.jobid).GetString();
                         }
                         else if (MainPages.SelectedItem == PageEdit)
