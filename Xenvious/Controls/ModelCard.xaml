@@ -89,7 +89,8 @@
                     </Button>
                     <StackPanel VerticalAlignment="Center">
                         <TextBlock x:Name="NameText" FontSize="15" FontWeight="Bold" Foreground="{DynamicResource TextColor}" TextTrimming="CharacterEllipsis"/>
-                        <TextBlock x:Name="DetailText" FontSize="11" FontFamily="Consolas" Foreground="#FFA3A6AA" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
+                        <!-- A read-only box, so native name and hash can be selected and copied. -->
+                        <TextBox x:Name="DetailText" Style="{x:Null}" IsReadOnly="True" BorderThickness="0" Background="Transparent" Padding="0" FontSize="11" FontFamily="Consolas" Foreground="#FFA3A6AA" Margin="-2,2,0,0" Cursor="IBeam"/>
                         <TextBlock x:Name="CategoryText" FontSize="11" FontWeight="Bold" Foreground="#FF72767D" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
                     </StackPanel>
                 </DockPanel>

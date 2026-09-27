@@ -104,6 +104,8 @@ namespace Xenvious
             new Global(model + stride * index).SetInt(item.Int32);
             card.SetModel(item.Hash);
             card.RefreshChips();
+            // The creator only shows the new model after a refresh, like a pick from its own list.
+            creatorRefresh();
         }
 
         // ----- Settings: picture cache -----

@@ -10279,7 +10279,7 @@
                                                             </StackPanel>
                                                             <StackPanel>
                                                                 <Border Style="{StaticResource DashCard}">
-                                                                    <Expander Style="{StaticResource CardExpander}" Header="{Binding Translation[advanced], FallbackValue=Advanced}">
+                                                                    <Expander Style="{StaticResource CardExpander}" IsExpanded="True" Header="{Binding Translation[advanced], FallbackValue=Advanced}">
                                                                         <StackPanel Margin="14,12,14,4">
                                                                         <Grid>
                                                                             <Grid.ColumnDefinitions>
@@ -12784,11 +12784,11 @@
                                     <DockPanel>
                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
                                             <DockPanel>
-                                                <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center" FontSize="12" Foreground="{StaticResource NavMutedBrush}" Text="{Binding Translation[conv_input_tip], FallbackValue='Name, number, 0x.. or 0b..'}"/>
                                                 <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[converter], FallbackValue=Converter}"/>
                                             </DockPanel>
                                         </Border>
                                         <StackPanel Margin="14,12,4,6">
+                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[conv_native], FallbackValue='Native, name or number'}"/>
                                             <TextBox x:Name="tbconvnative" Style="{StaticResource Watermark}" Height="40" FontSize="18" Margin="0,0,10,12" TextChanged="tbconvnative_TextChanged"/>
                                             <UniformGrid Columns="3" Margin="0,0,0,10">
                                             <StackPanel Margin="0,0,10,0">
