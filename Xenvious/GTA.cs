@@ -1744,6 +1744,8 @@ namespace Xenvious
                 public static long eoet = 0;
                 public static long eoir = 0;
                 public static long eoep = 0;
+                public static long optbs = 0;
+                public static long musmustr = 0;
                 public static long trsrl = 0;
                 public static long trstf = 0;
                 public static long trcmn = 0;

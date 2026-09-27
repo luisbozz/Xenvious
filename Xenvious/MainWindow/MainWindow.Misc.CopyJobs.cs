@@ -525,7 +525,7 @@ namespace Xenvious
             tbCopyStatus.Text = text ?? "";
             if (error && !string.IsNullOrEmpty(text))
                 Log.Warn("copy job: " + text, source: "copyjob");
-            tbCopyStatus.Foreground = new SolidColorBrush(error ? Color.FromRgb(0xD9, 0x53, 0x4F) : Color.FromRgb(0xFA, 0xC8, 0x28));
+            tbCopyStatus.Foreground = ThemeBrush(error ? "BadBrush" : "HighlightBrush");
             tbCopyStatus.Visibility = string.IsNullOrEmpty(text) ? Visibility.Collapsed : Visibility.Visible;
         }
 

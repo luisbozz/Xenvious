@@ -34,7 +34,7 @@ namespace Xenvious
             TextBlock temptb = new TextBlock();
             temptb.Height = 30;
             temptb.HorizontalAlignment = HorizontalAlignment.Center;
-            temptb.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFF04646"));
+            temptb.Foreground = ThemeBrush("BadBrush");
             temptb.Text = message;
             temptb.TextWrapping = TextWrapping.Wrap;
 

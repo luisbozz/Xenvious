@@ -174,7 +174,7 @@ namespace Xenvious
 
         private void ddmissiongangtype_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (_gangTypeSync || !(ddmissiongangtype.SelectedItem is GangTypeItem item))
+            if (_gangTypeSync || _gangSearch == null || _gangSearch.Syncing || !(ddmissiongangtype.SelectedItem is SearchItem item))
                 return;
             if (m.IsProcOpen && ddmissiongangno.SelectedIndex > -1 && ddmissiongangteamno.SelectedIndex > -1)
                 new Global(GTA.Offsets.Editor.gbtp + ddmissiongangno.SelectedIndex + ddmissiongangteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT).SetInt(item.Id);
@@ -186,12 +186,7 @@ namespace Xenvious
         private bool _gangTypeSync;
         private string _gangTypeLang;
 
-        public sealed class GangTypeItem
-        {
-            public int Id { get; set; }
-            public string Text { get; set; }
-            public override string ToString() => Text;
-        }
+        private SearchableCombo _gangSearch;
 
         private static string GangTypeText(GangTypes.GangType t, Func<string, string, string> tr)
         {
@@ -199,31 +194,19 @@ namespace Xenvious
             return t.Vehicle == null ? $"{t.Id}  {faction}" : $"{t.Id}  {faction} · {t.Vehicle}";
         }
 
-        // Flat list with disabled headers, the same as the zone types (a grouped view shows no items
-        // in the window's ComboBox template). Built again only when the language changed.
+        // Grouped list with a search box, the same as the zone types. Built again only when the
+        // language changed.
         private void FillGangTypes()
         {
             string lang = TranslateOr("gt_f_none", "");
-            if (ddmissiongangtype.ItemsSource != null && lang == _gangTypeLang)
+            if (_gangSearch != null && lang == _gangTypeLang)
                 return;
             _gangTypeLang = lang;
+            if (_gangSearch == null)
+                _gangSearch = new SearchableCombo(ddmissiongangtype, tbgangtypesearch);
             _gangTypeSync = true;
-            var items = new List<object>();
-            foreach (var group in GangTypes.All.GroupBy(t => t.Group).OrderBy(g => Array.IndexOf(GangTypes.Groups, g.Key)))
-            {
-                if (group.Key != "none")
-                    items.Add(new ComboBoxItem
-                    {
-                        Content = TranslateOr("gt_grp_" + group.Key, group.Key),
-                        IsEnabled = false,
-                        FontSize = 11,
-                        FontWeight = FontWeights.Bold,
-                        Foreground = (Brush)FindResource("NavMutedBrush"),
-                        Margin = new Thickness(0, 8, 0, 0),
-                    });
-                items.AddRange(group.OrderBy(t => t.Id).Select(t => new GangTypeItem { Id = t.Id, Text = GangTypeText(t, TranslateOr) }));
-            }
-            ddmissiongangtype.ItemsSource = items;
+            _gangSearch.SetItems(GangTypes.All.Select(t => new SearchItem { Id = t.Id, Text = GangTypeText(t, TranslateOr), Group = t.Group }),
+                GangTypes.Groups, g => g == "none" ? "" : TranslateOr("gt_grp_" + g, g));
             _gangTypeSync = false;
         }
 
@@ -233,10 +216,9 @@ namespace Xenvious
         {
             FillGangTypes();
             var type = GangTypes.Find(id);
-            _gangTypeSync = true;
-            ddmissiongangtype.SelectedItem = ddmissiongangtype.ItemsSource.OfType<GangTypeItem>().FirstOrDefault(i => i.Id == id);
-            _gangTypeSync = false;
+            _gangSearch.Select(id);
 
+            ShowGangDetails(id, type);
             if (type == null)
                 lblgangtypeinfo.Text = string.Format(TranslateOr("gt_unknown", "Type {0} is not a gang chase type."), id);
             else if (type.Group == "none")
@@ -245,6 +227,43 @@ namespace Xenvious
                 lblgangtypeinfo.Text = TranslateOr("gt_custom_info", "Uses a gang chase unit the job sets up itself (vehicle, peds and weapon come from there).");
             else
                 lblgangtypeinfo.Text = string.Format(TranslateOr("gt_info", "{0} with {1} peds ({2}), weapon: {3}."), type.Vehicle, type.Peds, type.Ped, type.Weapon);
+        }
+
+        // Name, the game's label, weapon, random weapons, vehicle, ped model and count, like the
+        // first versions showed them. The label and the random weapon list come from Gangtypes.json.
+        private void ShowGangDetails(int id, GangTypes.GangType type)
+        {
+            GangDetails.Children.Clear();
+            GangDetails.RowDefinitions.Clear();
+            GangDetails.ColumnDefinitions.Clear();
+            if (type == null || type.Vehicle == null)
+                return;
+            var json = GTA.Editor.GangTypes.FirstOrDefault(g => g.Value == id);
+            var rows = new (string Key, string Fallback, string Value)[]
+            {
+                ("gt_d_name", "Name", TranslateOr("gt_f_" + type.Faction, type.Faction)),
+                ("gt_d_label", "Game name", json?.InfoName),
+                ("gt_d_weapon", "Weapon", type.Weapon),
+                ("gt_d_random", "Random weapons", json?.RandonizedWeapons?.Replace("weapon_", "").Replace(",", ", ")),
+                ("gt_d_vehicle", "Vehicle", type.Vehicle),
+                ("gt_d_ped", "Enemy", type.Ped),
+                ("gt_d_count", "Enemies per vehicle", type.Peds.ToString(System.Globalization.CultureInfo.CurrentCulture)),
+            };
+            GangDetails.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(140) });
+            GangDetails.ColumnDefinitions.Add(new ColumnDefinition());
+            int r = 0;
+            foreach (var row in rows.Where(x => !string.IsNullOrEmpty(x.Value)))
+            {
+                GangDetails.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+                var key = new TextBlock { Text = TranslateOr(row.Key, row.Fallback), FontSize = 12.5, Margin = new Thickness(0, 2, 8, 2) };
+                key.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
+                var value = new TextBox { Text = row.Value, Style = null, IsReadOnly = true, BorderThickness = new Thickness(0), Background = Brushes.Transparent, FontSize = 12.5, Margin = new Thickness(-2, 2, 0, 2), TextWrapping = TextWrapping.Wrap };
+                value.SetResourceReference(TextBox.ForegroundProperty, "TextColor");
+                Grid.SetRow(key, r); Grid.SetRow(value, r); Grid.SetColumn(value, 1);
+                GangDetails.Children.Add(key);
+                GangDetails.Children.Add(value);
+                r++;
+            }
         }
 
         private void cbmissiongangnewrule_Checked(object sender, RoutedEventArgs e)

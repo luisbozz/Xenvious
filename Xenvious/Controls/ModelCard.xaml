@@ -11,8 +11,8 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
-                        <Border x:Name="b" Background="#FF232529" CornerRadius="11" Padding="9,3">
-                            <TextBlock x:Name="t" Text="{TemplateBinding Content}" FontSize="12" Foreground="#FFA3A6AA" TextTrimming="CharacterEllipsis" MaxWidth="170"/>
+                        <Border x:Name="b" Background="{DynamicResource DeepBrush}" CornerRadius="11" Padding="9,3">
+                            <TextBlock x:Name="t" Text="{TemplateBinding Content}" FontSize="12" Foreground="{DynamicResource MutedTextBrush}" TextTrimming="CharacterEllipsis" MaxWidth="170"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
@@ -30,7 +30,7 @@
             <Border DockPanel.Dock="Top" Background="{DynamicResource SeactionHeaderBackgroundBrush}" CornerRadius="6,6,0,0" Padding="12,8">
                 <DockPanel>
                     <!-- Lighter than the header bar, with a pencil and a verb, so it reads as the way to change the model. -->
-                    <Button x:Name="CatalogButton" DockPanel.Dock="Right" Style="{StaticResource FormButton}" Background="#FF40444B" Height="28" Padding="10,0" Click="CatalogButton_Click">
+                    <Button x:Name="CatalogButton" DockPanel.Dock="Right" Style="{StaticResource FormButton}" Background="{DynamicResource ButtonHoverBackgroundBrush}" Height="28" Padding="10,0" Click="CatalogButton_Click">
                         <StackPanel Orientation="Horizontal">
                             <Path Data="M9,2 L12,5 L5,12 L2,12 L2,9 Z" Stroke="{DynamicResource TextColor}" StrokeThickness="1.6" StrokeLineJoin="Round"
                                   Width="14" Height="14" VerticalAlignment="Center" Margin="0,0,6,0"/>
@@ -44,20 +44,20 @@
 
             <!-- Shown instead of the model while the creator has no entry of this kind or none is selected. -->
             <StackPanel x:Name="EmptyPanel" DockPanel.Dock="Top" Margin="16,22" Visibility="Collapsed">
-                <Border Width="40" Height="40" CornerRadius="20" Background="#FF232529" HorizontalAlignment="Center" Margin="0,0,0,10">
-                    <Path Data="M12,2 L22,7 L22,17 L12,22 L2,17 L2,7 Z M2,7 L12,12 L22,7 M12,12 L12,22" Stroke="#FF72767D" StrokeThickness="1.6"
+                <Border Width="40" Height="40" CornerRadius="20" Background="{DynamicResource DeepBrush}" HorizontalAlignment="Center" Margin="0,0,0,10">
+                    <Path Data="M12,2 L22,7 L22,17 L12,22 L2,17 L2,7 Z M2,7 L12,12 L22,7 M12,12 L12,22" Stroke="{DynamicResource FaintTextBrush}" StrokeThickness="1.6"
                           StrokeLineJoin="Round" Stretch="Uniform" Width="18" Height="18"/>
                 </Border>
                 <StackPanel x:Name="NothingPlaced">
                     <TextBlock FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource TextColor}" TextAlignment="Center" TextWrapping="Wrap"
                                Text="{Binding Translation[card_noplaced], FallbackValue='Nothing placed yet'}"/>
-                    <TextBlock FontSize="12" Foreground="#FFA3A6AA" TextAlignment="Center" TextWrapping="Wrap" Margin="0,4,0,0"
+                    <TextBlock FontSize="12" Foreground="{DynamicResource MutedTextBrush}" TextAlignment="Center" TextWrapping="Wrap" Margin="0,4,0,0"
                                Text="{Binding Translation[card_noplaced_hint], FallbackValue='Place one in the creator first, then change its model here.'}"/>
                 </StackPanel>
                 <StackPanel x:Name="NothingSelected">
                     <TextBlock FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource TextColor}" TextAlignment="Center" TextWrapping="Wrap"
                                Text="{Binding Translation[card_noselect], FallbackValue='No entry selected'}"/>
-                    <TextBlock FontSize="12" Foreground="#FFA3A6AA" TextAlignment="Center" TextWrapping="Wrap" Margin="0,4,0,0"
+                    <TextBlock FontSize="12" Foreground="{DynamicResource MutedTextBrush}" TextAlignment="Center" TextWrapping="Wrap" Margin="0,4,0,0"
                                Text="{Binding Translation[card_noselect_hint], FallbackValue='Select a number above to see and change its model.'}"/>
                 </StackPanel>
             </StackPanel>
@@ -65,12 +65,12 @@
             <StackPanel x:Name="ContentPanel" Margin="12,10">
                 <DockPanel>
                     <!-- The picture opens the catalog too; hovering it says so. -->
-                    <Button Width="72" Height="54" Margin="0,0,10,0" Cursor="Hand" FocusVisualStyle="{x:Null}" Click="CatalogButton_Click"
+                    <Button Width="150" Height="112" Margin="0,0,12,0" VerticalAlignment="Top" Cursor="Hand" FocusVisualStyle="{x:Null}" Click="CatalogButton_Click"
                             ToolTip="{Binding Translation[catalog_change], FallbackValue='Change model'}">
                         <Button.Template>
                             <ControlTemplate TargetType="{x:Type Button}">
                                 <Grid>
-                                    <Border CornerRadius="4" Background="#FF1B1D20" ClipToBounds="True">
+                                    <Border CornerRadius="4" Background="{DynamicResource DeepBrush}" ClipToBounds="True">
                                         <ContentPresenter/>
                                     </Border>
                                     <Border x:Name="overlay" CornerRadius="4" Background="#8C000000" Opacity="0">
@@ -87,19 +87,19 @@
                         </Button.Template>
                         <Image x:Name="Thumb" Stretch="UniformToFill"/>
                     </Button>
-                    <StackPanel VerticalAlignment="Center">
-                        <TextBlock x:Name="NameText" FontSize="15" FontWeight="Bold" Foreground="{DynamicResource TextColor}" TextTrimming="CharacterEllipsis"/>
+                    <StackPanel VerticalAlignment="Top">
+                        <TextBlock x:Name="NameText" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource TextColor}" TextWrapping="Wrap" MaxHeight="44" TextTrimming="CharacterEllipsis"/>
                         <!-- A read-only box, so native name and hash can be selected and copied. -->
-                        <TextBox x:Name="DetailText" Style="{x:Null}" IsReadOnly="True" BorderThickness="0" Background="Transparent" Padding="0" FontSize="11" FontFamily="Consolas" Foreground="#FFA3A6AA" Margin="-2,2,0,0" Cursor="IBeam"/>
-                        <TextBlock x:Name="CategoryText" FontSize="11" FontWeight="Bold" Foreground="#FF72767D" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
+                        <TextBox x:Name="DetailText" Style="{x:Null}" IsReadOnly="True" TextWrapping="Wrap" BorderThickness="0" Background="Transparent" Padding="0" FontSize="11" FontFamily="Consolas" Foreground="{DynamicResource MutedTextBrush}" Margin="-2,2,0,0" Cursor="IBeam"/>
+                        <TextBlock x:Name="CategoryText" FontSize="11.5" FontWeight="Bold" Foreground="{DynamicResource FaintTextBrush}" TextWrapping="Wrap" Margin="0,4,0,0"/>
                     </StackPanel>
                 </DockPanel>
 
-                <TextBlock x:Name="RecentLabel" FontSize="11" FontWeight="Bold" Foreground="#FF72767D" Margin="0,14,0,6"
+                <TextBlock x:Name="RecentLabel" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource FaintTextBrush}" Margin="0,14,0,6"
                            Text="{Binding Translation[catalog_recent], FallbackValue='Recently used'}"/>
                 <WrapPanel x:Name="RecentChips"/>
 
-                <TextBlock x:Name="FavoriteLabel" FontSize="11" FontWeight="Bold" Foreground="#FF72767D" Margin="0,10,0,6"
+                <TextBlock x:Name="FavoriteLabel" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource FaintTextBrush}" Margin="0,10,0,6"
                            Text="{Binding Translation[catalog_favorites], FallbackValue=Favourites}"/>
                 <WrapPanel x:Name="FavoriteChips"/>
             </StackPanel>

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -51,7 +51,7 @@ namespace Xenvious
 
         public JobMap()
         {
-            Background = new SolidColorBrush(Color.FromRgb(0x1B, 0x1D, 0x20));
+            Background = MainWindow.ThemeBrush("DeepBrush");
             CornerRadius = new CornerRadius(4);
             ClipToBounds = true;
             _surface.Children.Add(_image);

@@ -33,6 +33,19 @@
             <SolidColorBrush x:Key="ComboBoxArrow" Color="White" />
             <SolidColorBrush x:Key="TextColor" Color="White" />
             <SolidColorBrush x:Key="TextBoxForegroundThemeBrush" Color="#FFFFFFFF" />
+            <!-- Further theme tokens (Helper Classes/Themes.cs sets them per theme); dark values here. -->
+            <SolidColorBrush x:Key="CheckBoxBackground" Color="#36393F" />
+            <SolidColorBrush x:Key="DeepBrush" Color="#232529" />
+            <SolidColorBrush x:Key="LineBrush" Color="#3A3D43" />
+            <SolidColorBrush x:Key="MutedTextBrush" Color="#A3A6AA" />
+            <SolidColorBrush x:Key="FaintTextBrush" Color="#72767D" />
+            <SolidColorBrush x:Key="HighlightBrush" Color="#FAC828" />
+            <SolidColorBrush x:Key="HighlightForeground" Color="#202225" />
+            <SolidColorBrush x:Key="SelectedTileBrush" Color="#4F545C" />
+            <SolidColorBrush x:Key="OkBrush" Color="#43B581" />
+            <SolidColorBrush x:Key="WarnBrush" Color="#FAA61A" />
+            <SolidColorBrush x:Key="BadBrush" Color="#F04747" />
+            <SolidColorBrush x:Key="AccentBrush" Color="#5B9BE6" />
             <Color x:Key="ShadowColor" R="0" B="0" G="0"/>
             <FontFamily x:Key="Nunito">/Fonts/Nunito/#Nunito</FontFamily>
             <FontFamily x:Key="Volte">/Fonts/Volte Rounded/#Volte Rounded</FontFamily>

@@ -54,7 +54,8 @@ namespace Xenvious
             _hash = hash;
             var item = Items?.Invoke()?.FirstOrDefault(i => i.Hash == hash);
             NameText.Text = item?.Name ?? (hash == 0 ? "–" : hash.ToString(CultureInfo.InvariantCulture));
-            DetailText.Text = item?.Detail ?? "0x" + hash.ToString("X8", CultureInfo.InvariantCulture);
+            // Native and hash on their own lines beside the big picture.
+            DetailText.Text = (item?.Detail ?? "0x" + hash.ToString("X8", CultureInfo.InvariantCulture)).Replace(" · ", "\n");
             CategoryText.Text = item?.Category ?? "";
             Thumb.Source = item?.Thumb;
             if (item != null)

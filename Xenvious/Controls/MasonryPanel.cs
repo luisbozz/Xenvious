@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Xenvious
 {
@@ -33,6 +34,18 @@ namespace Xenvious
         }
 
         private readonly List<Rect> _slots = new List<Rect>();
+        private double[] _columnBottoms = new double[0];
+        private double _columnWidth;
+        private double _fillTo;
+
+        // Height the columns are filled to: the visible part of the surrounding scroll viewer.
+        private double ViewportHeight()
+        {
+            for (DependencyObject p = VisualTreeHelper.GetParent(this); p != null; p = VisualTreeHelper.GetParent(p))
+                if (p is ScrollViewer viewer)
+                    return viewer.ViewportHeight - Margin.Top - Margin.Bottom;
+            return 0;
+        }
 
         protected override Size MeasureOverride(Size available)
         {
@@ -63,6 +76,11 @@ namespace Xenvious
             double height = 0;
             foreach (double h in heights)
                 height = Math.Max(height, h);
+            // Empty space below a short column is filled with an empty card down to the bottom of
+            // the page, so the columns read as columns (OnRender).
+            _columnBottoms = heights;
+            _columnWidth = columnWidth;
+            _fillTo = Math.Max(height, ViewportHeight());
             return new Size(width, height);
         }
 
@@ -73,7 +91,23 @@ namespace Xenvious
                 var slot = i < _slots.Count ? _slots[i] : Rect.Empty;
                 InternalChildren[i].Arrange(slot.IsEmpty ? new Rect(0, 0, 0, 0) : slot);
             }
+            InvalidateVisual();
             return finalSize;
+        }
+
+        protected override void OnRender(DrawingContext dc)
+        {
+            base.OnRender(dc);
+            if (!(TryFindResource("SectionBackgroundBrush") is Brush fill))
+                return;
+            double spacing = Spacing;
+            for (int c = 0; c < _columnBottoms.Length; c++)
+            {
+                double top = _columnBottoms[c];   // already includes the last card's bottom margin
+                if (_fillTo - top < 40)
+                    continue;
+                dc.DrawRoundedRectangle(fill, null, new Rect(c * (_columnWidth + spacing), top, _columnWidth, _fillTo - top), 5, 5);
+            }
         }
     }
 }

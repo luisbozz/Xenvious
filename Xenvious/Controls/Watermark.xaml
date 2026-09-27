@@ -56,10 +56,10 @@
                             <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ComboBoxBorder}"/>
                         </Trigger>
                         <Trigger Property="IsFocused" Value="true">
-                            <Setter TargetName="Border" Property="BorderBrush" Value="#FF4F545C"/>
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource SelectedTileBrush}"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="true">
-                            <Setter TargetName="Border" Property="BorderBrush" Value="#FF4F545C" />
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource SelectedTileBrush}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

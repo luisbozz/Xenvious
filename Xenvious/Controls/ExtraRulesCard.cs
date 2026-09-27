@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
@@ -23,7 +23,7 @@ namespace Xenvious
         private readonly StackPanel _list = new StackPanel();
         private readonly TextBox _newNumber = new TextBox { Height = 30, Text = "1" };
         private readonly ComboBox _newType = new ComboBox { Height = 30, Margin = new Thickness(6, 0, 6, 0) };
-        private readonly TextBlock _error = new TextBlock { FontSize = 12, Foreground = new SolidColorBrush(Color.FromRgb(0xFA, 0xA6, 0x1A)), TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 6, 0, 0) };
+        private readonly TextBlock _error = new TextBlock { FontSize = 12, Foreground = MainWindow.ThemeBrush("WarnBrush"), TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 6, 0, 0) };
 
         /// <summary>Opens the explanation (the extra objectives overview).</summary>
         public event EventHandler HelpRequested;
@@ -144,7 +144,7 @@ namespace Xenvious
         private static UIElement Warning(string text) => new TextBlock
         {
             Text = text, FontSize = 12, TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, -2, 0, 6),
-            Foreground = new SolidColorBrush(Color.FromRgb(0xFA, 0xA6, 0x1A)),
+            Foreground = MainWindow.ThemeBrush("WarnBrush"),
         };
 
         private UIElement RuleRow(int slot, ExtraObjectives.Rule rule)

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -207,11 +207,12 @@ namespace Xenvious
             var label = new StackPanel { Orientation = Orientation.Horizontal };
             if (count.Dot != null)
                 label.Children.Add(new Ellipse { Width = 8, Height = 8, Fill = count.Dot, Margin = new Thickness(0, 0, 5, 0), VerticalAlignment = VerticalAlignment.Center });
-            label.Children.Add(new TextBlock { Text = count.Label, FontSize = 12, FontWeight = FontWeights.Bold, Foreground = (Brush)FindResource("NavMutedBrush") });
+            var labelText = new TextBlock { Text = count.Label, FontSize = 12, FontWeight = FontWeights.Bold };
+            labelText.SetResourceReference(TextBlock.ForegroundProperty, "NavMutedBrush");
+            label.Children.Add(labelText);
 
             var tile = new Border
             {
-                Background = (Brush)FindResource("SeactionHeaderBackgroundBrush"),
                 CornerRadius = new CornerRadius(4),
                 Padding = new Thickness(10, 7, 10, 7),
                 Margin = new Thickness(0, 0, 8, 8),
@@ -219,8 +220,11 @@ namespace Xenvious
                 Cursor = Cursors.Hand,
                 Child = new StackPanel { Children = { count.Value, label } }
             };
-            tile.MouseEnter += (_, __) => tile.Background = (Brush)FindResource("ButtonHoverBackgroundBrush");
-            tile.MouseLeave += (_, __) => tile.Background = (Brush)FindResource("SeactionHeaderBackgroundBrush");
+            // Resource references instead of brushes taken once, so a theme change repaints the
+            // tiles right away (not only on the next hover).
+            tile.SetResourceReference(Border.BackgroundProperty, "SeactionHeaderBackgroundBrush");
+            tile.MouseEnter += (_, __) => tile.SetResourceReference(Border.BackgroundProperty, "ButtonHoverBackgroundBrush");
+            tile.MouseLeave += (_, __) => tile.SetResourceReference(Border.BackgroundProperty, "SeactionHeaderBackgroundBrush");
             tile.MouseLeftButtonUp += (_, __) => count.Open?.Invoke();
             return tile;
         }

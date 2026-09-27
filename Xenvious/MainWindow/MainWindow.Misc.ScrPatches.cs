@@ -95,7 +95,6 @@ namespace Xenvious
         private Border ScrPatchFilterChip(string label, string script)
         {
             bool selected = _scrPatchScript == script;
-            var yellow = Color.FromRgb(0xFA, 0xC8, 0x28);
             // No outline: a 1 px border on a rounded chip renders blurry at non-100 % scaling.
             var chip = new Border
             {
@@ -105,13 +104,13 @@ namespace Xenvious
                 Cursor = Cursors.Hand,
                 UseLayoutRounding = true,
                 SnapsToDevicePixels = true,
-                Background = new SolidColorBrush(selected ? yellow : Color.FromRgb(0x2B, 0x2D, 0x31)),
+                Background = ThemeBrush(selected ? "HighlightBrush" : "HoverBackgroundBrush"),
                 Child = new TextBlock
                 {
                     Text = label,
                     FontSize = 12,
                     FontWeight = selected ? FontWeights.Bold : FontWeights.Normal,
-                    Foreground = new SolidColorBrush(selected ? Color.FromRgb(0x20, 0x22, 0x25) : yellow)
+                    Foreground = ThemeBrush(selected ? "HighlightForeground" : "HighlightBrush")
                 }
             };
             chip.MouseLeftButtonUp += (_, __) =>

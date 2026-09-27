@@ -980,7 +980,7 @@ namespace Xenvious
             TextBlock tb1 = new TextBlock();
             tb1.Height = 20;
             tb1.HorizontalAlignment = HorizontalAlignment.Center;
-            tb1.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFF04646"));
+            tb1.Foreground = ThemeBrush("BadBrush");
             tb1.Text = "";
             var dp = DependencyPropertyDescriptor.FromProperty(
              TextBlock.TextProperty,

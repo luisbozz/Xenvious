@@ -328,18 +328,8 @@ namespace Xenvious
             }
 
             Log.Debug("Load Color", source: "init");
-            switch (ini.ReadString("Settings", "color"))
-            {
-                case "gray":
-                    ddcolor.SelectedIndex = 0;
-                    break;
-                case "white":
-                    ddcolor.SelectedIndex = 1;
-                    break;
-                default:
-                    ddcolor.SelectedIndex = 0;
-                    break;
-            }
+            ddcolor.ItemsSource = System.Linq.Enumerable.Select(Themes.All, t => TranslateOr(t.NameKey, t.Fallback));
+            ddcolor.SelectedIndex = System.Linq.Enumerable.ToList(Themes.All).IndexOf(Themes.Find(ini.ReadString("Settings", "color")));
 
             tbsettingsincrementsize.Text = incrementsize.ToString();
 

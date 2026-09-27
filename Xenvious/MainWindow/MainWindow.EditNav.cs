@@ -36,6 +36,7 @@ namespace Xenvious
             public Button Button;           // the page's own switch button, clicked for us
             public Action Open;             // instead of Button, e.g. a page of its own
             public TabItem Page;            // for Open: the page that counts as this sub-page
+            public Func<int> Count;         // entries of this sub-page in the job, shown as a badge
         }
 
         private List<EditNavEntry> _editNav;
@@ -56,6 +57,7 @@ namespace Xenvious
                 return entry;
             }
             EditNavSub Sub(Button button) => new EditNavSub { Button = button };
+            EditNavSub Counted(Button button, Func<int> count) => new EditNavSub { Button = button, Count = count };
 
             return new List<EditNavEntry>
             {
@@ -73,9 +75,10 @@ namespace Xenvious
 
                 Page("mission", "Mission", "EditIconMission", 1, "LCM", PageMission, () => BtnSectionMission_Click(null, null),
                     Sub(BtnMissionGeneral), Sub(BtnMissionTeamSettings), Sub(BtnMissionPlayerSettings), Sub(BtnMissionPA), Sub(BtnMissionRA),
-                    Sub(BtnMissionTPM), Sub(BtnMissionKill), Sub(BtnMissionGC), Sub(BtnMissionotzone), Sub(BtnMissionBlips),
-                    Sub(BtnSectionInventory), Sub(BtnSectionSMS), Sub(BtnSectionGoto),
-                    new EditNavSub { Label = TranslateOr("eo_page", "Extra objectives"), Open = OpenExtraObjectives, Page = PageMission }),
+                    Sub(BtnMissionTPM), Counted(BtnMissionKill, () => GlobalCount(GTA.Offsets.Editor.Kill.number)), Counted(BtnMissionGC, GangChaseRuleCount),
+                    Counted(BtnMissionotzone, () => GlobalCount(GTA.Offsets.Editor.otzone.number)), Counted(BtnMissionBlips, () => GlobalCount(GTA.Offsets.Editor.ddblip.number)),
+                    Sub(BtnSectionInventory), Counted(BtnSectionSMS, SmsCount), Counted(BtnSectionGoto, () => GlobalCount(GTA.Offsets.Editor.Locations.number)),
+                    new EditNavSub { Label = TranslateOr("eo_page", "Extra objectives"), Open = OpenExtraObjectives, Page = PageMission, Count = ExtraObjectives.UsedSlots }),
                 Page("jobsubtype_mission_capture", "Capture", "EditIconCapture", 1, "C", PageCapture, () => BtnSectionObj_Click(null, null),
                     Sub(BtnCaptureGeneral), Sub(BtnCaptureObjects), Sub(BtnCaptureDelivery)),
                 Page("race", "Race", "EditIconRace", 1, "R", PageRace, () => BtnSectionRace_Click(null, null),
@@ -117,11 +120,22 @@ namespace Xenvious
             return letter.Length == 0 || entry.Creators.Contains(letter);
         }
 
+        // The race creator has no mission menu, but the mission options (team, kill, gang chase ...)
+        // are job data that still works there; they are listed greyed out.
+        private bool EditNavGreyed(EditNavEntry entry)
+            => CreatorLetter(_editNavCreator ?? "") == "R" && entry.Key == "mission";
+
         /// <summary>Called once a second from the dashboard status; rebuilds when the creator changes.</summary>
         private void UpdateEditNav(string creator)
         {
             if (_editNavCreator == creator && EditNavList.Children.Count > 0)
             {
+                string counts = EditNavCountKey();
+                if (counts != _editNavCounts)
+                {
+                    _editNavCounts = counts;
+                    RenderEditNav();
+                }
                 UpdateEditScriptStatus();
                 return;
             }
@@ -179,7 +193,7 @@ namespace Xenvious
             };
             for (int group = 0; group < groups.Length; group++)
             {
-                var entries = EditNav.Where(e => e.Group == group && EditNavFits(e)).ToList();
+                var entries = EditNav.Where(e => e.Group == group && (EditNavFits(e) || EditNavGreyed(e))).ToList();
                 if (entries.Count == 0)
                     continue;
                 if (!_editNavCollapsed)
@@ -189,7 +203,13 @@ namespace Xenvious
 
                 foreach (var entry in entries)
                 {
-                    EditNavList.Children.Add(NavEntryButton(entry));
+                    var button = NavEntryButton(entry);
+                    if (!EditNavFits(entry))
+                    {
+                        button.Opacity = 0.5;
+                        button.ToolTip = TranslateOr("editnav_other_creator", "Not part of this creator's menu; the values still work.");
+                    }
+                    EditNavList.Children.Add(button);
                     if (!_editNavCollapsed && entry == _editNavEntry && entry.Subs.Count > 0)
                         EditNavList.Children.Add(NavSubList(entry));
                 }
@@ -241,13 +261,82 @@ namespace Xenvious
                     Style = (Style)FindResource("SideNavButton"),
                     FontSize = 13,
                     Padding = new Thickness(10, 5, 10, 5),
-                    Content = new TextBlock { Text = SubLabel(sub), Style = (Style)FindResource("NavLabel") },
+                    Content = SubContent(sub),
                     Tag = sub == _editNavSub ? "active" : null,
                 };
                 button.Click += (_, __) => OpenEditNav(entry, sub, rememberBack: false);
                 list.Children.Add(button);
             }
             return list;
+        }
+
+        // Label plus a green badge with how many entries the job has on that sub-page.
+        private object SubContent(EditNavSub sub)
+        {
+            var label = new TextBlock { Text = SubLabel(sub), Style = (Style)FindResource("NavLabel") };
+            int count = SafeCount(sub);
+            if (count <= 0)
+                return label;
+            var row = new DockPanel { LastChildFill = true };
+            var badge = new Border
+            {
+                CornerRadius = new CornerRadius(9), Padding = new Thickness(7, 0, 7, 1), Margin = new Thickness(8, 0, 0, 0),
+                Background = ThemeBrush("DeepBrush"), VerticalAlignment = VerticalAlignment.Center,
+                Child = new TextBlock { Text = count.ToString(CultureInfo.CurrentCulture), FontSize = 11, FontWeight = FontWeights.Bold,
+                    Foreground = ThemeBrush("OkBrush") },
+            };
+            DockPanel.SetDock(badge, Dock.Right);
+            row.Children.Add(badge);
+            row.Children.Add(label);
+            return row;
+        }
+
+        private int SafeCount(EditNavSub sub)
+        {
+            if (sub.Count == null || _editNavCreator == null || _editNavCreator.Length == 0 || m == null || !m.IsProcOpen)
+                return 0;
+            try { return sub.Count(); }
+            catch { return 0; }
+        }
+
+        // Counts of all sub-pages; the side list is drawn again when one of them changes.
+        private string EditNavCountKey()
+            => string.Join(",", EditNav.SelectMany(e => e.Subs).Select(SafeCount));
+
+        private string _editNavCounts;
+
+        private static int GlobalCount(long offset) => offset == 0 ? 0 : new Global(offset).Get<int>();
+
+        // Messages that have a text and a rule.
+        private int SmsCount()
+        {
+            if (GTA.Offsets.Editor.SMS.txt == 0 || GTA.Offsets.Editor.SMS.rule == 0)
+                return 0;
+            int count = 0;
+            for (int i = 0; i < ddsmsno.Items.Count; i++)
+            {
+                long next = GTA.Offsets.Editor.SMS.NEXT * i;
+                if (new Global(GTA.Offsets.Editor.SMS.rule + next).Get<int>() >= 0
+                    && !string.IsNullOrWhiteSpace(new Global(GTA.Offsets.Editor.SMS.txt + next).GetString()))
+                    count++;
+            }
+            return count;
+        }
+
+        // Rules of any team that have a gang chase type set.
+        private static int GangChaseRuleCount()
+        {
+            if (GTA.Offsets.Editor.gbtp == 0 || GTA.Offsets.Editor.nrl == 0)
+                return 0;
+            int count = 0;
+            for (int team = 0; team < 4; team++)
+            {
+                int rules = Math.Min(new Global(GTA.Offsets.Editor.nrl + team * GTA.Offsets.Editor.team_NEXT).Get<int>(), 30);
+                for (int rule = 0; rule < rules; rule++)
+                    if (new Global(GTA.Offsets.Editor.gbtp + rule + team * GTA.Offsets.Editor.team_NEXT).Get<int>() > 0)
+                        count++;
+            }
+            return count;
         }
 
         private static string SubLabel(EditNavSub sub)

@@ -199,46 +199,26 @@ namespace Xenvious
         private bool _zoneTypeSync;
         private string _zoneTypeLang;
 
-        // Public properties: the list groups on Group.
-        public sealed class ZoneTypeItem
-        {
-            public int Id { get; set; }
-            public string Text { get; set; }
-            public string Group { get; set; }
-            public override string ToString() => Text;
-        }
+
+        private SearchableCombo _zoneSearch;
 
         // Built again only when the language changed: replacing the source while the list opens
         // leaves the popup with the group headers but no items.
         private void FillZoneTypes()
         {
             string lang = TranslateOr("zt_name_0", "");
-            if (ddzonetype.ItemsSource != null && lang == _zoneTypeLang)
+            if (_zoneSearch != null && lang == _zoneTypeLang)
                 return;
             _zoneTypeLang = lang;
+            if (_zoneSearch == null)
+                _zoneSearch = new SearchableCombo(ddzonetype, tbzonetypesearch);
             _zoneTypeSync = true;
-            // A flat list with disabled headers: the grouped CollectionView showed only the
-            // group headers in the window's ComboBox template, never the items.
-            var items = new List<object>();
-            foreach (var group in ZoneTypes.All.GroupBy(t => t.Group).OrderBy(g => Array.IndexOf(ZoneTypes.Groups, g.Key)))
+            _zoneSearch.SetItems(ZoneTypes.All.OrderBy(t => t.Id).Select(t => new SearchItem
             {
-                items.Add(new ComboBoxItem
-                {
-                    Content = TranslateOr("zt_grp_" + group.Key, group.Key),
-                    IsEnabled = false,
-                    FontSize = 11,
-                    FontWeight = FontWeights.Bold,
-                    Foreground = (Brush)FindResource("NavMutedBrush"),
-                    Margin = new Thickness(0, items.Count == 0 ? 2 : 8, 0, 0),
-                });
-                items.AddRange(group.OrderBy(t => t.Id).Select(t => new ZoneTypeItem
-                {
-                    Id = t.Id,
-                    Text = t.Id + "  " + TranslateOr("zt_name_" + t.Id, t.Name),
-                    Group = group.Key,
-                }));
-            }
-            ddzonetype.ItemsSource = items;
+                Id = t.Id,
+                Text = t.Id + "  " + TranslateOr("zt_name_" + t.Id, t.Name),
+                Group = t.Group,
+            }), ZoneTypes.Groups, g => TranslateOr("zt_grp_" + g, g));
             _zoneTypeSync = false;
             ShowZoneType();
         }
@@ -247,7 +227,7 @@ namespace Xenvious
 
         private void ddzonetype_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (_zoneTypeSync || !(ddzonetype.SelectedItem is ZoneTypeItem item))
+            if (_zoneTypeSync || _zoneSearch == null || _zoneSearch.Syncing || !(ddzonetype.SelectedItem is SearchItem item))
                 return;
             // The number field writes the type into the zone, as if it was typed in.
             tbzonezntp.Text = item.Id.ToString(CultureInfo.InvariantCulture);
@@ -259,7 +239,7 @@ namespace Xenvious
         {
             if (ddzonetype == null || lblzonetypeinfo == null)
                 return;
-            if (ddzonetype.ItemsSource == null)
+            if (_zoneSearch == null)
             {
                 FillZoneTypes();
                 return;
@@ -268,9 +248,7 @@ namespace Xenvious
             bool known = int.TryParse(tbzonezntp.Text, NumberStyles.Integer, CultureInfo.InvariantCulture, out int id);
             var type = known ? ZoneTypes.Find(id) : null;
 
-            _zoneTypeSync = true;
-            ddzonetype.SelectedItem = ddzonetype.ItemsSource.OfType<ZoneTypeItem>().FirstOrDefault(i => type != null && i.Id == type.Id);
-            _zoneTypeSync = false;
+            _zoneSearch.Select(type?.Id ?? -1);
 
             if (type != null)
                 lblzonetypeinfo.Text = TranslateOr("zt_desc_" + type.Id, type.Description);

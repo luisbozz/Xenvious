@@ -31,6 +31,17 @@ namespace Xenvious
                 }));
         }
 
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            // Brushes loaded from XAML are frozen; replace every theme brush with an unfrozen copy
+            // before the window is built, so a theme change can recolour them in place and
+            // StaticResource users and brushes taken in code follow along.
+            foreach (string key in Themes.TokenKeys)
+                if (TryFindResource(key) is System.Windows.Media.SolidColorBrush brush)
+                    Resources[key] = new System.Windows.Media.SolidColorBrush(brush.Color);
+            base.OnStartup(e);
+        }
+
         private static void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             LogCrash("Dispatcher", e.Exception);

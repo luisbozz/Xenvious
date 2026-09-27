@@ -27,10 +27,10 @@
         </Grid>
         <ControlTemplate.Triggers>
             <Trigger Property="ToggleButton.IsMouseOver" Value="true">
-                <Setter TargetName="Border" Property="BorderBrush" Value="#FF4F545C" />
+                <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource SelectedTileBrush}" />
             </Trigger>
             <Trigger Property="ToggleButton.IsChecked" Value="true">
-                <Setter TargetName="Border" Property="BorderBrush" Value="#FF4F545C" />
+                <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource SelectedTileBrush}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="false">
                 <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ComboBoxBorder}" />

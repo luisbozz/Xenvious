@@ -29,11 +29,11 @@
 
             <!-- Top bar -->
             <DockPanel Margin="0,0,0,10">
-                <TextBlock Text="Debug Log" FontSize="16" FontWeight="SemiBold" Foreground="#E6EAF2" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                <TextBlock Text="Debug Log" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource TextColor}" DockPanel.Dock="Left" VerticalAlignment="Center"/>
                 <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="#6C7378" Width="1" Margin="15,8,15,8" />
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
                     <Label Content="{Binding Translation[logger_autoscroll], FallbackValue=Auto-Scroll}" Foreground="{DynamicResource TextColor}" VerticalAlignment="Center"/>
-                    <CheckBox x:Name="AutoScrollCheck" IsChecked="True" Content="Auto-Scroll" Foreground="#E6EAF2"/>
+                    <CheckBox x:Name="AutoScrollCheck" IsChecked="True" Content="Auto-Scroll" Foreground="{DynamicResource TextColor}"/>
                     <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="#6C7378" Width="1" Margin="15,8,15,8" />
                     <Border CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="4" VerticalAlignment="Bottom" MaxHeight="30">
                         <Border.Effect>
@@ -61,7 +61,7 @@
 
             <!-- Log list -->
             <ListBox x:Name="List" Grid.Row="2" Margin="0,10,0,0" FontFamily="Cascadia Code, Consolas, 'Segoe UI Mono'"
-                     Background="{DynamicResource SeactionHeaderBackgroundBrush}" Foreground="#E6EAF2" BorderBrush="#232637" BorderThickness="1"
+                     Background="{DynamicResource SeactionHeaderBackgroundBrush}" Foreground="{DynamicResource TextColor}" BorderBrush="{DynamicResource LineBrush}" BorderThickness="1"
                      SelectionMode="Extended" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.ScrollUnit="Pixel">
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type logging:LogEntry}">

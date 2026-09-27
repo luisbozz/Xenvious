@@ -40,7 +40,7 @@
             <Setter Property="TextWrapping" Value="Wrap"/>
         </Style>
         <Style x:Key="Muted" TargetType="TextBlock" BasedOn="{StaticResource Lbl}">
-            <Setter Property="Foreground" Value="#FFA3A6AA"/>
+            <Setter Property="Foreground" Value="{DynamicResource MutedTextBrush}"/>
             <Setter Property="FontSize" Value="12"/>
         </Style>
         <Style x:Key="Field" TargetType="TextBox" BasedOn="{StaticResource Watermark}">
@@ -50,7 +50,7 @@
 
         <!-- Main action: light fill, like the headers -->
         <Style x:Key="PrimaryBtn" TargetType="Button">
-            <Setter Property="Foreground" Value="#FF202225"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryButtonForeground}"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="Cursor" Value="Hand"/>
@@ -61,13 +61,13 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border x:Name="b" CornerRadius="5" Background="#FFE3E5E8" Padding="{TemplateBinding Padding}">
+                        <Border x:Name="b" CornerRadius="5" Background="{DynamicResource PrimaryButtonBackground}" Padding="{TemplateBinding Padding}">
                             <Border.Effect><DropShadowEffect BlurRadius="5" ShadowDepth="2" Opacity="0.6" Color="{DynamicResource ShadowColor}"/></Border.Effect>
                             <ContentPresenter x:Name="c" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="b" Property="Background" Value="#FFFFFFFF"/>
+                                <Setter TargetName="b" Property="Opacity" Value="0.85"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
                                 <Setter TargetName="c" Property="RenderTransform"><Setter.Value><TranslateTransform Y="1"/></Setter.Value></Setter>
@@ -91,13 +91,13 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border x:Name="b" CornerRadius="5" Background="#FF36393F" Padding="{TemplateBinding Padding}">
+                        <Border x:Name="b" CornerRadius="5" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Padding="{TemplateBinding Padding}">
                             <Border.Effect><DropShadowEffect BlurRadius="5" ShadowDepth="2" Opacity="0.6" Color="{DynamicResource ShadowColor}"/></Border.Effect>
                             <ContentPresenter x:Name="c" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="b" Property="Background" Value="#FF40444B"/>
+                                <Setter TargetName="b" Property="Background" Value="{DynamicResource ButtonHoverBackgroundBrush}"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
                                 <Setter TargetName="c" Property="RenderTransform"><Setter.Value><TranslateTransform Y="1"/></Setter.Value></Setter>
@@ -120,19 +120,19 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ToggleButton">
-                        <Border x:Name="b" CornerRadius="5" Background="#FF36393F" Padding="14,0,18,0">
+                        <Border x:Name="b" CornerRadius="5" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Padding="14,0,18,0">
                             <Border.Effect><DropShadowEffect BlurRadius="5" ShadowDepth="2" Opacity="0.6" Color="{DynamicResource ShadowColor}"/></Border.Effect>
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <Ellipse x:Name="dot" Width="10" Height="10" Fill="#FF72767D" Margin="0,0,8,0"/>
+                                <Ellipse x:Name="dot" Width="10" Height="10" Fill="{DynamicResource FaintTextBrush}" Margin="0,0,8,0"/>
                                 <ContentPresenter VerticalAlignment="Center"/>
                             </StackPanel>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="b" Property="Background" Value="#FF4F545C"/>
+                                <Setter TargetName="b" Property="Background" Value="{DynamicResource SelectedTileBrush}"/>
                             </Trigger>
                             <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="dot" Property="Fill" Value="#FF43B581"/>
+                                <Setter TargetName="dot" Property="Fill" Value="{DynamicResource OkBrush}"/>
                                 <Setter TargetName="b" Property="Background" Value="#FF2D4A3A"/>
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
@@ -153,12 +153,12 @@
             <Setter Property="Width" Value="8"/>
             <Setter Property="Height" Value="8"/>
             <Setter Property="Margin" Value="4,0"/>
-            <Setter Property="Fill" Value="#FF4F545C"/>
+            <Setter Property="Fill" Value="{DynamicResource SelectedTileBrush}"/>
         </Style>
         <!-- Toggle used as radio button / tile -->
         <Style x:Key="Tile" TargetType="ToggleButton">
             <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
-            <Setter Property="Background" Value="#FF36393F"/>
+            <Setter Property="Background" Value="{DynamicResource SeactionHeaderBackgroundBrush}"/>
             <Setter Property="BorderBrush" Value="Transparent"/>
             <Setter Property="Padding" Value="10,6"/>
             <Setter Property="Margin" Value="0,0,6,6"/>
@@ -176,11 +176,11 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="b" Property="Background" Value="#FF40444B"/>
+                                <Setter TargetName="b" Property="Background" Value="{DynamicResource ButtonHoverBackgroundBrush}"/>
                             </Trigger>
                             <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="b" Property="Background" Value="#FF4F545C"/>
-                                <Setter TargetName="b" Property="BorderBrush" Value="#FFE3E5E8"/>
+                                <Setter TargetName="b" Property="Background" Value="{DynamicResource SelectedTileBrush}"/>
+                                <Setter TargetName="b" Property="BorderBrush" Value="{DynamicResource PrimaryButtonBackground}"/>
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
                                 <Setter Property="Opacity" Value="0.45"/>
@@ -213,7 +213,7 @@
                 </Grid.ColumnDefinitions>
 
                 <!-- script features -->
-                <Border Grid.Column="0" CornerRadius="5" Background="#FF36393F" Padding="12,6" Margin="0,0,10,0" MaxWidth="560">
+                <Border Grid.Column="0" CornerRadius="5" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Padding="12,6" Margin="0,0,10,0" MaxWidth="560">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -224,23 +224,23 @@
                         <Ellipse Grid.Column="0" Width="12" Height="12" Margin="2,0,12,0" VerticalAlignment="Center">
                             <Ellipse.Style>
                                 <Style TargetType="Ellipse">
-                                    <Setter Property="Fill" Value="#FFD9534F"/>
+                                    <Setter Property="Fill" Value="{DynamicResource BadBrush}"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding FeatureState}" Value="Active">
-                                            <Setter Property="Fill" Value="#FF43B581"/>
+                                            <Setter Property="Fill" Value="{DynamicResource OkBrush}"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding FeatureState}" Value="Checking">
-                                            <Setter Property="Fill" Value="#FFFAA61A"/>
+                                            <Setter Property="Fill" Value="{DynamicResource WarnBrush}"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding FeatureState}" Value="Disabled">
-                                            <Setter Property="Fill" Value="#FFFAA61A"/>
+                                            <Setter Property="Fill" Value="{DynamicResource WarnBrush}"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </Ellipse.Style>
                         </Ellipse>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="0,0,14,0">
-                            <TextBlock Foreground="#FFA3A6AA" FontSize="11" Tag="{Binding DataContext.Translation[adv_features_label], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Script-Features'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                            <TextBlock Foreground="{DynamicResource MutedTextBrush}" FontSize="11" Tag="{Binding DataContext.Translation[adv_features_label], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Script-Features'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
                             <TextBlock Foreground="{DynamicResource TextColor}" FontSize="15" FontWeight="Bold" TextTrimming="CharacterEllipsis" Text="{Binding FeatureStatusText}"
                                        ToolTip="{Binding FeatureHintText}"/>
                         </StackPanel>
@@ -251,30 +251,30 @@
                 </Border>
 
                 <!-- remember -->
-                <Border Grid.Column="1" CornerRadius="5" Background="#FF36393F" Padding="12,6" Margin="0,0,10,0">
+                <Border Grid.Column="1" CornerRadius="5" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Padding="12,6" Margin="0,0,10,0">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,14,0">
-                            <TextBlock Foreground="#FFA3A6AA" FontSize="11" Tag="{Binding DataContext.Translation[adv_settings_label], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Einstellungen'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                            <TextBlock Foreground="{DynamicResource MutedTextBrush}" FontSize="11" Tag="{Binding DataContext.Translation[adv_settings_label], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Einstellungen'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
                             <TextBlock Foreground="{DynamicResource TextColor}" FontSize="15" FontWeight="Bold" Tag="{Binding DataContext.Translation[adv_remember], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Letzte Einstellungen merken'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
                         </StackPanel>
                         <CheckBox Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding RememberSettings}"/>
                     </Grid>
                 </Border>
 
-                <Border Grid.Column="2" CornerRadius="5" Background="#FF36393F" Padding="12,6" HorizontalAlignment="Right">
+                <Border Grid.Column="2" CornerRadius="5" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Padding="12,6" HorizontalAlignment="Right">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="⌖" FontSize="22" Foreground="#FFFAC828" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <TextBlock Grid.Column="0" Text="⌖" FontSize="22" Foreground="{DynamicResource HighlightBrush}" VerticalAlignment="Center" Margin="0,0,10,0"/>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="0,0,14,0">
-                            <TextBlock Foreground="#FFA3A6AA" FontSize="11" Tag="{Binding DataContext.Translation[adv_hovered], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Prop unter dem Cursor'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                            <TextBlock Foreground="{DynamicResource MutedTextBrush}" FontSize="11" Tag="{Binding DataContext.Translation[adv_hovered], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Prop unter dem Cursor'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
                             <TextBlock Foreground="{DynamicResource TextColor}" FontSize="15" FontWeight="Bold" MaxWidth="330" TextTrimming="CharacterEllipsis" Text="{Binding HoveredText}"/>
                         </StackPanel>
                         <Button Grid.Column="2" Style="{StaticResource PrimaryBtn}" Height="32" FontSize="13" Padding="16,0" Command="{Binding UseHoveredCommand}" Tag="{Binding DataContext.Translation[adv_take], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Übernehmen'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
@@ -355,13 +355,13 @@
                                                             CommandParameter="{Binding}" Cursor="Hand" HorizontalContentAlignment="Stretch">
                                                         <Button.Template>
                                                             <ControlTemplate TargetType="Button">
-                                                                <Border x:Name="b" CornerRadius="5" Background="#FF36393F" Padding="14,12">
+                                                                <Border x:Name="b" CornerRadius="5" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Padding="14,12">
                                                                     <Border.Effect><DropShadowEffect BlurRadius="5" ShadowDepth="2" Opacity="0.6" Color="{DynamicResource ShadowColor}"/></Border.Effect>
                                                                     <ContentPresenter/>
                                                                 </Border>
                                                                 <ControlTemplate.Triggers>
                                                                     <Trigger Property="IsMouseOver" Value="True">
-                                                                        <Setter TargetName="b" Property="Background" Value="#FF40444B"/>
+                                                                        <Setter TargetName="b" Property="Background" Value="{DynamicResource ButtonHoverBackgroundBrush}"/>
                                                                     </Trigger>
                                                                 </ControlTemplate.Triggers>
                                                             </ControlTemplate>
@@ -371,10 +371,10 @@
                                                                 <ColumnDefinition Width="40"/>
                                                                 <ColumnDefinition Width="*"/>
                                                             </Grid.ColumnDefinitions>
-                                                            <TextBlock Text="{Binding Icon}" FontSize="24" Foreground="#FFFAC828" VerticalAlignment="Center"/>
+                                                            <TextBlock Text="{Binding Icon}" FontSize="24" Foreground="{DynamicResource HighlightBrush}" VerticalAlignment="Center"/>
                                                             <StackPanel Grid.Column="1" Margin="0,0,14,0">
                                                                 <TextBlock Foreground="{DynamicResource TextColor}" FontSize="15" FontWeight="Bold" TextTrimming="CharacterEllipsis" Text="{Binding Title}"/>
-                                                                <TextBlock Foreground="#FFA3A6AA" FontSize="12" Margin="0,2,0,0" TextTrimming="CharacterEllipsis" Text="{Binding Subtitle}"/>
+                                                                <TextBlock Foreground="{DynamicResource MutedTextBrush}" FontSize="12" Margin="0,2,0,0" TextTrimming="CharacterEllipsis" Text="{Binding Subtitle}"/>
                                                             </StackPanel>
                                                         </Grid>
                                                     </Button>
@@ -384,10 +384,10 @@
                                                             CommandParameter="{Binding}" ToolTip="{Binding DataContext.Translation[adv_preset_delete], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue=Löschen}">
                                                         <Button.Template>
                                                             <ControlTemplate TargetType="Button">
-                                                                <TextBlock x:Name="x" Text="✕" FontSize="13" Foreground="#FF72767D" Padding="6,4"/>
+                                                                <TextBlock x:Name="x" Text="✕" FontSize="13" Foreground="{DynamicResource FaintTextBrush}" Padding="6,4"/>
                                                                 <ControlTemplate.Triggers>
                                                                     <Trigger Property="IsMouseOver" Value="True">
-                                                                        <Setter TargetName="x" Property="Foreground" Value="#FFD9534F"/>
+                                                                        <Setter TargetName="x" Property="Foreground" Value="{DynamicResource BadBrush}"/>
                                                                     </Trigger>
                                                                 </ControlTemplate.Triggers>
                                                             </ControlTemplate>
@@ -401,7 +401,7 @@
 
                                 <!-- step 1: shape -->
                                 <StackPanel Visibility="{Binding QuickStep, Converter={StaticResource EqVis}, ConverterParameter=1}">
-                                    <Border CornerRadius="5" Background="#FF3B3A2A" BorderBrush="#FFFAC828" BorderThickness="1" Padding="12,10" Margin="0,0,0,10"
+                                    <Border CornerRadius="5" Background="{DynamicResource DeepBrush}" BorderBrush="{DynamicResource HighlightBrush}" BorderThickness="1" Padding="12,10" Margin="0,0,0,10"
                                             Visibility="{Binding IsPresetLocked, Converter={StaticResource BoolVis}}">
                                         <StackPanel>
                                             <TextBlock Foreground="{DynamicResource TextColor}" FontSize="13" TextWrapping="Wrap" Text="{Binding LockedPresetText}"/>
@@ -448,7 +448,7 @@
 
                                 <!-- step 2: size -->
                                 <StackPanel Visibility="{Binding QuickStep, Converter={StaticResource EqVis}, ConverterParameter=2}">
-                                    <Border CornerRadius="5" Background="#FF3B3A2A" BorderBrush="#FFFAC828" BorderThickness="1" Padding="12,10" Margin="0,0,0,10"
+                                    <Border CornerRadius="5" Background="{DynamicResource DeepBrush}" BorderBrush="{DynamicResource HighlightBrush}" BorderThickness="1" Padding="12,10" Margin="0,0,0,10"
                                             Visibility="{Binding IsPresetLocked, Converter={StaticResource BoolVis}}">
                                         <StackPanel>
                                             <TextBlock Foreground="{DynamicResource TextColor}" FontSize="13" TextWrapping="Wrap" Text="{Binding LockedPresetText}"/>
@@ -536,7 +536,7 @@
                     </ScrollViewer>
 
                     <!-- piece count: adjustable in every step -->
-                    <Border Grid.Row="2" CornerRadius="5" Background="#FF36393F" Padding="14,8" Margin="0,10,0,0">
+                    <Border Grid.Row="2" CornerRadius="5" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Padding="14,8" Margin="0,10,0,0">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
@@ -562,7 +562,7 @@
                                     <Style TargetType="Ellipse" BasedOn="{StaticResource StepDot}">
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding QuickStep, Converter={StaticResource AtLeast}, ConverterParameter=0}" Value="True">
-                                                <Setter Property="Fill" Value="#FFE3E5E8"/>
+                                                <Setter Property="Fill" Value="{DynamicResource PrimaryButtonBackground}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -573,7 +573,7 @@
                                     <Style TargetType="Ellipse" BasedOn="{StaticResource StepDot}">
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding QuickStep, Converter={StaticResource AtLeast}, ConverterParameter=1}" Value="True">
-                                                <Setter Property="Fill" Value="#FFE3E5E8"/>
+                                                <Setter Property="Fill" Value="{DynamicResource PrimaryButtonBackground}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -584,7 +584,7 @@
                                     <Style TargetType="Ellipse" BasedOn="{StaticResource StepDot}">
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding QuickStep, Converter={StaticResource AtLeast}, ConverterParameter=2}" Value="True">
-                                                <Setter Property="Fill" Value="#FFE3E5E8"/>
+                                                <Setter Property="Fill" Value="{DynamicResource PrimaryButtonBackground}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -595,7 +595,7 @@
                                     <Style TargetType="Ellipse" BasedOn="{StaticResource StepDot}">
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding QuickStep, Converter={StaticResource AtLeast}, ConverterParameter=3}" Value="True">
-                                                <Setter Property="Fill" Value="#FFE3E5E8"/>
+                                                <Setter Property="Fill" Value="{DynamicResource PrimaryButtonBackground}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -606,7 +606,7 @@
                                     <Style TargetType="Ellipse" BasedOn="{StaticResource StepDot}">
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding QuickStep, Converter={StaticResource AtLeast}, ConverterParameter=4}" Value="True">
-                                                <Setter Property="Fill" Value="#FFE3E5E8"/>
+                                                <Setter Property="Fill" Value="{DynamicResource PrimaryButtonBackground}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -723,7 +723,7 @@
                         <Border Style="{StaticResource Section}">
                             <StackPanel>
                                 <TextBlock Style="{StaticResource H1}" Tag="{Binding DataContext.Translation[adv_ex_result], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Ergebnis'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
-                                <Grid Margin="0,0,0,4" TextElement.Foreground="#FFA3A6AA" TextElement.FontSize="12">
+                                <Grid Margin="0,0,0,4" TextElement.Foreground="{DynamicResource MutedTextBrush}" TextElement.FontSize="12">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="32"/><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="52"/><ColumnDefinition Width="52"/><ColumnDefinition Width="52"/>
@@ -740,7 +740,7 @@
                                                         <ColumnDefinition Width="32"/><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/>
                                                         <ColumnDefinition Width="52"/><ColumnDefinition Width="52"/><ColumnDefinition Width="52"/>
                                                     </Grid.ColumnDefinitions>
-                                                    <TextBlock Text="{Binding Index}" Foreground="#FFA3A6AA"/>
+                                                    <TextBlock Text="{Binding Index}" Foreground="{DynamicResource MutedTextBrush}"/>
                                                     <TextBlock Grid.Column="1" Text="{Binding X}"/><TextBlock Grid.Column="2" Text="{Binding Y}"/><TextBlock Grid.Column="3" Text="{Binding Z}"/>
                                                     <TextBlock Grid.Column="4" Text="{Binding Pitch}"/><TextBlock Grid.Column="5" Text="{Binding Roll}"/><TextBlock Grid.Column="6" Text="{Binding Yaw}"/>
                                                 </Grid>
@@ -785,7 +785,7 @@
                         <Button Grid.Column="4" Style="{StaticResource SecondaryBtn}" Margin="0,0,10,0" Command="{Binding SavePresetCommand}" Tag="{Binding DataContext.Translation[adv_save_preset], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Als Preset speichern'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
                         <Button Grid.Column="5" Style="{StaticResource SecondaryBtn}" Command="{Binding OpenTemplatesCommand}" IsEnabled="{Binding CanUseTemplates}" ToolTip="{Binding FeatureHintText}" Tag="{Binding DataContext.Translation[adv_copy_templates], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='In Templates kopieren'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
                         <StackPanel Grid.Row="1" Grid.ColumnSpan="6" Margin="2,12,0,0">
-                            <TextBlock Foreground="#FFA3A6AA" FontSize="12" Text="{Binding PlanInfoText}"/>
+                            <TextBlock Foreground="{DynamicResource MutedTextBrush}" FontSize="12" Text="{Binding PlanInfoText}"/>
                             <TextBlock Foreground="{DynamicResource TextColor}" FontSize="13" Margin="0,3,0,0" TextWrapping="Wrap" Text="{Binding Status}"/>
                         </StackPanel>
                     </Grid>
@@ -823,23 +823,23 @@
                                             CommandParameter="{Binding}" Cursor="Hand" Margin="0,0,6,6">
                                         <Button.Template>
                                             <ControlTemplate TargetType="Button">
-                                                <Border x:Name="b" CornerRadius="5" Background="#FF36393F" BorderBrush="Transparent" BorderThickness="1.5" Padding="10,6">
+                                                <Border x:Name="b" CornerRadius="5" Background="{DynamicResource SeactionHeaderBackgroundBrush}" BorderBrush="Transparent" BorderThickness="1.5" Padding="10,6">
                                                     <ContentPresenter/>
                                                 </Border>
                                                 <ControlTemplate.Triggers>
                                                     <Trigger Property="IsMouseOver" Value="True">
-                                                        <Setter TargetName="b" Property="Background" Value="#FF40444B"/>
+                                                        <Setter TargetName="b" Property="Background" Value="{DynamicResource ButtonHoverBackgroundBrush}"/>
                                                     </Trigger>
                                                     <DataTrigger Binding="{Binding IsTarget}" Value="True">
-                                                        <Setter TargetName="b" Property="Background" Value="#FF4F545C"/>
-                                                        <Setter TargetName="b" Property="BorderBrush" Value="#FFE3E5E8"/>
+                                                        <Setter TargetName="b" Property="Background" Value="{DynamicResource SelectedTileBrush}"/>
+                                                        <Setter TargetName="b" Property="BorderBrush" Value="{DynamicResource PrimaryButtonBackground}"/>
                                                     </DataTrigger>
                                                 </ControlTemplate.Triggers>
                                             </ControlTemplate>
                                         </Button.Template>
                                         <StackPanel HorizontalAlignment="Left">
                                             <TextBlock Foreground="{DynamicResource TextColor}" FontSize="13" Text="{Binding Title}"/>
-                                            <TextBlock Foreground="#FFA3A6AA" FontSize="11" Text="{Binding Detail}"/>
+                                            <TextBlock Foreground="{DynamicResource MutedTextBrush}" FontSize="11" Text="{Binding Detail}"/>
                                         </StackPanel>
                                     </Button>
                                 </DataTemplate>
@@ -883,14 +883,14 @@
                         <ItemsControl ItemsSource="{Binding LearnedRows}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate DataType="{x:Type vm:LearnedRow}">
-                                    <Border CornerRadius="5" Background="#FF36393F" Padding="12,8" Margin="0,0,4,6">
+                                    <Border CornerRadius="5" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Padding="12,8" Margin="0,0,4,6">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
                                             <StackPanel VerticalAlignment="Center">
                                                 <TextBlock Foreground="{DynamicResource TextColor}" FontSize="13" FontWeight="Bold" Text="{Binding Title}"/>
-                                                <TextBlock Foreground="#FFA3A6AA" FontSize="11" Text="{Binding Detail}"/>
+                                                <TextBlock Foreground="{DynamicResource MutedTextBrush}" FontSize="11" Text="{Binding Detail}"/>
                                             </StackPanel>
                                             <Button Grid.Column="1" Style="{StaticResource Btn}" Margin="8,0,0,0"
                                                     Command="{Binding DataContext.ContinueLearnedCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}"

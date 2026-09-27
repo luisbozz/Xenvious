@@ -31,10 +31,10 @@
                             <Setter TargetName="content" Property="Data" Value=""/>
                         </Trigger>
                         <Trigger Property="IsFocused" Value="true">
-                            <Setter Property="BorderBrush" Value="#FF4F545C"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource SelectedTileBrush}"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="true">
-                            <Setter Property="BorderBrush" Value="#FF4F545C"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource SelectedTileBrush}"/>
                         </Trigger>
 
                         <!--<MultiTrigger>
