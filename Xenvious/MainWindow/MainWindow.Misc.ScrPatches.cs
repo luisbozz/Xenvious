@@ -38,10 +38,17 @@ namespace Xenvious
             if (GTA.Editor.ScrPatchesDev != null)
                 all.AddRange(GTA.Editor.ScrPatchesDev);
 
+            // Entries shipped with "enabled": false are parked (a broken or replaced pattern kept
+            // for later). They stay out of the cards: a card is "on" only when all its entries
+            // are, and switching it on would wake the parked ones too.
+            foreach (var p in all)
+                if (ScrPatchSeen.Add(p) && !p.enabled)
+                    ScrPatchParked.Add(p);
+
             // One card per patch name: most patches exist once per creator script and are
             // one feature, so they are shown and switched together.
             _scrPatchGroups = all
-                .Where(p => !string.IsNullOrEmpty(p.patch_name))
+                .Where(p => !string.IsNullOrEmpty(p.patch_name) && !ScrPatchParked.Contains(p))
                 .GroupBy(p => p.patch_name)
                 .Select(g => new ScrPatchGroup(g.Key, g.ToList(), ScrPatchDescription(g.Key),
                     TranslateOr, OnScrPatchToggled))
@@ -52,6 +59,8 @@ namespace Xenvious
         }
 
         private List<ScrPatchGroup> _scrPatchGroups = new List<ScrPatchGroup>();
+        private static readonly HashSet<GTA.ScrPatches> ScrPatchSeen = new HashSet<GTA.ScrPatches>();
+        private static readonly HashSet<GTA.ScrPatches> ScrPatchParked = new HashSet<GTA.ScrPatches>();
         private string _scrPatchScript;   // null: all scripts
         private string _patchesQuery = "";
         private string _patchesShownKey;
@@ -220,19 +229,20 @@ namespace Xenvious
                 scrPatchesFilter.Children.Add(ScrPatchFilterChip(ScrPatchScriptLabel(script), script, Count(script)));
         }
 
-        private System.Windows.Controls.Primitives.ToggleButton ScrPatchFilterChip(string label, string script, int count)
+        // Selected chip filled yellow, the others yellow text on the hover colour (as before).
+        private Border ScrPatchFilterChip(string label, string script, int count)
         {
-            var text = new TextBlock();
-            text.Inlines.Add(new System.Windows.Documents.Run(label));
-            var n = new System.Windows.Documents.Run("  " + count.ToString(CultureInfo.CurrentCulture)) { FontSize = 11.5 };
-            n.SetResourceReference(TextElement.ForegroundProperty, "FaintTextBrush");
-            text.Inlines.Add(n);
-            var chip = new System.Windows.Controls.Primitives.ToggleButton
+            bool selected = _scrPatchScript == script;
+            var text = new TextBlock { FontSize = 12, FontWeight = selected ? FontWeights.Bold : FontWeights.Normal, Foreground = ThemeBrush(selected ? "HighlightForeground" : "HighlightBrush") };
+            text.Inlines.Add(new Run(label));
+            text.Inlines.Add(new Run("  " + count.ToString(CultureInfo.CurrentCulture)) { FontSize = 11, FontWeight = FontWeights.Normal });
+            // No outline: a 1 px border on a rounded chip renders blurry at non-100 % scaling.
+            var chip = new Border
             {
-                Style = (Style)FindResource("ChoiceTile"), Content = text, IsChecked = _scrPatchScript == script,
-                Height = 28, MinHeight = 28, Padding = new Thickness(12, 0, 12, 0), Margin = new Thickness(0, 0, 6, 6), FontSize = 12.5,
+                CornerRadius = new CornerRadius(10), Padding = new Thickness(12, 4, 12, 4), Margin = new Thickness(0, 0, 6, 6), Cursor = Cursors.Hand,
+                UseLayoutRounding = true, SnapsToDevicePixels = true, Background = ThemeBrush(selected ? "HighlightBrush" : "HoverBackgroundBrush"), Child = text,
             };
-            chip.Click += (_, __) => { _scrPatchScript = script; _patchesShownKey = null; RenderPatchesPage(); };
+            chip.MouseLeftButtonUp += (_, __) => { _scrPatchScript = script; _patchesShownKey = null; RenderPatchesPage(); };
             return chip;
         }
 
@@ -283,12 +293,11 @@ namespace Xenvious
                 dot.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, dotBrush);
                 panel.Children.Add(dot);
             }
-            var t = new TextBlock { Text = text, FontSize = 11.5, FontWeight = FontWeights.SemiBold };
-            t.SetResourceReference(TextBlock.ForegroundProperty, "MutedTextBrush");
+            var t = new TextBlock { Text = text, FontSize = 11 };
+            t.SetResourceReference(TextBlock.ForegroundProperty, "HighlightBrush");
             panel.Children.Add(t);
-            var chip = new Border { CornerRadius = new CornerRadius(9), Padding = new Thickness(8, 1, 9, 2), Margin = new Thickness(0, 0, 6, 4), BorderThickness = new Thickness(1), Child = panel, ToolTip = tooltip };
-            chip.SetResourceReference(Border.BackgroundProperty, "DeepBrush");
-            chip.SetResourceReference(Border.BorderBrushProperty, "LineBrush");
+            var chip = new Border { CornerRadius = new CornerRadius(9), Padding = new Thickness(8, 2, 9, 2), Margin = new Thickness(0, 0, 6, 4), Child = panel, ToolTip = tooltip, SnapsToDevicePixels = true };
+            chip.SetResourceReference(Border.BackgroundProperty, "HoverBackgroundBrush");
             return chip;
         }
 
@@ -303,9 +312,12 @@ namespace Xenvious
                 var patches = group.Patches.Where(p => p.script_name == script).ToList();
                 bool applied = patches.Any(ScrPatchesRunner.IsApplied);
                 bool enabled = readOnly || patches.All(p => p.enabled);
-                string brush = !enabled ? null : applied ? "OkBrush" : script == creator ? "WarnBrush" : "FaintTextBrush";
+                // Triggered patches (precise templates) are only in the script while their feature runs.
+                bool waitsForTrigger = !applied && patches.All(p => !string.IsNullOrEmpty(p.trigger));
+                string brush = !enabled ? null : applied ? "OkBrush" : script == creator && !waitsForTrigger ? "WarnBrush" : "FaintTextBrush";
                 string tip = !enabled ? TranslateOr("patches_st_off", "Off")
                     : applied ? TranslateOr("patches_st_applied", "Applied")
+                    : waitsForTrigger ? TranslateOr("patches_st_trigger", "Only written while the feature is in use (templates category).")
                     : script == creator ? TranslateOr("patches_st_notfound", "On, but not found in the script: the pattern may need updating after a game update.")
                     : TranslateOr("patches_st_notloaded", "Creator not open: applied when it is opened.");
                 chips.Add(StatusChip(ScrPatchScriptLabel(script), brush, tip));
