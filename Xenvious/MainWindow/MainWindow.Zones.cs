@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -165,6 +166,69 @@ namespace Xenvious
         private void tbzonezntp_TextChanged(object sender, TextChangedEventArgs e)
         {
             new Global((GTA.Offsets.Editor.Zones.zntp + GTA.Offsets.Editor.Zones.NEXT * ddzoneno.SelectedIndex)).SetInt(tbzonezntp.Text);
+            ShowZoneType();
+        }
+
+        // ----- Zone type picker: names and help for the numbers in tbzonezntp -----
+
+        private bool _zoneTypeSync;
+
+        private sealed class ZoneTypeItem
+        {
+            public int Id;
+            public string Text;
+            public override string ToString() => Text;
+        }
+
+        // Built when the list opens, so the names follow the language.
+        private void FillZoneTypes()
+        {
+            _zoneTypeSync = true;
+            ddzonetype.ItemsSource = ZoneTypes.All
+                .Select(t => new ZoneTypeItem { Id = t.Id, Text = t.Id + "  " + TranslateOr("zt_name_" + t.Id, t.Name) })
+                .ToList();
+            _zoneTypeSync = false;
+            ShowZoneType();
+        }
+
+        private void ddzonetype_DropDownOpened(object sender, EventArgs e) => FillZoneTypes();
+
+        private void ddzonetype_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_zoneTypeSync || !(ddzonetype.SelectedItem is ZoneTypeItem item))
+                return;
+            // The number field writes the type into the zone, as if it was typed in.
+            tbzonezntp.Text = item.Id.ToString(CultureInfo.InvariantCulture);
+        }
+
+        // Selects the type of the number field in the list and explains it; both value fields
+        // get the name of what the type reads from them.
+        private void ShowZoneType()
+        {
+            if (ddzonetype == null || lblzonetypeinfo == null)
+                return;
+            if (ddzonetype.ItemsSource == null)
+            {
+                FillZoneTypes();
+                return;
+            }
+
+            bool known = int.TryParse(tbzonezntp.Text, NumberStyles.Integer, CultureInfo.InvariantCulture, out int id);
+            var type = known ? ZoneTypes.Find(id) : null;
+
+            _zoneTypeSync = true;
+            ddzonetype.SelectedItem = ((IEnumerable<ZoneTypeItem>)ddzonetype.ItemsSource).FirstOrDefault(i => type != null && i.Id == type.Id);
+            _zoneTypeSync = false;
+
+            if (type != null)
+                lblzonetypeinfo.Text = TranslateOr("zt_desc_" + type.Id, type.Description);
+            else if (known)
+                lblzonetypeinfo.Text = string.Format(TranslateOr("zt_unknown", "Type {0} has no description yet."), id);
+            else
+                lblzonetypeinfo.Text = TranslateOr("zt_pick", "Pick a zone type to see what it does.");
+
+            lblzoneznwd.Text = type?.UsesValue == ZoneTypes.Value.Znwd ? TranslateOr(type.ValueKey, type.ValueFallback) + " (znwd)" : "znwd";
+            lblzoneznwvd.Text = type?.UsesValue == ZoneTypes.Value.Znwvd ? TranslateOr(type.ValueKey, type.ValueFallback) + " (znwvd)" : "znwvd";
         }
 
         private void BtnZoneDelete_Click(object sender, RoutedEventArgs e)

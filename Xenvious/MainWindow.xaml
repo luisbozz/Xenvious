@@ -10358,216 +10358,242 @@
 
                                             <TabItem x:Name="PageZone" Header="Zone" >
 
-                                                <Grid Background="Transparent" Grid.Column="1" Margin="15 0">
-
-                                                    <Grid Background="Transparent" Grid.Column="1">
-                                                        <Grid.RowDefinitions>
-                                                            <RowDefinition Height="0.2*" MinHeight="50" MaxHeight="60"/>
-                                                            <RowDefinition Height="*" MinHeight="205"/>
-                                                        </Grid.RowDefinitions>
-
-                                                        <Grid Grid.Column="1">
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="*"/>
-                                                                <ColumnDefinition Width="0.15*" MinWidth="80"/>
-                                                                <ColumnDefinition Width="0.15*" MinWidth="80"/>
-                                                                <ColumnDefinition Width="0.25*" MinWidth="125"/>
-                                                            </Grid.ColumnDefinitions>
-
-
-                                                            <Border  Grid.Column="1" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5 10">
-                                                                <Border.Effect>
-                                                                    <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>            
-                                                                </Border.Effect>
-                                                                <Button x:Name="BtnzoneAdd" Style="{DynamicResource CustomButton}" Content="{Binding Translation[add], FallbackValue=Add}" local:CornerRadiusSetter.CornerRadius="5" ToolTip="{Binding Translation[add], FallbackValue=Add}" Click="BtnzoneAdd_Click"/>
-                                                            </Border>
-                                                            <Border  Grid.Column="2" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5 10">
-                                                                <Border.Effect>
-                                                                    <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>            
-                                                                </Border.Effect>
-                                                                <Button x:Name="BtnZoneDelete" Style="{DynamicResource CustomButton}" Content="{Binding Translation[delete], FallbackValue=Delete}" local:CornerRadiusSetter.CornerRadius="5" ToolTip="{Binding Translation[delete], FallbackValue=Delete}" Click="BtnZoneDelete_Click"/>
-                                                            </Border>
-                                                            <Border Grid.Column="3" Margin="5 10" Background="Transparent">
-                                                                <Border.Effect>
-                                                                    <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>            
-                                                                </Border.Effect>
-                                                                <ComboBox x:Name="ddzoneno" FontFamily="{DynamicResource Volte}" SelectionChanged="ddzoneno_SelectionChanged" ToolTip="{Binding Translation[zoneindex], FallbackValue=Zone Number}" Tag="{Binding Translation[zoneindex], FallbackValue=Zone Number}"/>
-                                                            </Border>
-
-
-                                                        </Grid>
-
-                                                        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" >
-
-                                                            <WrapPanel Margin="10,0,0,0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Stretch" Grid.Row="1">
-
-                                                                <Grid Width="290" Height="auto" Margin="0,0,10,0">
-                                                                    <Grid.RowDefinitions>
-                                                                        <RowDefinition Height="50"/>
-                                                                        <RowDefinition Height="*"/>
-                                                                    </Grid.RowDefinitions>
-
-                                                                    <Grid.ColumnDefinitions>
-                                                                        <ColumnDefinition Width="0.5*"/>
-                                                                        <ColumnDefinition Width="0.5*"/>
-                                                                    </Grid.ColumnDefinitions>
-
-                                                                    <!--header-->
-                                                                    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Text="{Binding Translation[pastart], FallbackValue=Startpoint}" FontWeight="Bold"/>
-
-                                                                    <Grid Grid.Row="1" Grid.ColumnSpan="2">
-                                                                        <Grid.RowDefinitions>
-                                                                            <RowDefinition Height="34"/>
-                                                                            <RowDefinition Height="34"/>
-                                                                            <RowDefinition Height="34"/>
-                                                                            <RowDefinition Height="50"/>
-                                                                            <RowDefinition Height="34"/>
-                                                                            <RowDefinition Height="34"/>
-                                                                            <RowDefinition Height="34"/>
-                                                                        </Grid.RowDefinitions>
-                                                                        <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="*"/>
-                                                                            <ColumnDefinition Width="30"/>
-                                                                        </Grid.ColumnDefinitions>
-
-                                                                        <TextBox x:Name="tbzonestartx" Grid.Row="0" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3x], FallbackValue=X-Component}" Height="30" Margin="0,0,5,0" IsEnabled="False" TextChanged="tbzonestartx_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangeZoneLocationXPlusMinus"/>
-                                                                        <TextBox x:Name="tbzonestarty" Grid.Row="1" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3y], FallbackValue=Y-Component}" Height="30" Margin="0,0,5,0" IsEnabled="False" TextChanged="tbzonestarty_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangeZoneLocationYPlusMinus"/>
-                                                                        <TextBox x:Name="tbzonestartz" Grid.Row="2" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3z], FallbackValue=Z-Component}" Height="30" Margin="0,0,5,0" IsEnabled="False" TextChanged="tbzonestartz_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangeZoneLocationZPlusMinus"/>
-                                                                        <Border  Grid.Column="1" Grid.RowSpan="3" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5">
-                                                                            <Border.Effect>
-                                                                                <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>                        
-                                                                            </Border.Effect>
-
-                                                                            <Button x:Name="Btnzonegetstart" Style="{DynamicResource TitleBarButton}" Click="Btnzonegetstart_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Translation[getcursorloc], FallbackValue=Get Cursor Location}" IsEnabled="False" >
-                                                                                <Path x:Name="zonegetstartpath"  Data="M 12 12 L 12 0 L 6 6 Z" Stretch="Uniform" Stroke="{DynamicResource TextColor}" />
-                                                                            </Button>
+                                                <!-- Entry bar on top, then cards by topic: model and position, look, rules, raw values. -->
+                                                <DockPanel Margin="10,0">
+                                                    <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,12">
+                                                        <DockPanel>
+                                                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                                                                <!-- ‹ number › : steps through the entries without opening the list. -->
+                                                                <Border Background="{DynamicResource ComboBoxBackground}" BorderBrush="{DynamicResource ComboBoxBorder}" BorderThickness="1" CornerRadius="4" Height="32" Margin="0,0,10,0">
+                                                                    <StackPanel Orientation="Horizontal">
+                                                                        <Button Style="{StaticResource EntryStepButton}" Content="‹" Tag="{Binding ElementName=ddzoneno}" CommandParameter="-1" Click="EntryStep_Click" ToolTip="{Binding Translation[entry_prev], FallbackValue=Previous}"/>
+                                                                        <ComboBox x:Name="ddzoneno" FontFamily="{DynamicResource Volte}" SelectionChanged="ddzoneno_SelectionChanged" ToolTip="{Binding Translation[zoneindex], FallbackValue=Zone Number}" Width="84" Height="30" BorderThickness="0"/>
+                                                                        <Button Style="{StaticResource EntryStepButton}" Content="›" Tag="{Binding ElementName=ddzoneno}" CommandParameter="1" Click="EntryStep_Click" ToolTip="{Binding Translation[entry_next], FallbackValue=Next}"/>
+                                                                    </StackPanel>
+                                                                </Border>
+                                                                <Button x:Name="BtnZoneDelete" Style="{StaticResource FormButton}" Width="34" Height="32" Padding="0" Margin="0,0,6,0" Click="BtnZoneDelete_Click" ToolTip="{Binding Translation[delete], FallbackValue=Delete}">
+                                                                    <Path Data="M3,4 L13,4 M6,4 L6,2.5 L10,2.5 L10,4 M4.5,4 L5.2,14 L10.8,14 L11.5,4" Stroke="{DynamicResource TextColor}" StrokeThickness="1.5" StrokeLineJoin="Round" Width="16" Height="16"/>
+                                                                </Button>
+                                                                <Button x:Name="BtnzoneAdd" Style="{StaticResource FormButtonPrimary}" Height="32" Padding="10,0,12,0" Click="BtnzoneAdd_Click" ToolTip="{Binding Translation[add], FallbackValue=Add}">
+                                                                    <StackPanel Orientation="Horizontal">
+                                                                        <Path Data="M8,3 L8,13 M3,8 L13,8" Stroke="#FF202225" StrokeThickness="2" Width="16" Height="16" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                                                        <TextBlock VerticalAlignment="Center" Foreground="#FF202225" Text="{Binding Translation[add], FallbackValue=Add}"/>
+                                                                    </StackPanel>
+                                                                </Button>
+                                                            </StackPanel>
+                                                            <TextBlock VerticalAlignment="Center" FontSize="14" Foreground="{StaticResource NavMutedBrush}">
+                                                                <Run FontSize="17" FontWeight="Bold" Foreground="{DynamicResource TextColor}" Text="{Binding Items.Count, ElementName=ddzoneno, Mode=OneWay}"/>
+                                                                <Run Text="{Binding Translation[zones_placed], FallbackValue=zones placed}"/>
+                                                            </TextBlock>
+                                                        </DockPanel>
+                                                    </Border>
+                                                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                                        <WrapPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                <Border Style="{StaticResource DashCard}">
+                                                                    <DockPanel>
+                                                                        <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                                                            <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[card_zonetype], FallbackValue=Zone Type}"/>
                                                                         </Border>
-
-                                                                        <TextBlock Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Text="{Binding Translation[paend], FallbackValue=Endpoint}" FontWeight="Bold"/>
-
-                                                                        <TextBox x:Name="tbzoneendx" Grid.Row="4" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3x], FallbackValue=X-Component}" Height="30" Margin="0,0,5,0" IsEnabled="False" TextChanged="tbzoneendx_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangeZoneLocationXPlusMinus"/>
-                                                                        <TextBox x:Name="tbzoneendy" Grid.Row="5" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3y], FallbackValue=Y-Component}" Height="30" Margin="0,0,5,0" IsEnabled="False" TextChanged="tbzoneendy_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangeZoneLocationYPlusMinus"/>
-                                                                        <TextBox x:Name="tbzoneendz" Grid.Row="6" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3z], FallbackValue=Z-Component}" Height="30" Margin="0,0,5,0" IsEnabled="False" TextChanged="tbzoneendz_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangeZoneLocationZPlusMinus"/>
-                                                                        <Border  Grid.Column="1" Grid.Row="4" Grid.RowSpan="3" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5">
-                                                                            <Border.Effect>
-                                                                                <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>                        
-                                                                            </Border.Effect>
-
-                                                                            <Button x:Name="Btnzonegetend" Style="{DynamicResource TitleBarButton}" Click="Btnzonegetend_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Translation[getcursorloc], FallbackValue=Get Cursor Location}" IsEnabled="False" >
-                                                                                <Path x:Name="zonestartpath"  Data="M 12 12 L 12 0 L 6 6 Z" Stretch="Uniform" Stroke="{DynamicResource TextColor}" />
-                                                                            </Button>
+                                                                        <StackPanel Margin="14,12,14,4">
+                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[zntp], FallbackValue=Zone Type}"/>
+                                                                        <Grid Margin="0,0,0,8">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="8"/>
+                                                                                <ColumnDefinition Width="64"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <ComboBox x:Name="ddzonetype" Height="30" IsEnabled="{Binding ElementName=tbzonezntp, Path=IsEnabled}" SelectionChanged="ddzonetype_SelectionChanged" DropDownOpened="ddzonetype_DropDownOpened" MaxDropDownHeight="420"/>
+                                                                            <TextBox x:Name="tbzonezntp" IsEnabled="False" Style="{StaticResource Watermark}" TextChanged="tbzonezntp_TextChanged" KeyDown="FormatTextForInteger" Grid.Column="2" Height="30"/>
+                                                                        </Grid>
+                                                                        <Border Background="{DynamicResource SeactionHeaderBackgroundBrush}" CornerRadius="4" Padding="10,8" Margin="0,0,0,12">
+                                                                            <TextBlock x:Name="lblzonetypeinfo" TextWrapping="Wrap" FontSize="13" Foreground="{StaticResource NavMutedBrush}" Text="{Binding Translation[zt_pick], FallbackValue=Pick a zone type to see what it does.}"/>
                                                                         </Border>
-
-                                                                    </Grid>
-
-                                                                </Grid>
-
-                                                                <Grid Width="290" Height="auto" Margin="0,0,10,0">
-                                                                    <Grid.RowDefinitions>
-                                                                        <RowDefinition Height="50"/>
-                                                                        <RowDefinition Height="36"/>
-                                                                        <RowDefinition Height="36"/>
-                                                                        <RowDefinition Height="36"/>
-                                                                        <RowDefinition Height="36"/>
-                                                                        <RowDefinition Height="36"/>
-                                                                        <RowDefinition Height="36"/>
-                                                                        <RowDefinition Height="36"/>
-                                                                        <RowDefinition Height="36"/>
-                                                                        <RowDefinition Height="36"/>
-                                                                    </Grid.RowDefinitions>
-
-                                                                    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Text="{Binding Translation[other], FallbackValue=Other}" FontWeight="Bold"/>
-
-                                                                    <TextBox x:Name="tbzonewidth" IsEnabled="False" Grid.Row="1" Style="{StaticResource Watermark}" Tag="{Binding Translation[width], FallbackValue=Width}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" TextChanged="tbzonewidth_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                                    <TextBox x:Name="tbzoneheight" IsEnabled="False" Grid.Row="2" Style="{StaticResource Watermark}" Tag="{Binding Translation[height], FallbackValue=Height}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" TextChanged="tbzoneheight_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                                    <TextBox x:Name="tbzoneznwd" IsEnabled="False" Grid.Row="3" Style="{StaticResource Watermark}" Tag="{Binding Translation[znwd], FallbackValue=znwd}" ToolTip="{Binding Translation[znwdinfo], FallbackValue=Time for explosion | Repair Speed | Weakening wave resistance}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" TextChanged="tbzoneznwd_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                                    <TextBox x:Name="tbzoneznwvd" IsEnabled="False" Grid.Row="4" Style="{StaticResource Watermark}" Tag="{Binding Translation[znwvd], FallbackValue=znwvd}" ToolTip="{Binding Translation[znwvdinfo], FallbackValue=Wave attenuation | ???}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" TextChanged="tbzoneznwvd_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                                    <Border Grid.Row="5"  Background="Transparent" Margin="0,0,0,5" Height="30">
-                                                                        <ComboBox x:Name="ddzonevariation" FontFamily="{DynamicResource Volte}" SelectionChanged="ddzonevariation_SelectionChanged" IsEnabled="False" ToolTip="{Binding Translation[variation], FallbackValue=Variation}" Tag="{Binding Translation[variation], FallbackValue=Variation}">
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock x:Name="lblzoneznwd" Style="{StaticResource FieldLabel}" Text="{Binding Translation[znwd], FallbackValue=znwd}"/>
+                                                                            <TextBox x:Name="tbzoneznwd" IsEnabled="False" Style="{StaticResource Watermark}" ToolTip="{Binding Translation[znwdinfo], FallbackValue=Time for explosion | Repair Speed | Weakening wave resistance}" TextChanged="tbzoneznwd_TextChanged" KeyDown="FormatTextForFloat" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                            <TextBlock x:Name="lblzoneznwvd" Style="{StaticResource FieldLabel}" Text="{Binding Translation[znwvd], FallbackValue=znwvd}"/>
+                                                                            <TextBox x:Name="tbzoneznwvd" IsEnabled="False" Style="{StaticResource Watermark}" ToolTip="{Binding Translation[znwvdinfo], FallbackValue=Wave attenuation | ???}" TextChanged="tbzoneznwvd_TextChanged" KeyDown="FormatTextForFloat" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="#FF72767D" Margin="0,0,0,8" Text="{Binding Translation[zt_hint], FallbackValue=Only some types are described. Any number can be typed in the field beside the list.}"/>
+                                                                        </StackPanel>
+                                                                    </DockPanel>
+                                                                </Border>
+                                                            </StackPanel>
+                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                <Border Style="{StaticResource DashCard}">
+                                                                    <DockPanel>
+                                                                        <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                                                            <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[card_shape], FallbackValue=Shape and Size}"/>
+                                                                        </Border>
+                                                                        <StackPanel Margin="14,12,14,4">
+                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[variation], FallbackValue=Variation}"/>
+                                                                        <ComboBox x:Name="ddzonevariation" FontFamily="{DynamicResource Volte}" SelectionChanged="ddzonevariation_SelectionChanged" IsEnabled="False" ToolTip="{Binding Translation[variation], FallbackValue=Variation}" Height="30" Margin="0,0,0,10">
                                                                             <ComboBoxItem Content="{Binding Translation[zoneaxis], FallbackValue=Axis Aligned Box}"/>
                                                                             <ComboBoxItem Content="{Binding Translation[sphere], FallbackValue=Sphere}"/>
                                                                             <ComboBoxItem Content="{Binding Translation[zonenonaxis], FallbackValue=Non Axis Aligned Box}"/>
                                                                             <ComboBoxItem Content="{Binding Translation[cylinder], FallbackValue=Cylinder}"/>
                                                                         </ComboBox>
-                                                                    </Border>
-                                                                    <TextBox x:Name="tbzonezntp" IsEnabled="False" Grid.Row="6" Style="{StaticResource Watermark}" Tag="{Binding Translation[zntp], FallbackValue=Zone Type}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" TextChanged="tbzonezntp_TextChanged" KeyDown="FormatTextForInteger"/>
-                                                                    <TextBox x:Name="tbzoneznbs" IsEnabled="False" Grid.Row="7" Style="{StaticResource Watermark}" Tag="{Binding Translation[znbs], FallbackValue=znbs}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" TextChanged="tbzoneznbs_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                    <TextBox x:Name="tbzoneznbs2" IsEnabled="False" Grid.Row="8" Style="{StaticResource Watermark}" Tag="{Binding Translation[znbs2], FallbackValue=znbs2}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" TextChanged="tbzoneznbs2_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                    <TextBox x:Name="tbzoneznbs3" IsEnabled="False" Grid.Row="9" Style="{StaticResource Watermark}" Tag="{Binding Translation[znbs3], FallbackValue=znbs3}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" TextChanged="tbzoneznbs3_TextChanged" KeyDown="FormatTextForModel"/>
-
-                                                                </Grid>
-
-                                                                <Grid Width="290" Height="auto" Margin="0,0,10,0">
-                                                                    <Grid.RowDefinitions>
-                                                                        <RowDefinition Height="50"/>
-                                                                        <RowDefinition Height="*"/>
-                                                                    </Grid.RowDefinitions>
-
-                                                                    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Text="{Binding Translation[advanced], FallbackValue=Advanced}" FontWeight="Bold"/>
-
-                                                                    <StackPanel Grid.Row="1" Orientation="Vertical" Margin="0,2,0,0">
-
-                                                                        <ComboBox x:Name="ddzoneteam" VerticalAlignment="Top" Grid.Row="1" Height="30" HorizontalAlignment="Stretch" Tag="{Binding Translation[actorteam], FallbackValue=Team}" IsEnabled="False" Margin="0,3,0,5" SelectionChanged="ddzoneteam_SelectionChanged">
-                                                                            <ComboBoxItem Content="1" Selector.IsSelected="True"/>
-                                                                            <ComboBoxItem Content="2"/>
-                                                                            <ComboBoxItem Content="3"/>
-                                                                            <ComboBoxItem Content="4"/>
-                                                                        </ComboBox>
-
-                                                                        <TextBox x:Name="tbzonerule" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[rule], FallbackValue=Rule}" IsEnabled="False" TextChanged="tbzonerule_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                        <TextBox x:Name="tbzonepriority" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[priority], FallbackValue=Priority}" IsEnabled="False" TextChanged="tbzonepriority_TextChanged" KeyDown="FormatTextForModel"/>
-
-                                                                        <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="#6C7378" Height="1" Margin="20,5,20,8" />
-
+                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[pastart], FallbackValue=Startpoint}"/>
+                                                                        <Grid Margin="0,0,0,10">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="6"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="6"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="6"/>
+                                                                                <ColumnDefinition Width="30"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="X"/>
+                                                                                <TextBox x:Name="tbzonestartx" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbzonestartx_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangeZoneLocationXPlusMinus" Height="30"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="Y"/>
+                                                                                <TextBox x:Name="tbzonestarty" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbzonestarty_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangeZoneLocationYPlusMinus" Height="30"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="4">
+                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="Z"/>
+                                                                                <TextBox x:Name="tbzonestartz" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbzonestartz_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangeZoneLocationZPlusMinus" Height="30"/>
+                                                                            </StackPanel>
+                                                                            <Border Grid.Column="6" Width="30" Height="30" VerticalAlignment="Bottom">
+                                                                                <Button x:Name="Btnzonegetstart" Style="{StaticResource FieldIconButton}" Click="Btnzonegetstart_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Translation[getcursorloc], FallbackValue=Get Cursor Location}" IsEnabled="False" >
+                                                                                    <Path x:Name="zonegetstartpath" Data="M8,1.5 L8,4.5 M8,11.5 L8,14.5 M1.5,8 L4.5,8 M11.5,8 L14.5,8 M8,5 A3,3 0 1 1 7.99,5" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.6" Width="16" Height="16" />
+                                                                                </Button>
+                                                                            </Border>
+                                                                        </Grid>
+                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[paend], FallbackValue=Endpoint}"/>
+                                                                        <Grid Margin="0,0,0,10">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="6"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="6"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="6"/>
+                                                                                <ColumnDefinition Width="30"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="X"/>
+                                                                                <TextBox x:Name="tbzoneendx" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbzoneendx_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangeZoneLocationXPlusMinus" Height="30"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="Y"/>
+                                                                                <TextBox x:Name="tbzoneendy" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbzoneendy_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangeZoneLocationYPlusMinus" Height="30"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="4">
+                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="Z"/>
+                                                                                <TextBox x:Name="tbzoneendz" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbzoneendz_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangeZoneLocationZPlusMinus" Height="30"/>
+                                                                            </StackPanel>
+                                                                            <Border Grid.Column="6" Width="30" Height="30" VerticalAlignment="Bottom">
+                                                                                <Button x:Name="Btnzonegetend" Style="{StaticResource FieldIconButton}" Click="Btnzonegetend_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Translation[getcursorloc], FallbackValue=Get Cursor Location}" IsEnabled="False" >
+                                                                                    <Path x:Name="zonestartpath" Data="M8,1.5 L8,4.5 M8,11.5 L8,14.5 M1.5,8 L4.5,8 M11.5,8 L14.5,8 M8,5 A3,3 0 1 1 7.99,5" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.6" Width="16" Height="16" />
+                                                                                </Button>
+                                                                            </Border>
+                                                                        </Grid>
                                                                         <Grid>
                                                                             <Grid.ColumnDefinitions>
-                                                                                <ColumnDefinition Width="0.9*"/>
-                                                                                <ColumnDefinition Width="0.1*"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
                                                                             </Grid.ColumnDefinitions>
-
-                                                                            <Grid.RowDefinitions>
-                                                                                <RowDefinition Height="12"/>
-                                                                                <RowDefinition Height="12"/>
-                                                                                <RowDefinition Height="12"/>
-                                                                                <RowDefinition Height="12"/>
-                                                                                <RowDefinition Height="12"/>
-                                                                                <RowDefinition Height="12"/>
-                                                                                <RowDefinition Height="12"/>
-                                                                                <RowDefinition Height="12"/>
-                                                                            </Grid.RowDefinitions>
-
-                                                                            <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Foreground="Gray" FontSize="10" Text="Known Zone Types:"/>
-                                                                            <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Foreground="Gray" FontSize="10" Text="no Traffic and Peds in Zone"/>
-                                                                            <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Foreground="Gray" FontSize="10" Text="Wave Adjust"/>
-                                                                            <TextBlock Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Foreground="Gray" FontSize="10" Text="No Police Spawns"/>
-                                                                            <TextBlock Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Foreground="Gray" FontSize="10" Text="Slowdown Zone"/>
-                                                                            <TextBlock Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Foreground="Gray" FontSize="10" Text="Vehicle Repair"/>
-                                                                            <TextBlock Grid.Row="6" Grid.Column="0" VerticalAlignment="Center" Foreground="Gray" FontSize="10" Text="Explosion"/>
-                                                                            <TextBlock Grid.Row="7" Grid.Column="0" VerticalAlignment="Center" Foreground="Gray" FontSize="10" Text="Drift Points Multiplier"/>
-
-                                                                            <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Foreground="Gray" FontSize="10" Text="0" TextAlignment="Right"/>
-                                                                            <TextBlock Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Foreground="Gray" FontSize="10" Text="9" TextAlignment="Right"/>
-                                                                            <TextBlock Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Foreground="Gray" FontSize="10" Text="12" TextAlignment="Right"/>
-                                                                            <TextBlock Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Foreground="Gray" FontSize="10" Text="23" TextAlignment="Right"/>
-                                                                            <TextBlock Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" Foreground="Gray" FontSize="10" Text="37" TextAlignment="Right"/>
-                                                                            <TextBlock Grid.Row="6" Grid.Column="1" VerticalAlignment="Center" Foreground="Gray" FontSize="10" Text="40" TextAlignment="Right"/>
-                                                                            <TextBlock Grid.Row="7" Grid.Column="1" VerticalAlignment="Center" Foreground="Gray" FontSize="10" Text="89" TextAlignment="Right"/>
-
-
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[width], FallbackValue=Width}"/>
+                                                                            <TextBox x:Name="tbzonewidth" IsEnabled="False" Style="{StaticResource Watermark}" TextChanged="tbzonewidth_TextChanged" KeyDown="FormatTextForFloat" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[height], FallbackValue=Height}"/>
+                                                                            <TextBox x:Name="tbzoneheight" IsEnabled="False" Style="{StaticResource Watermark}" TextChanged="tbzoneheight_TextChanged" KeyDown="FormatTextForFloat" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
                                                                         </Grid>
+                                                                        </StackPanel>
+                                                                    </DockPanel>
+                                                                </Border>
+                                                            </StackPanel>
+                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                <Border Style="{StaticResource DashCard}">
+                                                                    <Expander Style="{StaticResource CardExpander}" Header="{Binding Translation[advanced], FallbackValue=Advanced}">
+                                                                        <StackPanel Margin="14,12,14,4">
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[actorteam], FallbackValue=Team}"/>
+                                                                            <ComboBox x:Name="ddzoneteam" IsEnabled="False" SelectionChanged="ddzoneteam_SelectionChanged" Height="30" Margin="0,0,0,10">
+                                                                                <ComboBoxItem Content="1" Selector.IsSelected="True"/>
+                                                                                <ComboBoxItem Content="2"/>
+                                                                                <ComboBoxItem Content="3"/>
+                                                                                <ComboBoxItem Content="4"/>
+                                                                            </ComboBox>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[rule], FallbackValue=Rule}"/>
+                                                                            <TextBox x:Name="tbzonerule" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbzonerule_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[priority], FallbackValue=Priority}"/>
+                                                                            <TextBox x:Name="tbzonepriority" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbzonepriority_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
 
-                                                                    </StackPanel>
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="znbs"/>
+                                                                            <TextBox x:Name="tbzoneznbs" IsEnabled="False" Style="{StaticResource Watermark}" TextChanged="tbzoneznbs_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="znbs2"/>
+                                                                            <TextBox x:Name="tbzoneznbs2" IsEnabled="False" Style="{StaticResource Watermark}" TextChanged="tbzoneznbs2_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="znbs3"/>
+                                                                            <TextBox x:Name="tbzoneznbs3" IsEnabled="False" Style="{StaticResource Watermark}" TextChanged="tbzoneznbs3_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
 
-                                                                </Grid>
-
-                                                            </WrapPanel>
-
-                                                        </ScrollViewer>
-
-                                                    </Grid>
-
-                                                </Grid>
-
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        </StackPanel>
+                                                                    </Expander>
+                                                                </Border>
+                                                            </StackPanel>
+                                                        </WrapPanel>
+                                                    </ScrollViewer>
+                                                </DockPanel>
 
                                             </TabItem>
 
