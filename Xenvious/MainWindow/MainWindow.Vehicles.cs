@@ -263,6 +263,7 @@ namespace Xenvious
 
 
                 if (!tbvehmodel.IsFocused || ignore_focus) tbvehmodel.Text = model.ToString();
+                VehModelCard.SetModel(unchecked((uint)model));
                 if (!tbvehlocx.IsFocused || ignore_focus) tbvehlocx.Text = new Global((GTA.Offsets.Editor.Vehicle.loc + 0 + GTA.Offsets.Editor.Vehicle.NEXT * index)).Get<float>().ToString();
                 if (!tbvehlocy.IsFocused || ignore_focus) tbvehlocy.Text = new Global((GTA.Offsets.Editor.Vehicle.loc + 1 + GTA.Offsets.Editor.Vehicle.NEXT * index)).Get<float>().ToString();
                 if (!tbvehlocz.IsFocused || ignore_focus) tbvehlocz.Text = new Global((GTA.Offsets.Editor.Vehicle.loc + 2 + GTA.Offsets.Editor.Vehicle.NEXT * index)).Get<float>().ToString();

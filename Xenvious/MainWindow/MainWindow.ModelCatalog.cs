@@ -8,11 +8,12 @@ using System.Windows.Controls;
 
 namespace Xenvious
 {
-    // Part of MainWindow: the model catalog on the Props, Dynamic Props and Actor pages, and its picture cache in Settings.
+    // Part of MainWindow: the model catalog on the Props, Dynamic Props, Vehicle and Actor pages, and its picture cache in Settings.
     public partial class MainWindow
     {
         private List<CatalogItem> _propCatalog;
         private List<CatalogItem> _actorCatalog;
+        private List<CatalogItem> _vehicleCatalog;
 
         // Props and dynamic props share one list, and with it the same pictures. An empty list
         // (asked for before the offline data was loaded) is built again next time.
@@ -23,10 +24,15 @@ namespace Xenvious
         private List<CatalogItem> ActorCatalog => _actorCatalog?.Count > 0 ? _actorCatalog : (_actorCatalog = GTA.Editor.ActorList
             .Select(a => new CatalogItem(a.Name, null, a.UInt32, "", "actor")).ToList());
 
+        // vehicles.json has model names only; there is no picture source for vehicles yet.
+        private List<CatalogItem> VehicleCatalog => _vehicleCatalog?.Count > 0 ? _vehicleCatalog : (_vehicleCatalog = GTA.Editor.VehList
+            .Select(v => new CatalogItem(v.Native, v.Native, v.Uint32, v.Category, "vehicle")).ToList());
+
         private void InitModelCards()
         {
             Wire(PropModelCard, ddpropno, () => PropCatalog, TranslateOr("prop", "Props"), () => (GTA.Offsets.Editor.Props.model, GTA.Offsets.Editor.Props.NEXT, ddpropno.SelectedIndex));
             Wire(DPropModelCard, dddpropno, () => PropCatalog, TranslateOr("dprop", "Dynamic Props"), () => (GTA.Offsets.Editor.DProps.model, GTA.Offsets.Editor.DProps.NEXT, dddpropno.SelectedIndex));
+            Wire(VehModelCard, ddvehno, () => VehicleCatalog, TranslateOr("vehicles", "Vehicles"), () => (GTA.Offsets.Editor.Vehicle.model, GTA.Offsets.Editor.Vehicle.NEXT, ddvehno.SelectedIndex));
             Wire(ActorModelCard, ddactorno, () => ActorCatalog, TranslateOr("actor", "Actors"), () => (GTA.Offsets.Editor.Actor.model, GTA.Offsets.Editor.Actor.NEXT, ddactorno.SelectedIndex));
         }
 

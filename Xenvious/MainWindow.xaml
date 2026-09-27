@@ -2766,483 +2766,599 @@
 
                                             <TabItem x:Name="PageVehicle" Header="Vehicles" Height="25" VerticalAlignment="Top" >
 
-                                                <Grid Background="Transparent" Grid.Column="1" Margin="15 0">
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height="0.2*" MinHeight="50" MaxHeight="60"/>
-                                                        <RowDefinition Height="*" MinHeight="205"/>
-                                                    </Grid.RowDefinitions>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="0.3*" MinWidth="205"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                    </Grid.ColumnDefinitions>
-
-                                                    <Border Margin="0,10,10,10" Grid.Row="0" Grid.RowSpan="2" BorderThickness="1" CornerRadius="5" BorderBrush="{DynamicResource SectionBackgroundBrush}" Background="{DynamicResource SectionBackgroundBrush}" MinHeight="225" MinWidth="175">
-                                                        <Border.Effect>
-                                                            <DropShadowEffect BlurRadius="8" ShadowDepth="0" Color="{DynamicResource ShadowColor}"/>    
-                                                        </Border.Effect>
-                                                        <Grid>
-
-                                                            <Grid.RowDefinitions>
-                                                                <RowDefinition Height="0.13*" MinHeight="50" MaxHeight="150"/>
-                                                                <RowDefinition Height="*"/>
-                                                            </Grid.RowDefinitions>
-
-                                                            <!--Top-->
-                                                            <Border x:Name="Lblvehmodel" Grid.Row="0" CornerRadius="5" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="8,5,8,0">
-                                                                <Viewbox VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                                                                    <Label Foreground="{DynamicResource TextColor}" FontFamily="{DynamicResource Volte}" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Content="{Binding Translation[model], FallbackValue=Model}"/>
-                                                                </Viewbox>
-                                                            </Border>
-
-                                                            <!--Bottom-->
-                                                            <Border Grid.Row="1" CornerRadius="5" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="8">
-                                                                <Grid Margin="5">
-                                                                    <Grid.RowDefinitions>
-                                                                        <RowDefinition Height="35"/>
-                                                                        <RowDefinition Height="35"/>
-                                                                        <RowDefinition Height="*"/>
-                                                                    </Grid.RowDefinitions>
-
-                                                                    <Border Grid.Row="0" Margin="3,0,3,5" Background="Transparent">
-                                                                        <ComboBox x:Name="ddvehmodelswicther" FontFamily="{DynamicResource Volte}" IsEnabled="False" Tag="{Binding Translation[category], FallbackValue=Category}" ToolTip="{Binding Translation[inputmode], FallbackValue=Input Mode}" SelectionChanged="ddvehmodelswicther_SelectionChanged">
-                                                                            <ComboBoxItem Content="{Binding Translation[custom], FallbackValue=Custom}" />
-                                                                            <ComboBoxItem Content="{Binding Translation[category], FallbackValue=Category}" Selector.IsSelected="True" />
-                                                                        </ComboBox>
-                                                                    </Border>
-                                                                    <Border Grid.Row="1" Margin="3,0,3,5" Background="Transparent">
-                                                                        <ComboBox x:Name="ddvehcategory" FontFamily="{DynamicResource Volte}" SelectionChanged="ddvehcategory_SelectionChanged" IsEnabled="False" ToolTip="{Binding Translation[vcategory], FallbackValue=Vehicle Category}" Tag="{Binding Translation[vcategory], FallbackValue=Vehicle Category}" ItemsSource="{x:Static local:GTA+Editor.VehCategories}"/>
-                                                                    </Border>
-
-                                                                    <TextBox x:Name="tbvehmodel" Grid.Row="2" VerticalAlignment="Top" Style="{StaticResource Watermark}" Tag="Model" ToolTip="Model" Height="30" Margin="3 0" IsEnabled="False" Visibility="Collapsed" KeyDown="FormatTextForModel" TextChanged="tbvehmodel_TextChanged" />
-
-                                                                    <ListView x:Name="vehModelList" Grid.Row="2" Margin="0 5 0 0" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource TextColor}" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding .}" DisplayMemberPath="Name" SelectionChanged="vehModelList_SelectionChanged"/>
-
-                                                                </Grid>
-                                                            </Border>
-                                                        </Grid>
+                                                <!-- Entry bar on top, then cards by topic: model and position, look, rules, raw values. -->
+                                                <DockPanel Margin="10,0">
+                                                    <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,12">
+                                                        <DockPanel>
+                                                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                                                                <!-- ‹ number › : steps through the entries without opening the list. -->
+                                                                <Border Background="{DynamicResource ComboBoxBackground}" BorderBrush="{DynamicResource ComboBoxBorder}" BorderThickness="1" CornerRadius="4" Height="32" Margin="0,0,10,0">
+                                                                    <StackPanel Orientation="Horizontal">
+                                                                        <Button Style="{StaticResource EntryStepButton}" Content="‹" Tag="{Binding ElementName=ddvehno}" CommandParameter="-1" Click="EntryStep_Click" ToolTip="{Binding Translation[entry_prev], FallbackValue=Previous}"/>
+                                                                        <ComboBox x:Name="ddvehno" FontFamily="{DynamicResource Volte}" SelectionChanged="ddvehno_SelectionChanged" ToolTip="{Binding Translation[vindex], FallbackValue=Vehicle Index}" Width="84" Height="30" BorderThickness="0"/>
+                                                                        <Button Style="{StaticResource EntryStepButton}" Content="›" Tag="{Binding ElementName=ddvehno}" CommandParameter="1" Click="EntryStep_Click" ToolTip="{Binding Translation[entry_next], FallbackValue=Next}"/>
+                                                                    </StackPanel>
+                                                                </Border>
+                                                                <Button x:Name="BtnVehDelete" Style="{StaticResource FormButton}" Width="34" Height="32" Padding="0" Margin="0,0,6,0" Click="BtnVehDelete_Click" ToolTip="{Binding Translation[delete], FallbackValue=Delete}">
+                                                                    <Path Data="M3,4 L13,4 M6,4 L6,2.5 L10,2.5 L10,4 M4.5,4 L5.2,14 L10.8,14 L11.5,4" Stroke="{DynamicResource TextColor}" StrokeThickness="1.5" StrokeLineJoin="Round" Width="16" Height="16"/>
+                                                                </Button>
+                                                                <Button x:Name="BtnVehAdd" Style="{StaticResource FormButtonPrimary}" Height="32" Padding="10,0,12,0" Click="BtnVehAdd_Click" ToolTip="{Binding Translation[add], FallbackValue=Add}">
+                                                                    <StackPanel Orientation="Horizontal">
+                                                                        <Path Data="M8,3 L8,13 M3,8 L13,8" Stroke="#FF202225" StrokeThickness="2" Width="16" Height="16" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                                                        <TextBlock VerticalAlignment="Center" Foreground="#FF202225" Text="{Binding Translation[add], FallbackValue=Add}"/>
+                                                                    </StackPanel>
+                                                                </Button>
+                                                            </StackPanel>
+                                                            <TextBlock VerticalAlignment="Center" FontSize="14" Foreground="{StaticResource NavMutedBrush}">
+                                                                <Run FontSize="17" FontWeight="Bold" Foreground="{DynamicResource TextColor}" Text="{Binding Items.Count, ElementName=ddvehno, Mode=OneWay}"/>
+                                                                <Run Text="{Binding Translation[vehicles_placed], FallbackValue=vehicles placed}"/>
+                                                            </TextBlock>
+                                                        </DockPanel>
                                                     </Border>
-
-                                                    <Grid Grid.Column="1">
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="*"/>
-                                                            <ColumnDefinition Width="0.20*" MinWidth="80"/>
-                                                            <ColumnDefinition Width="0.20*" MinWidth="80"/>
-                                                            <ColumnDefinition Width="0.40*" MinWidth="125"/>
-                                                        </Grid.ColumnDefinitions>
-
-
-                                                        <Border  Grid.Column="1" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5 10">
-                                                            <Border.Effect>
-                                                                <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>        
-                                                            </Border.Effect>
-                                                            <Button x:Name="BtnVehAdd" Style="{DynamicResource CustomButton}" Content="{Binding Translation[add], FallbackValue=Add}" local:CornerRadiusSetter.CornerRadius="5" Click="BtnVehAdd_Click"/>
+                                                    <!-- The old model controls: hidden, but their code still reads and fills them. -->
+                                                    <StackPanel DockPanel.Dock="Top" Visibility="Collapsed">
+                                                        <Border x:Name="Lblvehmodel" Grid.Row="0" CornerRadius="5" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="8,5,8,0">
+                                                            <Viewbox VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                                                                <Label Foreground="{DynamicResource TextColor}" FontFamily="{DynamicResource Volte}" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Content="{Binding Translation[model], FallbackValue=Model}"/>
+                                                            </Viewbox>
                                                         </Border>
-                                                        <Border  Grid.Column="2" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5 10">
-                                                            <Border.Effect>
-                                                                <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>        
-                                                            </Border.Effect>
-                                                            <Button x:Name="BtnVehDelete" Style="{DynamicResource CustomButton}" Content="{Binding Translation[delete], FallbackValue=Delete}" local:CornerRadiusSetter.CornerRadius="5" Click="BtnVehDelete_Click"/>
-                                                        </Border>
-                                                        <Border Grid.Column="3" Margin="5 10" Background="Transparent">
-                                                            <Border.Effect>
-                                                                <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>        
-                                                            </Border.Effect>
-                                                            <ComboBox x:Name="ddvehno" FontFamily="{DynamicResource Volte}" SelectionChanged="ddvehno_SelectionChanged" ToolTip="{Binding Translation[vindex], FallbackValue=Vehicle Index}" Tag="{Binding Translation[vindex], FallbackValue=Vehicle Index}"/>
-                                                        </Border>
-
-
-                                                    </Grid>
-
-                                                    <ScrollViewer Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Auto" >
-
-                                                        <WrapPanel Margin="10,0,0,0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Stretch" >
-
-                                                            <Grid Width="290" Height="auto" Margin="0,0,10,0">
+                                                        <Border Grid.Row="1" CornerRadius="5" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="8">
+                                                            <Grid Margin="5">
                                                                 <Grid.RowDefinitions>
-                                                                    <RowDefinition Height="50"/>
+                                                                    <RowDefinition Height="35"/>
+                                                                    <RowDefinition Height="35"/>
                                                                     <RowDefinition Height="*"/>
                                                                 </Grid.RowDefinitions>
 
+                                                                <Border Grid.Row="0" Margin="3,0,3,5" Background="Transparent">
+                                                                    <ComboBox x:Name="ddvehmodelswicther" FontFamily="{DynamicResource Volte}" IsEnabled="False" Tag="{Binding Translation[category], FallbackValue=Category}" ToolTip="{Binding Translation[inputmode], FallbackValue=Input Mode}" SelectionChanged="ddvehmodelswicther_SelectionChanged">
+                                                                        <ComboBoxItem Content="{Binding Translation[custom], FallbackValue=Custom}" />
+                                                                        <ComboBoxItem Content="{Binding Translation[category], FallbackValue=Category}" Selector.IsSelected="True" />
+                                                                    </ComboBox>
+                                                                </Border>
+                                                                <Border Grid.Row="1" Margin="3,0,3,5" Background="Transparent">
+                                                                    <ComboBox x:Name="ddvehcategory" FontFamily="{DynamicResource Volte}" SelectionChanged="ddvehcategory_SelectionChanged" IsEnabled="False" ToolTip="{Binding Translation[vcategory], FallbackValue=Vehicle Category}" Tag="{Binding Translation[vcategory], FallbackValue=Vehicle Category}" ItemsSource="{x:Static local:GTA+Editor.VehCategories}"/>
+                                                                </Border>
 
-                                                                <!--header-->
-                                                                <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Text="{Binding Translation[loc], FallbackValue=Location}" FontWeight="Bold"/>
+                                                                <TextBox x:Name="tbvehmodel" Grid.Row="2" VerticalAlignment="Top" Style="{StaticResource Watermark}" Tag="Model" ToolTip="Model" Height="30" Margin="3 0" IsEnabled="False" Visibility="Collapsed" KeyDown="FormatTextForModel" TextChanged="tbvehmodel_TextChanged" />
 
-                                                                <StackPanel Grid.Row="1" >
-                                                                    
-                                                                    <Grid>
-                                                                        <Grid.RowDefinitions>
-                                                                            <RowDefinition Height="34"/>
-                                                                            <RowDefinition Height="34"/>
-                                                                            <RowDefinition Height="34"/>
-                                                                        </Grid.RowDefinitions>
-                                                                        <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="*"/>
-                                                                            <ColumnDefinition Width="30"/>
-                                                                        </Grid.ColumnDefinitions>
+                                                                <ListView x:Name="vehModelList" Grid.Row="2" Margin="0 5 0 0" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource TextColor}" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding .}" DisplayMemberPath="Name" SelectionChanged="vehModelList_SelectionChanged"/>
 
-                                                                        <TextBox x:Name="tbvehlocx" Grid.Row="0" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3x], FallbackValue=X-Component}" Height="30" Margin="0,0,5,0" IsEnabled="False" TextChanged="tbvehlocx_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangeVEHLocationXPlusMinus"/>
-                                                                        <TextBox x:Name="tbvehlocy" Grid.Row="1" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3y], FallbackValue=Y-Component}" Height="30" Margin="0,0,5,0" IsEnabled="False" TextChanged="tbvehlocy_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangeVEHLocationYPlusMinus"/>
-                                                                        <TextBox x:Name="tbvehlocz" Grid.Row="2" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3z], FallbackValue=Z-Component}" Height="30" Margin="0,0,5,0" IsEnabled="False" TextChanged="tbvehlocz_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangeVEHLocationZPlusMinus"/>
-                                                                        <Border  Grid.Column="1" Grid.RowSpan="3" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5">
-                                                                            <Border.Effect>
-                                                                                <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>
-                                                                            </Border.Effect>
-
-                                                                            <Button x:Name="Btnvehgetloc" Style="{DynamicResource TitleBarButton}" Click="Btnvehgetloc_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Translation[getcursorloc], FallbackValue=Get Cursor Location}" IsEnabled="False" >
-                                                                                <Path x:Name="vehgetlocpath"  Data="M 12 12 L 12 0 L 6 6 Z" Stretch="Uniform" Stroke="{DynamicResource TextColor}" />
-                                                                            </Button>
+                                                            </Grid>
+                                                        </Border>
+                                                    </StackPanel>
+                                                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                                        <WrapPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                <local:ModelCard x:Name="VehModelCard" Margin="0,0,0,12"/>
+                                                            </StackPanel>
+                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                <Border Style="{StaticResource DashCard}">
+                                                                    <DockPanel>
+                                                                        <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                                                            <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[card_position], FallbackValue=Placement}"/>
                                                                         </Border>
+                                                                        <StackPanel Margin="14,12,14,4">
+                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[loc], FallbackValue=Location}"/>
+                                                                        <Grid Margin="0,0,0,10">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="6"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="6"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="6"/>
+                                                                                <ColumnDefinition Width="30"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="X"/>
+                                                                                <TextBox x:Name="tbvehlocx" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehlocx_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangeVEHLocationXPlusMinus" Height="30"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="Y"/>
+                                                                                <TextBox x:Name="tbvehlocy" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehlocy_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangeVEHLocationYPlusMinus" Height="30"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="4">
+                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="Z"/>
+                                                                                <TextBox x:Name="tbvehlocz" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehlocz_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangeVEHLocationZPlusMinus" Height="30"/>
+                                                                            </StackPanel>
+                                                                            <Border Grid.Column="6" Width="30" Height="30" VerticalAlignment="Bottom">
+                                                                                <Button x:Name="Btnvehgetloc" Style="{StaticResource FieldIconButton}" Click="Btnvehgetloc_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Translation[getcursorloc], FallbackValue=Get Cursor Location}" IsEnabled="False" >
+                                                                                    <Path x:Name="vehgetlocpath" Data="M8,1.5 L8,4.5 M8,11.5 L8,14.5 M1.5,8 L4.5,8 M11.5,8 L14.5,8 M8,5 A3,3 0 1 1 7.99,5" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.6" Width="16" Height="16" />
+                                                                                </Button>
+                                                                            </Border>
+                                                                        </Grid>
+                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[vrot], FallbackValue=Rotation}"/>
+                                                                        <Grid Margin="0,0,0,10">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="6"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="6"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="6"/>
+                                                                                <ColumnDefinition Width="30"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="X"/>
+                                                                                <TextBox x:Name="tbvehrotx" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehrotx_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="Y"/>
+                                                                                <TextBox x:Name="tbvehroty" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehroty_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="4">
+                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="Z"/>
+                                                                                <TextBox x:Name="tbvehrotz" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehrotz_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[heading], FallbackValue=Heading}"/>
+                                                                            <TextBox x:Name="tbvehhead" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehhead_TextChanged" KeyDown="FormatTextForFloat" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
 
-                                                                    </Grid>
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        </StackPanel>
+                                                                    </DockPanel>
+                                                                </Border>
+                                                            </StackPanel>
+                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                <Border Style="{StaticResource DashCard}">
+                                                                    <DockPanel>
+                                                                        <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                                                            <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[card_look], FallbackValue=Look}"/>
+                                                                        </Border>
+                                                                        <StackPanel Margin="14,12,14,4">
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[pcol], FallbackValue=Primary Color}"/>
+                                                                            <ComboBox x:Name="ddvehcol1" FontFamily="{DynamicResource Volte}" SelectionChanged="ddvehcol1_SelectionChanged" IsEnabled="False" ToolTip="{Binding Translation[pcol], FallbackValue=Primary Color}" DisplayMemberPath="Name" ItemsSource="{x:Static local:GTA+Editor.VehicleColors}" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[scol], FallbackValue=Secondary Color}"/>
+                                                                            <ComboBox x:Name="ddvehcol2" FontFamily="{DynamicResource Volte}" SelectionChanged="ddvehcol2_SelectionChanged" IsEnabled="False" ToolTip="{Binding Translation[scol], FallbackValue=Secondary Color}" DisplayMemberPath="Name" ItemsSource="{x:Static local:GTA+Editor.VehicleColors}" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[windowtint], FallbackValue=Window Tint}"/>
+                                                                            <ComboBox x:Name="ddvehwindowtint" FontFamily="{DynamicResource Volte}" SelectionChanged="ddvehwindowtint_SelectionChanged" IsEnabled="False" ToolTip="{Binding Translation[windowtint], FallbackValue=Window Tint}"  ItemsSource="{x:Static local:GTA+Editor.window_name}" Height="30" Margin="0,0,0,10">
+                                                                            </ComboBox>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[livery], FallbackValue=Livery}"/>
+                                                                            <TextBox x:Name="tbvehlivery" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehlivery_TextChanged" KeyDown="FormatTextForInteger" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[icon], FallbackValue=Icon}"/>
+                                                                            <ComboBox x:Name="ddvehicon" FontFamily="{DynamicResource Volte}" SelectionChanged="ddvehicon_SelectionChanged" IsEnabled="False" ToolTip="{Binding Translation[icon], FallbackValue=Icon}" Height="30" Margin="0,0,0,10">
+                                                                                <ComboBoxItem Content="{Binding Translation[standard], FallbackValue=Standard}"/>
+                                                                                <ComboBoxItem Content="A"/>
+                                                                                <ComboBoxItem Content="B"/>
+                                                                                <ComboBoxItem Content="C"/>
+                                                                                <ComboBoxItem Content="D"/>
+                                                                                <ComboBoxItem Content="E"/>
+                                                                                <ComboBoxItem Content="F"/>
+                                                                                <ComboBoxItem Content="G"/>
+                                                                                <ComboBoxItem Content="H"/>
+                                                                                <ComboBoxItem Content="SamTurret"/>
+                                                                                <ComboBoxItem Content="CCTV"/>
+                                                                                <ComboBoxItem Content="Juggernaut"/>
+                                                                                <ComboBoxItem Content="Cargo"/>
+                                                                                <ComboBoxItem Content="Target"/>
+                                                                            </ComboBox>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[iconsize], FallbackValue=Icon Size}"/>
+                                                                            <TextBox x:Name="tbvehiconsize" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehiconsize_TextChanged" KeyDown="FormatTextForFloat" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="46"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[vehneonlights], FallbackValue=Neon Lights}" IsEnabled="{Binding ElementName=cb_veh_neon, Path=IsEnabled}"/>
+                                                                            <CheckBox x:Name="cb_veh_neon" Checked="cb_veh_neon_Checked" Unchecked="cb_veh_neon_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                        </Grid>
+                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="46"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[remwindows], FallbackValue=Remove Windows}" IsEnabled="{Binding ElementName=cb_veh_remove_windows, Path=IsEnabled}"/>
+                                                                            <CheckBox x:Name="cb_veh_remove_windows" Checked="cb_veh_remove_windows_Checked" Unchecked="cb_veh_remove_windows_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                        </Grid>
+                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="46"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[vehlights], FallbackValue=Vehicle Lights}" IsEnabled="{Binding ElementName=cb_veh_lights, Path=IsEnabled}"/>
+                                                                            <CheckBox x:Name="cb_veh_lights" Checked="cb_veh_lights_Checked" Unchecked="cb_veh_lights_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                        </Grid>
+                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="46"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[vehsirens], FallbackValue=Vehicle Sirens}" IsEnabled="{Binding ElementName=cb_veh_sirens, Path=IsEnabled}"/>
+                                                                            <CheckBox x:Name="cb_veh_sirens" Checked="cb_veh_sirens_Checked" Unchecked="cb_veh_sirens_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                        </Grid>
+                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="46"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[vehsirensaudio], FallbackValue=Vehicle Sirens Audio}" IsEnabled="{Binding ElementName=cb_veh_sirens_audio, Path=IsEnabled}"/>
+                                                                            <CheckBox x:Name="cb_veh_sirens_audio" Checked="cb_veh_sirens_audio_Checked" Unchecked="cb_veh_sirens_audio_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                        </Grid>
+                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="46"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[vehbox], FallbackValue=Spawn Boxes}" IsEnabled="{Binding ElementName=cb_veh_box, Path=IsEnabled}"/>
+                                                                            <CheckBox x:Name="cb_veh_box" Checked="cb_veh_box_Checked" Unchecked="cb_veh_box_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                        </Grid>
+                                                                        </StackPanel>
+                                                                    </DockPanel>
+                                                                </Border>
+                                                                <Border Style="{StaticResource DashCard}">
+                                                                    <DockPanel>
+                                                                        <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                                                            <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[card_locks], FallbackValue=Locks}"/>
+                                                                        </Border>
+                                                                        <StackPanel Margin="14,12,14,4">
+                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="46"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[vehlockteam], StringFormat='{}{0} 1', FallbackValue='Locked for Team 1'}"/>
+                                                                            <CheckBox x:Name="cb_veh_lockteam1" Checked="cb_veh_lockteam_Checked" Unchecked="cb_veh_lockteam_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                        </Grid>
+                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="46"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[vehlockteam], StringFormat='{}{0} 2', FallbackValue='Locked for Team 2'}"/>
+                                                                            <CheckBox x:Name="cb_veh_lockteam2" Checked="cb_veh_lockteam_Checked" Unchecked="cb_veh_lockteam_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                        </Grid>
+                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="46"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[vehlockteam], StringFormat='{}{0} 3', FallbackValue='Locked for Team 3'}"/>
+                                                                            <CheckBox x:Name="cb_veh_lockteam3" Checked="cb_veh_lockteam_Checked" Unchecked="cb_veh_lockteam_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                        </Grid>
+                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="46"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[vehlockteam], StringFormat='{}{0} 4', FallbackValue='Locked for Team 4'}"/>
+                                                                            <CheckBox x:Name="cb_veh_lockteam4" Checked="cb_veh_lockteam_Checked" Unchecked="cb_veh_lockteam_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                        </Grid>
+                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="46"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[lockveh], FallbackValue=Lock Vehicle}" IsEnabled="{Binding ElementName=cb_veh_locveh, Path=IsEnabled}"/>
+                                                                            <CheckBox x:Name="cb_veh_locveh" Checked="cb_veh_locveh_Checked" Unchecked="cb_veh_locveh_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                        </Grid>
+                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="46"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[lockveh2], FallbackValue=Lock Vehicle for Players}" IsEnabled="{Binding ElementName=cb_veh_locvehforp, Path=IsEnabled}"/>
+                                                                            <CheckBox x:Name="cb_veh_locvehforp" Checked="cb_veh_locvehforp_Checked" Unchecked="cb_veh_locvehforp_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                        </Grid>
+                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="46"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[freezecar], FallbackValue=Freeze Car}" ToolTip="{Binding Translation[freezecarinfo], FallbackValue=Freeze Car}" IsEnabled="{Binding ElementName=cb_veh_freeze, Path=IsEnabled}"/>
+                                                                            <CheckBox x:Name="cb_veh_freeze" Checked="cb_veh_freeze_Checked" Unchecked="cb_veh_freeze_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                        </Grid>
+                                                                        </StackPanel>
+                                                                    </DockPanel>
+                                                                </Border>
+                                                            </StackPanel>
+                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                <Border Style="{StaticResource DashCard}">
+                                                                    <DockPanel>
+                                                                        <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                                                            <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[card_state], FallbackValue=State}"/>
+                                                                        </Border>
+                                                                        <StackPanel Margin="14,12,14,4">
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[health], FallbackValue=Health}"/>
+                                                                            <TextBox x:Name="tbvehhlth"  Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehhlth_TextChanged" KeyDown="FormatTextForInteger" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[veh_hp_engine], FallbackValue=Engine}"/>
+                                                                            <TextBox x:Name="tbvehenghp" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehenghp_TextChanged" KeyDown="FormatTextForFloat" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[veh_hp_tank], FallbackValue=Petrol Tank}"/>
+                                                                            <TextBox x:Name="tbvehptrhp" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehptrhp_TextChanged" KeyDown="FormatTextForFloat" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[veh_hp_body], FallbackValue=Body}"/>
+                                                                            <TextBox x:Name="tbvehbdyhp" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehbdyhp_TextChanged" KeyDown="FormatTextForFloat" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="46"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[godmode], FallbackValue=God Mode}" IsEnabled="{Binding ElementName=cb_veh_godmode, Path=IsEnabled}"/>
+                                                                            <CheckBox x:Name="cb_veh_godmode" Checked="cb_veh_godmode_Checked" Unchecked="cb_veh_godmode_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                        </Grid>
+                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="46"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[bptires], FallbackValue=Bulletproof Tires}" IsEnabled="{Binding ElementName=cb_veh_bptires, Path=IsEnabled}"/>
+                                                                            <CheckBox x:Name="cb_veh_bptires" Checked="cb_veh_bptires_Checked" Unchecked="cb_veh_bptires_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                        </Grid>
+                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="46"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[vehengineon], FallbackValue=Engine on}" ToolTip="{Binding Translation[vehengineoninfo], FallbackValue=Engine on}" IsEnabled="{Binding ElementName=cb_veh_engine, Path=IsEnabled}"/>
+                                                                            <CheckBox x:Name="cb_veh_engine" Checked="cb_veh_engine_Checked" Unchecked="cb_veh_engine_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                        </Grid>
+                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="46"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[veheiw], FallbackValue=Explode in Water}" IsEnabled="{Binding ElementName=cb_veh_explodeinwater, Path=IsEnabled}"/>
+                                                                            <CheckBox x:Name="cb_veh_explodeinwater" Checked="cb_veh_explodeinwater_Checked" Unchecked="cb_veh_explodeinwater_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                        </Grid>
+                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="46"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[nottargetable], FallbackValue=Not Targetable}" IsEnabled="{Binding ElementName=cb_veh_nottargetable, Path=IsEnabled}"/>
+                                                                            <CheckBox x:Name="cb_veh_nottargetable" Checked="cb_veh_nottargetable_Checked" Unchecked="cb_veh_nottargetable_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                        </Grid>
+                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="46"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[markveh], FallbackValue=Mark Vehicle}" IsEnabled="{Binding ElementName=cb_veh_mark, Path=IsEnabled}"/>
+                                                                            <CheckBox x:Name="cb_veh_mark" Checked="cb_veh_mark_Checked" Unchecked="cb_veh_mark_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                        </Grid>
+                                                                        </StackPanel>
+                                                                    </DockPanel>
+                                                                </Border>
+                                                                <Border Style="{StaticResource DashCard}">
+                                                                    <DockPanel>
+                                                                        <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                                                            <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[card_doors], FallbackValue=Doors}"/>
+                                                                        </Border>
+                                                                        <StackPanel Margin="14,12,14,4">
+                                                                        <Grid Margin="0,0,0,8">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="56"/>
+                                                                                <ColumnDefinition Width="56"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <Grid.RowDefinitions>
+                                                                                <RowDefinition Height="Auto"/>
+                                                                                <RowDefinition Height="34"/>
+                                                                                <RowDefinition Height="34"/>
+                                                                                <RowDefinition Height="34"/>
+                                                                                <RowDefinition Height="34"/>
+                                                                                <RowDefinition Height="34"/>
+                                                                                <RowDefinition Height="34"/>
+                                                                            </Grid.RowDefinitions>
+                                                                            <TextBlock Grid.Column="1" Style="{StaticResource FieldAxis}" HorizontalAlignment="Right" Text="{Binding Translation[door_open], FallbackValue=Open}"/>
+                                                                            <TextBlock Grid.Column="2" Style="{StaticResource FieldAxis}" HorizontalAlignment="Right" Text="{Binding Translation[door_closed], FallbackValue=Closed}"/>
+                                                                            <TextBlock Grid.Row="1" Style="{StaticResource FormLabel}" Text="{Binding Translation[vehdoorsfl], FallbackValue=Front Left}"/>
+                                                                            <CheckBox x:Name="cb_veh_door_open_fl" Checked="cb_veh_door_open_lf_Checked" Unchecked="cb_veh_door_open_lf_Checked" IsEnabled="False" Grid.Row="1" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                            <CheckBox x:Name="cb_veh_door_close_fl" Checked="cb_veh_door_close_lf_Checked" Unchecked="cb_veh_door_close_lf_Checked" IsEnabled="False" Grid.Row="1" Grid.Column="2" Style="{StaticResource FormToggle}"/>
+                                                                            <TextBlock Grid.Row="2" Style="{StaticResource FormLabel}" Text="{Binding Translation[vehdoorsfr], FallbackValue=Front Right}"/>
+                                                                            <CheckBox x:Name="cb_veh_door_open_fr" Checked="cb_veh_door_open_lr_Checked" Unchecked="cb_veh_door_open_lr_Checked" IsEnabled="False" Grid.Row="2" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                            <CheckBox x:Name="cb_veh_door_close_fr" Checked="cb_veh_door_close_lr_Checked" Unchecked="cb_veh_door_close_lr_Checked" IsEnabled="False" Grid.Row="2" Grid.Column="2" Style="{StaticResource FormToggle}"/>
+                                                                            <TextBlock Grid.Row="3" Style="{StaticResource FormLabel}" Text="{Binding Translation[vehdoorsrl], FallbackValue=Rear Left}"/>
+                                                                            <CheckBox x:Name="cb_veh_door_open_rl" Checked="cb_veh_door_open_rf_Checked" Unchecked="cb_veh_door_open_rf_Checked" IsEnabled="False" Grid.Row="3" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                            <CheckBox x:Name="cb_veh_door_close_rl" Checked="cb_veh_door_close_rf_Checked" Unchecked="cb_veh_door_close_rf_Checked" IsEnabled="False" Grid.Row="3" Grid.Column="2" Style="{StaticResource FormToggle}"/>
+                                                                            <TextBlock Grid.Row="4" Style="{StaticResource FormLabel}" Text="{Binding Translation[vehdoorsrr], FallbackValue=Rear Right}"/>
+                                                                            <CheckBox x:Name="cb_veh_door_open_rr" Checked="cb_veh_door_open_rr_Checked" Unchecked="cb_veh_door_open_rr_Checked" IsEnabled="False" Grid.Row="4" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                            <CheckBox x:Name="cb_veh_door_close_rr" Checked="cb_veh_door_close_rr_Checked" Unchecked="cb_veh_door_close_rr_Checked" IsEnabled="False" Grid.Row="4" Grid.Column="2" Style="{StaticResource FormToggle}"/>
+                                                                            <TextBlock Grid.Row="5" Style="{StaticResource FormLabel}" Text="{Binding Translation[vehdoorshood], FallbackValue=Hood}"/>
+                                                                            <CheckBox x:Name="cb_veh_door_open_hood" Checked="cb_veh_door_open_hood_Checked" Unchecked="cb_veh_door_open_hood_Checked" IsEnabled="False" Grid.Row="5" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                            <CheckBox x:Name="cb_veh_door_close_hood" Checked="cb_veh_door_close_hood_Checked" Unchecked="cb_veh_door_close_hood_Checked" IsEnabled="False" Grid.Row="5" Grid.Column="2" Style="{StaticResource FormToggle}"/>
+                                                                            <TextBlock Grid.Row="6" Style="{StaticResource FormLabel}" Text="{Binding Translation[vehdoorstrunk], FallbackValue=Trunk}"/>
+                                                                            <CheckBox x:Name="cb_veh_door_open_trunk" Checked="cb_veh_door_open_trunk_Checked" Unchecked="cb_veh_door_open_trunk_Checked" IsEnabled="False" Grid.Row="6" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                            <CheckBox x:Name="cb_veh_door_close_trunk" Checked="cb_veh_door_close_trunk_Checked" Unchecked="cb_veh_door_close_trunk_Checked" IsEnabled="False" Grid.Row="6" Grid.Column="2" Style="{StaticResource FormToggle}"/>
+                                                                        </Grid>
+                                                                        </StackPanel>
+                                                                    </DockPanel>
+                                                                </Border>
+                                                            </StackPanel>
+                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                <Border Style="{StaticResource DashCard}">
+                                                                    <DockPanel>
+                                                                        <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                                                            <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[aslrheader], FallbackValue=Associated Rule}"/>
+                                                                        </Border>
+                                                                        <StackPanel Margin="14,12,14,4">
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[vehrsp], FallbackValue=Vehicle Respawn}"/>
+                                                                            <ComboBox x:Name="ddvehrsp" ToolTip="{Binding Translation[vehrspinfo], FallbackValue=The amnount of times the Vehcile will Respawn}" IsEnabled="False" SelectionChanged="ddvehrsp_SelectionChanged" Height="30" Margin="0,0,0,10">
+                                                                                <ComboBoxItem Content="{Binding Translation[never], FallbackValue='Never'}"/>
+                                                                                <ComboBoxItem Content="1"/>
+                                                                                <ComboBoxItem Content="2"/>
+                                                                                <ComboBoxItem Content="3"/>
+                                                                                <ComboBoxItem Content="4"/>
+                                                                                <ComboBoxItem Content="5"/>
+                                                                                <ComboBoxItem Content="6"/>
+                                                                                <ComboBoxItem Content="7"/>
+                                                                                <ComboBoxItem Content="8"/>
+                                                                                <ComboBoxItem Content="9"/>
+                                                                                <ComboBoxItem Content="10"/>
+                                                                                <ComboBoxItem Content="15"/>
+                                                                                <ComboBoxItem Content="20"/>
+                                                                                <ComboBoxItem Content="{Binding Translation[unlimited], FallbackValue='Unlimited'}"/>
+                                                                                <ComboBoxItem Content="{Binding Translation[plyl15], FallbackValue=Player num variable}"/>
+                                                                            </ComboBox>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[vehvrr], FallbackValue=Respawn Range}"/>
+                                                                            <TextBox x:Name="tbvehvrr" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehvrr_TextChanged" KeyDown="FormatTextForFloat" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <Rectangle Height="1" Fill="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="0,4,0,12"/>
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[asrlspawnon], FallbackValue=Spawn On}"/>
+                                                                            <ComboBox x:Name="ddvehspawnon" IsEnabled="False" SelectionChanged="ddvehspawnon_SelectionChanged" Height="30" Margin="0,0,0,10">
+                                                                                <ComboBoxItem Content="{Binding Translation[spawnoption1], FallbackValue=Mission Start}"/>
+                                                                                <ComboBoxItem Content="{Binding Translation[spawnoption2], FallbackValue=Objective Start}"/>
+                                                                                <ComboBoxItem Content="{Binding Translation[spawnoption3], FallbackValue=Objective Mid Point}"/>
+                                                                                <ComboBoxItem Content="{Binding Translation[spawnoption4], FallbackValue=Only during Objective}"/>
+                                                                            </ComboBox>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[asrlspawnteam], FallbackValue=Spawn by Team}"/>
+                                                                            <ComboBox x:Name="ddvehspawnteam" IsEnabled="False" SelectionChanged="ddvehspawnteam_SelectionChanged" Height="30" Margin="0,0,0,10">
+                                                                                <ComboBoxItem Content="{Binding Translation[none], FallbackValue=None}"/>
+                                                                                <ComboBoxItem Content="1"/>
+                                                                                <ComboBoxItem Content="2"/>
+                                                                                <ComboBoxItem Content="3"/>
+                                                                                <ComboBoxItem Content="4"/>
+                                                                            </ComboBox>
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[asrlspawn], FallbackValue=Spawn at Rule}"/>
+                                                                            <TextBox x:Name="tbvehspawnrule" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehspawnrule_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
 
-                                                                    <TextBlock Margin="0 10" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Text="{Binding Translation[vrot], FallbackValue=Rotation}" FontWeight="Bold"/>
-
-                                                                    <Grid>
-                                                                        <Grid.RowDefinitions>
-                                                                            <RowDefinition Height="34"/>
-                                                                            <RowDefinition Height="34"/>
-                                                                            <RowDefinition Height="34"/>
-                                                                        </Grid.RowDefinitions>
-                                                                        <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="*"/>
-                                                                            <ColumnDefinition Width="30"/>
-                                                                        </Grid.ColumnDefinitions>
-
-
-                                                                        
-                                                                        <TextBox x:Name="tbvehrotx" Grid.Row="0" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3x], FallbackValue=X-Component}" Height="30" Margin="0,0,5,0" IsEnabled="False" TextChanged="tbvehrotx_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                                        <TextBox x:Name="tbvehroty" Grid.Row="1" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3y], FallbackValue=Y-Component}" Height="30" Margin="0,0,5,0" IsEnabled="False" TextChanged="tbvehroty_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                                        <TextBox x:Name="tbvehrotz" Grid.Row="2" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3z], FallbackValue=Z-Component}" Height="30" Margin="0,0,5,0" IsEnabled="False" TextChanged="tbvehrotz_TextChanged" KeyDown="FormatTextForFloat"/>
-
-                                                                    </Grid>
-
-                                                                    <TextBlock Margin="0 10" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Text="{Binding Translation[visual], FallbackValue=Visual}" FontWeight="Bold"/>
-
-
-                                                                    <Border Background="Transparent" Margin="0,0,0,5" Height="30">
-                                                                        <ComboBox x:Name="ddvehcol1" FontFamily="{DynamicResource Volte}" SelectionChanged="ddvehcol1_SelectionChanged" IsEnabled="False" ToolTip="{Binding Translation[pcol], FallbackValue=Primary Color}" Tag="{Binding Translation[pcol], FallbackValue=Primary Color}" DisplayMemberPath="Name" ItemsSource="{x:Static local:GTA+Editor.VehicleColors}"/>
-                                                                    </Border>
-
-                                                                    <Border Background="Transparent" Margin="0,0,0,5" Height="30">
-                                                                        <ComboBox x:Name="ddvehcol2" FontFamily="{DynamicResource Volte}" SelectionChanged="ddvehcol2_SelectionChanged" IsEnabled="False" ToolTip="{Binding Translation[scol], FallbackValue=Secondary Color}" Tag="{Binding Translation[scol], FallbackValue=Secondary Color}" DisplayMemberPath="Name" ItemsSource="{x:Static local:GTA+Editor.VehicleColors}"/>
-                                                                    </Border>
-
-                                                                    <Border Background="Transparent" Margin="0,0,0,5" Height="30">
-                                                                        <ComboBox x:Name="ddvehwindowtint" FontFamily="{DynamicResource Volte}" SelectionChanged="ddvehwindowtint_SelectionChanged" IsEnabled="False" ToolTip="{Binding Translation[windowtint], FallbackValue=Window Tint}" Tag="{Binding Translation[windowtint], FallbackValue=Window Tint}"  ItemsSource="{x:Static local:GTA+Editor.window_name}">
-                                                                        </ComboBox>
-                                                                    </Border>
-
-                                                                    <Grid Height="30" Margin="0,0,0,5">
-                                                                        <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="0.87*" />
-                                                                            <ColumnDefinition Width="0.13*" />
-                                                                        </Grid.ColumnDefinitions>
-                                                                        <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[remwindows], FallbackValue=Remove Windows}" TextTrimming="CharacterEllipsis"/>
-                                                                        <CheckBox x:Name="cb_veh_remove_windows" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_veh_remove_windows_Checked" Unchecked="cb_veh_remove_windows_Checked" MaxHeight="30" IsEnabled="False"/>
-                                                                    </Grid>
-                                                                    <Grid Height="30" Margin="0,0,0,5">
-                                                                        <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="0.87*" />
-                                                                            <ColumnDefinition Width="0.13*" />
-                                                                        </Grid.ColumnDefinitions>
-                                                                        <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[vehlights], FallbackValue=Vehicle Lights}" ToolTip="{Binding Translation[vehlights], FallbackValue=Vehicle Lights}" TextTrimming="CharacterEllipsis"/>
-                                                                        <CheckBox x:Name="cb_veh_lights" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_veh_lights_Checked" Unchecked="cb_veh_lights_Checked" MaxHeight="30" IsEnabled="False"/>
-                                                                    </Grid>
-                                                                    <Grid Height="30" Margin="0,0,0,5">
-                                                                        <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="0.87*" />
-                                                                            <ColumnDefinition Width="0.13*" />
-                                                                        </Grid.ColumnDefinitions>
-                                                                        <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[vehsirens], FallbackValue=Vehicle Sirens}" ToolTip="{Binding Translation[vehsirens], FallbackValue=Vehicle Sirens}" TextTrimming="CharacterEllipsis"/>
-                                                                        <CheckBox x:Name="cb_veh_sirens" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_veh_sirens_Checked" Unchecked="cb_veh_sirens_Checked" MaxHeight="30" IsEnabled="False"/>
-                                                                    </Grid>
-                                                                    <Grid Height="30" Margin="0,0,0,5">
-                                                                        <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="0.87*" />
-                                                                            <ColumnDefinition Width="0.13*" />
-                                                                        </Grid.ColumnDefinitions>
-                                                                        <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[vehsirensaudio], FallbackValue=Vehicle Sirens Audio}" ToolTip="{Binding Translation[vehsirensaudio], FallbackValue=Vehicle Sirens Audio}" TextTrimming="CharacterEllipsis"/>
-                                                                        <CheckBox x:Name="cb_veh_sirens_audio" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_veh_sirens_audio_Checked" Unchecked="cb_veh_sirens_audio_Checked" MaxHeight="30" IsEnabled="False"/>
-                                                                    </Grid>
-                                                                    <Grid Height="30" Margin="0,0,0,5">
-                                                                        <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="0.87*" />
-                                                                            <ColumnDefinition Width="0.13*" />
-                                                                        </Grid.ColumnDefinitions>
-                                                                        <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[vehneonlights], FallbackValue=Neon Lights}" ToolTip="{Binding Translation[vehneonlights], FallbackValue=Neon Lights}" TextTrimming="CharacterEllipsis"/>
-                                                                        <CheckBox x:Name="cb_veh_neon" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_veh_neon_Checked" Unchecked="cb_veh_neon_Checked" MaxHeight="30" IsEnabled="False"/>
-                                                                    </Grid>
-                                                                    <Grid Height="30" Margin="0,0,0,5">
-                                                                        <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="0.87*" />
-                                                                            <ColumnDefinition Width="0.13*" />
-                                                                        </Grid.ColumnDefinitions>
-                                                                        <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[vehbox], FallbackValue=Spawn Boxes}" ToolTip="{Binding Translation[vehbox], FallbackValue=Spawn Boxes}" TextTrimming="CharacterEllipsis"/>
-                                                                        <CheckBox x:Name="cb_veh_box" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_veh_box_Checked" Unchecked="cb_veh_box_Checked" MaxHeight="30" IsEnabled="False"/>
-                                                                    </Grid>
-
-                                                                    <Border Background="Transparent" Margin="0,5,0,5" Height="30">
-                                                                        <ComboBox x:Name="ddvehicon" FontFamily="{DynamicResource Volte}" SelectionChanged="ddvehicon_SelectionChanged" IsEnabled="False" ToolTip="{Binding Translation[icon], FallbackValue=Icon}" Tag="{Binding Translation[icon], FallbackValue=Icon}">
-                                                                            <ComboBoxItem Content="{Binding Translation[standard], FallbackValue=Standard}"/>
-                                                                            <ComboBoxItem Content="A"/>
-                                                                            <ComboBoxItem Content="B"/>
-                                                                            <ComboBoxItem Content="C"/>
-                                                                            <ComboBoxItem Content="D"/>
-                                                                            <ComboBoxItem Content="E"/>
-                                                                            <ComboBoxItem Content="F"/>
-                                                                            <ComboBoxItem Content="G"/>
-                                                                            <ComboBoxItem Content="H"/>
-                                                                            <ComboBoxItem Content="SamTurret"/>
-                                                                            <ComboBoxItem Content="CCTV"/>
-                                                                            <ComboBoxItem Content="Juggernaut"/>
-                                                                            <ComboBoxItem Content="Cargo"/>
-                                                                            <ComboBoxItem Content="Target"/>
-                                                                        </ComboBox>
-                                                                    </Border>
-
-                                                                    <TextBox x:Name="tbvehiconsize" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[iconsize], FallbackValue=Icon Size}" IsEnabled="False" TextChanged="tbvehiconsize_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                                    <TextBox x:Name="tbvehlivery" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[livery], FallbackValue=Livery}" IsEnabled="False" TextChanged="tbvehlivery_TextChanged" KeyDown="FormatTextForInteger"/>
-                                                                    <TextBox x:Name="tbvehhead" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[heading], FallbackValue=Heading}" IsEnabled="False" TextChanged="tbvehhead_TextChanged" KeyDown="FormatTextForFloat"/>
-
-
-
-                                                                    <TextBlock Margin="0 10" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Text="{Binding Translation[health], FallbackValue=Health}" FontWeight="Bold" />
-
-                                                                    <Grid Height="30" Margin="0,0,0,5">
-                                                                        <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="0.87*" />
-                                                                            <ColumnDefinition Width="0.13*" />
-                                                                        </Grid.ColumnDefinitions>
-                                                                        <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[godmode], FallbackValue=God Mode}" ToolTip="{Binding Translation[godmode], FallbackValue=God Mode}" TextTrimming="CharacterEllipsis"/>
-                                                                        <CheckBox x:Name="cb_veh_godmode" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_veh_godmode_Checked" Unchecked="cb_veh_godmode_Checked" MaxHeight="30" IsEnabled="False"/>
-                                                                    </Grid>
-                                                                    <TextBox x:Name="tbvehenghp" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[enghp], FallbackValue=enghp}" IsEnabled="False" TextChanged="tbvehenghp_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                                    <TextBox x:Name="tbvehptrhp" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[ptrhp], FallbackValue=ptrhp}" IsEnabled="False" TextChanged="tbvehptrhp_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                                    <TextBox x:Name="tbvehbdyhp" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[bdyhp], FallbackValue=bdyhp}" IsEnabled="False" TextChanged="tbvehbdyhp_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                                    <TextBox x:Name="tbvehhlth"  Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[hlth], FallbackValue=hlth}" IsEnabled="False" TextChanged="tbvehhlth_TextChanged" KeyDown="FormatTextForInteger"/>
-
-
-                                                                </StackPanel>
-                                                                
-                                                                
-
-                                                            </Grid>
-
-                                                            <Grid Width="290" Height="auto" Margin="0,0,10,0">
-                                                                <Grid.RowDefinitions>
-                                                                    <RowDefinition Height="50"/>
-                                                                    <RowDefinition Height="*"/>
-                                                                </Grid.RowDefinitions>
-
-                                                                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Text="{Binding Translation[options], FallbackValue=Options}" FontWeight="Bold"/>
-
-
-                                                                <StackPanel Grid.Row="1" Orientation="Vertical" Margin="0,2,0,0">
-
-                                                                    <Grid Height="30" Margin="0,0,0,5">
-                                                                        <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="0.87*" />
-                                                                            <ColumnDefinition Width="0.13*" />
-                                                                        </Grid.ColumnDefinitions>
-                                                                        <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[freezecar], FallbackValue=Freeze Car}" ToolTip="{Binding Translation[freezecarinfo], FallbackValue=Freeze Car}" TextTrimming="CharacterEllipsis"/>
-                                                                        <CheckBox x:Name="cb_veh_freeze" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_veh_freeze_Checked" Unchecked="cb_veh_freeze_Checked" MaxHeight="30" IsEnabled="False"/>
-                                                                    </Grid>
-                                                                    <Grid Height="30" Margin="0,0,0,5">
-                                                                        <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="0.87*" />
-                                                                            <ColumnDefinition Width="0.13*" />
-                                                                        </Grid.ColumnDefinitions>
-                                                                        <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[markveh], FallbackValue=Mark Vehicle}" ToolTip="{Binding Translation[markveh], FallbackValue=Mark Vehicle}" TextTrimming="CharacterEllipsis"/>
-                                                                        <CheckBox x:Name="cb_veh_mark" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_veh_mark_Checked" Unchecked="cb_veh_mark_Checked" MaxHeight="30" IsEnabled="False"/>
-                                                                    </Grid>
-                                                                    <Grid Height="30" Margin="0,0,0,5">
-                                                                        <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="0.87*" />
-                                                                            <ColumnDefinition Width="0.13*" />
-                                                                        </Grid.ColumnDefinitions>
-                                                                        <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[lockveh], FallbackValue=Lock Vehicle}" ToolTip="{Binding Translation[lockveh], FallbackValue=Lock Vehicle}" TextTrimming="CharacterEllipsis"/>
-                                                                        <CheckBox x:Name="cb_veh_locveh" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_veh_locveh_Checked" Unchecked="cb_veh_locveh_Checked" MaxHeight="30" IsEnabled="False"/>
-                                                                    </Grid>
-                                                                    <Grid Height="30" Margin="0,0,0,5">
-                                                                        <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="0.87*" />
-                                                                            <ColumnDefinition Width="0.13*" />
-                                                                        </Grid.ColumnDefinitions>
-                                                                        <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[lockveh2], FallbackValue=Lock Vehicle for Players}" ToolTip="{Binding Translation[lockveh2], FallbackValue=Lock Vehicle for Players}" TextTrimming="CharacterEllipsis"/>
-                                                                        <CheckBox x:Name="cb_veh_locvehforp" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_veh_locvehforp_Checked" Unchecked="cb_veh_locvehforp_Checked" MaxHeight="30" IsEnabled="False"/>
-                                                                    </Grid>
-                                                                    <Grid Height="30" Margin="0,0,0,5">
-                                                                        <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="0.87*" />
-                                                                            <ColumnDefinition Width="0.13*" />
-                                                                        </Grid.ColumnDefinitions>
-                                                                        <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[bptires], FallbackValue=Bulletproof Tires}" ToolTip="{Binding Translation[bptires], FallbackValue=Bulletproof Tires}" TextTrimming="CharacterEllipsis"/>
-                                                                        <CheckBox x:Name="cb_veh_bptires" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_veh_bptires_Checked" Unchecked="cb_veh_bptires_Checked" MaxHeight="30" IsEnabled="False"/>
-                                                                    </Grid>
-
-                                                                    <ComboBox x:Name="ddvehrsp" Height="30" HorizontalAlignment="Stretch" Tag="{Binding Translation[vehrsp], FallbackValue=Vehcile Respawn}" ToolTip="{Binding Translation[vehrspinfo], FallbackValue=The amnount of times the Vehcile will Respawn}" IsEnabled="False" Margin="0,0,0,5" SelectionChanged="ddvehrsp_SelectionChanged">
-                                                                        <ComboBoxItem Content="{Binding Translation[never], FallbackValue='Never'}"/>
-                                                                        <ComboBoxItem Content="1"/>
-                                                                        <ComboBoxItem Content="2"/>
-                                                                        <ComboBoxItem Content="3"/>
-                                                                        <ComboBoxItem Content="4"/>
-                                                                        <ComboBoxItem Content="5"/>
-                                                                        <ComboBoxItem Content="6"/>
-                                                                        <ComboBoxItem Content="7"/>
-                                                                        <ComboBoxItem Content="8"/>
-                                                                        <ComboBoxItem Content="9"/>
-                                                                        <ComboBoxItem Content="10"/>
-                                                                        <ComboBoxItem Content="15"/>
-                                                                        <ComboBoxItem Content="20"/>
-                                                                        <ComboBoxItem Content="{Binding Translation[unlimited], FallbackValue='Unlimited'}"/>
-                                                                        <ComboBoxItem Content="{Binding Translation[plyl15], FallbackValue=Player num variable}"/>
-                                                                    </ComboBox>
-                                                                    <TextBox x:Name="tbvehvrr" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[vehvrr], FallbackValue=Respawn Range}" IsEnabled="False" TextChanged="tbvehvrr_TextChanged" KeyDown="FormatTextForFloat"/>
-
-
-                                                                    <Grid Height="30" Margin="0,0,0,5">
-                                                                        <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="0.87*" />
-                                                                            <ColumnDefinition Width="0.13*" />
-                                                                        </Grid.ColumnDefinitions>
-                                                                        <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[nottargetable], FallbackValue=Not Targetable}" ToolTip="{Binding Translation[nottargetable], FallbackValue=Not Targetable}" TextTrimming="CharacterEllipsis"/>
-                                                                        <CheckBox x:Name="cb_veh_nottargetable" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_veh_nottargetable_Checked" Unchecked="cb_veh_nottargetable_Checked" MaxHeight="30" IsEnabled="False"/>
-                                                                    </Grid>
-                                                                    <Grid Height="30" Margin="0,0,0,5">
-                                                                        <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="0.87*" />
-                                                                            <ColumnDefinition Width="0.13*" />
-                                                                        </Grid.ColumnDefinitions>
-                                                                        <TextBlock  Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[vehengineon], FallbackValue=Engine on}" ToolTip="{Binding Translation[vehengineoninfo], FallbackValue=Engine on}" TextTrimming="CharacterEllipsis"/>
-                                                                        <CheckBox x:Name="cb_veh_engine" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_veh_engine_Checked" Unchecked="cb_veh_engine_Checked" MaxHeight="30" IsEnabled="False"/>
-                                                                    </Grid>
-                                                                    <Grid Height="30" Margin="0,0,0,5">
-                                                                        <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="0.87*" />
-                                                                            <ColumnDefinition Width="0.13*" />
-                                                                        </Grid.ColumnDefinitions>
-                                                                        <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[veheiw], FallbackValue=Explode in Water}" ToolTip="{Binding Translation[veheiw], FallbackValue=Explode in Water}" TextTrimming="CharacterEllipsis"/>
-                                                                        <CheckBox x:Name="cb_veh_explodeinwater" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_veh_explodeinwater_Checked" Unchecked="cb_veh_explodeinwater_Checked" MaxHeight="30" IsEnabled="False"/>
-                                                                    </Grid>
-                                                                    <Grid Height="30" Margin="0,0,0,5">
-                                                                        <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="0.87*" />
-                                                                            <ColumnDefinition Width="0.13*" />
-                                                                        </Grid.ColumnDefinitions>
-                                                                        <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[vehlockteam], StringFormat='{}{0} 1', FallbackValue='Locked for Team 1'}" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" TextTrimming="CharacterEllipsis"/>
-                                                                        <CheckBox x:Name="cb_veh_lockteam1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_veh_lockteam_Checked" Unchecked="cb_veh_lockteam_Checked" MaxHeight="30" IsEnabled="False"/>
-                                                                    </Grid>
-                                                                    <Grid Height="30" Margin="0,0,0,5">
-                                                                        <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="0.87*" />
-                                                                            <ColumnDefinition Width="0.13*" />
-                                                                        </Grid.ColumnDefinitions>
-                                                                        <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[vehlockteam], StringFormat='{}{0} 2', FallbackValue='Locked for Team 2'}" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" TextTrimming="CharacterEllipsis"/>
-                                                                        <CheckBox x:Name="cb_veh_lockteam2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_veh_lockteam_Checked" Unchecked="cb_veh_lockteam_Checked" MaxHeight="30" IsEnabled="False"/>
-                                                                    </Grid>
-                                                                    <Grid Height="30" Margin="0,0,0,5">
-                                                                        <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="0.87*" />
-                                                                            <ColumnDefinition Width="0.13*" />
-                                                                        </Grid.ColumnDefinitions>
-                                                                        <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[vehlockteam], StringFormat='{}{0} 3', FallbackValue='Locked for Team 3'}" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" TextTrimming="CharacterEllipsis"/>
-                                                                        <CheckBox x:Name="cb_veh_lockteam3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_veh_lockteam_Checked" Unchecked="cb_veh_lockteam_Checked" MaxHeight="30" IsEnabled="False"/>
-                                                                    </Grid>
-                                                                    <Grid Height="30" Margin="0,0,0,5">
-                                                                        <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="0.87*" />
-                                                                            <ColumnDefinition Width="0.13*" />
-                                                                        </Grid.ColumnDefinitions>
-                                                                        <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[vehlockteam], StringFormat='{}{0} 4', FallbackValue='Locked for Team 4'}" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" TextTrimming="CharacterEllipsis"/>
-                                                                        <CheckBox x:Name="cb_veh_lockteam4" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_veh_lockteam_Checked" Unchecked="cb_veh_lockteam_Checked" MaxHeight="30" IsEnabled="False"/>
-                                                                    </Grid>
-
-                                                                    <Grid>
-                                                                        <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="0.74*"/>
-                                                                            <ColumnDefinition Width="0.13*"/>
-                                                                            <ColumnDefinition Width="0.13*"/>
-                                                                        </Grid.ColumnDefinitions>
-
-                                                                        <Grid.RowDefinitions>
-                                                                            <RowDefinition Height="50"/>
-                                                                            <RowDefinition Height="35"/>
-                                                                            <RowDefinition Height="35"/>
-                                                                            <RowDefinition Height="35"/>
-                                                                            <RowDefinition Height="35"/>
-                                                                            <RowDefinition Height="35"/>
-                                                                            <RowDefinition Height="35"/>
-                                                                        </Grid.RowDefinitions>
-
-                                                                        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="20" Text="{Binding Translation[vehdoorsheader], FallbackValue=Open/Close Doors}" FontWeight="Bold" />
-
-                                                                        <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="20" Text="{Binding Translation[vehdoorsfl], FallbackValue=Front Left}" />
-                                                                        <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="20" Text="{Binding Translation[vehdoorsfr], FallbackValue=Front Right}" />
-                                                                        <TextBlock Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="20" Text="{Binding Translation[vehdoorsrl], FallbackValue=Rear Left}" />
-                                                                        <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="20" Text="{Binding Translation[vehdoorsrr], FallbackValue=Rear Right}" />
-                                                                        <TextBlock Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="20" Text="{Binding Translation[vehdoorshood], FallbackValue=Hood}" />
-                                                                        <TextBlock Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="20" Text="{Binding Translation[vehdoorstrunk], FallbackValue=Trunk}" />
-
-                                                                        <CheckBox x:Name="cb_veh_door_open_fl" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_veh_door_open_lf_Checked" Unchecked="cb_veh_door_open_lf_Checked" MaxHeight="30" IsEnabled="False"/>
-                                                                        <CheckBox x:Name="cb_veh_door_open_fr" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_veh_door_open_lr_Checked" Unchecked="cb_veh_door_open_lr_Checked" MaxHeight="30" IsEnabled="False"/>
-                                                                        <CheckBox x:Name="cb_veh_door_open_rl" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_veh_door_open_rf_Checked" Unchecked="cb_veh_door_open_rf_Checked" MaxHeight="30" IsEnabled="False"/>
-                                                                        <CheckBox x:Name="cb_veh_door_open_rr" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_veh_door_open_rr_Checked" Unchecked="cb_veh_door_open_rr_Checked" MaxHeight="30" IsEnabled="False"/>
-                                                                        <CheckBox x:Name="cb_veh_door_open_hood" Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_veh_door_open_hood_Checked" Unchecked="cb_veh_door_open_hood_Checked" MaxHeight="30" IsEnabled="False"/>
-                                                                        <CheckBox x:Name="cb_veh_door_open_trunk" Grid.Row="6" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_veh_door_open_trunk_Checked" Unchecked="cb_veh_door_open_trunk_Checked" MaxHeight="30" IsEnabled="False"/>
-
-                                                                        <CheckBox x:Name="cb_veh_door_close_fl" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_veh_door_close_lf_Checked" Unchecked="cb_veh_door_close_lf_Checked" MaxHeight="30" IsEnabled="False"/>
-                                                                        <CheckBox x:Name="cb_veh_door_close_fr" Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_veh_door_close_lr_Checked" Unchecked="cb_veh_door_close_lr_Checked" MaxHeight="30" IsEnabled="False"/>
-                                                                        <CheckBox x:Name="cb_veh_door_close_rl" Grid.Row="3" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_veh_door_close_rf_Checked" Unchecked="cb_veh_door_close_rf_Checked" MaxHeight="30" IsEnabled="False"/>
-                                                                        <CheckBox x:Name="cb_veh_door_close_rr" Grid.Row="4" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_veh_door_close_rr_Checked" Unchecked="cb_veh_door_close_rr_Checked" MaxHeight="30" IsEnabled="False"/>
-                                                                        <CheckBox x:Name="cb_veh_door_close_hood" Grid.Row="5" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_veh_door_close_hood_Checked" Unchecked="cb_veh_door_close_hood_Checked" MaxHeight="30" IsEnabled="False"/>
-                                                                        <CheckBox x:Name="cb_veh_door_close_trunk" Grid.Row="6" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_veh_door_close_trunk_Checked" Unchecked="cb_veh_door_close_trunk_Checked" MaxHeight="30" IsEnabled="False"/>
-
-
-                                                                    </Grid>
-                                                                    
-                                                                </StackPanel>
-
-                                                            </Grid>
-
-                                                            <Grid Width="290" Height="auto" Margin="0,0,10,0">
-                                                                <Grid.RowDefinitions>
-                                                                    <RowDefinition Height="50"/>
-                                                                    <RowDefinition Height="*"/>
-                                                                </Grid.RowDefinitions>
-
-                                                                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Text="{Binding Translation[advanced], FallbackValue=Advanced}" FontWeight="Bold"/>
-
-                                                                <StackPanel Grid.Row="1" Orientation="Vertical" Margin="0,2,0,0">
-
-
-                                                                    <ComboBox x:Name="ddvehteamrlprio" VerticalAlignment="Top" Grid.Row="1" Height="30" HorizontalAlignment="Stretch" Tag="{Binding Translation[actorteam], FallbackValue=Team}" IsEnabled="False" Margin="0,3,0,5" SelectionChanged="ddvehteamrlprio_SelectionChanged">
-                                                                        <ComboBoxItem Content="1" Selector.IsSelected="True"/>
-                                                                        <ComboBoxItem Content="2"/>
-                                                                        <ComboBoxItem Content="3"/>
-                                                                        <ComboBoxItem Content="4"/>
-                                                                    </ComboBox>
-
-                                                                    <TextBox x:Name="tbvehrule" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[rule], FallbackValue=Rule}" IsEnabled="False" TextChanged="tbvehrule_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                    <TextBox x:Name="tbvehpriority" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[priority], FallbackValue=Priority}" IsEnabled="False" TextChanged="tbvehpriority_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                    <TextBox x:Name="tbvehjtop" Style="{StaticResource Watermark}" Tag="{Binding Translation[jtop], FallbackValue=Jump To Objective(Pass)}" Height="30" Margin="0,0,3,5" IsEnabled="False" TextChanged="tbkilljtop_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                    <TextBox x:Name="tbvehjtof" Style="{StaticResource Watermark}" Tag="{Binding Translation[jtof], FallbackValue=Jump To Objective(Fail)}" Height="30" Margin="0,0,3,5" IsEnabled="False" TextChanged="tbkilljtof_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                    <TextBox x:Name="tbvehobjt" Style="{StaticResource Watermark}" Tag="{Binding Translation[objt], FallbackValue=objt}" Height="30" Margin="0,0,3,5" IsEnabled="False" TextChanged="tbvehobjt_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                    <TextBox x:Name="tbvehspwn" Style="{StaticResource Watermark}" Tag="{Binding Translation[spwn], FallbackValue=spwn}" Height="30" Margin="0,0,3,5" IsEnabled="False" TextChanged="tbvehspwn_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                    <TextBox x:Name="tbvehteam" Style="{StaticResource Watermark}" Tag="{Binding Translation[team], FallbackValue=team}" Height="30" Margin="0,0,3,5" IsEnabled="False" TextChanged="tbvehteam_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                    <TextBox x:Name="tbvehspsrc" Style="{StaticResource Watermark}" Tag="{Binding Translation[spsrc], FallbackValue=spsrc}" Height="30" Margin="0,0,3,5" IsEnabled="False" TextChanged="tbvehspsrc_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                    <TextBox x:Name="tbvehspasr" Style="{StaticResource Watermark}" Tag="{Binding Translation[spasr], FallbackValue=spasr}" Height="30" Margin="0,0,3,5" IsEnabled="False" TextChanged="tbvehspasr_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                    
-                                                                    <Rectangle Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="#6C7378" Height="1" Margin="20,8,20,8" />
-
-                                                                    
-                                                                    <Grid>
-                                                                        <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="0.35*"/>
-                                                                            <ColumnDefinition Width="0.65*"/>
-                                                                        </Grid.ColumnDefinitions>
-
-                                                                        <Border Background="Transparent" Margin="0,0,0,5" Height="30" Grid.Column="0" >
-                                                                            <ComboBox x:Name="ddvehvbs" FontFamily="{DynamicResource Volte}" SelectionChanged="ddvehvbs_SelectionChanged" Tag="vbs" ToolTip="irbs" local:CornerRadiusSetter.CornerRadius="2,0,0,2" BorderThickness="1,1,0,1" IsEnabled="False">
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="46"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[spwnrlivc], FallbackValue=Ignore Visibility Check on Spawn}" ToolTip="{Binding Translation[spwnrlivc], FallbackValue=Ignore Visibility Check on Spawn}" IsEnabled="{Binding ElementName=cb_veh_spwnrlivc, Path=IsEnabled}"/>
+                                                                            <CheckBox x:Name="cb_veh_spwnrlivc" Checked="cb_veh_spwnrlivc_Checked" Unchecked="cb_veh_spwnrlivc_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                        </Grid>
+                                                                        <Rectangle Height="1" Fill="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="0,4,0,12"/>
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[asrlclteam], FallbackValue=Clear up by Team}"/>
+                                                                            <ComboBox x:Name="ddvehteamclear" IsEnabled="False" SelectionChanged="ddvehteamclear_SelectionChanged" Height="30" Margin="0,0,0,10">
+                                                                                <ComboBoxItem Content="{Binding Translation[none], FallbackValue=None}"/>
+                                                                                <ComboBoxItem Content="1"/>
+                                                                                <ComboBoxItem Content="2"/>
+                                                                                <ComboBoxItem Content="3"/>
+                                                                                <ComboBoxItem Content="4"/>
+                                                                            </ComboBox>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[asrlclear], FallbackValue=Clear up at Rule}"/>
+                                                                            <TextBox x:Name="tbvehclearrule" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehclearrule_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="46"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[clrlivc], FallbackValue=Ignore Visibility Check on Clean up}" ToolTip="{Binding Translation[clrlivc], FallbackValue=Ignore Visibility Check on Clean up}" IsEnabled="{Binding ElementName=cb_veh_clrlivc, Path=IsEnabled}"/>
+                                                                            <CheckBox x:Name="cb_veh_clrlivc" Checked="cb_veh_clrlivc_Checked" Unchecked="cb_veh_clrlivc_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                        </Grid>
+                                                                        </StackPanel>
+                                                                    </DockPanel>
+                                                                </Border>
+                                                                <Border Style="{StaticResource DashCard}">
+                                                                    <Expander Style="{StaticResource CardExpander}" Header="{Binding Translation[advanced], FallbackValue=Advanced}">
+                                                                        <StackPanel Margin="14,12,14,4">
+                                                                        <TextBlock Style="{StaticResource FieldLabelRaw}" Text="vbs2 … vbs9"/>
+                                                                        <Grid Margin="0,0,0,10">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="110"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <ComboBox x:Name="ddvehvbs" FontFamily="{DynamicResource Volte}" SelectionChanged="ddvehvbs_SelectionChanged" ToolTip="irbs" local:CornerRadiusSetter.CornerRadius="2,0,0,2" BorderThickness="1,1,0,1" IsEnabled="False" Height="30">
                                                                                 <ComboBox.Resources>
                                                                                     <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
                                                                                         <Style.Triggers>
@@ -3264,91 +3380,151 @@
                                                                                 <ComboBoxItem Content="8"/>
                                                                                 <ComboBoxItem Content="9"/>
                                                                             </ComboBox>
-                                                                        </Border>
+                                                                            <TextBox x:Name="tbvehvbs" TextChanged="tbvehvbs_TextChanged" KeyDown="FormatTextForModel" local:CornerRadiusSetter.CornerRadius="0,2,2,0" BorderThickness="0,1,1,1" IsEnabled="False" Grid.Column="1" Height="30">
+                                                                                <TextBox.Style>
+                                                                                    <Style TargetType="TextBox" BasedOn="{StaticResource Watermark}">
+                                                                                        <Style.Triggers>
+                                                                                            <DataTrigger Binding="{Binding IsFocused, ElementName=ddvehvbs}" Value="true">
+                                                                                                <Setter Property="BorderBrush" Value="{DynamicResource ComboBoxBorder}"/>
+                                                                                            </DataTrigger>
+                                                                                            <DataTrigger Binding="{Binding IsMouseOver, ElementName=ddvehvbs}" Value="true">
+                                                                                                <Setter Property="BorderBrush" Value="{DynamicResource ComboBoxBorder}"/>
+                                                                                            </DataTrigger>
+                                                                                        </Style.Triggers>
+                                                                                    </Style>
+                                                                                </TextBox.Style>
+                                                                            </TextBox>
+                                                                        </Grid>
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[actorteam], FallbackValue=Team}"/>
+                                                                            <ComboBox x:Name="ddvehteamrlprio" IsEnabled="False" SelectionChanged="ddvehteamrlprio_SelectionChanged" Height="30" Margin="0,0,0,10">
+                                                                                <ComboBoxItem Content="1" Selector.IsSelected="True"/>
+                                                                                <ComboBoxItem Content="2"/>
+                                                                                <ComboBoxItem Content="3"/>
+                                                                                <ComboBoxItem Content="4"/>
+                                                                            </ComboBox>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[rule], FallbackValue=Rule}"/>
+                                                                            <TextBox x:Name="tbvehrule" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehrule_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[priority], FallbackValue=Priority}"/>
+                                                                            <TextBox x:Name="tbvehpriority" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehpriority_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
 
-                                                                        <TextBox x:Name="tbvehvbs" Grid.Column="1" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" TextChanged="tbvehvbs_TextChanged" KeyDown="FormatTextForModel" local:CornerRadiusSetter.CornerRadius="0,2,2,0" BorderThickness="0,1,1,1" IsEnabled="False">
-                                                                            <TextBox.Style>
-                                                                                <Style TargetType="TextBox" BasedOn="{StaticResource Watermark}">
-                                                                                    <Style.Triggers>
-                                                                                        <DataTrigger Binding="{Binding IsFocused, ElementName=ddvehvbs}" Value="true">
-                                                                                            <Setter Property="BorderBrush" Value="{DynamicResource ComboBoxBorder}"/>
-                                                                                        </DataTrigger>
-                                                                                        <DataTrigger Binding="{Binding IsMouseOver, ElementName=ddvehvbs}" Value="true">
-                                                                                            <Setter Property="BorderBrush" Value="{DynamicResource ComboBoxBorder}"/>
-                                                                                        </DataTrigger>
-                                                                                    </Style.Triggers>
-                                                                                </Style>
-                                                                            </TextBox.Style>
-                                                                        </TextBox>
-                                                                    </Grid>
-                                                                    <TextBox x:Name="tbvehvebs" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[vebs], FallbackValue='vebs'}" IsEnabled="False" TextChanged="tbvehvebs_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                    <TextBox x:Name="tbvehdrbs" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[drbs], FallbackValue='drbs'}" IsEnabled="False" TextChanged="tbvehdrbs_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                    <TextBox x:Name="tbvehvehcr" Style="{StaticResource Watermark}" Tag="{Binding Translation[vehcr], FallbackValue=vehcr}" Height="30" Margin="0,0,3,5" IsEnabled="False" TextChanged="tbvehvehcr_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                    <TextBox x:Name="tbvehvehct" Style="{StaticResource Watermark}" Tag="{Binding Translation[vehct], FallbackValue=vehct}" Height="30" Margin="0,0,3,5" IsEnabled="False" TextChanged="tbvehvehct_TextChanged" KeyDown="FormatTextForModel"/>
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[jtop], FallbackValue='Jump To Objective(Pass)'}"/>
+                                                                            <TextBox x:Name="tbvehjtop" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbkilljtop_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[jtof], FallbackValue='Jump To Objective(Fail)'}"/>
+                                                                            <TextBox x:Name="tbvehjtof" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbkilljtof_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="objt"/>
+                                                                            <TextBox x:Name="tbvehobjt" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehobjt_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="spwn"/>
+                                                                            <TextBox x:Name="tbvehspwn" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehspwn_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="team"/>
+                                                                            <TextBox x:Name="tbvehteam" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehteam_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="spsrc"/>
+                                                                            <TextBox x:Name="tbvehspsrc" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehspsrc_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="spasr"/>
+                                                                            <TextBox x:Name="tbvehspasr" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehspasr_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="vebs"/>
+                                                                            <TextBox x:Name="tbvehvebs" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehvebs_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="drbs"/>
+                                                                            <TextBox x:Name="tbvehdrbs" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehdrbs_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="vehcr"/>
+                                                                            <TextBox x:Name="tbvehvehcr" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehvehcr_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="vehct"/>
+                                                                            <TextBox x:Name="tbvehvehct" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehvehct_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
 
-
-                                                                    <Rectangle Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="#6C7378" Height="1" Margin="20,8,20,8" />
-
-
-                                                                    <TextBlock Margin="0 10" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="20" Text="{Binding Translation[aslrheader], FallbackValue=Associated Rule}" FontWeight="Bold" />
-
-                                                                    <ComboBox x:Name="ddvehteamclear" VerticalAlignment="Top" Grid.Row="1" Height="30" HorizontalAlignment="Stretch" Tag="{Binding Translation[asrlclteam], FallbackValue=Clear up by Team}" IsEnabled="False" Margin="0,0,0,5" SelectionChanged="ddvehteamclear_SelectionChanged">
-                                                                        <ComboBoxItem Content="{Binding Translation[none], FallbackValue=None}"/>
-                                                                        <ComboBoxItem Content="1"/>
-                                                                        <ComboBoxItem Content="2"/>
-                                                                        <ComboBoxItem Content="3"/>
-                                                                        <ComboBoxItem Content="4"/>
-                                                                    </ComboBox>
-
-                                                                    <TextBox x:Name="tbvehclearrule" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[asrlclear], FallbackValue='Clear up at Rule'}" IsEnabled="False" TextChanged="tbvehclearrule_TextChanged" KeyDown="FormatTextForModel"/>
-
-                                                                    <Grid Height="30" Margin="0,0,0,5">
-                                                                        <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="0.87*" />
-                                                                            <ColumnDefinition Width="0.13*" />
-                                                                        </Grid.ColumnDefinitions>
-                                                                        <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="16" Text="{Binding Translation[clrlivc], FallbackValue=Ignore Visibility Check on Clean up}" ToolTip="{Binding Translation[clrlivc], FallbackValue=Ignore Visibility Check on Clean up}" TextTrimming="CharacterEllipsis"/>
-                                                                        <CheckBox x:Name="cb_veh_clrlivc" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_veh_clrlivc_Checked" Unchecked="cb_veh_clrlivc_Checked" MaxHeight="30" IsEnabled="False"/>
-                                                                    </Grid>
-                                                                    
-                                                                    <Rectangle Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="#6C7378" Height="1" Margin="20,3,20,8" />
-
-                                                                    <ComboBox x:Name="ddvehspawnon" VerticalAlignment="Top" Grid.Row="1" Height="30" HorizontalAlignment="Stretch" Tag="{Binding Translation[asrlspawnon], FallbackValue=Spawn On}" IsEnabled="False" Margin="0,0,0,5" SelectionChanged="ddvehspawnon_SelectionChanged">
-                                                                        <ComboBoxItem Content="{Binding Translation[spawnoption1], FallbackValue=Mission Start}"/>
-                                                                        <ComboBoxItem Content="{Binding Translation[spawnoption2], FallbackValue=Objective Start}"/>
-                                                                        <ComboBoxItem Content="{Binding Translation[spawnoption3], FallbackValue=Objective Mid Point}"/>
-                                                                        <ComboBoxItem Content="{Binding Translation[spawnoption4], FallbackValue=Only during Objective}"/>
-                                                                    </ComboBox>
-
-                                                                    <ComboBox x:Name="ddvehspawnteam" VerticalAlignment="Top" Grid.Row="1" Height="30" HorizontalAlignment="Stretch" Tag="{Binding Translation[asrlspawnteam], FallbackValue=Spawn by Team}" IsEnabled="False" Margin="0,0,0,5" SelectionChanged="ddvehspawnteam_SelectionChanged">
-                                                                        <ComboBoxItem Content="{Binding Translation[none], FallbackValue=None}"/>
-                                                                        <ComboBoxItem Content="1"/>
-                                                                        <ComboBoxItem Content="2"/>
-                                                                        <ComboBoxItem Content="3"/>
-                                                                        <ComboBoxItem Content="4"/>
-                                                                    </ComboBox>
-
-                                                                    <TextBox x:Name="tbvehspawnrule" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[asrlspawn], FallbackValue='Spawn at Rule'}" IsEnabled="False" TextChanged="tbvehspawnrule_TextChanged" KeyDown="FormatTextForModel"/>
-
-
-                                                                    <Grid Height="30" Margin="0,0,0,5">
-                                                                        <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="0.87*" />
-                                                                            <ColumnDefinition Width="0.13*" />
-                                                                        </Grid.ColumnDefinitions>
-                                                                        <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="16" Text="{Binding Translation[spwnrlivc], FallbackValue=Ignore Visibility Check on Spawn}" ToolTip="{Binding Translation[spwnrlivc], FallbackValue=Ignore Visibility Check on Spawn}" TextTrimming="CharacterEllipsis"/>
-                                                                        <CheckBox x:Name="cb_veh_spwnrlivc" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_veh_spwnrlivc_Checked" Unchecked="cb_veh_spwnrlivc_Checked" MaxHeight="30" IsEnabled="False"/>
-                                                                    </Grid>
-
-                                                                </StackPanel>
-
-                                                            </Grid>
-
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        </StackPanel>
+                                                                    </Expander>
+                                                                </Border>
+                                                            </StackPanel>
                                                         </WrapPanel>
-
                                                     </ScrollViewer>
-
-                                                </Grid>
+                                                </DockPanel>
 
                                             </TabItem>
 
