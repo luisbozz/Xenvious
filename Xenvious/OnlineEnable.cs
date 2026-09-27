@@ -34,7 +34,7 @@ namespace Xenvious
         /// xenvious.com backend, which is offline. The button stays hidden and init() does
         /// nothing while this is false.
         /// </summary>
-        public const bool Available = false;
+        public const bool Available = true;
 
         static string path = "";
         public static bool isDLLInjected = false;

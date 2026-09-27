@@ -67,7 +67,7 @@ namespace Xenvious
                 UpdateStatusStrip(game, inCreator, creatorMenu, creator);
                 UpdateEditNav(inCreator ? creator : "");
                 OfferLaunchInStoryMode(globals, inCreator, creatorMenu);
-                ScriptThreadLog.Tick($"state={CurrentGameState} creator={(inCreator ? creator : "-")}");
+                ScriptThreadLog.Tick($"state={CurrentGameState} creator={(inCreator ? creator : "-")} transition={(globals && GTA.Offsets.Editor.transitionState != 0 ? new Global(GTA.Offsets.Editor.transitionState).Get<int>() : -1)}");
             }
             catch (Exception ex)
             {
@@ -195,11 +195,10 @@ namespace Xenvious
 
         public GameState CurrentGameState { get; private set; } = GameState.NoGame;
 
-        // Markers from the thread log on Enhanced 1.0.1158: story mode runs flow_controller (there
+        // Markers from the thread log (Enhanced 1.0.1158 and Legacy): story mode runs flow_controller (there
         // is no respawn_controller), a switch between modes runs maintransition, the creator hub
         // runs creator, GTA Online freemode. In the game's own main menu no thread is live. Only
-        // live threads count (GTA.IsLiveThread); Legacy has no thread offsets yet, so an ended
-        // script can still look running there.
+        // live threads count (GTA.IsLiveThread); Legacy was checked the same way.
         private void UpdateGameState(bool game, bool globals, bool inCreator, bool creatorMenu)
         {
             GameState state = !game ? GameState.NoGame
@@ -207,7 +206,8 @@ namespace Xenvious
                 : inCreator ? GameState.Creator
                 : creatorMenu ? GameState.CreatorMenu
                 : GTA.IsScriptRunning("freemode") ? GameState.Online
-                : GTA.IsScriptRunning("flow_controller") ? GameState.StoryMode
+                // startup_positioning places the player while the loading screen is still up.
+                : GTA.IsScriptRunning("flow_controller") ? (GTA.IsScriptRunning("startup_positioning") ? GameState.Loading : GameState.StoryMode)
                 : GameState.MainMenu;
             if (state != CurrentGameState)
                 Log.Info($"game state: {CurrentGameState} -> {state}", source: "dashboard");
@@ -310,7 +310,6 @@ namespace Xenvious
             if (!m.IsProcOpen)
                 return;
             _launchStarted = DateTime.UtcNow;
-            _launchReport = true;
             if (!GameVariant.IsEnhanced || GameHasFocus())
             {
                 FireLaunch();
@@ -373,33 +372,10 @@ namespace Xenvious
             }
         }
 
-        private bool _launchReport;
-
         /// <summary>
         /// GTA has the focus while the creator starts, so Xenvious tells the player what
         /// happened when they come back: one dialog per launch.
         /// </summary>
-        private async void ReportLaunch(bool started, double seconds, bool menu = false)
-        {
-            if (!_launchReport)
-                return;
-            _launchReport = false;
-            if (menu)
-            {
-                await ConfirmAsync(TranslateOr("launch_menu_title", "Creator-Menü geöffnet"),
-                    string.Format(CultureInfo.CurrentCulture, TranslateOr("launch_menu_text", "Das Creator-Menü war nach {0:0} Sekunden da. Wähle in GTA, welchen Creator du öffnen willst."), seconds),
-                    "OK", null);
-                return;
-            }
-            await ConfirmAsync(
-                started ? TranslateOr("launch_done_title", "Creator gestartet")
-                        : TranslateOr("launch_failed_title", "Creator-Start fehlgeschlagen"),
-                started
-                    ? string.Format(CultureInfo.CurrentCulture, TranslateOr("launch_done_text", "Der Creator lief nach {0:0} Sekunden."), seconds)
-                    : TranslateOr("launch_failed_text", "Der Creator ist nicht innerhalb von 2 Minuten gestartet. Prüfe in GTA, wo das Spiel steht, und versuch es noch einmal."),
-                "OK", null, danger: !started);
-        }
-
         private void FireLaunch()
         {
             LaunchCreator();
@@ -427,7 +403,6 @@ namespace Xenvious
                         _launchPhase = LaunchPhase.None;
                         double took = (DateTime.UtcNow - _launchStarted).TotalSeconds;
                         Log.Info($"{(inCreator ? "Creator" : "Creator menu")} ready after {took:0.0} s", source: "dashboard");
-                        ReportLaunch(true, took, menu: !inCreator);
                         return;
                     }
                     if (_launchPhase == LaunchPhase.Requested && GTA.getCurrentCreatorAddy() != null)
@@ -437,7 +412,6 @@ namespace Xenvious
                         Log.Warn($"Creator did not start within {LaunchTimeout.TotalSeconds:0} s ({_launchPhase})", source: "dashboard");
                         _launchPhase = LaunchPhase.Failed;
                         _launchFailedAt = DateTime.UtcNow;
-                        ReportLaunch(false, LaunchTimeout.TotalSeconds);
                     }
                     break;
                 case LaunchPhase.Failed:
