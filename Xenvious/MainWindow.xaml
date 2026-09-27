@@ -6776,7 +6776,7 @@
                                                                                                     <ColumnDefinition Width="46"/>
                                                                                                 </Grid.ColumnDefinitions>
                                                                                                 <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[missionnlosehealthoopa], FallbackValue='Only out of Playarea'}"/>
-                                                                                                <CheckBox x:Name="cbmissionlosehealthoopa" Checked="cbmissionlosehealthoopa_Checked" Unchecked="cbmissionlosehealthoopa_Checked" Grid.Column="1" Style="{StaticResource FormToggle}">
+                                                                                                <CheckBox x:Name="cbmissionlosehealthoopa" Checked="cbmissionlosehealthoopa_Checked" Unchecked="cbmissionlosehealthoopa_Checked" Grid.Column="1">
                                                                                                     <CheckBox.Style>
                                                                                                         <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
                                                                                                             <Setter Property="Visibility" Value="Collapsed" />
