@@ -69,9 +69,12 @@ Status as of 2026-09-26. For a new Claude session: read this file, `AGENTS.md` a
 
 1. Card layout for the remaining edit pages: the Mission/Capture/Race/DM/Survival sub-pages, fixtures,
    modded, interior. Page concept has templates for Capture objects/general, Race checkpoints, Mission team settings.
-2. Dashboard: overview map (mockup https://claude.ai/artifact/C6nbeVWAam5wJZwdApWxtr, user picks A/B/C)
-   and ambient sections for DM and Survival.
+2. Dashboard: ambient sections for DM and Survival (check in the scripts which options their
+   controllers read). The overview map is shelved for now (user decision, mockup
+   https://claude.ai/artifact/C6nbeVWAam5wJZwdApWxtr).
 3. Zone type names above 7: need the DLC text labels (FMMC_ZN_TY*, MC_H_ZN_TY*), e.g. exported with OpenIV.
+   The public Mission Creator (Enhanced `public_mission_creator.c`, func_3152) offers only
+   0, 9, 12, 23, 37, 40 and 89, so the user can read those names in game.
 4. Optional: entry bar into the header row; catalog pictures for vehicles/weapons/actors (WebP).
 5. Later: Race handoff, converter and bit handling, new offsets optbs / musmustr / WSBS via ysc-global-updater.
 6. PR for `feature/ui-redesign` once the user asks (state what was tested in game).
