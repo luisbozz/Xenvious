@@ -252,6 +252,11 @@ def is_raw_field(it):
     return bool(lab) and not lab.startswith('{') and ' ' not in lab and not lab[:1].isupper()
 
 
+def toggle_attrs(cb):
+    """A checkbox that brings its own style (element <CheckBox.Style>) keeps it."""
+    return 'Grid.Column="1"' if '<CheckBox.Style>' in cb or 'Style=' in cb[:cb.index('>')] else 'Grid.Column="1" Style="{StaticResource FormToggle}"'
+
+
 def emit(items, n, vec_label=None):
     s = ' ' * n
     # raw values (short lowercase names) two per row
@@ -295,7 +300,7 @@ def emit(items, n, vec_label=None):
                     f'{s}<Grid Style="{{StaticResource FormRow}}">',
                     f'{s}    <Grid.ColumnDefinitions>\n{s}        <ColumnDefinition Width="*"/>\n{s}        <ColumnDefinition Width="46"/>\n{s}    </Grid.ColumnDefinitions>',
                     reindent(label[1], n + 4),
-                    reindent(clean(cb, add='Grid.Column="1" Style="{StaticResource FormToggle}"'), n + 4),
+                    reindent(clean(cb, add=toggle_attrs(cb)), n + 4),
                     f'{s}</Grid>']))
             else:
                 text = label[1] if isinstance(label, tuple) else (label or '')
@@ -305,7 +310,7 @@ def emit(items, n, vec_label=None):
                     f'{s}<Grid Style="{{StaticResource FormRow}}">',
                     f'{s}    <Grid.ColumnDefinitions>\n{s}        <ColumnDefinition Width="*"/>\n{s}        <ColumnDefinition Width="46"/>\n{s}    </Grid.ColumnDefinitions>',
                     f'{s}    <TextBlock Style="{{StaticResource FormLabel}}" Text="{text}"{tt}/>',
-                    reindent(clean(cb, add='Grid.Column="1" Style="{StaticResource FormToggle}"'), n + 4),
+                    reindent(clean(cb, add=toggle_attrs(cb)), n + 4),
                     f'{s}</Grid>']))
         elif kind == 'field':
             lab = label_xaml(it[1], n)
