@@ -111,7 +111,7 @@ namespace Xenvious
                 if (source != tbconvhex)
                     tbconvhex.Text = v.ToString("X8", CultureInfo.InvariantCulture);
                 if (source != tbconvbinary)
-                    tbconvbinary.Text = Convert.ToString(unchecked((int)v), 2).PadLeft(32, '0');
+                    tbconvbinary.Text = Regex.Replace(Convert.ToString(unchecked((int)v), 2).PadLeft(32, '0'), "(.{8})(?!$)", "$1 ");
             }
             finally
             {
@@ -155,9 +155,22 @@ namespace Xenvious
             if (!hit)
                 return;
             ConvHitKind.Text = TranslateOr("conv_kind_" + _convHit.ImageKind, _convHit.ImageKind).ToUpperInvariant();
+            ConvHitKind.Foreground = new SolidColorBrush(KindColor(_convHit.ImageKind));
             ConvHitName.Text = _convHit.Name;
             ConvHitNative.Text = _convHit.Native ?? "";
             ConvHitCategory.Text = _convHit.Category;
+        }
+
+        // Same colours as the mockup, so the kind is readable at a glance.
+        private static Color KindColor(string kind)
+        {
+            switch (kind)
+            {
+                case "vehicle": return Color.FromRgb(0x3B, 0xA5, 0x5D);
+                case "actor": return Color.FromRgb(0xF4, 0x7B, 0x67);
+                case "weapon": return Color.FromRgb(0xFA, 0xA6, 0x1A);
+                default: return Color.FromRgb(0x8C, 0x7E, 0xF0);
+            }
         }
 
         private void tbconvnative_TextChanged(object sender, TextChangedEventArgs e)
