@@ -11583,85 +11583,43 @@
 
                                                         <TabItem x:Name="PageInnerSurvivalGeneral" Header="General">
 
-                                                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                                            <!-- Card layout (docs/handoff/auto_page.py): one card per old column, headings as sub titles. -->
+                                                            <DockPanel Margin="10,0">
 
-                                                                <WrapPanel Margin="10,0,0,0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Stretch" >
-
-                                                                    <Grid Width="325" Height="auto" Margin="0,0,10,0">
-                                                                        <Grid.RowDefinitions>
-                                                                            <RowDefinition Height="50"/>
-                                                                            <RowDefinition Height="auto"/>
-                                                                        </Grid.RowDefinitions>
-
-                                                                        <TextBlock Grid.Row="0" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="24" Text="{Binding Translation[options], FallbackValue=Options}" FontWeight="Bold"/>
-
-                                                                        <StackPanel Orientation="Vertical" Grid.Row="1">
-
-                                                                            <Grid Height="30" Margin="0,0,0,5">
-                                                                                <Grid.ColumnDefinitions>
-                                                                                    <ColumnDefinition Width="0.87*" />
-                                                                                    <ColumnDefinition Width="0.13*" />
-                                                                                </Grid.ColumnDefinitions>
-                                                                                <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[survalienmode], FallbackValue='Alien Mode'}" TextTrimming="CharacterEllipsis"/>
-                                                                                <CheckBox x:Name="cbsurvalienmode" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbsurvalienmode_Checked" Unchecked="cbsurvalienmode_Checked" MaxHeight="30"/>
-                                                                            </Grid>
-                                                                            <Grid Height="30" Margin="0,0,0,5">
-                                                                                <Grid.ColumnDefinitions>
-                                                                                    <ColumnDefinition Width="0.87*" />
-                                                                                    <ColumnDefinition Width="0.13*" />
-                                                                                </Grid.ColumnDefinitions>
-                                                                                <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[survalienmodespawn], FallbackValue='Spawn Animation'}" TextTrimming="CharacterEllipsis" IsEnabled="{Binding ElementName=cbsurvalienmodespawn, Path=IsEnabled}"/>
-                                                                                <CheckBox x:Name="cbsurvalienmodespawn" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbsurvalienmodespawn_Checked" Unchecked="cbsurvalienmodespawn_Checked" MaxHeight="30" IsEnabled="{Binding ElementName=cbsurvalienmode, Path=IsChecked, Converter={StaticResource IsCheckedConverter}}" />
-                                                                            </Grid>
-                                                                            <TextBox x:Name="tbsurvwaves" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[survnumwaves], FallbackValue='Number of Waves'}" TextChanged="tbsurvwaves_TextChanged" KeyDown="FormatTextForInteger"/>
-
-
+                                                                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                                                    <WrapPanel Orientation="Horizontal" Margin="0,12,0,12">
+                                                                        <StackPanel Width="340" Margin="0,0,12,0">
+                                                                            <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
+                                                                                <DockPanel>
+                                                                                    <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                                                                        <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[options], FallbackValue=Options}"/>
+                                                                                    </Border>
+                                                                                    <StackPanel Margin="14,12,14,4">
+                                                                                    <Grid Style="{StaticResource FormRow}">
+                                                                                        <Grid.ColumnDefinitions>
+                                                                                            <ColumnDefinition Width="*"/>
+                                                                                            <ColumnDefinition Width="46"/>
+                                                                                        </Grid.ColumnDefinitions>
+                                                                                        <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[survalienmode], FallbackValue='Alien Mode'}"/>
+                                                                                        <CheckBox x:Name="cbsurvalienmode" Checked="cbsurvalienmode_Checked" Unchecked="cbsurvalienmode_Checked" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                                    </Grid>
+                                                                                    <Grid Style="{StaticResource FormRow}">
+                                                                                        <Grid.ColumnDefinitions>
+                                                                                            <ColumnDefinition Width="*"/>
+                                                                                            <ColumnDefinition Width="46"/>
+                                                                                        </Grid.ColumnDefinitions>
+                                                                                        <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[survalienmodespawn], FallbackValue='Spawn Animation'}"/>
+                                                                                        <CheckBox x:Name="cbsurvalienmodespawn" Checked="cbsurvalienmodespawn_Checked" Unchecked="cbsurvalienmodespawn_Checked" IsEnabled="{Binding ElementName=cbsurvalienmode, Path=IsChecked, Converter={StaticResource IsCheckedConverter}}" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                                    </Grid>
+                                                                                    <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[survnumwaves], FallbackValue='Number of Waves'}"/>
+                                                                                    <TextBox x:Name="tbsurvwaves" Style="{StaticResource Watermark}" TextChanged="tbsurvwaves_TextChanged" KeyDown="FormatTextForInteger" Height="30" Margin="0,0,0,10"/>
+                                                                                    </StackPanel>
+                                                                                </DockPanel>
+                                                                            </Border>
                                                                         </StackPanel>
-
-                                                                    </Grid>
-
-                                                                    <!--<Grid Width="325" Height="auto" Margin="0,0,10,0">
-                                                                        <Grid.RowDefinitions>
-                                                                            <RowDefinition Height="50"/>
-                                                                            <RowDefinition Height="auto"/>
-                                                                            <RowDefinition Height="38"/>
-                                                                            <RowDefinition Height="35"/>
-                                                                            <RowDefinition Height="35"/>
-                                                                            <RowDefinition Height="35"/>
-                                                                            <RowDefinition Height="*"/>
-                                                                        </Grid.RowDefinitions>
-
-                                                                        <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="*"/>
-                                                                            <ColumnDefinition Width="30"/>
-                                                                        </Grid.ColumnDefinitions>
-
-                                                                        <TextBlock Grid.Row="0" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="24" Text="{Binding Translation[sgridcarloc], FallbackValue=Starting Grid Car Locations}" FontWeight="Bold" TextTrimming="CharacterEllipsis" Grid.ColumnSpan="2"/>
-
-                                                                        <Border Grid.Row="1" Grid.ColumnSpan="2" Background="Transparent" Margin="0,5,3,3" Height="30">
-                                                                            <ComboBox x:Name="ddcpssg" FontFamily="{DynamicResource Volte}" SelectionChanged="ddcpssg_SelectionChanged" Tag="{Binding Translation[carnum], FallbackValue=Car Number}"/>
-                                                                        </Border>
-
-                                                                        <TextBox x:Name="tbcpssglocx" Grid.Row="2" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3x], FallbackValue=X-Component}" Margin="0,5,3,3" TextChanged="tbcpssglocx_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangeVEHLocationXPlusMinus"/>
-                                                                        <TextBox x:Name="tbcpssglocy" Grid.Row="3" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3y], FallbackValue=Y-Component}" Margin="0,5,3,3" TextChanged="tbcpssglocy_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangeVEHLocationYPlusMinus"/>
-                                                                        <TextBox x:Name="tbcpssglocz" Grid.Row="4" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3z], FallbackValue=Z-Component}" Margin="0,5,3,3" TextChanged="tbcpssglocz_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangeVEHLocationZPlusMinus"/>
-
-                                                                        <Border Grid.Row="2" Grid.Column="1" Grid.RowSpan="3" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5">
-                                                                            <Border.Effect>
-                                                                                <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>
-                                                                            </Border.Effect>
-
-                                                                            <Button x:Name="Btncpssggetloc" Style="{DynamicResource TitleBarButton}" Click="Btncpssggetloc_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Translation[getcursorloc], FallbackValue=Get Cursor Location}" HorizontalAlignment="Left" Width="20" >
-                                                                                <Path x:Name="cpssggetlocpath"  Data="M 12 12 L 12 0 L 6 6 Z" Stretch="Uniform" Stroke="{DynamicResource TextColor}" />
-                                                                            </Button>
-                                                                        </Border>
-                                                                        <TextBox x:Name="tbcpssghead" Grid.Row="5" Style="{StaticResource Watermark}" Tag="{Binding Translation[heading], FallbackValue=Heading}" Margin="0,5,3,3" TextChanged="tbcpssghead_TextChanged" KeyDown="FormatTextForFloat"/>
-
-                                                                    </Grid>-->
-
-                                                                </WrapPanel>
-
-                                                            </ScrollViewer>
+                                                                    </WrapPanel>
+                                                                </ScrollViewer>
+                                                            </DockPanel>
 
                                                         </TabItem>
 
