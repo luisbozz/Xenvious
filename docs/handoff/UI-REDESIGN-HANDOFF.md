@@ -54,20 +54,27 @@ Status as of 2026-09-26. For a new Claude session: read this file, `AGENTS.md` a
     - in `Controls/NavBar.xaml`: FormButtonPrimary, EntryStepButton, FieldIconButton, GoToPageIcon (arrow for buttons that jump to another page).
 - **Map Mover calibration** measured in game and set as the default.
 
+## Done on 2026-09-27 (not tested in game yet)
+
+- Vehicles, zones, weapons and doors in the card layout (`docs/handoff/vehicle_page.py`,
+  `zone_page.py`, `weapon_page.py`, `doors_page.py`; `.gitignore` excludes `*.py`, so add them with `git add -f`).
+  Vehicles and weapons have a model card with catalog (no pictures: the only sources found serve WebP).
+- Zones: zone type picker with names and help (`Creator Classes/ZoneTypes.cs`), taken from the zone
+  type switch in `fm_mission_controller`. Rockstar's names for types above 7 are in no public label dump.
+- Actor catalog: categories and model names from `fm_lts_creator` (`Creator Classes/ActorCategories.cs`).
+- Entry number dropdown stays numbers only (user picked variant A).
+- Copy Jobs "missing models" check: dropped, the user does not need it.
+
 ## Open todos
 
-1. Rebuild the other edit pages in the card layout: vehicles, weapons, zones, doors, the Mission/Capture/Race/DM/Survival sub-pages, fixtures, modded, interior. Use the same pattern, styles and generator approach as for props.
-2. Use FieldIconButton (crosshair, link) and GoToPageIcon (arrow for page jumps) on those pages too.
-3. Optional: move the entry bar into the header row next to the title (as in the page concept).
-4. Dashboard: overview map (the user wants it) and ambient sections for DM and Survival.
-5. Actor list with model names and categories from the scripts (`fm_lts_creator` func_5751/func_952, 10 categories), so actors get pictures and categories in the catalog.
-6. Copy Jobs: check for missing models.
-7. Read the Race HANDOFF.md (the user has the file and will attach it again).
-8. Later:
-   - extend the converter and switch the bit handling
-   - new offsets optbs / musmustr / WSBS via ysc-global-updater
-9. Create a PR for `feature/ui-redesign` once the user asks (state what was tested in game).
-10. Check the latest builds `5bc4df8`, `1550dc4` and `792289b` in Actions.
+1. Card layout for the remaining edit pages: the Mission/Capture/Race/DM/Survival sub-pages, fixtures,
+   modded, interior. Page concept has templates for Capture objects/general, Race checkpoints, Mission team settings.
+2. Dashboard: overview map (mockup https://claude.ai/artifact/C6nbeVWAam5wJZwdApWxtr, user picks A/B/C)
+   and ambient sections for DM and Survival.
+3. Zone type names above 7: need the DLC text labels (FMMC_ZN_TY*, MC_H_ZN_TY*), e.g. exported with OpenIV.
+4. Optional: entry bar into the header row; catalog pictures for vehicles/weapons/actors (WebP).
+5. Later: Race handoff, converter and bit handling, new offsets optbs / musmustr / WSBS via ysc-global-updater.
+6. PR for `feature/ui-redesign` once the user asks (state what was tested in game).
 
 ## Mockups (claude.ai artifacts, private to the old account)
 
