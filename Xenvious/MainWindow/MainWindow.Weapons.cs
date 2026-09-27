@@ -118,6 +118,7 @@ namespace Xenvious
                 }
 
                 if (!tbweapmodel.IsFocused || ignore_focus) tbweapmodel.Text = model.ToString();
+                WeapModelCard.SetModel(unchecked((uint)model));
                 if (!tbweaplocx.IsFocused || ignore_focus) tbweaplocx.Text = new Global((GTA.Offsets.Editor.Weapon.locx + GTA.Offsets.Editor.Weapon.NEXT * index)).Get<float>().ToString();
                 if (!tbweaplocy.IsFocused || ignore_focus) tbweaplocy.Text = new Global((GTA.Offsets.Editor.Weapon.locy + GTA.Offsets.Editor.Weapon.NEXT * index)).Get<float>().ToString();
                 if (!tbweaplocz.IsFocused || ignore_focus) tbweaplocz.Text = new Global((GTA.Offsets.Editor.Weapon.locz + GTA.Offsets.Editor.Weapon.NEXT * index)).Get<float>().ToString();

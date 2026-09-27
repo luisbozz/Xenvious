@@ -8,12 +8,13 @@ using System.Windows.Controls;
 
 namespace Xenvious
 {
-    // Part of MainWindow: the model catalog on the Props, Dynamic Props, Vehicle and Actor pages, and its picture cache in Settings.
+    // Part of MainWindow: the model catalog on the Props, Dynamic Props, Vehicle, Weapon and Actor pages, and its picture cache in Settings.
     public partial class MainWindow
     {
         private List<CatalogItem> _propCatalog;
         private List<CatalogItem> _actorCatalog;
         private List<CatalogItem> _vehicleCatalog;
+        private List<CatalogItem> _weaponCatalog;
 
         // Props and dynamic props share one list, and with it the same pictures. An empty list
         // (asked for before the offline data was loaded) is built again next time.
@@ -28,11 +29,16 @@ namespace Xenvious
         private List<CatalogItem> VehicleCatalog => _vehicleCatalog?.Count > 0 ? _vehicleCatalog : (_vehicleCatalog = GTA.Editor.VehList
             .Select(v => new CatalogItem(v.Native, v.Native, v.Uint32, v.Category, "vehicle")).ToList());
 
+        // weapons.json has weapon names only, no pictures either.
+        private List<CatalogItem> WeaponCatalog => _weaponCatalog?.Count > 0 ? _weaponCatalog : (_weaponCatalog = GTA.Editor.WeaponList
+            .Select(w => new CatalogItem(w.Native, w.Native, w.UInt32, w.Category, "weapon")).ToList());
+
         private void InitModelCards()
         {
             Wire(PropModelCard, ddpropno, () => PropCatalog, TranslateOr("prop", "Props"), () => (GTA.Offsets.Editor.Props.model, GTA.Offsets.Editor.Props.NEXT, ddpropno.SelectedIndex));
             Wire(DPropModelCard, dddpropno, () => PropCatalog, TranslateOr("dprop", "Dynamic Props"), () => (GTA.Offsets.Editor.DProps.model, GTA.Offsets.Editor.DProps.NEXT, dddpropno.SelectedIndex));
             Wire(VehModelCard, ddvehno, () => VehicleCatalog, TranslateOr("vehicles", "Vehicles"), () => (GTA.Offsets.Editor.Vehicle.model, GTA.Offsets.Editor.Vehicle.NEXT, ddvehno.SelectedIndex));
+            Wire(WeapModelCard, ddweapno, () => WeaponCatalog, TranslateOr("weapons", "Weapons"), () => (GTA.Offsets.Editor.Weapon.model, GTA.Offsets.Editor.Weapon.NEXT, ddweapno.SelectedIndex));
             Wire(ActorModelCard, ddactorno, () => ActorCatalog, TranslateOr("actor", "Actors"), () => (GTA.Offsets.Editor.Actor.model, GTA.Offsets.Editor.Actor.NEXT, ddactorno.SelectedIndex));
         }
 

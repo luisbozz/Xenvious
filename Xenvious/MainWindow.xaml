@@ -3531,337 +3531,450 @@
 
                                             <TabItem x:Name="PageWeapon" Header="Weapon" >
 
-                                                <Grid Background="Transparent" Grid.Column="1" Margin="15 0">
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height="0.2*" MinHeight="50" MaxHeight="60"/>
-                                                        <RowDefinition Height="*" MinHeight="205"/>
-                                                    </Grid.RowDefinitions>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="0.3*" MinWidth="205"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                    </Grid.ColumnDefinitions>
-
-                                                    <Border Margin="0,10,10,10" Grid.Row="0" Grid.RowSpan="2" BorderThickness="1" CornerRadius="5" BorderBrush="{DynamicResource SectionBackgroundBrush}" Background="{DynamicResource SectionBackgroundBrush}" MinHeight="225" MinWidth="175">
-                                                        <Border.Effect>
-                                                            <DropShadowEffect BlurRadius="8" ShadowDepth="0" Color="{DynamicResource ShadowColor}"/>    
-                                                        </Border.Effect>
-                                                        <Grid>
-
-                                                            <Grid.RowDefinitions>
-                                                                <RowDefinition Height="0.13*" MinHeight="50" MaxHeight="150"/>
-                                                                <RowDefinition Height="*"/>
-                                                            </Grid.RowDefinitions>
-
-                                                            <!--Top-->
-                                                            <Border x:Name="Lblweapmodel" Grid.Row="0" CornerRadius="5" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="8,5,8,0">
-                                                                <Viewbox VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                                                                    <Label Foreground="{DynamicResource TextColor}" FontFamily="{DynamicResource Volte}" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Content="{Binding Translation[model], FallbackValue=Model}"/>
-                                                                </Viewbox>
-                                                            </Border>
-
-                                                            <!--Bottom-->
-                                                            <Border Grid.Row="1" CornerRadius="5" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="8">
-                                                                <Grid Margin="5">
-                                                                    <Grid.RowDefinitions>
-                                                                        <RowDefinition Height="35"/>
-                                                                        <RowDefinition Height="35"/>
-                                                                        <RowDefinition Height="*"/>
-                                                                    </Grid.RowDefinitions>
-
-                                                                    <Border Grid.Row="0" Margin="3,0,3,5" Background="Transparent">
-                                                                        <ComboBox x:Name="ddweapmodelswicther" FontFamily="{DynamicResource Volte}" IsEnabled="False" Tag="{Binding Translation[category], FallbackValue=Category}" ToolTip="{Binding Translation[inputmode], FallbackValue=Input Mode}" SelectionChanged="ddweapmodelswicther_SelectionChanged">
-                                                                            <ComboBoxItem Content="{Binding Translation[custom], FallbackValue=Custom}" />
-                                                                            <ComboBoxItem Content="{Binding Translation[category], FallbackValue=Category}" Selector.IsSelected="True" />
-                                                                        </ComboBox>
-                                                                    </Border>
-                                                                    <Border Grid.Row="1" Margin="3,0,3,5" Background="Transparent">
-                                                                        <ComboBox x:Name="ddweapcategory" FontFamily="{DynamicResource Volte}" IsEnabled="False" SelectionChanged="ddweapcategory_SelectionChanged" ToolTip="{Binding Translation[vcategory], FallbackValue=Weapon Category}" Tag="{Binding Translation[vcategory], FallbackValue=Weapon Category}" ItemsSource="{x:Static local:GTA+Editor.WeaponCategories}"/>
-                                                                    </Border>
-
-                                                                    <TextBox x:Name="tbweapmodel" Grid.Row="2" VerticalAlignment="Top" Style="{StaticResource Watermark}" Tag="Model" ToolTip="Model" Height="30" Margin="3 0" IsEnabled="False" Visibility="Collapsed" TextChanged="tbweapmodel_TextChanged"  />
-
-                                                                    <ListView x:Name="weapModelList" Grid.Row="2" Margin="0 5 0 0" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource TextColor}" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding .}" DisplayMemberPath="Name" SelectionChanged="weapModelList_SelectionChanged"/>
-
-                                                                </Grid>
-                                                            </Border>
-                                                        </Grid>
+                                                <!-- Entry bar on top, then cards by topic: model and position, look, rules, raw values. -->
+                                                <DockPanel Margin="10,0">
+                                                    <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,12">
+                                                        <DockPanel>
+                                                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                                                                <!-- ‹ number › : steps through the entries without opening the list. -->
+                                                                <Border Background="{DynamicResource ComboBoxBackground}" BorderBrush="{DynamicResource ComboBoxBorder}" BorderThickness="1" CornerRadius="4" Height="32" Margin="0,0,10,0">
+                                                                    <StackPanel Orientation="Horizontal">
+                                                                        <Button Style="{StaticResource EntryStepButton}" Content="‹" Tag="{Binding ElementName=ddweapno}" CommandParameter="-1" Click="EntryStep_Click" ToolTip="{Binding Translation[entry_prev], FallbackValue=Previous}"/>
+                                                                        <ComboBox x:Name="ddweapno" FontFamily="{DynamicResource Volte}" SelectionChanged="ddweapno_SelectionChanged" ToolTip="{Binding Translation[windex], FallbackValue='Weapon Index'}" Width="84" Height="30" BorderThickness="0"/>
+                                                                        <Button Style="{StaticResource EntryStepButton}" Content="›" Tag="{Binding ElementName=ddweapno}" CommandParameter="1" Click="EntryStep_Click" ToolTip="{Binding Translation[entry_next], FallbackValue=Next}"/>
+                                                                    </StackPanel>
+                                                                </Border>
+                                                                <Button x:Name="BtnWeapDelete" Style="{StaticResource FormButton}" Width="34" Height="32" Padding="0" Margin="0,0,6,0" Click="BtnWeapDelete_Click" ToolTip="{Binding Translation[delete], FallbackValue=Delete}">
+                                                                    <Path Data="M3,4 L13,4 M6,4 L6,2.5 L10,2.5 L10,4 M4.5,4 L5.2,14 L10.8,14 L11.5,4" Stroke="{DynamicResource TextColor}" StrokeThickness="1.5" StrokeLineJoin="Round" Width="16" Height="16"/>
+                                                                </Button>
+                                                                <Button x:Name="BtnWeapAdd" Style="{StaticResource FormButtonPrimary}" Height="32" Padding="10,0,12,0" Click="BtnWeapAdd_Click" ToolTip="{Binding Translation[add], FallbackValue=Add}">
+                                                                    <StackPanel Orientation="Horizontal">
+                                                                        <Path Data="M8,3 L8,13 M3,8 L13,8" Stroke="#FF202225" StrokeThickness="2" Width="16" Height="16" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                                                        <TextBlock VerticalAlignment="Center" Foreground="#FF202225" Text="{Binding Translation[add], FallbackValue=Add}"/>
+                                                                    </StackPanel>
+                                                                </Button>
+                                                            </StackPanel>
+                                                            <TextBlock VerticalAlignment="Center" FontSize="14" Foreground="{StaticResource NavMutedBrush}">
+                                                                <Run FontSize="17" FontWeight="Bold" Foreground="{DynamicResource TextColor}" Text="{Binding Items.Count, ElementName=ddweapno, Mode=OneWay}"/>
+                                                                <Run Text="{Binding Translation[weapons_placed], FallbackValue=weapons placed}"/>
+                                                            </TextBlock>
+                                                        </DockPanel>
                                                     </Border>
-
-                                                    <Grid Grid.Column="1">
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="*"/>
-                                                            <ColumnDefinition Width="0.20*" MinWidth="80"/>
-                                                            <ColumnDefinition Width="0.20*" MinWidth="80"/>
-                                                            <ColumnDefinition Width="0.40*" MinWidth="125"/>
-                                                        </Grid.ColumnDefinitions>
-
-
-                                                        <Border  Grid.Column="1" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5 10">
-                                                            <Border.Effect>
-                                                                <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>        
-                                                            </Border.Effect>
-                                                            <Button x:Name="BtnWeapAdd" Style="{DynamicResource CustomButton}" Content="{Binding Translation[add], FallbackValue=Add}" local:CornerRadiusSetter.CornerRadius="5" Click="BtnWeapAdd_Click"/>
+                                                    <!-- The old model controls: hidden, but their code still reads and fills them. -->
+                                                    <StackPanel DockPanel.Dock="Top" Visibility="Collapsed">
+                                                        <Border x:Name="Lblweapmodel" Grid.Row="0" CornerRadius="5" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="8,5,8,0">
+                                                            <Viewbox VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                                                                <Label Foreground="{DynamicResource TextColor}" FontFamily="{DynamicResource Volte}" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Content="{Binding Translation[model], FallbackValue=Model}"/>
+                                                            </Viewbox>
                                                         </Border>
-                                                        <Border  Grid.Column="2" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5 10">
-                                                            <Border.Effect>
-                                                                <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>        
-                                                            </Border.Effect>
-                                                            <Button x:Name="BtnWeapDelete" Style="{DynamicResource CustomButton}" Content="{Binding Translation[delete], FallbackValue=Delete}" local:CornerRadiusSetter.CornerRadius="5" Click="BtnWeapDelete_Click"/>
-                                                        </Border>
-                                                        <Border Grid.Column="3" Margin="5 10" Background="Transparent">
-                                                            <Border.Effect>
-                                                                <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>        
-                                                            </Border.Effect>
-                                                            <ComboBox x:Name="ddweapno" FontFamily="{DynamicResource Volte}" SelectionChanged="ddweapno_SelectionChanged" ToolTip="{Binding Translation[windex], FallbackValue='Weapon Index'}" Tag="{Binding Translation[windex], FallbackValue='Weapon Index'}"/>
-                                                        </Border>
-
-
-                                                    </Grid>
-
-                                                    <ScrollViewer Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Auto">
-
-                                                        <WrapPanel Margin="10,0,0,0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Stretch" >
-
-                                                            <Grid Width="290" Height="auto" Margin="0,0,10,0">
+                                                        <Border Grid.Row="1" CornerRadius="5" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="8">
+                                                            <Grid Margin="5">
                                                                 <Grid.RowDefinitions>
-                                                                    <RowDefinition Height="50"/>
+                                                                    <RowDefinition Height="35"/>
+                                                                    <RowDefinition Height="35"/>
                                                                     <RowDefinition Height="*"/>
                                                                 </Grid.RowDefinitions>
 
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="0.5*"/>
-                                                                    <ColumnDefinition Width="0.5*"/>
-                                                                </Grid.ColumnDefinitions>
+                                                                <Border Grid.Row="0" Margin="3,0,3,5" Background="Transparent">
+                                                                    <ComboBox x:Name="ddweapmodelswicther" FontFamily="{DynamicResource Volte}" IsEnabled="False" Tag="{Binding Translation[category], FallbackValue=Category}" ToolTip="{Binding Translation[inputmode], FallbackValue=Input Mode}" SelectionChanged="ddweapmodelswicther_SelectionChanged">
+                                                                        <ComboBoxItem Content="{Binding Translation[custom], FallbackValue=Custom}" />
+                                                                        <ComboBoxItem Content="{Binding Translation[category], FallbackValue=Category}" Selector.IsSelected="True" />
+                                                                    </ComboBox>
+                                                                </Border>
+                                                                <Border Grid.Row="1" Margin="3,0,3,5" Background="Transparent">
+                                                                    <ComboBox x:Name="ddweapcategory" FontFamily="{DynamicResource Volte}" IsEnabled="False" SelectionChanged="ddweapcategory_SelectionChanged" ToolTip="{Binding Translation[vcategory], FallbackValue=Weapon Category}" Tag="{Binding Translation[vcategory], FallbackValue=Weapon Category}" ItemsSource="{x:Static local:GTA+Editor.WeaponCategories}"/>
+                                                                </Border>
 
-                                                                <!--header-->
-                                                                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Text="{Binding Translation[loc], FallbackValue=Location}" FontWeight="Bold"/>
+                                                                <TextBox x:Name="tbweapmodel" Grid.Row="2" VerticalAlignment="Top" Style="{StaticResource Watermark}" Tag="Model" ToolTip="Model" Height="30" Margin="3 0" IsEnabled="False" Visibility="Collapsed" TextChanged="tbweapmodel_TextChanged"  />
 
-                                                                <Grid Grid.Row="1" Grid.ColumnSpan="2">
-                                                                    <Grid.RowDefinitions>
-                                                                        <RowDefinition Height="34"/>
-                                                                        <RowDefinition Height="34"/>
-                                                                        <RowDefinition Height="34"/>
-                                                                        <RowDefinition Height="5"/>
-                                                                        <RowDefinition Height="34"/>
-                                                                        <RowDefinition Height="34"/>
-                                                                        <RowDefinition Height="34"/>
-                                                                    </Grid.RowDefinitions>
-                                                                    <Grid.ColumnDefinitions>
-                                                                        <ColumnDefinition Width="*"/>
-                                                                        <ColumnDefinition Width="30"/>
-                                                                    </Grid.ColumnDefinitions>
-
-                                                                    <TextBox x:Name="tbweaplocx" Grid.Row="0" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3x], FallbackValue=X-Component}" Height="30" Margin="0,0,5,0" IsEnabled="False" TextChanged="tbweaplocx_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangeWeapLocationXPlusMinus"/>
-                                                                    <TextBox x:Name="tbweaplocy" Grid.Row="1" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3y], FallbackValue=Y-Component}" Height="30" Margin="0,0,5,0" IsEnabled="False" TextChanged="tbweaplocy_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangeWeapLocationYPlusMinus"/>
-                                                                    <TextBox x:Name="tbweaplocz" Grid.Row="2" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3z], FallbackValue=Z-Component}" Height="30" Margin="0,0,5,0" IsEnabled="False" TextChanged="tbweaplocz_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangeWeapLocationZPlusMinus"/>
-
-                                                                    <Border  Grid.Column="1" Grid.RowSpan="3" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5">
-                                                                        <Border.Effect>
-                                                                            <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>                    
-                                                                        </Border.Effect>
-
-                                                                        <Button x:Name="Btnweapgetloc" Style="{DynamicResource TitleBarButton}" Click="Btnweapgetloc_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Translation[getcursorloc], FallbackValue=Get Cursor Location}" IsEnabled="False" >
-                                                                            <Path x:Name="weapgetlocpath"  Data="M 12 12 L 12 0 L 6 6 Z" Stretch="Uniform" Stroke="{DynamicResource TextColor}" />
-                                                                        </Button>
-                                                                    </Border>
-
-
-
-                                                                </Grid>
+                                                                <ListView x:Name="weapModelList" Grid.Row="2" Margin="0 5 0 0" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource TextColor}" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding .}" DisplayMemberPath="Name" SelectionChanged="weapModelList_SelectionChanged"/>
 
                                                             </Grid>
+                                                        </Border>
+                                                    </StackPanel>
+                                                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                                        <WrapPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                <local:ModelCard x:Name="WeapModelCard" Margin="0,0,0,12"/>
+                                                            </StackPanel>
+                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                <Border Style="{StaticResource DashCard}">
+                                                                    <DockPanel>
+                                                                        <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                                                            <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[card_position], FallbackValue=Placement}"/>
+                                                                        </Border>
+                                                                        <StackPanel Margin="14,12,14,4">
+                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[loc], FallbackValue=Location}"/>
+                                                                        <Grid Margin="0,0,0,10">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="6"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="6"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="6"/>
+                                                                                <ColumnDefinition Width="30"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="X"/>
+                                                                                <TextBox x:Name="tbweaplocx" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbweaplocx_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangeWeapLocationXPlusMinus" Height="30"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="Y"/>
+                                                                                <TextBox x:Name="tbweaplocy" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbweaplocy_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangeWeapLocationYPlusMinus" Height="30"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="4">
+                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="Z"/>
+                                                                                <TextBox x:Name="tbweaplocz" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbweaplocz_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangeWeapLocationZPlusMinus" Height="30"/>
+                                                                            </StackPanel>
+                                                                            <Border Grid.Column="6" Width="30" Height="30" VerticalAlignment="Bottom">
+                                                                                <Button x:Name="Btnweapgetloc" Style="{StaticResource FieldIconButton}" Click="Btnweapgetloc_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Translation[getcursorloc], FallbackValue=Get Cursor Location}" IsEnabled="False" >
+                                                                                    <Path x:Name="weapgetlocpath" Data="M8,1.5 L8,4.5 M8,11.5 L8,14.5 M1.5,8 L4.5,8 M11.5,8 L14.5,8 M8,5 A3,3 0 1 1 7.99,5" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.6" Width="16" Height="16" />
+                                                                                </Button>
+                                                                            </Border>
+                                                                        </Grid>
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[heading], FallbackValue=Heading}"/>
+                                                                            <TextBox x:Name="tbweapheading" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbweapheading_TextChanged" KeyDown="FormatTextForFloat" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
 
-                                                            <Grid Width="290" Height="auto" Margin="0,0,10,0">
-                                                                <Grid.RowDefinitions>
-                                                                    <RowDefinition Height="50"/>
-                                                                    <RowDefinition Height="*"/>
-                                                                </Grid.RowDefinitions>
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="46"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[weapenablerot], FallbackValue=Enable Rotation}" IsEnabled="{Binding ElementName=cbweapenablerot, Path=IsEnabled}"/>
+                                                                            <CheckBox x:Name="cbweapenablerot" Checked="cbweapenablerot_Checked" Unchecked="cbweapenablerot_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                        </Grid>
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[rotx], FallbackValue=Rotation X}"/>
+                                                                            <TextBox x:Name="tbweaprotx" TextChanged="tbweaprotx_TextChanged" KeyDown="FormatTextForFloat" Height="30" Margin="0,0,0,10">
+                                                                                <TextBox.Style>
+                                                                                    <Style TargetType="TextBox" BasedOn="{StaticResource Watermark}">
+                                                                                        <Setter Property="IsEnabled" Value="False" />
+                                                                                        <Style.Triggers>
+                                                                                            <DataTrigger Binding="{Binding ElementName=cbweapenablerot, Path=IsChecked}" Value="True">
+                                                                                                <Setter Property="IsEnabled" Value="True"/>
+                                                                                            </DataTrigger>
+                                                                                        </Style.Triggers>
+                                                                                    </Style>
+                                                                                </TextBox.Style>
+                                                                            </TextBox>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[roty], FallbackValue=Rotation Y}"/>
+                                                                            <TextBox x:Name="tbweaproty" TextChanged="tbweaproty_TextChanged" KeyDown="FormatTextForFloat" Height="30" Margin="0,0,0,10">
+                                                                                <TextBox.Style>
+                                                                                    <Style TargetType="TextBox" BasedOn="{StaticResource Watermark}">
+                                                                                        <Setter Property="IsEnabled" Value="False" />
+                                                                                        <Style.Triggers>
+                                                                                            <DataTrigger Binding="{Binding ElementName=cbweapenablerot, Path=IsChecked}" Value="True">
+                                                                                                <Setter Property="IsEnabled" Value="True"/>
+                                                                                            </DataTrigger>
+                                                                                        </Style.Triggers>
+                                                                                    </Style>
+                                                                                </TextBox.Style>
+                                                                            </TextBox>
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        </StackPanel>
+                                                                    </DockPanel>
+                                                                </Border>
+                                                            </StackPanel>
+                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                <Border Style="{StaticResource DashCard}">
+                                                                    <DockPanel>
+                                                                        <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                                                            <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[options], FallbackValue=Options}"/>
+                                                                        </Border>
+                                                                        <StackPanel Margin="14,12,14,4">
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[dmgmult], FallbackValue=Damage Multiplier}"/>
+                                                                            <TextBox x:Name="tbweapdmgmlt" Style="{StaticResource Watermark}" ToolTip="{Binding Translation[dmgmultinfo], FallbackValue='Damage Multiplier'}" IsEnabled="False" TextChanged="tbweapdmgmlt_TextChanged" KeyDown="FormatTextForFloat" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
 
-                                                                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Text="{Binding Translation[other], FallbackValue=Other}" FontWeight="Bold"/>
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="46"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <TextBlock x:Name="Lbl_weap_invisible" Text="{Binding Translation[invisible], FallbackValue=Invisible}" Style="{StaticResource FormLabel}"/>
+                                                                            <CheckBox x:Name="cb_weap_invisible" Checked="cb_weap_invisible_Checked" Unchecked="cb_weap_invisible_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                        </Grid>
+                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="46"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[weapciv], FallbackValue=Collect in Vehicle}" IsEnabled="{Binding ElementName=cb_weap_civ, Path=IsEnabled}"/>
+                                                                            <CheckBox x:Name="cb_weap_civ" Checked="cb_weap_civ_Checked" Unchecked="cb_weap_civ_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                        </Grid>
+                                                                        <Rectangle Height="1" Fill="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="0,4,0,12"/>
+                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="46"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[weapbrest1], FallbackValue=Hide for Team 1}" IsEnabled="{Binding ElementName=cb_weap_brest1, Path=IsEnabled}"/>
+                                                                            <CheckBox x:Name="cb_weap_brest1" Checked="cb_weap_brest1_Checked" Unchecked="cb_weap_brest1_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                        </Grid>
+                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="46"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[weapbrest2], FallbackValue=Hide for Team 2}" IsEnabled="{Binding ElementName=cb_weap_brest2, Path=IsEnabled}"/>
+                                                                            <CheckBox x:Name="cb_weap_brest2" Checked="cb_weap_brest2_Checked" Unchecked="cb_weap_brest2_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                        </Grid>
+                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="46"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[weapbrest3], FallbackValue=Hide for Team 3}" IsEnabled="{Binding ElementName=cb_weap_brest3, Path=IsEnabled}"/>
+                                                                            <CheckBox x:Name="cb_weap_brest3" Checked="cb_weap_brest3_Checked" Unchecked="cb_weap_brest3_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                        </Grid>
+                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="46"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[weapbrest4], FallbackValue=Hide for Team 4}" IsEnabled="{Binding ElementName=cb_weap_brest4, Path=IsEnabled}"/>
+                                                                            <CheckBox x:Name="cb_weap_brest4" Checked="cb_weap_brest4_Checked" Unchecked="cb_weap_brest4_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                        </Grid>
+                                                                        </StackPanel>
+                                                                    </DockPanel>
+                                                                </Border>
+                                                            </StackPanel>
+                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                <Border Style="{StaticResource DashCard}">
+                                                                    <DockPanel>
+                                                                        <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                                                            <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[aslrheader], FallbackValue=Associated Rule}"/>
+                                                                        </Border>
+                                                                        <StackPanel Margin="14,12,14,4">
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[asrlspawnon], FallbackValue=Spawn On}"/>
+                                                                            <ComboBox x:Name="ddweapspawnon" IsEnabled="False" SelectionChanged="ddweapspawnon_SelectionChanged" Height="30" Margin="0,0,0,10">
+                                                                                <ComboBoxItem Content="{Binding Translation[spawnoption1], FallbackValue=Mission Start}"/>
+                                                                                <ComboBoxItem Content="{Binding Translation[spawnoption2], FallbackValue=Objective Start}"/>
+                                                                                <ComboBoxItem Content="{Binding Translation[spawnoption3], FallbackValue=Objective Mid Point}"/>
+                                                                                <ComboBoxItem Content="{Binding Translation[spawnoption4], FallbackValue=Only during Objective}"/>
+                                                                            </ComboBox>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[asrlspawnteam], FallbackValue=Spawn by Team}"/>
+                                                                            <ComboBox x:Name="ddweapspawnteam" IsEnabled="False" SelectionChanged="ddweapspawnteam_SelectionChanged" Height="30" Margin="0,0,0,10">
+                                                                                <ComboBoxItem Content="{Binding Translation[none], FallbackValue=None}"/>
+                                                                                <ComboBoxItem Content="1"/>
+                                                                                <ComboBoxItem Content="2"/>
+                                                                                <ComboBoxItem Content="3"/>
+                                                                                <ComboBoxItem Content="4"/>
+                                                                            </ComboBox>
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[asrlspawn], FallbackValue=Spawn at Rule}"/>
+                                                                            <TextBox x:Name="tbweapspawnrule" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbweapspawnrule_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
 
-                                                                <StackPanel Grid.Row="1" Orientation="Vertical" Margin="0,2,0,0">
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <Rectangle Height="1" Fill="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="0,4,0,12"/>
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[asrlclteam], FallbackValue=Clear up by Team}"/>
+                                                                            <ComboBox x:Name="ddweapteamclear" IsEnabled="False" SelectionChanged="ddweapteamclear_SelectionChanged" Height="30" Margin="0,0,0,10">
+                                                                                <ComboBoxItem Content="{Binding Translation[none], FallbackValue=None}"/>
+                                                                                <ComboBoxItem Content="1"/>
+                                                                                <ComboBoxItem Content="2"/>
+                                                                                <ComboBoxItem Content="3"/>
+                                                                                <ComboBoxItem Content="4"/>
+                                                                            </ComboBox>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[asrlclear], FallbackValue=Clear up at Rule}"/>
+                                                                            <TextBox x:Name="tbweapclearrule" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbweapclearrule_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        </StackPanel>
+                                                                    </DockPanel>
+                                                                </Border>
+                                                                <Border Style="{StaticResource DashCard}">
+                                                                    <Expander Style="{StaticResource CardExpander}" Header="{Binding Translation[advanced], FallbackValue=Advanced}">
+                                                                        <StackPanel Margin="14,12,14,4">
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[actorteam], FallbackValue=Team}"/>
+                                                                            <ComboBox x:Name="ddweaponteam" IsEnabled="False" SelectionChanged="ddweaponteam_SelectionChanged" Height="30" Margin="0,0,0,10">
+                                                                                <ComboBoxItem Content="1" Selector.IsSelected="True"/>
+                                                                                <ComboBoxItem Content="2"/>
+                                                                                <ComboBoxItem Content="3"/>
+                                                                                <ComboBoxItem Content="4"/>
+                                                                            </ComboBox>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
 
-                                                                    <TextBox x:Name="tbweapheading" Style="{StaticResource Watermark}" Tag="{Binding Translation[heading], FallbackValue='Heading'}" Height="30" Margin="0,0,0,5" IsEnabled="False" TextChanged="tbweapheading_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                                    <Grid Height="30" Margin="0,0,0,5">
-                                                                        <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="0.87*" />
-                                                                            <ColumnDefinition Width="0.13*" />
-                                                                        </Grid.ColumnDefinitions>
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="vput"/>
+                                                                            <TextBox x:Name="tbweapvput" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbweapvput_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="rput"/>
+                                                                            <TextBox x:Name="tbweaprput" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbweaprput_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="bits"/>
+                                                                            <TextBox x:Name="tbweapbits" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbweapbits_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="clip"/>
+                                                                            <TextBox x:Name="tbweapclip" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbweapclip_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="sub"/>
+                                                                            <TextBox x:Name="tbweapsub" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbweapsub_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="iptnp"/>
+                                                                            <TextBox x:Name="tbweapiptnp" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbweapiptnp_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="wcpm"/>
+                                                                            <TextBox x:Name="tbweapwcpm" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbweapwcpm_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="vclnrl"/>
+                                                                            <TextBox x:Name="tbweapvclnrl" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbweapvclnrl_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="vclnr"/>
+                                                                            <TextBox x:Name="tbweapvclnr" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbweapvclnr_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="vclnt"/>
+                                                                            <TextBox x:Name="tbweapvclnt" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbweapvclnt_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="vasso"/>
+                                                                            <TextBox x:Name="tbweapvasso" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbweapvasso_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="vasss"/>
+                                                                            <TextBox x:Name="tbweapvasss" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbweapvasss_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="vasst"/>
+                                                                            <TextBox x:Name="tbweapvasst" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbweapvasst_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
 
-                                                                        <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[weapenablerot], FallbackValue=Enable Rotation}" TextTrimming="CharacterEllipsis"/>
-                                                                        <CheckBox x:Name="cbweapenablerot" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbweapenablerot_Checked" Unchecked="cbweapenablerot_Checked" MaxHeight="30" IsEnabled="False"/>
-
-                                                                    </Grid>
-                                                                    <TextBox x:Name="tbweaprotx" Tag="{Binding Translation[rotx], FallbackValue='Rotation X'}" Height="30" Margin="0,0,0,5" TextChanged="tbweaprotx_TextChanged" KeyDown="FormatTextForFloat">
-                                                                        <TextBox.Style>
-                                                                            <Style TargetType="TextBox" BasedOn="{StaticResource Watermark}">
-                                                                                <Setter Property="IsEnabled" Value="False" />
-                                                                                <Style.Triggers>
-                                                                                    <DataTrigger Binding="{Binding ElementName=cbweapenablerot, Path=IsChecked}" Value="True">
-                                                                                        <Setter Property="IsEnabled" Value="True"/>
-                                                                                    </DataTrigger>
-                                                                                </Style.Triggers>
-                                                                            </Style>
-                                                                        </TextBox.Style>
-                                                                    </TextBox>
-                                                                    <TextBox x:Name="tbweaproty" Tag="{Binding Translation[roty], FallbackValue='Rotation Y'}" Height="30" Margin="0,0,0,5" TextChanged="tbweaproty_TextChanged" KeyDown="FormatTextForFloat">
-                                                                        <TextBox.Style>
-                                                                            <Style TargetType="TextBox" BasedOn="{StaticResource Watermark}">
-                                                                                <Setter Property="IsEnabled" Value="False" />
-                                                                                <Style.Triggers>
-                                                                                    <DataTrigger Binding="{Binding ElementName=cbweapenablerot, Path=IsChecked}" Value="True">
-                                                                                        <Setter Property="IsEnabled" Value="True"/>
-                                                                                    </DataTrigger>
-                                                                                </Style.Triggers>
-                                                                            </Style>
-                                                                        </TextBox.Style>
-                                                                    </TextBox>
-                                                                    <TextBox x:Name="tbweapdmgmlt" Style="{StaticResource Watermark}" Tag="{Binding Translation[dmgmult], FallbackValue='Damage Multiplier'}" ToolTip="{Binding Translation[dmgmultinfo], FallbackValue='Damage Multiplier'}" Height="30" Margin="0,0,0,5" IsEnabled="False" TextChanged="tbweapdmgmlt_TextChanged" KeyDown="FormatTextForFloat"/>
-
-                                                                    <Grid Height="30" Margin="0,0,0,5">
-                                                                        <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="0.87*" />
-                                                                            <ColumnDefinition Width="0.13*" />
-                                                                        </Grid.ColumnDefinitions>
-
-                                                                        <TextBlock x:Name="Lbl_weap_invisible" Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[invisible], FallbackValue=Invisible}" TextTrimming="CharacterEllipsis"/>
-                                                                        <CheckBox x:Name="cb_weap_invisible" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_weap_invisible_Checked" Unchecked="cb_weap_invisible_Checked" MaxHeight="30" IsEnabled="False"/>
-
-                                                                    </Grid>
-                                                                    <Grid Height="30" Margin="0,0,0,5">
-                                                                        <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="0.87*" />
-                                                                            <ColumnDefinition Width="0.13*" />
-                                                                        </Grid.ColumnDefinitions>
-
-                                                                        <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[weapciv], FallbackValue=Collect in Vehicle}" TextTrimming="CharacterEllipsis"/>
-                                                                        <CheckBox x:Name="cb_weap_civ" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_weap_civ_Checked" Unchecked="cb_weap_civ_Checked" MaxHeight="30" IsEnabled="False"/>
-
-                                                                    </Grid>
-                                                                    <Grid Height="30" Margin="0,0,0,5">
-                                                                        <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="0.87*" />
-                                                                            <ColumnDefinition Width="0.13*" />
-                                                                        </Grid.ColumnDefinitions>
-
-                                                                        <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[weapbrest1], FallbackValue=Hide for Team 1}" TextTrimming="CharacterEllipsis"/>
-                                                                        <CheckBox x:Name="cb_weap_brest1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_weap_brest1_Checked" Unchecked="cb_weap_brest1_Checked" MaxHeight="30" IsEnabled="False"/>
-
-                                                                    </Grid>
-                                                                    <Grid Height="30" Margin="0,0,0,5">
-                                                                        <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="0.87*" />
-                                                                            <ColumnDefinition Width="0.13*" />
-                                                                        </Grid.ColumnDefinitions>
-
-                                                                        <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[weapbrest2], FallbackValue=Hide for Team 2}" TextTrimming="CharacterEllipsis"/>
-                                                                        <CheckBox x:Name="cb_weap_brest2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_weap_brest2_Checked" Unchecked="cb_weap_brest2_Checked" MaxHeight="30" IsEnabled="False"/>
-
-                                                                    </Grid>
-                                                                    <Grid Height="30" Margin="0,0,0,5">
-                                                                        <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="0.87*" />
-                                                                            <ColumnDefinition Width="0.13*" />
-                                                                        </Grid.ColumnDefinitions>
-
-                                                                        <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[weapbrest3], FallbackValue=Hide for Team 3}" TextTrimming="CharacterEllipsis"/>
-                                                                        <CheckBox x:Name="cb_weap_brest3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_weap_brest3_Checked" Unchecked="cb_weap_brest3_Checked" MaxHeight="30" IsEnabled="False"/>
-
-                                                                    </Grid>
-                                                                    <Grid Height="30" Margin="0,0,0,5">
-                                                                        <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="0.87*" />
-                                                                            <ColumnDefinition Width="0.13*" />
-                                                                        </Grid.ColumnDefinitions>
-
-                                                                        <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[weapbrest4], FallbackValue=Hide for Team 4}" TextTrimming="CharacterEllipsis"/>
-                                                                        <CheckBox x:Name="cb_weap_brest4" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cb_weap_brest4_Checked" Unchecked="cb_weap_brest4_Checked" MaxHeight="30" IsEnabled="False"/>
-
-                                                                    </Grid>
-
-                                                                </StackPanel>
-
-                                                            </Grid>
-
-                                                            <Grid Width="290" Height="auto" Margin="0,0,10,0">
-                                                                <Grid.RowDefinitions>
-                                                                    <RowDefinition Height="50"/>
-                                                                    <RowDefinition Height="*"/>
-                                                                </Grid.RowDefinitions>
-
-                                                                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Text="{Binding Translation[advanced], FallbackValue=Advanced}" FontWeight="Bold"/>
-
-                                                                <StackPanel Grid.Row="1" Orientation="Vertical" Margin="0,2,0,0">
-
-                                                                    <TextBox x:Name="tbweapvput" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="vput" IsEnabled="False" TextChanged="tbweapvput_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                    <TextBox x:Name="tbweaprput" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="rput" IsEnabled="False" TextChanged="tbweaprput_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                    <TextBox x:Name="tbweapbits" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="bits" IsEnabled="False" TextChanged="tbweapbits_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                    <TextBox x:Name="tbweapvclnrl" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="vclnrl" IsEnabled="False" TextChanged="tbweapvclnrl_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                    <TextBox x:Name="tbweapvclnr" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="vclnr" IsEnabled="False" TextChanged="tbweapvclnr_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                    <TextBox x:Name="tbweapvclnt" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="vclnt" IsEnabled="False" TextChanged="tbweapvclnt_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                    <TextBox x:Name="tbweapclip" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="clip" IsEnabled="False" TextChanged="tbweapclip_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                    <TextBox x:Name="tbweapsub" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="sub" IsEnabled="False" TextChanged="tbweapsub_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                    <TextBox x:Name="tbweapiptnp" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="iptnp" IsEnabled="False" TextChanged="tbweapiptnp_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                    <TextBox x:Name="tbweapwcpm" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="wcpm" IsEnabled="False" TextChanged="tbweapwcpm_TextChanged" KeyDown="FormatTextForModel"/>
-
-                                                                    <Rectangle Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="#6C7378" Height="1" Margin="20,8,20,8" />
-
-
-                                                                    <ComboBox x:Name="ddweaponteam" VerticalAlignment="Top" Grid.Row="1" Height="30" HorizontalAlignment="Stretch" Tag="{Binding Translation[actorteam], FallbackValue=Team}" IsEnabled="False" Margin="0,3,0,5" SelectionChanged="ddweaponteam_SelectionChanged">
-                                                                        <ComboBoxItem Content="1" Selector.IsSelected="True"/>
-                                                                        <ComboBoxItem Content="2"/>
-                                                                        <ComboBoxItem Content="3"/>
-                                                                        <ComboBoxItem Content="4"/>
-                                                                    </ComboBox>
-                                                                    <TextBox x:Name="tbweapvasso" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="vasso" IsEnabled="False" TextChanged="tbweapvasso_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                    <TextBox x:Name="tbweapvasss" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="vasss" IsEnabled="False" TextChanged="tbweapvasss_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                    <TextBox x:Name="tbweapvasst" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="vasst" IsEnabled="False" TextChanged="tbweapvasst_TextChanged" KeyDown="FormatTextForModel"/>
-
-                                                                    <Rectangle Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="#6C7378" Height="1" Margin="20,8,20,8" />
-
-
-                                                                    <TextBlock Margin="0 10" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="20" Text="{Binding Translation[aslrheader], FallbackValue=Associated Rule}" FontWeight="Bold" />
-
-                                                                    <ComboBox x:Name="ddweapteamclear" VerticalAlignment="Top" Grid.Row="1" Height="30" HorizontalAlignment="Stretch" Tag="{Binding Translation[asrlclteam], FallbackValue=Clear up by Team}" IsEnabled="False" Margin="0,0,0,5" SelectionChanged="ddweapteamclear_SelectionChanged">
-                                                                        <ComboBoxItem Content="{Binding Translation[none], FallbackValue=None}"/>
-                                                                        <ComboBoxItem Content="1"/>
-                                                                        <ComboBoxItem Content="2"/>
-                                                                        <ComboBoxItem Content="3"/>
-                                                                        <ComboBoxItem Content="4"/>
-                                                                    </ComboBox>
-
-                                                                    <TextBox x:Name="tbweapclearrule" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[asrlclear], FallbackValue='Clear up at Rule'}" IsEnabled="False" TextChanged="tbweapclearrule_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                    
-                                                                    <Rectangle Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="#6C7378" Height="1" Margin="20,3,20,8" />
-
-                                                                    <ComboBox x:Name="ddweapspawnon" VerticalAlignment="Top" Grid.Row="1" Height="30" HorizontalAlignment="Stretch" Tag="{Binding Translation[asrlspawnon], FallbackValue=Spawn On}" IsEnabled="False" Margin="0,0,0,5" SelectionChanged="ddweapspawnon_SelectionChanged">
-                                                                        <ComboBoxItem Content="{Binding Translation[spawnoption1], FallbackValue=Mission Start}"/>
-                                                                        <ComboBoxItem Content="{Binding Translation[spawnoption2], FallbackValue=Objective Start}"/>
-                                                                        <ComboBoxItem Content="{Binding Translation[spawnoption3], FallbackValue=Objective Mid Point}"/>
-                                                                        <ComboBoxItem Content="{Binding Translation[spawnoption4], FallbackValue=Only during Objective}"/>
-                                                                    </ComboBox>
-
-                                                                    <ComboBox x:Name="ddweapspawnteam" VerticalAlignment="Top" Grid.Row="1" Height="30" HorizontalAlignment="Stretch" Tag="{Binding Translation[asrlspawnteam], FallbackValue=Spawn by Team}" IsEnabled="False" Margin="0,0,0,5" SelectionChanged="ddweapspawnteam_SelectionChanged">
-                                                                        <ComboBoxItem Content="{Binding Translation[none], FallbackValue=None}"/>
-                                                                        <ComboBoxItem Content="1"/>
-                                                                        <ComboBoxItem Content="2"/>
-                                                                        <ComboBoxItem Content="3"/>
-                                                                        <ComboBoxItem Content="4"/>
-                                                                    </ComboBox>
-
-                                                                    <TextBox x:Name="tbweapspawnrule" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="{Binding Translation[asrlspawn], FallbackValue='Spawn at Rule'}" IsEnabled="False" TextChanged="tbweapspawnrule_TextChanged" KeyDown="FormatTextForModel"/>
-
-
-
-                                                                </StackPanel>
-
-                                                            </Grid>
-
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        </StackPanel>
+                                                                    </Expander>
+                                                                </Border>
+                                                            </StackPanel>
                                                         </WrapPanel>
-
                                                     </ScrollViewer>
-
-                                                </Grid>
+                                                </DockPanel>
 
                                             </TabItem>
 
