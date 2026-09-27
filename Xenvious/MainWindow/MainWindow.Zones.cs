@@ -196,6 +196,7 @@ namespace Xenvious
         // ----- Zone type picker: names and help for the numbers in tbzonezntp -----
 
         private bool _zoneTypeSync;
+        private string _zoneTypeLang;
 
         // Public properties: the list groups on Group.
         public sealed class ZoneTypeItem
@@ -206,9 +207,14 @@ namespace Xenvious
             public override string ToString() => Text;
         }
 
-        // Built when the list opens, so the names follow the language; grouped by topic.
+        // Built again only when the language changed: replacing the source while the list opens
+        // leaves the popup with the group headers but no items.
         private void FillZoneTypes()
         {
+            string lang = TranslateOr("zt_name_0", "");
+            if (ddzonetype.ItemsSource != null && lang == _zoneTypeLang)
+                return;
+            _zoneTypeLang = lang;
             _zoneTypeSync = true;
             var items = ZoneTypes.All
                 .OrderBy(t => Array.IndexOf(ZoneTypes.Groups, t.Group)).ThenBy(t => t.Id)
