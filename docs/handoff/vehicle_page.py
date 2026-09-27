@@ -59,8 +59,8 @@ def entry_bar(combo, count_label, delete_btn, add_btn, n):
 def icon_button(btn, n):
     """Cursor button beside X/Y/Z: crosshair icon in the square field button, as on props."""
     btn = re.sub(r'Style="\{DynamicResource TitleBarButton\}"', 'Style="{StaticResource FieldIconButton}"', btn)
-    btn = re.sub(r'(<Path x:Name="[^"]+")[^/]*/>',
-                 r'\1 Data="M8,1.5 L8,4.5 M8,11.5 L8,14.5 M1.5,8 L4.5,8 M11.5,8 L14.5,8 M8,5 A3,3 0 1 1 7.99,5" '
+    btn = re.sub(r'<Path( x:Name="[^"]+")?[^/]*/>',
+                 r'<Path\1 Data="M8,1.5 L8,4.5 M8,11.5 L8,14.5 M1.5,8 L4.5,8 M11.5,8 L14.5,8 M8,5 A3,3 0 1 1 7.99,5" '
                  r'Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.6" Width="16" Height="16" />', btn)
     return btn
 
