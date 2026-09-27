@@ -11380,257 +11380,382 @@
 
                                             <TabItem x:Name="PageDoors" Header="Doors" >
 
-                                                <Grid Background="Transparent" Grid.Column="1" Margin="15 0">
-
-                                                    <Grid Background="Transparent" Grid.Column="1">
-                                                        <Grid.RowDefinitions>
-                                                            <RowDefinition Height="0.2*" MinHeight="50" MaxHeight="60"/>
-                                                            <RowDefinition Height="*" MinHeight="205"/>
-                                                        </Grid.RowDefinitions>
-
-                                                        <Grid Grid.Column="1">
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="*"/>
-                                                                <ColumnDefinition Width="0.20*" MinWidth="80"/>
-                                                                <ColumnDefinition Width="0.20*" MinWidth="80"/>
-                                                                <ColumnDefinition Width="0.40*" MinWidth="125"/>
-                                                            </Grid.ColumnDefinitions>
-
-
-                                                            <Border  Grid.Column="1" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5 10">
-                                                                <Border.Effect>
-                                                                    <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>
-                                                                </Border.Effect>
-                                                                <Button x:Name="BtndoorsAdd" Style="{DynamicResource CustomButton}" Content="{Binding Translation[add], FallbackValue=Add}" local:CornerRadiusSetter.CornerRadius="5" Click="BtndoorsAdd_Click"/>
-                                                            </Border>
-                                                            <Border  Grid.Column="2" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5 10">
-                                                                <Border.Effect>
-                                                                    <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>
-                                                                </Border.Effect>
-                                                                <Button x:Name="BtndoorsDelete" Style="{DynamicResource CustomButton}" Content="{Binding Translation[delete], FallbackValue=Delete}" local:CornerRadiusSetter.CornerRadius="5" Click="BtndoorsDelete_Click"/>
-                                                            </Border>
-                                                            <Border Grid.Column="3" Margin="5 10" Background="Transparent">
-                                                                <Border.Effect>
-                                                                    <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>
-                                                                </Border.Effect>
-                                                                <ComboBox x:Name="dddoorsno" FontFamily="{DynamicResource Volte}" SelectionChanged="dddoorsno_SelectionChanged" ToolTip="{Binding Translation[doorsindex], FallbackValue=Doors Number}" Tag="{Binding Translation[doorsindex], FallbackValue=Doors Number}"/>
-                                                            </Border>
-
-
-                                                        </Grid>
-
-
-                                                        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
-
-                                                            <WrapPanel Margin="10,0,0,0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Stretch" >
-
-                                                                <Grid Width="290" Height="auto" Margin="0,0,10,0" >
-                                                                    <Grid.RowDefinitions>
-                                                                        <RowDefinition Height="50"/>
-                                                                        <RowDefinition Height="*"/>
-                                                                    </Grid.RowDefinitions>
-
-                                                                    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Text="{Binding Translation[loc], FallbackValue=Location}" FontWeight="Bold"/>
-
-                                                                    <StackPanel Grid.Row="1" Orientation="Vertical"  Margin="0,2,0,0" >
-
-                                                                        <Grid>
-
+                                                <!-- Entry bar on top, then cards by topic: model and position, look, rules, raw values. -->
+                                                <DockPanel Margin="10,0">
+                                                    <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,12">
+                                                        <DockPanel>
+                                                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                                                                <!-- ‹ number › : steps through the entries without opening the list. -->
+                                                                <Border Background="{DynamicResource ComboBoxBackground}" BorderBrush="{DynamicResource ComboBoxBorder}" BorderThickness="1" CornerRadius="4" Height="32" Margin="0,0,10,0">
+                                                                    <StackPanel Orientation="Horizontal">
+                                                                        <Button Style="{StaticResource EntryStepButton}" Content="‹" Tag="{Binding ElementName=dddoorsno}" CommandParameter="-1" Click="EntryStep_Click" ToolTip="{Binding Translation[entry_prev], FallbackValue=Previous}"/>
+                                                                        <ComboBox x:Name="dddoorsno" FontFamily="{DynamicResource Volte}" SelectionChanged="dddoorsno_SelectionChanged" ToolTip="{Binding Translation[doorsindex], FallbackValue=Doors Number}" Width="84" Height="30" BorderThickness="0"/>
+                                                                        <Button Style="{StaticResource EntryStepButton}" Content="›" Tag="{Binding ElementName=dddoorsno}" CommandParameter="1" Click="EntryStep_Click" ToolTip="{Binding Translation[entry_next], FallbackValue=Next}"/>
+                                                                    </StackPanel>
+                                                                </Border>
+                                                                <Button x:Name="BtndoorsDelete" Style="{StaticResource FormButton}" Width="34" Height="32" Padding="0" Margin="0,0,6,0" Click="BtndoorsDelete_Click" ToolTip="{Binding Translation[delete], FallbackValue=Delete}">
+                                                                    <Path Data="M3,4 L13,4 M6,4 L6,2.5 L10,2.5 L10,4 M4.5,4 L5.2,14 L10.8,14 L11.5,4" Stroke="{DynamicResource TextColor}" StrokeThickness="1.5" StrokeLineJoin="Round" Width="16" Height="16"/>
+                                                                </Button>
+                                                                <Button x:Name="BtndoorsAdd" Style="{StaticResource FormButtonPrimary}" Height="32" Padding="10,0,12,0" Click="BtndoorsAdd_Click" ToolTip="{Binding Translation[add], FallbackValue=Add}">
+                                                                    <StackPanel Orientation="Horizontal">
+                                                                        <Path Data="M8,3 L8,13 M3,8 L13,8" Stroke="#FF202225" StrokeThickness="2" Width="16" Height="16" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                                                        <TextBlock VerticalAlignment="Center" Foreground="#FF202225" Text="{Binding Translation[add], FallbackValue=Add}"/>
+                                                                    </StackPanel>
+                                                                </Button>
+                                                            </StackPanel>
+                                                            <TextBlock VerticalAlignment="Center" FontSize="14" Foreground="{StaticResource NavMutedBrush}">
+                                                                <Run FontSize="17" FontWeight="Bold" Foreground="{DynamicResource TextColor}" Text="{Binding Items.Count, ElementName=dddoorsno, Mode=OneWay}"/>
+                                                                <Run Text="{Binding Translation[doors_placed], FallbackValue=doors placed}"/>
+                                                            </TextBlock>
+                                                        </DockPanel>
+                                                    </Border>
+                                                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                                        <WrapPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                <Border Style="{StaticResource DashCard}">
+                                                                    <DockPanel>
+                                                                        <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                                                            <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[card_position], FallbackValue=Placement}"/>
+                                                                        </Border>
+                                                                        <StackPanel Margin="14,12,14,4">
+                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[loc], FallbackValue=Location}"/>
+                                                                        <Grid Margin="0,0,0,10">
                                                                             <Grid.ColumnDefinitions>
                                                                                 <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="6"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="6"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="6"/>
                                                                                 <ColumnDefinition Width="30"/>
                                                                             </Grid.ColumnDefinitions>
-
-                                                                            <Grid.RowDefinitions>
-                                                                                <RowDefinition Height="34"/>
-                                                                                <RowDefinition Height="34"/>
-                                                                                <RowDefinition Height="34"/>
-                                                                            </Grid.RowDefinitions>
-
-
-                                                                            <TextBox x:Name="tbdoorslocx" Grid.Row="0" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3x], FallbackValue=X-Component}" Height="30" Margin="0,0,5,0" IsEnabled="False" TextChanged="tbdoorslocx_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                                            <TextBox x:Name="tbdoorslocy" Grid.Row="1" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3y], FallbackValue=Y-Component}" Height="30" Margin="0,0,5,0" IsEnabled="False" TextChanged="tbdoorslocy_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                                            <TextBox x:Name="tbdoorslocz" Grid.Row="2" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3z], FallbackValue=Z-Component}" Height="30" Margin="0,0,5,0" IsEnabled="False" TextChanged="tbdoorslocz_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                                            <Border  Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5">
-                                                                                <Border.Effect>
-                                                                                    <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>
-                                                                                </Border.Effect>
-
-                                                                                <Button x:Name="Btndoorsgetloc" Style="{DynamicResource TitleBarButton}" Click="Btndoorsgetloc_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Translation[getcursorloc], FallbackValue=Get Cursor Location}" IsEnabled="False" >
-                                                                                    <Path Data="M 12 12 L 12 0 L 6 6 Z" Stretch="Uniform" Stroke="{DynamicResource TextColor}" />
+                                                                            <StackPanel Grid.Column="0">
+                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="X"/>
+                                                                                <TextBox x:Name="tbdoorslocx" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbdoorslocx_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="Y"/>
+                                                                                <TextBox x:Name="tbdoorslocy" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbdoorslocy_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="4">
+                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="Z"/>
+                                                                                <TextBox x:Name="tbdoorslocz" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbdoorslocz_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
+                                                                            </StackPanel>
+                                                                            <Border Grid.Column="6" Width="30" Height="30" VerticalAlignment="Bottom">
+                                                                                <Button x:Name="Btndoorsgetloc" Style="{StaticResource FieldIconButton}" Click="Btndoorsgetloc_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Translation[getcursorloc], FallbackValue=Get Cursor Location}" IsEnabled="False" >
+                                                                                    <Path Data="M8,1.5 L8,4.5 M8,11.5 L8,14.5 M1.5,8 L4.5,8 M11.5,8 L14.5,8 M8,5 A3,3 0 1 1 7.99,5" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.6" Width="16" Height="16" />
                                                                                 </Button>
                                                                             </Border>
-
                                                                         </Grid>
-                                                                    </StackPanel>
-
-                                                                </Grid>
-
-                                                                <Grid Width="290" Height="auto" Margin="0,0,10,0" >
-                                                                    <Grid.RowDefinitions>
-                                                                        <RowDefinition Height="50"/>
-                                                                        <RowDefinition Height="*"/>
-                                                                    </Grid.RowDefinitions>
-
-                                                                    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Text="{Binding Translation[options], FallbackValue=Options}" FontWeight="Bold"/>
-
-                                                                    <StackPanel Grid.Row="1" Orientation="Vertical"  Margin="0,2,0,0" >
-
-                                                                        <TextBox x:Name="tbdoorsmodel" Style="{StaticResource Watermark}" Tag="{Binding Translation[model], FallbackValue=Model}" Height="30" Margin="0,0,0,5" IsEnabled="False" TextChanged="tbdoorsmodel_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                        <TextBox x:Name="tbdoorsfopen" Style="{StaticResource Watermark}" Tag="{Binding Translation[fopen], FallbackValue=Open Ratio}" Height="30" Margin="0,0,0,5" IsEnabled="False" TextChanged="tbdoorsfopen_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                                        <Grid Height="30" Margin="0,0,0,5">
-                                                                            <Grid.ColumnDefinitions>
-                                                                                <ColumnDefinition Width="0.87*" />
-                                                                                <ColumnDefinition Width="0.13*" />
-                                                                            </Grid.ColumnDefinitions>
-
-                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[doorslock], FallbackValue=Lock}" TextTrimming="CharacterEllipsis" IsEnabled="{Binding ElementName=cbdoorslock, Path=IsEnabled}"/>
-                                                                            <CheckBox x:Name="cbdoorslock" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbdoorslock_Checked" Unchecked="cbdoorslock_Checked" MaxHeight="30" IsEnabled="False"/>
-                                                                        </Grid>
-                                                                        <Grid Height="30" Margin="0,0,0,5">
-                                                                            <Grid.ColumnDefinitions>
-                                                                                <ColumnDefinition Width="0.87*" />
-                                                                                <ColumnDefinition Width="0.13*" />
-                                                                            </Grid.ColumnDefinitions>
-
-                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[doorsswing], FallbackValue=Swing Free}" TextTrimming="CharacterEllipsis" IsEnabled="{Binding ElementName=cbdoorsswing, Path=IsEnabled}"/>
-                                                                            <CheckBox x:Name="cbdoorsswing" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbdoorsswing_Checked" Unchecked="cbdoorsswing_Checked" MaxHeight="30" IsEnabled="False"/>
-                                                                        </Grid>
-
-                                                                        <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="#6C7378" Height="1" Margin="20,3,20,8" />
-                                                                        
-                                                                        <TextBlock VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Text="{Binding Translation[doorsupdate], FallbackValue=Update on}" FontWeight="Bold"/>
-
-                                                                        <TextBox x:Name="tbdoorsudrle" Style="{StaticResource Watermark}" Tag="{Binding Translation[doorsudrle], FallbackValue=Update on Priority}" Height="30" Margin="0,5,0,5" IsEnabled="False" TextChanged="tbdoorsudrle_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                        <TextBox x:Name="tbdoorsudtem" Style="{StaticResource Watermark}" Tag="{Binding Translation[doorsudtem], FallbackValue=Update by Team}" Height="30" Margin="0,0,0,5" IsEnabled="False" TextChanged="tbdoorsudtem_TextChanged" KeyDown="FormatTextForModel"/>
-
-                                                                        <Grid Height="30" Margin="0,0,0,5">
-                                                                            <Grid.ColumnDefinitions>
-                                                                                <ColumnDefinition Width="0.87*" />
-                                                                                <ColumnDefinition Width="0.13*" />
-                                                                            </Grid.ColumnDefinitions>
-
-                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[doorsmid], FallbackValue=Update on Mid Point}" TextTrimming="CharacterEllipsis" IsEnabled="{Binding ElementName=cbdoorsmid, Path=IsEnabled}"/>
-                                                                            <CheckBox x:Name="cbdoorsmid" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbdoorsmid_Checked" Unchecked="cbdoorsmid_Checked" MaxHeight="30" IsEnabled="False"/>
-                                                                        </Grid>
-                                                                        <Grid Height="30" Margin="0,0,0,5">
-                                                                            <Grid.ColumnDefinitions>
-                                                                                <ColumnDefinition Width="0.87*" />
-                                                                                <ColumnDefinition Width="0.13*" />
-                                                                            </Grid.ColumnDefinitions>
-
-                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[doorsswingu], FallbackValue=Swing Free on Update}" TextTrimming="CharacterEllipsis" IsEnabled="{Binding ElementName=cbdoorsswingu, Path=IsEnabled}"/>
-                                                                            <CheckBox x:Name="cbdoorsswingu" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbdoorsswingu_Checked" Unchecked="cbdoorsswingu_Checked" MaxHeight="30" IsEnabled="False"/>
-                                                                        </Grid>
-                                                                        <TextBox x:Name="tbdoorsudrat" Style="{StaticResource Watermark}" Tag="{Binding Translation[doorsudrat], FallbackValue=Open Ratio on Update}" Height="30" Margin="0,0,0,5" IsEnabled="False" TextChanged="tbdoorsudrat_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                                        <TextBox x:Name="tbdoorsuaurt" Style="{StaticResource Watermark}" Tag="{Binding Translation[uaurt], FallbackValue=uaurt}" Height="30" Margin="0,0,0,5" IsEnabled="False" TextChanged="tbdoorsuaurt_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                                        <TextBox x:Name="tbdoorsuaudst" Style="{StaticResource Watermark}" Tag="{Binding Translation[uaudst], FallbackValue=uaudst}" Height="30" Margin="0,0,0,5" IsEnabled="False" TextChanged="tbdoorsuaudst_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                                        <TextBox x:Name="tbdoorsdirud" Style="{StaticResource Watermark}" Tag="{Binding Translation[dirud], FallbackValue=dirud}" Height="30" Margin="0,0,0,5" IsEnabled="False" TextChanged="tbdoorsdirud_TextChanged" KeyDown="FormatTextForFloat"/>
                                                                         <Grid>
-
                                                                             <Grid.ColumnDefinitions>
                                                                                 <ColumnDefinition Width="*"/>
-                                                                                <ColumnDefinition Width="30"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
                                                                             </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[model], FallbackValue=Model}"/>
+                                                                            <TextBox x:Name="tbdoorsmodel" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbdoorsmodel_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
 
-                                                                            <Grid.RowDefinitions>
-                                                                                <RowDefinition Height="34"/>
-                                                                                <RowDefinition Height="34"/>
-                                                                                <RowDefinition Height="34"/>
-                                                                            </Grid.RowDefinitions>
-
-
-                                                                            <TextBox x:Name="tbdoorsdirduvx" Grid.Row="0" Style="{StaticResource Watermark}" Tag="{Binding Translation[dirduvx], FallbackValue=dirduvx}" Height="30" Margin="0,0,5,0" IsEnabled="False" TextChanged="tbdoorsdirduvx_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                                            <TextBox x:Name="tbdoorsdirduvy" Grid.Row="1" Style="{StaticResource Watermark}" Tag="{Binding Translation[dirduvy], FallbackValue=dirduvy}" Height="30" Margin="0,0,5,0" IsEnabled="False" TextChanged="tbdoorsdirduvy_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                                            <TextBox x:Name="tbdoorsdirduvz" Grid.Row="2" Style="{StaticResource Watermark}" Tag="{Binding Translation[dirduvz], FallbackValue=dirduvz}" Height="30" Margin="0,0,5,0" IsEnabled="False" TextChanged="tbdoorsdirduvz_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                                            <Border  Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5">
-                                                                                <Border.Effect>
-                                                                                    <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>
-                                                                                </Border.Effect>
-
-                                                                                <Button x:Name="Btndoorsdirduvgetloc" Style="{DynamicResource TitleBarButton}" Click="Btndoorsdirduvgetloc_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Translation[getcursorloc], FallbackValue=Get Cursor Location}" IsEnabled="False" >
-                                                                                    <Path Data="M 12 12 L 12 0 L 6 6 Z" Stretch="Uniform" Stroke="{DynamicResource TextColor}" />
-                                                                                </Button>
-                                                                            </Border>
-
+                                                                            </StackPanel>
                                                                         </Grid>
-
-                                                                    </StackPanel>
-
-                                                                </Grid>
-
-                                                                <Grid Width="290" Height="auto" Margin="0,0,10,0">
-                                                                    <Grid.RowDefinitions>
-                                                                        <RowDefinition Height="50"/>
-                                                                        <RowDefinition Height="*"/>
-                                                                    </Grid.RowDefinitions>
-
-                                                                    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Text="{Binding Translation[advanced], FallbackValue=Advanced}" FontWeight="Bold"/>
-
-                                                                    <StackPanel Grid.Row="1" Orientation="Vertical"  Margin="0,2,0,0" >
-
-                                                                        <TextBox x:Name="tbdoorsbits" Style="{StaticResource Watermark}" Tag="{Binding Translation[bits], FallbackValue=bits}" Height="30" Margin="0,0,0,5" IsEnabled="False" TextChanged="tbdoorsbits_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                        <TextBox x:Name="tbdoorsfcz" Style="{StaticResource Watermark}" Tag="{Binding Translation[fcz], FallbackValue=fcz}" Height="30" Margin="0,0,0,5" IsEnabled="False" TextChanged="tbdoorsfcz_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                                        <TextBox x:Name="tbdoorsfoz" Style="{StaticResource Watermark}" Tag="{Binding Translation[foz], FallbackValue=foz}" Height="30" Margin="0,0,0,5" IsEnabled="False" TextChanged="tbdoorsfoz_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                                        <TextBox x:Name="tbdoorsaurt" Style="{StaticResource Watermark}" Tag="{Binding Translation[aurt], FallbackValue=aurt}" Height="30" Margin="0,0,0,5" IsEnabled="False" TextChanged="tbdoorsaurt_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                                        <TextBox x:Name="tbdoorsaudst" Style="{StaticResource Watermark}" Tag="{Binding Translation[audst], FallbackValue=audst}" Height="30" Margin="0,0,0,5" IsEnabled="False" TextChanged="tbdoorsaudst_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                                        <TextBox x:Name="tbdoorsdird" Style="{StaticResource Watermark}" Tag="{Binding Translation[dird], FallbackValue=dird}" Height="30" Margin="0,0,0,5" IsEnabled="False" TextChanged="tbdoorsdird_TextChanged" KeyDown="FormatTextForModel"/>
+                                                                        </StackPanel>
+                                                                    </DockPanel>
+                                                                </Border>
+                                                                <Border Style="{StaticResource DashCard}">
+                                                                    <DockPanel>
+                                                                        <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                                                            <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[card_door], FallbackValue=Door}"/>
+                                                                        </Border>
+                                                                        <StackPanel Margin="14,12,14,4">
                                                                         <Grid>
-
                                                                             <Grid.ColumnDefinitions>
                                                                                 <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[fopen], FallbackValue=Open Ratio}"/>
+                                                                            <TextBox x:Name="tbdoorsfopen" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbdoorsfopen_TextChanged" KeyDown="FormatTextForFloat" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="46"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[doorslock], FallbackValue=Lock}" IsEnabled="{Binding ElementName=cbdoorslock, Path=IsEnabled}"/>
+                                                                            <CheckBox x:Name="cbdoorslock" Checked="cbdoorslock_Checked" Unchecked="cbdoorslock_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                        </Grid>
+                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="46"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[doorsswing], FallbackValue=Swing Free}" IsEnabled="{Binding ElementName=cbdoorsswing, Path=IsEnabled}"/>
+                                                                            <CheckBox x:Name="cbdoorsswing" Checked="cbdoorsswing_Checked" Unchecked="cbdoorsswing_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                        </Grid>
+                                                                        </StackPanel>
+                                                                    </DockPanel>
+                                                                </Border>
+                                                            </StackPanel>
+                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                <Border Style="{StaticResource DashCard}">
+                                                                    <DockPanel>
+                                                                        <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                                                            <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[doorsupdate], FallbackValue=Update on}"/>
+                                                                        </Border>
+                                                                        <StackPanel Margin="14,12,14,4">
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[doorsudrle], FallbackValue=Update on Priority}"/>
+                                                                            <TextBox x:Name="tbdoorsudrle" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbdoorsudrle_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[doorsudtem], FallbackValue=Update by Team}"/>
+                                                                            <TextBox x:Name="tbdoorsudtem" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbdoorsudtem_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="46"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[doorsmid], FallbackValue=Update on Mid Point}" IsEnabled="{Binding ElementName=cbdoorsmid, Path=IsEnabled}"/>
+                                                                            <CheckBox x:Name="cbdoorsmid" Checked="cbdoorsmid_Checked" Unchecked="cbdoorsmid_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                        </Grid>
+                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="46"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[doorsswingu], FallbackValue=Swing Free on Update}" IsEnabled="{Binding ElementName=cbdoorsswingu, Path=IsEnabled}"/>
+                                                                            <CheckBox x:Name="cbdoorsswingu" Checked="cbdoorsswingu_Checked" Unchecked="cbdoorsswingu_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                        </Grid>
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[doorsudrat], FallbackValue=Open Ratio on Update}"/>
+                                                                            <TextBox x:Name="tbdoorsudrat" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbdoorsudrat_TextChanged" KeyDown="FormatTextForFloat" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <Rectangle Height="1" Fill="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="0,4,0,12"/>
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="uaurt"/>
+                                                                            <TextBox x:Name="tbdoorsuaurt" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbdoorsuaurt_TextChanged" KeyDown="FormatTextForFloat" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="uaudst"/>
+                                                                            <TextBox x:Name="tbdoorsuaudst" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbdoorsuaudst_TextChanged" KeyDown="FormatTextForFloat" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="dirud"/>
+                                                                            <TextBox x:Name="tbdoorsdirud" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbdoorsdirud_TextChanged" KeyDown="FormatTextForFloat" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[dirduv], FallbackValue=dirduv}"/>
+                                                                        <Grid Margin="0,0,0,10">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="6"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="6"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="6"/>
                                                                                 <ColumnDefinition Width="30"/>
                                                                             </Grid.ColumnDefinitions>
-
-                                                                            <Grid.RowDefinitions>
-                                                                                <RowDefinition Height="34"/>
-                                                                                <RowDefinition Height="34"/>
-                                                                                <RowDefinition Height="34"/>
-                                                                            </Grid.RowDefinitions>
-
-
-                                                                            <TextBox x:Name="tbdoorsdirdvx" Grid.Row="0" Style="{StaticResource Watermark}" Tag="{Binding Translation[dirdvx], FallbackValue=dirdvx}" Height="30" Margin="0,0,5,0" IsEnabled="False" TextChanged="tbdoorsdirdvx_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                                            <TextBox x:Name="tbdoorsdirdvy" Grid.Row="1" Style="{StaticResource Watermark}" Tag="{Binding Translation[dirdvy], FallbackValue=dirdvy}" Height="30" Margin="0,0,5,0" IsEnabled="False" TextChanged="tbdoorsdirdvy_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                                            <TextBox x:Name="tbdoorsdirdvz" Grid.Row="2" Style="{StaticResource Watermark}" Tag="{Binding Translation[dirdvz], FallbackValue=dirdvz}" Height="30" Margin="0,0,5,0" IsEnabled="False" TextChanged="tbdoorsdirdvz_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                                            <Border  Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5">
-                                                                                <Border.Effect>
-                                                                                    <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>
-                                                                                </Border.Effect>
-
-                                                                                <Button x:Name="Btndoorsdirdvgetloc" Style="{DynamicResource TitleBarButton}" Click="Btndoorsdirdvgetloc_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Translation[getcursorloc], FallbackValue=Get Cursor Location}" IsEnabled="False" >
-                                                                                    <Path Data="M 12 12 L 12 0 L 6 6 Z" Stretch="Uniform" Stroke="{DynamicResource TextColor}" />
+                                                                            <StackPanel Grid.Column="0">
+                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="X"/>
+                                                                                <TextBox x:Name="tbdoorsdirduvx" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbdoorsdirduvx_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="Y"/>
+                                                                                <TextBox x:Name="tbdoorsdirduvy" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbdoorsdirduvy_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="4">
+                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="Z"/>
+                                                                                <TextBox x:Name="tbdoorsdirduvz" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbdoorsdirduvz_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
+                                                                            </StackPanel>
+                                                                            <Border Grid.Column="6" Width="30" Height="30" VerticalAlignment="Bottom">
+                                                                                <Button x:Name="Btndoorsdirduvgetloc" Style="{StaticResource FieldIconButton}" Click="Btndoorsdirduvgetloc_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Translation[getcursorloc], FallbackValue=Get Cursor Location}" IsEnabled="False" >
+                                                                                    <Path Data="M8,1.5 L8,4.5 M8,11.5 L8,14.5 M1.5,8 L4.5,8 M11.5,8 L14.5,8 M8,5 A3,3 0 1 1 7.99,5" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.6" Width="16" Height="16" />
                                                                                 </Button>
                                                                             </Border>
-
                                                                         </Grid>
-                                                                        <TextBox x:Name="tbdoorsorg" Style="{StaticResource Watermark}" Tag="{Binding Translation[org], FallbackValue=org}" Height="30" Margin="0,0,0,5" IsEnabled="False" TextChanged="tbdoorsorg_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                                        <TextBox x:Name="tbdoorsdcoid" Style="{StaticResource Watermark}" Tag="{Binding Translation[dcoid], FallbackValue=dcoid}" Height="30" Margin="0,0,0,5" IsEnabled="False" TextChanged="tbdoorsdcoid_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                        <TextBox x:Name="tbdoorsdtime" Style="{StaticResource Watermark}" Tag="{Binding Translation[dtime], FallbackValue=dtime}" Height="30" Margin="0,0,0,5" IsEnabled="False" TextChanged="tbdoorsdtime_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                        <Grid Height="30" Margin="0,0,0,5">
+                                                                        </StackPanel>
+                                                                    </DockPanel>
+                                                                </Border>
+                                                            </StackPanel>
+                                                            <StackPanel Width="340" Margin="0,0,12,0">
+                                                                <Border Style="{StaticResource DashCard}">
+                                                                    <Expander Style="{StaticResource CardExpander}" Header="{Binding Translation[advanced], FallbackValue=Advanced}">
+                                                                        <StackPanel Margin="14,12,14,4">
+                                                                        <Grid>
                                                                             <Grid.ColumnDefinitions>
-                                                                                <ColumnDefinition Width="0.87*" />
-                                                                                <ColumnDefinition Width="0.13*" />
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
                                                                             </Grid.ColumnDefinitions>
-
-                                                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding Translation[lfp], FallbackValue=lfp}" TextTrimming="CharacterEllipsis" IsEnabled="{Binding ElementName=cbdoorslfp, Path=IsEnabled}"/>
-                                                                            <CheckBox x:Name="cbdoorslfp" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="cbdoorslfp_Checked" Unchecked="cbdoorslfp_Checked" MaxHeight="30" IsEnabled="False"/>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="bits"/>
+                                                                            <TextBox x:Name="tbdoorsbits" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbdoorsbits_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="fcz"/>
+                                                                            <TextBox x:Name="tbdoorsfcz" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbdoorsfcz_TextChanged" KeyDown="FormatTextForFloat" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
                                                                         </Grid>
-                                                                        <TextBox x:Name="tbdoorsornlo" Style="{StaticResource Watermark}" Tag="{Binding Translation[ornlo], FallbackValue=ornlo}" Height="30" Margin="0,0,0,5" IsEnabled="False" TextChanged="tbdoorsornlo_TextChanged" KeyDown="FormatTextForFloat" Cursor="IBeam"/>
-                                                                        <TextBox x:Name="tbdoorsdle" Style="{StaticResource Watermark}" Tag="{Binding Translation[dle], FallbackValue=dle}" Height="30" Margin="0,0,0,5" IsEnabled="False" TextChanged="tbdoorsdle_TextChanged" KeyDown="FormatTextForModel"/>
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="foz"/>
+                                                                            <TextBox x:Name="tbdoorsfoz" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbdoorsfoz_TextChanged" KeyDown="FormatTextForFloat" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="aurt"/>
+                                                                            <TextBox x:Name="tbdoorsaurt" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbdoorsaurt_TextChanged" KeyDown="FormatTextForFloat" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="audst"/>
+                                                                            <TextBox x:Name="tbdoorsaudst" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbdoorsaudst_TextChanged" KeyDown="FormatTextForFloat" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="dird"/>
+                                                                            <TextBox x:Name="tbdoorsdird" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbdoorsdird_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[dirdv], FallbackValue=dirdv}"/>
+                                                                        <Grid Margin="0,0,0,10">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="6"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="6"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="6"/>
+                                                                                <ColumnDefinition Width="30"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="X"/>
+                                                                                <TextBox x:Name="tbdoorsdirdvx" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbdoorsdirdvx_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="Y"/>
+                                                                                <TextBox x:Name="tbdoorsdirdvy" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbdoorsdirdvy_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="4">
+                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="Z"/>
+                                                                                <TextBox x:Name="tbdoorsdirdvz" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbdoorsdirdvz_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
+                                                                            </StackPanel>
+                                                                            <Border Grid.Column="6" Width="30" Height="30" VerticalAlignment="Bottom">
+                                                                                <Button x:Name="Btndoorsdirdvgetloc" Style="{StaticResource FieldIconButton}" Click="Btndoorsdirdvgetloc_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Translation[getcursorloc], FallbackValue=Get Cursor Location}" IsEnabled="False" >
+                                                                                    <Path Data="M8,1.5 L8,4.5 M8,11.5 L8,14.5 M1.5,8 L4.5,8 M11.5,8 L14.5,8 M8,5 A3,3 0 1 1 7.99,5" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.6" Width="16" Height="16" />
+                                                                                </Button>
+                                                                            </Border>
+                                                                        </Grid>
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="org"/>
+                                                                            <TextBox x:Name="tbdoorsorg" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbdoorsorg_TextChanged" KeyDown="FormatTextForFloat" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="dcoid"/>
+                                                                            <TextBox x:Name="tbdoorsdcoid" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbdoorsdcoid_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="dtime"/>
+                                                                            <TextBox x:Name="tbdoorsdtime" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbdoorsdtime_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="ornlo"/>
+                                                                            <TextBox x:Name="tbdoorsornlo" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbdoorsornlo_TextChanged" KeyDown="FormatTextForFloat" Cursor="IBeam" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="dle"/>
+                                                                            <TextBox x:Name="tbdoorsdle" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbdoorsdle_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
 
-
-
-                                                                    </StackPanel>
-
-                                                                </Grid>
-
-                                                            </WrapPanel>
-                                                            
-                                                        </ScrollViewer>
-
-                                                    </Grid>
-
-                                                </Grid>
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="46"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[lfp], FallbackValue=lfp}" IsEnabled="{Binding ElementName=cbdoorslfp, Path=IsEnabled}"/>
+                                                                            <CheckBox x:Name="cbdoorslfp" Checked="cbdoorslfp_Checked" Unchecked="cbdoorslfp_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                        </Grid>
+                                                                        </StackPanel>
+                                                                    </Expander>
+                                                                </Border>
+                                                            </StackPanel>
+                                                        </WrapPanel>
+                                                    </ScrollViewer>
+                                                </DockPanel>
 
                                             </TabItem>
 
