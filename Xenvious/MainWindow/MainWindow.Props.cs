@@ -313,6 +313,7 @@ namespace Xenvious
                 if (!tbpropssettings2.IsFocused || ignore_focus) tbpropssettings2.Text = new Global((GTA.Offsets.Editor.Props.prpbs2 + GTA.Offsets.Editor.Props.NEXT * index)).Get<int>().ToString();
 
                 Functions.Read.checkbinary(9, GTA.Offsets.Editor.Props.prpbs2 + GTA.Offsets.Editor.Props.NEXT * index, cb_props_nocollision);
+                ShowPropUfoOptions(model, index);
                 Functions.Read.checkbinary(10, GTA.Offsets.Editor.Props.prpbs + GTA.Offsets.Editor.Props.NEXT * index, cb_props_invisible);
                 Functions.Read.checkbinary(2, GTA.Offsets.Editor.Props.prpbs + GTA.Offsets.Editor.Props.NEXT * index, cb_props_ignorevscheck);
                 Functions.Read.checkbinary(4, GTA.Offsets.Editor.Props.prpbs + GTA.Offsets.Editor.Props.NEXT * index, cb_props_lockpos);
@@ -755,6 +756,35 @@ namespace Xenvious
         private void cb_props_invisible_Checked(object sender, RoutedEventArgs e)
         {
             Functions.Write.writebinary(10, GTA.Offsets.Editor.Props.prpbs + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex, true);
+        }
+
+        // UFO props: prpbs2 bit 14 turns the ship, bit 15 lets it shine a beam now and then
+        // (fm_survival_controller). Only shown for the UFO models.
+        private static readonly uint[] UfoModels = { Functions.joaat("imp_prop_ship_01a"), Functions.joaat("gr_prop_damship_01a"), Functions.joaat("p_spinning_anus_s") };
+        private bool _ufoSync;
+
+        private void ShowPropUfoOptions(int model, int index)
+        {
+            bool ufo = UfoModels.Contains(unchecked((uint)model));
+            PropUfoOptions.Visibility = ufo ? Visibility.Visible : Visibility.Collapsed;
+            if (!ufo)
+                return;
+            _ufoSync = true;
+            Functions.Read.checkbinary(15, GTA.Offsets.Editor.Props.prpbs2 + GTA.Offsets.Editor.Props.NEXT * index, cb_props_ufospin);
+            Functions.Read.checkbinary(16, GTA.Offsets.Editor.Props.prpbs2 + GTA.Offsets.Editor.Props.NEXT * index, cb_props_ufolight);
+            _ufoSync = false;
+        }
+
+        private void cb_props_ufospin_Checked(object sender, RoutedEventArgs e)
+        {
+            if (!_ufoSync && m.IsProcOpen && ddpropno.SelectedIndex > -1)
+                Functions.Write.writebinary(15, GTA.Offsets.Editor.Props.prpbs2 + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex, cb_props_ufospin);
+        }
+
+        private void cb_props_ufolight_Checked(object sender, RoutedEventArgs e)
+        {
+            if (!_ufoSync && m.IsProcOpen && ddpropno.SelectedIndex > -1)
+                Functions.Write.writebinary(16, GTA.Offsets.Editor.Props.prpbs2 + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex, cb_props_ufolight);
         }
 
         private void cb_props_nocollision_Checked(object sender, RoutedEventArgs e)

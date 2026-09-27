@@ -1742,6 +1742,26 @@
                                                                                         <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[remcollision], FallbackValue=Remove Collision}" ToolTip="{Binding Translation[remcollision_tip], FallbackValue=Only in missions}" IsEnabled="{Binding ElementName=cb_props_nocollision, Path=IsEnabled}"/>
                                                                                         <CheckBox x:Name="cb_props_nocollision" Checked="cb_props_nocollision_Checked" Unchecked="cb_props_nocollision_Unchecked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
                                                                                     </Grid>
+                                                                                    <!-- UFO props only (imp_prop_ship_01a, gr_prop_damship_01a, p_spinning_anus_s); read by the survival controller. -->
+                                                                                    <StackPanel x:Name="PropUfoOptions" Visibility="Collapsed">
+                                                                                        <TextBlock Style="{StaticResource CardSub}" Margin="0,8,0,4" Text="{Binding Translation[prop_ufo], FallbackValue='UFO (Survival)'}"/>
+                                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                                            <Grid.ColumnDefinitions>
+                                                                                                <ColumnDefinition Width="*"/>
+                                                                                                <ColumnDefinition Width="46"/>
+                                                                                            </Grid.ColumnDefinitions>
+                                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[prop_ufospin], FallbackValue='UFO spins'}" ToolTip="{Binding Translation[prop_ufospin_tip], FallbackValue='Turns the UFO slowly around itself.'}"/>
+                                                                                            <CheckBox x:Name="cb_props_ufospin" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cb_props_ufospin_Checked" Unchecked="cb_props_ufospin_Checked" IsEnabled="{Binding ElementName=cb_props_nocollision, Path=IsEnabled}"/>
+                                                                                        </Grid>
+                                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                                            <Grid.ColumnDefinitions>
+                                                                                                <ColumnDefinition Width="*"/>
+                                                                                                <ColumnDefinition Width="46"/>
+                                                                                            </Grid.ColumnDefinitions>
+                                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[prop_ufolight], FallbackValue='Abduction beam'}" ToolTip="{Binding Translation[prop_ufolight_tip], FallbackValue='Now and then the UFO shines a beam down for 10 seconds.'}"/>
+                                                                                            <CheckBox x:Name="cb_props_ufolight" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cb_props_ufolight_Checked" Unchecked="cb_props_ufolight_Checked" IsEnabled="{Binding ElementName=cb_props_nocollision, Path=IsEnabled}"/>
+                                                                                        </Grid>
+                                                                                    </StackPanel>
                                                                                     </StackPanel>
                                                                                 </DockPanel>
                                                                             </Border>
