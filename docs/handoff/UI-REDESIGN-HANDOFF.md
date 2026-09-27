@@ -132,7 +132,10 @@ Status as of 2026-09-27 (evening). Head: 04ce17b, CI green. For a new Claude ses
    by the user. Only with a local build and step-by-step testing.
 4. Race handoff: hidden options, wrong label on cbraceoloosnc, empty handler of cb_race_nononcontact,
    empty Race Arena tab.
-5. Later: offsets optbs / musmustr / WSBS, UserControls per page, catalog pictures (WebP; vehicles,
+5. Light and blue theme pass: many new styles and pages use hard-coded dark colours
+   (#FFA3A6AA, NavMutedBrush, ConvBit, kind colours …). Move them to theme resources set in
+   `MainWindow.Settings.cs` (like PrimaryButtonBackground / PrimaryButtonForeground).
+6. Later: offsets optbs / musmustr / WSBS, UserControls per page, catalog pictures (WebP; vehicles,
    actors and weapons have no picture source yet), zone type names above 7.
 
 ## Mockups (claude.ai artifacts, private to the old account)
