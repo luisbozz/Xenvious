@@ -1,12 +1,14 @@
 # Handoff: UI redesign (branch `feature/ui-redesign`)
 
-Status as of 2026-09-26. For a new Claude session: read this file, `AGENTS.md` and
+Status as of 2026-09-27 (evening). Head: 04ce17b, CI green. For a new Claude session: read this file, `AGENTS.md` and
 `docs/wiki/` first. The user writes in German; answer in German.
 
 ## Working rules (from the user)
 
 - Every change goes to `feature/ui-redesign`, never `claude/...` branches.
-- The user tests in game on Windows and builds with xbuild in WSL.
+- The user tests in game on Windows and builds with xbuild in WSL. From now on the work moves to a
+  local Claude session in WSL (VS Code with the Claude plugin): it can build locally and read GTA
+  recordings / memory dumps, so offsets and values can be checked instead of guessed.
   GitHub Actions `build.yml` must stay green. It only proves that the code compiles.
   A missing StaticResource in XAML only shows up at startup, so ask for the log after a crash.
 - The user likes to see mockups first (HTML artifacts) and then picks a variant.
@@ -99,15 +101,39 @@ Status as of 2026-09-26. For a new Claude session: read this file, `AGENTS.md` a
 - UFO switches for survival props; police and traffic for DM on the dashboard.
 - Research notes for DM and Survival: `docs/handoff/DM-SURVIVAL-RESEARCH.md`.
 
+## Done on 2026-09-27, day (not tested in game)
+
+- PR #16 (hidden LTS / Capture options, creator value fixes) squash-merged into main and brought into
+  this branch (`5ffd314`). The repo allows no merge commits on main; use squash.
+- Race: `menubs18` bit 18 is "target race"; the switch is named for that (`b2c1f73`).
+- Entry bar in the header row next to the page title (`MainWindow.EditHeaderBar.cs`): bars carry
+  `Tag="EntryBar"` (23 pages), the element is moved into `EditHeaderBar` and back on page change.
+- Converter (`04ce17b`, `MainWindow.Converter.cs`), built after mockup
+  https://claude.ai/artifact/CGxnCLYaXydCBGRkpkWiub:
+  - one wide input (`tbconvnative`) takes a name (joaat), a number, `0x..` or `0b..`;
+    below int / unsigned / hex and binary, each with a copy button (`ConvCopy_Click`);
+  - bits as four byte tiles (style A), built in code into `ConvBitsPanel`: big = Xenvious bit (1-32),
+    small = script bit (0-31), click toggles;
+  - "Recognised" card at the bottom: looks the value up in PropCatalog, VehicleCatalog, ActorCatalog,
+    WeaponCatalog (names only come from our lists, a hash cannot be reversed); "Show picture" uses
+    `ModelImageCache.GetAsync` (disk cache first, then the source; only props have one);
+    "Open in catalog" opens the matching catalog, a pick goes back into the converter.
+  - one central `SetConverterValue(uint, source)` with a `_convSync` flag fills everything.
+- Plan for one UserControl per page: `docs/handoff/USERCONTROLS-PLAN.md` (not started; step 1 only
+  when the user can test).
+
 ## Open todos
 
-1. Test everything in game, page by page, and fix what the converter got wrong.
+1. Test everything in game, page by page (use the review list
+   https://claude.ai/artifact/NYd7sbdEJ6Fbm9wZGfNAH4), and fix what the converter scripts got wrong.
+   PR #17 (draft) stays draft until then; state in it what was tested, on which edition and build.
 2. DM and Survival full functions (last): needs new offsets via ysc-global-updater, see research notes.
-3. Zone type names above 7 (user reads the 7 public ones in game).
-4. Race handoff: hidden options, wrong label on cbraceoloosnc, empty handler of cb_race_nononcontact, empty Race Arena tab.
-5. Later: converter and bit handling, offsets optbs / musmustr / WSBS, UserControls per page,
-   entry bar into the header row, catalog pictures (WebP).
-6. PR for `feature/ui-redesign` once the user asks (state what was tested in game).
+3. Bit switch 1-based -> 0-based in `checkbinary` / `writebinary`: about 690 call sites; postponed
+   by the user. Only with a local build and step-by-step testing.
+4. Race handoff: hidden options, wrong label on cbraceoloosnc, empty handler of cb_race_nononcontact,
+   empty Race Arena tab.
+5. Later: offsets optbs / musmustr / WSBS, UserControls per page, catalog pictures (WebP; vehicles,
+   actors and weapons have no picture source yet), zone type names above 7.
 
 ## Mockups (claude.ai artifacts, private to the old account)
 
@@ -121,3 +147,5 @@ They can only be opened if the old account shares them:
 | Dashboard v3 | https://claude.ai/artifact/BmhFr7ebhDYeRcKq4M72Me |
 | Copy Jobs | https://claude.ai/artifact/4n7tg1JWhpJquREjdaZSD4 |
 | Misc | https://claude.ai/artifact/JNEtZzh8RFjeipuPe4h5zF |
+| Converter (final) | https://claude.ai/artifact/CGxnCLYaXydCBGRkpkWiub |
+| Review list for testing | https://claude.ai/artifact/NYd7sbdEJ6Fbm9wZGfNAH4 |
