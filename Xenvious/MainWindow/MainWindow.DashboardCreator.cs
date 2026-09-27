@@ -65,6 +65,7 @@ namespace Xenvious
                 // Each job type shows its own section under Ambient.
                 DashMissionSection.Visibility = mission ? Visibility.Visible : Visibility.Collapsed;
                 DashRaceLobby.Visibility = creator == "fm_race_creator" ? Visibility.Visible : Visibility.Collapsed;
+                DashDMSection.Visibility = creator == "fm_deathmatch_creator" ? Visibility.Visible : Visibility.Collapsed;
                 // The map rebuild is only verified for race, LTS and capture (see CreatorMap).
                 BtnDashReloadMap.IsEnabled = creator == "fm_race_creator" || creator == "fm_lts_creator" || creator == "fm_capture_creator";
             }
@@ -79,6 +80,8 @@ namespace Xenvious
                 GetDashboardMissionAmbient();
             else if (creator == "fm_race_creator")
                 GetDashboardRaceLobby();
+            else if (creator == "fm_deathmatch_creator")
+                GetDashboardDMAmbient();
         }
 
         private static string SafeRead(Func<string> read)
@@ -358,6 +361,34 @@ namespace Xenvious
             GetMissionDensity(dddashpeds, GTA.Offsets.Editor.apeds);
             Functions.Read.checkbinary(21, GTA.Offsets.Editor.menubs2, cbdashptod);
             GetMissionExtraValues();
+        }
+
+        // Deathmatch: fm_deathmatch_controler reads pol (0 normal, 1 no police) and traf
+        // (0 off, 1..5 = 20/30/50/70/100 % traffic); these are the lobby defaults of the job.
+        private void GetDashboardDMAmbient()
+        {
+            if (!dddashdmpolice.IsDropDownOpen)
+            {
+                int pol = new Global(GTA.Offsets.Editor.pol).Get<int>();
+                dddashdmpolice.SelectedIndex = pol >= 0 && pol < dddashdmpolice.Items.Count ? pol : -1;
+            }
+            if (!dddashdmtraffic.IsDropDownOpen)
+            {
+                int traf = new Global(GTA.Offsets.Editor.traf).Get<int>();
+                dddashdmtraffic.SelectedIndex = traf >= 0 && traf < dddashdmtraffic.Items.Count ? traf : -1;
+            }
+        }
+
+        private void dddashdmpolice_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (dddashdmpolice.SelectedIndex > -1 && m.IsProcOpen && GTA.Offsets.Editor.pol != 0)
+                new Global(GTA.Offsets.Editor.pol).SetInt(dddashdmpolice.SelectedIndex);
+        }
+
+        private void dddashdmtraffic_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (dddashdmtraffic.SelectedIndex > -1 && m.IsProcOpen && GTA.Offsets.Editor.traf != 0)
+                new Global(GTA.Offsets.Editor.traf).SetInt(dddashdmtraffic.SelectedIndex);
         }
 
         private void dddashpolice_SelectionChanged(object sender, SelectionChangedEventArgs e)
