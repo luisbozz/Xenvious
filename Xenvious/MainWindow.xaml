@@ -4135,7 +4135,7 @@
                                                                                             <ColumnDefinition Width="*"/>
                                                                                             <ColumnDefinition Width="46"/>
                                                                                         </Grid.ColumnDefinitions>
-                                                                                        <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[olohideag], FallbackValue='Only Standard and Non-Contact'}"/>
+                                                                                        <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[racetargetrace], FallbackValue='Target Race'}" ToolTip="{Binding Translation[racetargetrace_tip], FallbackValue='Plays the race as a Target Assault race, like race type 18 and 19.'}"/>
                                                                                         <CheckBox x:Name="cbraceoloosnc" Checked="cbraceoloosnc_Checked" Unchecked="cbraceoloosnc_Checked" Grid.Column="1" Style="{StaticResource FormToggle}"/>
                                                                                     </Grid>
                                                                                     <Grid Style="{StaticResource FormRow}">

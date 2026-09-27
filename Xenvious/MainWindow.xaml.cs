@@ -722,11 +722,6 @@ namespace Xenvious
             return issteam ? m.memory(GTA.Offsets.Editor.steam_accname).GetString() : isrstar ? m.memory(GTA.Offsets.Editor.rstar_accname).GetString() : m.memory(GTA.Offsets.Editor.epic_accname).GetString();
         }
 
-        private void cb_race_nononcontact_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void mpropspanelmain_DragEnter(object sender, DragEventArgs e)
         {
             mpropsdrop.Visibility = Visibility.Visible;
