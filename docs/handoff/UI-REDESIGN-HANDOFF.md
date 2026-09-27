@@ -15,6 +15,27 @@ Status as of 2026-09-26. For a new Claude session: read this file, `AGENTS.md` a
   dictionaries in `Translation.cs`. Insert new keys after the `"dash_team"` line
   in each dictionary (order ger, eng, ru, pl, fr, zh_cn).
 
+## Design decisions (binding, from the user; apply them without asking again)
+
+- Dark Discord-like grey. Cards: DashCard + DashCardHeader + DashCardTitle (17 px bold); sub titles CardSub.
+  Not everything bold: labels normal or semi-bold, only what matters is big.
+- Edit pages follow the page concept: free entry bar without a box (left "N … placed", right an action like
+  "→ Dynamic", then ‹ number › as one field with numbers only, trash icon button, light "+ Add" =
+  FormButtonPrimary), all 32 px high. Below: 340 px card columns in a WrapPanel: Model | Placement (not
+  "Position", next to the model) | Look | Rules | Advanced (folded CardExpander, raw values with FieldLabelRaw).
+- Labels above fields (FieldLabel), no watermark in the field. X/Y/Z in one row with FieldAxis labels and a
+  square FieldIconButton (crosshair = cursor position, chain = keep rotation). Switch rows: FormRow +
+  FormLabel + FormToggle.
+- Buttons that jump to another Xenvious page get GoToPageIcon; external links the "opens outside" icon.
+- Global ComboBox style; model card variant C (change button with pencil, clickable picture, empty states).
+- Breadcrumb never doubled. Options that do not fit the loaded job type: hidden, with a section heading per
+  job type (like the dashboard ambient).
+- Choices shown as picture buttons where that helps (zone shapes), long lists grouped by topic (zone types, variant B).
+- No markers for "not offered by the creator": no " *", no "also in the public creator" notes.
+- Every control keeps its x:Name and handler; old controls still used by code are hidden, not deleted.
+- Work without asking for mockups when the pattern is known; mockups only as a list to review afterwards.
+- Overview map on the dashboard: shelved. Copy Jobs "missing models" check: not wanted.
+
 ## What is done (all pushed, CI green up to 42f5565 / 061c3bf)
 
 - **Dashboard.**
