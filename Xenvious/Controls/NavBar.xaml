@@ -142,9 +142,12 @@
         </Setter>
     </Style>
     <!-- The main action of a page (Add): light, so it stands out from the grey buttons. -->
+    <!-- Dark theme values; MainWindow.Settings.cs sets them per theme. -->
+    <SolidColorBrush x:Key="PrimaryButtonBackground" Color="#FFE3E5E8"/>
+    <SolidColorBrush x:Key="PrimaryButtonForeground" Color="#FF202225"/>
     <Style x:Key="FormButtonPrimary" TargetType="{x:Type Button}" BasedOn="{StaticResource FormButton}">
-        <Setter Property="Background" Value="#FFE3E5E8"/>
-        <Setter Property="Foreground" Value="#FF202225"/>
+        <Setter Property="Background" Value="{DynamicResource PrimaryButtonBackground}"/>
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryButtonForeground}"/>
     </Style>
     <!-- Arrow after the label of a button that opens another page in Xenvious. -->
     <Style x:Key="GoToPageIcon" TargetType="{x:Type Path}">

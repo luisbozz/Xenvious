@@ -71,6 +71,8 @@ namespace Xenvious
                     this.Resources["ComboBoxArrow"] = new SolidColorBrush(Colors.White);
                     this.Resources["TextColor"] = new SolidColorBrush(Colors.White);
                     this.Resources["TextBoxForegroundThemeBrush"] = new SolidColorBrush(Colors.White);
+                    this.Resources["PrimaryButtonBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#E3E5E8"));
+                    this.Resources["PrimaryButtonForeground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#202225"));
                     this.Resources["ShadowColor"] = Colors.Black;
                     this.XenviousImage.Source = (BitmapImage)FindResource("ogimage256");
 
@@ -96,6 +98,8 @@ namespace Xenvious
                     this.Resources["ComboBoxArrow"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B9BBBE"));
                     this.Resources["TextColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4F5660"));
                     this.Resources["TextBoxForegroundThemeBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4F5660"));
+                    this.Resources["PrimaryButtonBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4F5660"));
+                    this.Resources["PrimaryButtonForeground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFFFFF"));
                     this.Resources["ShadowColor"] = Colors.White;
                     this.XenviousImage.Source = (BitmapImage)FindResource("ogimageb256");
                     break;
@@ -119,6 +123,8 @@ namespace Xenvious
                     this.Resources["ComboBoxArrow"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B9BBBE"));
                     this.Resources["TextColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#90A0BC"));
                     this.Resources["TextBoxForegroundThemeBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#90A0BC"));
+                    this.Resources["PrimaryButtonBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#90A0BC"));
+                    this.Resources["PrimaryButtonForeground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#161C32"));
                     this.Resources["ShadowColor"] = Colors.Black;
                     break;
                 default:

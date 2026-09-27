@@ -395,12 +395,8 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
-                        <Border CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="4" VerticalAlignment="Center" MaxHeight="30">
-                            <Border.Effect>
-                                <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>
-                            </Border.Effect>
-                            <Button x:Name="BtnLaunchCreator" FontSize="16" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" Click="BtnLaunchCreator_Click" Content="{Binding Translation[launchcreator], FallbackValue=Launch Creator}" Foreground="{DynamicResource TextColor}" />
-                        </Border>
+                        <!-- Main action of the title bar, same look as "+ Add". -->
+                        <Button x:Name="BtnLaunchCreator" Style="{StaticResource FormButtonPrimary}" Height="30" FontSize="14" Margin="4" HorizontalAlignment="Right" VerticalAlignment="Center" Click="BtnLaunchCreator_Click" Content="{Binding Translation[launchcreator], FallbackValue=Launch Creator}" WindowChrome.IsHitTestVisibleInChrome="True"/>
                         <Rectangle Grid.Column="1" HorizontalAlignment="center" VerticalAlignment="Stretch" Fill="DimGray" Width="1" Margin="15 6 10 6" />
                     </Grid>
 
