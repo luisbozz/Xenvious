@@ -1303,9 +1303,10 @@
                                                 </StackPanel>
                                             </Button>
                                             <!-- The entry bar of the open page (count, ‹ number ›, delete, add) moves up here; MainWindow.EditNav.cs. -->
-                                            <ContentControl x:Name="EditHeaderBar" DockPanel.Dock="Right" VerticalAlignment="Center" Focusable="False"/>
-                                            <TextBlock x:Name="EditCrumbParent" VerticalAlignment="Center" FontSize="14" FontWeight="Bold" Foreground="#FFA3A6AA"/>
-                                            <TextBlock x:Name="HeaderLabel" VerticalAlignment="Center" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource TextColor}"/>
+                                            <TextBlock x:Name="EditCrumbParent" DockPanel.Dock="Left" VerticalAlignment="Center" FontSize="14" FontWeight="Bold" Foreground="#FFA3A6AA"/>
+                                            <TextBlock x:Name="HeaderLabel" DockPanel.Dock="Left" VerticalAlignment="Center" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource TextColor}"/>
+                                            <!-- Fills the rest of the row: the count sits right after the title, the controls on the right. -->
+                                            <ContentControl x:Name="EditHeaderBar" Margin="16,0,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" Focusable="False"/>
                                         </DockPanel>
                                     </Border>
 
