@@ -1007,6 +1007,19 @@ namespace Xenvious
                     public static long outonfv = 0;
                     public static long outhc = 0;
                     public static long pribt = 0;
+                    // Per team, one bit per rule (timers: ms), outside the bounds structs: what area 1 / 2 does.
+                    public static long timer = 0;
+                    public static long leavebs = 0;
+                    public static long playbs = 0;
+                    public static long spawnbs = 0;
+                    public static long spawnwhilebs = 0;
+                    public static long spawnbs2 = 0;
+                    public static long spawnwhilebs2 = 0;
+                    public static long wantedbs = 0;
+                    public static long leavebs2 = 0;
+                    public static long playbs2 = 0;
+                    public static long timer2 = 0;
+                    public static long wantedbs2 = 0;
                     public static long bd2t = 0;
                     public static long bd2vx = 0;
                     public static long bd2vy = 0;
