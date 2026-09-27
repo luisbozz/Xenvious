@@ -6452,59 +6452,83 @@
 
                                                             <TabItem x:Name="PageInnerMissionIPL" Header="IPL" >
 
+                                                                <!-- Interiors as cards (switch loads the IPL, teleport goes there); the raw IPL values folded on the left. -->
+                                                                <DockPanel Margin="10,12,10,0">
+                                                                    <StackPanel DockPanel.Dock="Left" Width="340" Margin="0,0,12,0">
+                                                                        <TextBlock FontSize="13" Foreground="{StaticResource NavMutedBrush}" TextWrapping="Wrap" Margin="2,0,0,12" Text="{Binding Translation[ipl_intro], FallbackValue='Interiors and map parts the job loads. The switch turns one on or off, Teleport takes you there.'}"/>
+                                                                                <Border Style="{StaticResource DashCard}">
+                                                                                    <Expander Style="{StaticResource CardExpander}" Header="{Binding Translation[advanced], FallbackValue=Advanced}">
+                                                                                        <StackPanel Margin="14,12,14,4">
+                                                                                        <Grid>
+                                                                                            <Grid.ColumnDefinitions>
+                                                                                                <ColumnDefinition Width="*"/>
+                                                                                                <ColumnDefinition Width="10"/>
+                                                                                                <ColumnDefinition Width="*"/>
+                                                                                            </Grid.ColumnDefinitions>
+                                                                                            <StackPanel Grid.Column="0">
+                                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="iplop"/>
+                                                                                            <TextBox x:Name="tbMissioniplop"    Style="{StaticResource Watermark}" TextChanged="tbMissioniplop_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                                            </StackPanel>
+                                                                                            <StackPanel Grid.Column="2">
+                                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="iplop2"/>
+                                                                                            <TextBox x:Name="tbMissioniplop2"    Style="{StaticResource Watermark}" TextChanged="tbMissioniplop2_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                                            </StackPanel>
+                                                                                        </Grid>
+                                                                                        <Grid>
+                                                                                            <Grid.ColumnDefinitions>
+                                                                                                <ColumnDefinition Width="*"/>
+                                                                                                <ColumnDefinition Width="10"/>
+                                                                                                <ColumnDefinition Width="*"/>
+                                                                                            </Grid.ColumnDefinitions>
+                                                                                            <StackPanel Grid.Column="0">
+                                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="intop"/>
+                                                                                            <TextBox x:Name="tbMissionintop"    Style="{StaticResource Watermark}"  TextChanged="tbMissionintop_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                                            </StackPanel>
+                                                                                            <StackPanel Grid.Column="2">
+                                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="intop2"/>
+                                                                                            <TextBox x:Name="tbMissionintop2"   Style="{StaticResource Watermark}" TextChanged="tbMissionintop2_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                                            </StackPanel>
+                                                                                        </Grid>
+                                                                                        <Grid>
+                                                                                            <Grid.ColumnDefinitions>
+                                                                                                <ColumnDefinition Width="*"/>
+                                                                                                <ColumnDefinition Width="10"/>
+                                                                                                <ColumnDefinition Width="*"/>
+                                                                                            </Grid.ColumnDefinitions>
+                                                                                            <StackPanel Grid.Column="0">
+                                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="intop3"/>
+                                                                                            <TextBox x:Name="tbMissionintop3"   Style="{StaticResource Watermark}" TextChanged="tbMissionintop3_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                                            </StackPanel>
+                                                                                            <StackPanel Grid.Column="2">
 
-
-                                                                <Grid>
-                                                                    <Grid.ColumnDefinitions>
-                                                                        <ColumnDefinition MaxWidth="250" MinWidth="175" Width="0.33*"/>
-                                                                        <ColumnDefinition Width="*"/>
-                                                                    </Grid.ColumnDefinitions>
-
-                                                                    <Grid>
-                                                                        <Grid.RowDefinitions>
-                                                                            <RowDefinition Height="50"/>
-                                                                            <RowDefinition Height="*"/>
-                                                                        </Grid.RowDefinitions>
-
-                                                                        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Text="{Binding Translation[advanced], FallbackValue=Advanced}" FontWeight="Bold" TextTrimming="CharacterEllipsis"/>
-
-                                                                        <StackPanel Grid.Row="1" Orientation="Vertical" Margin="0,2,0,0">
-
-                                                                            <TextBox x:Name="tbMissioniplop"    Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="iplop" TextChanged="tbMissioniplop_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                            <TextBox x:Name="tbMissioniplop2"    Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="iplop2" TextChanged="tbMissioniplop2_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                            <TextBox x:Name="tbMissionintop"    Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="intop"  TextChanged="tbMissionintop_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                            <TextBox x:Name="tbMissionintop2"   Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="intop2" TextChanged="tbMissionintop2_TextChanged" KeyDown="FormatTextForModel"/>
-                                                                            <TextBox x:Name="tbMissionintop3"   Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,5" VerticalAlignment="Stretch" Tag="intop3" TextChanged="tbMissionintop3_TextChanged" KeyDown="FormatTextForModel"/>
-
-                                                                        </StackPanel>
-                                                                    </Grid>
-
-                                                                    <ScrollViewer Grid.Column="1" Margin="10 0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                                                        <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Height="auto" >
-
-                                                                            <local:IPL x:Name="IPLYachtH"        HeaderText="Dignity Heist Yacht"      Margin="10"/>
-                                                                            <local:IPL x:Name="IPLYachtP"        HeaderText="Dignity Party Yacht"      Margin="10"/>
-                                                                            <local:IPL x:Name="IPLCarrier"       HeaderText="Aircraft Carrier"         Margin="10"/>
-                                                                            <local:IPL x:Name="IPLMorgue"        HeaderText="Morgue"                   Margin="10"/>
-                                                                            <local:IPL x:Name="IPLFranklin"      HeaderText="Franklins House"          Margin="10"/>
-                                                                            <local:IPL x:Name="IPLMichael"       HeaderText="Michaels House"           Margin="10"/>
-                                                                            <local:IPL x:Name="IPLRockClub"      HeaderText="Rockclub"                 Margin="10"/>
-                                                                            <local:IPL x:Name="IPLStripClub"     HeaderText="Stripclub"                Margin="10"/>
-                                                                            <local:IPL x:Name="IPLONeil"         HeaderText="O-Neil Farm"              Margin="10"/>
-                                                                            <local:IPL x:Name="IPLLiveinvader"   HeaderText="Liveinvader Office"       Margin="10"/>
-                                                                            <local:IPL x:Name="IPLSlaughter"     HeaderText="Race Slaughterhouse"      Margin="10"/>
-                                                                            <local:IPL x:Name="IPLvrecycle"      HeaderText="vrecycle"                 Margin="10"/>
-                                                                            <local:IPL x:Name="IPLFoundry"       HeaderText="Foundry"                  Margin="10"/>
-                                                                            <local:IPL x:Name="IPLServerFarm"    HeaderText="Server Farm"              Margin="10"/>
-                                                                            <local:IPL x:Name="IPLIAA"           HeaderText="IAA Base"                 Margin="10"/>
-                                                                            <local:IPL x:Name="IPLFIB"           HeaderText="FIB"                      Margin="10"/>
-                                                                            <local:IPL x:Name="IPLCaypPerico"    HeaderText="Cayo Perico"              Margin="10"/>
-
+                                                                                            </StackPanel>
+                                                                                        </Grid>
+                                                                                        </StackPanel>
+                                                                                    </Expander>
+                                                                                </Border>
+                                                                    </StackPanel>
+                                                                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                                                        <WrapPanel Orientation="Horizontal">
+                                                                            <local:IPL x:Name="IPLYachtH"        HeaderText="Dignity Heist Yacht"/>
+                                                                            <local:IPL x:Name="IPLYachtP"        HeaderText="Dignity Party Yacht"/>
+                                                                            <local:IPL x:Name="IPLCarrier"       HeaderText="Aircraft Carrier"/>
+                                                                            <local:IPL x:Name="IPLMorgue"        HeaderText="Morgue"/>
+                                                                            <local:IPL x:Name="IPLFranklin"      HeaderText="Franklins House"/>
+                                                                            <local:IPL x:Name="IPLMichael"       HeaderText="Michaels House"/>
+                                                                            <local:IPL x:Name="IPLRockClub"      HeaderText="Rockclub"/>
+                                                                            <local:IPL x:Name="IPLStripClub"     HeaderText="Stripclub"/>
+                                                                            <local:IPL x:Name="IPLONeil"         HeaderText="O-Neil Farm"/>
+                                                                            <local:IPL x:Name="IPLLiveinvader"   HeaderText="Liveinvader Office"/>
+                                                                            <local:IPL x:Name="IPLSlaughter"     HeaderText="Race Slaughterhouse"/>
+                                                                            <local:IPL x:Name="IPLvrecycle"      HeaderText="vrecycle"/>
+                                                                            <local:IPL x:Name="IPLFoundry"       HeaderText="Foundry"/>
+                                                                            <local:IPL x:Name="IPLServerFarm"    HeaderText="Server Farm"/>
+                                                                            <local:IPL x:Name="IPLIAA"           HeaderText="IAA Base"/>
+                                                                            <local:IPL x:Name="IPLFIB"           HeaderText="FIB"/>
+                                                                            <local:IPL x:Name="IPLCaypPerico"    HeaderText="Cayo Perico"/>
                                                                         </WrapPanel>
                                                                     </ScrollViewer>
-
-                                                                </Grid>
-
+                                                                </DockPanel>
 
                                                             </TabItem>
 
