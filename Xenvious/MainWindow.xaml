@@ -12782,78 +12782,136 @@
 
                     <TabItem x:Name="PageConverter" Header="Converter">
 
-                        <Border Grid.Column="1" Background="{DynamicResource SectionBackgroundBrush}" CornerRadius="15" Padding="0,0,0,5" HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <Border.Effect>
-                                <DropShadowEffect BlurRadius="13" ShadowDepth="0" Color="{DynamicResource ShadowColor}"/>
-                            </Border.Effect>
+                        <!-- One input (name, number, 0x.., 0b..), the conversions, the 32 bits as byte tiles and the
+                             model the value stands for, if it is in one of our lists. MainWindow.Converter.cs. -->
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                            <StackPanel x:Name="ConverterMain" Margin="20,16,20,16" MaxWidth="1000">
+                                <StackPanel.Resources>
+                                    <Style x:Key="ConvBit" TargetType="{x:Type ToggleButton}">
+                                        <Setter Property="Height" Value="40"/>
+                                        <Setter Property="Margin" Value="2"/>
+                                        <Setter Property="Cursor" Value="Hand"/>
+                                        <Setter Property="Foreground" Value="#FF72767D"/>
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                                    <Border x:Name="bd" CornerRadius="4" BorderThickness="1" Background="{DynamicResource ComboBoxBackground}" BorderBrush="{DynamicResource ComboBoxBorder}">
+                                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                    </Border>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsChecked" Value="True">
+                                                            <Setter TargetName="bd" Property="Background" Value="#3343B581"/>
+                                                            <Setter TargetName="bd" Property="BorderBrush" Value="#B343B581"/>
+                                                            <Setter Property="Foreground" Value="#FF43B581"/>
+                                                        </Trigger>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter TargetName="bd" Property="BorderBrush" Value="{DynamicResource TextColor}"/>
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </StackPanel.Resources>
 
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="50"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
-
-                                <Border Margin="3" CornerRadius="15" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Grid.Row="0">
-                                    <Viewbox VerticalAlignment="Center" HorizontalAlignment="Center">
-                                        <Label Foreground="{DynamicResource TextColor}" FontFamily="{DynamicResource Volte}" FontWeight="Bold" Content="{Binding Translation[converter], FallbackValue=Converter}"/>
-                                    </Viewbox>
+                                <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
+                                    <DockPanel>
+                                        <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                            <DockPanel>
+                                                <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center" FontSize="12" Foreground="{StaticResource NavMutedBrush}" Text="{Binding Translation[conv_input_tip], FallbackValue='Name, number, 0x.. or 0b..'}"/>
+                                                <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[converter], FallbackValue=Converter}"/>
+                                            </DockPanel>
+                                        </Border>
+                                        <StackPanel Margin="14,12,4,6">
+                                            <TextBox x:Name="tbconvnative" Style="{StaticResource Watermark}" Height="40" FontSize="18" Margin="0,0,10,12" TextChanged="tbconvnative_TextChanged"/>
+                                            <UniformGrid Columns="3" Margin="0,0,0,10">
+                                            <StackPanel Margin="0,0,10,0">
+                                                <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[conv_int], FallbackValue=Integer}"/>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                    <TextBox x:Name="tbconvint" Style="{StaticResource Watermark}" Height="32" FontFamily="Consolas" FontSize="14" TextChanged="tbconvint_TextChanged"/>
+                                                    <Button Grid.Column="1" Style="{StaticResource FormButton}" Height="32" Padding="10,0" Margin="4,0,0,0" Tag="{Binding ElementName=tbconvint}" Click="ConvCopy_Click" Content="{Binding Translation[conv_copy], FallbackValue=Copy}"/>
+                                                </Grid>
+                                            </StackPanel>
+                                            <StackPanel Margin="0,0,10,0">
+                                                <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[conv_uint], FallbackValue=Unsigned}"/>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                    <TextBox x:Name="tbconvuint" Style="{StaticResource Watermark}" Height="32" FontFamily="Consolas" FontSize="14" TextChanged="tbconvuint_TextChanged"/>
+                                                    <Button Grid.Column="1" Style="{StaticResource FormButton}" Height="32" Padding="10,0" Margin="4,0,0,0" Tag="{Binding ElementName=tbconvuint}" Click="ConvCopy_Click" Content="{Binding Translation[conv_copy], FallbackValue=Copy}"/>
+                                                </Grid>
+                                            </StackPanel>
+                                            <StackPanel Margin="0,0,10,0">
+                                                <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[conv_hex], FallbackValue=Hexadecimal}"/>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                    <TextBox x:Name="tbconvhex" Style="{StaticResource Watermark}" Height="32" FontFamily="Consolas" FontSize="14" TextChanged="tbconvhex_TextChanged"/>
+                                                    <Button Grid.Column="1" Style="{StaticResource FormButton}" Height="32" Padding="10,0" Margin="4,0,0,0" Tag="{Binding ElementName=tbconvhex}" Click="ConvCopy_Click" Content="{Binding Translation[conv_copy], FallbackValue=Copy}"/>
+                                                </Grid>
+                                            </StackPanel>
+                                            </UniformGrid>
+                                            <StackPanel Margin="0,0,10,0">
+                                                <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[conv_bin], FallbackValue=Binary}"/>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                    <TextBox x:Name="tbconvbinary" Style="{StaticResource Watermark}" Height="32" FontFamily="Consolas" FontSize="14" TextChanged="tbconvbinary_TextChanged"/>
+                                                    <Button Grid.Column="1" Style="{StaticResource FormButton}" Height="32" Padding="10,0" Margin="4,0,0,0" Tag="{Binding ElementName=tbconvbinary}" Click="ConvCopy_Click" Content="{Binding Translation[conv_copy], FallbackValue=Copy}"/>
+                                                </Grid>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </DockPanel>
                                 </Border>
 
-                                <Grid Grid.Row="1" Width="400" Margin="15" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="ConverterMain">
+                                <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
+                                    <DockPanel>
+                                        <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                            <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[conv_bits], FallbackValue=Bits}"/>
+                                        </Border>
+                                        <StackPanel Margin="14,12,14,10">
+                                            <!-- Four bytes of eight tiles, filled in code: big Xenvious bit (1-32), small script bit (0-31). -->
+                                            <UniformGrid x:Name="ConvBitsPanel" Columns="4"/>
+                                            <TextBlock FontSize="12" Foreground="#FF72767D" Margin="2,8,0,0" TextWrapping="Wrap" Text="{Binding Translation[conv_bits_hint], FallbackValue='Big: Xenvious bit (1-32), small: script bit (0-31). A click switches the bit.'}"/>
+                                            <Label x:Name="Lblconvbinarynums" Padding="2,6,0,0" FontSize="13" Foreground="{DynamicResource TextColor}"/>
+                                        </StackPanel>
+                                    </DockPanel>
+                                </Border>
 
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="0.5*"/>
-                                        <ColumnDefinition Width="0.5*"/>
-                                    </Grid.ColumnDefinitions>
-
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="50"/>
-                                        <RowDefinition Height="50"/>
-                                        <RowDefinition Height="50"/>
-                                        <RowDefinition Height="50"/>
-                                        <RowDefinition Height="50"/>
-                                        <RowDefinition Height="30"/>
-                                        <RowDefinition Height="50"/>
-                                    </Grid.RowDefinitions>
-
-
-                                    <Viewbox Grid.Row="0" HorizontalAlignment="Left">
-                                        <Label FontSize="18" Content="Native"/>
-                                    </Viewbox>
-                                    <Viewbox Grid.Row="1" HorizontalAlignment="Left">
-                                        <Label FontSize="18" Content="{Binding Translation[hex], FallbackValue=Hexadecimal}" ContentStringFormat="{}{0} (hex)"/>
-                                    </Viewbox>
-                                    <Viewbox Grid.Row="2" HorizontalAlignment="Left">
-                                        <Label FontSize="18" Content="{Binding Translation[int], FallbackValue=Integer}" ContentStringFormat="{}{0} (int)"/>
-                                    </Viewbox>
-                                    <Viewbox Grid.Row="3" HorizontalAlignment="Left">
-                                        <Label FontSize="18" Content="{Binding Translation[uint], FallbackValue=Integer}" ContentStringFormat="{}{0} (uint)"/>
-                                    </Viewbox>
-                                    <Viewbox Grid.Row="4" HorizontalAlignment="Left">
-                                        <Label FontSize="18" Content="{Binding Translation[binary], FallbackValue=Binary}"/>
-                                    </Viewbox>
-
-                                    <TextBox x:Name="tbconvnative" Grid.Row="0" Grid.Column="1" Style="{StaticResource Watermark}" Width="200" Height="30" HorizontalAlignment="Right" IsEnabled="True" TextChanged="tbconvnative_TextChanged"/>
-                                    <TextBox x:Name="tbconvhex" Grid.Row="1" Grid.Column="1" Style="{StaticResource Watermark}" Width="200" Height="30" HorizontalAlignment="Right" IsEnabled="True" TextChanged="tbconvhex_TextChanged" MaxLength="8"/>
-                                    <TextBox x:Name="tbconvint" Grid.Row="2" Grid.Column="1" Style="{StaticResource Watermark}" Width="200" Height="30" HorizontalAlignment="Right" IsEnabled="True" TextChanged="tbconvint_TextChanged" MaxLength="11"  KeyDown="FormatTextForModel"/>
-                                    <TextBox x:Name="tbconvuint" Grid.Row="3" Grid.Column="1" Style="{StaticResource Watermark}" Width="200" Height="30" HorizontalAlignment="Right" IsEnabled="True" TextChanged="tbconvuint_TextChanged" MaxLength="10"  KeyDown="FormatTextForUInteger"/>
-                                    <TextBox x:Name="tbconvbinary" Grid.Row="4" Grid.Column="1" Style="{StaticResource Watermark}" Width="200" Height="30" HorizontalAlignment="Right" IsEnabled="True" TextChanged="tbconvbinary_TextChanged" />
-
-                                    <Viewbox Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Center">
-                                        <Label FontSize="18" x:Name="Lblconvbinarynums"/>
-                                    </Viewbox>
-                                    
-                                    <Border Grid.Row="6" Grid.ColumnSpan="2" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5">
-                                        <Border.Effect>
-                                            <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>                                        
-                                        </Border.Effect>
-                                        <Button x:Name="Btncenvgetimg" Style="{DynamicResource CustomButton}" Content="{Binding Translation[image], FallbackValue=Image}" local:CornerRadiusSetter.CornerRadius="5" Click="Btncenvgetimg_Click"/>
-                                    </Border>
-
-                                </Grid>
-
-                            </Grid>
-                        </Border>
+                                <Border Style="{StaticResource DashCard}">
+                                    <DockPanel>
+                                        <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                            <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[conv_hit], FallbackValue=Recognised}"/>
+                                        </Border>
+                                        <Grid Margin="14,12,14,14">
+                                            <TextBlock x:Name="ConvHitNone" TextWrapping="Wrap" FontSize="13" Foreground="{StaticResource NavMutedBrush}" Text="{Binding Translation[conv_nohit], FallbackValue='No model in our lists. The value is probably a bitset or another number.'}"/>
+                                            <Grid x:Name="ConvHitPanel" Visibility="Collapsed">
+                                                <Grid.ColumnDefinitions><ColumnDefinition Width="220"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                                <Border Width="200" Height="140" CornerRadius="5" Background="{DynamicResource SeactionHeaderBackgroundBrush}" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                                    <Image x:Name="ConvHitImage" Stretch="Uniform"/>
+                                                </Border>
+                                                <StackPanel Grid.Column="1">
+                                                    <TextBlock x:Name="ConvHitKind" FontSize="12" FontWeight="Bold" Foreground="#FFA3A6AA"/>
+                                                    <TextBlock x:Name="ConvHitName" FontSize="18" FontWeight="SemiBold" Margin="0,2,0,4" TextTrimming="CharacterEllipsis"/>
+                                                    <TextBlock x:Name="ConvHitNative" FontSize="13" FontFamily="Consolas" Foreground="{StaticResource NavMutedBrush}"/>
+                                                    <TextBlock x:Name="ConvHitCategory" FontSize="13" Foreground="{StaticResource NavMutedBrush}" Margin="0,2,0,10"/>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Button x:Name="Btncenvgetimg" Style="{StaticResource FormButtonPrimary}" Height="32" Padding="12,0" Margin="0,0,8,0" Click="Btncenvgetimg_Click">
+                                                            <TextBlock Foreground="#FF202225" Text="{Binding Translation[conv_showpic], FallbackValue='Show picture'}"/>
+                                                        </Button>
+                                                        <Button x:Name="BtnConvCatalog" Style="{StaticResource FormButton}" Height="32" Padding="12,0" Click="BtnConvCatalog_Click">
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <TextBlock Text="{Binding Translation[conv_catalog], FallbackValue='Open in catalog'}"/>
+                                                                <Path Style="{StaticResource GoToPageIcon}"/>
+                                                            </StackPanel>
+                                                        </Button>
+                                                    </StackPanel>
+                                                    <TextBlock x:Name="ConvHitSource" FontSize="12" Foreground="#FF72767D" Margin="0,8,0,0" TextWrapping="Wrap"/>
+                                                </StackPanel>
+                                            </Grid>
+                                        </Grid>
+                                    </DockPanel>
+                                </Border>
+                            </StackPanel>
+                        </ScrollViewer>
 
                     </TabItem>
 
