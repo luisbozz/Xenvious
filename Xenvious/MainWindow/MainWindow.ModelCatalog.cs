@@ -21,9 +21,28 @@ namespace Xenvious
         private List<CatalogItem> PropCatalog => _propCatalog?.Count > 0 ? _propCatalog : (_propCatalog = GTA.Editor.PropList
             .Select(p => new CatalogItem(p.Name, p.Native, p.UInt, p.Category, "prop")).ToList());
 
-        // actors.json has display names only, no model names, so actors have no pictures yet.
-        private List<CatalogItem> ActorCatalog => _actorCatalog?.Count > 0 ? _actorCatalog : (_actorCatalog = GTA.Editor.ActorList
-            .Select(a => new CatalogItem(a.Name, null, a.UInt32, "", "actor")).ToList());
+        // actors.json has display names only; the model name and the category come from the
+        // creator's own ped lists (ActorCategories). Models the creator offers that are missing
+        // from actors.json are added under their model name. No picture source for peds yet.
+        private List<CatalogItem> ActorCatalog => _actorCatalog?.Count > 0 ? _actorCatalog : (_actorCatalog = BuildActorCatalog());
+
+        private List<CatalogItem> BuildActorCatalog()
+        {
+            string CategoryName(uint hash) => ActorCategories.ByHash.TryGetValue(hash, out var entry)
+                ? TranslateOr("actorcat_" + entry.Category, "")
+                : TranslateOr("actorcat_other", "Other");
+
+            var items = GTA.Editor.ActorList
+                .Select(a => new CatalogItem(a.Name, ActorCategories.ByHash.TryGetValue(a.UInt32, out var e) ? e.Model : null, a.UInt32, CategoryName(a.UInt32), "actor"))
+                .ToList();
+            if (items.Count == 0)
+                return items;
+            var known = new HashSet<uint>(items.Select(i => i.Hash));
+            items.AddRange(ActorCategories.ByHash
+                .Where(p => !known.Contains(p.Key))
+                .Select(p => new CatalogItem(p.Value.Model, p.Value.Model, p.Key, CategoryName(p.Key), "actor")));
+            return items;
+        }
 
         // vehicles.json has model names only; there is no picture source for vehicles yet.
         private List<CatalogItem> VehicleCatalog => _vehicleCatalog?.Count > 0 ? _vehicleCatalog : (_vehicleCatalog = GTA.Editor.VehList
