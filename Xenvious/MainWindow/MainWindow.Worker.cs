@@ -918,14 +918,10 @@ namespace Xenvious
                             {
                                 if (PageInnerProps.SelectedItem == PageInnerModdedProps)
                                 {
-                                    if (!cbMPropsForceMurica.IsFocused)
+                                    await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (System.Action)(() =>
                                     {
-                                        cbMPropsForceMurica.IsChecked = new Global(GTA.Offsets.Editor.enable_murica).Get<int>() == 1;
-                                        await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (System.Action)(() =>
-                                        {
-                                            EnsureModdedPropSourcesInitialized();
-                                        }));
-                                    }
+                                        EnsureModdedPropSourcesInitialized();
+                                    }));
                                 }
                             }
                         }

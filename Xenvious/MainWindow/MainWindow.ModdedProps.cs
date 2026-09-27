@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -38,87 +39,6 @@ namespace Xenvious
             {
                 return false;
             }
-        }
-
-        private void BtnModdedProps_Click(object sender, RoutedEventArgs e)
-        {
-            BtnNormalProps.Background = (SolidColorBrush)Resources["SeactionHeaderBackgroundBrush"];
-            BtnDynamicProps.Background = (SolidColorBrush)Resources["SeactionHeaderBackgroundBrush"];
-
-            BtnModdedProps.Background = (SolidColorBrush)Resources["ButtonHoverBackgroundBrush"];
-
-            PageInnerProps.SelectedItem = PageInnerModdedProps;
-
-            // Initialise now instead of on the next 1 s timer tick, so the loading dots
-            // appear when the tab opens and not only just before the list is ready.
-            if (m.IsProcOpen)
-                EnsureModdedPropSourcesInitialized();
-        }
-
-
-        private void EnsureModdedPropSourcesInitialized()
-        {
-            var labelMap = new Dictionary<string, TextBlock>
-            {
-                { "fm_race_creator", lblmpropsinitialisedrace },
-                { "fm_lts_creator", lblmpropsinitialisedlts },
-                { "fm_dm_creator", lblmpropsinitialiseddm },
-                { "fm_capture_creator", lblmpropsinitialisedcapture },
-                { "fm_survival_creator", lblmpropsinitialisedsurvival }
-            };
-
-            for (int i = 0; i < GTA.Editor.ModdedPropSources.Count; i++)
-            {
-                var source = GTA.Editor.ModdedPropSources[i];
-                // Use the refresh result right away. Reading "available" before the refresh
-                // made every creator wait one more timer tick before it could be selected.
-                bool available = source.ScriptPointer != 0 || source.RefreshScriptPointer();
-
-                if (available && labelMap.TryGetValue(source.ScriptName, out var label))
-                {
-                    if (ddMPROPSCreator.SelectedIndex == -1)
-                    {
-                        ddMPROPSCreator.SelectedIndex = i;
-                    }
-                    setlabelsinitialized(label);
-                }
-
-                var existingItem = ddMPROPSCreator.Items
-                    .OfType<ComboBoxItem>()
-                    .FirstOrDefault(item => string.Equals(item.Tag as string, source.ScriptName, StringComparison.OrdinalIgnoreCase));
-
-                if (existingItem == null)
-                {
-                    existingItem = new ComboBoxItem
-                    {
-                        Tag = source.ScriptName,
-                        Content = source.DisplayName
-                    };
-                    ddMPROPSCreator.Items.Insert(Math.Min(i, ddMPROPSCreator.Items.Count), existingItem);
-                }
-                else
-                {
-                    existingItem.Tag = source.ScriptName;
-                    existingItem.Content = source.DisplayName;
-                    int currentIndex = ddMPROPSCreator.Items.IndexOf(existingItem);
-                    if (currentIndex != i)
-                    {
-                        ddMPROPSCreator.Items.RemoveAt(currentIndex);
-                        ddMPROPSCreator.Items.Insert(Math.Min(i, ddMPROPSCreator.Items.Count), existingItem);
-                    }
-                }
-
-                if (existingItem != null)
-                {
-                    existingItem.IsEnabled = available;
-                }
-            }
-        }
-
-        public void setlabelsinitialized(TextBlock lbl)
-        {
-            lbl.Text = "Initialized";
-            lbl.Foreground = new SolidColorBrush(Colors.Green);
         }
 
         public enum PropCategory : int
@@ -429,13 +349,9 @@ namespace Xenvious
                 Log.Debug($"loadMProps complete for {source.DisplayName}: categories={categories.Count}, props={totalProps}, total time={totalTimer.ElapsedMilliseconds} ms", source: logSource);
             });
 
-            ddMPropsReplaceCategory.IsEnabled = true;
-            ddMPropsReplaceCategory.SelectedIndex = 0;
-            mpropsloadanimation.IsEnabled = false;
-            mpropsloadanimation.Visibility = Visibility.Collapsed;
-            mpropspanelmainmain.Visibility = Visibility.Visible;
             return true;
         }
+
         private bool TryLocateModdedPropDataRegion(ModdedPropSource source, string logSource, out ulong dataRegion)
         {
             var locateTimer = Stopwatch.StartNew();
@@ -520,88 +436,6 @@ namespace Xenvious
             return -1;
         }
 
-        public void loadMPropClass(PropCategory category)
-        {
-            try
-            {
-                mpropModelList.ItemsSource = allprops[(int)category].prop;
-
-                tbmpropsbulk.Text = String.Join(",", allprops[(int)category].prop.Select(x => x.HexValue));
-            }
-            catch (Exception)
-            {
-                displayScreenMessage("Something went wrong loading the selected Prop Category.");
-            }
-        }
-
-        private void Btnmpropsreplace_Click(object sender, RoutedEventArgs e)
-        {
-            if (!m.IsProcOpen)
-            {
-                return;
-            }
-
-            if (cbmpbulk.IsChecked == true)
-            {
-                try
-                {
-                    var props = tbmpropsbulk.Text.Split(',').Select(Functions.int_parse).ToList();
-                    int counter = 0;
-
-                    if (mpropModelList.ItemsSource is List<GTA.MPEntry> entries)
-                    {
-                        foreach (var item in entries)
-                        {
-                            if (counter >= props.Count)
-                            {
-                                break;
-                            }
-
-                            try
-                            {
-                                int newValue = props[counter];
-                                m.memory(item.Address[ddMPROPSCreator.SelectedIndex]).SetInt(newValue);
-                                UpdateModdedPropEntry(item, newValue);
-                            }
-                            catch (Exception)
-                            {
-                                counter++;
-                                continue;
-                            }
-
-                            counter++;
-                        }
-                    }
-                }
-                catch (Exception)
-                {
-
-                }
-                return;
-            }
-
-            var entry = mpropModelList.SelectedItem as GTA.MPEntry;
-            if (entry == null)
-            {
-                return;
-            }
-
-            if (!ModelIdParser.TryParseModelIdInt(tbmpropsmodelchange.Text, out int prop, out var kind))
-            {
-                return;
-            }
-
-            try
-            {
-                m.memory(entry.Address[ddMPROPSCreator.SelectedIndex]).SetInt(prop);
-                UpdateModdedPropEntry(entry, prop);
-            }
-            catch (Exception)
-            {
-
-            }
-        }
-
         public void enableMProps()
         {
             if (m.IsProcOpen)
@@ -670,96 +504,6 @@ namespace Xenvious
             ScreenMessageContainer.Children.Clear();
         }
 
-        private void cbmpbulk_Checked(object sender, RoutedEventArgs e)
-        {
-            if (cbmpbulk.IsChecked ?? true)
-            {
-                mpropModelList.Visibility = Visibility.Hidden;
-                tbmpropsmodelchange.Visibility = Visibility.Hidden;
-
-                tbmpropsbulk.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                tbmpropsbulk.Visibility = Visibility.Hidden;
-
-                mpropModelList.Visibility = Visibility.Visible;
-                tbmpropsmodelchange.Visibility = Visibility.Visible;
-            }
-        }
-
-        private void ddMPropsCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (ddMPropsCategory.SelectedIndex > -1)
-            {
-                bool needscan = curcreatorscanneeded();
-                if (needscan)
-                    GTA.Offsets.Editor.localptr = GTA.getCurrentCreatorAddy();
-
-                int category_index = GetPropCategoryIndex();
-
-                long addy = getCurrentCreatorBase();
-
-                m.memory((addy + GTA.Offsets.Editor.OFFSET_current_creator_pre_category_num * 8).ToString("X")).SetInt(category_index);
-            }
-        }
-
-        public int GetPropCategoryIndex()
-        {
-            switch (ddMPropsCategory.SelectedIndex)
-            {
-                case 0:
-                    return (int)GTA.Editor.SpecialPropCategorys.Special;
-                case 1:
-                    return (int)GTA.Editor.SpecialPropCategorys.Targets;
-                case 2:
-                    return (int)GTA.Editor.SpecialPropCategorys.Drugs;
-                case 3:
-                    return (int)GTA.Editor.SpecialPropCategorys.Gunrunning;
-                case 4:
-                    return (int)GTA.Editor.SpecialPropCategorys.LandingPlaces;
-                case 5:
-                    return (int)GTA.Editor.SpecialPropCategorys.Hidden;
-                case 6:
-                    return (int)GTA.Editor.SpecialPropCategorys.Hidden2;
-                case 7:
-                    return (int)GTA.Editor.SpecialPropCategorys.Hidden3;
-                case 8:
-                    return (int)GTA.Editor.SpecialPropCategorys.Hidden4;
-                case 9:
-                    return (int)GTA.Editor.SpecialPropCategorys.Hidden5;
-                case 10:
-                    return (int)GTA.Editor.SpecialPropCategorys.Custom;
-                case 11:
-                    return (int)GTA.Editor.SpecialPropCategorys.Templates;
-                default:
-                    return 0;
-            }
-        }
-
-        private void cbMPropsForceMurica_Checked(object sender, RoutedEventArgs e)
-        {
-            if (m.IsProcOpen)
-            {
-                new Global(GTA.Offsets.Editor.enable_murica).SetInt(cbMPropsForceMurica.IsChecked == true ? 1 : 0);
-            }
-        }
-
-        private void mpropModelList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                string addy = ((GTA.MPEntry)mpropModelList.SelectedItem).Address[ddMPROPSCreator.SelectedIndex];
-                int value = m.memory(addy).Get<int>();
-
-                tbmpropsmodelchange.Text = value.ToString();
-            }
-            catch (Exception)
-            {
-
-            }
-        }
-
         public void preparemoddedpropjsontoread(ref string json)
         {
             json = json.Replace("[", "{").Replace("]", "}");
@@ -769,962 +513,862 @@ namespace Xenvious
             json = json.Replace("{", "[").Replace("}", "]");
         }
 
-        private void ddMPropsReplaceCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        // ----- page (mockup: https://claude.ai/artifact/UHkkxoYy3ySGxcsLxh87vq) -----
+        //
+        // Left the categories of the prop menu, in the middle the slots of the chosen category as
+        // tiles, on the right the editor for one slot, import and the creator options. Writes go
+        // to the chosen creator or, with "all loaded creators", to every creator whose table is
+        // known (MPEntry.Address holds one address per source).
+
+        private sealed class MPCategory
         {
-            switch (ddMPropsReplaceCategory.SelectedIndex)
-            {
-                case 0:
-                    loadMPropClass(PropCategory.mp_barrier);
-                    break;
-                case 1:
-                    loadMPropClass(PropCategory.mp_banks);
-                    break;
-                case 2:
-                    loadMPropClass(PropCategory.mp_boje);
-                    break;
-                case 3:
-                    loadMPropClass(PropCategory.mp_cabins);
-                    break;
-                case 4:
-                    loadMPropClass(PropCategory.mp_bags);
-                    break;
-                case 5:
-                    loadMPropClass(PropCategory.mp_container);
-                    break;
-                case 6:
-                    loadMPropClass(PropCategory.mp_crates);
-                    break;
-                case 7:
-                    loadMPropClass(PropCategory.mp_trash_container);
-                    break;
-                case 8:
-                    loadMPropClass(PropCategory.mp_machinery);
-                    break;
-                case 9:
-                    loadMPropClass(PropCategory.mp_ramps);
-                    break;
-                case 10:
-                    loadMPropClass(PropCategory.mp_signs);
-                    break;
-                case 11:
-                    loadMPropClass(PropCategory.mp_trailer);
-                    break;
-                case 12:
-                    loadMPropClass(PropCategory.mp_wrecks);
-                    break;
-                case 13:
-                    loadMPropClass(PropCategory.mp_trees);
-                    break;
-                case 14:
-                    loadMPropClass(PropCategory.mp_dynamics);
-                    break;
-                case 15:
-                    loadMPropClass(PropCategory.mp_special);
-                    break;
-                case 16:
-                    loadMPropClass(PropCategory.mp_hidden);
-                    break;
-                case 17:
-                    loadMPropClass(PropCategory.mp_stunt_tracks);
-                    break;
-                case 18:
-                    loadMPropClass(PropCategory.mp_stunt_tracks_wb);
-                    break;
-                case 19:
-                    loadMPropClass(PropCategory.mp_stunt_tracks_high);
-                    break;
-                case 20:
-                    loadMPropClass(PropCategory.mp_stunt_barriers);
-                    break;
-                case 21:
-                    loadMPropClass(PropCategory.mp_stunt_tubes);
-                    break;
-                case 22:
-                    loadMPropClass(PropCategory.mp_stunt_tubes_neon);
-                    break;
-                case 23:
-                    loadMPropClass(PropCategory.mp_stunt_bis_neon_arrows);
-                    break;
-                case 24:
-                    loadMPropClass(PropCategory.mp_stunt_air_tubes);
-                    break;
-                case 25:
-                    loadMPropClass(PropCategory.mp_stunt_checkpoint_rings);
-                    break;
-                case 26:
-                    loadMPropClass(PropCategory.mp_stunt_air_gates);
-                    break;
-                case 27:
-                    loadMPropClass(PropCategory.mp_stunt_inflateable_gates);
-                    break;
-                case 28:
-                    loadMPropClass(PropCategory.mp_stunt_building_blocks);
-                    break;
-                case 29:
-                    loadMPropClass(PropCategory.mp_stunt_neon_blocks);
-                    break;
-                case 30:
-                    loadMPropClass(PropCategory.mp_stunt_ramps);
-                    break;
-                case 31:
-                    loadMPropClass(PropCategory.mp_stunt_set_pieces);
-                    break;
-                case 32:
-                    loadMPropClass(PropCategory.mp_stunt_signs);
-                    break;
-                case 33:
-                    loadMPropClass(PropCategory.mp_stunt_special);
-                    break;
-                case 34:
-                    loadMPropClass(PropCategory.mp_stunt_targets);
-                    break;
-                case 35:
-                    loadMPropClass(PropCategory.mp_stunt_targets_assault);
-                    break;
-                case 36:
-                    loadMPropClass(PropCategory.mp_race_buildings);
-                    break;
-                case 37:
-                    loadMPropClass(PropCategory.mp_drugs);
-                    break;
-                case 38:
-                    loadMPropClass(PropCategory.mp_gunrunning);
-                    break;
-                case 39:
-                    loadMPropClass(PropCategory.mp_hidden2);
-                    break;
-                case 40:
-                    loadMPropClass(PropCategory.mp_hidden3);
-                    break;
-                case 41:
-                    loadMPropClass(PropCategory.mp_hidden4);
-                    break;
-                case 42:
-                    loadMPropClass(PropCategory.mp_cctv);
-                    break;
-                case 43:
-                    loadMPropClass(PropCategory.mp_paintedsigns);
-                    break;
-                case 44:
-                    loadMPropClass(PropCategory.mp_holidays);
-                    break;
-                case 45:
-                    loadMPropClass(PropCategory.mp_tracksmoothing);
-                    break;
-                case 46:
-                    loadMPropClass(PropCategory.mp_precision);
-                    break;
-                case 47:
-                    loadMPropClass(PropCategory.mp_hidden5);
-                    break;
-                case 48:
-                    loadMPropClass(PropCategory.mp_hidden6);
-                    break;
-                case 49:
-                    loadMPropClass(PropCategory.mp_hidden6);
-                    break;
-                default:
-                    break;
-            }
+            public string Key, Fallback, Group;
+            public int Table;
         }
 
-        private async void ddMPROPSCreator_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        // Order and names of the old drop-down; Table is the index in allprops (PropCategory).
+        private static readonly MPCategory[] MPCategories = BuildMPCategories();
+
+        private static MPCategory[] BuildMPCategories()
         {
-
-            //while (!loadmpropsthreadfinished) ;
-
-
-            mpropsloadanimation.IsEnabled = true;
-            mpropsloadanimation.Visibility = Visibility.Visible;
-            mpropspanelmainmain.Visibility = Visibility.Collapsed;
-
-            await loadMProps(ddMPROPSCreator.SelectedIndex);
+            var list = new List<MPCategory>();
+            void Add(string group, string key, string fallback, PropCategory table) => list.Add(new MPCategory { Group = group, Key = key, Fallback = fallback, Table = (int)table });
+            Add("std", "mp_barrier", "Barriers", PropCategory.mp_barrier);
+            Add("std", "mp_banks", "Banks", PropCategory.mp_banks);
+            Add("std", "mp_boje", "Buoys", PropCategory.mp_boje);
+            Add("std", "mp_cabins", "Cabins", PropCategory.mp_cabins);
+            Add("std", "mp_bags", "Bags", PropCategory.mp_bags);
+            Add("std", "mp_container", "Container", PropCategory.mp_container);
+            Add("std", "mp_kaesten", "Boxes", PropCategory.mp_crates);
+            Add("std", "mp_trash_container", "Trash Container", PropCategory.mp_trash_container);
+            Add("std", "mp_machinery", "Machinery", PropCategory.mp_machinery);
+            Add("std", "mp_ramps", "Ramps", PropCategory.mp_ramps);
+            Add("std", "mp_signs", "Signs", PropCategory.mp_signs);
+            Add("std", "mp_trailer", "Trailer", PropCategory.mp_trailer);
+            Add("std", "mp_wrecks", "Wrecks", PropCategory.mp_wrecks);
+            Add("std", "mp_trees", "Trees", PropCategory.mp_trees);
+            Add("std", "mp_dynamics", "Dynamics", PropCategory.mp_dynamics);
+            Add("std", "mp_drugs", "Drugs", PropCategory.mp_drugs);
+            Add("std", "mp_gunrunning", "Gunrunning", PropCategory.mp_gunrunning);
+            Add("std", "mp_cctv", "CCTV", PropCategory.mp_cctv);
+            Add("std", "mp_paintedsigns", "Painted Signs", PropCategory.mp_paintedsigns);
+            Add("std", "mp_holidays", "Holidays", PropCategory.mp_holidays);
+            Add("std", "mp_race_buildings", "Race Buildings", PropCategory.mp_race_buildings);
+            Add("stunt", "mp_stunt_tracks", "Stunt Track", PropCategory.mp_stunt_tracks);
+            Add("stunt", "mp_stunt_tracks_wb", "Stunt Track with Barriers", PropCategory.mp_stunt_tracks_wb);
+            Add("stunt", "mp_stunt_tracks_high", "Stunt Raised Tracks", PropCategory.mp_stunt_tracks_high);
+            Add("stunt", "mp_stunt_barriers", "Stunt Barriers", PropCategory.mp_stunt_barriers);
+            Add("stunt", "mp_stunt_tubes", "Stunt Tubes", PropCategory.mp_stunt_tubes);
+            Add("stunt", "mp_stunt_tubes_neon", "Stunt Neon Tubes", PropCategory.mp_stunt_tubes_neon);
+            Add("stunt", "mp_stunt_arrow", "Stunt Arrows", PropCategory.mp_stunt_bis_neon_arrows);
+            Add("stunt", "mp_stunt_tubes_big", "Stunt Air Tubes", PropCategory.mp_stunt_air_tubes);
+            Add("stunt", "mp_stunt_cp_rings", "Stunt Checkpoint Rings", PropCategory.mp_stunt_checkpoint_rings);
+            Add("stunt", "mp_stunt_air_gates", "Stunt Air Gates", PropCategory.mp_stunt_air_gates);
+            Add("stunt", "mp_stunt_inflateable_gates", "Stunt Inflatable Gates", PropCategory.mp_stunt_inflateable_gates);
+            Add("stunt", "mp_stunt_building_blocks", "Stunt Building Blocks", PropCategory.mp_stunt_building_blocks);
+            Add("stunt", "mp_stunt_neon_blocks", "Stunt Neon Blocks", PropCategory.mp_stunt_neon_blocks);
+            Add("stunt", "mp_stunt_ramps", "Stunt Ramps", PropCategory.mp_stunt_ramps);
+            Add("stunt", "mp_stunt_set_pieces", "Stunt Set Pieces", PropCategory.mp_stunt_set_pieces);
+            Add("stunt", "mp_stunt_signs", "Stunt Signs", PropCategory.mp_stunt_signs);
+            Add("stunt", "mp_stunt_special", "Stunt Special", PropCategory.mp_stunt_special);
+            Add("stunt", "mp_stunt_target", "Stunt Targets", PropCategory.mp_stunt_targets);
+            Add("stunt", "mp_stunt_targets", "Target Assault", PropCategory.mp_stunt_targets_assault);
+            Add("hidden", "mp_special", "Special", PropCategory.mp_special);
+            Add("hidden", "mp_tracksmoothing", "Track Smoothing", PropCategory.mp_tracksmoothing);
+            Add("hidden", "mp_precision", "Precision", PropCategory.mp_precision);
+            int n = 1;
+            foreach (var hidden in new[] { PropCategory.mp_hidden, PropCategory.mp_hidden2, PropCategory.mp_hidden3, PropCategory.mp_hidden4, PropCategory.mp_hidden5, PropCategory.mp_hidden6, PropCategory.mp_hidden7 })
+                list.Add(new MPCategory { Group = "hidden", Key = "mp_hidden", Fallback = "Hidden", Table = (int)hidden, });
+            foreach (var c in list.Where(c => c.Key == "mp_hidden"))
+                c.Fallback = "Hidden " + n++;
+            return list.ToArray();
         }
 
-        private void Btnmpropsreplaceall_Click(object sender, RoutedEventArgs e)
+        // .cprp files: field sN holds the hashes of table (import mapping, kept for old files).
+        private static readonly int[] CprpTable = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 13, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 50, 48 };
+
+        private int _mpCreator = -1;
+        private MPCategory _mpCategory = MPCategories[0];
+        private int _mpSlot;
+        private bool _mpAllCreators = true;
+        private bool _mpListMode;
+        private bool _mpLoading;
+        private CatalogItem _mpPick;
+        private string _mpCatQuery = "", _mpPickQuery = "";
+        private bool _mpBuilt;
+
+        private StackPanel _mpCreators, _mpCatList, _mpEditor, _mpImport, _mpForce;
+        private WrapPanel _mpSlots;
+        private TextBlock _mpCatTitle, _mpSlotHint, _mpChanged, _mpBulkInfo, _mpStatus;
+        private TextBox _mpBulk;
+        private FrameworkElement _mpListPanel;
+        private System.Windows.Controls.Primitives.ToggleButton _mpModeGrid, _mpModeList;
+        private CheckBox _mpAllBox, _mpMurica;
+        private JSON.ModdedPropJSON.Rootobject _mpImported;
+        private string _mpImportedName;
+
+        private string MPT(string key, string fallback) => TranslateOr(key, fallback);
+
+        private void BtnModdedProps_Click(object sender, RoutedEventArgs e)
         {
+            BtnNormalProps.Background = (SolidColorBrush)Resources["SeactionHeaderBackgroundBrush"];
+            BtnDynamicProps.Background = (SolidColorBrush)Resources["SeactionHeaderBackgroundBrush"];
+            BtnModdedProps.Background = (SolidColorBrush)Resources["ButtonHoverBackgroundBrush"];
+            PageInnerProps.SelectedItem = PageInnerModdedProps;
+            BuildModdedPropsPage();
             if (m.IsProcOpen)
+                EnsureModdedPropSourcesInitialized();
+        }
+
+        /// <summary>Finds which creators have their prop table in memory; picks the first one.</summary>
+        private void EnsureModdedPropSourcesInitialized()
+        {
+            BuildModdedPropsPage();
+            var sources = GTA.Editor.ModdedPropSources;
+            var loaded = new bool[sources.Count];
+            for (int i = 0; i < sources.Count; i++)
+                loaded[i] = sources[i].ScriptPointer != 0 || sources[i].RefreshScriptPointer();
+            string key = string.Concat(loaded.Select(l => l ? "1" : "0"));
+            if (!Equals(_mpCreators.Tag, key))
             {
-                if (cbmpbulk.IsChecked == false)
+                _mpCreators.Tag = key;
+                RenderMPCreators(loaded);
+            }
+            if (_mpCreator < 0 || _mpCreator >= loaded.Length || !loaded[_mpCreator])
+            {
+                int first = Array.IndexOf(loaded, true);
+                if (first >= 0 && first != _mpCreator)
+                    SelectMPCreator(first);
+            }
+            if (_mpMurica != null && !_mpMurica.IsFocused && GTA.Offsets.Editor.enable_murica != 0)
+                _mpMurica.IsChecked = new Global(GTA.Offsets.Editor.enable_murica).Get<int>() == 1;
+        }
+
+        private async void SelectMPCreator(int index)
+        {
+            _mpCreator = index;
+            _mpLoading = true;
+            RenderMPCreators(null);
+            RenderMPAll();
+            await loadMProps(index);
+            _mpLoading = false;
+            RenderMPAll();
+        }
+
+        private void BuildModdedPropsPage()
+        {
+            if (_mpBuilt)
+                return;
+            _mpBuilt = true;
+
+            var root = new DockPanel { Margin = new Thickness(16, 12, 16, 12) };
+
+            // Top bar: creators, "all loaded creators", import / export / restore.
+            var bar = new DockPanel();
+            var actions = new StackPanel { Orientation = Orientation.Horizontal };
+            DockPanel.SetDock(actions, Dock.Right);
+            var allRow = new StackPanel { Orientation = Orientation.Horizontal, VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(0, 0, 12, 0) };
+            allRow.Children.Add(new TextBlock { Text = MPT("mp_allcreators", "All loaded creators"), VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(0, 0, 8, 0), Foreground = ThemeBrush("MutedTextBrush") });
+            _mpAllBox = new CheckBox { Style = (Style)FindResource("FormToggle"), IsChecked = true };
+            _mpAllBox.Click += (_, __) => { _mpAllCreators = _mpAllBox.IsChecked == true; RenderMPEditor(); };
+            allRow.Children.Add(_mpAllBox);
+            actions.Children.Add(allRow);
+            actions.Children.Add(MPButton(MPT("mp_import", "Import"), (_, __) => ImportMProps()));
+            actions.Children.Add(MPButton(MPT("mp_export", "Export"), (_, __) => ExportMProps()));
+            actions.Children.Add(MPButton(MPT("mp_restoreall", "Restore all"), (_, __) => RestoreMProps()));
+            bar.Children.Add(actions);
+            _mpCreators = new StackPanel { Orientation = Orientation.Horizontal, VerticalAlignment = VerticalAlignment.Center };
+            bar.Children.Add(_mpCreators);
+            var barCard = new Border { Style = (Style)FindResource("DashCard"), Padding = new Thickness(12, 8, 12, 8), Margin = new Thickness(0, 0, 0, 12), Child = bar };
+            DockPanel.SetDock(barCard, Dock.Top);
+            root.Children.Add(barCard);
+
+            var grid = new Grid();
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(230) });
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(12) });
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(12) });
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(320) });
+
+            // Categories
+            var catSearch = new BareSearchBox(MPT("mp_catsearch", "Search category…")) { Margin = new Thickness(12, 4, 12, 4) };
+            catSearch.Changed += q => { _mpCatQuery = q.Trim(); RenderMPCategories(); };
+            _mpCatList = new StackPanel();
+            var catBody = new DockPanel();
+            DockPanel.SetDock(catSearch, Dock.Top);
+            catBody.Children.Add(catSearch);
+            catBody.Children.Add(new ScrollViewer { VerticalScrollBarVisibility = ScrollBarVisibility.Auto, Content = _mpCatList });
+            var catCard = MPCard(MPT("mp_categories", "Categories"), catBody, null);
+            grid.Children.Add(catCard);
+
+            // Slots
+            _mpCatTitle = new TextBlock();
+            _mpModeGrid = MPSegment(MPT("mp_tiles", "Tiles"));
+            _mpModeList = MPSegment(MPT("mp_list", "List"));
+            _mpModeGrid.Click += (_, __) => { _mpListMode = false; RenderMPSlots(); };
+            _mpModeList.Click += (_, __) => { _mpListMode = true; RenderMPSlots(); };
+            var seg = new StackPanel { Orientation = Orientation.Horizontal };
+            seg.Children.Add(_mpModeGrid);
+            seg.Children.Add(_mpModeList);
+            var slotsBody = new DockPanel();
+            var hintRow = new DockPanel { Margin = new Thickness(0, 0, 0, 8) };
+            _mpChanged = new TextBlock { FontWeight = FontWeights.Bold };
+            _mpChanged.SetResourceReference(TextBlock.ForegroundProperty, "WarnBrush");
+            DockPanel.SetDock(_mpChanged, Dock.Right);
+            hintRow.Children.Add(_mpChanged);
+            _mpSlotHint = new TextBlock { FontSize = 12 };
+            _mpSlotHint.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
+            hintRow.Children.Add(_mpSlotHint);
+            DockPanel.SetDock(hintRow, Dock.Top);
+            slotsBody.Children.Add(hintRow);
+            _mpStatus = new TextBlock { FontSize = 13, TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 4, 0, 8) };
+            _mpStatus.SetResourceReference(TextBlock.ForegroundProperty, "MutedTextBrush");
+            DockPanel.SetDock(_mpStatus, Dock.Top);
+            slotsBody.Children.Add(_mpStatus);
+            _mpSlots = new WrapPanel();
+            var listPanel = new DockPanel();
+            var listHint = new TextBlock { Text = MPT("mp_list_hint", "One model per line, name or hash. The order is the order of the slots."), FontSize = 12, TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 0, 0, 6) };
+            listHint.SetResourceReference(TextBlock.ForegroundProperty, "MutedTextBrush");
+            DockPanel.SetDock(listHint, Dock.Top);
+            listPanel.Children.Add(listHint);
+            var listFoot = new DockPanel { Margin = new Thickness(0, 8, 0, 0) };
+            var apply = MPButton(MPT("mp_apply", "Apply"), (_, __) => ApplyMPList(), primary: true);
+            DockPanel.SetDock(apply, Dock.Right);
+            listFoot.Children.Add(apply);
+            _mpBulkInfo = new TextBlock { FontSize = 12, VerticalAlignment = VerticalAlignment.Center };
+            _mpBulkInfo.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
+            listFoot.Children.Add(_mpBulkInfo);
+            DockPanel.SetDock(listFoot, Dock.Bottom);
+            listPanel.Children.Add(listFoot);
+            _mpBulk = new TextBox { AcceptsReturn = true, FontFamily = new FontFamily("Consolas"), FontSize = 12.5, MinHeight = 220, VerticalScrollBarVisibility = ScrollBarVisibility.Auto, TextWrapping = TextWrapping.NoWrap };
+            _mpBulk.SetResourceReference(StyleProperty, "Watermark");
+            _mpBulk.TextChanged += (_, __) => UpdateMPBulkInfo();
+            listPanel.Children.Add(_mpBulk);
+            _mpListPanel = listPanel;
+            var slotHost = new Grid();
+            slotHost.Children.Add(new ScrollViewer { VerticalScrollBarVisibility = ScrollBarVisibility.Auto, Content = _mpSlots });
+            slotHost.Children.Add(listPanel);
+            slotsBody.Children.Add(slotHost);
+            var slotCard = MPCard(null, slotsBody, seg, _mpCatTitle);
+            Grid.SetColumn(slotCard, 2);
+            grid.Children.Add(slotCard);
+
+            // Editor, import, creator options
+            var side = new StackPanel();
+            _mpEditor = new StackPanel();
+            side.Children.Add(MPCard(MPT("mp_slot", "Slot"), _mpEditor, null));
+            _mpImport = new StackPanel();
+            var importCard = MPCard(MPT("mp_import", "Import"), _mpImport, null);
+            importCard.Visibility = Visibility.Collapsed;
+            importCard.Name = "mpImportCard";
+            side.Children.Add(importCard);
+            var creatorBody = new StackPanel();
+            creatorBody.Children.Add(new TextBlock { Style = (Style)FindResource("FieldLabel"), Text = MPT("mp_force", "Force a category") });
+            _mpForce = new StackPanel();
+            creatorBody.Children.Add(_mpForce);
+            var forceHint = new TextBlock { Text = MPT("mp_force_hint", "Opens a hidden category in the prop menu (e.g. Hidden, Templates)."), FontSize = 12, TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 0, 0, 8) };
+            forceHint.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
+            creatorBody.Children.Add(forceHint);
+            var murica = new Grid { Style = (Style)FindResource("FormRow") };
+            murica.ColumnDefinitions.Add(new ColumnDefinition());
+            murica.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+            murica.Children.Add(new TextBlock { Style = (Style)FindResource("FormLabel"), Text = MPT("mp_murica", "Unlock Murica colour") });
+            _mpMurica = new CheckBox { Style = (Style)FindResource("FormToggle") };
+            _mpMurica.Click += (_, __) =>
+            {
+                if (m.IsProcOpen && GTA.Offsets.Editor.enable_murica != 0)
+                    new Global(GTA.Offsets.Editor.enable_murica).SetInt(_mpMurica.IsChecked == true ? 1 : 0);
+            };
+            Grid.SetColumn(_mpMurica, 1);
+            murica.Children.Add(_mpMurica);
+            creatorBody.Children.Add(murica);
+            side.Children.Add(MPCard(MPT("mp_increator", "In the creator"), creatorBody, null));
+            var sideScroll = new ScrollViewer { VerticalScrollBarVisibility = ScrollBarVisibility.Auto, Content = side };
+            Grid.SetColumn(sideScroll, 4);
+            grid.Children.Add(sideScroll);
+
+            root.Children.Add(grid);
+            mpRoot.Children.Clear();
+            mpRoot.Children.Add(root);
+            RenderMPForce();
+            RenderMPCreators(null);
+            RenderMPAll();
+        }
+
+        private Button MPButton(string text, RoutedEventHandler click, bool primary = false)
+        {
+            var b = new Button { Style = (Style)FindResource(primary ? "FormButtonPrimary" : "FormButton"), Content = text, Padding = new Thickness(12, 0, 12, 0), Margin = new Thickness(6, 0, 0, 0), MinWidth = 70 };
+            b.Click += click;
+            return b;
+        }
+
+        private System.Windows.Controls.Primitives.ToggleButton MPSegment(string text)
+            => new System.Windows.Controls.Primitives.ToggleButton { Style = (Style)FindResource("ChoiceTile"), Content = text, Height = 28, MinHeight = 28, Padding = new Thickness(12, 0, 12, 0), Margin = new Thickness(4, 0, 0, 0), FontSize = 12.5 };
+
+        private Border MPCard(string title, FrameworkElement body, FrameworkElement right, TextBlock titleBlock = null)
+        {
+            var header = new DockPanel();
+            if (right != null)
+            {
+                DockPanel.SetDock(right, Dock.Right);
+                header.Children.Add(right);
+            }
+            var t = titleBlock ?? new TextBlock();
+            t.Style = (Style)FindResource("DashCardTitle");
+            if (title != null)
+                t.Text = title;
+            header.Children.Add(t);
+            var dock = new DockPanel();
+            var head = new Border { Style = (Style)FindResource("DashCardHeader"), Child = header };
+            DockPanel.SetDock(head, Dock.Top);
+            dock.Children.Add(head);
+            body.Margin = new Thickness(12, 10, 12, 10);
+            dock.Children.Add(body);
+            return new Border { Style = (Style)FindResource("DashCard"), Margin = new Thickness(0, 0, 0, 12), Child = dock, VerticalAlignment = VerticalAlignment.Top };
+        }
+
+        private void RenderMPAll()
+        {
+            RenderMPCategories();
+            RenderMPSlots();
+            RenderMPEditor();
+            RenderMPImport();
+        }
+
+        private void RenderMPCreators(bool[] loaded)
+        {
+            if (_mpCreators == null)
+                return;
+            var sources = GTA.Editor.ModdedPropSources;
+            if (loaded == null)
+            {
+                string key = _mpCreators.Tag as string ?? "";
+                loaded = Enumerable.Range(0, sources.Count).Select(i => i < key.Length && key[i] == '1').ToArray();
+            }
+            _mpCreators.Children.Clear();
+            for (int i = 0; i < sources.Count; i++)
+            {
+                int index = i;
+                var content = new StackPanel { Orientation = Orientation.Horizontal };
+                var dot = new System.Windows.Shapes.Ellipse { Width = 7, Height = 7, Margin = new Thickness(0, 0, 6, 0), VerticalAlignment = VerticalAlignment.Center };
+                dot.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, loaded[i] ? "OkBrush" : "FaintTextBrush");
+                content.Children.Add(dot);
+                content.Children.Add(new TextBlock { Text = sources[i].DisplayName });
+                var b = MPSegment(null);
+                b.Content = content;
+                b.Margin = new Thickness(0, 0, 4, 0);
+                b.IsChecked = i == _mpCreator;
+                b.IsEnabled = loaded[i];
+                b.ToolTip = loaded[i] ? MPT("mp_tableloaded", "Prop table loaded") : MPT("mp_notloaded", "Creator not loaded");
+                b.Click += (_, __) => { if (index != _mpCreator) SelectMPCreator(index); else b.IsChecked = true; };
+                _mpCreators.Children.Add(b);
+            }
+        }
+
+        private List<GTA.MPEntry> MPSlots(MPCategory category)
+            => category != null && category.Table < allprops.Count ? allprops[category.Table].prop : new List<GTA.MPEntry>();
+
+        // The creator's own models for a table, from the shipped defaults; null when unknown.
+        private int[] MPDefaults(int table)
+        {
+            if (_mpCreator < 0)
+                return null;
+            List<string> defaults;
+            switch (GTA.Editor.ModdedPropSources[_mpCreator].DisplayName)
+            {
+                case "Race": defaults = GTA.Defaults.MPropsDefaultsRace; break;
+                case "LTS": defaults = GTA.Defaults.MPropsDefaultsLTS; break;
+                case "Capture": defaults = GTA.Defaults.MPropsDefaultsCapture; break;
+                case "Deathmatch": defaults = GTA.Defaults.MPropsDefaultsDM; break;
+                case "Survival": defaults = GTA.Defaults.MPropsDefaultsSurvival; break;
+                default: return null;
+            }
+            if (defaults == null || table >= defaults.Count || string.IsNullOrWhiteSpace(defaults[table]))
+                return null;
+            return defaults[table].Split(',').Select(Functions.int_parse).ToArray();
+        }
+
+        private int MPChangedCount(MPCategory category)
+        {
+            var slots = MPSlots(category);
+            var defaults = MPDefaults(category.Table);
+            if (defaults == null)
+                return 0;
+            int n = 0;
+            for (int i = 0; i < slots.Count && i < defaults.Length; i++)
+                if (slots[i].IntegerValue != defaults[i])
+                    n++;
+            return n;
+        }
+
+        private void RenderMPCategories()
+        {
+            if (_mpCatList == null)
+                return;
+            _mpCatList.Children.Clear();
+            foreach (var group in new[] { ("std", "mp_grp_std", "Standard"), ("stunt", "mp_grp_stunt", "Stunt"), ("hidden", "mp_grp_hidden", "Hidden") })
+            {
+                var items = MPCategories.Where(c => c.Group == group.Item1 && MPCategoryName(c).IndexOf(_mpCatQuery, StringComparison.CurrentCultureIgnoreCase) >= 0).ToList();
+                if (items.Count == 0)
+                    continue;
+                var head = new TextBlock { Text = MPT(group.Item2, group.Item3).ToUpper(CultureInfo.CurrentCulture), FontSize = 11, FontWeight = FontWeights.Bold, Margin = new Thickness(12, 10, 12, 4) };
+                head.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
+                _mpCatList.Children.Add(head);
+                foreach (var c in items)
                 {
-                    try
+                    var category = c;
+                    int changed = allprops.Count > 0 ? MPChangedCount(c) : 0;
+                    int count = MPSlots(c).Count;
+                    var row = new DockPanel();
+                    var right = new TextBlock { FontSize = 11.5, VerticalAlignment = VerticalAlignment.Center };
+                    if (changed > 0)
                     {
-                        var entry = mpropModelList.SelectedItem as GTA.MPEntry;
-                        int prop = Functions.int_parse(tbmpropsmodelchange.Text);
-                        if (entry != null && IsValidInt(prop.ToString()))
-                        {
-                            foreach (var address in entry.Address.Where(addr => !string.IsNullOrWhiteSpace(addr)))
-                            {
-                                m.memory(address).SetInt(prop);
-                            }
-                            UpdateModdedPropEntry(entry, prop);
-                        }
+                        right.Text = string.Format(CultureInfo.CurrentCulture, MPT("mp_changed_n", "{0} changed"), changed);
+                        right.FontWeight = FontWeights.Bold;
+                        right.SetResourceReference(TextBlock.ForegroundProperty, "WarnBrush");
                     }
-                    catch (Exception)
+                    else
                     {
+                        right.Text = count > 0 ? count.ToString(CultureInfo.CurrentCulture) : "";
+                        right.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
                     }
-                }
-                else if (cbmpbulk.IsChecked == true)
-                {
-                    try
-                    {
-                        var props = tbmpropsbulk.Text.Split(',').Select(Functions.int_parse).ToList();
-                        int counter = 0;
-                        foreach (var entry in (List<GTA.MPEntry>)mpropModelList.ItemsSource)
-                        {
-                            if (counter >= props.Count)
-                            {
-                                break;
-                            }
-
-                            int newValue = props[counter];
-
-                            try
-                            {
-                                foreach (var address in entry.Address.Where(addr => !string.IsNullOrWhiteSpace(addr)))
-                                {
-                                    m.memory(address).SetInt(newValue);
-                                }
-
-                                UpdateModdedPropEntry(entry, newValue);
-                            }
-                            catch (Exception)
-                            {
-                                counter++;
-                                continue;
-                            }
-
-                            counter++;
-                        }
-                    }
-                    catch (Exception)
-                    {
-
-                    }
+                    DockPanel.SetDock(right, Dock.Right);
+                    row.Children.Add(right);
+                    row.Children.Add(new TextBlock { Text = MPCategoryName(c), TextTrimming = TextTrimming.CharacterEllipsis });
+                    var button = new Button { Style = (Style)FindResource("SideNavButton"), Content = row, HorizontalContentAlignment = HorizontalAlignment.Stretch, Tag = c == _mpCategory ? "active" : null };
+                    button.Click += (_, __) => { _mpCategory = category; _mpSlot = 0; _mpPick = null; RenderMPAll(); };
+                    _mpCatList.Children.Add(button);
                 }
             }
         }
 
-        private void Btnmpropsimport_Click(object sender, RoutedEventArgs e)
+        private string MPCategoryName(MPCategory c) => c.Key == "mp_hidden" ? MPT("mp_hidden", "Hidden") + " " + c.Fallback.Substring(7) : MPT(c.Key, c.Fallback);
+
+        private string MPModelName(int hash)
         {
-            mpropsdrop.Visibility = Visibility.Visible;
+            var item = PropCatalog.FirstOrDefault(c => c.Int32 == hash);
+            if (item != null)
+                return item.Name;
+            var info = GTA.Editor.PropList?.FirstOrDefault(p => p.Integer == hash);
+            return string.IsNullOrWhiteSpace(info?.Name) ? "0x" + hash.ToString("X8", CultureInfo.InvariantCulture) : info.Name;
         }
 
-        private void Btnmpropsexport_Click(object sender, RoutedEventArgs e)
+        private static string MPHex(int hash) => "0x" + hash.ToString("X8", CultureInfo.InvariantCulture);
+
+        private void RenderMPSlots()
         {
-            JSON.ModdedPropJSON.Rootobject exportmpropjsonobj = new JSON.ModdedPropJSON.Rootobject();
-
-            var temp = allprops[0].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s0 = string.Join(",", temp);
-            temp = allprops[1].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s1 = string.Join(",", temp);
-            temp = allprops[2].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s2 = string.Join(",", temp);
-            temp = allprops[3].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s3 = string.Join(",", temp);
-            temp = allprops[4].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s4 = string.Join(",", temp);
-            temp = allprops[5].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s5 = string.Join(",", temp);
-            temp = allprops[6].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s6 = string.Join(",", temp);
-            temp = allprops[7].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s7 = string.Join(",", temp);
-            temp = allprops[8].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s8 = string.Join(",", temp);
-            temp = allprops[9].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s9 = string.Join(",", temp);
-            temp = allprops[10].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s10 = string.Join(",", temp);
-            temp = allprops[11].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s11 = string.Join(",", temp);
-            temp = allprops[12].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s12 = string.Join(",", temp);
-            temp = allprops[14].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s13 = string.Join(",", temp);
-            temp = allprops[13].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s14 = string.Join(",", temp);
-            temp = allprops[15].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s15 = string.Join(",", temp);
-            temp = allprops[16].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s16 = string.Join(",", temp);
-            temp = allprops[17].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s17 = string.Join(",", temp);
-            temp = allprops[18].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s18 = string.Join(",", temp);
-            temp = allprops[19].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s19 = string.Join(",", temp);
-            temp = allprops[20].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s20 = string.Join(",", temp);
-            temp = allprops[21].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s21 = string.Join(",", temp);
-            temp = allprops[22].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s22 = string.Join(",", temp);
-            temp = allprops[24].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s23 = string.Join(",", temp);
-            temp = allprops[23].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s24 = string.Join(",", temp);
-            temp = allprops[25].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s25 = string.Join(",", temp);
-            temp = allprops[26].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s26 = string.Join(",", temp);
-            temp = allprops[27].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s27 = string.Join(",", temp);
-            temp = allprops[28].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s28 = string.Join(",", temp);
-            temp = allprops[29].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s29 = string.Join(",", temp);
-            temp = allprops[30].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s30 = string.Join(",", temp);
-            temp = allprops[31].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s31 = string.Join(",", temp);
-            temp = allprops[32].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s32 = string.Join(",", temp);
-            temp = allprops[34].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s33 = string.Join(",", temp);
-            temp = allprops[33].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s34 = string.Join(",", temp);
-            temp = allprops[35].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s35 = string.Join(",", temp);
-            temp = allprops[36].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s36 = string.Join(",", temp);
-            temp = allprops[37].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s37 = string.Join(",", temp);
-            temp = allprops[38].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s38 = string.Join(",", temp);
-            temp = allprops[39].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s39 = string.Join(",", temp);
-            temp = allprops[40].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s40 = string.Join(",", temp);
-            temp = allprops[41].prop.Select(x => m.memory(x.Address[ddMPROPSCreator.SelectedIndex]).Get<int>().ToString("X8")).ToList();
-            exportmpropjsonobj.s41 = string.Join(",", temp);
-
-            string jsontoexport = JsonConvert.SerializeObject(exportmpropjsonobj);
-            preparemoddedpropjsontoexport(ref jsontoexport);
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Title = "Select any path to safe the file";
-            saveFileDialog.Filter = "Custom Prop File (*.cprp) | *.cprp";
-            saveFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-
-            Nullable<bool> result = saveFileDialog.ShowDialog();
-
-            if (result == true)
+            if (_mpSlots == null)
+                return;
+            _mpCatTitle.Text = MPCategoryName(_mpCategory);
+            _mpModeGrid.IsChecked = !_mpListMode;
+            _mpModeList.IsChecked = _mpListMode;
+            _mpSlots.Children.Clear();
+            var slots = MPSlots(_mpCategory);
+            var defaults = MPDefaults(_mpCategory.Table);
+            _mpStatus.Text = !m.IsProcOpen ? MPT("mp_nogame", "GTA is not connected.")
+                : _mpCreator < 0 ? MPT("mp_nocreator", "Open a creator once so its prop table is in memory.")
+                : _mpLoading ? MPT("mp_loading", "Reading the prop table…")
+                : slots.Count == 0 ? MPT("mp_empty", "This category has no slots in this creator.") : "";
+            _mpStatus.Visibility = _mpStatus.Text.Length == 0 ? Visibility.Collapsed : Visibility.Visible;
+            _mpSlotHint.Text = slots.Count == 0 ? "" : string.Format(CultureInfo.CurrentCulture, MPT("mp_slots_n", "{0} slots in the prop menu"), slots.Count);
+            int changed = 0;
+            for (int i = 0; i < slots.Count; i++)
             {
-                File.WriteAllText(saveFileDialog.FileName, jsontoexport);
+                int index = i;
+                var slot = slots[i];
+                bool isChanged = defaults != null && i < defaults.Length && slot.IntegerValue != defaults[i];
+                if (isChanged)
+                    changed++;
+                var tile = new StackPanel { Width = 138 };
+                var head = new DockPanel();
+                var no = new TextBlock { Text = (i + 1).ToString(CultureInfo.CurrentCulture), FontSize = 11 };
+                no.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
+                head.Children.Add(no);
+                if (isChanged)
+                {
+                    var badge = new TextBlock { Text = MPT("mp_changed", "changed"), FontSize = 10.5, FontWeight = FontWeights.Bold, HorizontalAlignment = HorizontalAlignment.Right };
+                    badge.SetResourceReference(TextBlock.ForegroundProperty, "WarnBrush");
+                    head.Children.Add(badge);
+                }
+                tile.Children.Add(head);
+                var item = PropCatalog.FirstOrDefault(c => c.Int32 == slot.IntegerValue);
+                var thumb = new Border { Height = 80, CornerRadius = new CornerRadius(5), Margin = new Thickness(0, 4, 0, 6), ClipToBounds = true };
+                thumb.SetResourceReference(Border.BackgroundProperty, "DeepBrush");
+                if (item != null)
+                    thumb.Child = new System.Windows.Controls.Image { Source = item.Thumb, Stretch = Stretch.Uniform };
+                tile.Children.Add(thumb);
+                tile.Children.Add(new TextBlock { Text = MPModelName(slot.IntegerValue), FontSize = 12.5, FontWeight = FontWeights.SemiBold, TextTrimming = TextTrimming.CharacterEllipsis, ToolTip = MPModelName(slot.IntegerValue) });
+                var sub = new TextBlock { FontSize = 11, TextTrimming = TextTrimming.CharacterEllipsis };
+                sub.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
+                if (isChanged)
+                {
+                    sub.Text = MPModelName(defaults[i]);
+                    sub.TextDecorations = TextDecorations.Strikethrough;
+                }
+                else
+                {
+                    sub.Text = MPHex(slot.IntegerValue);
+                    sub.FontFamily = new FontFamily("Consolas");
+                }
+                tile.Children.Add(sub);
+                var button = new System.Windows.Controls.Primitives.ToggleButton { Style = (Style)FindResource("ChoiceTile"), Content = tile, IsChecked = i == _mpSlot, Margin = new Thickness(0, 0, 8, 8), Padding = new Thickness(8), HorizontalContentAlignment = HorizontalAlignment.Stretch };
+                button.Click += (_, __) => { _mpSlot = index; _mpPick = null; RenderMPSlots(); RenderMPEditor(); };
+                _mpSlots.Children.Add(button);
             }
+            _mpChanged.Text = changed > 0 ? string.Format(CultureInfo.CurrentCulture, MPT("mp_changed_of", "{0} of {1} changed"), changed, slots.Count) : "";
+            _mpSlots.Visibility = _mpListMode ? Visibility.Collapsed : Visibility.Visible;
+            _mpListPanel.Visibility = _mpListMode ? Visibility.Visible : Visibility.Collapsed;
+            if (_mpListMode && !_mpBulk.IsKeyboardFocused)
+                _mpBulk.Text = string.Join(Environment.NewLine, slots.Select(s => MPModelName(s.IntegerValue)));
         }
 
-        JSON.ModdedPropJSON.Rootobject importedmpropjsonobj = null;
-        private void Border_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        // A line of the list: a catalogue name or a hash (hex or decimal, see ModelIdParser).
+        private bool TryParseMPLine(string line, out int hash)
         {
-            Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
-            ofd.Title = "Select any Propfile";
-            ofd.Filter = "Custom Prop File (*.cprp) | *.cprp";
-            ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            ofd.Multiselect = false;
-
-            // Launch OpenFileDialog by calling ShowDialog method
-            Nullable<bool> result = ofd.ShowDialog();
-            // Get the selected file name and display in a TextBox.
-            // Load content of file in a TextBlock
-
-            if (result == true)
+            hash = 0;
+            line = (line ?? "").Trim();
+            if (line.Length == 0)
+                return false;
+            var item = PropCatalog.FirstOrDefault(c => string.Equals(c.Name, line, StringComparison.OrdinalIgnoreCase));
+            if (item != null)
             {
-                // get content from file
+                hash = item.Int32;
+                return true;
+            }
+            var info = GTA.Editor.PropList?.FirstOrDefault(p => string.Equals(p.Name, line, StringComparison.OrdinalIgnoreCase));
+            if (info != null)
+            {
+                hash = info.Integer;
+                return true;
+            }
+            return ModelIdParser.TryParseModelIdInt(line.StartsWith("0x", StringComparison.OrdinalIgnoreCase) ? line.Substring(2) : line, out hash, out _);
+        }
+
+        private void UpdateMPBulkInfo()
+        {
+            var slots = MPSlots(_mpCategory);
+            var lines = _mpBulk.Text.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).Select(l => l.Trim()).Where(l => l.Length > 0).ToList();
+            int changes = 0, bad = 0;
+            for (int i = 0; i < lines.Count && i < slots.Count; i++)
+            {
+                if (!TryParseMPLine(lines[i], out int hash)) bad++;
+                else if (hash != slots[i].IntegerValue) changes++;
+            }
+            int extra = Math.Max(0, lines.Count - slots.Count);
+            var parts = new List<string> { string.Format(CultureInfo.CurrentCulture, MPT("mp_bulk_changes", "{0} slots change"), changes) };
+            if (bad > 0) parts.Add(string.Format(CultureInfo.CurrentCulture, MPT("mp_bulk_bad", "{0} lines not understood"), bad));
+            if (extra > 0) parts.Add(string.Format(CultureInfo.CurrentCulture, MPT("mp_bulk_extra", "{0} lines too many (ignored)"), extra));
+            _mpBulkInfo.Text = string.Join(" · ", parts);
+        }
+
+        private void ApplyMPList()
+        {
+            var slots = MPSlots(_mpCategory);
+            var lines = _mpBulk.Text.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).Select(l => l.Trim()).Where(l => l.Length > 0).ToList();
+            for (int i = 0; i < lines.Count && i < slots.Count; i++)
+                if (TryParseMPLine(lines[i], out int hash) && hash != slots[i].IntegerValue)
+                    WriteMPSlot(slots[i], hash);
+            _mpListMode = false;
+            RenderMPAll();
+        }
+
+        // Writes one slot to the chosen creator, or to every creator whose table is known.
+        // Originals differ per creator, so putting them back only touches the chosen one.
+        private void WriteMPSlot(GTA.MPEntry slot, int hash, bool onlyChosen = false)
+        {
+            if (!m.IsProcOpen || slot == null || _mpCreator < 0)
+                return;
+            var addresses = _mpAllCreators && !onlyChosen
+                ? slot.Address.Where(a => !string.IsNullOrWhiteSpace(a))
+                : new[] { slot.Address[_mpCreator] }.Where(a => !string.IsNullOrWhiteSpace(a));
+            foreach (var address in addresses)
+                m.memory(address).SetInt(hash);
+            UpdateModdedPropEntry(slot, hash);
+        }
+
+        private void RenderMPEditor()
+        {
+            if (_mpEditor == null)
+                return;
+            _mpEditor.Children.Clear();
+            var slots = MPSlots(_mpCategory);
+            if (_mpSlot >= slots.Count)
+            {
+                _mpEditor.Children.Add(new TextBlock { Text = MPT("mp_pickslot", "Pick a slot."), Foreground = ThemeBrush("NavMutedBrush") });
+                return;
+            }
+            var slot = slots[_mpSlot];
+            var defaults = MPDefaults(_mpCategory.Table);
+            int original = defaults != null && _mpSlot < defaults.Length ? defaults[_mpSlot] : slot.IntegerValue;
+
+            FrameworkElement Box(string label, int hash)
+            {
+                var box = new Border { CornerRadius = new CornerRadius(6), Padding = new Thickness(8, 6, 8, 6), BorderThickness = new Thickness(1) };
+                box.SetResourceReference(Border.BackgroundProperty, "DeepBrush");
+                box.SetResourceReference(Border.BorderBrushProperty, "LineBrush");
+                var p = new StackPanel();
+                var l = new TextBlock { Text = label, FontSize = 11.5 };
+                l.SetResourceReference(TextBlock.ForegroundProperty, "MutedTextBrush");
+                p.Children.Add(l);
+                p.Children.Add(new TextBlock { Text = MPModelName(hash), FontWeight = FontWeights.Bold, FontSize = 12.5, TextTrimming = TextTrimming.CharacterEllipsis, ToolTip = MPModelName(hash) });
+                var h = new TextBlock { Text = MPHex(hash), FontSize = 10.5, FontFamily = new FontFamily("Consolas") };
+                h.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
+                p.Children.Add(h);
+                box.Child = p;
+                return box;
+            }
+            var cmp = new Grid { Margin = new Thickness(0, 0, 0, 8) };
+            cmp.ColumnDefinitions.Add(new ColumnDefinition());
+            cmp.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(22) });
+            cmp.ColumnDefinitions.Add(new ColumnDefinition());
+            cmp.Children.Add(Box(MPT("mp_original", "Original"), original));
+            var arrow = new TextBlock { Text = "→", HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center };
+            arrow.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
+            Grid.SetColumn(arrow, 1);
+            cmp.Children.Add(arrow);
+            var now = Box(MPT("mp_now", "Now"), _mpPick?.Int32 ?? slot.IntegerValue);
+            Grid.SetColumn(now, 2);
+            cmp.Children.Add(now);
+            _mpEditor.Children.Add(new TextBlock { Style = (Style)FindResource("FieldLabel"), Text = string.Format(CultureInfo.CurrentCulture, MPT("mp_slot_n", "Slot {0}"), _mpSlot + 1) });
+            _mpEditor.Children.Add(cmp);
+
+            var search = new BareSearchBox(MPT("mp_modelsearch", "Search model (name or hash)…")) { Margin = new Thickness(0, 0, 0, 6) };
+            search.Box.Text = _mpPickQuery;
+            var list = new StackPanel();
+            void Fill()
+            {
+                list.Children.Clear();
+                string q = _mpPickQuery.Trim();
+                var hits = PropCatalog.Where(c => q.Length == 0 || c.Name.IndexOf(q, StringComparison.OrdinalIgnoreCase) >= 0 || MPHex(c.Int32).IndexOf(q, StringComparison.OrdinalIgnoreCase) >= 0).Take(60);
+                foreach (var hit in hits)
+                {
+                    var item = hit;
+                    var row = new DockPanel();
+                    var img = new Border { Width = 38, Height = 28, CornerRadius = new CornerRadius(4), Margin = new Thickness(0, 0, 8, 0), ClipToBounds = true, Child = new System.Windows.Controls.Image { Source = item.Thumb, Stretch = Stretch.Uniform } };
+                    img.SetResourceReference(Border.BackgroundProperty, "DeepBrush");
+                    row.Children.Add(img);
+                    var t = new StackPanel { VerticalAlignment = VerticalAlignment.Center };
+                    t.Children.Add(new TextBlock { Text = item.Name, FontSize = 12.5, TextTrimming = TextTrimming.CharacterEllipsis });
+                    var h = new TextBlock { Text = MPHex(item.Int32), FontSize = 10.5, FontFamily = new FontFamily("Consolas") };
+                    h.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
+                    t.Children.Add(h);
+                    row.Children.Add(t);
+                    var b = new Button { Style = (Style)FindResource("SideNavButton"), Content = row, HorizontalContentAlignment = HorizontalAlignment.Stretch, Tag = _mpPick == item ? "active" : null };
+                    b.Click += (_, __) => { _mpPick = item; RenderMPEditor(); };
+                    list.Children.Add(b);
+                }
+                if (list.Children.Count == 0 && TryParseMPLine(q, out int raw))
+                {
+                    var b = MPButton(string.Format(CultureInfo.CurrentCulture, MPT("mp_usehash", "Use {0}"), MPHex(raw)), (_, __) => { _mpPick = new CatalogItem(MPHex(raw), "", unchecked((uint)raw), "", "prop"); RenderMPEditor(); });
+                    b.Margin = new Thickness(0);
+                    list.Children.Add(b);
+                }
+            }
+            search.Changed += q => { _mpPickQuery = q; Fill(); };
+            _mpEditor.Children.Add(search);
+            var listBorder = new Border { Height = 250, BorderThickness = new Thickness(1), CornerRadius = new CornerRadius(6), Margin = new Thickness(0, 0, 0, 8), Child = new ScrollViewer { VerticalScrollBarVisibility = ScrollBarVisibility.Auto, Content = list } };
+            listBorder.SetResourceReference(Border.BorderBrushProperty, "LineBrush");
+            _mpEditor.Children.Add(listBorder);
+            Fill();
+
+            var buttons = new System.Windows.Controls.Primitives.UniformGrid { Columns = 2 };
+            var reset = MPButton(MPT("mp_original", "Original"), (_, __) => { WriteMPSlot(slot, original, onlyChosen: true); _mpPick = null; RenderMPAll(); });
+            reset.Margin = new Thickness(0, 0, 4, 0);
+            var set = MPButton(MPT("mp_set", "Set"), (_, __) => { if (_mpPick != null) { WriteMPSlot(slot, _mpPick.Int32); _mpPick = null; RenderMPAll(); } }, primary: true);
+            set.Margin = new Thickness(4, 0, 0, 0);
+            set.IsEnabled = _mpPick != null;
+            buttons.Children.Add(reset);
+            buttons.Children.Add(set);
+            _mpEditor.Children.Add(buttons);
+            var sources = GTA.Editor.ModdedPropSources;
+            string where = _mpAllCreators
+                ? MPT("mp_where_all", "Applies to: ") + string.Join(", ", sources.Where((s, i) => slot.Address.Count > i && !string.IsNullOrWhiteSpace(slot.Address[i])).Select(s => s.DisplayName))
+                : MPT("mp_where_one", "Applies only to: ") + (_mpCreator >= 0 ? sources[_mpCreator].DisplayName : "–");
+            var whereText = new TextBlock { Text = where, FontSize = 12, TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 8, 0, 0) };
+            whereText.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
+            _mpEditor.Children.Add(whereText);
+        }
+
+        private void RenderMPForce()
+        {
+            // Category the prop menu shows (pre_category_num), for menus the creator never offers.
+            var options = new (string Key, string Fallback, GTA.Editor.SpecialPropCategorys Value)[]
+            {
+                ("mp_f_special", "Special", GTA.Editor.SpecialPropCategorys.Special), ("mp_f_targets", "Targets", GTA.Editor.SpecialPropCategorys.Targets),
+                ("mp_f_drugs", "Drugs", GTA.Editor.SpecialPropCategorys.Drugs), ("mp_f_gunrunning", "Gunrunning", GTA.Editor.SpecialPropCategorys.Gunrunning),
+                ("mp_f_landing", "Landing places", GTA.Editor.SpecialPropCategorys.LandingPlaces), ("mp_f_hidden1", "Hidden 1", GTA.Editor.SpecialPropCategorys.Hidden),
+                ("mp_f_hidden2", "Hidden 2", GTA.Editor.SpecialPropCategorys.Hidden2), ("mp_f_hidden3", "Hidden 3", GTA.Editor.SpecialPropCategorys.Hidden3),
+                ("mp_f_hidden4", "Hidden 4", GTA.Editor.SpecialPropCategorys.Hidden4), ("mp_f_hidden5", "Hidden 5", GTA.Editor.SpecialPropCategorys.Hidden5),
+                ("mp_f_custom", "Custom", GTA.Editor.SpecialPropCategorys.Custom), ("mp_f_templates", "Templates", GTA.Editor.SpecialPropCategorys.Templates),
+            };
+            var grid = new System.Windows.Controls.Primitives.UniformGrid { Columns = 3, Margin = new Thickness(0, 0, -6, 4) };
+            foreach (var option in options)
+            {
+                var o = option;
+                var b = MPSegment(MPT(o.Key, o.Fallback));
+                b.Margin = new Thickness(0, 0, 6, 6);
+                b.Click += (_, __) =>
+                {
+                    foreach (var other in grid.Children.OfType<System.Windows.Controls.Primitives.ToggleButton>())
+                        other.IsChecked = other == b;
+                    if (!m.IsProcOpen || GTA.Offsets.Editor.OFFSET_current_creator_pre_category_num == 0)
+                        return;
+                    if (curcreatorscanneeded())
+                        GTA.Offsets.Editor.localptr = GTA.getCurrentCreatorAddy();
+                    long addy = getCurrentCreatorBase();
+                    if (addy != 0)
+                        m.memory((addy + GTA.Offsets.Editor.OFFSET_current_creator_pre_category_num * 8).ToString("X")).SetInt((int)o.Value);
+                };
+                grid.Children.Add(b);
+            }
+            _mpForce.Children.Add(grid);
+        }
+
+        // ----- import / export / restore -----
+
+        private void ImportMProps()
+        {
+            var ofd = new OpenFileDialog
+            {
+                Title = MPT("mp_import_title", "Choose a prop file"),
+                Filter = "Custom Prop File (*.cprp)|*.cprp",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+            };
+            if (ofd.ShowDialog() != true)
+                return;
+            try
+            {
                 string content = File.ReadAllText(ofd.FileName);
-                // make json deserializeable
                 preparemoddedpropjsontoread(ref content);
-                // read json into json obj
-                importedmpropjsonobj = JsonConvert.DeserializeObject<JSON.ModdedPropJSON.Rootobject>(content);
-                // initialize objects for interaction
-                initializempropsimport();
-                ddmpropsimport.SelectedIndex = 0;
+                _mpImported = JsonConvert.DeserializeObject<JSON.ModdedPropJSON.Rootobject>(content);
+                _mpImportedName = Path.GetFileName(ofd.FileName);
             }
-        }
-
-        private void Btnmpropsclose_Click(object sender, RoutedEventArgs e)
-        {
-            mpropsdrop.Visibility = Visibility.Collapsed;
-        }
-
-        private void Btnmpropsimportreplace_Click(object sender, RoutedEventArgs e)
-        {
-            replaceimportedProps(false);
-        }
-
-        private void Btnmpropsimportreplaceall_Click(object sender, RoutedEventArgs e)
-        {
-            replaceimportedProps(true);
-        }
-
-        public void replaceimportedProps(bool all)
-        {
-            switch (ddmpropsimport.SelectedIndex)
+            catch (Exception ex)
             {
-                case 0:
-                    writeCategory(importedmpropjsonobj.s0, (int)PropCategory.mp_barrier, all);
-                    writeCategory(importedmpropjsonobj.s1, (int)PropCategory.mp_banks, all);
-                    writeCategory(importedmpropjsonobj.s2, (int)PropCategory.mp_boje, all);
-                    writeCategory(importedmpropjsonobj.s3, (int)PropCategory.mp_cabins, all);
-                    writeCategory(importedmpropjsonobj.s4, (int)PropCategory.mp_bags, all);
-                    writeCategory(importedmpropjsonobj.s5, (int)PropCategory.mp_container, all);
-                    writeCategory(importedmpropjsonobj.s6, (int)PropCategory.mp_crates, all);
-                    writeCategory(importedmpropjsonobj.s7, (int)PropCategory.mp_trash_container, all);
-                    writeCategory(importedmpropjsonobj.s8, (int)PropCategory.mp_machinery, all);
-                    writeCategory(importedmpropjsonobj.s9, (int)PropCategory.mp_ramps, all);
-                    writeCategory(importedmpropjsonobj.s10, (int)PropCategory.mp_signs, all);
-                    writeCategory(importedmpropjsonobj.s11, (int)PropCategory.mp_trailer, all);
-                    writeCategory(importedmpropjsonobj.s12, (int)PropCategory.mp_wrecks, all);
-                    writeCategory(importedmpropjsonobj.s13, (int)PropCategory.mp_dynamics, all);
-                    writeCategory(importedmpropjsonobj.s14, (int)PropCategory.mp_trees, all);
-                    writeCategory(importedmpropjsonobj.s15, (int)PropCategory.mp_special, all);
-                    writeCategory(importedmpropjsonobj.s16, (int)PropCategory.mp_hidden, all);
-                    writeCategory(importedmpropjsonobj.s17, (int)PropCategory.mp_stunt_ramps, all);
-                    writeCategory(importedmpropjsonobj.s18, (int)PropCategory.mp_stunt_building_blocks, all);
-                    writeCategory(importedmpropjsonobj.s19, (int)PropCategory.mp_stunt_set_pieces, all);
-                    writeCategory(importedmpropjsonobj.s20, (int)PropCategory.mp_stunt_special, all);
-                    writeCategory(importedmpropjsonobj.s21, (int)PropCategory.mp_stunt_targets_assault, all);
-                    writeCategory(importedmpropjsonobj.s22, (int)PropCategory.mp_stunt_signs, all);
-                    writeCategory(importedmpropjsonobj.s23, (int)PropCategory.mp_stunt_bis_neon_arrows, all);
-                    writeCategory(importedmpropjsonobj.s24, (int)PropCategory.mp_stunt_tracks, all);
-                    writeCategory(importedmpropjsonobj.s25, (int)PropCategory.mp_stunt_tracks_wb, all);
-                    writeCategory(importedmpropjsonobj.s26, (int)PropCategory.mp_stunt_tracks_high, all);
-                    writeCategory(importedmpropjsonobj.s27, (int)PropCategory.mp_stunt_barriers, all);
-                    writeCategory(importedmpropjsonobj.s28, (int)PropCategory.mp_stunt_tubes, all);
-                    writeCategory(importedmpropjsonobj.s29, (int)PropCategory.mp_drugs, all);
-                    writeCategory(importedmpropjsonobj.s30, (int)PropCategory.mp_gunrunning, all);
-                    writeCategory(importedmpropjsonobj.s31, (int)PropCategory.mp_stunt_tubes_neon, all);
-                    writeCategory(importedmpropjsonobj.s32, (int)PropCategory.mp_stunt_neon_blocks, all);
-                    writeCategory(importedmpropjsonobj.s33, (int)PropCategory.mp_stunt_targets, all);
-                    writeCategory(importedmpropjsonobj.s34, (int)PropCategory.mp_stunt_air_tubes, all);
-                    writeCategory(importedmpropjsonobj.s35, (int)PropCategory.mp_stunt_checkpoint_rings, all);
-                    writeCategory(importedmpropjsonobj.s36, (int)PropCategory.mp_stunt_air_gates, all);
-                    writeCategory(importedmpropjsonobj.s37, (int)PropCategory.mp_stunt_inflateable_gates, all);
-                    writeCategory(importedmpropjsonobj.s38, (int)PropCategory.mp_race_buildings, all);
-                    writeCategory(importedmpropjsonobj.s39, (int)PropCategory.mp_hidden2, all);
-                    writeCategory(importedmpropjsonobj.s40, (int)PropCategory.mp_hidden3, all);
-                    writeCategory(importedmpropjsonobj.s41, (int)PropCategory.mp_hidden4, all);
-                    break;
-                case 1:
-                    writeCategory(importedmpropjsonobj.s0, (int)PropCategory.mp_barrier, all);
-                    break;
-                case 2:
-                    writeCategory(importedmpropjsonobj.s1, (int)PropCategory.mp_banks, all);
-                    break;
-                case 3:
-                    writeCategory(importedmpropjsonobj.s2, (int)PropCategory.mp_boje, all);
-                    break;
-                case 4:
-                    writeCategory(importedmpropjsonobj.s3, (int)PropCategory.mp_cabins, all);
-                    break;
-                case 5:
-                    writeCategory(importedmpropjsonobj.s4, (int)PropCategory.mp_bags, all);
-                    break;
-                case 6:
-                    writeCategory(importedmpropjsonobj.s5, (int)PropCategory.mp_container, all);
-                    break;
-                case 7:
-                    writeCategory(importedmpropjsonobj.s6, (int)PropCategory.mp_crates, all);
-                    break;
-                case 8:
-                    writeCategory(importedmpropjsonobj.s7, (int)PropCategory.mp_trash_container, all);
-                    break;
-                case 9:
-                    writeCategory(importedmpropjsonobj.s8, (int)PropCategory.mp_machinery, all);
-                    break;
-                case 10:
-                    writeCategory(importedmpropjsonobj.s9, (int)PropCategory.mp_ramps, all);
-                    break;
-                case 11:
-                    writeCategory(importedmpropjsonobj.s10, (int)PropCategory.mp_signs, all);
-                    break;
-                case 12:
-                    writeCategory(importedmpropjsonobj.s11, (int)PropCategory.mp_trailer, all);
-                    break;
-                case 13:
-                    writeCategory(importedmpropjsonobj.s12, (int)PropCategory.mp_wrecks, all);
-                    break;
-                case 14:
-                    writeCategory(importedmpropjsonobj.s13, (int)PropCategory.mp_dynamics, all);
-                    break;
-                case 15:
-                    writeCategory(importedmpropjsonobj.s14, (int)PropCategory.mp_trees, all);
-                    break;
-                case 16:
-                    writeCategory(importedmpropjsonobj.s15, (int)PropCategory.mp_stunt_special, all);
-                    break;
-                case 17:
-                    writeCategory(importedmpropjsonobj.s16, (int)PropCategory.mp_hidden, all);
-                    break;
-                case 18:
-                    writeCategory(importedmpropjsonobj.s17, (int)PropCategory.mp_stunt_ramps, all);
-                    break;
-                case 19:
-                    writeCategory(importedmpropjsonobj.s18, (int)PropCategory.mp_stunt_building_blocks, all);
-                    break;
-                case 20:
-                    writeCategory(importedmpropjsonobj.s19, (int)PropCategory.mp_stunt_set_pieces, all);
-                    break;
-                case 21:
-                    writeCategory(importedmpropjsonobj.s20, (int)PropCategory.mp_stunt_special, all);
-                    break;
-                case 22:
-                    writeCategory(importedmpropjsonobj.s21, (int)PropCategory.mp_stunt_targets_assault, all);
-                    break;
-                case 23:
-                    writeCategory(importedmpropjsonobj.s22, (int)PropCategory.mp_stunt_signs, all);
-                    break;
-                case 24:
-                    writeCategory(importedmpropjsonobj.s23, (int)PropCategory.mp_stunt_bis_neon_arrows, all);
-                    break;
-                case 25:
-                    writeCategory(importedmpropjsonobj.s24, (int)PropCategory.mp_stunt_tracks, all);
-                    break;
-                case 26:
-                    writeCategory(importedmpropjsonobj.s25, (int)PropCategory.mp_stunt_tracks_wb, all);
-                    break;
-                case 27:
-                    writeCategory(importedmpropjsonobj.s26, (int)PropCategory.mp_stunt_tracks_high, all);
-                    break;
-                case 28:
-                    writeCategory(importedmpropjsonobj.s27, (int)PropCategory.mp_stunt_barriers, all);
-                    break;
-                case 29:
-                    writeCategory(importedmpropjsonobj.s28, (int)PropCategory.mp_stunt_tubes, all);
-                    break;
-                case 30:
-                    writeCategory(importedmpropjsonobj.s29, (int)PropCategory.mp_drugs, all);
-                    break;
-                case 31:
-                    writeCategory(importedmpropjsonobj.s30, (int)PropCategory.mp_gunrunning, all);
-                    break;
-                case 32:
-                    writeCategory(importedmpropjsonobj.s31, (int)PropCategory.mp_stunt_tubes_neon, all);
-                    break;
-                case 33:
-                    writeCategory(importedmpropjsonobj.s32, (int)PropCategory.mp_stunt_neon_blocks, all);
-                    break;
-                case 34:
-                    writeCategory(importedmpropjsonobj.s33, (int)PropCategory.mp_stunt_targets, all);
-                    break;
-                case 35:
-                    writeCategory(importedmpropjsonobj.s34, (int)PropCategory.mp_stunt_air_tubes, all);
-                    break;
-                case 36:
-                    writeCategory(importedmpropjsonobj.s35, (int)PropCategory.mp_stunt_checkpoint_rings, all);
-                    break;
-                case 37:
-                    writeCategory(importedmpropjsonobj.s36, (int)PropCategory.mp_stunt_air_gates, all);
-                    break;
-                case 38:
-                    writeCategory(importedmpropjsonobj.s37, (int)PropCategory.mp_stunt_inflateable_gates, all);
-                    break;
-                case 39:
-                    writeCategory(importedmpropjsonobj.s38, (int)PropCategory.mp_race_buildings, all);
-                    break;
-                case 40:
-                    writeCategory(importedmpropjsonobj.s39, (int)PropCategory.mp_hidden2, all);
-                    break;
-                case 41:
-                    writeCategory(importedmpropjsonobj.s40, (int)PropCategory.mp_hidden3, all);
-                    break;
-                case 42:
-                    writeCategory(importedmpropjsonobj.s41, (int)PropCategory.mp_hidden4, all);
-                    break;
-                default:
-                    break;
+                Log.Error("Reading the prop file failed", ex, source: "mprops");
+                _mpImported = null;
+                displayScreenMessage(MPT("mp_import_bad", "The file could not be read."));
             }
+            RenderMPImport();
+        }
+
+        private static string CprpField(JSON.ModdedPropJSON.Rootobject file, int n)
+            => typeof(JSON.ModdedPropJSON.Rootobject).GetProperty("s" + n.ToString(CultureInfo.InvariantCulture))?.GetValue(file) as string;
+
+        private void RenderMPImport()
+        {
+            if (_mpImport == null)
+                return;
+            _mpImport.Children.Clear();
+            var owner = FindMPImportCard();
+            if (_mpImported == null)
+            {
+                if (owner != null) owner.Visibility = Visibility.Collapsed;
+                return;
+            }
+            if (owner != null) owner.Visibility = Visibility.Visible;
+            var head = new DockPanel { Margin = new Thickness(0, 0, 0, 6) };
+            var close = MPButton("✕", (_, __) => { _mpImported = null; RenderMPImport(); });
+            DockPanel.SetDock(close, Dock.Right);
+            head.Children.Add(close);
+            head.Children.Add(new TextBlock { Text = _mpImportedName, FontWeight = FontWeights.Bold, VerticalAlignment = VerticalAlignment.Center, TextTrimming = TextTrimming.CharacterEllipsis });
+            _mpImport.Children.Add(head);
+            int total = 0;
+            for (int n = 0; n < CprpTable.Length; n++)
+            {
+                string field = CprpField(_mpImported, n);
+                if (string.IsNullOrWhiteSpace(field))
+                    continue;
+                int count = field.Split(',').Length;
+                total += count;
+                var category = MPCategories.FirstOrDefault(c => c.Table == CprpTable[n]);
+                var row = new DockPanel { Margin = new Thickness(0, 0, 0, 4) };
+                var c1 = new TextBlock { Text = string.Format(CultureInfo.CurrentCulture, MPT("mp_props_n", "{0} props"), count), FontSize = 12 };
+                c1.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
+                DockPanel.SetDock(c1, Dock.Right);
+                row.Children.Add(c1);
+                row.Children.Add(new TextBlock { Text = category != null ? MPCategoryName(category) : "#" + CprpTable[n], FontSize = 13 });
+                _mpImport.Children.Add(row);
+            }
+            var apply = MPButton(string.Format(CultureInfo.CurrentCulture, MPT("mp_import_apply", "Import {0} props"), total), (_, __) =>
+            {
+                for (int n = 0; n < CprpTable.Length; n++)
+                {
+                    string field = CprpField(_mpImported, n);
+                    if (!string.IsNullOrWhiteSpace(field) && CprpTable[n] < allprops.Count)
+                        writeCategory(field, CprpTable[n], _mpAllCreators);
+                }
+                _mpImported = null;
+                RenderMPAll();
+            }, primary: true);
+            apply.Margin = new Thickness(0, 8, 0, 0);
+            apply.IsEnabled = allprops.Count > 0;
+            _mpImport.Children.Add(apply);
+        }
+
+        private FrameworkElement FindMPImportCard()
+        {
+            DependencyObject d = _mpImport;
+            while (d != null && !(d is FrameworkElement fe && fe.Name == "mpImportCard"))
+                d = LogicalTreeHelper.GetParent(d);
+            return d as FrameworkElement;
         }
 
         public void writeCategory(string basecategoryproplist, int category, bool all)
         {
-            if (string.IsNullOrWhiteSpace(basecategoryproplist))
-            {
+            if (string.IsNullOrWhiteSpace(basecategoryproplist) || category >= allprops.Count || _mpCreator < 0)
                 return;
-            }
-            //get all props from the list and convert them to int
-            var props = basecategoryproplist.Split(',').Select(x => Functions.int_parse(x)).ToList();
+            var props = basecategoryproplist.Split(',').Select(Functions.int_parse).ToList();
             var proplist = allprops[category].prop;
-            int counter = 0;
-
-            counter = props.Count > proplist.Count ? proplist.Count : props.Count;
-
-            if (all)
+            for (int i = 0; i < Math.Min(props.Count, proplist.Count); i++)
             {
-                for (int i = 0; i < counter; i++)
-                {
-                    foreach (var address in proplist[i].Address.Where(addr => !string.IsNullOrWhiteSpace(addr)))
-                    {
-                        m.memory(address).SetInt(props[i]);
-                    }
-                }
-            }
-            else
-            {
-                for (int i = 0; i < counter; i++)
-                {
-                    m.memory(proplist[i].Address[ddMPROPSCreator.SelectedIndex]).SetInt(props[i]);
-                }
+                var addresses = all ? proplist[i].Address.Where(a => !string.IsNullOrWhiteSpace(a)) : new[] { proplist[i].Address[_mpCreator] };
+                foreach (var address in addresses)
+                    m.memory(address).SetInt(props[i]);
+                UpdateModdedPropEntry(proplist[i], props[i]);
             }
         }
 
-        private void Btnmpropscycle_Click(object sender, RoutedEventArgs e)
+        private void ExportMProps()
         {
-            resetmpropsimport();
-        }
-
-        public void initializempropsimport()
-        {
-            ddmpropsimport.IsEnabled = true;
-            Btnmpropsimportreplace.IsEnabled = true;
-            Btnmpropsimportreplaceall.IsEnabled = true;
-            Lblmpropsimportinitialize.Visibility = Visibility.Hidden;
-            tbmpropsimport.Visibility = Visibility.Visible;
-        }
-
-        public void resetmpropsimport()
-        {
-            ddmpropsimport.IsEnabled = false;
-            Btnmpropsimportreplace.IsEnabled = false;
-            Btnmpropsimportreplaceall.IsEnabled = false;
-            Lblmpropsimportinitialize.Visibility = Visibility.Visible;
-            tbmpropsimport.Visibility = Visibility.Hidden;
-            importedmpropjsonobj = null;
-        }
-
-        private void ddmpropsimport_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (ddmpropsimport.SelectedIndex == 0)
+            if (!m.IsProcOpen || _mpCreator < 0 || allprops.Count == 0)
+                return;
+            var file = new JSON.ModdedPropJSON.Rootobject();
+            for (int n = 0; n < CprpTable.Length; n++)
             {
-                tbmpropsimport.Text = "all props from categorys";
+                if (CprpTable[n] >= allprops.Count)
+                    continue;
+                string value = string.Join(",", allprops[CprpTable[n]].prop.Select(x => m.memory(x.Address[_mpCreator]).Get<int>().ToString("X8", CultureInfo.InvariantCulture)));
+                typeof(JSON.ModdedPropJSON.Rootobject).GetProperty("s" + n.ToString(CultureInfo.InvariantCulture))?.SetValue(file, value);
             }
-            else if (ddmpropsimport.SelectedIndex > 0)
+            string json = JsonConvert.SerializeObject(file);
+            preparemoddedpropjsontoexport(ref json);
+            var dialog = new SaveFileDialog
             {
-                switch (ddmpropsimport.SelectedIndex)
-                {
-                    case 1:
-                        tbmpropsimport.Text = importedmpropjsonobj.s0;
-                        break;
-                    case 2:
-                        tbmpropsimport.Text = importedmpropjsonobj.s1;
-                        break;
-                    case 3:
-                        tbmpropsimport.Text = importedmpropjsonobj.s2;
-                        break;
-                    case 4:
-                        tbmpropsimport.Text = importedmpropjsonobj.s3;
-                        break;
-                    case 5:
-                        tbmpropsimport.Text = importedmpropjsonobj.s4;
-                        break;
-                    case 6:
-                        tbmpropsimport.Text = importedmpropjsonobj.s5;
-                        break;
-                    case 7:
-                        tbmpropsimport.Text = importedmpropjsonobj.s6;
-                        break;
-                    case 8:
-                        tbmpropsimport.Text = importedmpropjsonobj.s7;
-                        break;
-                    case 9:
-                        tbmpropsimport.Text = importedmpropjsonobj.s8;
-                        break;
-                    case 10:
-                        tbmpropsimport.Text = importedmpropjsonobj.s9;
-                        break;
-                    case 11:
-                        tbmpropsimport.Text = importedmpropjsonobj.s10;
-                        break;
-                    case 12:
-                        tbmpropsimport.Text = importedmpropjsonobj.s11;
-                        break;
-                    case 13:
-                        tbmpropsimport.Text = importedmpropjsonobj.s12;
-                        break;
-                    case 14:
-                        tbmpropsimport.Text = importedmpropjsonobj.s13;
-                        break;
-                    case 15:
-                        tbmpropsimport.Text = importedmpropjsonobj.s14;
-                        break;
-                    case 16:
-                        tbmpropsimport.Text = importedmpropjsonobj.s15;
-                        break;
-                    case 17:
-                        tbmpropsimport.Text = importedmpropjsonobj.s16;
-                        break;
-                    case 18:
-                        tbmpropsimport.Text = importedmpropjsonobj.s17;
-                        break;
-                    case 19:
-                        tbmpropsimport.Text = importedmpropjsonobj.s18;
-                        break;
-                    case 20:
-                        tbmpropsimport.Text = importedmpropjsonobj.s19;
-                        break;
-                    case 21:
-                        tbmpropsimport.Text = importedmpropjsonobj.s20;
-                        break;
-                    case 22:
-                        tbmpropsimport.Text = importedmpropjsonobj.s21;
-                        break;
-                    case 23:
-                        tbmpropsimport.Text = importedmpropjsonobj.s22;
-                        break;
-                    case 24:
-                        tbmpropsimport.Text = importedmpropjsonobj.s23;
-                        break;
-                    case 25:
-                        tbmpropsimport.Text = importedmpropjsonobj.s24;
-                        break;
-                    case 26:
-                        tbmpropsimport.Text = importedmpropjsonobj.s25;
-                        break;
-                    case 27:
-                        tbmpropsimport.Text = importedmpropjsonobj.s26;
-                        break;
-                    case 28:
-                        tbmpropsimport.Text = importedmpropjsonobj.s27;
-                        break;
-                    case 29:
-                        tbmpropsimport.Text = importedmpropjsonobj.s28;
-                        break;
-                    case 30:
-                        tbmpropsimport.Text = importedmpropjsonobj.s29;
-                        break;
-                    case 31:
-                        tbmpropsimport.Text = importedmpropjsonobj.s30;
-                        break;
-                    case 32:
-                        tbmpropsimport.Text = importedmpropjsonobj.s31;
-                        break;
-                    case 33:
-                        tbmpropsimport.Text = importedmpropjsonobj.s32;
-                        break;
-                    case 34:
-                        tbmpropsimport.Text = importedmpropjsonobj.s33;
-                        break;
-                    case 35:
-                        tbmpropsimport.Text = importedmpropjsonobj.s34;
-                        break;
-                    case 36:
-                        tbmpropsimport.Text = importedmpropjsonobj.s35;
-                        break;
-                    case 37:
-                        tbmpropsimport.Text = importedmpropjsonobj.s36;
-                        break;
-                    case 38:
-                        tbmpropsimport.Text = importedmpropjsonobj.s37;
-                        break;
-                    case 39:
-                        tbmpropsimport.Text = importedmpropjsonobj.s38;
-                        break;
-                    case 40:
-                        tbmpropsimport.Text = importedmpropjsonobj.s39;
-                        break;
-                    case 41:
-                        tbmpropsimport.Text = importedmpropjsonobj.s40;
-                        break;
-                    case 42:
-                        tbmpropsimport.Text = importedmpropjsonobj.s41;
-                        break;
-                    default:
-                        break;
-                }
-            }
+                Title = MPT("mp_export_title", "Save the prop file"),
+                Filter = "Custom Prop File (*.cprp)|*.cprp",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+            };
+            if (dialog.ShowDialog() == true)
+                File.WriteAllText(dialog.FileName, json);
         }
 
-        private void tbmpropsimport_TextChanged(object sender, TextChangedEventArgs e)
+        // Puts the creator's own models back into every table (chosen creator, or all loaded).
+        private void RestoreMProps()
         {
-            switch (ddmpropsimport.SelectedIndex)
+            if (!m.IsProcOpen || _mpCreator < 0)
+                return;
+            foreach (var category in MPCategories)
             {
-                case 1:
-                    importedmpropjsonobj.s0 = tbmpropsimport.Text;
-                    break;
-                case 2:
-                    importedmpropjsonobj.s1 = tbmpropsimport.Text;
-                    break;
-                case 3:
-                    importedmpropjsonobj.s2 = tbmpropsimport.Text;
-                    break;
-                case 4:
-                    importedmpropjsonobj.s3 = tbmpropsimport.Text;
-                    break;
-                case 5:
-                    importedmpropjsonobj.s4 = tbmpropsimport.Text;
-                    break;
-                case 6:
-                    importedmpropjsonobj.s5 = tbmpropsimport.Text;
-                    break;
-                case 7:
-                    importedmpropjsonobj.s6 = tbmpropsimport.Text;
-                    break;
-                case 8:
-                    importedmpropjsonobj.s7 = tbmpropsimport.Text;
-                    break;
-                case 9:
-                    importedmpropjsonobj.s8 = tbmpropsimport.Text;
-                    break;
-                case 10:
-                    importedmpropjsonobj.s9 = tbmpropsimport.Text;
-                    break;
-                case 11:
-                    importedmpropjsonobj.s10 = tbmpropsimport.Text;
-                    break;
-                case 12:
-                    importedmpropjsonobj.s11 = tbmpropsimport.Text;
-                    break;
-                case 13:
-                    importedmpropjsonobj.s12 = tbmpropsimport.Text;
-                    break;
-                case 14:
-                    importedmpropjsonobj.s13 = tbmpropsimport.Text;
-                    break;
-                case 15:
-                    importedmpropjsonobj.s14 = tbmpropsimport.Text;
-                    break;
-                case 16:
-                    importedmpropjsonobj.s15 = tbmpropsimport.Text;
-                    break;
-                case 17:
-                    importedmpropjsonobj.s16 = tbmpropsimport.Text;
-                    break;
-                case 18:
-                    importedmpropjsonobj.s17 = tbmpropsimport.Text;
-                    break;
-                case 19:
-                    importedmpropjsonobj.s18 = tbmpropsimport.Text;
-                    break;
-                case 20:
-                    importedmpropjsonobj.s19 = tbmpropsimport.Text;
-                    break;
-                case 21:
-                    importedmpropjsonobj.s20 = tbmpropsimport.Text;
-                    break;
-                case 22:
-                    importedmpropjsonobj.s21 = tbmpropsimport.Text;
-                    break;
-                case 23:
-                    importedmpropjsonobj.s22 = tbmpropsimport.Text;
-                    break;
-                case 24:
-                    importedmpropjsonobj.s23 = tbmpropsimport.Text;
-                    break;
-                case 25:
-                    importedmpropjsonobj.s24 = tbmpropsimport.Text;
-                    break;
-                case 26:
-                    importedmpropjsonobj.s25 = tbmpropsimport.Text;
-                    break;
-                case 27:
-                    importedmpropjsonobj.s26 = tbmpropsimport.Text;
-                    break;
-                case 28:
-                    importedmpropjsonobj.s27 = tbmpropsimport.Text;
-                    break;
-                case 29:
-                    importedmpropjsonobj.s28 = tbmpropsimport.Text;
-                    break;
-                case 30:
-                    importedmpropjsonobj.s29 = tbmpropsimport.Text;
-                    break;
-                case 31:
-                    importedmpropjsonobj.s30 = tbmpropsimport.Text;
-                    break;
-                case 32:
-                    importedmpropjsonobj.s31 = tbmpropsimport.Text;
-                    break;
-                case 33:
-                    importedmpropjsonobj.s32 = tbmpropsimport.Text;
-                    break;
-                case 34:
-                    importedmpropjsonobj.s33 = tbmpropsimport.Text;
-                    break;
-                case 35:
-                    importedmpropjsonobj.s34 = tbmpropsimport.Text;
-                    break;
-                case 36:
-                    importedmpropjsonobj.s35 = tbmpropsimport.Text;
-                    break;
-                case 37:
-                    importedmpropjsonobj.s36 = tbmpropsimport.Text;
-                    break;
-                case 38:
-                    importedmpropjsonobj.s37 = tbmpropsimport.Text;
-                    break;
-                case 39:
-                    importedmpropjsonobj.s38 = tbmpropsimport.Text;
-                    break;
-                case 40:
-                    importedmpropjsonobj.s39 = tbmpropsimport.Text;
-                    break;
-                case 41:
-                    importedmpropjsonobj.s40 = tbmpropsimport.Text;
-                    break;
-                case 42:
-                    importedmpropjsonobj.s41 = tbmpropsimport.Text;
-                    break;
-                default:
-                    break;
+                var defaults = MPDefaults(category.Table);
+                if (defaults == null)
+                    continue;
+                var slots = MPSlots(category);
+                for (int i = 0; i < slots.Count && i < defaults.Length; i++)
+                    if (slots[i].IntegerValue != defaults[i])
+                        WriteMPSlot(slots[i], defaults[i], onlyChosen: true);
             }
-        }
-
-        private void Btnmpropsrestore_Click(object sender, RoutedEventArgs e)
-        {
-
-
-            List<string> tempmainarr = new List<string>();
-
-            switch ((ddMPROPSCreator.SelectedItem as ComboBoxItem).Content.ToString())
-            {
-                case "Race":
-                    tempmainarr = GTA.Defaults.MPropsDefaultsRace;
-                    break;
-                case "LTS":
-                    tempmainarr = GTA.Defaults.MPropsDefaultsLTS;
-                    break;
-                case "Capture":
-                    tempmainarr = GTA.Defaults.MPropsDefaultsCapture;
-                    break;
-                case "Deathmatch":
-                    tempmainarr = GTA.Defaults.MPropsDefaultsDM;
-                    break;
-                case "Survival":
-                    tempmainarr = GTA.Defaults.MPropsDefaultsSurvival;
-                    break;
-                default:
-                    break;
-            }
-
-
-            for (int i = 0; i < tempmainarr.Count; i++)
-            {
-                try
-                {
-                    var temparr = tempmainarr[i].Split(',');
-                    for (int d = 0; d < allprops[i].prop.Count; d++)
-                    {
-                        try
-                        {
-                            m.memory(allprops[i].prop[d].Address[ddMPROPSCreator.SelectedIndex]).SetInt(Functions.int_parse(temparr[d]));
-                        }
-                        catch (Exception)
-                        {
-
-                        }
-                    }
-                }
-                catch (Exception)
-                {
-
-                }
-            }
-        }
-
-        private void tbmpropsmodelchange_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            //GTA.MPEntry proptemp = ((GTA.MPEntry)mpropModelList.SelectedItem);
-            //Clipboard.SetText(proptemp.Address[ddMPROPSCreator.SelectedIndex]);
+            RenderMPAll();
         }
     }
 }

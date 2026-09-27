@@ -339,7 +339,6 @@ namespace Xenvious
             //panelTopSwitcher.Visibility = Visibility.Hidden;
             BtnOnlineEnabler.Visibility = Visibility.Collapsed;
             BtnLaunchCreator.Visibility = Visibility.Collapsed;
-            mpropspanelmainmain.Visibility = Visibility.Collapsed;
 
 
             Log.Debug("Start timercheckgta", source: "init");
@@ -709,11 +708,6 @@ namespace Xenvious
                 return m.memory(addr.ToString("X")).GetString(64).TrimEnd('\0');
             }
             return issteam ? m.memory(GTA.Offsets.Editor.steam_accname).GetString() : isrstar ? m.memory(GTA.Offsets.Editor.rstar_accname).GetString() : m.memory(GTA.Offsets.Editor.epic_accname).GetString();
-        }
-
-        private void mpropspanelmain_DragEnter(object sender, DragEventArgs e)
-        {
-            mpropsdrop.Visibility = Visibility.Visible;
         }
 
         public static bool freeze = false;
