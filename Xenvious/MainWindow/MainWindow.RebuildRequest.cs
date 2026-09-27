@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Windows;
 using Xenvious.Logging;
@@ -43,6 +43,13 @@ namespace Xenvious
             _rebuildAsking = true;
             try
             {
+                // The user asked for this one exception to "never steal focus": a rebuild waits on
+                // the answer, so Xenvious comes to the front.
+                if (WindowState == WindowState.Minimized)
+                    WindowState = WindowState.Normal;
+                Topmost = true;
+                Activate();
+                Topmost = false;
                 bool close = await ConfirmAsync(TranslateOr("rebuild_title", "New build"),
                     TranslateOr("rebuild_msg", "A rebuild is waiting. Close Xenvious now? Start the new version afterwards."),
                     TranslateOr("rebuild_close", "Close"), TranslateOr("rebuild_later", "Later"));

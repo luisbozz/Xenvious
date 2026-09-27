@@ -1,6 +1,6 @@
 # Handoff: UI redesign (branch `feature/ui-redesign`)
 
-Status as of 2026-09-27 (evening). Head: 04ce17b, CI green. For a new Claude session: read this file, `AGENTS.md` and
+Status as of 2026-09-27 (late). Open items and decisions of the test rounds: docs/handoff/FEEDBACK-2026-09-27.md; rules for every change: docs/handoff/CHECKLIST.md; rules research: RULES.md; extra objectives: EXTRA-OBJECTIVES.md. Work runs in a local WSL session now (build with ~/bin/xrebuild, translations with ~/bin/addtr). For a new Claude session: read this file, `AGENTS.md` and
 `docs/wiki/` first. The user writes in German; answer in German.
 
 ## Working rules (from the user)
