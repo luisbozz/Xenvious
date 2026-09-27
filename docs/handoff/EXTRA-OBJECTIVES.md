@@ -76,6 +76,5 @@ Check the Legacy numbers the same way before use.
   on the Vehicle and Actor pages; the delete buttons of both pages shift the indices.
 - Explanation with example: `eo_help_text` (dialog from the card's "?").
 
-Next: card for objects and go-tos, the overview page of all 30 slots with the explanation on it
-(the "?" then jumps there), warnings (rule number past the team's rules, entity without own rule
-for the team), duplicate handling.
+Also built since (commit 05f0336): the card for objects and go-tos, the overview page of all 30
+slots with the explanation, warnings. Next: test in game (Enhanced + Legacy), duplicate handling.

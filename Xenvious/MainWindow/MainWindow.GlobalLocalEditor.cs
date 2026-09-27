@@ -29,8 +29,9 @@ namespace Xenvious
             gridFreezeGlobal.Visibility = global ? Visibility.Visible : Visibility.Collapsed;
             gridFreezeLocal.Visibility = global ? Visibility.Collapsed : Visibility.Visible;
 
-            BtnFreezeListGlobal.Background = (SolidColorBrush)Resources[global ? "ButtonHoverBackgroundBrush" : "SectionBackgroundBrush"];
-            BtnFreezeListLocal.Background = (SolidColorBrush)Resources[global ? "SectionBackgroundBrush" : "ButtonHoverBackgroundBrush"];
+            // The shown list's button is the filled one.
+            BtnFreezeListGlobal.Style = (Style)FindResource(global ? "FormButtonPrimary" : "FormButton");
+            BtnFreezeListLocal.Style = (Style)FindResource(global ? "FormButton" : "FormButtonPrimary");
         }
 
         private void BtnFreezeListGlobal_Click(object sender, RoutedEventArgs e) => ShowFreezeList(true);

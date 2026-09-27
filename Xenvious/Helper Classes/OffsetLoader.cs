@@ -101,6 +101,7 @@ namespace Xenvious
             GTA.Offsets.Editor.OFFSET_current_creator_pre_publish = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_pre_publish"), 0);
             GTA.Offsets.Editor.OFFSET_current_creator_pre_previous_menu = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_pre_previous_menu"), 0);
             GTA.Offsets.Editor.OFFSET_current_creator_pre_current_menu = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_pre_current_menu"), 0);
+            GTA.Offsets.Editor.OFFSET_current_creator_pre_visgroups = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_pre_visgroups"), 0);
             GTA.Offsets.Editor.OFFSET_current_creator_pre_idk = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_pre_idk"), 0);
             GTA.Offsets.Editor.OFFSET_current_creator_test_survival = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_test_survival"), 0);
             GTA.Offsets.Editor.OFFSET_current_creator_test_race = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_test_race"), 0);

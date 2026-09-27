@@ -178,7 +178,10 @@
     <Compile Include="Controls\JobMap.cs" />
     <Compile Include="Controls\MasonryPanel.cs" />
     <Compile Include="Controls\SearchableCombo.cs" />
+    <Compile Include="Controls\AreaEditor.cs" />
     <Compile Include="Controls\ExtraRulesCard.cs" />
+    <Compile Include="Controls\MenuBitsView.cs" />
+    <Compile Include="Controls\VisibilityCard.cs" />
     <Compile Include="Controls\ModelCard.xaml.cs">
       <DependentUpon>ModelCard.xaml</DependentUpon>
     </Compile>
@@ -218,6 +221,7 @@
     <Compile Include="Creator Classes\Gangs.cs" />
     <Compile Include="Creator Classes\GangTypes.cs" />
     <Compile Include="Creator Classes\ExtraObjectives.cs" />
+    <Compile Include="Creator Classes\VisibilityGroups.cs" />
     <Compile Include="Creator Classes\ScriptThreadLog.cs" />
     <Compile Include="Creator Classes\LocalFreezer.cs" />
     <Compile Include="Creator Classes\GlobalFreezer.cs" />
@@ -452,6 +456,7 @@
     <Compile Include="MainWindow\MainWindow.Dashboard.cs" />
     <Compile Include="MainWindow\MainWindow.DashboardCreator.cs" />
     <Compile Include="MainWindow\MainWindow.EditNav.cs" />
+    <Compile Include="MainWindow\MainWindow.EditSearch.cs" />
     <Compile Include="MainWindow\MainWindow.EntryBar.cs" />
     <Compile Include="MainWindow\MainWindow.EditHeaderBar.cs" />
     <Compile Include="MainWindow\MainWindow.RebuildRequest.cs" />
@@ -494,6 +499,7 @@
     <EmbeddedResource Include="OfflineData\placement_presets.json" />
     <EmbeddedResource Include="OfflineData\weapons.json" />
     <EmbeddedResource Include="OfflineData\actors.json" />
+    <EmbeddedResource Include="OfflineData\menubits.json" />
     <None Include=".manifest" />
     <Resource Include="Fonts\Nunito\Nunito-Black.ttf" />
     <Resource Include="Fonts\Nunito\Nunito-BlackItalic.ttf" />

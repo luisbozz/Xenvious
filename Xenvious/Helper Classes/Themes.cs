@@ -31,7 +31,7 @@ namespace Xenvious
         };
 
         /// <summary>Every brush a theme sets, plus the ones derived from them.</summary>
-        public static IEnumerable<string> TokenKeys => Tokens.Concat(new[] { "NavGroupBackgroundBrush" });
+        public static IEnumerable<string> TokenKeys => Tokens.Concat(new[] { "NavGroupBackgroundBrush", "AccentSoftBrush" });
 
         // Order: token list above.
         private static Theme T(string key, string nameKey, string fallback, bool light, params string[] hex)

@@ -85,5 +85,8 @@ namespace Xenvious
 
         /// <summary>Built-in advanced placement presets (JSON array).</summary>
         public static string PlacementPresets => LoadShared("placement_presets.json");
+
+        /// <summary>Names of the job option bits per menubs field (JSON), from Rockstar's constants.</summary>
+        public static string MenuBits => LoadShared("menubits.json");
     }
 }

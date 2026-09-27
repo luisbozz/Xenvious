@@ -76,9 +76,15 @@ namespace Xenvious
                     cells.Children.Add(bit);
                 }
                 var tile = new StackPanel();
-                tile.Children.Add(new TextBlock { Text = $"Byte {b} · {b * 8 + 1}-{b * 8 + 8}", FontSize = 11, FontWeight = FontWeights.Bold, Foreground = (Brush)FindResource("NavMutedBrush"), Margin = new Thickness(2, 0, 0, 4) });
+                var caption = new TextBlock { Text = $"Byte {b} · {b * 8 + 1}-{b * 8 + 8}", FontSize = 11, FontWeight = FontWeights.Bold, Margin = new Thickness(2, 0, 0, 4) };
+                caption.SetResourceReference(TextBlock.ForegroundProperty, "NavMutedBrush");
+                tile.Children.Add(caption);
                 tile.Children.Add(cells);
-                ConvBitsPanel.Children.Add(new Border { Child = tile, Margin = new Thickness(0, 0, 8, 0), Padding = new Thickness(6), CornerRadius = new CornerRadius(5), Background = (Brush)FindResource("SeactionHeaderBackgroundBrush") });
+                // Resource references, so a theme change recolours the tiles too.
+                var frame = new Border { Child = tile, Margin = new Thickness(0, 0, 8, 0), Padding = new Thickness(6), CornerRadius = new CornerRadius(5), BorderThickness = new Thickness(1) };
+                frame.SetResourceReference(Border.BackgroundProperty, "DeepBrush");
+                frame.SetResourceReference(Border.BorderBrushProperty, "LineBrush");
+                ConvBitsPanel.Children.Add(frame);
             }
         }
 
@@ -157,6 +163,14 @@ namespace Xenvious
             ConvHitKind.Text = TranslateOr("conv_kind_" + _convHit.ImageKind, _convHit.ImageKind).ToUpperInvariant();
             ConvHitKind.Foreground = new SolidColorBrush(KindColor(_convHit.ImageKind));
             ConvHitName.Text = _convHit.Name;
+            // The picture loads by itself, a moment after typing stops (every key is a new hit).
+            if (_convImageTimer == null)
+            {
+                _convImageTimer = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromMilliseconds(350) };
+                _convImageTimer.Tick += (_, __) => { _convImageTimer.Stop(); Btncenvgetimg_Click(null, null); };
+            }
+            _convImageTimer.Stop();
+            _convImageTimer.Start();
             ConvHitNative.Text = _convHit.Native ?? "";
             ConvHitCategory.Text = _convHit.Category;
         }
@@ -258,6 +272,8 @@ namespace Xenvious
         }
 
         // Disk cache first, then the online source (only props have one so far).
+        private System.Windows.Threading.DispatcherTimer _convImageTimer;
+
         private async void Btncenvgetimg_Click(object sender, RoutedEventArgs e)
         {
             var hit = _convHit;

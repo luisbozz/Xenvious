@@ -46,6 +46,7 @@
             <SolidColorBrush x:Key="WarnBrush" Color="#FAA61A" />
             <SolidColorBrush x:Key="BadBrush" Color="#F04747" />
             <SolidColorBrush x:Key="AccentBrush" Color="#5B9BE6" />
+            <SolidColorBrush x:Key="AccentSoftBrush" Color="#705B9BE6" />
             <Color x:Key="ShadowColor" R="0" B="0" G="0"/>
             <FontFamily x:Key="Nunito">/Fonts/Nunito/#Nunito</FontFamily>
             <FontFamily x:Key="Volte">/Fonts/Volte Rounded/#Volte Rounded</FontFamily>

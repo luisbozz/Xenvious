@@ -63,6 +63,7 @@ namespace Xenvious
             tbmissiongangv1locx.Text = loc[0].ToString();
             tbmissiongangv1locy.Text = loc[1].ToString();
             tbmissiongangv1locz.Text = loc[2].ToString();
+            gangArea.StartPicked();
         }
 
         private void Btmissiongangv2getloc_Click(object sender, RoutedEventArgs e)
@@ -72,6 +73,7 @@ namespace Xenvious
             tbmissiongangv2locx.Text = loc[0].ToString();
             tbmissiongangv2locy.Text = loc[1].ToString();
             tbmissiongangv2locz.Text = loc[2].ToString();
+            gangArea.EndPicked();
         }
 
         public void getGangValues(bool ignore_focus = false)
@@ -203,7 +205,7 @@ namespace Xenvious
                 return;
             _gangTypeLang = lang;
             if (_gangSearch == null)
-                _gangSearch = new SearchableCombo(ddmissiongangtype, tbgangtypesearch);
+                _gangSearch = new SearchableCombo(ddmissiongangtype);
             _gangTypeSync = true;
             _gangSearch.SetItems(GangTypes.All.Select(t => new SearchItem { Id = t.Id, Text = GangTypeText(t, TranslateOr), Group = t.Group }),
                 GangTypes.Groups, g => g == "none" ? "" : TranslateOr("gt_grp_" + g, g));

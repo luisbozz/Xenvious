@@ -610,5 +610,37 @@
                 "bytes_to_read": 4
             }
         ]
+    },
+    {
+        "patch_name": "show placed zones brighter",
+        "script_name": "fm_lts_creator",
+        "pattern": "29 00 00 0C 42 39 ? 38 ? 38 ? 5D",
+        "offset": 1,
+        "bytes_to_patch": "00 00 8C 42",
+        "dev": false
+    },
+    {
+        "patch_name": "show placed angled zones brighter",
+        "script_name": "fm_lts_creator",
+        "pattern": "38 ? 29 33 33 B3 3E 10 39 ? 38 ? 41 0B 25 25",
+        "offset": 3,
+        "bytes_to_patch": "CD CC 4C 3F",
+        "dev": false
+    },
+    {
+        "patch_name": "show placed zones brighter",
+        "script_name": "fm_capture_creator",
+        "pattern": "29 00 00 0C 42 39 ? 38 ? 38 ? 5D",
+        "offset": 1,
+        "bytes_to_patch": "00 00 8C 42",
+        "dev": false
+    },
+    {
+        "patch_name": "show placed angled zones brighter",
+        "script_name": "fm_capture_creator",
+        "pattern": "38 ? 29 33 33 B3 3E 10 39 ? 38 ? 41 0B 25 25",
+        "offset": 3,
+        "bytes_to_patch": "CD CC 4C 3F",
+        "dev": false
     }
 ]

@@ -373,6 +373,7 @@ namespace Xenvious
             tbbd2pastartlocx.Text = temp[0].ToString();
             tbbd2pastartlocy.Text = temp[1].ToString();
             tbbd2pastartlocz.Text = temp[2].ToString();
+            bd2Area.StartPicked();
         }
 
         private void tbbd2paendlocx_TextChanged(object sender, TextChangedEventArgs e)
@@ -478,6 +479,7 @@ namespace Xenvious
             tbbd2paendlocx.Text = temp[0].ToString();
             tbbd2paendlocy.Text = temp[1].ToString();
             tbbd2paendlocz.Text = temp[2].ToString();
+            bd2Area.EndPicked();
         }
 
         private void tbbd2pawidth_TextChanged(object sender, TextChangedEventArgs e)

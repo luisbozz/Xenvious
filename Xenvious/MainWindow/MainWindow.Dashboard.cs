@@ -61,6 +61,8 @@ namespace Xenvious
                 // "creator"; from there the player picks a creator in the game itself.
                 bool creatorMenu = globals && !inCreator && GTA.IsScriptRunning("creator");
                 UpdateGameState(game, globals, inCreator, creatorMenu);
+                if (inCreator)
+                    VisibilityGroups.Apply();
 
                 AdvanceLaunch(game, inCreator);
                 UpdateLaunchButton(inCreator);

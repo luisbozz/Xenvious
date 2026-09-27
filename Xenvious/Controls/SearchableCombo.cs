@@ -4,7 +4,9 @@ using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
 
@@ -54,7 +56,7 @@ namespace Xenvious
     }
 
     /// <summary>
-    /// A grouped list (disabled header rows + SearchItem rows) with a search box above it that
+    /// A grouped list (disabled header rows + SearchItem rows) with a search box at the top of its drop-down that
     /// filters by name or number and highlights the match. The list is flat on purpose: a grouped
     /// CollectionView showed only the headers in the window's ComboBox template.
     /// </summary>
@@ -62,24 +64,62 @@ namespace Xenvious
     {
         private readonly ComboBox _combo;
         private readonly TextBox _search;
+        private readonly TextBlock _hint;
         private List<SearchItem> _all = new List<SearchItem>();
         private Func<string, string> _groupName = g => g;
         private string[] _groupOrder = new string[0];
         public bool Syncing { get; private set; }
 
-        public SearchableCombo(ComboBox combo, TextBox search)
+        public SearchableCombo(ComboBox combo)
         {
             _combo = combo;
-            _search = search;
+            // A bare text line, no box: the grey hint sits in it until something is typed.
+            _search = new TextBox { Background = Brushes.Transparent, BorderThickness = new Thickness(0), Padding = new Thickness(8, 7, 8, 7), FontSize = 14 };
+            _search.SetResourceReference(Control.ForegroundProperty, "TextColor");
+            _search.SetResourceReference(TextBoxBase.CaretBrushProperty, "TextColor");
+            _hint = new TextBlock
+            {
+                Text = MainWindow.Instance?.TranslateOr("search_type", "Search: name or number") ?? "Search: name or number",
+                Margin = new Thickness(11, 7, 8, 7), FontSize = 14, IsHitTestVisible = false,
+            };
+            _hint.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
+            _search.TextChanged += (_, __) => _hint.Visibility = _search.Text.Length == 0 ? Visibility.Visible : Visibility.Collapsed;
+            // Typing goes to the search box, not to the combo's own jump-to-letter search.
+            _combo.IsTextSearchEnabled = false;
             _combo.ItemTemplate = (DataTemplate)XamlReader.Parse(
                 "<DataTemplate xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation' xmlns:l='clr-namespace:Xenvious;assembly=" + typeof(Highlight).Assembly.GetName().Name + "'>" +
                 "<TextBlock TextTrimming='CharacterEllipsis' l:Highlight.Text='{Binding Text}' l:Highlight.Query='{Binding Query}'/></DataTemplate>");
-            _search.TextChanged += (_, __) =>
+            _search.TextChanged += (_, __) => Rebuild();
+            _combo.DropDownOpened += (_, __) =>
             {
-                Rebuild();
-                if (_search.IsKeyboardFocusWithin && _search.Text.Length > 0)
-                    _combo.IsDropDownOpen = true;
+                PutSearchIntoPopup();
+                _search.Dispatcher.BeginInvoke(new Action(() => { _search.Focus(); Keyboard.Focus(_search); }), System.Windows.Threading.DispatcherPriority.Input);
             };
+            _combo.DropDownClosed += (_, __) =>
+            {
+                if (_search.Text.Length > 0)
+                    _search.Text = "";
+            };
+        }
+
+        // The search box sits at the top of the drop-down itself (ComboBox.xaml: DropDownBorder), so
+        // the list and the box share the frame. Done once per combo, each has its own template copy.
+        private void PutSearchIntoPopup()
+        {
+            if (_search.Parent != null || !(_combo.Template?.FindName("DropDownBorder", _combo) is Border border) || border.Child == null)
+                return;
+            var list = border.Child;
+            border.Child = null;
+            var field = new Grid();
+            field.Children.Add(_search);
+            field.Children.Add(_hint);
+            var line = new Border { BorderThickness = new Thickness(0, 0, 0, 1), Child = field };
+            line.SetResourceReference(Border.BorderBrushProperty, "LineBrush");
+            var panel = new DockPanel();
+            DockPanel.SetDock(line, Dock.Top);
+            panel.Children.Add(line);
+            panel.Children.Add(list);
+            border.Child = panel;
         }
 
         public void SetItems(IEnumerable<SearchItem> items, string[] groupOrder, Func<string, string> groupName)

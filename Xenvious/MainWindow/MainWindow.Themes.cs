@@ -31,6 +31,13 @@ namespace Xenvious
                 group.Color = (Color)ColorConverter.ConvertFromString(theme.Colors["DeepBrush"]);
             else
                 Application.Current.Resources["NavGroupBackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString(theme.Colors["DeepBrush"]));
+            // Hover mark of the side lists: the accent at half strength.
+            var accent = (Color)ColorConverter.ConvertFromString(theme.Colors["AccentBrush"]);
+            var soft = Color.FromArgb(0x70, accent.R, accent.G, accent.B);
+            if (TryFindResource("AccentSoftBrush") is SolidColorBrush softBrush && !softBrush.IsFrozen)
+                softBrush.Color = soft;
+            else
+                Application.Current.Resources["AccentSoftBrush"] = new SolidColorBrush(soft);
             Resources["ShadowColor"] = theme.Light ? Colors.White : Colors.Black;
             XenviousImage.Source = (BitmapImage)FindResource(theme.Light ? "ogimageb256" : "ogimage256");
         }

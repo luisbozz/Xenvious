@@ -22,6 +22,7 @@ namespace Xenvious
             tbpastartlocx.Text = loc.X.ToString();
             tbpastartlocy.Text = loc.Y.ToString();
             tbpastartlocz.Text = loc.Z.ToString();
+            paArea.StartPicked();
         }
 
         private void tbpastartlocx_TextChanged(object sender, TextChangedEventArgs e)
@@ -241,6 +242,7 @@ namespace Xenvious
             tbpaendlocx.Text = loc.X.ToString();
             tbpaendlocy.Text = loc.Y.ToString();
             tbpaendlocz.Text = loc.Z.ToString();
+            paArea.EndPicked();
         }
 
         private void tbpawidth_TextChanged(object sender, TextChangedEventArgs e)

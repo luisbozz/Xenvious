@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.ComponentModel;
 using System.IO;
 using System.Windows;
@@ -136,10 +137,27 @@ namespace Xenvious
             cbmissiontpls.IsEnabled = enabled ? true : false;
             cbmissiontpwv.IsEnabled = enabled ? true : false;
             tbmissiontpbind.IsEnabled = enabled ? true : false;
+            foreach (var box in TpBitBoxes)
+                box.IsEnabled = enabled;
+            if (ddmissiontplink.Items.Count == 0)
+            {
+                ddmissiontplink.Items.Add(TranslateOr("tp_link_none", "None"));
+                for (int i = 1; i <= ddmissiontpno.Items.Count; i++)
+                    ddmissiontplink.Items.Add(TranslateOr("tp_marker", "Marker") + " " + i.ToString(CultureInfo.CurrentCulture));
+            }
 
             if (enabled)
             {
                 if (!tbmissiontpbind.IsFocused || ignore_focus) tbmissiontpbind.Text = new Global(GTA.Offsets.Editor.Teleport_Marker.WAz + index * GTA.Offsets.Editor.Teleport_Marker.NEXT).Get<int>().ToString();
+                // iLinkedPortal: -1 none, else the 0-based marker; the list has "None" first.
+                if (!ddmissiontplink.IsDropDownOpen && int.TryParse(tbmissiontpbind.Text, out int link))
+                {
+                    _tpLinkSync = true;
+                    ddmissiontplink.SelectedIndex = link >= -1 && link + 1 < ddmissiontplink.Items.Count ? link + 1 : -1;
+                    _tpLinkSync = false;
+                }
+                foreach (var box in TpBitBoxes)
+                    if (!box.IsFocused || ignore_focus) Functions.Read.checkbinary(int.Parse((string)box.Tag), GTA.Offsets.Editor.Teleport_Marker.WE + index * GTA.Offsets.Editor.Teleport_Marker.NEXT, box);
                 if (!tbmissiontpwalocx.IsFocused || ignore_focus) tbmissiontpwalocx.Text = new Global(GTA.Offsets.Editor.Teleport_Marker.WA + 0 + index * GTA.Offsets.Editor.Teleport_Marker.NEXT).Get<float>().ToString();
                 if (!tbmissiontpwalocy.IsFocused || ignore_focus) tbmissiontpwalocy.Text = new Global(GTA.Offsets.Editor.Teleport_Marker.WA + 1 + index * GTA.Offsets.Editor.Teleport_Marker.NEXT).Get<float>().ToString();
                 if (!tbmissiontpwalocz.IsFocused || ignore_focus) tbmissiontpwalocz.Text = new Global(GTA.Offsets.Editor.Teleport_Marker.WA + 2 + index * GTA.Offsets.Editor.Teleport_Marker.NEXT).Get<float>().ToString();
@@ -157,7 +175,7 @@ namespace Xenvious
                 {
                     if (!ddmissiontpenteranimationwj.IsFocused || ignore_focus) ddmissiontpenteranimationwj.SelectedIndex = anim;
                 } // check if anim is higher than highest animation
-                else if (anim > 9)
+                else if (anim > 13)
                 {
                     ddmissiontpenteranimationwj.SelectedIndex = -1;
                 }
@@ -258,6 +276,25 @@ namespace Xenvious
         private void cbmissiontpdtphin2_Checked(object sender, RoutedEventArgs e)
         {
             Functions.Write.writebinary(12, GTA.Offsets.Editor.Teleport_Marker.WE + ddmissiontpno.SelectedIndex * GTA.Offsets.Editor.Teleport_Marker.NEXT, cbmissiontpdtphin2);
+        }
+
+        // Switches for single bits of iWarpPortalBS (ciWARP_PORTAL_*); Tag = 1-based bit (checkbinary).
+        private CheckBox[] TpBitBoxes => new[] { cbtpbit3, cbtpbit28, cbtpbit24, cbtpbit30, cbtpbit17, cbtpbit14, cbtpbit8, cbtpbit22, cbtpbit19 };
+
+        private void TpBit_Checked(object sender, RoutedEventArgs e)
+        {
+            if (!(sender is CheckBox box) || ddmissiontpno == null || ddmissiontpno.SelectedIndex < 0 || !m.IsProcOpen)
+                return;
+            Functions.Write.writebinary(int.Parse((string)box.Tag), GTA.Offsets.Editor.Teleport_Marker.WE + ddmissiontpno.SelectedIndex * GTA.Offsets.Editor.Teleport_Marker.NEXT, box);
+        }
+
+        private bool _tpLinkSync;
+
+        private void ddmissiontplink_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_tpLinkSync || ddmissiontplink.SelectedIndex < 0)
+                return;
+            tbmissiontpbind.Text = (ddmissiontplink.SelectedIndex - 1).ToString(CultureInfo.InvariantCulture);
         }
 
         private void ddmissiontpenteranimationwj_SelectionChanged(object sender, SelectionChangedEventArgs e)

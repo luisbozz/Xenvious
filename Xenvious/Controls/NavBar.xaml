@@ -64,6 +64,7 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource AccentSoftBrush}"/>
                         </Trigger>
                         <Trigger Property="IsKeyboardFocused" Value="True">
                             <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
@@ -105,6 +106,7 @@
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
                             <Setter TargetName="border" Property="Background" Value="{DynamicResource ButtonHoverBackgroundBrush}"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource AccentSoftBrush}"/>
                         </Trigger>
                         <Trigger Property="Tag" Value="active">
                             <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>

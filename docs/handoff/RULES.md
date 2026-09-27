@@ -51,3 +51,12 @@ JSON `prod.cloud.rockstargames.com/ugc/gta5mission/4983/CYaUJTEy9UKDwwhVbRcONw/0
   a bare index.
 - Moving / deleting a rule has to renumber every pointer (entities, player rules, extra objectives,
   per-rule arrays). That is the risky part; do it after the display works.
+
+## Notes for later
+
+- The creator draws some per-rule things only for the rule selected in its rules menu
+  (`sSelDetails.iRow`): the play area bounds (sBoundsStruct / sBoundsStruct2) through the
+  "bounds" visibility group (bit 5, `MAINTAIN_PLACED_MISSION_DROP_OFF_POINTS` area in
+  FMMC_header.sch around line 15448) and the mission drop-offs (visibility group 6). A rules
+  page could switch that row to show the rule being edited.
+

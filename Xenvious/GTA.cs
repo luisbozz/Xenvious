@@ -1453,6 +1453,7 @@ namespace Xenvious
                 public static long OFFSET_current_creator_pre_publish = 0x0;
                 public static long OFFSET_current_creator_pre_previous_menu = 0x0;
                 public static long OFFSET_current_creator_pre_current_menu = 0x0;
+                public static long OFFSET_current_creator_pre_visgroups = 0x0;
                 public static long OFFSET_current_creator_pre_idk = 0x0;
                 public static long OFFSET_current_creator_test_survival = 0x0;
                 public static long OFFSET_current_creator_test_race = 0x0;

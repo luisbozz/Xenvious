@@ -45,6 +45,8 @@ namespace Xenvious
         private EditNavSub _editNavSub;
         private (EditNavEntry Entry, EditNavSub Sub)? _editNavBack;
         private bool _editNavCollapsed;
+        // Entries whose sub-pages are shown: opening another page leaves them open.
+        private readonly HashSet<EditNavEntry> _editNavOpen = new HashSet<EditNavEntry>();
 
         private List<EditNavEntry> EditNav => _editNav ?? (_editNav = BuildEditNav());
 
@@ -191,6 +193,7 @@ namespace Xenvious
                 TranslateOr("editnav_grp_rules", "Job rules"),
                 TranslateOr("editnav_grp_more", "More options"),
             };
+            RenderFavorites();
             for (int group = 0; group < groups.Length; group++)
             {
                 var entries = EditNav.Where(e => e.Group == group && (EditNavFits(e) || EditNavGreyed(e))).ToList();
@@ -209,8 +212,8 @@ namespace Xenvious
                         button.Opacity = 0.5;
                         button.ToolTip = TranslateOr("editnav_other_creator", "Not part of this creator's menu; the values still work.");
                     }
-                    EditNavList.Children.Add(button);
-                    if (!_editNavCollapsed && entry == _editNavEntry && entry.Subs.Count > 0)
+                    EditNavList.Children.Add(WithStar(button, FavoriteId(entry, null)));
+                    if (!_editNavCollapsed && _editNavOpen.Contains(entry) && entry.Subs.Count > 0)
                         EditNavList.Children.Add(NavSubList(entry));
                 }
             }
@@ -231,7 +234,18 @@ namespace Xenvious
                 Tag = entry == _editNavEntry && (_editNavSub == null || _editNavCollapsed) ? "active" : null,
                 ToolTip = _editNavCollapsed ? label : null,
             };
-            button.Click += (_, __) => OpenEditNav(entry, null, rememberBack: false);
+            button.Click += (_, __) =>
+            {
+                // A second click on the open page folds its sub-pages away (and back).
+                if (entry == _editNavEntry && entry.Subs.Count > 0 && !_editNavCollapsed)
+                {
+                    if (!_editNavOpen.Remove(entry))
+                        _editNavOpen.Add(entry);
+                    RenderEditNav();
+                    return;
+                }
+                OpenEditNav(entry, null, rememberBack: false);
+            };
             return button;
         }
 
@@ -265,7 +279,7 @@ namespace Xenvious
                     Tag = sub == _editNavSub ? "active" : null,
                 };
                 button.Click += (_, __) => OpenEditNav(entry, sub, rememberBack: false);
-                list.Children.Add(button);
+                list.Children.Add(WithStar(button, FavoriteId(entry, sub)));
             }
             return list;
         }
@@ -351,6 +365,7 @@ namespace Xenvious
                 _editNavBack = (_editNavEntry, _editNavSub);
 
             _editNavEntry = entry;
+            _editNavOpen.Add(entry);
             _editNavSub = sub ?? entry.Subs.FirstOrDefault(s => s.Button != null && s.Button.Visibility == Visibility.Visible);
             _openingFromNav = true;
             try
@@ -385,6 +400,7 @@ namespace Xenvious
             if (entry == null)
                 return;
             _editNavEntry = entry;
+            _editNavOpen.Add(entry);
             _editNavSub = entry.Subs.FirstOrDefault(s => s.Page == page)
                 ?? entry.Subs.FirstOrDefault(s => s.Button != null && s.Button.Visibility == Visibility.Visible);
             _editNavBack = null;
@@ -416,7 +432,7 @@ namespace Xenvious
         {
             _editNavCollapsed = !_editNavCollapsed;
             EditNavColumn.Width = new GridLength(_editNavCollapsed ? 74 : 250);
-            tbEditNavSearch.Visibility = _editNavCollapsed ? Visibility.Collapsed : Visibility.Visible;
+            ((FrameworkElement)((FrameworkElement)tbEditNavSearch.Parent).Parent).Visibility = _editNavCollapsed ? Visibility.Collapsed : Visibility.Visible;
             EditScriptLabel.Visibility = EditScriptSummary.Visibility = _editNavCollapsed ? Visibility.Collapsed : Visibility.Visible;
             EditNavCollapseIcon.Data = (Geometry)FindResource(_editNavCollapsed ? "EditIconForward" : "EditIconBack");
             if (_editNavCollapsed)
@@ -424,7 +440,121 @@ namespace Xenvious
             RenderEditNav();
         }
 
-        // ----- search: pages and sub-pages of the open creator -----
+        // ----- favourites: pages and sub-pages the user starred, kept in config.ini -----
+
+        private List<string> _editNavFavorites;
+
+        private List<string> EditNavFavorites
+        {
+            get
+            {
+                if (_editNavFavorites == null)
+                {
+                    string raw = new ini_reader(Functions.getRoamingConfigFilePath()).ReadString("Settings", "editnavfav", "");
+                    _editNavFavorites = raw.Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                }
+                return _editNavFavorites;
+            }
+        }
+
+        // Entry key, or entry key + "#" + sub index (labels change with the language, indices do not).
+        private static string FavoriteId(EditNavEntry entry, EditNavSub sub)
+            => sub == null ? entry.Key : entry.Key + "#" + entry.Subs.IndexOf(sub).ToString(CultureInfo.InvariantCulture);
+
+        private (EditNavEntry Entry, EditNavSub Sub) FromFavoriteId(string id)
+        {
+            string[] parts = id.Split('#');
+            var entry = EditNav.FirstOrDefault(e => e.Key == parts[0]);
+            if (entry == null || parts.Length == 1)
+                return (entry, null);
+            return int.TryParse(parts[1], NumberStyles.Integer, CultureInfo.InvariantCulture, out int i) && i >= 0 && i < entry.Subs.Count
+                ? (entry, entry.Subs[i]) : (null, null);
+        }
+
+        private void ToggleFavorite(string id)
+        {
+            if (!EditNavFavorites.Remove(id))
+                EditNavFavorites.Add(id);
+            new ini_reader(Functions.getRoamingConfigFilePath()).Write("Settings", "editnavfav", string.Join("|", EditNavFavorites));
+            RenderEditNav();
+        }
+
+        private void RenderFavorites()
+        {
+            var favorites = EditNavFavorites.Select(FromFavoriteId)
+                .Where(f => f.Entry != null && EditNavFits(f.Entry) && (f.Sub?.Button == null || f.Sub.Button.Visibility == Visibility.Visible))
+                .ToList();
+            if (favorites.Count == 0)
+                return;
+            if (!_editNavCollapsed)
+                EditNavList.Children.Add(new TextBlock { Text = TranslateOr("editnav_grp_fav", "Favourites"), Style = (Style)FindResource("SideNavGroup") });
+            foreach (var (entry, sub) in favorites)
+            {
+                // Compact like the sub-page rows: one line, the parent page after it in grey.
+                string page = TranslateOr(entry.Key, entry.Fallback);
+                var content = new StackPanel { Orientation = Orientation.Horizontal };
+                var icon = NavIcon(entry.Icon);
+                icon.Width = icon.Height = 14;
+                content.Children.Add(icon);
+                if (!_editNavCollapsed)
+                {
+                    content.Children.Add(new TextBlock { Text = sub == null ? page : SubLabel(sub), Style = (Style)FindResource("NavLabel") });
+                    if (sub != null)
+                        content.Children.Add(new TextBlock { Text = page, FontSize = 11, Margin = new Thickness(8, 0, 0, 0), VerticalAlignment = VerticalAlignment.Center, Foreground = (Brush)FindResource("NavMutedBrush") });
+                }
+                bool active = entry == _editNavEntry && (sub == null ? _editNavSub == null || entry.Subs.Count == 0 : sub == _editNavSub);
+                var button = new Button
+                {
+                    Style = (Style)FindResource("SideNavButton"),
+                    FontSize = 13,
+                    Padding = new Thickness(10, 4, 10, 4),
+                    Content = content,
+                    Tag = active ? "active" : null,
+                    ToolTip = _editNavCollapsed ? (sub == null ? page : SubLabel(sub)) : null,
+                };
+                button.Click += (_, __) => OpenEditNav(entry, sub, rememberBack: false);
+                EditNavList.Children.Add(WithStar(button, FavoriteId(entry, sub)));
+            }
+        }
+
+        private static ControlTemplate _starTemplate;
+
+        // The row's button with a star on its right: filled for favourites, shown on hover otherwise.
+        private FrameworkElement WithStar(Button button, string id)
+        {
+            if (_editNavCollapsed)
+                return button;
+            bool favorite = EditNavFavorites.Contains(id);
+            if (_starTemplate == null)
+                _starTemplate = (ControlTemplate)System.Windows.Markup.XamlReader.Parse(
+                    "<ControlTemplate xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation' TargetType='Button'>" +
+                    "<Border Background='Transparent' Padding='6,0'><ContentPresenter VerticalAlignment='Center'/></Border></ControlTemplate>");
+            var glyph = new TextBlock { Text = favorite ? "\u2605" : "\u2606", FontSize = 14 };
+            glyph.SetResourceReference(TextBlock.ForegroundProperty, favorite ? "AccentBrush" : "NavMutedBrush");
+            var star = new Button
+            {
+                Template = _starTemplate,
+                Content = glyph,
+                HorizontalAlignment = HorizontalAlignment.Right,
+                VerticalAlignment = VerticalAlignment.Stretch,
+                Margin = new Thickness(0, 0, 4, 0),
+                Cursor = System.Windows.Input.Cursors.Hand,
+                ToolTip = TranslateOr(favorite ? "editnav_unfav" : "editnav_fav", favorite ? "Remove from favourites" : "Add to favourites"),
+                Opacity = favorite ? 1 : 0,
+            };
+            star.Click += (_, __) => ToggleFavorite(id);
+            var row = new Grid();
+            row.Children.Add(button);
+            row.Children.Add(star);
+            if (!favorite)
+            {
+                row.MouseEnter += (_, __) => star.Opacity = 1;
+                row.MouseLeave += (_, __) => star.Opacity = 0;
+            }
+            return row;
+        }
+
+        // ----- search: pages and sub-pages of the open creator, then fields (MainWindow.EditSearch.cs) -----
 
         private void tbEditNavSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -448,7 +578,8 @@ namespace Xenvious
                 }
             }
 
-            if (hits.Count == 0)
+            var fields = SearchFields(query, 25);
+            if (hits.Count == 0 && fields.Count == 0)
             {
                 EditNavResults.Children.Add(new TextBlock
                 {
@@ -471,6 +602,28 @@ namespace Xenvious
                 {
                     tbEditNavSearch.Text = "";
                     OpenEditNav(hit.Entry, hit.Sub, rememberBack: true);
+                };
+                EditNavResults.Children.Add(button);
+            }
+
+            if (fields.Count == 0)
+                return;
+            EditNavResults.Children.Add(new TextBlock { Text = TranslateOr("editnav_grp_fields", "On the pages"), Style = (Style)FindResource("SideNavGroup") });
+            foreach (var field in fields)
+            {
+                var text = new StackPanel();
+                var title = Highlighted(field.Title, query);
+                title.FontSize = 13;
+                title.FontWeight = FontWeights.SemiBold;
+                title.TextTrimming = TextTrimming.CharacterEllipsis;
+                text.Children.Add(title);
+                text.Children.Add(new TextBlock { Text = field.Path, FontSize = 11, Foreground = (Brush)FindResource("NavMutedBrush"), TextTrimming = TextTrimming.CharacterEllipsis });
+                var button = new Button { Style = (Style)FindResource("SideNavButton"), Content = text, Padding = new Thickness(10, 5, 10, 5) };
+                var open = field.Open;
+                button.Click += (_, __) =>
+                {
+                    tbEditNavSearch.Text = "";
+                    open();
                 };
                 EditNavResults.Children.Add(button);
             }

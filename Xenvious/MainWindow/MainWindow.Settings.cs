@@ -648,15 +648,25 @@ namespace Xenvious
         // functions, bit 30 for the dev patches. Bit 5 makes the race creator flicker, so it
         // is only set inside the other creators (and outside a creator it waits until one
         // is known, so the race creator never runs a frame with it).
+        // Bits 2 and 3 (customfuncs fn3 play areas, fn4 gang chase areas) also follow their
+        // switches on the "Show in game" card.
         private static void WriteScriptFeatureBits(bool enable)
         {
             string creator = GTA.CurrentCreatorName();
             for (int bit = 1; bit <= 5; bit++)
             {
-                bool wanted = enable && (bit != 5 || (creator != "" && creator != "fm_race_creator"));
+                bool wanted = enable && (bit != 5 || (creator != "" && creator != "fm_race_creator"))
+                    && (bit != 2 || VisibilityGroups.IsOn(VisibilityGroups.PlayAreaBit))
+                    && (bit != 3 || VisibilityGroups.IsOn(VisibilityGroups.GangChaseBit));
                 Functions.Write.writebinary(bit, GTA.Offsets.Editor.custom_check, wanted);
             }
             Functions.Write.writebinary(30, GTA.Offsets.Editor.custom_check, enable);
+        }
+
+        public void RefreshScriptFeatureBits()
+        {
+            if (m.IsProcOpen && GTA.Offsets.Editor.custom_check != 0)
+                WriteScriptFeatureBits(cbsettingsexpscrfeat.IsChecked == true);
         }
 
         private void cbsettingsswitchcamkey_Checked(object sender, RoutedEventArgs e)

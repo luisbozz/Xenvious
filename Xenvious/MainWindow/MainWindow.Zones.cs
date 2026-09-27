@@ -14,7 +14,7 @@ using static Xenvious.GTA.Offsets.Editor;
 
 namespace Xenvious
 {
-    // Part of MainWindow: Zones page.
+    // Part of MainWindow: Zones page, and the area editors of zones, play areas and gang chase.
     public partial class MainWindow
     {
         public void GetZone()
@@ -74,6 +74,7 @@ namespace Xenvious
                 tbzonestartx.Text = loc[0];
                 tbzonestarty.Text = loc[1];
                 tbzonestartz.Text = loc[2];
+                zoneArea.StartPicked();
             }
         }
 
@@ -86,6 +87,7 @@ namespace Xenvious
                 tbzoneendx.Text = loc[0];
                 tbzoneendy.Text = loc[1];
                 tbzoneendz.Text = loc[2];
+                zoneArea.EndPicked();
             }
         }
 
@@ -177,10 +179,22 @@ namespace Xenvious
             ddzonevariation.SelectedIndex = shape;
         }
 
+        private void InitAreaEditors()
+        {
+            zoneArea.Attach(tbzonestartx, tbzonestarty, tbzonestartz, tbzoneendx, tbzoneendy, tbzoneendz, tbzonewidth, tbzoneheight);
+            // Play area and play area 2: the angled box part (the sphere part has no height).
+            paArea.Attach(tbpastartlocx, tbpastartlocy, tbpastartlocz, tbpaendlocx, tbpaendlocy, tbpaendlocz, tbpawidth);
+            bd2Area.Attach(tbbd2pastartlocx, tbbd2pastartlocy, tbbd2pastartlocz, tbbd2paendlocx, tbbd2paendlocy, tbbd2paendlocz, tbbd2pawidth);
+            // Gang chase trigger area: IS_ENTITY_IN_ANGLED_AREA(vGangTriggerPos1, vGangTriggerPos2, fGangTriggerWidth).
+            gangArea.Attach(tbmissiongangv1locx, tbmissiongangv1locy, tbmissiongangv1locz, tbmissiongangv2locx, tbmissiongangv2locy, tbmissiongangv2locz, tbmissiongbaw);
+        }
+
         private void ShowZoneShape()
         {
             if (rbzoneshape0 == null)
                 return;
+            if (ddzonevariation.SelectedIndex >= 0 && ddzonevariation.SelectedIndex <= 3)
+                zoneArea.Kind = (AreaShape)ddzonevariation.SelectedIndex;
             _zoneShapeSync = true;
             var buttons = new[] { rbzoneshape0, rbzoneshape1, rbzoneshape2, rbzoneshape3 };
             for (int i = 0; i < buttons.Length; i++)
@@ -211,7 +225,7 @@ namespace Xenvious
                 return;
             _zoneTypeLang = lang;
             if (_zoneSearch == null)
-                _zoneSearch = new SearchableCombo(ddzonetype, tbzonetypesearch);
+                _zoneSearch = new SearchableCombo(ddzonetype);
             _zoneTypeSync = true;
             _zoneSearch.SetItems(ZoneTypes.All.OrderBy(t => t.Id).Select(t => new SearchItem
             {

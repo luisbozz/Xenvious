@@ -1235,8 +1235,24 @@
                                                 <Canvas Width="24" Height="24"><Path x:Name="EditNavCollapseIcon" Style="{StaticResource NavIcon}" Data="{StaticResource EditIconBack}"/></Canvas>
                                             </Viewbox>
                                         </Button>
-                                        <TextBox x:Name="tbEditNavSearch" Style="{StaticResource Watermark}" Height="32" FontSize="14" TextChanged="tbEditNavSearch_TextChanged"
-                                                 Tag="{Binding Translation[editnav_search], FallbackValue='Search pages'}"/>
+                                        <!-- A bare text line like the search in the drop-downs: grey hint until something is typed, a line under it. -->
+                                        <Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource LineBrush}" VerticalAlignment="Center">
+                                            <Grid>
+                                                <TextBox x:Name="tbEditNavSearch" Background="Transparent" BorderThickness="0" Padding="4,6,4,6" FontSize="14" Foreground="{DynamicResource TextColor}" CaretBrush="{DynamicResource TextColor}" TextChanged="tbEditNavSearch_TextChanged"/>
+                                                <TextBlock IsHitTestVisible="False" Margin="7,6,4,6" FontSize="14" Foreground="{DynamicResource FaintTextBrush}" Text="{Binding Translation[editnav_search], FallbackValue='Search pages'}">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="{x:Type TextBlock}">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Text, ElementName=tbEditNavSearch}" Value="">
+                                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                            </Grid>
+                                        </Border>
                                     </DockPanel>
 
                                     <!-- Script patches of the open creator: status only; switching stays in Misc. -->
@@ -4936,7 +4952,7 @@
 
                                                                     <Button x:Name="BtnMissionPA" Style="{DynamicResource CustomButton}"  Height="45" Content="{Binding Translation[paheader], FallbackValue=Play Area}" Click="BtnMissionPA_Click" FontSize="20" Background="{DynamicResource ButtonHoverBackgroundBrush}"/>
                                                                     
-                                                                    <Button x:Name="BtnMissionRA" Style="{DynamicResource CustomButton}"  Height="45" Content="{Binding Translation[raheader], FallbackValue=Respawn Area}" Click="BtnMissionRA_Click" FontSize="20" Background="{DynamicResource ButtonHoverBackgroundBrush}"/>
+                                                                    <Button x:Name="BtnMissionRA" Style="{DynamicResource CustomButton}"  Height="45" Content="{Binding Translation[raheader], FallbackValue=Play Area 2}" Click="BtnMissionRA_Click" FontSize="20" Background="{DynamicResource ButtonHoverBackgroundBrush}"/>
 
                                                                     <Button x:Name="BtnMissionTPM" Style="{DynamicResource CustomButton}"  Height="45" Content="{Binding Translation[tpmheader], FallbackValue=Teleport Marker}" Click="BtnMissionTPM_Click" FontSize="20" Background="{DynamicResource ButtonHoverBackgroundBrush}"/>
                                                                 
@@ -5817,14 +5833,16 @@
                                                                 <DockPanel Margin="10,0">
 
                                                                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                                                        <local:MasonryPanel Margin="0,12,0,12">
-                                                                            <StackPanel>
-                                                                                <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
-                                                                                    <DockPanel>
-                                                                                        <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
-                                                                                            <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[general], FallbackValue=General}"/>
-                                                                                        </Border>
-                                                                                        <StackPanel Margin="14,12,14,4">
+                                                                        <!-- Left the options by name (MenuBitsView), right the raw fields. -->
+                                                                        <Grid Margin="0,12,0,12">
+                                                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="12"/><ColumnDefinition Width="400"/></Grid.ColumnDefinitions>
+                                                                            <local:MenuBitsView x:Name="menuBitsView" Grid.Column="0" VerticalAlignment="Top"/>
+                                                                            <Border Grid.Column="2" Style="{StaticResource DashCard}" VerticalAlignment="Top">
+                                                                                <DockPanel>
+                                                                                    <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                                                                        <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[mb_raw], FallbackValue='Raw values'}"/>
+                                                                                    </Border>
+                                                                        <StackPanel Margin="14,12,14,8">
                                                                                         <Grid>
                                                                                             <Grid.ColumnDefinitions>
                                                                                                 <ColumnDefinition Width="*"/>
@@ -6065,11 +6083,10 @@
                                                                                             <TextBox x:Name="tbmbs32" Style="{StaticResource Watermark}"  TextChanged="tbmbs32_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
                                                                                             </StackPanel>
                                                                                         </Grid>
-                                                                                        </StackPanel>
-                                                                                    </DockPanel>
-                                                                                </Border>
-                                                                            </StackPanel>
-                                                                        </local:MasonryPanel>
+                                                                        </StackPanel>
+                                                                                </DockPanel>
+                                                                            </Border>
+                                                                        </Grid>
                                                                     </ScrollViewer>
                                                                 </DockPanel>
 
@@ -7311,6 +7328,7 @@
                                                                                         </Grid>
                                                                                         <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[width], FallbackValue=Width}"/>
                                                                                         <TextBox x:Name="tbpawidth" IsEnabled="False" Style="{StaticResource Watermark}" TextChanged="tbpawidth_TextChanged" KeyDown="FormatTextForFloat" Height="30" Margin="0,0,0,10"/>
+                                                                                        <local:AreaEditor x:Name="paArea" IsEnabled="{Binding ElementName=tbpawidth, Path=IsEnabled}"/>
                                                                                         </StackPanel>
                                                                                     </DockPanel>
                                                                                 </Border>
@@ -7321,7 +7339,7 @@
 
                                                             </TabItem>
 
-                                                            <TabItem x:Name="PageInnerMissionRA" Header="Respawn Area">
+                                                            <TabItem x:Name="PageInnerMissionRA" Header="Play Area 2">
 
                                                                 <!-- Card layout (docs/handoff/auto_page.py): one card per old column, headings as sub titles. -->
                                                                 <DockPanel Margin="10,0">
@@ -7556,6 +7574,7 @@
                                                                                         </Grid>
                                                                                         <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[width], FallbackValue=Width}"/>
                                                                                         <TextBox x:Name="tbbd2pawidth" IsEnabled="False" Style="{StaticResource Watermark}" TextChanged="tbbd2pawidth_TextChanged" KeyDown="FormatTextForFloat" Height="30" Margin="0,0,0,10"/>
+                                                                                        <local:AreaEditor x:Name="bd2Area" IsEnabled="{Binding ElementName=tbbd2pawidth, Path=IsEnabled}"/>
                                                                                         </StackPanel>
                                                                                     </DockPanel>
                                                                                 </Border>
@@ -7617,285 +7636,321 @@
                                                                     </Border>
                                                                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                                                                         <local:MasonryPanel Margin="0,12,0,12">
-                                                                            <StackPanel>
-                                                                                <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
-                                                                                    <DockPanel>
-                                                                                        <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
-                                                                                            <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[tpsource], FallbackValue=Source}"/>
-                                                                                        </Border>
-                                                                                        <StackPanel Margin="14,12,14,4">
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[loc], FallbackValue=Location}"/>
-                                                                                        <Grid Margin="0,0,0,10">
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="6"/>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="6"/>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="6"/>
-                                                                                                <ColumnDefinition Width="30"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <StackPanel Grid.Column="0">
-                                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="X"/>
-                                                                                                <TextBox x:Name="tbmissiontpwalocx" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissiontpwalocx_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
-                                                                                            </StackPanel>
-                                                                                            <StackPanel Grid.Column="2">
-                                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="Y"/>
-                                                                                                <TextBox x:Name="tbmissiontpwalocy" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissiontpwalocy_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
-                                                                                            </StackPanel>
-                                                                                            <StackPanel Grid.Column="4">
-                                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="Z"/>
-                                                                                                <TextBox x:Name="tbmissiontpwalocz" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissiontpwalocz_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
-                                                                                            </StackPanel>
-                                                                                            <Border Grid.Column="6" Width="30" Height="30" VerticalAlignment="Bottom">
-                                                                                                <Button x:Name="Btmissiontpwagetloc" Style="{StaticResource FieldIconButton}" Click="Btmissiontpwagetloc_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Translation[getcursorloc], FallbackValue=Get Cursor Location}" IsEnabled="False" >
-                                                                                                    <Path Data="M8,1.5 L8,4.5 M8,11.5 L8,14.5 M1.5,8 L4.5,8 M11.5,8 L14.5,8 M8,5 A3,3 0 1 1 7.99,5" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.6" Width="16" Height="16" />
-                                                                                                </Button>
+                                                                                <StackPanel>
+                                                                                    <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
+                                                                                        <DockPanel>
+                                                                                            <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                                                                                <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[tpsource], FallbackValue='Entrance'}"/>
                                                                                             </Border>
-                                                                                        </Grid>
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[head], FallbackValue=Heading}"/>
-                                                                                        <TextBox x:Name="tbmissiontpwh" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissiontpwh_TextChanged" KeyDown="FormatTextForFloat" Height="30" Margin="0,0,0,10"/>
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[tpms], FallbackValue=Marker Size}"/>
-                                                                                        <TextBox x:Name="tbmissiontpwc" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissiontpwc_TextChanged" KeyDown="FormatTextForFloat" Height="30" Margin="0,0,0,10"/>
-                                                                                        <TextBlock Style="{StaticResource CardSub}" Text="{Binding Translation[tpbind], FallbackValue=Bind to TP ID}"/>
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[id], FallbackValue=ID}"/>
-                                                                                        <TextBox x:Name="tbmissiontpbind" Style="{StaticResource Watermark}"  IsEnabled="False" TextChanged="tbmissiontpbind_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                        </StackPanel>
-                                                                                    </DockPanel>
-                                                                                </Border>
-                                                                            </StackPanel>
-                                                                            <StackPanel>
-                                                                                <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
-                                                                                    <Expander Style="{StaticResource CardExpander}" IsExpanded="True" Header="{Binding Translation[advanced], FallbackValue=Advanced}">
-                                                                                        <StackPanel Margin="14,12,14,4">
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[tppriority1], FallbackValue=Appear Priority}"/>
-                                                                                        <TextBox x:Name="tbmissiontpwF" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissiontpwF_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[tppriority2], FallbackValue=Clean Priority}"/>
-                                                                                        <TextBox x:Name="tbmissiontpwG" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissiontpwG_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                        <Rectangle Height="1" Fill="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="0,4,0,12"/>
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[bits], FallbackValue=bits}"/>
-                                                                                        <TextBox x:Name="tbmissiontpwe" Style="{StaticResource Watermark}"  IsEnabled="False" TextChanged="tbmissiontpwe_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[tpvsrange], FallbackValue=Visual Range}"/>
-                                                                                        <TextBox x:Name="tbmissiontpwAk" Style="{StaticResource Watermark}"  IsEnabled="False" TextChanged="tbmissiontpwAk_TextChanged" KeyDown="FormatTextForFloat" Height="30" Margin="0,0,0,10"/>
-                                                                                        <TextBlock Style="{StaticResource CardSub}" Text="{Binding Translation[other], FallbackValue=Other}"/>
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[tpcolor], FallbackValue=Blip Color}"/>
-                                                                                        <ComboBox x:Name="ddmissiontpcolor" FontFamily="{DynamicResource Volte}" SelectionChanged="ddmissiontpcolor_SelectionChanged" IsEnabled="False" ToolTip="{Binding Translation[tpcolor], FallbackValue=Blip Color}" Height="30" Margin="0,0,0,10">
-                                                                                            <ComboBoxItem Content="{Binding Translation[tpcolor0], FallbackValue=Default}"/>
-                                                                                            <ComboBoxItem Content="{Binding Translation[tpcolor1], FallbackValue=Red}"/>
-                                                                                            <ComboBoxItem Content="{Binding Translation[tpcolor2], FallbackValue=Dark Blue}"/>
-                                                                                            <ComboBoxItem Content="{Binding Translation[tpcolor3], FallbackValue=Friendly light Blue}"/>
-                                                                                            <ComboBoxItem Content="{Binding Translation[tpcolor4], FallbackValue=Green}"/>
-                                                                                            <ComboBoxItem Content="{Binding Translation[tpcolor5], FallbackValue=Yellow}"/>
-                                                                                            <ComboBoxItem Content="{Binding Translation[tpcolor6], FallbackValue=White}"/>
-                                                                                            <ComboBoxItem Content="{Binding Translation[tpcolor7], FallbackValue=Black}"/>
-                                                                                            <ComboBoxItem Content="{Binding Translation[tpcolor8], FallbackValue=Purple}"/>
-                                                                                            <ComboBoxItem Content="{Binding Translation[tpcolor9], FallbackValue=Orange}"/>
-                                                                                            <ComboBoxItem Content="{Binding Translation[tpcolor10], FallbackValue=Blue}"/>
-                                                                                        </ComboBox>
-                                                                                        <Grid Style="{StaticResource FormRow}">
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="46"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[missiontpmarkonmap], FallbackValue=Mark on Minimap}"/>
-                                                                                            <CheckBox x:Name="cbmissiontpmarkonmap" Checked="cbmissiontpmarkonmap_Checked" Unchecked="cbmissiontpmarkonmap_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                        </Grid>
-                                                                                        <Grid Style="{StaticResource FormRow}">
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="46"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[missiontphidetpatp], FallbackValue=Hide TP-Location after TP}"/>
-                                                                                            <CheckBox x:Name="cbmissiontphidetpatp" Checked="cbmissiontphidetpatp_Checked" Unchecked="cbmissiontphidetpatp_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                        </Grid>
-                                                                                        <Grid Style="{StaticResource FormRow}">
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="46"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[missiontpdtpback], FallbackValue=Disable TP on Foot}"/>
-                                                                                            <CheckBox x:Name="cbmissiontpdtphin" Checked="cbmissiontpdtphin_Checked" Unchecked="cbmissiontpdtphin_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                        </Grid>
-                                                                                        <Grid Style="{StaticResource FormRow}">
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="46"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[missiontpdtpbackincar], FallbackValue=Disable TP in Car}"/>
-                                                                                            <CheckBox x:Name="cbmissiontpdtphin2" Checked="cbmissiontpdtphin_Checked" Unchecked="cbmissiontpdtphin2_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                        </Grid>
-                                                                                        <Grid Style="{StaticResource FormRow}">
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="46"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[missiontphidetp1], FallbackValue=Hide Marker}"/>
-                                                                                            <CheckBox x:Name="cbmissiontphidetp1" Checked="cbmissiontphidetp1_Checked" Unchecked="cbmissiontphidetp1_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                        </Grid>
-                                                                                        <Grid Style="{StaticResource FormRow}">
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="46"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[missiontpe2e], FallbackValue=Press E to Enter}"/>
-                                                                                            <CheckBox x:Name="cbmissiontpe2e" Checked="cbmissiontpe2e_Checked" Unchecked="cbmissiontpe2e_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                        </Grid>
-                                                                                        <Grid Style="{StaticResource FormRow}">
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="46"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[missiontpls], FallbackValue=Loading Screen}"/>
-                                                                                            <CheckBox x:Name="cbmissiontpls" Checked="cbmissiontpls_Checked" Unchecked="cbmissiontpls_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                        </Grid>
-                                                                                        <Grid Style="{StaticResource FormRow}">
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="46"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[missiontppb], FallbackValue=Purple Blur}"/>
-                                                                                            <CheckBox x:Name="cbmissiontppb" Checked="cbmissiontppb_Checked" Unchecked="cbmissiontppb_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                        </Grid>
-                                                                                        <Grid Style="{StaticResource FormRow}">
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="46"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[missiontpfade], FallbackValue=Fade Out Screen}"/>
-                                                                                            <CheckBox x:Name="cbmissiontpfade" Checked="cbmissiontpfade_Checked" Unchecked="cbmissiontpfade_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                        </Grid>
-                                                                                        <Grid Style="{StaticResource FormRow}">
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="46"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[missiontpwv], FallbackValue=Teleport with Vehicle}"/>
-                                                                                            <CheckBox x:Name="cbmissiontpwv" Checked="cbmissiontpwv_Checked" Unchecked="cbmissiontpwv_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                        </Grid>
-                                                                                        </StackPanel>
-                                                                                    </Expander>
-                                                                                </Border>
-                                                                            </StackPanel>
-                                                                            <StackPanel>
-                                                                                <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
-                                                                                    <DockPanel>
-                                                                                        <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
-                                                                                            <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[tpsanimation], FallbackValue=Source Animation}"/>
-                                                                                        </Border>
-                                                                                        <StackPanel Margin="14,12,14,4">
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[variationanim], FallbackValue=TP Animation Variation}"/>
-                                                                                        <ComboBox x:Name="ddmissiontpenteranimationwj" FontFamily="{DynamicResource Volte}" SelectionChanged="ddmissiontpenteranimationwj_SelectionChanged" IsEnabled="False" ToolTip="{Binding Translation[variationanim], FallbackValue=TP Animation Variation}" Height="30" Margin="0,0,0,10">
-                                                                                            <ComboBoxItem Content="{Binding Translation[tpanim0], FallbackValue=None}"/>
-                                                                                            <ComboBoxItem Content="{Binding Translation[tpanim1], FallbackValue=Apartment Exit Left}" ToolTip="{Binding Translation[tpanim1info], FallbackValue='anim@apt_trans@hinge_l'}"/>
-                                                                                            <ComboBoxItem Content="{Binding Translation[tpanim2], FallbackValue=Apartment Exit Right}" ToolTip="{Binding Translation[tpanim3info], FallbackValue='anim@apt_trans@hinge_r'}"/>
-                                                                                            <ComboBoxItem Content="{Binding Translation[tpanim3], FallbackValue=Apartment Garage Open}" ToolTip="{Binding Translation[tpanim3info], FallbackValue='anim@apt_trans@garage'}"/>
-                                                                                            <ComboBoxItem Content="{Binding Translation[tpanim4], FallbackValue=Apartment Player Exit Left}" ToolTip="{Binding Translation[tpanim4info], FallbackValue='anim@apt_trans@hinge_l_action'}"/>
-                                                                                            <ComboBoxItem Content="{Binding Translation[tpanim5], FallbackValue=Vehicle}" ToolTip="{Binding Translation[tpanim5info], FallbackValue='Vehicle'}"/>
-                                                                                            <ComboBoxItem Content="{Binding Translation[tpanim6], FallbackValue=Walk Left}" ToolTip="{Binding Translation[tpanim6info], FallbackValue='anim@door_trans@hinge_l@'}"/>
-                                                                                            <ComboBoxItem Content="{Binding Translation[tpanim7], FallbackValue=Walk Right}" ToolTip="{Binding Translation[tpanim7info], FallbackValue='anim@door_trans@hinge_r@'}"/>
-                                                                                            <ComboBoxItem Content="{Binding Translation[tpanim8], FallbackValue=Charge}" ToolTip="{Binding Translation[tpanim8info], FallbackValue='anim@door_trans@hinge_l@'}"/>
-                                                                                        </ComboBox>
-                                                                                        <StackPanel Visibility="{Binding ElementName=cbmissiontpcamanimleft, Path=Visibility}">
-                                                                                            <Grid Style="{StaticResource FormRow}">
-                                                                                                <Grid.ColumnDefinitions>
-                                                                                                    <ColumnDefinition Width="*"/>
-                                                                                                    <ColumnDefinition Width="46"/>
-                                                                                                </Grid.ColumnDefinitions>
-                                                                                                <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[missiontpcamanimleft], FallbackValue=CAM Anim Left}" ToolTip="{Binding Translation[missiontpcamanimleftinfo], FallbackValue=CAM Animation Left, StringFormat=Varianten 6 - 8}"/>
-                                                                                                <CheckBox x:Name="cbmissiontpcamanimleft" Checked="cbmissiontpcamanimleft_Checked" Unchecked="cbmissiontpcamanimleft_Checked" IsEnabled="False" Visibility="Collapsed" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                            </Grid>
-                                                                                        </StackPanel>
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[tpcamloc1], FallbackValue=Player Start Position}"/>
-                                                                                        <Grid Margin="0,0,0,10">
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="6"/>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="6"/>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="6"/>
-                                                                                                <ColumnDefinition Width="30"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <StackPanel Grid.Column="0">
-                                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="X"/>
-                                                                                                <TextBox x:Name="tbmissiontpwklocx" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissiontpwklocx_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
+                                                                                            <StackPanel Margin="14,12,14,4">
+                                                                                                <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[loc], FallbackValue='Location'}"/>
+                                                                                                <Grid Margin="0,0,0,10">
+                                                                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="6"/><ColumnDefinition Width="*"/><ColumnDefinition Width="6"/><ColumnDefinition Width="*"/><ColumnDefinition Width="6"/><ColumnDefinition Width="30"/></Grid.ColumnDefinitions>
+                                                                                                    <StackPanel Grid.Column="0">
+                                                                                                        <TextBlock Style="{StaticResource FieldAxis}" Text="X"/>
+                                                                                                        <TextBox x:Name="tbmissiontpwalocx" Style="{StaticResource Watermark}" IsEnabled="False" Height="30" TextChanged="tbmissiontpwalocx_TextChanged" KeyDown="FormatTextForFloat"/>
+                                                                                                    </StackPanel>
+                                                                                                    <StackPanel Grid.Column="2">
+                                                                                                        <TextBlock Style="{StaticResource FieldAxis}" Text="Y"/>
+                                                                                                        <TextBox x:Name="tbmissiontpwalocy" Style="{StaticResource Watermark}" IsEnabled="False" Height="30" TextChanged="tbmissiontpwalocy_TextChanged" KeyDown="FormatTextForFloat"/>
+                                                                                                    </StackPanel>
+                                                                                                    <StackPanel Grid.Column="4">
+                                                                                                        <TextBlock Style="{StaticResource FieldAxis}" Text="Z"/>
+                                                                                                        <TextBox x:Name="tbmissiontpwalocz" Style="{StaticResource Watermark}" IsEnabled="False" Height="30" TextChanged="tbmissiontpwalocz_TextChanged" KeyDown="FormatTextForFloat"/>
+                                                                                                    </StackPanel>
+                                                                                                    <Button x:Name="Btmissiontpwagetloc" Grid.Column="6" Style="{StaticResource FieldIconButton}" Width="30" Height="30" VerticalAlignment="Bottom" IsEnabled="False" Click="Btmissiontpwagetloc_Click" ToolTip="{Binding Translation[getcursorloc], FallbackValue='Get Cursor Location'}">
+                                                                                                        <Path Data="M8,1.5 L8,4.5 M8,11.5 L8,14.5 M1.5,8 L4.5,8 M11.5,8 L14.5,8 M8,5 A3,3 0 1 1 7.99,5" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.6" Width="16" Height="16"/>
+                                                                                                    </Button>
+                                                                                                </Grid>
+                                                                                                <Grid>
+                                                                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="10"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                                                                                    <StackPanel Grid.Column="0">
+                                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[head], FallbackValue='Heading'}"/>
+                                                                                                        <TextBox x:Name="tbmissiontpwh" Style="{StaticResource Watermark}" IsEnabled="False" Height="30" Margin="0,0,0,10" TextChanged="tbmissiontpwh_TextChanged" KeyDown="FormatTextForFloat"/>
+                                                                                                    </StackPanel>
+                                                                                                    <StackPanel Grid.Column="2">
+                                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[tp_range], FallbackValue='Trigger radius (m)'}"/>
+                                                                                                        <TextBox x:Name="tbmissiontpwc" Style="{StaticResource Watermark}" IsEnabled="False" Height="30" Margin="0,0,0,10" TextChanged="tbmissiontpwc_TextChanged" KeyDown="FormatTextForFloat"/>
+                                                                                                    </StackPanel>
+                                                                                                </Grid>
+                                                                                                <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[tp_link], FallbackValue='Leads to marker'}"/>
+                                                                                                <ComboBox x:Name="ddmissiontplink" Height="30" Margin="0,0,0,4" IsEnabled="{Binding ElementName=tbmissiontpbind, Path=IsEnabled}" SelectionChanged="ddmissiontplink_SelectionChanged"/>
+                                                                                                <TextBlock FontSize="12" Foreground="{DynamicResource FaintTextBrush}" TextWrapping="Wrap" Margin="0,-4,0,10" Text="{Binding Translation[tp_link_hint], FallbackValue='Where the player comes out: the entrance of that marker. Linked markers work both ways unless &quot;One way&quot; is on.'}"/>
+                                                                                                <TextBox x:Name="tbmissiontpbind" Visibility="Collapsed" IsEnabled="False" TextChanged="tbmissiontpbind_TextChanged"/>
                                                                                             </StackPanel>
-                                                                                            <StackPanel Grid.Column="2">
-                                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="Y"/>
-                                                                                                <TextBox x:Name="tbmissiontpwklocy" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissiontpwklocy_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
-                                                                                            </StackPanel>
-                                                                                            <StackPanel Grid.Column="4">
-                                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="Z"/>
-                                                                                                <TextBox x:Name="tbmissiontpwklocz" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissiontpwklocz_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
-                                                                                            </StackPanel>
-                                                                                            <Border Grid.Column="6" Width="30" Height="30" VerticalAlignment="Bottom">
-                                                                                                <Button x:Name="Btmissiontpwkgetloc" Style="{StaticResource FieldIconButton}" Click="Btmissiontpwkgetloc_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Translation[getcursorloc], FallbackValue=Get Cursor Location}" IsEnabled="False" >
-                                                                                                    <Path Data="M8,1.5 L8,4.5 M8,11.5 L8,14.5 M1.5,8 L4.5,8 M11.5,8 L14.5,8 M8,5 A3,3 0 1 1 7.99,5" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.6" Width="16" Height="16" />
-                                                                                                </Button>
+                                                                                        </DockPanel>
+                                                                                    </Border>
+                                                                                </StackPanel>
+                                                                                <StackPanel>
+                                                                                    <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
+                                                                                        <DockPanel>
+                                                                                            <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                                                                                <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[tp_active], FallbackValue='When it is active'}"/>
                                                                                             </Border>
-                                                                                        </Grid>
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[head], FallbackValue=Heading}"/>
-                                                                                        <TextBox x:Name="tbmissiontpwl" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissiontpwl_TextChanged" KeyDown="FormatTextForFloat" Height="30" Margin="0,0,0,10"/>
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[tpcamloc], FallbackValue=Cam Location}"/>
-                                                                                        <Grid Margin="0,0,0,10">
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="6"/>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="6"/>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="6"/>
-                                                                                                <ColumnDefinition Width="30"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <StackPanel Grid.Column="0">
-                                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="X"/>
-                                                                                                <TextBox x:Name="tbmissiontpwmlocx" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissiontpwmlocx_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
+                                                                                            <StackPanel Margin="14,12,14,4">
+                                                                                                <TextBlock FontSize="12" Foreground="{DynamicResource FaintTextBrush}" TextWrapping="Wrap" Margin="0,-4,0,10" Text="{Binding Translation[tp_active_hint], FallbackValue='Per team (team above). Rule numbers start at 0; -1 means from the start / until the end.'}"/>
+                                                                                                <Grid Margin="0,4,0,0">
+                                                                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="10"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                                                                                    <StackPanel Grid.Column="0">
+                                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[tppriority1], FallbackValue='From rule'}"/>
+                                                                                                        <TextBox x:Name="tbmissiontpwF" Style="{StaticResource Watermark}" IsEnabled="False" Height="30" Margin="0,0,0,10" TextChanged="tbmissiontpwF_TextChanged"/>
+                                                                                                    </StackPanel>
+                                                                                                    <StackPanel Grid.Column="2">
+                                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[tppriority2], FallbackValue='Until rule'}"/>
+                                                                                                        <TextBox x:Name="tbmissiontpwG" Style="{StaticResource Watermark}" IsEnabled="False" Height="30" Margin="0,0,0,10" TextChanged="tbmissiontpwG_TextChanged"/>
+                                                                                                    </StackPanel>
+                                                                                                </Grid>
+                                                                                                <Grid Style="{StaticResource FormRow}">
+                                                                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                                                                    <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[tp_objblock], FallbackValue='Off while the objective is blocked'}"/>
+                                                                                                    <CheckBox x:Name="cbtpbit3" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Tag="3" Checked="TpBit_Checked" Unchecked="TpBit_Checked"/>
+                                                                                                </Grid>
+                                                                                                <Grid Style="{StaticResource FormRow}">
+                                                                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                                                                    <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[tp_midpoint], FallbackValue='Needs the rule midpoint'}"/>
+                                                                                                    <CheckBox x:Name="cbtpbit28" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Tag="28" Checked="TpBit_Checked" Unchecked="TpBit_Checked"/>
+                                                                                                </Grid>
                                                                                             </StackPanel>
-                                                                                            <StackPanel Grid.Column="2">
-                                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="Y"/>
-                                                                                                <TextBox x:Name="tbmissiontpwmlocy" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissiontpwmlocy_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
-                                                                                            </StackPanel>
-                                                                                            <StackPanel Grid.Column="4">
-                                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="Z"/>
-                                                                                                <TextBox x:Name="tbmissiontpwmlocz" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissiontpwmlocz_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
-                                                                                            </StackPanel>
-                                                                                            <Border Grid.Column="6" Width="30" Height="30" VerticalAlignment="Bottom">
-                                                                                                <Button x:Name="Btmissiontpwmgetloc" Style="{StaticResource FieldIconButton}" Click="Btmissiontpwmgetloc_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Translation[getcursorloc], FallbackValue=Get Cursor Location}" IsEnabled="False" >
-                                                                                                    <Path Data="M8,1.5 L8,4.5 M8,11.5 L8,14.5 M1.5,8 L4.5,8 M11.5,8 L14.5,8 M8,5 A3,3 0 1 1 7.99,5" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.6" Width="16" Height="16" />
-                                                                                                </Button>
+                                                                                        </DockPanel>
+                                                                                    </Border>
+                                                                                </StackPanel>
+                                                                                <StackPanel>
+                                                                                    <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
+                                                                                        <DockPanel>
+                                                                                            <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                                                                                <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[tp_trigger], FallbackValue='Entering'}"/>
                                                                                             </Border>
-                                                                                        </Grid>
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[tpcamrot], FallbackValue=Cam Rotation}"/>
-                                                                                        <Grid Margin="0,0,0,10">
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="6"/>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="6"/>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="6"/>
-                                                                                                <ColumnDefinition Width="30"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <StackPanel Grid.Column="0">
-                                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="X"/>
-                                                                                                <TextBox x:Name="tbmissiontpwnx" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissiontpwnx_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
+                                                                                            <StackPanel Margin="14,12,14,4">
+                                                                                                <Grid Style="{StaticResource FormRow}" ToolTip="{Binding Translation[tp_press_tip], FallbackValue='Old flag (RequiresTriggerLegacy); the creator still offers it.'}">
+                                                                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                                                                    <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[tp_press], FallbackValue='Press a button to enter'}"/>
+                                                                                                    <CheckBox x:Name="cbmissiontpe2e" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Checked="cbmissiontpe2e_Checked" Unchecked="cbmissiontpe2e_Checked"/>
+                                                                                                </Grid>
+                                                                                                <Grid Style="{StaticResource FormRow}">
+                                                                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                                                                    <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[tp_press_new], FallbackValue='Press a button to enter (new)'}"/>
+                                                                                                    <CheckBox x:Name="cbtpbit24" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Tag="24" Checked="TpBit_Checked" Unchecked="TpBit_Checked"/>
+                                                                                                </Grid>
+                                                                                                <Grid Style="{StaticResource FormRow}">
+                                                                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                                                                    <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[missiontpdtpback], FallbackValue='Not on foot'}"/>
+                                                                                                    <CheckBox x:Name="cbmissiontpdtphin" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Checked="cbmissiontpdtphin_Checked" Unchecked="cbmissiontpdtphin_Checked"/>
+                                                                                                </Grid>
+                                                                                                <Grid Style="{StaticResource FormRow}">
+                                                                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                                                                    <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[missiontpdtpbackincar], FallbackValue='Not in a vehicle'}"/>
+                                                                                                    <CheckBox x:Name="cbmissiontpdtphin2" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Checked="cbmissiontpdtphin2_Checked" Unchecked="cbmissiontpdtphin2_Checked"/>
+                                                                                                </Grid>
+                                                                                                <Grid Style="{StaticResource FormRow}">
+                                                                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                                                                    <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[tp_oneway], FallbackValue='One way (no way back)'}"/>
+                                                                                                    <CheckBox x:Name="cbmissiontphidetpatp" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Checked="cbmissiontphidetpatp_Checked" Unchecked="cbmissiontphidetpatp_Checked"/>
+                                                                                                </Grid>
+                                                                                                <Grid Style="{StaticResource FormRow}">
+                                                                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                                                                    <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[missiontpwv], FallbackValue='Keep the vehicle'}"/>
+                                                                                                    <CheckBox x:Name="cbmissiontpwv" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Checked="cbmissiontpwv_Checked" Unchecked="cbmissiontpwv_Checked"/>
+                                                                                                </Grid>
+                                                                                                <Grid Style="{StaticResource FormRow}">
+                                                                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                                                                    <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[tp_companions], FallbackValue='Bring companions'}"/>
+                                                                                                    <CheckBox x:Name="cbtpbit30" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Tag="30" Checked="TpBit_Checked" Unchecked="TpBit_Checked"/>
+                                                                                                </Grid>
+                                                                                                <Grid Style="{StaticResource FormRow}">
+                                                                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                                                                    <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[tp_dialogue], FallbackValue='Wait for dialogue to finish'}"/>
+                                                                                                    <CheckBox x:Name="cbtpbit17" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Tag="17" Checked="TpBit_Checked" Unchecked="TpBit_Checked"/>
+                                                                                                </Grid>
                                                                                             </StackPanel>
-                                                                                            <StackPanel Grid.Column="2">
-                                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="Y"/>
-                                                                                                <TextBox x:Name="tbmissiontpwny" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissiontpwny_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
+                                                                                        </DockPanel>
+                                                                                    </Border>
+                                                                                </StackPanel>
+                                                                                <StackPanel>
+                                                                                    <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
+                                                                                        <DockPanel>
+                                                                                            <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                                                                                <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[tp_transition], FallbackValue='Transition'}"/>
+                                                                                            </Border>
+                                                                                            <StackPanel Margin="14,12,14,4">
+                                                                                                <Grid Style="{StaticResource FormRow}">
+                                                                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                                                                    <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[missiontpfade], FallbackValue='Fade out the screen'}"/>
+                                                                                                    <CheckBox x:Name="cbmissiontpfade" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Checked="cbmissiontpfade_Checked" Unchecked="cbmissiontpfade_Checked"/>
+                                                                                                </Grid>
+                                                                                                <Grid Style="{StaticResource FormRow}">
+                                                                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                                                                    <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[missiontppb], FallbackValue='Purple blur before the fade'}"/>
+                                                                                                    <CheckBox x:Name="cbmissiontppb" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Checked="cbmissiontppb_Checked" Unchecked="cbmissiontppb_Checked"/>
+                                                                                                </Grid>
+                                                                                                <Grid Style="{StaticResource FormRow}">
+                                                                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                                                                    <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[tp_nofadein], FallbackValue='Do not fade back in'}"/>
+                                                                                                    <CheckBox x:Name="cbtpbit14" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Tag="14" Checked="TpBit_Checked" Unchecked="TpBit_Checked"/>
+                                                                                                </Grid>
+                                                                                                <Grid Style="{StaticResource FormRow}" ToolTip="{Binding Translation[tp_fadeold_tip], FallbackValue='FadeOutBeforeWarpLegacy: Rockstar keeps it only for old jobs.'}">
+                                                                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                                                                    <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[tp_fadeold], FallbackValue='Fade out (old flag)'}"/>
+                                                                                                    <CheckBox x:Name="cbmissiontpls" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Checked="cbmissiontpls_Checked" Unchecked="cbmissiontpls_Checked"/>
+                                                                                                </Grid>
                                                                                             </StackPanel>
-                                                                                            <StackPanel Grid.Column="4">
-                                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="Z"/>
-                                                                                                <TextBox x:Name="tbmissiontpwnz" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissiontpwnz_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
+                                                                                        </DockPanel>
+                                                                                    </Border>
+                                                                                </StackPanel>
+                                                                                <StackPanel>
+                                                                                    <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
+                                                                                        <DockPanel>
+                                                                                            <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                                                                                <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[tp_look], FallbackValue='Look'}"/>
+                                                                                            </Border>
+                                                                                            <StackPanel Margin="14,12,14,4">
+                                                                                                <Grid Style="{StaticResource FormRow}">
+                                                                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                                                                    <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[missiontpmarkonmap], FallbackValue='Blip on the map'}"/>
+                                                                                                    <CheckBox x:Name="cbmissiontpmarkonmap" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Checked="cbmissiontpmarkonmap_Checked" Unchecked="cbmissiontpmarkonmap_Checked"/>
+                                                                                                </Grid>
+                                                                                                <Grid Style="{StaticResource FormRow}">
+                                                                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                                                                    <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[missiontphidetp1], FallbackValue='Hide the marker'}"/>
+                                                                                                    <CheckBox x:Name="cbmissiontphidetp1" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Checked="cbmissiontphidetp1_Checked" Unchecked="cbmissiontphidetp1_Checked"/>
+                                                                                                </Grid>
+                                                                                                <Grid Style="{StaticResource FormRow}">
+                                                                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                                                                    <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[tp_ptfx], FallbackValue='Portal effect (particles)'}"/>
+                                                                                                    <CheckBox x:Name="cbtpbit8" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Tag="8" Checked="TpBit_Checked" Unchecked="TpBit_Checked"/>
+                                                                                                </Grid>
+                                                                                                <Grid Style="{StaticResource FormRow}">
+                                                                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                                                                    <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[tp_floor], FallbackValue='Put the marker on the floor'}"/>
+                                                                                                    <CheckBox x:Name="cbtpbit22" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Tag="22" Checked="TpBit_Checked" Unchecked="TpBit_Checked"/>
+                                                                                                </Grid>
+                                                                                                <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[tpcolor], FallbackValue='Blip Color'}"/>
+                                                                                                <ComboBox x:Name="ddmissiontpcolor" Height="30" Margin="0,0,0,10" IsEnabled="False" SelectionChanged="ddmissiontpcolor_SelectionChanged">
+                                                                                                    <ComboBoxItem Content="{Binding Translation[tpcolor0], FallbackValue='Default'}"/>
+                                                                                                    <ComboBoxItem Content="{Binding Translation[tpcolor1], FallbackValue='Red'}"/>
+                                                                                                    <ComboBoxItem Content="{Binding Translation[tpcolor2], FallbackValue='Dark Blue'}"/>
+                                                                                                    <ComboBoxItem Content="{Binding Translation[tpcolor3], FallbackValue='Friendly light Blue'}"/>
+                                                                                                    <ComboBoxItem Content="{Binding Translation[tpcolor4], FallbackValue='Green'}"/>
+                                                                                                    <ComboBoxItem Content="{Binding Translation[tpcolor5], FallbackValue='Yellow'}"/>
+                                                                                                    <ComboBoxItem Content="{Binding Translation[tpcolor6], FallbackValue='White'}"/>
+                                                                                                    <ComboBoxItem Content="{Binding Translation[tpcolor7], FallbackValue='Black'}"/>
+                                                                                                    <ComboBoxItem Content="{Binding Translation[tpcolor8], FallbackValue='Purple'}"/>
+                                                                                                    <ComboBoxItem Content="{Binding Translation[tpcolor9], FallbackValue='Orange'}"/>
+                                                                                                    <ComboBoxItem Content="{Binding Translation[tpcolor10], FallbackValue='Blue'}"/>
+                                                                                                </ComboBox>
+                                                                                                <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[tpvsrange], FallbackValue='Visual Range'}"/>
+                                                                                                <TextBox x:Name="tbmissiontpwAk" Style="{StaticResource Watermark}" IsEnabled="False" Height="30" Margin="0,0,0,10" TextChanged="tbmissiontpwAk_TextChanged" KeyDown="FormatTextForFloat"/>
+                                                                                                <TextBlock FontSize="12" Foreground="{DynamicResource FaintTextBrush}" TextWrapping="Wrap" Margin="0,-4,0,10" Text="{Binding Translation[tp_vsrange_hint], FallbackValue='-1 = the game decides.'}"/>
                                                                                             </StackPanel>
-                                                                                        </Grid>
-                                                                                        <Rectangle Height="1" Fill="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="0,4,0,12"/>
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[tpwo], FallbackValue=FOV}"/>
-                                                                                        <TextBox x:Name="tbmissiontpwo" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissiontpwo_TextChanged" KeyDown="FormatTextForFloat" Height="30" Margin="0,0,0,10"/>
-                                                                                        </StackPanel>
-                                                                                    </DockPanel>
-                                                                                </Border>
-                                                                            </StackPanel>
+                                                                                        </DockPanel>
+                                                                                    </Border>
+                                                                                </StackPanel>
+                                                                                <StackPanel>
+                                                                                    <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
+                                                                                        <DockPanel>
+                                                                                            <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                                                                                <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[tpsanimation], FallbackValue='Animation'}"/>
+                                                                                            </Border>
+                                                                                            <StackPanel Margin="14,12,14,4">
+                                                                                                <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[variationanim], FallbackValue='Animation'}"/>
+                                                                                                <ComboBox x:Name="ddmissiontpenteranimationwj" Height="30" Margin="0,0,0,10" IsEnabled="False" SelectionChanged="ddmissiontpenteranimationwj_SelectionChanged">
+                                                                                                    <ComboBoxItem Content="{Binding Translation[tpanim0], FallbackValue='None'}"/>
+                                                                                                    <ComboBoxItem Content="{Binding Translation[tpanim1], FallbackValue='Apartment Exit Left'}"/>
+                                                                                                    <ComboBoxItem Content="{Binding Translation[tpanim2], FallbackValue='Apartment Exit Right'}"/>
+                                                                                                    <ComboBoxItem Content="{Binding Translation[tpanim3], FallbackValue='Apartment Garage Open'}"/>
+                                                                                                    <ComboBoxItem Content="{Binding Translation[tpanim4], FallbackValue='Apartment Player Exit Left'}"/>
+                                                                                                    <ComboBoxItem Content="{Binding Translation[tpanim5], FallbackValue='Vehicle'}"/>
+                                                                                                    <ComboBoxItem Content="{Binding Translation[tpanim6], FallbackValue='Walk Left'}"/>
+                                                                                                    <ComboBoxItem Content="{Binding Translation[tpanim7], FallbackValue='Walk Right'}"/>
+                                                                                                    <ComboBoxItem Content="{Binding Translation[tpanim8], FallbackValue='Charge'}"/>
+                                                                                                    <ComboBoxItem Content="{Binding Translation[tpanim9], FallbackValue='Elevator button left'}"/>
+                                                                                                    <ComboBoxItem Content="{Binding Translation[tpanim10], FallbackValue='Elevator button right'}"/>
+                                                                                                    <ComboBoxItem Content="{Binding Translation[tpanim11], FallbackValue='Garage, both hands'}"/>
+                                                                                                    <ComboBoxItem Content="{Binding Translation[tpanim12], FallbackValue='Garage, left hand'}"/>
+                                                                                                    <ComboBoxItem Content="{Binding Translation[tpanim13], FallbackValue='Garage, right hand'}"/>
+                                                                                                </ComboBox>
+                                                                                                <Grid Style="{StaticResource FormRow}">
+                                                                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                                                                    <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[missiontpcamanimleft], FallbackValue='Camera from the left'}"/>
+                                                                                                    <CheckBox x:Name="cbmissiontpcamanimleft" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Checked="cbmissiontpcamanimleft_Checked" Unchecked="cbmissiontpcamanimleft_Checked"/>
+                                                                                                </Grid>
+                                                                                                <Grid Style="{StaticResource FormRow}">
+                                                                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                                                                    <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[tp_forcecam], FallbackValue='Always use the animated camera'}"/>
+                                                                                                    <CheckBox x:Name="cbtpbit19" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Tag="19" Checked="TpBit_Checked" Unchecked="TpBit_Checked"/>
+                                                                                                </Grid>
+                                                                                                <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[tpcamloc1], FallbackValue='Player start position'}"/>
+                                                                                                <Grid Margin="0,0,0,10">
+                                                                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="6"/><ColumnDefinition Width="*"/><ColumnDefinition Width="6"/><ColumnDefinition Width="*"/><ColumnDefinition Width="6"/><ColumnDefinition Width="30"/></Grid.ColumnDefinitions>
+                                                                                                    <StackPanel Grid.Column="0">
+                                                                                                        <TextBlock Style="{StaticResource FieldAxis}" Text="X"/>
+                                                                                                        <TextBox x:Name="tbmissiontpwklocx" Style="{StaticResource Watermark}" IsEnabled="False" Height="30" TextChanged="tbmissiontpwklocx_TextChanged" KeyDown="FormatTextForFloat"/>
+                                                                                                    </StackPanel>
+                                                                                                    <StackPanel Grid.Column="2">
+                                                                                                        <TextBlock Style="{StaticResource FieldAxis}" Text="Y"/>
+                                                                                                        <TextBox x:Name="tbmissiontpwklocy" Style="{StaticResource Watermark}" IsEnabled="False" Height="30" TextChanged="tbmissiontpwklocy_TextChanged" KeyDown="FormatTextForFloat"/>
+                                                                                                    </StackPanel>
+                                                                                                    <StackPanel Grid.Column="4">
+                                                                                                        <TextBlock Style="{StaticResource FieldAxis}" Text="Z"/>
+                                                                                                        <TextBox x:Name="tbmissiontpwklocz" Style="{StaticResource Watermark}" IsEnabled="False" Height="30" TextChanged="tbmissiontpwklocz_TextChanged" KeyDown="FormatTextForFloat"/>
+                                                                                                    </StackPanel>
+                                                                                                    <Button x:Name="Btmissiontpwkgetloc" Grid.Column="6" Style="{StaticResource FieldIconButton}" Width="30" Height="30" VerticalAlignment="Bottom" IsEnabled="False" Click="Btmissiontpwkgetloc_Click" ToolTip="{Binding Translation[getcursorloc], FallbackValue='Get Cursor Location'}">
+                                                                                                        <Path Data="M8,1.5 L8,4.5 M8,11.5 L8,14.5 M1.5,8 L4.5,8 M11.5,8 L14.5,8 M8,5 A3,3 0 1 1 7.99,5" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.6" Width="16" Height="16"/>
+                                                                                                    </Button>
+                                                                                                </Grid>
+                                                                                                <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[head], FallbackValue='Heading'}"/>
+                                                                                                <TextBox x:Name="tbmissiontpwl" Style="{StaticResource Watermark}" IsEnabled="False" Height="30" Margin="0,0,0,10" TextChanged="tbmissiontpwl_TextChanged" KeyDown="FormatTextForFloat"/>
+                                                                                                <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[tpcamloc], FallbackValue='Camera position'}"/>
+                                                                                                <Grid Margin="0,0,0,10">
+                                                                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="6"/><ColumnDefinition Width="*"/><ColumnDefinition Width="6"/><ColumnDefinition Width="*"/><ColumnDefinition Width="6"/><ColumnDefinition Width="30"/></Grid.ColumnDefinitions>
+                                                                                                    <StackPanel Grid.Column="0">
+                                                                                                        <TextBlock Style="{StaticResource FieldAxis}" Text="X"/>
+                                                                                                        <TextBox x:Name="tbmissiontpwmlocx" Style="{StaticResource Watermark}" IsEnabled="False" Height="30" TextChanged="tbmissiontpwmlocx_TextChanged" KeyDown="FormatTextForFloat"/>
+                                                                                                    </StackPanel>
+                                                                                                    <StackPanel Grid.Column="2">
+                                                                                                        <TextBlock Style="{StaticResource FieldAxis}" Text="Y"/>
+                                                                                                        <TextBox x:Name="tbmissiontpwmlocy" Style="{StaticResource Watermark}" IsEnabled="False" Height="30" TextChanged="tbmissiontpwmlocy_TextChanged" KeyDown="FormatTextForFloat"/>
+                                                                                                    </StackPanel>
+                                                                                                    <StackPanel Grid.Column="4">
+                                                                                                        <TextBlock Style="{StaticResource FieldAxis}" Text="Z"/>
+                                                                                                        <TextBox x:Name="tbmissiontpwmlocz" Style="{StaticResource Watermark}" IsEnabled="False" Height="30" TextChanged="tbmissiontpwmlocz_TextChanged" KeyDown="FormatTextForFloat"/>
+                                                                                                    </StackPanel>
+                                                                                                    <Button x:Name="Btmissiontpwmgetloc" Grid.Column="6" Style="{StaticResource FieldIconButton}" Width="30" Height="30" VerticalAlignment="Bottom" IsEnabled="False" Click="Btmissiontpwmgetloc_Click" ToolTip="{Binding Translation[getcursorloc], FallbackValue='Get Cursor Location'}">
+                                                                                                        <Path Data="M8,1.5 L8,4.5 M8,11.5 L8,14.5 M1.5,8 L4.5,8 M11.5,8 L14.5,8 M8,5 A3,3 0 1 1 7.99,5" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.6" Width="16" Height="16"/>
+                                                                                                    </Button>
+                                                                                                </Grid>
+                                                                                                <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[tpcamrot], FallbackValue='Camera rotation'}"/>
+                                                                                                <Grid Margin="0,0,0,10">
+                                                                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="6"/><ColumnDefinition Width="*"/><ColumnDefinition Width="6"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                                                                                    <StackPanel Grid.Column="0">
+                                                                                                        <TextBlock Style="{StaticResource FieldAxis}" Text="X"/>
+                                                                                                        <TextBox x:Name="tbmissiontpwnx" Style="{StaticResource Watermark}" IsEnabled="False" Height="30" TextChanged="tbmissiontpwnx_TextChanged" KeyDown="FormatTextForFloat"/>
+                                                                                                    </StackPanel>
+                                                                                                    <StackPanel Grid.Column="2">
+                                                                                                        <TextBlock Style="{StaticResource FieldAxis}" Text="Y"/>
+                                                                                                        <TextBox x:Name="tbmissiontpwny" Style="{StaticResource Watermark}" IsEnabled="False" Height="30" TextChanged="tbmissiontpwny_TextChanged" KeyDown="FormatTextForFloat"/>
+                                                                                                    </StackPanel>
+                                                                                                    <StackPanel Grid.Column="4">
+                                                                                                        <TextBlock Style="{StaticResource FieldAxis}" Text="Z"/>
+                                                                                                        <TextBox x:Name="tbmissiontpwnz" Style="{StaticResource Watermark}" IsEnabled="False" Height="30" TextChanged="tbmissiontpwnz_TextChanged" KeyDown="FormatTextForFloat"/>
+                                                                                                    </StackPanel>
+                                                                                                </Grid>
+                                                                                                <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[tpwo], FallbackValue='FOV'}"/>
+                                                                                                <TextBox x:Name="tbmissiontpwo" Style="{StaticResource Watermark}" IsEnabled="False" Height="30" Margin="0,0,0,10" TextChanged="tbmissiontpwo_TextChanged" KeyDown="FormatTextForFloat"/>
+                                                                                            </StackPanel>
+                                                                                        </DockPanel>
+                                                                                    </Border>
+                                                                                </StackPanel>
+                                                                                <StackPanel>
+                                                                                    <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
+                                                                                        <Expander Style="{StaticResource CardExpander}" IsExpanded="True" Header="{Binding Translation[advanced], FallbackValue='Advanced'}">
+                                                                                            <StackPanel Margin="14,12,14,4">
+                                                                                                <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[bits], FallbackValue='Flags (raw)'}"/>
+                                                                                                <TextBox x:Name="tbmissiontpwe" Style="{StaticResource Watermark}" IsEnabled="False" Height="30" Margin="0,0,0,10" TextChanged="tbmissiontpwe_TextChanged"/>
+                                                                                                <TextBlock FontSize="12" Foreground="{DynamicResource FaintTextBrush}" TextWrapping="Wrap" Margin="0,-4,0,10" Text="{Binding Translation[tp_bits_hint], FallbackValue='iWarpPortalBS: every switch on this page is one bit of it.'}"/>
+                                                                                            </StackPanel>
+                                                                                        </Expander>
+                                                                                    </Border>
+                                                                                </StackPanel>
                                                                         </local:MasonryPanel>
                                                                     </ScrollViewer>
                                                                 </DockPanel>
@@ -8069,13 +8124,13 @@
                                                                                         </Border>
                                                                                         <StackPanel Margin="14,12,14,4">
                                                                                         <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[gangyype], FallbackValue=Gang Type}"/>
-                                                                                        <TextBox x:Name="tbgangtypesearch" Style="{StaticResource Watermark}" Tag="{Binding Translation[search_type], FallbackValue='Search: name or number'}" Height="30" Margin="0,0,0,6"/>
                                                                                         <ComboBox x:Name="ddmissiongangtype" FontFamily="{DynamicResource Volte}" SelectionChanged="ddmissiongangtype_SelectionChanged" IsEnabled="False" ToolTip="{Binding Translation[gangyype], FallbackValue=Gang Type}" DropDownOpened="ddmissiongangtype_DropDownOpened" MaxDropDownHeight="420" Height="30" Margin="0,0,0,10"/>
                                                                                         <Border Background="{DynamicResource SeactionHeaderBackgroundBrush}" CornerRadius="4" Padding="10,8" Margin="0,0,0,12">
                                                                                             <TextBlock x:Name="lblgangtypeinfo" TextWrapping="Wrap" FontSize="13" Foreground="{DynamicResource NavMutedBrush}"/>
                                                                                         </Border>
                                                                                         <!-- The old detail list (name, game label, weapons, vehicle, peds), filled in code. -->
                                                                                         <Grid x:Name="GangDetails" Margin="0,0,0,12"/>
+                                                                                        <Rectangle Height="1" Fill="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="0,4,0,12"/>
                                                                                         <Grid Style="{StaticResource FormRow}">
                                                                                             <Grid.ColumnDefinitions>
                                                                                                 <ColumnDefinition Width="*"/>
@@ -8084,7 +8139,6 @@
                                                                                             <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[missiongangtyperw], FallbackValue=Randomize Weapons}" ToolTip="{Binding Translation[missiongangtyperw], FallbackValue=Randomize the Weapons of the selected Gang Type.}"/>
                                                                                             <CheckBox x:Name="cbmissiongangtyperw" Checked="cbmissiongangtyperw_Checked" Unchecked="cbmissiongangtyperw_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
                                                                                         </Grid>
-                                                                                        <Rectangle Height="1" Fill="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="0,4,0,12"/>
                                                                                         </StackPanel>
                                                                                     </DockPanel>
                                                                                 </Border>
@@ -8157,6 +8211,7 @@
                                                                                         <Rectangle Height="1" Fill="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="0,4,0,12"/>
                                                                                         <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[gbaw], FallbackValue=Width}"/>
                                                                                         <TextBox x:Name="tbmissiongbaw" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissiongbaw_TextChanged" KeyDown="FormatTextForFloat" Height="30" Margin="0,0,0,10"/>
+                                                                                        <local:AreaEditor x:Name="gangArea" IsEnabled="{Binding ElementName=tbmissiongbaw, Path=IsEnabled}"/>
                                                                                         </StackPanel>
                                                                                     </DockPanel>
                                                                                 </Border>
@@ -10172,7 +10227,6 @@
                                                                         </Border>
                                                                         <StackPanel Margin="14,12,14,4">
                                                                         <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[zntp], FallbackValue=Zone Type}"/>
-                                                                        <TextBox x:Name="tbzonetypesearch" Style="{StaticResource Watermark}" Tag="{Binding Translation[search_type], FallbackValue='Search: name or number'}" Height="30" Margin="0,0,0,6"/>
                                                                         <Grid Margin="0,0,0,8">
                                                                             <Grid.ColumnDefinitions>
                                                                                 <ColumnDefinition Width="*"/>
@@ -10322,6 +10376,7 @@
                                                                             <TextBox x:Name="tbzoneheight" IsEnabled="False" Style="{StaticResource Watermark}" TextChanged="tbzoneheight_TextChanged" KeyDown="FormatTextForFloat" Height="30" Margin="0,0,0,10"/>
                                                                             </StackPanel>
                                                                         </Grid>
+                                                                        <local:AreaEditor x:Name="zoneArea" IsEnabled="{Binding ElementName=ddzonevariation, Path=IsEnabled}"/>
                                                                         </StackPanel>
                                                                     </DockPanel>
                                                                 </Border>
@@ -12282,6 +12337,7 @@
                                                     <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[forcepublish], FallbackValue='Force Publish'}"/>
                                                     <CheckBox x:Name="cbforce_publish" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbforce_publish_Checked" Unchecked="cbforce_publish_Checked"/>
                                                 </Grid>
+                                                <local:VisibilityCard x:Name="toolsVisibility" Margin="0,12,0,0"/>
                                             </StackPanel>
                                         </TabItem>
 
@@ -12834,9 +12890,9 @@
                                                     </Border>
                                                     <ControlTemplate.Triggers>
                                                         <Trigger Property="IsChecked" Value="True">
-                                                            <Setter TargetName="bd" Property="Background" Value="{DynamicResource SelectedTileBrush}"/>
-                                                            <Setter TargetName="bd" Property="BorderBrush" Value="{DynamicResource OkBrush}"/>
-                                                            <Setter Property="Foreground" Value="{DynamicResource OkBrush}"/>
+                                                            <Setter TargetName="bd" Property="Background" Value="{DynamicResource AccentSoftBrush}"/>
+                                                            <Setter TargetName="bd" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                                                            <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
                                                         </Trigger>
                                                         <Trigger Property="IsMouseOver" Value="True">
                                                             <Setter TargetName="bd" Property="BorderBrush" Value="{DynamicResource TextColor}"/>
@@ -12928,8 +12984,8 @@
                                                     <TextBlock x:Name="ConvHitNative" FontSize="13" FontFamily="Consolas" Foreground="{DynamicResource NavMutedBrush}"/>
                                                     <TextBlock x:Name="ConvHitCategory" FontSize="13" Foreground="{DynamicResource NavMutedBrush}" Margin="0,2,0,10"/>
                                                     <StackPanel Orientation="Horizontal">
-                                                        <Button x:Name="Btncenvgetimg" Style="{StaticResource FormButtonPrimary}" Height="32" Padding="12,0" Margin="0,0,8,0" Click="Btncenvgetimg_Click">
-                                                            <TextBlock Foreground="{DynamicResource HighlightForeground}" Text="{Binding Translation[conv_showpic], FallbackValue='Show picture'}"/>
+                                                        <Button x:Name="Btncenvgetimg" Visibility="Collapsed" Style="{StaticResource FormButtonPrimary}" Height="32" Padding="12,0" Margin="0,0,8,0" Click="Btncenvgetimg_Click">
+                                                            <TextBlock Foreground="{DynamicResource PrimaryButtonForeground}" Text="{Binding Translation[conv_showpic], FallbackValue='Show picture'}"/>
                                                         </Button>
                                                         <Button x:Name="BtnConvCatalog" Style="{StaticResource FormButton}" Height="32" Padding="12,0" Click="BtnConvCatalog_Click">
                                                             <StackPanel Orientation="Horizontal">
@@ -12950,280 +13006,147 @@
                     </TabItem>
 
                     <TabItem x:Name="PageTeleport" Header="Teleport">
-
-                        <Border Grid.Column="1" Background="{DynamicResource SectionBackgroundBrush}" CornerRadius="15" Padding="0,0,0,5" HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <Border.Effect>
-                                <DropShadowEffect BlurRadius="13" ShadowDepth="0" Color="{DynamicResource ShadowColor}"/>
-                            </Border.Effect>
-
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="50"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
-
-                                <Border Margin="3" CornerRadius="15" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Grid.Row="0">
-                                    <Viewbox VerticalAlignment="Center" HorizontalAlignment="Center">
-                                        <Label Foreground="{DynamicResource TextColor}" FontFamily="{DynamicResource Volte}" FontWeight="Bold" Content="{Binding Translation[teleport], FallbackValue=Teleport}"/>
-                                    </Viewbox>
+                        <!-- Teleport to a position; the race part jumps to the next checkpoint. MainWindow.Teleport.cs. -->
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                            <StackPanel Margin="20,16,20,16" Width="640" HorizontalAlignment="Center">
+                                <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
+                                    <DockPanel>
+                                        <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                            <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[teleport], FallbackValue=Teleport}"/>
+                                        </Border>
+                                        <StackPanel Margin="14,12,14,14">
+                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[tp_target], FallbackValue=Target}"/>
+                                            <Grid Margin="0,0,0,12">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/><ColumnDefinition Width="6"/><ColumnDefinition Width="*"/><ColumnDefinition Width="6"/><ColumnDefinition Width="*"/><ColumnDefinition Width="6"/><ColumnDefinition Width="30"/><ColumnDefinition Width="6"/><ColumnDefinition Width="30"/>
+                                                </Grid.ColumnDefinitions>
+                                                <StackPanel Grid.Column="0">
+                                                    <TextBlock Style="{StaticResource FieldAxis}" Text="X"/>
+                                                    <TextBox x:Name="tbteleportlocx" Style="{StaticResource Watermark}" Height="30" KeyDown="FormatTextForFloat"/>
+                                                </StackPanel>
+                                                <StackPanel Grid.Column="2">
+                                                    <TextBlock Style="{StaticResource FieldAxis}" Text="Y"/>
+                                                    <TextBox x:Name="tbteleportlocy" Style="{StaticResource Watermark}" Height="30" KeyDown="FormatTextForFloat"/>
+                                                </StackPanel>
+                                                <StackPanel Grid.Column="4">
+                                                    <TextBlock Style="{StaticResource FieldAxis}" Text="Z"/>
+                                                    <TextBox x:Name="tbteleportlocz" Style="{StaticResource Watermark}" Height="30" KeyDown="FormatTextForFloat"/>
+                                                </StackPanel>
+                                                <Button x:Name="Btnteleportgetlocation" Grid.Column="6" Style="{StaticResource FieldIconButton}" Width="30" Height="30" VerticalAlignment="Bottom" Click="Btnteleportgetlocation_Click" ToolTip="{Binding Translation[getcursorloc], FallbackValue='Get Cursor Location'}">
+                                                    <Path Data="M8,1.5 L8,4.5 M8,11.5 L8,14.5 M1.5,8 L4.5,8 M11.5,8 L14.5,8 M8,5 A3,3 0 1 1 7.99,5" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.6" Width="16" Height="16"/>
+                                                </Button>
+                                                <Button x:Name="Btnteleportgetplayerlocation" Grid.Column="8" Style="{StaticResource FieldIconButton}" Width="30" Height="30" VerticalAlignment="Bottom" Click="Btnteleportgetplayerlocation_Click" ToolTip="{Binding Translation[getplayerloc], FallbackValue='Get Player Location'}">
+                                                    <Path Data="M8,2 A2.6,2.6 0 1 1 7.99,2 M3,15 C3,10 13,10 13,15" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.6" Width="16" Height="16"/>
+                                                </Button>
+                                            </Grid>
+                                            <Button x:Name="Btnteleportsetlocation" Style="{StaticResource FormButtonPrimary}" Height="34" Padding="18,0" HorizontalAlignment="Left" Click="Btnteleportsetlocation_Click">
+                                                <TextBlock Foreground="{DynamicResource PrimaryButtonForeground}" Text="{Binding Translation[teleport], FallbackValue=Teleport}"/>
+                                            </Button>
+                                            <TextBlock FontSize="12" Foreground="{DynamicResource FaintTextBrush}" Margin="0,10,0,0" TextWrapping="Wrap" Text="{Binding Translation[tp_hint], FallbackValue='Fill the target from the cursor or your own position, or type it in.'}"/>
+                                        </StackPanel>
+                                    </DockPanel>
                                 </Border>
-
-                                <Grid Grid.Row="1" Width="300" Margin="15" HorizontalAlignment="Center" VerticalAlignment="Center">
-
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="0.5*"/>
-                                    </Grid.ColumnDefinitions>
-
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="50"/>
-                                        <RowDefinition Height="50"/>
-                                        <RowDefinition Height="50"/>
-                                        <RowDefinition Height="40"/>
-                                        <RowDefinition Height="40"/>
-                                        <RowDefinition Height="40"/>
-                                        <RowDefinition Height="10"/>
-                                        <RowDefinition Height="30"/>
-                                        <RowDefinition Height="40"/>
-                                        <RowDefinition Height="40"/>
-                                    </Grid.RowDefinitions>
-
-                                    <TextBox x:Name="tbteleportlocx" Grid.Row="0" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3x], FallbackValue=X-Component}" Height="30" KeyDown="FormatTextForFloat"/>
-                                    <TextBox x:Name="tbteleportlocy" Grid.Row="1" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3y], FallbackValue=Y-Component}" Height="30" KeyDown="FormatTextForFloat"/>
-                                    <TextBox x:Name="tbteleportlocz" Grid.Row="2" Style="{StaticResource Watermark}" Tag="{Binding Translation[vector3z], FallbackValue=Z-Component}" Height="30" KeyDown="FormatTextForFloat"/>
-
-                                    <Border Grid.Row="3" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5">
-                                        <Border.Effect>
-                                            <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>                                        </Border.Effect>
-                                        <Button x:Name="Btnteleportgetlocation" Style="{DynamicResource CustomButton}" Content="{Binding Translation[getcursorloc], FallbackValue=Get Cursor Location}" local:CornerRadiusSetter.CornerRadius="5" Click="Btnteleportgetlocation_Click"/>
-                                    </Border>
-                                    <Border Grid.Row="4" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5">
-                                        <Border.Effect>
-                                            <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>                                        </Border.Effect>
-                                        <Button x:Name="Btnteleportgetplayerlocation" Style="{DynamicResource CustomButton}" Content="{Binding Translation[getplayerloc], FallbackValue=Get Player Location}" local:CornerRadiusSetter.CornerRadius="5" Click="Btnteleportgetplayerlocation_Click"/>
-                                    </Border>
-                                    <Border Grid.Row="5" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5">
-                                        <Border.Effect>
-                                            <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>                                        </Border.Effect>
-                                        <Button x:Name="Btnteleportsetlocation" Style="{DynamicResource CustomButton}" Content="{Binding Translation[teleport], FallbackValue=Teleport}" local:CornerRadiusSetter.CornerRadius="5" Click="Btnteleportsetlocation_Click"/>
-                                    </Border>
-
-                                    <Rectangle Grid.Row="6" VerticalAlignment="Center" HorizontalAlignment="Stretch" Fill="DimGray" Height="1" Margin="6 0"/>
-
-                                    <TextBlock Grid.Row="7" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="20" Text="{Binding Translation[race], FallbackValue=Race}" FontWeight="Bold"/>
-
-                                    <Border Grid.Row="8" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5">
-                                        <Border.Effect>
-                                            <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>                                        </Border.Effect>
-                                        <Button x:Name="Btnteleportgetnextcplocation" Style="{DynamicResource CustomButton}" Content="{Binding Translation[getnextcploc], FallbackValue=Get Next Checkpoint Location}" local:CornerRadiusSetter.CornerRadius="5" Click="Btnteleportgetnextcplocation_Click"/>
-                                    </Border>
-                                    <Border Grid.Row="9" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5">
-                                        <Border.Effect>
-                                            <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>                                        </Border.Effect>
-                                        <Button x:Name="Btnteleportnextcplocation" Style="{DynamicResource CustomButton}" Content="{Binding Translation[teleportnextcploc], FallbackValue=Teleport to Next Checkpoint Location}" local:CornerRadiusSetter.CornerRadius="5" Click="Btnteleportnextcplocation_Click"/>
-                                    </Border>
-
-                                </Grid>
-
-                            </Grid>
-                        </Border>
-
+                                <Border Style="{StaticResource DashCard}">
+                                    <DockPanel>
+                                        <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                            <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[race], FallbackValue=Race}"/>
+                                        </Border>
+                                        <WrapPanel Margin="14,12,8,8">
+                                            <Button x:Name="Btnteleportgetnextcplocation" Style="{StaticResource FormButton}" Height="32" Padding="12,0" Margin="0,0,6,6" Click="Btnteleportgetnextcplocation_Click" Content="{Binding Translation[getnextcploc], FallbackValue=Get Next Checkpoint Location}"/>
+                                            <Button x:Name="Btnteleportnextcplocation" Style="{StaticResource FormButton}" Height="32" Padding="12,0" Margin="0,0,6,6" Click="Btnteleportnextcplocation_Click" Content="{Binding Translation[teleportnextcploc], FallbackValue=Teleport to Next Checkpoint Location}"/>
+                                        </WrapPanel>
+                                    </DockPanel>
+                                </Border>
+                            </StackPanel>
+                        </ScrollViewer>
                     </TabItem>
 
                     <TabItem x:Name="PageGEditor" Header="Global Editor">
-                        <ScrollViewer VerticalScrollBarVisibility="Auto">
-
-                            <Grid>
-
-                                <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" >
-
-
-                                    <Border Grid.Column="1" Background="{DynamicResource SectionBackgroundBrush}" CornerRadius="15" Padding="0,0,0,5" Margin="0,0,20,20">
-                                        <Border.Effect>
-                                            <DropShadowEffect BlurRadius="13" ShadowDepth="0" Color="{DynamicResource ShadowColor}"/>
-                                        </Border.Effect>
-
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="50"/>
-                                                <RowDefinition Height="*"/>
-                                            </Grid.RowDefinitions>
-
-                                            <Border Margin="3" CornerRadius="15" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Grid.Row="0">
-                                                <Viewbox VerticalAlignment="Center" HorizontalAlignment="Center">
-                                                    <Label Foreground="{DynamicResource TextColor}" FontFamily="{DynamicResource Volte}" FontWeight="Bold" Content="Global Editor"/>
-                                                </Viewbox>
-                                            </Border>
-
-                                            <Grid Grid.Row="1" Width="400" Margin="15" HorizontalAlignment="Center" VerticalAlignment="Center">
-
-
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="50"/>
-                                                    <RowDefinition Height="50"/>
-                                                    <RowDefinition Height="50"/>
-                                                    <RowDefinition Height="50"/>
-                                                    <RowDefinition Height="50"/>
-                                                    <RowDefinition Height="50"/>
-                                                    <RowDefinition Height="50"/>
-                                                </Grid.RowDefinitions>
-
-
-                                                <TextBox x:Name="tbgeglobal" Grid.Row="0" Grid.Column="1" Style="{StaticResource Watermark}"  Height="30" Tag="Global"  />
-                                                <TextBox x:Name="tbgeglobalvalue" Grid.Row="1" Grid.Column="1" Style="{StaticResource Watermark}" Height="30" Tag="Value" />
-
-                                                <Border Grid.Column="1" Margin="4 5" Background="Transparent" Grid.Row="2" >
-                                                    <Border.Effect>
-                                                        <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>
-                                                    </Border.Effect>
-                                                    <ComboBox x:Name="ddgechangemode" FontFamily="{DynamicResource Volte}" ToolTip="Mode" Tag="Mode">
-                                                        <ComboBoxItem Content="Byte" />
-                                                        <ComboBoxItem Content="Short" />
-                                                        <ComboBoxItem Content="Integer" Selector.IsSelected="True" />
-                                                        <ComboBoxItem Content="Long"/>
-                                                        <ComboBoxItem Content="Float"/>
-                                                        <ComboBoxItem Content="Double"/>
-                                                        <ComboBoxItem Content="String"/>
-                                                    </ComboBox>
-                                                </Border>
-                                                <Border Grid.Row="3" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5">
-                                                    <Border.Effect>
-                                                        <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>
-                                                    </Border.Effect>
-                                                    <Button x:Name="Btngereadglobal" Style="{DynamicResource CustomButton}" Content="Read Value" local:CornerRadiusSetter.CornerRadius="5" Click="Btngereadglobal_Click"/>
-                                                </Border>
-                                                <Border Grid.Row="4" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5">
-                                                    <Border.Effect>
-                                                        <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>
-                                                    </Border.Effect>
-                                                    <Button x:Name="Btngewriteglobal" Style="{DynamicResource CustomButton}" Content="Write Value" local:CornerRadiusSetter.CornerRadius="5" Click="Btngewriteglobal_Click"/>
-                                                </Border>
-                                                <Border Grid.Row="5" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5">
-                                                    <Border.Effect>
-                                                        <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>
-                                                    </Border.Effect>
-                                                    <Button x:Name="Btngecopyaddy" Style="{DynamicResource CustomButton}" Content="Copy Address" local:CornerRadiusSetter.CornerRadius="5" Click="Btngecopyaddy_Click"/>
-                                                </Border>
-                                                <Border Grid.Row="6" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5">
-                                                    <Border.Effect>
-                                                        <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>
-                                                    </Border.Effect>
-                                                    <Button x:Name="Btngeadd2f" Style="{DynamicResource CustomButton}" Content="Add to freeze list" local:CornerRadiusSetter.CornerRadius="5" Click="Btngeadd2f_Click"/>
-                                                </Border>
-
-                                            </Grid>
-
-                                        </Grid>
-                                    </Border>
-
-
-                                    <Border Grid.Column="1" Background="{DynamicResource SectionBackgroundBrush}" CornerRadius="15" Padding="0,0,0,5" Margin="0,0,20,20" >
-                                        <Border.Effect>
-                                            <DropShadowEffect BlurRadius="13" ShadowDepth="0" Color="{DynamicResource ShadowColor}"/>
-                                        </Border.Effect>
-
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="50"/>
-                                                <RowDefinition Height="*"/>
-                                            </Grid.RowDefinitions>
-
-                                            <Border Margin="3" CornerRadius="15" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Grid.Row="0">
-                                                <Viewbox VerticalAlignment="Center" HorizontalAlignment="Center">
-                                                    <Label Foreground="{DynamicResource TextColor}" FontFamily="{DynamicResource Volte}" FontWeight="Bold" Content="Local Editor"/>
-                                                </Viewbox>
-                                            </Border>
-
-                                            <Grid Grid.Row="1" Width="400" Margin="15" HorizontalAlignment="Center" VerticalAlignment="Center" >
-
-
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="50"/>
-                                                    <RowDefinition Height="50"/>
-                                                    <RowDefinition Height="50"/>
-                                                    <RowDefinition Height="50"/>
-                                                    <RowDefinition Height="50"/>
-                                                    <RowDefinition Height="50"/>
-                                                    <RowDefinition Height="50"/>
-                                                    <RowDefinition Height="50"/>
-                                                </Grid.RowDefinitions>
-
-
-                                                <TextBox x:Name="tblelocalscript" Grid.Row="0" Grid.Column="1" Style="{StaticResource Watermark}"  Height="30" Tag="Script Name" Text="fm_capture_creator" />
-                                                <TextBox x:Name="tblelocal" Grid.Row="1" Grid.Column="1" Style="{StaticResource Watermark}"  Height="30" Tag="Local"  />
-                                                <TextBox x:Name="tblelocalvalue" Grid.Row="2" Grid.Column="1" Style="{StaticResource Watermark}" Height="30" Tag="Value" />
-
-                                                <Border Grid.Column="1" Margin="4 5" Background="Transparent" Grid.Row="3" >
-                                                    <Border.Effect>
-                                                        <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>
-                                                    </Border.Effect>
-                                                    <ComboBox x:Name="ddlechangemode" FontFamily="{DynamicResource Volte}" SelectionChanged="ddlechangemode_SelectionChanged" ToolTip="Mode" Tag="Mode">
-                                                        <ComboBoxItem Content="Byte" />
-                                                        <ComboBoxItem Content="Short" />
-                                                        <ComboBoxItem Content="Integer" Selector.IsSelected="True" />
-                                                        <ComboBoxItem Content="Long"/>
-                                                        <ComboBoxItem Content="Float"/>
-                                                        <ComboBoxItem Content="Double"/>
-                                                        <ComboBoxItem Content="String"/>
-                                                    </ComboBox>
-                                                </Border>
-                                                <Border Grid.Row="4" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5">
-                                                    <Border.Effect>
-                                                        <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>
-                                                    </Border.Effect>
-                                                    <Button x:Name="Btnlereadglobal" Style="{DynamicResource CustomButton}" Content="Read Value" local:CornerRadiusSetter.CornerRadius="5" Click="Btnlereadglobal_Click"/>
-                                                </Border>
-                                                <Border Grid.Row="5" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5">
-                                                    <Border.Effect>
-                                                        <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>
-                                                    </Border.Effect>
-                                                    <Button x:Name="Btnlewriteglobal" Style="{DynamicResource CustomButton}" Content="Write Value" local:CornerRadiusSetter.CornerRadius="5" Click="Btnlewriteglobal_Click"/>
-                                                </Border>
-                                                <Border Grid.Row="6" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5">
-                                                    <Border.Effect>
-                                                        <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>
-                                                    </Border.Effect>
-                                                    <Button x:Name="Btnlecopyaddy" Style="{DynamicResource CustomButton}" Content="Copy Address" local:CornerRadiusSetter.CornerRadius="5" Click="Btnlecopyaddy_Click"/>
-                                                </Border>
-                                                <Border Grid.Row="7" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5">
-                                                    <Border.Effect>
-                                                        <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>
-                                                    </Border.Effect>
-                                                    <Button x:Name="Btnleadd2f" Style="{DynamicResource CustomButton}" Content="Add to freeze list" local:CornerRadiusSetter.CornerRadius="5" Click="Btnleadd2f_Click"/>
-                                                </Border>
-
-                                            </Grid>
-
-                                        </Grid>
-                                    </Border>
+                        <!-- Read and write one global or script local, and the freeze lists. MainWindow.GlobalLocalEditor.cs. -->
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                            <StackPanel Margin="20,16,20,16" Width="900" HorizontalAlignment="Center">
+                            <UniformGrid Columns="2">
+                                <Border Margin="0,0,6,0" Style="{StaticResource DashCard}">
+                                    <DockPanel>
+                                        <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                            <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[ge_global], FallbackValue='Global'}"/>
+                                        </Border>
+                                        <StackPanel Margin="14,12,14,8">
+                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[ge_index], FallbackValue='Global (Global_N.f_M or number)'}"/>
+                                            <TextBox x:Name="tbgeglobal" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,10"/>
+                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[ge_value], FallbackValue='Value'}"/>
+                                            <TextBox x:Name="tbgeglobalvalue" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,10"/>
+                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[ge_type], FallbackValue=Type}"/>
+                                            <ComboBox x:Name="ddgechangemode" FontFamily="{DynamicResource Volte}" Height="30" Margin="0,0,0,12">
+                                                <ComboBoxItem Content="Byte"/>
+                                                <ComboBoxItem Content="Short"/>
+                                                <ComboBoxItem Content="Integer" Selector.IsSelected="True"/>
+                                                <ComboBoxItem Content="Long"/>
+                                                <ComboBoxItem Content="Float"/>
+                                                <ComboBoxItem Content="Double"/>
+                                                <ComboBoxItem Content="String"/>
+                                            </ComboBox>
+                                            <WrapPanel>
+                                                <Button x:Name="Btngereadglobal" Style="{StaticResource FormButton}" Height="32" Padding="12,0" Margin="0,0,6,6" Click="Btngereadglobal_Click" Content="{Binding Translation[ge_read], FallbackValue='Read'}"/>
+                                                <Button x:Name="Btngewriteglobal" Style="{StaticResource FormButtonPrimary}" Height="32" Padding="12,0" Margin="0,0,6,6" Click="Btngewriteglobal_Click" Content="{Binding Translation[ge_write], FallbackValue='Write'}"/>
+                                                <Button x:Name="Btngecopyaddy" Style="{StaticResource FormButton}" Height="32" Padding="12,0" Margin="0,0,6,6" Click="Btngecopyaddy_Click" Content="{Binding Translation[ge_copy], FallbackValue='Copy address'}"/>
+                                                <Button x:Name="Btngeadd2f" Style="{StaticResource FormButton}" Height="32" Padding="12,0" Margin="0,0,6,6" Click="Btngeadd2f_Click" Content="{Binding Translation[ge_add2f], FallbackValue='Add to freeze list'}"/>
+                                            </WrapPanel>
+                                        </StackPanel>
+                                    </DockPanel>
+                                </Border>
+                                <Border Margin="6,0,0,0" Style="{StaticResource DashCard}">
+                                    <DockPanel>
+                                        <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                            <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[ge_local], FallbackValue='Local'}"/>
+                                        </Border>
+                                        <StackPanel Margin="14,12,14,8">
+                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[ge_script], FallbackValue='Script'}"/>
+                                            <TextBox x:Name="tblelocalscript" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,10" Text="fm_capture_creator"/>
+                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[ge_localidx], FallbackValue='Local'}"/>
+                                            <TextBox x:Name="tblelocal" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,10"/>
+                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[ge_value], FallbackValue='Value'}"/>
+                                            <TextBox x:Name="tblelocalvalue" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,10"/>
+                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[ge_type], FallbackValue=Type}"/>
+                                            <ComboBox x:Name="ddlechangemode" FontFamily="{DynamicResource Volte}" Height="30" Margin="0,0,0,12" SelectionChanged="ddlechangemode_SelectionChanged">
+                                                <ComboBoxItem Content="Byte"/>
+                                                <ComboBoxItem Content="Short"/>
+                                                <ComboBoxItem Content="Integer" Selector.IsSelected="True"/>
+                                                <ComboBoxItem Content="Long"/>
+                                                <ComboBoxItem Content="Float"/>
+                                                <ComboBoxItem Content="Double"/>
+                                                <ComboBoxItem Content="String"/>
+                                            </ComboBox>
+                                            <WrapPanel>
+                                                <Button x:Name="Btnlereadglobal" Style="{StaticResource FormButton}" Height="32" Padding="12,0" Margin="0,0,6,6" Click="Btnlereadglobal_Click" Content="{Binding Translation[ge_read], FallbackValue='Read'}"/>
+                                                <Button x:Name="Btnlewriteglobal" Style="{StaticResource FormButtonPrimary}" Height="32" Padding="12,0" Margin="0,0,6,6" Click="Btnlewriteglobal_Click" Content="{Binding Translation[ge_write], FallbackValue='Write'}"/>
+                                                <Button x:Name="Btnlecopyaddy" Style="{StaticResource FormButton}" Height="32" Padding="12,0" Margin="0,0,6,6" Click="Btnlecopyaddy_Click" Content="{Binding Translation[ge_copy], FallbackValue='Copy address'}"/>
+                                                <Button x:Name="Btnleadd2f" Style="{StaticResource FormButton}" Height="32" Padding="12,0" Margin="0,0,6,6" Click="Btnleadd2f_Click" Content="{Binding Translation[ge_add2f], FallbackValue='Add to freeze list'}"/>
+                                            </WrapPanel>
+                                        </StackPanel>
+                                    </DockPanel>
+                                </Border>
+                            </UniformGrid>
                                     <!-- Global and local freeze list share one card; the header switches between them. -->
-                                    <Border Grid.Column="1" Background="{DynamicResource SectionBackgroundBrush}" CornerRadius="15" Padding="0,0,0,5" Margin="0,0,20,20">
-                                        <Border.Effect>
-                                            <DropShadowEffect BlurRadius="13" ShadowDepth="0" Color="{DynamicResource ShadowColor}"/>
-                                        </Border.Effect>
+                                    <Border Style="{StaticResource DashCard}" Margin="0,12,0,0">
 
                                         <Grid>
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="50"/>
+                                                <RowDefinition Height="Auto"/>
                                                 <RowDefinition Height="*"/>
                                             </Grid.RowDefinitions>
 
-                                            <Border Margin="3" CornerRadius="15" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Grid.Row="0">
-                                                <Grid Margin="15,0">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Label Grid.Column="0" Foreground="{DynamicResource TextColor}" FontFamily="{DynamicResource Volte}" FontWeight="Bold" FontSize="18" Content="Freeze List"/>
-                                                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                                                        <Button x:Name="BtnFreezeListGlobal" Style="{DynamicResource CustomButton}" Content="Global" FontSize="15" Width="80" Height="30" Margin="0,0,6,0"
-                                                                Background="{DynamicResource ButtonHoverBackgroundBrush}" local:CornerRadiusSetter.CornerRadius="5" Click="BtnFreezeListGlobal_Click"/>
-                                                        <Button x:Name="BtnFreezeListLocal" Style="{DynamicResource CustomButton}" Content="Local" FontSize="15" Width="80" Height="30"
-                                                                Background="{DynamicResource SectionBackgroundBrush}" local:CornerRadiusSetter.CornerRadius="5" Click="BtnFreezeListLocal_Click"/>
+                                            <Border Grid.Row="0" Style="{StaticResource DashCardHeader}">
+                                                <DockPanel>
+                                                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                                                        <Button x:Name="BtnFreezeListGlobal" Style="{StaticResource FormButtonPrimary}" Content="Global" Height="28" Padding="12,0" Margin="0,0,6,0" Click="BtnFreezeListGlobal_Click"/>
+                                                        <Button x:Name="BtnFreezeListLocal" Style="{StaticResource FormButton}" Content="Local" Height="28" Padding="12,0" Click="BtnFreezeListLocal_Click"/>
                                                     </StackPanel>
-                                                </Grid>
+                                                    <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[ge_freeze], FallbackValue='Freeze list'}"/>
+                                                </DockPanel>
                                             </Border>
 
-                                            <Grid x:Name="gridFreezeGlobal" Grid.Row="1" Width="400" Margin="15" HorizontalAlignment="Center" VerticalAlignment="Top">
+                                            <Grid x:Name="gridFreezeGlobal" Grid.Row="1" Margin="14,12,14,12">
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="30"/>
                                                     <RowDefinition Height="*"/>
@@ -13235,9 +13158,9 @@
                                                         <ColumnDefinition Width="0.41*"/>
                                                         <ColumnDefinition Width="0.16*"/>
                                                     </Grid.ColumnDefinitions>
-                                                    <TextBlock Grid.Column="0" FontSize="20" Foreground="{DynamicResource TextColor}" TextTrimming="CharacterEllipsis" Text="Name" />
-                                                    <TextBlock Grid.Column="1" FontSize="20" Foreground="{DynamicResource TextColor}" TextTrimming="CharacterEllipsis" Text="Value" />
-                                                    <TextBlock Grid.Column="2" FontSize="20" Foreground="{DynamicResource TextColor}" TextTrimming="CharacterEllipsis" Text="Freeze" HorizontalAlignment="Right" />
+                                                    <TextBlock Grid.Column="0" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource FaintTextBrush}" TextTrimming="CharacterEllipsis" Text="Name" />
+                                                    <TextBlock Grid.Column="1" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource FaintTextBrush}" TextTrimming="CharacterEllipsis" Text="Value" />
+                                                    <TextBlock Grid.Column="2" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource FaintTextBrush}" TextTrimming="CharacterEllipsis" Text="Freeze" HorizontalAlignment="Right" />
                                                 </Grid>
                                                 <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" VerticalContentAlignment="Stretch">
                                                     <Grid VerticalAlignment="Stretch" Height="300">
@@ -13250,8 +13173,8 @@
                                                                             <ColumnDefinition Width="0.41*"/>
                                                                             <ColumnDefinition Width="0.08*"/>
                                                                         </Grid.ColumnDefinitions>
-                                                                        <TextBlock Grid.Column="0" FontSize="18" Foreground="{DynamicResource TextColor}" TextTrimming="CharacterEllipsis" Text="{Binding Name}" VerticalAlignment="Center" />
-                                                                        <TextBox x:Name="tbgevalue" Style="{StaticResource Watermark}"  Grid.Column="1" FontSize="18" Foreground="{DynamicResource TextColor}" Text="{Binding val, Converter={StaticResource FreezeValueConverter}}">
+                                                                        <TextBlock Grid.Column="0" FontSize="14" Foreground="{DynamicResource TextColor}" TextTrimming="CharacterEllipsis" Text="{Binding Name}" VerticalAlignment="Center" />
+                                                                        <TextBox x:Name="tbgevalue" Style="{StaticResource Watermark}"  Grid.Column="1" FontSize="14" Foreground="{DynamicResource TextColor}" Text="{Binding val, Converter={StaticResource FreezeValueConverter}}">
                                                                             <i:Interaction.Triggers>
                                                                                 <i:EventTrigger EventName="TextChanged">
                                                                                     <i:InvokeCommandAction Command="{Binding DataContext.ChangeValue, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}}"
@@ -13310,14 +13233,9 @@
                                                         </ListBox>
                                                     </Grid>
                                                 </ScrollViewer>
-                                                <Border Grid.Row="2" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5">
-                                                    <Border.Effect>
-                                                        <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>
-                                                    </Border.Effect>
-                                                    <Button x:Name="Btngefreezelistdel" Style="{DynamicResource CustomButton}" Content="{Binding Translation[delete], FallbackValue=Delete}" local:CornerRadiusSetter.CornerRadius="5" Click="Btngefreezelistdel_Click"/>
-                                                </Border>
+                                                <Button Grid.Row="2" x:Name="Btngefreezelistdel" Style="{StaticResource FormButton}" Content="{Binding Translation[delete], FallbackValue=Delete}" Height="32" Padding="14,0" Margin="0,10,0,0" HorizontalAlignment="Left" Click="Btngefreezelistdel_Click"/>
                                             </Grid>
-                                            <Grid x:Name="gridFreezeLocal" Grid.Row="1" Width="400" Margin="15" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Collapsed">
+                                            <Grid x:Name="gridFreezeLocal" Grid.Row="1" Margin="14,12,14,12" Visibility="Collapsed">
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="30"/>
                                                     <RowDefinition Height="*"/>
@@ -13329,9 +13247,9 @@
                                                         <ColumnDefinition Width="0.41*"/>
                                                         <ColumnDefinition Width="0.20*"/>
                                                     </Grid.ColumnDefinitions>
-                                                    <TextBlock Grid.Column="0" FontSize="20" Foreground="{DynamicResource TextColor}" TextTrimming="CharacterEllipsis" Text="Name/Script" />
-                                                    <TextBlock Grid.Column="1" FontSize="20" Foreground="{DynamicResource TextColor}" TextTrimming="CharacterEllipsis" Text="Value" />
-                                                    <TextBlock Grid.Column="2" FontSize="20" Foreground="{DynamicResource TextColor}" TextTrimming="CharacterEllipsis" Text="Freeze" HorizontalAlignment="Right" />
+                                                    <TextBlock Grid.Column="0" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource FaintTextBrush}" TextTrimming="CharacterEllipsis" Text="Name/Script" />
+                                                    <TextBlock Grid.Column="1" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource FaintTextBrush}" TextTrimming="CharacterEllipsis" Text="Value" />
+                                                    <TextBlock Grid.Column="2" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource FaintTextBrush}" TextTrimming="CharacterEllipsis" Text="Freeze" HorizontalAlignment="Right" />
                                                 </Grid>
                                                 <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" VerticalContentAlignment="Stretch">
                                                     <Grid VerticalAlignment="Stretch" Height="300">
@@ -13353,17 +13271,17 @@
                                                                                     <RowDefinition Height="20"/>
                                                                                 </Grid.RowDefinitions>
 
-                                                                                <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Foreground="Gray" FontSize="10" Text="Name"/>
-                                                                                <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Foreground="Gray" FontSize="10" Text="Scriptname"/>
-                                                                                <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Foreground="Gray" FontSize="10" Text="Local value"/>
-                                                                                <TextBlock Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Foreground="Gray" FontSize="10" Text="Calculated local value"/>
-                                                                                <TextBlock Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Foreground="Gray" FontSize="10" Text="Value to write"/>
+                                                                                <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Foreground="{DynamicResource FaintTextBrush}" FontSize="10" Text="Name"/>
+                                                                                <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Foreground="{DynamicResource FaintTextBrush}" FontSize="10" Text="Scriptname"/>
+                                                                                <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Foreground="{DynamicResource FaintTextBrush}" FontSize="10" Text="Local value"/>
+                                                                                <TextBlock Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Foreground="{DynamicResource FaintTextBrush}" FontSize="10" Text="Calculated local value"/>
+                                                                                <TextBlock Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Foreground="{DynamicResource FaintTextBrush}" FontSize="10" Text="Value to write"/>
 
-                                                                                <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Foreground="Gray" FontSize="10" Text="{Binding Path=Name}" TextAlignment="Right" TextTrimming="CharacterEllipsis"/>
-                                                                                <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Foreground="Gray" FontSize="10" Text="{Binding Path=Script}" TextAlignment="Right" TextTrimming="CharacterEllipsis"/>
-                                                                                <TextBlock Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Foreground="Gray" FontSize="10" Text="{Binding Path=LocalName}" TextAlignment="Right" TextTrimming="CharacterEllipsis"/>
-                                                                                <TextBlock Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Foreground="Gray" FontSize="10" Text="{Binding Path=LocalValue}" TextAlignment="Right" TextTrimming="CharacterEllipsis"/>
-                                                                                <TextBlock Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Foreground="Gray" FontSize="10" Text="{Binding Path=val, Converter={StaticResource FreezeValueConverter}}" TextAlignment="Right" TextTrimming="CharacterEllipsis"/>
+                                                                                <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Foreground="{DynamicResource FaintTextBrush}" FontSize="10" Text="{Binding Path=Name}" TextAlignment="Right" TextTrimming="CharacterEllipsis"/>
+                                                                                <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Foreground="{DynamicResource FaintTextBrush}" FontSize="10" Text="{Binding Path=Script}" TextAlignment="Right" TextTrimming="CharacterEllipsis"/>
+                                                                                <TextBlock Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Foreground="{DynamicResource FaintTextBrush}" FontSize="10" Text="{Binding Path=LocalName}" TextAlignment="Right" TextTrimming="CharacterEllipsis"/>
+                                                                                <TextBlock Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Foreground="{DynamicResource FaintTextBrush}" FontSize="10" Text="{Binding Path=LocalValue}" TextAlignment="Right" TextTrimming="CharacterEllipsis"/>
+                                                                                <TextBlock Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Foreground="{DynamicResource FaintTextBrush}" FontSize="10" Text="{Binding Path=val, Converter={StaticResource FreezeValueConverter}}" TextAlignment="Right" TextTrimming="CharacterEllipsis"/>
 
 
                                                                             </Grid>
@@ -13383,7 +13301,7 @@
                                                                             <ColumnDefinition Width="0.41*"/>
                                                                             <ColumnDefinition Width="0.08*"/>
                                                                         </Grid.ColumnDefinitions>
-                                                                        <TextBlock Grid.Column="0" FontSize="18" Foreground="{DynamicResource TextColor}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center">
+                                                                        <TextBlock Grid.Column="0" FontSize="14" Foreground="{DynamicResource TextColor}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center">
                                                                             <TextBlock.Text>
                                                                                 <MultiBinding StringFormat="{}{0}/{1}">
                                                                                     <Binding Path="Name" />
@@ -13391,7 +13309,7 @@
                                                                                 </MultiBinding>
                                                                             </TextBlock.Text>
                                                                         </TextBlock>
-                                                                        <TextBox x:Name="tblevalue" Style="{StaticResource Watermark}"  Grid.Column="1" FontSize="18" Foreground="{DynamicResource TextColor}" Text="{Binding val, Converter={StaticResource FreezeValueConverter}}">
+                                                                        <TextBox x:Name="tblevalue" Style="{StaticResource Watermark}"  Grid.Column="1" FontSize="14" Foreground="{DynamicResource TextColor}" Text="{Binding val, Converter={StaticResource FreezeValueConverter}}">
                                                                             <i:Interaction.Triggers>
                                                                                 <i:EventTrigger EventName="TextChanged">
                                                                                     <i:InvokeCommandAction Command="{Binding DataContext.ChangeValue, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}}"
@@ -13450,22 +13368,14 @@
                                                         </ListBox>
                                                     </Grid>
                                                 </ScrollViewer>
-                                                <Border Grid.Row="2" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5">
-                                                    <Border.Effect>
-                                                        <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>
-                                                    </Border.Effect>
-                                                    <Button x:Name="Btnlefreezelistdel" Style="{DynamicResource CustomButton}" Content="{Binding Translation[delete], FallbackValue=Delete}" local:CornerRadiusSetter.CornerRadius="5" Click="Btnlefreezelistdel_Click"/>
-                                                </Border>
+                                                <Button Grid.Row="2" x:Name="Btnlefreezelistdel" Style="{StaticResource FormButton}" Content="{Binding Translation[delete], FallbackValue=Delete}" Height="32" Padding="14,0" Margin="0,10,0,0" HorizontalAlignment="Left" Click="Btnlefreezelistdel_Click"/>
                                             </Grid>
                                         </Grid>
                                     </Border>
 
 
 
-                                </WrapPanel>
-
-                            </Grid>
-                            
+                            </StackPanel>
                         </ScrollViewer>
                     </TabItem>
 
