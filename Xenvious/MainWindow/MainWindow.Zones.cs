@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using Xenvious.JSON;
 using static Xenvious.GTA;
@@ -161,6 +162,29 @@ namespace Xenvious
         private void ddzonevariation_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             new Global((GTA.Offsets.Editor.Zones.znatp + GTA.Offsets.Editor.Zones.NEXT * ddzoneno.SelectedIndex)).SetInt(ddzonevariation.SelectedIndex);
+            ShowZoneShape();
+        }
+
+        // ----- Shape buttons: stand in for the hidden ddzonevariation -----
+
+        private bool _zoneShapeSync;
+
+        private void ZoneShape_Checked(object sender, RoutedEventArgs e)
+        {
+            if (_zoneShapeSync || !(sender is RadioButton button) || !int.TryParse(button.Tag as string, out int shape))
+                return;
+            ddzonevariation.SelectedIndex = shape;
+        }
+
+        private void ShowZoneShape()
+        {
+            if (rbzoneshape0 == null)
+                return;
+            _zoneShapeSync = true;
+            var buttons = new[] { rbzoneshape0, rbzoneshape1, rbzoneshape2, rbzoneshape3 };
+            for (int i = 0; i < buttons.Length; i++)
+                buttons[i].IsChecked = ddzonevariation.SelectedIndex == i;
+            _zoneShapeSync = false;
         }
 
         private void tbzonezntp_TextChanged(object sender, TextChangedEventArgs e)
@@ -173,20 +197,31 @@ namespace Xenvious
 
         private bool _zoneTypeSync;
 
-        private sealed class ZoneTypeItem
+        // Public properties: the list groups on Group.
+        public sealed class ZoneTypeItem
         {
-            public int Id;
-            public string Text;
+            public int Id { get; set; }
+            public string Text { get; set; }
+            public string Group { get; set; }
             public override string ToString() => Text;
         }
 
-        // Built when the list opens, so the names follow the language.
+        // Built when the list opens, so the names follow the language; grouped by topic.
         private void FillZoneTypes()
         {
             _zoneTypeSync = true;
-            ddzonetype.ItemsSource = ZoneTypes.All
-                .Select(t => new ZoneTypeItem { Id = t.Id, Text = t.Id + "  " + TranslateOr("zt_name_" + t.Id, t.Name) })
+            var items = ZoneTypes.All
+                .OrderBy(t => Array.IndexOf(ZoneTypes.Groups, t.Group)).ThenBy(t => t.Id)
+                .Select(t => new ZoneTypeItem
+                {
+                    Id = t.Id,
+                    Text = t.Id + "  " + TranslateOr("zt_name_" + t.Id, t.Name),
+                    Group = TranslateOr("zt_grp_" + t.Group, t.Group),
+                })
                 .ToList();
+            var view = new ListCollectionView(items);
+            view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(ZoneTypeItem.Group)));
+            ddzonetype.ItemsSource = view;
             _zoneTypeSync = false;
             ShowZoneType();
         }
@@ -217,7 +252,7 @@ namespace Xenvious
             var type = known ? ZoneTypes.Find(id) : null;
 
             _zoneTypeSync = true;
-            ddzonetype.SelectedItem = ((IEnumerable<ZoneTypeItem>)ddzonetype.ItemsSource).FirstOrDefault(i => type != null && i.Id == type.Id);
+            ddzonetype.SelectedItem = ddzonetype.ItemsSource.Cast<ZoneTypeItem>().FirstOrDefault(i => type != null && i.Id == type.Id);
             _zoneTypeSync = false;
 
             if (type != null)

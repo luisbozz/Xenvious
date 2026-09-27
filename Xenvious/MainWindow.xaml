@@ -10516,7 +10516,17 @@
                                                                                 <ColumnDefinition Width="8"/>
                                                                                 <ColumnDefinition Width="64"/>
                                                                             </Grid.ColumnDefinitions>
-                                                                            <ComboBox x:Name="ddzonetype" Height="30" IsEnabled="{Binding ElementName=tbzonezntp, Path=IsEnabled}" SelectionChanged="ddzonetype_SelectionChanged" DropDownOpened="ddzonetype_DropDownOpened" MaxDropDownHeight="420"/>
+                                                                            <ComboBox x:Name="ddzonetype" Height="30" IsEnabled="{Binding ElementName=tbzonezntp, Path=IsEnabled}" SelectionChanged="ddzonetype_SelectionChanged" DropDownOpened="ddzonetype_DropDownOpened" MaxDropDownHeight="420">
+                                                                                <ComboBox.GroupStyle>
+                                                                                    <GroupStyle>
+                                                                                        <GroupStyle.HeaderTemplate>
+                                                                                            <DataTemplate>
+                                                                                                <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="Bold" Foreground="#FF72767D" Margin="8,8,0,2"/>
+                                                                                            </DataTemplate>
+                                                                                        </GroupStyle.HeaderTemplate>
+                                                                                    </GroupStyle>
+                                                                                </ComboBox.GroupStyle>
+                                                                            </ComboBox>
                                                                             <TextBox x:Name="tbzonezntp" IsEnabled="False" Style="{StaticResource Watermark}" TextChanged="tbzonezntp_TextChanged" KeyDown="FormatTextForInteger" Grid.Column="2" Height="30"/>
                                                                         </Grid>
                                                                         <Border Background="{DynamicResource SeactionHeaderBackgroundBrush}" CornerRadius="4" Padding="10,8" Margin="0,0,0,12">
@@ -10550,12 +10560,68 @@
                                                                         </Border>
                                                                         <StackPanel Margin="14,12,14,4">
                                                                         <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[variation], FallbackValue=Variation}"/>
-                                                                        <ComboBox x:Name="ddzonevariation" FontFamily="{DynamicResource Volte}" SelectionChanged="ddzonevariation_SelectionChanged" IsEnabled="False" ToolTip="{Binding Translation[variation], FallbackValue=Variation}" Height="30" Margin="0,0,0,10">
+                                                                        <ComboBox x:Name="ddzonevariation" FontFamily="{DynamicResource Volte}" SelectionChanged="ddzonevariation_SelectionChanged" IsEnabled="False" ToolTip="{Binding Translation[variation], FallbackValue=Variation}" Visibility="Collapsed">
                                                                             <ComboBoxItem Content="{Binding Translation[zoneaxis], FallbackValue=Axis Aligned Box}"/>
                                                                             <ComboBoxItem Content="{Binding Translation[sphere], FallbackValue=Sphere}"/>
                                                                             <ComboBoxItem Content="{Binding Translation[zonenonaxis], FallbackValue=Non Axis Aligned Box}"/>
                                                                             <ComboBoxItem Content="{Binding Translation[cylinder], FallbackValue=Cylinder}"/>
                                                                         </ComboBox>
+                                                                        <!-- Shape as four buttons; they set the hidden dropdown above, which writes the zone. -->
+                                                                        <UniformGrid Columns="4" Margin="0,0,-6,10" IsEnabled="{Binding ElementName=ddzonevariation, Path=IsEnabled}">
+                                                                            <UniformGrid.Resources>
+                                                                                <Style TargetType="{x:Type RadioButton}">
+                                                                                    <Setter Property="Margin" Value="0,0,6,0"/>
+                                                                                    <Setter Property="Cursor" Value="Hand"/>
+                                                                                    <Setter Property="Foreground" Value="{StaticResource NavMutedBrush}"/>
+                                                                                    <Setter Property="Template">
+                                                                                        <Setter.Value>
+                                                                                            <ControlTemplate TargetType="{x:Type RadioButton}">
+                                                                                                <Border x:Name="bd" Background="{DynamicResource ComboBoxBackground}" BorderBrush="{DynamicResource ComboBoxBorder}" BorderThickness="1" CornerRadius="4" Padding="2,6">
+                                                                                                    <ContentPresenter HorizontalAlignment="Center"/>
+                                                                                                </Border>
+                                                                                                <ControlTemplate.Triggers>
+                                                                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                                                                        <Setter TargetName="bd" Property="Background" Value="{DynamicResource SeactionHeaderBackgroundBrush}"/>
+                                                                                                    </Trigger>
+                                                                                                    <Trigger Property="IsChecked" Value="True">
+                                                                                                        <Setter TargetName="bd" Property="Background" Value="{DynamicResource SeactionHeaderBackgroundBrush}"/>
+                                                                                                        <Setter TargetName="bd" Property="BorderBrush" Value="{DynamicResource TextColor}"/>
+                                                                                                        <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
+                                                                                                    </Trigger>
+                                                                                                    <Trigger Property="IsEnabled" Value="False">
+                                                                                                        <Setter Property="Opacity" Value="0.5"/>
+                                                                                                    </Trigger>
+                                                                                                </ControlTemplate.Triggers>
+                                                                                            </ControlTemplate>
+                                                                                        </Setter.Value>
+                                                                                    </Setter>
+                                                                                </Style>
+                                                                            </UniformGrid.Resources>
+                                                                            <RadioButton x:Name="rbzoneshape0" GroupName="ZoneShape" Tag="0" Checked="ZoneShape_Checked" ToolTip="{Binding Translation[zoneaxis], FallbackValue=Axis Aligned Box}">
+                                                                                <StackPanel>
+                                                                                    <Path Data="M5,5 L23,5 L23,17 L5,17 Z" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" StrokeThickness="1.5" Width="28" Height="22" HorizontalAlignment="Center"/>
+                                                                                    <TextBlock Text="{Binding Translation[zs_box], FallbackValue=Box}" FontSize="11" HorizontalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="0,3,0,0"/>
+                                                                                </StackPanel>
+                                                                            </RadioButton>
+                                                                            <RadioButton x:Name="rbzoneshape1" GroupName="ZoneShape" Tag="1" Checked="ZoneShape_Checked" ToolTip="{Binding Translation[sphere], FallbackValue=Sphere}">
+                                                                                <StackPanel>
+                                                                                    <Path Data="M6,11 A8,8 0 1 1 22,11 A8,8 0 1 1 6,11" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" StrokeThickness="1.5" Width="28" Height="22" HorizontalAlignment="Center"/>
+                                                                                    <TextBlock Text="{Binding Translation[zs_sphere], FallbackValue=Sphere}" FontSize="11" HorizontalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="0,3,0,0"/>
+                                                                                </StackPanel>
+                                                                            </RadioButton>
+                                                                            <RadioButton x:Name="rbzoneshape2" GroupName="ZoneShape" Tag="2" Checked="ZoneShape_Checked" ToolTip="{Binding Translation[zonenonaxis], FallbackValue=Non Axis Aligned Box}">
+                                                                                <StackPanel>
+                                                                                    <Path Data="M8,3 L24,8 L20,19 L4,14 Z" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" StrokeThickness="1.5" Width="28" Height="22" HorizontalAlignment="Center"/>
+                                                                                    <TextBlock Text="{Binding Translation[zs_boxrot], FallbackValue=Rotated Box}" FontSize="11" HorizontalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="0,3,0,0"/>
+                                                                                </StackPanel>
+                                                                            </RadioButton>
+                                                                            <RadioButton x:Name="rbzoneshape3" GroupName="ZoneShape" Tag="3" Checked="ZoneShape_Checked" ToolTip="{Binding Translation[cylinder], FallbackValue=Cylinder}">
+                                                                                <StackPanel>
+                                                                                    <Path Data="M6,5 A8,3 0 1 1 22,5 A8,3 0 1 1 6,5 M6,5 L6,17 A8,3 0 0 0 22,17 L22,5" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" StrokeThickness="1.5" Width="28" Height="22" HorizontalAlignment="Center"/>
+                                                                                    <TextBlock Text="{Binding Translation[zs_cylinder], FallbackValue=Cylinder}" FontSize="11" HorizontalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="0,3,0,0"/>
+                                                                                </StackPanel>
+                                                                            </RadioButton>
+                                                                        </UniformGrid>
                                                                         <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[pastart], FallbackValue=Startpoint}"/>
                                                                         <Grid Margin="0,0,0,10">
                                                                             <Grid.ColumnDefinitions>
