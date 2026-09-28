@@ -298,12 +298,12 @@ namespace Xenvious
         // instructions, so the displacements cannot be shared.
         //
         // Legacy   "4C 8D 05 ..."  online at +3, build 165 bytes *before* the site
-        // Enhanced "4C 8D 0D ..."  build at +3, online at +0x47
+        // Enhanced "4C 8D 0D ..."  build at +3, online in the lea at +0x47 (displacement +0x4A)
         //
-        // Measured against 1.73-3889 and enhanced-1.73-1158: on Enhanced +3 reads
-        // "1158.16" and +0x47 reads "1.73", while -165 lands outside the module.
+        // Legacy checked in the running game (1.73-3889): +3 reads "1.73", -165 reads
+        // "3889.0". Enhanced as in the scanner of another creator tool (Add(0x47).Add(3).Rip()).
         private static int VersionDelta(bool online) =>
-            GameVariant.IsEnhanced ? (online ? 0x47 : 3) : (online ? 3 : -165);
+            GameVariant.IsEnhanced ? (online ? 0x47 + 3 : 3) : (online ? 3 : -165);
 
         private static string VersionString(bool online, int length)
         {
@@ -312,7 +312,11 @@ namespace Xenvious
 
             IntPtr site = IntPtr.Add((IntPtr)GTA.Offsets.Editor.versionptr, VersionDelta(online));
             IntPtr p = (IntPtr)(MainWindow.m.rip(site).ToInt64() - (long)MainWindow.m.getBaseAddress());
-            return Encoding.UTF8.GetString(MainWindow.m.memory(p.ToInt64()).GetBytes(length));
+            // C strings: read a little more and stop at the terminator, so a longer build
+            // number is not cut and nothing behind a shorter one is shown.
+            string text = Encoding.ASCII.GetString(MainWindow.m.memory(p.ToInt64()).GetBytes(Math.Max(length, 32)));
+            int end = text.IndexOf('\0');
+            return end >= 0 ? text.Substring(0, end) : text.Substring(0, length);
         }
 
         public static string getOnlineVersion(byte[] buffer = null)

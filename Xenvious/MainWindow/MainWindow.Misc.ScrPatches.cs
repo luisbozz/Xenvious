@@ -164,8 +164,7 @@ namespace Xenvious
                 return;
             _patchesShownKey = key;
 
-            patchesMeta.Text = string.Format(CultureInfo.CurrentCulture, TranslateOr("patches_meta", "{0} · creator open: {1}"),
-                GameVariant.DisplayName(GameVariant.Current), creator.Length == 0 ? "–" : ScrPatchScriptLabel(creator));
+            RenderPatchesHeader(creator);
             patchesExe.Text = GameVariant.IsEnhanced ? "GTA5_Enhanced.exe" : "GTA5.exe";
 
             patchesNative.Children.Clear();
@@ -199,11 +198,48 @@ namespace Xenvious
             patchesDevList.Children.Clear();
             foreach (var group in dev)
                 patchesDevList.Children.Add(ScrPatchCard(group, creator, readOnly: true));
-            patchesDevHeader.Text = TranslateOr("patches_internal", "Internal: needed by other functions") + "  (" + dev.Count + ")";
+            patchesDevHeader.Inlines.Clear();
+            patchesDevHeader.Inlines.Add(new Run(TranslateOr("patches_internal", "Internal: needed by other functions")));
+            patchesDevHeader.Inlines.Add(new Run("  (" + dev.Count + ")") { FontWeight = FontWeights.Normal, Foreground = ThemeBrush("FaintTextBrush") });
             patchesDev.Visibility = dev.Count == 0 ? Visibility.Collapsed : Visibility.Visible;
 
             int on = _scrPatchGroups.Count(g => !g.Patches.Any(p => p.dev) && g.Enabled), total = _scrPatchGroups.Count(g => !g.Patches.Any(p => p.dev));
             patchesScriptCount.Text = string.Format(CultureInfo.CurrentCulture, TranslateOr("patches_count", "{0} of {1} on"), on, total);
+        }
+
+        // Edition as a segmented control (the running one raised), then build and open creator.
+        private void RenderPatchesHeader(string creator)
+        {
+            var items = new StackPanel { Orientation = Orientation.Horizontal };
+            foreach (bool enhanced in new[] { false, true })
+            {
+                bool current = GameVariant.IsEnhanced == enhanced;
+                var text = new TextBlock { Text = enhanced ? "Enhanced" : "Legacy", FontWeight = FontWeights.Bold, FontSize = 13 };
+                text.SetResourceReference(TextBlock.ForegroundProperty, current ? "TextColor" : "MutedTextBrush");
+                var item = new Border { CornerRadius = new CornerRadius(5), Padding = new Thickness(12, 4, 12, 4), Margin = new Thickness(0, 0, enhanced ? 0 : 3, 0), Child = text, BorderThickness = new Thickness(0, 0, 0, current ? 2 : 0) };
+                item.SetResourceReference(Border.BackgroundProperty, current ? "SectionBackgroundBrush" : "DeepBrush");
+                item.SetResourceReference(Border.BorderBrushProperty, "AccentBrush");
+                items.Children.Add(item);
+            }
+            var track = new Border { CornerRadius = new CornerRadius(7), Padding = new Thickness(3), BorderThickness = new Thickness(1), Child = items,
+                ToolTip = TranslateOr("patches_edition_tip", "The game edition Xenvious is connected to") };
+            track.SetResourceReference(Border.BackgroundProperty, "DeepBrush");
+            track.SetResourceReference(Border.BorderBrushProperty, "LineBrush");
+            patchesEdition.Child = track;
+
+            // "1.73-3889": online version and the build number without its ".0" / ".16" part.
+            string build = "";
+            if (m != null && m.IsProcOpen)
+            {
+                string online = GTA.getOnlineVersion(), number = GTA.getBuildVersion();
+                int dot = number.IndexOf('.');
+                build = (online + "-" + (dot > 0 ? number.Substring(0, dot) : number)).Trim('-');
+            }
+            patchesMeta.Inlines.Clear();
+            patchesMeta.Inlines.Add(new Run(TranslateOr("patches_build", "Build") + " "));
+            patchesMeta.Inlines.Add(new Run(build.Length == 0 ? "–" : build) { FontFamily = new FontFamily("Consolas"), FontWeight = FontWeights.Bold, Foreground = ThemeBrush("TextColor") });
+            patchesMeta.Inlines.Add(new Run(" · " + TranslateOr("patches_creatoropen", "Creator open:") + " "));
+            patchesMeta.Inlines.Add(new Run(creator.Length == 0 ? "–" : ScrPatchScriptLabel(creator)) { FontWeight = FontWeights.Bold, Foreground = ThemeBrush("TextColor") });
         }
 
         private bool MatchesPatchQuery(string text)
@@ -325,7 +361,25 @@ namespace Xenvious
             if (group.Patches.Any(p => p.trigger == "templates"))
                 chips.Add(StatusChip(TranslateOr("scrpatch_tag_templates", "templates only"), null));
             if (readOnly)
-                return PatchCard(ScrPatchName(group.Name), group.Description, null, true, false, null, chips);
+            {
+                var head = new DockPanel();
+                var always = StatusChip(TranslateOr("patches_always", "always on"), "OkBrush", group.Description);
+                always.Margin = new Thickness(10, 0, 0, 0);
+                always.VerticalAlignment = VerticalAlignment.Top;
+                DockPanel.SetDock(always, Dock.Right);
+                head.Children.Add(always);
+                head.Children.Add(new TextBlock { Text = ScrPatchName(group.Name), FontSize = 14.5, FontWeight = FontWeights.Bold, TextWrapping = TextWrapping.Wrap, Foreground = ThemeBrush("TextColor"), ToolTip = group.Description });
+                var body = new StackPanel();
+                body.Children.Add(head);
+                var foot = new WrapPanel { Margin = new Thickness(0, 8, 0, 0) };
+                foreach (var chip in chips)
+                    foot.Children.Add(chip);
+                body.Children.Add(foot);
+                var card = new Border { CornerRadius = new CornerRadius(8), Padding = new Thickness(14, 12, 14, 10), Margin = new Thickness(0, 0, 10, 10), BorderThickness = new Thickness(1), Child = body };
+                card.SetResourceReference(Border.BackgroundProperty, "SectionBackgroundBrush");
+                card.SetResourceReference(Border.BorderBrushProperty, "LineBrush");
+                return card;
+            }
             return PatchCard(ScrPatchName(group.Name), group.Description, null, group.Enabled, true, on => group.Enabled = on, chips);
         }
 

@@ -11573,7 +11573,8 @@
                                                             <Button DockPanel.Dock="Right" Style="{StaticResource FormButton}" Margin="14,0,0,0" Padding="12,0" Click="BtnPatchesApply_Click"
                                                                     Content="{Binding Translation[patches_reload], FallbackValue='Reload'}"/>
                                                             <Border x:Name="patchesSearchHost" DockPanel.Dock="Right"/>
-                                                            <TextBlock x:Name="patchesMeta" VerticalAlignment="Center" FontSize="13" Foreground="{DynamicResource MutedTextBrush}"/>
+                                                            <Border x:Name="patchesEdition" DockPanel.Dock="Left" VerticalAlignment="Center" Margin="0,0,14,0"/>
+                <TextBlock x:Name="patchesMeta" VerticalAlignment="Center" FontSize="13" Foreground="{DynamicResource MutedTextBrush}"/>
                                                         </DockPanel>
                                                     </Border>
                                                     <DockPanel Margin="0,0,0,8">
@@ -11594,7 +11595,7 @@
                                                     <Border x:Name="patchesDev" Style="{StaticResource DashCard}" Margin="0,4,0,0">
                                                         <Expander Style="{StaticResource CardExpander}" IsExpanded="False">
                                                             <Expander.Header>
-                                                                <TextBlock x:Name="patchesDevHeader" FontWeight="Bold"/>
+                                                                <TextBlock x:Name="patchesDevHeader" FontWeight="Bold" Foreground="{DynamicResource MutedTextBrush}"/>
                                                             </Expander.Header>
                                                             <UniformGrid x:Name="patchesDevList" Columns="2" Margin="14,12,4,4"/>
                                                         </Expander>
