@@ -616,6 +616,9 @@ namespace Xenvious
 
         // Set when a model was brought over from the props or dynamic props page.
         private string _mpFrom;
+        // Step of that hand-over the user is at: 1 category, 2 slot, 3 Set.
+        private int _mpGuideStep;
+        private Border _mpGuide, _mpCatCard, _mpSlotCard, _mpEditorCard;
 
         // Props / Dynamic props: take the model of the selected entry over to Modded Props, so it
         // can replace a slot of the prop menu. The creator places everything from the Dynamic
@@ -634,6 +637,8 @@ namespace Xenvious
             int hash = new Global(model + next * index).Get<int>();
             _mpPick = PropCatalog.FirstOrDefault(c => c.Int32 == hash) ?? new CatalogItem(MPHex(hash), "", unchecked((uint)hash), "", "prop");
             _mpFrom = dynamic ? "dynamic" : "static";
+            // A dynamic prop has its category already: only Dynamics places it as dynamic.
+            _mpGuideStep = dynamic ? 2 : 1;
             if (dynamic)
                 _mpCategory = MPCategories.First(c => c.Table == (int)PropCategory.mp_dynamics);
             _mpSlot = 0;
@@ -724,6 +729,9 @@ namespace Xenvious
             var barCard = new Border { Style = (Style)FindResource("DashCard"), Padding = new Thickness(12, 8, 12, 8), Margin = new Thickness(0, 0, 0, 12), Child = bar };
             DockPanel.SetDock(barCard, Dock.Top);
             root.Children.Add(barCard);
+            _mpGuide = new Border { Style = (Style)FindResource("DashCard"), Padding = new Thickness(12, 8, 12, 8), Margin = new Thickness(0, 0, 0, 12), Visibility = Visibility.Collapsed };
+            DockPanel.SetDock(_mpGuide, Dock.Top);
+            root.Children.Add(_mpGuide);
 
             var grid = new Grid();
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(230) });
@@ -742,6 +750,7 @@ namespace Xenvious
             catBody.Children.Add(new ScrollViewer { VerticalScrollBarVisibility = ScrollBarVisibility.Auto, Content = _mpCatList });
             var catCard = MPCard(MPT("mp_categories", "Categories"), catBody, null);
             catCard.VerticalAlignment = VerticalAlignment.Stretch;
+            _mpCatCard = catCard;
             grid.Children.Add(catCard);
 
             // Slots
@@ -796,13 +805,15 @@ namespace Xenvious
             var slotCard = MPCard(null, slotsBody, seg, _mpCatTitle);
             // Stretch, so the tile area and the list box get the height of the page and scroll.
             slotCard.VerticalAlignment = VerticalAlignment.Stretch;
+            _mpSlotCard = slotCard;
             Grid.SetColumn(slotCard, 2);
             grid.Children.Add(slotCard);
 
             // Editor, import, creator options
             var side = new StackPanel();
             _mpEditor = new StackPanel();
-            side.Children.Add(MPCard(MPT("mp_slot", "Slot"), _mpEditor, null));
+            _mpEditorCard = MPCard(MPT("mp_slot", "Slot"), _mpEditor, null);
+            side.Children.Add(_mpEditorCard);
             _mpSaved = new StackPanel();
             side.Children.Add(MPCard(MPT("mp_saved", "Saved lists"), _mpSaved, null));
             _mpImport = new StackPanel();
@@ -1166,7 +1177,7 @@ namespace Xenvious
                     Grid.SetColumn(right, 1);
                     row.Children.Add(right);
                     var button = new Button { Style = (Style)FindResource("SideNavButton"), Content = row, Tag = c == _mpCategory ? "active" : null };
-                    button.Click += (_, __) => { _mpCategory = category; _mpSlot = 0; if (_mpFrom == null) _mpPick = null; RenderMPAll(); };
+                    button.Click += (_, __) => { _mpCategory = category; _mpSlot = 0; if (_mpFrom == null) _mpPick = null; else _mpGuideStep = Math.Max(_mpGuideStep, 2); RenderMPAll(); };
                     _mpCatList.Children.Add(button);
                 }
             }
@@ -1359,7 +1370,7 @@ namespace Xenvious
                 }
                 tile.Children.Add(sub);
                 var button = new System.Windows.Controls.Primitives.ToggleButton { Style = (Style)FindResource("ChoiceTile"), Content = tile, IsChecked = i == _mpSlot, Margin = new Thickness(0, 0, 8, 8), Padding = new Thickness(8), HorizontalContentAlignment = HorizontalAlignment.Stretch };
-                button.Click += (_, __) => { _mpSlot = index; if (_mpFrom == null) _mpPick = null; RenderMPSlots(); RenderMPEditor(); };
+                button.Click += (_, __) => { _mpSlot = index; if (_mpFrom == null) _mpPick = null; else _mpGuideStep = 3; RenderMPSlots(); RenderMPEditor(); };
                 _mpSlots.Children.Add(button);
             }
             _mpChanged.Text = changed > 0 ? string.Format(CultureInfo.CurrentCulture, MPT("mp_changed_of", "{0} of {1} changed"), changed, slots.Count) : "";
@@ -1436,10 +1447,86 @@ namespace Xenvious
             UpdateModdedPropEntry(slot, hash);
         }
 
+        // A model brought over from Props / Dynamic props: a bar with the three steps, and a frame
+        // around the card the next step happens in, until Set or Cancel.
+        private void RenderMPGuide()
+        {
+            if (_mpGuide == null)
+                return;
+            bool on = _mpFrom != null && _mpPick != null;
+            _mpGuide.Visibility = on ? Visibility.Visible : Visibility.Collapsed;
+            foreach (var (card, step) in new[] { (_mpCatCard, 1), (_mpSlotCard, 2), (_mpEditorCard, 3) })
+            {
+                if (card == null)
+                    continue;
+                if (on && step == _mpGuideStep)
+                {
+                    card.SetResourceReference(Border.BorderBrushProperty, "AccentBrush");
+                    card.BorderThickness = new Thickness(2);
+                }
+                else
+                {
+                    card.ClearValue(Border.BorderBrushProperty);
+                    card.ClearValue(Border.BorderThicknessProperty);
+                }
+            }
+            if (!on)
+                return;
+
+            var bar = new DockPanel();
+            var cancel = MPButton(MPT("mp_guide_cancel", "Cancel"), (_, __) => { _mpFrom = null; _mpPick = null; RenderMPAll(); });
+            cancel.Margin = new Thickness(12, 0, 0, 0);
+            DockPanel.SetDock(cancel, Dock.Right);
+            bar.Children.Add(cancel);
+            var thumb = MPThumb(_mpPick, 18);
+            var thumbBox = new Border { Width = 44, Height = 34, CornerRadius = new CornerRadius(4), ClipToBounds = true, Margin = new Thickness(0, 0, 10, 0), Child = thumb };
+            thumbBox.SetResourceReference(Border.BackgroundProperty, "DeepBrush");
+            DockPanel.SetDock(thumbBox, Dock.Left);
+            bar.Children.Add(thumbBox);
+            var what = new StackPanel { VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(0, 0, 16, 0) };
+            var title = new TextBlock { Text = MPT("mp_guide_title", "Add to the prop menu"), FontSize = 11.5 };
+            title.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
+            what.Children.Add(title);
+            what.Children.Add(new TextBlock { Text = MPModelName(_mpPick.Int32), FontWeight = FontWeights.Bold, FontSize = 13.5, TextTrimming = TextTrimming.CharacterEllipsis, MaxWidth = 220 });
+            DockPanel.SetDock(what, Dock.Left);
+            bar.Children.Add(what);
+
+            var steps = new WrapPanel { VerticalAlignment = VerticalAlignment.Center };
+            string[] texts =
+            {
+                MPT("mp_guide_step1", "Pick a category"),
+                MPT("mp_guide_step2", "Pick the slot it replaces"),
+                MPT("mp_guide_step3", "Press Set"),
+            };
+            for (int i = 0; i < texts.Length; i++)
+            {
+                int step = i + 1;
+                bool done = step < _mpGuideStep, now = step == _mpGuideStep;
+                var pill = new Border { CornerRadius = new CornerRadius(12), Padding = new Thickness(4, 3, 10, 3), Margin = new Thickness(0, 2, 6, 2), BorderThickness = new Thickness(1) };
+                pill.SetResourceReference(Border.BorderBrushProperty, now ? "AccentBrush" : "LineBrush");
+                pill.SetResourceReference(Border.BackgroundProperty, now ? "DeepBrush" : "SectionBackgroundBrush");
+                var row = new StackPanel { Orientation = Orientation.Horizontal };
+                var dot = new Border { Width = 18, Height = 18, CornerRadius = new CornerRadius(9), Margin = new Thickness(0, 0, 6, 0) };
+                dot.SetResourceReference(Border.BackgroundProperty, done ? "OkBrush" : now ? "AccentBrush" : "DeepBrush");
+                var mark = new TextBlock { Text = done ? "\u2713" : step.ToString(CultureInfo.CurrentCulture), FontSize = 11, FontWeight = FontWeights.Bold, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center };
+                mark.SetResourceReference(TextBlock.ForegroundProperty, done || now ? "PrimaryButtonForeground" : "FaintTextBrush");
+                dot.Child = mark;
+                row.Children.Add(dot);
+                var t = new TextBlock { Text = texts[i], FontSize = 12.5, VerticalAlignment = VerticalAlignment.Center, FontWeight = now ? FontWeights.Bold : FontWeights.Normal };
+                t.SetResourceReference(TextBlock.ForegroundProperty, now ? "TextColor" : done ? "MutedTextBrush" : "FaintTextBrush");
+                row.Children.Add(t);
+                pill.Child = row;
+                steps.Children.Add(pill);
+            }
+            bar.Children.Add(steps);
+            _mpGuide.Child = bar;
+        }
+
         private void RenderMPEditor()
         {
             if (_mpEditor == null)
                 return;
+            RenderMPGuide();
             _mpEditor.Children.Clear();
             var slots = MPSlots(_mpCategory);
             if (_mpSlot >= slots.Count)
