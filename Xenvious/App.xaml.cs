@@ -30,25 +30,24 @@ namespace Xenvious
                         e.Handled = true;
                 }));
 
-            // Scrolling a page over a closed dropdown changed its value and stopped the page.
-            // The wheel only picks in a dropdown that has the focus and when the page was not
-            // just scrolled; otherwise it scrolls the page on.
+            // The wheel over a closed dropdown picks the previous or next entry, but while the
+            // page is being scrolled it scrolls the page on instead of stopping at the dropdown.
             EventManager.RegisterClassHandler(typeof(ComboBox), UIElement.PreviewMouseWheelEvent,
                 new MouseWheelEventHandler((sender, e) =>
                 {
                     var box = (ComboBox)sender;
                     if (box.IsDropDownOpen)
                         return;
-                    if (box.IsKeyboardFocusWithin && Environment.TickCount - _lastPageScroll > 600)
-                        return;
                     e.Handled = true;
-                    for (DependencyObject p = System.Windows.Media.VisualTreeHelper.GetParent(box); p != null; p = System.Windows.Media.VisualTreeHelper.GetParent(p))
-                        if (p is ScrollViewer sv && sv.ScrollableHeight > 0)
-                        {
-                            sv.ScrollToVerticalOffset(sv.VerticalOffset - e.Delta);
-                            _lastPageScroll = Environment.TickCount;
-                            break;
-                        }
+                    if (Environment.TickCount - _lastPageScroll < 600)
+                    {
+                        if (System.Windows.Media.VisualTreeHelper.GetParent(box) is UIElement parent)
+                            parent.RaiseEvent(new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta) { RoutedEvent = UIElement.MouseWheelEvent, Source = box });
+                        return;
+                    }
+                    int index = box.SelectedIndex + (e.Delta > 0 ? -1 : 1);
+                    if (index >= 0 && index < box.Items.Count)
+                        box.SelectedIndex = index;
                 }));
             EventManager.RegisterClassHandler(typeof(ScrollViewer), ScrollViewer.ScrollChangedEvent,
                 new ScrollChangedEventHandler((sender, e) =>
