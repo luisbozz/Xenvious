@@ -273,6 +273,8 @@ namespace Xenvious
             GTA.Offsets.Editor.Vehicle.model = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_veh_model"), 1);
             GTA.Offsets.Editor.Vehicle.rule = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_veh_rule"), 2);
             GTA.Offsets.Editor.Vehicle.pri = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_veh_pri"), 2);
+            GTA.Offsets.Editor.Vehicle.jtp = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_veh_jtp"), 2);
+            GTA.Offsets.Editor.Vehicle.jtf = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_veh_jtf"), 2);
             GTA.Offsets.Editor.Vehicle.jtop = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_veh_jtop"), 2);
             GTA.Offsets.Editor.Vehicle.jtof = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_veh_jtof"), 2);
             GTA.Offsets.Editor.Vehicle.loc = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_veh_loc"), 1);
@@ -347,6 +349,8 @@ namespace Xenvious
             GTA.Offsets.Editor.Objects.bits4 = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_obj_bits4"), 1);
             GTA.Offsets.Editor.Objects.rule = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_obj_rule"), 2);
             GTA.Offsets.Editor.Objects.pri = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_obj_pri"), 2);
+            GTA.Offsets.Editor.Objects.jtp = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_obj_jtp"), 2);
+            GTA.Offsets.Editor.Objects.jtf = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_obj_jtf"), 2);
             GTA.Offsets.Editor.Objects.jtop = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_obj_jtop"), 2);
             GTA.Offsets.Editor.Objects.jtof = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_obj_jtof"), 2);
             GTA.Offsets.Editor.Objects.team = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_obj_team"), 1);
@@ -416,6 +420,7 @@ namespace Xenvious
 
             GTA.Offsets.Editor.Locations.rule = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_goto_rule"), 2);
             GTA.Offsets.Editor.Locations.pri = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_goto_pri"), 2);
+            GTA.Offsets.Editor.Locations.jtp = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_goto_jtp"), 2);
             GTA.Offsets.Editor.Locations.locx = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_goto_locx"), 2);
             GTA.Offsets.Editor.Locations.locy = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_goto_locy"), 2);
             GTA.Offsets.Editor.Locations.locz = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_goto_locz"), 2);
@@ -486,6 +491,8 @@ namespace Xenvious
             GTA.Offsets.Editor.Actor.group = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_actor_group"), 2);
             GTA.Offsets.Editor.Actor.rule = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_actor_rule"), 2);
             GTA.Offsets.Editor.Actor.pri = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_actor_pri"), 2);
+            GTA.Offsets.Editor.Actor.jtp = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_actor_jtp"), 2);
+            GTA.Offsets.Editor.Actor.jtf = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_actor_jtf"), 2);
             GTA.Offsets.Editor.Actor.dmv = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_actor_dmv"), 1);
             GTA.Offsets.Editor.Actor.jtop = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_actor_jtop"), 2);
             GTA.Offsets.Editor.Actor.jtof = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_actor_jtof"), 2);
@@ -893,6 +900,13 @@ namespace Xenvious
             GTA.Offsets.Editor.trrt = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_trrt"), 0);
             GTA.Offsets.Editor.tmt = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_tmt"), 2);
             GTA.Offsets.Editor.tms = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_tms"), 2);
+            GTA.Offsets.Editor.nxtrulb = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_nxtrulb"), 2);
+            GTA.Offsets.Editor.ttime = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_ttime"), 2);
+            GTA.Offsets.Editor.teamfail = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_teamfail"), 1);
+            GTA.Offsets.Editor.rulelist = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_rulelist"), 2);
+            GTA.Offsets.Editor.rulelist_count = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_rulelist_count"), 1);
+            GTA.Offsets.Editor.rulelist_NEXT = ini.ReadInteger("OFFSETS", "OFFSET_rulelist_NEXT");
+            GTA.Offsets.Editor.rulelist_rule_NEXT = ini.ReadInteger("OFFSETS", "OFFSET_rulelist_rule_NEXT");
             GTA.Offsets.Editor.numRounds = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_numRounds"), 0);
             GTA.Offsets.Editor.weth = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_weth"), 0);
             GTA.Offsets.Editor.tod = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_tod"), 0);

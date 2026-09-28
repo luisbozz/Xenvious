@@ -686,6 +686,8 @@ namespace Xenvious
                     public static long model = 0;
                     public static long rule = 0;
                     public static long pri = 0;
+                    public static long jtp = 0;
+                    public static long jtf = 0;
                     public static long jtop = 0;
                     public static long jtof = 0;
                     public static long loc = 0;
@@ -766,6 +768,8 @@ namespace Xenvious
                     public static long bits4 = 0;
                     public static long rule = 0;
                     public static long pri = 0;
+                    public static long jtp = 0;
+                    public static long jtf = 0;
                     public static long jtop = 0;
                     public static long jtof = 0;
                     public static long team = 0;
@@ -839,6 +843,7 @@ namespace Xenvious
                 {
                     public static long rule = 0;
                     public static long pri = 0;
+                    public static long jtp = 0;
                     public static long locx = 0;
                     public static long locy = 0;
                     public static long locz = 0;
@@ -913,6 +918,9 @@ namespace Xenvious
                     public static long group = 0;
                     public static long rule = 0;
                     public static long pri = 0;
+                    // Jump to objective on pass / fail per team (see docs/handoff/RULES.md for the values).
+                    public static long jtp = 0;
+                    public static long jtf = 0;
                     public static long dmv = 0;
                     public static long jtop = 0;
                     public static long jtof = 0;
@@ -1653,6 +1661,13 @@ namespace Xenvious
                 public static long trrt = 0;
                 public static long tmt = 0;
                 public static long tms = 0;
+                public static long nxtrulb = 0;
+                public static long ttime = 0;
+                public static long teamfail = 0;
+                public static long rulelist = 0;
+                public static long rulelist_count = 0;
+                public static long rulelist_NEXT = 0;
+                public static long rulelist_rule_NEXT = 0;
                 public static long numRounds = 0;
                 public static long weth = 0;
                 public static long tod = 0;
