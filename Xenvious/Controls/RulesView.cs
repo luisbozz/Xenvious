@@ -201,7 +201,7 @@ namespace Xenvious
 
         private string Signature()
             => _team + "|" + _selected + "|" + Rules.PublicCreator + "|" + string.Join(";", _rules.Select(r =>
-                $"{r.Text}/{r.NextRules}/{r.TargetScore}/{r.ObjectiveScore}/{r.TakeoverMs}/{r.TimeLimit}/{r.FailsMission}/" +
+                $"{r.Text}/{r.NextRules}/{r.TargetScore}/{r.ObjectiveScore}/{r.TakeoverMs}/{r.TimeLimit}/{r.FailsMission}/{string.Join(".", r.DropZones)}/{r.DropRadius}/" +
                 string.Join(",", r.Links.Select(l => $"{l.Kind}{l.Index}:{l.Type}:{l.Extra}:{l.PassJump}:{l.FailJump}:{Rules.FailJumpBlocked(l, _team, out _)}"))));
 
         // ----- the list -----
@@ -253,6 +253,15 @@ namespace Xenvious
                         extra ? T("rl_extra_tip", "Extra objective: this entity has another rule as well") : null));
                 }
             }
+            foreach (int zone in rule.DropZones)
+                chips.Children.Add(DropChip(string.Format(CultureInfo.CurrentCulture, T("rl_drop_zone", "Drop-off zone {0}"), zone + 1),
+                    T("rl_drop_zone_tip", "Drop-off zone of this rule. In the creator: the rule's Specify Drop-off Zones.")));
+            if (rule.DropRadius > 0)
+                chips.Children.Add(DropChip(string.Format(CultureInfo.CurrentCulture, T("rl_drop_point", "Drop-off point · {0} m"), rule.DropRadius.ToString("0.#", CultureInfo.CurrentCulture)),
+                    T("rl_drop_point_tip", "Drop-off point of this rule and its radius.")));
+            if (Rules.PublicCreator && rule.DropZones.Count == 0 && rule.Links.Any(Rules.IsDelivery))
+                chips.Children.Add(Chip(T("rl_drop_none", "no drop-off zone"), ChipKind.Warn,
+                    T("rl_drop_none_tip", "Collect & deliver needs a drop-off. In the creator: the rule's Specify Drop-off Zones.")));
             // An extra objective on the rule the entity already has does nothing new: the entity is
             // done with this rule once, so the extra one belongs on a later rule.
             foreach (var twice in rule.Links.Where(l => l.Extra && rule.Links.Any(o => !o.Extra && o.Kind == l.Kind && o.Index == l.Index)))
@@ -307,6 +316,23 @@ namespace Xenvious
                 t.SetResourceReference(TextBlock.ForegroundProperty, kind == ChipKind.Type ? "TextColor" : "MutedTextBrush");
             }
             chip.Child = t;
+            return chip;
+        }
+
+        /// <summary>A drop-off as a pin chip, yellow like the game's drop-off marker text.</summary>
+        private static Border DropChip(string text, string tip)
+        {
+            var chip = new Border { CornerRadius = new CornerRadius(5), Padding = new Thickness(6, 1, 7, 2), Margin = new Thickness(0, 0, 5, 5), BorderThickness = new Thickness(1), ToolTip = tip };
+            chip.SetResourceReference(Border.BorderBrushProperty, "WarnBrush");
+            var row = new StackPanel { Orientation = Orientation.Horizontal };
+            var pin = new Path { Data = Geometry.Parse("M6,11 C6,11 10,7.4 10,4.5 A4,4 0 0 0 2,4.5 C2,7.4 6,11 6,11 Z M6,3.2 A1.3,1.3 0 1 1 6,5.8 A1.3,1.3 0 1 1 6,3.2 Z"),
+                StrokeThickness = 1.6, Width = 10, Height = 11, Stretch = Stretch.Uniform, VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(0, 0, 4, 0) };
+            pin.SetResourceReference(Shape.StrokeProperty, "WarnBrush");
+            var t = new TextBlock { Text = text, FontSize = 11.5, FontWeight = FontWeights.Bold };
+            t.SetResourceReference(TextBlock.ForegroundProperty, "WarnBrush");
+            row.Children.Add(pin);
+            row.Children.Add(t);
+            chip.Child = row;
             return chip;
         }
 

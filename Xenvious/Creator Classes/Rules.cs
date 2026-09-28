@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -40,6 +41,8 @@ namespace Xenvious
             public int TakeoverMs;     // ttime
             public int TimeLimit;      // tmt selection index
             public bool FailsMission;  // bit in the team fail bitset
+            public List<int> DropZones = new List<int>(); // Mission Creator: zone indices of the drop-off
+            public float DropRadius;   // older creators: radius of the drop-off point, 0 = none
         }
 
         public static bool Ready => MainWindow.m != null && MainWindow.m.IsProcOpen
@@ -101,6 +104,40 @@ namespace Xenvious
             if (offset != 0)
                 new Global(RuleField(offset, team, rule)).SetInt(value);
         }
+
+        /// <summary>
+        /// The Mission Creator's drop-off zones of a rule ("Specify Drop-off Zones"): a bitset of
+        /// zone indices per team and rule (public_mission_creator func_1322).
+        /// </summary>
+        public static List<int> DropOffZones(int team, int rule)
+        {
+            var zones = new List<int>();
+            if (!PublicCreator || GTA.Offsets.Editor.dozn == 0 || GTA.Offsets.Editor.dozn_NEXT == 0)
+                return zones;
+            long at = GTA.Offsets.Editor.dozn + Team(team) + rule * GTA.Offsets.Editor.dozn_NEXT;
+            for (int word = 0; word < 3; word++)
+            {
+                int bits = new Global(at + word).Get<int>();
+                for (int b = 0; b < 32; b++)
+                    if ((bits & (1 << b)) != 0)
+                        zones.Add(word * 32 + b);
+            }
+            return zones;
+        }
+
+        /// <summary>The older creators' drop-off point of a rule: its radius, 0 when none is placed.</summary>
+        public static float DropOffRadius(int team, int rule)
+        {
+            if (PublicCreator || GTA.Offsets.Editor.dpos == 0 || GTA.Offsets.Editor.drpr == 0)
+                return 0;
+            long at = GTA.Offsets.Editor.dpos + Team(team) + rule * 3;
+            bool placed = new Global(at).Get<float>() != 0 || new Global(at + 1).Get<float>() != 0;
+            return placed ? Math.Max(0.1f, new Global(GTA.Offsets.Editor.drpr + Team(team) + rule).Get<float>()) : 0;
+        }
+
+        /// <summary>A collect-and-deliver objective (creator selections 1, 6, 11).</summary>
+        public static bool IsDelivery(Link link)
+            => link.Kind != Kind.Player && (link.Extra ? link.Type == 1 || link.Type == 6 || link.Type == 11 : link.Type == 1 && link.Kind != Kind.GoTo);
 
         public enum Critical { No, Auto, Yes }
 
@@ -225,6 +262,8 @@ namespace Xenvious
                     TakeoverMs = GetField(GTA.Offsets.Editor.ttime, team, r),
                     TimeLimit = GetField(GTA.Offsets.Editor.tmt, team, r),
                     FailsMission = FailsMission(team, r),
+                    DropZones = DropOffZones(team, r),
+                    DropRadius = DropOffRadius(team, r),
                 });
 
             bool publicCreator = PublicCreator;
