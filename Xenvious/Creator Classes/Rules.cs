@@ -245,6 +245,34 @@ namespace Xenvious
             "Loot threshold", "Points threshold", "Ped goes to location", "Holding rule",
         };
 
+        /// <summary>
+        /// The creator's selection for a rule logic on this kind of entity (func_1378 in the Mission
+        /// Creator), so a vehicle's "kill" reads "Destroy" like in the creator. -1 when there is none.
+        /// </summary>
+        public static int Selection(Kind kind, int logic)
+        {
+            int k = kind == Kind.Ped ? 0 : kind == Kind.Vehicle ? 1 : kind == Kind.Object ? 2 : kind == Kind.GoTo ? 3 : -1;
+            if (k < 0)
+                return -1;
+            switch (logic)
+            {
+                case 1: return new[] { 1, 6, 11, -1 }[k];
+                case 2: return new[] { 2, 7, 12, -1 }[k];
+                case 3: return new[] { 3, 8, 13, -1 }[k];
+                case 4: return new[] { 4, 9, 14, 16 }[k];
+                case 5: return new[] { 5, 10, 15, 17 }[k];
+                case 11: return new[] { 23, 24, 25, -1 }[k];
+                case 12: return new[] { 26, 27, 28, 29 }[k];
+                case 13: return k == 2 ? 30 : -1;
+                case 23: return k == 3 ? 40 : -1;
+                case 24: return k == 3 ? 41 : -1;
+                case 31: return new[] { 46, 50, 51, -1 }[k];
+                case 32: return new[] { 47, 48, 49, -1 }[k];
+                case 35: return k == 0 ? 55 : -1;
+                default: return -1;
+            }
+        }
+
         /// <summary>Time limit selections (tmt) in seconds, from public_mission_controller 1.73, sorted by time.</summary>
         public static readonly (int Selection, int Seconds)[] TimeLimits =
         {

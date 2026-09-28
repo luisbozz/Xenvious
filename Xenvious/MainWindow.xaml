@@ -71,6 +71,35 @@
                 <Setter Property="VerticalAlignment" Value="Center"/>
                 <Setter Property="HorizontalAlignment" Value="Right"/>
             </Style>
+            <!-- Team to test: a row of toggles instead of a small dropdown. -->
+            <Style x:Key="DashTeamButton" TargetType="{x:Type ToggleButton}">
+                <Setter Property="Foreground" Value="{DynamicResource NavMutedBrush}"/>
+                <Setter Property="FontFamily" Value="{DynamicResource Volte}"/>
+                <Setter Property="FontSize" Value="15"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="Width" Value="28"/>
+                <Setter Property="Height" Value="28"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ToggleButton}">
+                            <Border x:Name="b" Background="Transparent" CornerRadius="4">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
+                                </Trigger>
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Setter TargetName="b" Property="Background" Value="{DynamicResource SeactionHeaderBackgroundBrush}"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
             <!-- Cards of the dashboard and the settings: a panel with a header bar. -->
             <Style x:Key="DashCard" TargetType="{x:Type Border}">
                 <Setter Property="Background" Value="{DynamicResource SectionBackgroundBrush}"/>
@@ -510,35 +539,6 @@
                                                     </Trigger>
                                                     <Trigger Property="IsEnabled" Value="False">
                                                         <Setter Property="Cursor" Value="Arrow"/>
-                                                    </Trigger>
-                                                </ControlTemplate.Triggers>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                </Style>
-                                <!-- Team to test: a row of toggles instead of a small dropdown. -->
-                                <Style x:Key="DashTeamButton" TargetType="{x:Type ToggleButton}">
-                                    <Setter Property="Foreground" Value="{DynamicResource NavMutedBrush}"/>
-                                    <Setter Property="FontFamily" Value="{DynamicResource Volte}"/>
-                                    <Setter Property="FontSize" Value="15"/>
-                                    <Setter Property="FontWeight" Value="Bold"/>
-                                    <Setter Property="Width" Value="28"/>
-                                    <Setter Property="Height" Value="28"/>
-                                    <Setter Property="Cursor" Value="Hand"/>
-                                    <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="{x:Type ToggleButton}">
-                                                <Border x:Name="b" Background="Transparent" CornerRadius="4">
-                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                </Border>
-                                                <ControlTemplate.Triggers>
-                                                    <Trigger Property="IsMouseOver" Value="True">
-                                                        <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
-                                                    </Trigger>
-                                                    <Trigger Property="IsChecked" Value="True">
-                                                        <Setter TargetName="b" Property="Background" Value="{DynamicResource SeactionHeaderBackgroundBrush}"/>
-                                                        <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
                                                     </Trigger>
                                                 </ControlTemplate.Triggers>
                                             </ControlTemplate>
