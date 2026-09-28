@@ -535,7 +535,7 @@ namespace Xenvious
         private static readonly string[] CreatorScriptNames =
         {
             "fm_lts_creator", "fm_capture_creator", "fm_deathmatch_creator",
-            "fm_race_creator", "fm_survival_creator", "fm_mission_creator"
+            "fm_race_creator", "fm_survival_creator", "public_mission_creator"
         };
 
         private static string AsciiPattern(string text)
@@ -568,6 +568,7 @@ namespace Xenvious
                 case "fm_capture_creator": return GTA.Offsets.Editor.OFFSET_current_creator_worker_capture;
                 case "fm_deathmatch_creator": return GTA.Offsets.Editor.OFFSET_current_creator_worker_dm;
                 case "fm_race_creator": return GTA.Offsets.Editor.OFFSET_current_creator_worker_race;
+                case "public_mission_creator": return GTA.Offsets.Editor.OFFSET_current_creator_worker_mission;
                 default: return GTA.Offsets.Editor.OFFSET_current_creator_worker_lts;
             }
         }
@@ -764,6 +765,7 @@ namespace Xenvious
                 case "fm_capture_creator": return GTA.Offsets.Editor.OFFSET_current_creator_cam_heading_capture;
                 case "fm_deathmatch_creator": return GTA.Offsets.Editor.OFFSET_current_creator_cam_heading_dm;
                 case "fm_race_creator": return GTA.Offsets.Editor.OFFSET_current_creator_cam_heading_race;
+                case "public_mission_creator": return GTA.Offsets.Editor.OFFSET_current_creator_cam_heading_mission;
                 default: return GTA.Offsets.Editor.OFFSET_current_creator_cam_heading_lts;
             }
         }

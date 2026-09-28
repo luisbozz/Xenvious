@@ -46,7 +46,7 @@ namespace Xenvious
 
         private static bool IsMissionCreator(string creator)
         {
-            return creator == "fm_lts_creator" || creator == "fm_capture_creator" || creator == "fm_mission_creator";
+            return creator == "fm_lts_creator" || creator == "fm_capture_creator" || creator == "public_mission_creator";
         }
 
         /// <summary>
@@ -66,8 +66,7 @@ namespace Xenvious
                 DashMissionSection.Visibility = mission ? Visibility.Visible : Visibility.Collapsed;
                 DashRaceLobby.Visibility = creator == "fm_race_creator" ? Visibility.Visible : Visibility.Collapsed;
                 DashDMSection.Visibility = creator == "fm_deathmatch_creator" ? Visibility.Visible : Visibility.Collapsed;
-                // The map rebuild is only verified for race, LTS and capture (see CreatorMap).
-                BtnDashReloadMap.IsEnabled = creator == "fm_race_creator" || creator == "fm_lts_creator" || creator == "fm_capture_creator";
+                BtnDashReloadMap.IsEnabled = CreatorMap.WorkerOffset(creator) != 0;
             }
 
             if (MainPages.SelectedItem != PageDashboard || !m.IsProcOpen || creator.Length == 0)
@@ -108,6 +107,7 @@ namespace Xenvious
                         TranslateOr("dash_secondary", "{0} secondary"), CountSecondaryCheckpoints(checkpoints));
                     break;
                 case "fm_lts_creator":
+                case "public_mission_creator":
                     label = TranslateOr("dash_actors", "Actors");
                     value = CountOf(GTA.Offsets.Editor.Actor.number);
                     break;

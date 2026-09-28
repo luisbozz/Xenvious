@@ -41,7 +41,7 @@ namespace Xenvious
             { "fm_capture_creator", new[] { "1:21", "5:29", "4:27" } },
             { "fm_race_creator", new[] { "2:28", "2:29", "3:5" } },
             { "fm_deathmatch_creator", new[] { "1:18", "1:24", "5:22" } },
-            { "fm_mission_creator", new[] { "1:0", "3:13" } },
+            { "public_mission_creator", new[] { "1:0", "3:13" } },
         };
 
         private static string T(string key, string fallback) => MainWindow.Instance?.TranslateOr(key, fallback) ?? fallback;

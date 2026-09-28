@@ -186,7 +186,7 @@ namespace Xenvious
                 case "fm_capture_creator": return "Capture Creator";
                 case "fm_deathmatch_creator": return "Deathmatch Creator";
                 case "fm_survival_creator": return "Survival Creator";
-                case "fm_mission_creator": return "Mission Creator";
+                case "public_mission_creator": return "Mission Creator";
                 default: return "Creator";
             }
         }

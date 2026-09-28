@@ -110,7 +110,7 @@ namespace Xenvious
                 case "fm_capture_creator": return "C";
                 case "fm_deathmatch_creator": return "D";
                 case "fm_survival_creator": return "S";
-                case "fm_mission_creator": return "M";
+                case "public_mission_creator": return "M";
                 default: return "";
             }
         }

@@ -860,10 +860,13 @@ namespace Xenvious
                             new Global(GTA.Offsets.Editor.current_team_test).SetInt(index);
                             Functions.Write.writebinarytoaddy(26, m.memory(GTA.Offsets.Editor.localptr[0], new long[] { GTA.Offsets.Editor.localptr[1], GTA.Offsets.Editor.OFFSET_script_local_start, GTA.Offsets.Editor.OFFSET_current_creator_test_capture * 8 }).GetAddress());
                             break;
-                        case "fm_mission_creator":
                         case "fm_lts_creator":
                             new Global(GTA.Offsets.Editor.current_team_test).SetInt(index);
                             Functions.Write.writebinarytoaddy(26, m.memory(GTA.Offsets.Editor.localptr[0], new long[] { GTA.Offsets.Editor.localptr[1], GTA.Offsets.Editor.OFFSET_script_local_start, GTA.Offsets.Editor.OFFSET_current_creator_test_lts * 8 }).GetAddress());
+                            break;
+                        case "public_mission_creator":
+                            new Global(GTA.Offsets.Editor.current_team_test).SetInt(index);
+                            Functions.Write.writebinarytoaddy(26, m.memory(GTA.Offsets.Editor.localptr[0], new long[] { GTA.Offsets.Editor.localptr[1], GTA.Offsets.Editor.OFFSET_script_local_start, GTA.Offsets.Editor.OFFSET_current_creator_test_mission * 8 }).GetAddress());
                             break;
                         case "fm_deathmatch_creator":
                             displayScreenMessage("currently not possible for deathmatch");

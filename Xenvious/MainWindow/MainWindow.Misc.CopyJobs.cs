@@ -500,7 +500,7 @@ namespace Xenvious
                     {
                         case 5: return "fm_lts_creator";
                         case 6: return "fm_capture_creator";
-                        default: return "fm_mission_creator";
+                        default: return "public_mission_creator";
                     }
             }
         }

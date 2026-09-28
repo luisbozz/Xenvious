@@ -17,7 +17,8 @@ namespace Xenvious
     /// *without* touching the job data and builds checkpoints, props, dynamic props,
     /// vehicles and markers again from the globals, then returns to 3. Anything that
     /// writes job data (restore, copy, moving props between lists) uses it to become
-    /// visible. Race, LTS and capture share that numbering; deathmatch and survival
+    /// visible. Race, LTS and capture share that numbering; so does the Public Mission
+    /// Creator (read from its script, not yet tried in game). Deathmatch and survival
     /// do not, so they are left out until checked.
     ///
     /// That path also sends the menu back to the creator's main menu (func_71) and
@@ -117,6 +118,7 @@ namespace Xenvious
                 case "fm_race_creator": return GTA.Offsets.Editor.OFFSET_current_creator_worker_race;
                 case "fm_lts_creator": return GTA.Offsets.Editor.OFFSET_current_creator_worker_lts;
                 case "fm_capture_creator": return GTA.Offsets.Editor.OFFSET_current_creator_worker_capture;
+                case "public_mission_creator": return GTA.Offsets.Editor.OFFSET_current_creator_worker_mission;
                 default: return 0;   // deathmatch / survival: other state numbering
             }
         }
@@ -176,6 +178,7 @@ namespace Xenvious
                 case "fm_race_creator": return GTA.Offsets.Editor.OFFSET_current_creator_pre_race;
                 case "fm_lts_creator": return GTA.Offsets.Editor.OFFSET_current_creator_pre_lts;
                 case "fm_capture_creator": return GTA.Offsets.Editor.OFFSET_current_creator_pre_capture;
+                case "public_mission_creator": return GTA.Offsets.Editor.OFFSET_current_creator_pre_mission;
                 default: return 0;
             }
         }
@@ -201,6 +204,17 @@ namespace Xenvious
                 ulong program = ScrProgramScanner.GetScrProgramByName(creator);
                 if (program == 0)
                     return kept;
+                if (creator == "public_mission_creator")
+                {
+                    // Its state-7 path leaves the menu alone; only the camera store is there.
+                    // The struct is below local 256, so it is LOCAL_U8 (one byte shorter).
+                    var hits = ScrProgramScanner.ScanScrProgramForPattern(program, "7A 7A 29 00 00 20 41 74 3A ? 40 09 33");
+                    if (hits == null || hits.Count != 1)
+                        return kept;
+                    kept.Add((hits[0], MainWindow.m.memory(hits[0].ToString("X")).GetBytes(13)));
+                    MainWindow.m.memory(hits[0].ToString("X")).SetBytes(new byte[13]);
+                    return kept;
+                }
                 // Race: LOCAL_U16 &pre, PUSH_CONST_0, CALL (menu reset) | PUSH_CONST_M1,
                 // LOCAL_U16_STORE x | PUSH_CONST_3, LOCAL_U16 &worker, IOFFSET_U16_STORE 565
                 string raceMenu = $"4F {U16(pre)} 71 5D ? ? ? 70 51 ? ? 74 4F {U16(worker)} 48 {U16(state)}";

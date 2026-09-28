@@ -94,8 +94,8 @@ namespace Xenvious
                         return GTA.Offsets.Editor.OFFSET_current_creator_refresh_dm;
                     case "fm_race_creator":
                         return GTA.Offsets.Editor.OFFSET_current_creator_refresh_race;
-                    case "fm_mission_creator":
-                        return GTA.Offsets.Editor.OFFSET_current_creator_refresh_lts;
+                    case "public_mission_creator":
+                        return GTA.Offsets.Editor.OFFSET_current_creator_refresh_mission;
                     default:
                         return 0;
                 }
@@ -120,8 +120,8 @@ namespace Xenvious
                         return GTA.Offsets.Editor.OFFSET_current_creator_worker_dm;
                     case "fm_race_creator":
                         return GTA.Offsets.Editor.OFFSET_current_creator_worker_race;
-                    case "fm_mission_creator":
-                        return GTA.Offsets.Editor.OFFSET_current_creator_worker_lts;
+                    case "public_mission_creator":
+                        return GTA.Offsets.Editor.OFFSET_current_creator_worker_mission;
                     default:
                         return 0;
                 }
@@ -146,8 +146,8 @@ namespace Xenvious
                         return GTA.Offsets.Editor.OFFSET_current_creator_cam_heading_dm;
                     case "fm_race_creator":
                         return GTA.Offsets.Editor.OFFSET_current_creator_cam_heading_race;
-                    case "fm_mission_creator":
-                        return GTA.Offsets.Editor.OFFSET_current_creator_cam_heading_lts;
+                    case "public_mission_creator":
+                        return GTA.Offsets.Editor.OFFSET_current_creator_cam_heading_mission;
                     default:
                         return 0;
                 }
@@ -172,8 +172,8 @@ namespace Xenvious
                         return GTA.Offsets.Editor.OFFSET_current_creator_pre_dm;
                     case "fm_race_creator":
                         return GTA.Offsets.Editor.OFFSET_current_creator_pre_race;
-                    case "fm_mission_creator":
-                        return GTA.Offsets.Editor.OFFSET_current_creator_pre_lts;
+                    case "public_mission_creator":
+                        return GTA.Offsets.Editor.OFFSET_current_creator_pre_mission;
                     default:
                         return 0;
                 }
