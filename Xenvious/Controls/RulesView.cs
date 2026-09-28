@@ -202,7 +202,7 @@ namespace Xenvious
         private string Signature()
             => _team + "|" + _selected + "|" + Rules.PublicCreator + "|" + string.Join(";", _rules.Select(r =>
                 $"{r.Text}/{r.NextRules}/{r.TargetScore}/{r.ObjectiveScore}/{r.TakeoverMs}/{r.TimeLimit}/{r.FailsMission}/" +
-                string.Join(",", r.Links.Select(l => $"{l.Kind}{l.Index}:{l.Type}:{l.Extra}:{l.PassJump}:{l.FailJump}"))));
+                string.Join(",", r.Links.Select(l => $"{l.Kind}{l.Index}:{l.Type}:{l.Extra}:{l.PassJump}:{l.FailJump}:{Rules.FailJumpBlocked(l, _team, out _)}"))));
 
         // ----- the list -----
 
@@ -500,6 +500,13 @@ namespace Xenvious
                 Hint(Rules.PublicCreator
                     ? T("rl_jump_hint_pmc", "✓ / ✗: where the team goes when this objective is passed or failed. The Mission Creator only jumps forward.")
                     : T("rl_jump_hint", "✓ / ✗: where the team goes when this objective is passed or failed."));
+            foreach (int to in rule.Links.Where(l => Rules.FailJumpBlocked(l, _team, out _)).Select(l => l.FailJump).Distinct())
+            {
+                var warn = Faint("⚠ " + CriticalTip(rule, to), 12);
+                warn.Margin = new Thickness(0, 6, 0, 0);
+                warn.SetResourceReference(TextBlock.ForegroundProperty, "WarnBrush");
+                _detail.Children.Add(warn);
+            }
         }
 
         private FrameworkElement JumpBox(Rules.Link link, bool pass)

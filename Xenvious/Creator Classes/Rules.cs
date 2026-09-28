@@ -102,6 +102,55 @@ namespace Xenvious
                 new Global(RuleField(offset, team, rule)).SetInt(value);
         }
 
+        public enum Critical { No, Auto, Yes }
+
+        /// <summary>
+        /// The Mission Creator's "Mission Critical" of an entity for a team (Critical for Team N:
+        /// Auto / Yes / No). Auto is a bit on the entity, Yes a bit in a team bitset
+        /// (public_mission_creator func_2287 and neighbours).
+        /// </summary>
+        public static Critical CriticalFor(Link link, int team)
+        {
+            long auto = 0, yes = 0;
+            int autoBit = 0;
+            switch (link.Kind)
+            {
+                case Kind.Vehicle:
+                    auto = GTA.Offsets.Editor.Vehicle.vbs12 == 0 ? 0 : GTA.Offsets.Editor.Vehicle.vbs12 + link.Index * GTA.Offsets.Editor.Vehicle.NEXT; autoBit = 14;
+                    yes = GTA.Offsets.Editor.mcvbs == 0 ? 0 : GTA.Offsets.Editor.mcvbs + team;
+                    break;
+                case Kind.Object:
+                    auto = GTA.Offsets.Editor.Objects.bits6 == 0 ? 0 : GTA.Offsets.Editor.Objects.bits6 + link.Index * GTA.Offsets.Editor.Objects.NEXT; autoBit = 22;
+                    yes = GTA.Offsets.Editor.mcobs == 0 ? 0 : GTA.Offsets.Editor.mcobs + team;
+                    break;
+                case Kind.Ped:
+                    auto = GTA.Offsets.Editor.Actor.pbs25 == 0 ? 0 : GTA.Offsets.Editor.Actor.pbs25 + link.Index * GTA.Offsets.Editor.Actor.NEXT; autoBit = 13;
+                    yes = GTA.Offsets.Editor.mcpbs == 0 || GTA.Offsets.Editor.mcpbs_NEXT == 0 ? 0 : GTA.Offsets.Editor.mcpbs + team * GTA.Offsets.Editor.mcpbs_NEXT + link.Index / 32;
+                    break;
+            }
+            if (auto != 0 && (new Global(auto).Get<int>() & (1 << (autoBit + team))) != 0)
+                return Critical.Auto;
+            int bit = link.Kind == Kind.Ped ? link.Index % 32 : link.Index;
+            if (yes != 0 && bit < 32 && (new Global(yes).Get<int>() & (1 << bit)) != 0)
+                return Critical.Yes;
+            return Critical.No;
+        }
+
+        /// <summary>
+        /// A ✗ jump the Mission Controller never takes: when a critical entity dies the team fails
+        /// the mission first (public_mission_controller func_596 / func_598). Auto only counts
+        /// while the entity is needed, which it is on its own rule, and never on a kill objective.
+        /// </summary>
+        public static bool FailJumpBlocked(Link link, int team, out Critical critical)
+        {
+            critical = Critical.No;
+            if (!PublicCreator || link.FailJump < 0 || link.Kind == Kind.Player || link.Kind == Kind.GoTo)
+                return false;
+            critical = CriticalFor(link, team);
+            bool kill = link.Extra ? link.Type == 2 || link.Type == 7 || link.Type == 12 : link.Type == 2;
+            return critical == Critical.Yes || critical == Critical.Auto && !kill;
+        }
+
         public static bool FailsMission(int team, int rule)
             => GTA.Offsets.Editor.teamfail != 0 && (new Global(GTA.Offsets.Editor.teamfail + Team(team)).Get<int>() & (1 << rule)) != 0;
 

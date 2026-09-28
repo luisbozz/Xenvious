@@ -35,7 +35,7 @@ namespace Xenvious
                 // Rows wrap and grow with the window; the arrows follow them.
                 _rows.SizeChanged += (_, __) => DrawArrows();
             }
-            _flow = RuleFlow.Build(_rules);
+            _flow = RuleFlow.Build(_rules, l => Rules.FailJumpBlocked(l, _team, out _));
             _rows.Children.Clear();
             _arrows.Children.Clear();
             _parts.Clear();
@@ -132,6 +132,8 @@ namespace Xenvious
             }
             foreach (var e in edges.Where(e => e.Kind == RuleFlow.Kind.Fail))
                 panel.Children.Add(FlowChip("✗ → " + Rule(e.To), "BadBrush", T("rl_flow_fail_tip", "Jump when the objective is failed")));
+            foreach (var e in edges.Where(e => e.Kind == RuleFlow.Kind.FailBlocked))
+                panel.Children.Add(IgnoredChip("✗ → " + Rule(e.To), CriticalTip(_rules[rule], e.To)));
             return panel.Children.Count == 0 ? null : panel;
         }
 
@@ -147,11 +149,25 @@ namespace Xenvious
             return chip;
         }
 
-        /// <summary>A next-objective override that a ✓ jump on the same rule beats in game.</summary>
-        private static FrameworkElement IgnoredChip(string text)
+        /// <summary>Why a ✗ jump never happens: the entities behind it are mission critical.</summary>
+        private string CriticalTip(Rules.Rule rule, int to)
+        {
+            var names = rule.Links.Where(l => l.FailJump == to).Select(l =>
+            {
+                Rules.FailJumpBlocked(l, _team, out var critical);
+                string how = critical == Rules.Critical.Yes ? T("rl_crit_yes", "Yes") : T("rl_crit_auto", "Auto");
+                return KindName(l.Kind) + " " + (l.Index + 1) + " (" + how + ")";
+            });
+            return string.Format(CultureInfo.CurrentCulture, T("rl_crit_tip",
+                "{0} is mission critical for team {1}. When it is destroyed the mission fails before the ✗ jump happens. In the creator set Mission Critical → Critical for Team {1} to No."),
+                string.Join(", ", names), _team + 1);
+        }
+
+        /// <summary>A jump that is set but never happens (a next objective beaten by a ✓ jump, or a ✗ jump of a critical entity).</summary>
+        private static FrameworkElement IgnoredChip(string text, string tip = null)
         {
             var chip = new Grid { Margin = new Thickness(0, 0, 6, 4),
-                ToolTip = T("rl_flow_noeffect_tip", "A ✓ jump is set on this rule. In the game the jump wins, so the next objective does nothing.") };
+                ToolTip = tip ?? T("rl_flow_noeffect_tip", "A ✓ jump is set on this rule. In the game the jump wins, so the next objective does nothing.") };
             var frame = new Rectangle { RadiusX = 11, RadiusY = 11, StrokeThickness = 1, StrokeDashArray = new DoubleCollection { 3, 2 } };
             frame.SetResourceReference(Shape.StrokeProperty, "FaintTextBrush");
             var t = new TextBlock { FontSize = 12, FontWeight = FontWeights.Bold, Margin = new Thickness(9, 1, 9, 2) };
@@ -288,10 +304,11 @@ namespace Xenvious
                     _arrows.Children.Add(line);
                     continue;
                 }
-                string brush = e.Kind == RuleFlow.Kind.Pass ? "OkBrush" : e.Kind == RuleFlow.Kind.Fail ? "BadBrush" : e.Kind == RuleFlow.Kind.Next ? "AccentBrush" : "FaintTextBrush";
-                bool ignored = e.Kind == RuleFlow.Kind.NextIgnored;
+                bool fail = e.Kind == RuleFlow.Kind.Fail || e.Kind == RuleFlow.Kind.FailBlocked;
+                string brush = e.Kind == RuleFlow.Kind.Pass ? "OkBrush" : fail ? "BadBrush" : e.Kind == RuleFlow.Kind.Next ? "AccentBrush" : "FaintTextBrush";
+                bool ignored = e.Kind == RuleFlow.Kind.NextIgnored || e.Kind == RuleFlow.Kind.FailBlocked;
                 double x = gutter - 14 - e.Lane * LaneWidth, r = 7;
-                double ys = a.Cy + (e.Kind == RuleFlow.Kind.Fail ? 8 : ignored ? -8 : 0), ye = b.Cy;
+                double ys = a.Cy + (fail ? 8 : ignored ? -8 : 0), ye = b.Cy;
                 double xe = e.To == _flow.Count ? b.Cx - 20 : b.Left - 2;
                 var path = Stroke($"M{F(a.Left)},{F(ys)} H{F(x + r)} Q{F(x)},{F(ys)} {F(x)},{F(ys + r)} V{F(ye - r)} Q{F(x)},{F(ye)} {F(x + r)},{F(ye)} H{F(xe)}",
                     brush, ignored ? new DoubleCollection { 2, 2 } : null, (ignored ? 0.7 : 1) * dim);

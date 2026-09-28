@@ -7,11 +7,12 @@ namespace Xenvious
     /// Where a team goes after each rule, and which rules it can reach. A ✓ jump on an entity wins
     /// over the rule's next-objective override (seen in game: rule 3 with next = 4 and ✓ → 6 went
     /// to 6), the override wins over the next rule, and ✗ jumps branch off on failure. Only forward
-    /// jumps count; the Mission Controller drops the others (func_147).
+    /// jumps count; the Mission Controller drops the others (func_147). A ✗ jump of a mission
+    /// critical entity never happens: its death ends the mission first.
     /// </summary>
     internal sealed class RuleFlow
     {
-        public enum Kind { Straight, Unused, Pass, Fail, Next, NextIgnored }
+        public enum Kind { Straight, Unused, Pass, Fail, Next, NextIgnored, FailBlocked }
         public enum Reach { Main, Branch, Never }
 
         public sealed class Edge
@@ -34,7 +35,8 @@ namespace Xenvious
 
         public bool HasJumps => Edges.Any(e => e.IsJump);
 
-        public static RuleFlow Build(IReadOnlyList<Rules.Rule> rules)
+        /// <param name="failBlocked">Whether an entity's ✗ jump can never happen.</param>
+        public static RuleFlow Build(IReadOnlyList<Rules.Rule> rules, System.Func<Rules.Link, bool> failBlocked)
         {
             int n = rules.Count;
             var flow = new RuleFlow { Count = n };
@@ -57,7 +59,8 @@ namespace Xenvious
                 }
                 else
                     flow.Add(i, i + 1, Kind.Straight);
-                fail.ForEach(j => flow.Add(i, j, Kind.Fail));
+                foreach (int j in fail)
+                    flow.Add(i, j, rule.Links.Where(l => l.FailJump == j).All(failBlocked) ? Kind.FailBlocked : Kind.Fail);
             }
             flow.FindReach();
             flow.AssignLanes();
@@ -97,7 +100,7 @@ namespace Xenvious
                 if (Reached[r] == Reach.Never)
                 {
                     // The nearest reachable rule that jumps past this one names the reason.
-                    var by = Edges.Where(e => e.IsJump && e.Kind != Kind.NextIgnored && e.From < r && e.To > r && any.Contains(e.From))
+                    var by = Edges.Where(e => e.IsJump && e.Kind != Kind.NextIgnored && e.Kind != Kind.FailBlocked && e.From < r && e.To > r && any.Contains(e.From))
                         .OrderByDescending(e => e.From).FirstOrDefault();
                     if (by != null) { SkippedBy[r] = by.From; SkippedTo[r] = by.To; }
                 }
