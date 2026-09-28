@@ -22,6 +22,34 @@ namespace Xenvious
             InitializeComponent();
         }
 
+        /// <summary>Accent frame for the page's main card (the Vehicles page).</summary>
+        public bool IsHero
+        {
+            set
+            {
+                if (value) Root.SetResourceReference(System.Windows.Controls.Border.BorderBrushProperty, "AccentBrush");
+                else Root.BorderBrush = System.Windows.Media.Brushes.Transparent;
+            }
+        }
+
+        /// <summary>Icon in the header, like the SectionCard cards next to it.</summary>
+        public System.Windows.Media.Geometry HeaderIcon
+        {
+            set
+            {
+                IconPath.Data = value;
+                IconTile.Visibility = value == null ? Visibility.Collapsed : Visibility.Visible;
+            }
+        }
+
+        /// <summary>Chips under the name that say what the entity does in the mission.</summary>
+        public void SetInfo(IEnumerable<UIElement> chips)
+        {
+            InfoChips.Children.Clear();
+            foreach (var chip in chips)
+                InfoChips.Children.Add(chip);
+        }
+
         /// <summary>The list the card looks models up in ("prop" or "actor" items).</summary>
         public Func<IReadOnlyList<CatalogItem>> Items { get; set; }
 

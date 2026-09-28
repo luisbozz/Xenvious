@@ -12,6 +12,7 @@ namespace Xenvious
         {
             VehExtraRules.Attach(ddvehno, ExtraObjectives.TypeVehicle);
             VehExtraRules.HelpRequested += (_, __) => OpenExtraObjectives();
+            InitVehicleLayout();
             ActorExtraRules.Attach(ddactorno, ExtraObjectives.TypePed);
             ActorExtraRules.HelpRequested += (_, __) => OpenExtraObjectives();
             ObjExtraRules.Attach(ddobjno, ExtraObjectives.TypeObject);

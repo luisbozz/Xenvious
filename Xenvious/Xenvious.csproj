@@ -185,6 +185,9 @@
     <Compile Include="Controls\PlayAreaView.cs" />
     <Compile Include="Controls\GtaTextAssist.cs" />
     <Compile Include="Controls\RulesView.cs" />
+    <Compile Include="Controls\EntityRulesCard.cs" />
+    <Compile Include="Controls\SectionCard.cs" />
+    <Compile Include="Controls\RuleStrip.cs" />
     <Compile Include="Controls\MenuBitsView.cs" />
     <Compile Include="Controls\VisibilityCard.cs" />
     <Compile Include="Controls\ModelCard.xaml.cs">
@@ -456,6 +459,7 @@
     <Compile Include="MainWindow\MainWindow.Survival.cs" />
     <Compile Include="MainWindow\MainWindow.Teleport.cs" />
     <Compile Include="MainWindow\MainWindow.Vehicles.cs" />
+    <Compile Include="MainWindow\MainWindow.VehicleLayout.cs" />
     <Compile Include="MainWindow\MainWindow.Weapons.cs" />
     <Compile Include="MainWindow\MainWindow.Worker.cs" />
     <Compile Include="MainWindow\MainWindow.Zones.cs" />
