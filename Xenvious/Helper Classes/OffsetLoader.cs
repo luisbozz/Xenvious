@@ -1237,6 +1237,7 @@ namespace Xenvious
             GTA.Editor.prop_model_centitydef_whitelist.AddRange(ini.ReadString("OTHER", "prop_model_centitydef_whitelist").Split(','));
             GTA.Editor.prop_model_stunt_with_color_option.AddRange(ini.ReadString("OTHER", "prop_model_stunt_with_color_option").Split(','));
             GTA.Editor.prop_model_blacklisted.AddRange(ini.ReadString("OTHER", "prop_model_blacklisted").Split(','));
+            GTA.Editor.prop_model_raceonly.AddRange(ini.ReadString("OTHER", "prop_model_raceonly").Split(','));
             GTA.Editor.dprop_model_activationtimer.AddRange(ini.ReadString("OTHER", "dprop_model_activationtimer").Split(','));
 
 

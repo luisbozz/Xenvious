@@ -1185,8 +1185,9 @@ namespace Xenvious
 
         // "Barriers 3, Ramps 12": where a model already is in the loaded creator's menu.
         // Models on the prop blacklist (offsets.ini [OTHER] prop_model_blacklisted, from the
-        // scripts' IS_PROP_A_DEV_ONLY_PLACEABLE_PROP): a user-made job gets them replaced by
-        // PROP_CONST_FENCE02B when it loads. The props pages mark the same list.
+        // scripts' IS_PROP_A_DEV_ONLY_PLACEABLE_PROP, including the UFO ships that depend on a
+        // tunable): a user-made job gets them replaced by PROP_CONST_FENCE02B when it loads. The
+        // props pages mark the same list.
         private static HashSet<int> _mpBlacklist;
         private static bool MPBlacklisted(int hash)
         {
@@ -1219,6 +1220,19 @@ namespace Xenvious
             string script = GTA.Editor.ModdedPropSources[_mpCreator].ScriptName;
             bool patched = GTA.Editor.ScrPatches?.Any(p => p.patch_name == "blue fence props fix" && p.script_name == script && p.enabled) == true;
             return !patched;
+        }
+
+        private static HashSet<int> _mpRaceOnly;
+
+        // Race-only props (paddock, pit garage, grandstand) turn into the fence when a job that is
+        // not a race loads.
+        private bool MPRaceOnlyElsewhere(int hash)
+        {
+            if (_mpCreator < 0 || GTA.Editor.ModdedPropSources[_mpCreator].ScriptName == "fm_race_creator")
+                return false;
+            if (_mpRaceOnly == null)
+                _mpRaceOnly = new HashSet<int>((GTA.Editor.prop_model_raceonly ?? new List<string>()).Select(x => int.TryParse(x, NumberStyles.Integer, CultureInfo.InvariantCulture, out int v) ? v : 0).Where(v => v != 0));
+            return _mpRaceOnly.Contains(hash);
         }
 
         // A small outlined pill, as in the mockup ("changed", "Blacklist").
@@ -1300,6 +1314,12 @@ namespace Xenvious
                 {
                     blacklisted++;
                     pills.Children.Add(MPPill(MPT("mp_blacklist", "Blacklist"), "BadBrush"));
+                }
+                if (MPRaceOnlyElsewhere(slot.IntegerValue))
+                {
+                    var race = MPPill(MPT("mp_raceonly", "Race only"), "BadBrush");
+                    race.ToolTip = MPT("mp_raceonly_tip", "Race-only prop: when a job that is not a race loads, the game replaces it with the blue fence.");
+                    pills.Children.Add(race);
                 }
                 if (MPBecomesFence(slot.IntegerValue, _mpCategory.Table))
                 {
@@ -1466,6 +1486,16 @@ namespace Xenvious
                 _mpEditor.Children.Add(note);
             }
             int shown = _mpPick?.Int32 ?? slot.IntegerValue;
+            if (MPRaceOnlyElsewhere(shown))
+            {
+                var race = new Border { CornerRadius = new CornerRadius(0, 6, 6, 0), BorderThickness = new Thickness(3, 0, 0, 0), Padding = new Thickness(10, 8, 10, 8), Margin = new Thickness(0, 0, 0, 10) };
+                race.SetResourceReference(Border.BorderBrushProperty, "BadBrush");
+                race.SetResourceReference(Border.BackgroundProperty, "DeepBrush");
+                var rt = new TextBlock { Text = MPT("mp_raceonly_tip", "Race-only prop: when a job that is not a race loads, the game replaces it with the blue fence."), TextWrapping = TextWrapping.Wrap, FontSize = 12.5 };
+                rt.SetResourceReference(TextBlock.ForegroundProperty, "MutedTextBrush");
+                race.Child = rt;
+                _mpEditor.Children.Add(race);
+            }
             if (MPBecomesFence(shown, _mpCategory.Table))
             {
                 var fence = new Border { CornerRadius = new CornerRadius(0, 6, 6, 0), BorderThickness = new Thickness(3, 0, 0, 0), Padding = new Thickness(10, 8, 10, 8), Margin = new Thickness(0, 0, 0, 10) };

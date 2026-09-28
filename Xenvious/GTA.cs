@@ -1829,6 +1829,8 @@ namespace Xenvious
             public static List<string> prop_model_centitydef_whitelist = new List<string>();
             public static List<string> prop_model_stunt_with_color_option = new List<string>();
             public static List<string> prop_model_blacklisted = new List<string>();
+            // IS_PROP_A_RACE_ONLY_PROP: outside races a loaded job gets these as the fence.
+            public static List<string> prop_model_raceonly = new List<string>();
             public static List<string> dprop_model_activationtimer = new List<string>();
 
             public static List<ScrPatches> ScrPatches = new List<ScrPatches>();
