@@ -211,6 +211,17 @@ deleted or moved, the public creator renumbers the jumps like priorities (`func_
 - a jump to the deleted rule becomes `-1`,
 - a swap of two rules swaps the values.
 
+**Mission critical entities never take their fail jump** (checked in game 2026-09-28). A vehicle,
+object or actor has "Mission Critical → Critical for Team N" = Auto / Yes / No in the public
+creator (`func_2287` and its neighbours). Auto is a bit on the entity (vehicle `vbs12` `f_126`
+bit 14+team, object `bits6` `f_153` bit 22+team, actor `pbs25` `f_599` bit 13+team); Yes is a
+bit per entity in a team bitset (`mcvbs` `f_112640[team]`, `mcobs` `f_112645[team]`, actors
+`f_112623[team /*4*/]` int[3]). When the entity dies, `func_596` asks `func_598`: Yes, or Auto
+while the entity is needed for a current or later objective (not a destroy one), fails the
+mission with reason 9 (`func_597`) and `jtf` is never read. Only with No does the objective fail
+and the fail jump happen. Example: protect vehicle on rule 4 with `jtf` → rule 8 ended the
+mission until Critical for Team 1 was set to No.
+
 Example CC5, rule 9 "protect the Aztecas contact" (ped 14): `pjtp0 = 11` (he survives → rule 12,
 kill waves), `pjtf0 = 9` (he dies → rule 10, get in his Caracara). The Caracara vehicles (rules
 10/11) have `vjtp0 = 14` (→ rule 15, the end). Go-tos 2/3 on rule 2 (choose a chapter) have
@@ -235,6 +246,11 @@ is a **bitset of rules**. When the rule completes, `func_551`/`func_552` in
 Then the conditional jump (`cojr<t>` `f_19081[rule]` = target rule, `cojc<t>` `f_19099[rule]`
 = condition) can replace it. It compares team 0 and team 1 scores; with condition 0, it jumps
 on a draw.
+
+**A pass jump beats the override** (checked in game 2026-09-28): rule 3 with next objective = rule
+4 and an entity pass jump to rule 6 went to rule 6. The code does not show the order clearly
+(`func_125` stores the jump in `Local_47549.f_1533`, `func_551` applies the override), so this
+comes from the test.
 
 Example CC5: rule 4 "destroy the Burrito" has `nxtrulb0[3] = 64` (bit 6), so after it the team
 skips rules 5–6 (the other branch) and continues with rule 7.
