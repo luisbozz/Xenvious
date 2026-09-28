@@ -1455,7 +1455,10 @@
                                                                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                                                                     <local:MasonryPanel Margin="0,12,0,12">
                                                                         <StackPanel>
-                                                                            <local:ModelCard x:Name="PropModelCard" Margin="0,0,0,12"/>
+                                                                            <local:ModelCard x:Name="PropModelCard" Margin="0,0,0,4"/>
+                                                                            <Button Style="{StaticResource FormButton}" Tag="static" Click="PropToMenu_Click" HorizontalAlignment="Left" Padding="12,0" Margin="0,0,0,12"
+                                                                                    Content="{Binding Translation[mp_tomenu], FallbackValue='Add to the prop menu (Modded Props)'}"
+                                                                                    ToolTip="{Binding Translation[mp_tomenu_tip], FallbackValue='Opens Modded Props with this model picked: choose the slot it should replace.'}"/>
                                                                         </StackPanel>
                                                                         <StackPanel>
                                                                             <Border Style="{StaticResource DashCard}">
@@ -2050,7 +2053,10 @@
                                                                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                                                                     <local:MasonryPanel Margin="0,12,0,12">
                                                                         <StackPanel>
-                                                                            <local:ModelCard x:Name="DPropModelCard" Margin="0,0,0,12"/>
+                                                                            <local:ModelCard x:Name="DPropModelCard" Margin="0,0,0,4"/>
+                                                                            <Button Style="{StaticResource FormButton}" Tag="dynamic" Click="PropToMenu_Click" HorizontalAlignment="Left" Padding="12,0" Margin="0,0,0,12"
+                                                                                    Content="{Binding Translation[mp_tomenu], FallbackValue='Add to the prop menu (Modded Props)'}"
+                                                                                    ToolTip="{Binding Translation[mp_tomenu_tip], FallbackValue='Opens Modded Props with this model picked: choose the slot it should replace.'}"/>
                                                                         </StackPanel>
                                                                         <StackPanel>
                                                                             <Border Style="{StaticResource DashCard}">

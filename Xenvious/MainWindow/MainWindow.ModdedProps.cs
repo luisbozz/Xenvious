@@ -584,8 +584,11 @@ namespace Xenvious
             return list.ToArray();
         }
 
-        // .cprp files: field sN holds the hashes of table (import mapping, kept for old files).
-        private static readonly int[] CprpTable = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 13, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 50, 48 };
+        // .cprp files: field sN holds the hashes of a table. Import and export map the fields
+        // differently (13/14, 23/24, 33/34, 40, 41); both are kept exactly as they always were so
+        // files written by earlier versions still come back the same way.
+        private static readonly int[] CprpImportTable = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 13, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 50, 48 };
+        private static readonly int[] CprpExportTable = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 13, 15, 16, 17, 18, 19, 20, 21, 22, 24, 23, 25, 26, 27, 28, 29, 30, 31, 32, 34, 33, 35, 36, 37, 38, 39, 40, 41 };
 
         private int _mpCreator = -1;
         private MPCategory _mpCategory = MPCategories[0];
@@ -599,15 +602,44 @@ namespace Xenvious
 
         private StackPanel _mpCreators, _mpCatList, _mpEditor, _mpImport, _mpForce;
         private WrapPanel _mpSlots;
-        private TextBlock _mpCatTitle, _mpSlotHint, _mpChanged, _mpBulkInfo, _mpStatus;
+        private TextBlock _mpCatTitle, _mpSlotHint, _mpChanged, _mpBulkInfo, _mpStatus, _mpSource;
         private TextBox _mpBulk;
         private FrameworkElement _mpListPanel;
-        private System.Windows.Controls.Primitives.ToggleButton _mpModeGrid, _mpModeList;
+        private StackPanel _mpModeSeg;
         private CheckBox _mpAllBox, _mpMurica;
         private JSON.ModdedPropJSON.Rootobject _mpImported;
+        private StackPanel _mpSaved;
+        private string _mpSaveName = "";
         private string _mpImportedName;
 
         private string MPT(string key, string fallback) => TranslateOr(key, fallback);
+
+        // Set when a model was brought over from the props or dynamic props page.
+        private string _mpFrom;
+
+        // Props / Dynamic props: take the model of the selected entry over to Modded Props, so it
+        // can replace a slot of the prop menu. The creator places everything from the Dynamic
+        // library (PROP_LIBRARY_DYNAMIC) as a dynamic prop and everything else as a static one,
+        // so a dynamic prop is sent to the Dynamics category.
+        private void PropToMenu_Click(object sender, RoutedEventArgs e)
+        {
+            if (!m.IsProcOpen)
+                return;
+            bool dynamic = (sender as FrameworkElement)?.Tag as string == "dynamic";
+            long model = dynamic ? GTA.Offsets.Editor.DProps.model : GTA.Offsets.Editor.Props.model;
+            long next = dynamic ? GTA.Offsets.Editor.DProps.NEXT : GTA.Offsets.Editor.Props.NEXT;
+            int index = dynamic ? dddpropno.SelectedIndex : ddpropno.SelectedIndex;
+            if (model == 0 || index < 0)
+                return;
+            int hash = new Global(model + next * index).Get<int>();
+            _mpPick = PropCatalog.FirstOrDefault(c => c.Int32 == hash) ?? new CatalogItem(MPHex(hash), "", unchecked((uint)hash), "", "prop");
+            _mpFrom = dynamic ? "dynamic" : "static";
+            if (dynamic)
+                _mpCategory = MPCategories.First(c => c.Table == (int)PropCategory.mp_dynamics);
+            _mpSlot = 0;
+            BtnModdedProps_Click(sender, e);
+            RenderMPAll();
+        }
 
         private void BtnModdedProps_Click(object sender, RoutedEventArgs e)
         {
@@ -673,9 +705,9 @@ namespace Xenvious
             _mpAllBox.Click += (_, __) => { _mpAllCreators = _mpAllBox.IsChecked == true; RenderMPEditor(); };
             allRow.Children.Add(_mpAllBox);
             actions.Children.Add(allRow);
-            actions.Children.Add(MPButton(MPT("mp_import", "Import"), (_, __) => ImportMProps()));
-            actions.Children.Add(MPButton(MPT("mp_export", "Export"), (_, __) => ExportMProps()));
-            actions.Children.Add(MPButton(MPT("mp_restoreall", "Restore all"), (_, __) => RestoreMProps()));
+            actions.Children.Add(MPButton(MPT("mp_import", "Import"), (_, __) => ImportMProps(), icon: "M8,2 V10 M4.5,6.5 L8,10 L11.5,6.5 M2.5,13.5 H13.5"));
+            actions.Children.Add(MPButton(MPT("mp_export", "Export"), (_, __) => ExportMProps(), icon: "M8,10 V2 M4.5,5.5 L8,2 L11.5,5.5 M2.5,13.5 H13.5"));
+            actions.Children.Add(MPButton(MPT("mp_restoreall", "Restore all"), (_, __) => RestoreMProps(), icon: "M3,8 A5,5 0 1 0 4.5,4.4 M3,2.5 V5 H5.5"));
             bar.Children.Add(actions);
             _mpCreators = new StackPanel { Orientation = Orientation.Horizontal, VerticalAlignment = VerticalAlignment.Center };
             bar.Children.Add(_mpCreators);
@@ -703,13 +735,9 @@ namespace Xenvious
 
             // Slots
             _mpCatTitle = new TextBlock();
-            _mpModeGrid = MPSegment(MPT("mp_tiles", "Tiles"));
-            _mpModeList = MPSegment(MPT("mp_list", "List"));
-            _mpModeGrid.Click += (_, __) => { _mpListMode = false; RenderMPSlots(); };
-            _mpModeList.Click += (_, __) => { _mpListMode = true; RenderMPSlots(); };
-            var seg = new StackPanel { Orientation = Orientation.Horizontal };
-            seg.Children.Add(_mpModeGrid);
-            seg.Children.Add(_mpModeList);
+            _mpModeSeg = new StackPanel { Orientation = Orientation.Horizontal };
+            var seg = MPSegmentTrack(_mpModeSeg);
+            seg.Padding = new Thickness(2);
             var slotsBody = new DockPanel();
             var hintRow = new DockPanel { Margin = new Thickness(0, 0, 0, 8) };
             _mpChanged = new TextBlock { FontWeight = FontWeights.Bold };
@@ -718,6 +746,9 @@ namespace Xenvious
             hintRow.Children.Add(_mpChanged);
             _mpSlotHint = new TextBlock { FontSize = 12 };
             _mpSlotHint.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
+            _mpSource = new TextBlock { FontSize = 11.5, Margin = new Thickness(12, 0, 12, 0), VerticalAlignment = VerticalAlignment.Center };
+            DockPanel.SetDock(_mpSource, Dock.Right);
+            hintRow.Children.Add(_mpSource);
             hintRow.Children.Add(_mpSlotHint);
             DockPanel.SetDock(hintRow, Dock.Top);
             slotsBody.Children.Add(hintRow);
@@ -757,6 +788,8 @@ namespace Xenvious
             var side = new StackPanel();
             _mpEditor = new StackPanel();
             side.Children.Add(MPCard(MPT("mp_slot", "Slot"), _mpEditor, null));
+            _mpSaved = new StackPanel();
+            side.Children.Add(MPCard(MPT("mp_saved", "Saved lists"), _mpSaved, null));
             _mpImport = new StackPanel();
             var importCard = MPCard(MPT("mp_import", "Import"), _mpImport, null);
             importCard.Visibility = Visibility.Collapsed;
@@ -795,15 +828,49 @@ namespace Xenvious
             RenderMPAll();
         }
 
-        private Button MPButton(string text, RoutedEventHandler click, bool primary = false)
+        private Button MPButton(string text, RoutedEventHandler click, bool primary = false, string icon = null)
         {
-            var b = new Button { Style = (Style)FindResource(primary ? "FormButtonPrimary" : "FormButton"), Content = text, Padding = new Thickness(12, 0, 12, 0), Margin = new Thickness(6, 0, 0, 0), MinWidth = 70 };
+            object content = text;
+            if (icon != null)
+            {
+                var panel = new StackPanel { Orientation = Orientation.Horizontal };
+                var path = new System.Windows.Shapes.Path { Data = Geometry.Parse(icon), StrokeThickness = 1.6, Width = 14, Height = 14, Stretch = Stretch.Uniform, Margin = new Thickness(0, 0, 7, 0), VerticalAlignment = VerticalAlignment.Center };
+                path.SetBinding(System.Windows.Shapes.Shape.StrokeProperty, new System.Windows.Data.Binding("Foreground") { RelativeSource = new System.Windows.Data.RelativeSource(System.Windows.Data.RelativeSourceMode.FindAncestor, typeof(Button), 1) });
+                panel.Children.Add(path);
+                panel.Children.Add(new TextBlock { Text = text, VerticalAlignment = VerticalAlignment.Center });
+                content = panel;
+            }
+            var b = new Button { Style = (Style)FindResource(primary ? "FormButtonPrimary" : "FormButton"), Content = content, Padding = new Thickness(12, 0, 12, 0), Margin = new Thickness(6, 0, 0, 0), MinWidth = 70 };
             b.Click += click;
             return b;
         }
 
         private System.Windows.Controls.Primitives.ToggleButton MPSegment(string text)
             => new System.Windows.Controls.Primitives.ToggleButton { Style = (Style)FindResource("ChoiceTile"), Content = text, Height = 28, MinHeight = 28, Padding = new Thickness(12, 0, 12, 0), Margin = new Thickness(4, 0, 0, 0), FontSize = 12.5 };
+
+        // Segmented control of the mockup: a deep track, the chosen segment raised with an
+        // accent line under it.
+        private static Border MPSegmentTrack(Panel items)
+        {
+            var track = new Border { CornerRadius = new CornerRadius(7), Padding = new Thickness(3), BorderThickness = new Thickness(1), Child = items, VerticalAlignment = VerticalAlignment.Center };
+            track.SetResourceReference(Border.BackgroundProperty, "DeepBrush");
+            track.SetResourceReference(Border.BorderBrushProperty, "LineBrush");
+            return track;
+        }
+
+        private static Border MPSegmentItem(object content, bool selected, bool enabled, Action click, string tooltip = null)
+        {
+            var text = content as FrameworkElement ?? new TextBlock { Text = content as string, FontWeight = FontWeights.Bold, FontSize = 13 };
+            if (text is TextBlock tb)
+                tb.SetResourceReference(TextBlock.ForegroundProperty, selected ? "TextColor" : "MutedTextBrush");
+            var item = new Border { CornerRadius = new CornerRadius(5), Padding = new Thickness(12, 5, 12, 5), Margin = new Thickness(0, 0, 3, 0), Child = text, ToolTip = tooltip,
+                Cursor = enabled ? Cursors.Hand : Cursors.Arrow, Opacity = enabled ? 1 : 0.45, BorderThickness = new Thickness(0, 0, 0, selected ? 2 : 0) };
+            item.SetResourceReference(Border.BackgroundProperty, selected ? "SectionBackgroundBrush" : "DeepBrush");
+            item.SetResourceReference(Border.BorderBrushProperty, "AccentBrush");
+            if (enabled)
+                item.MouseLeftButtonUp += (_, __) => click();
+            return item;
+        }
 
         private Border MPCard(string title, FrameworkElement body, FrameworkElement right, TextBlock titleBlock = null)
         {
@@ -815,10 +882,13 @@ namespace Xenvious
             }
             var t = titleBlock ?? new TextBlock();
             t.Style = (Style)FindResource("DashCardTitle");
+            t.VerticalAlignment = VerticalAlignment.Center;
             if (title != null)
                 t.Text = title;
             header.Children.Add(t);
             var dock = new DockPanel();
+            header.Height = 30;
+            header.LastChildFill = true;
             var head = new Border { Style = (Style)FindResource("DashCardHeader"), Child = header };
             DockPanel.SetDock(head, Dock.Top);
             dock.Children.Add(head);
@@ -827,12 +897,129 @@ namespace Xenvious
             return new Border { Style = (Style)FindResource("DashCard"), Margin = new Thickness(0, 0, 0, 12), Child = dock, VerticalAlignment = VerticalAlignment.Top };
         }
 
+        // A cube while there is no picture (none found, or still loading); the picture covers it
+        // once the catalogue has it (CatalogItem.Thumb loads on first use and notifies).
+        private static FrameworkElement MPThumb(CatalogItem item, double iconSize)
+        {
+            var grid = new Grid();
+            var cube = new System.Windows.Shapes.Path
+            {
+                Data = Geometry.Parse("M4,8 L12,4 L20,8 L20,16 L12,20 L4,16 Z M4,8 L12,12 L20,8 M12,12 L12,20"),
+                StrokeThickness = 1.3, Width = iconSize, Height = iconSize, Stretch = Stretch.Uniform, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center,
+            };
+            cube.SetResourceReference(System.Windows.Shapes.Shape.StrokeProperty, "FaintTextBrush");
+            grid.Children.Add(cube);
+            if (item != null)
+            {
+                var image = new System.Windows.Controls.Image { Stretch = Stretch.Uniform };
+                image.SetBinding(System.Windows.Controls.Image.SourceProperty, new System.Windows.Data.Binding(nameof(CatalogItem.Thumb)) { Source = item });
+                grid.Children.Add(image);
+            }
+            return grid;
+        }
+
         private void RenderMPAll()
         {
             RenderMPCategories();
             RenderMPSlots();
             RenderMPEditor();
             RenderMPImport();
+            RenderMPSaved();
+        }
+
+        // ----- saved lists: the models of one category under a name, applied with one click -----
+
+        private sealed class MPSavedList
+        {
+            public string Name { get; set; }
+            public int Table { get; set; }
+            public List<string> Hashes { get; set; }
+        }
+
+        private const string MPSavedConfigKey = "mplists";
+
+        private static List<MPSavedList> LoadMPSaved()
+        {
+            try
+            {
+                string stored = new ini_reader(Functions.getRoamingConfigFilePath()).ReadString("Settings", MPSavedConfigKey);
+                if (!string.IsNullOrEmpty(stored))
+                    return JsonConvert.DeserializeObject<List<MPSavedList>>(ConfigText.Decode(stored)) ?? new List<MPSavedList>();
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Reading the saved prop lists failed", ex, source: "mprops");
+            }
+            return new List<MPSavedList>();
+        }
+
+        private static void StoreMPSaved(List<MPSavedList> lists)
+            => new ini_reader(Functions.getRoamingConfigFilePath()).Write("Settings", MPSavedConfigKey, ConfigText.Encode(JsonConvert.SerializeObject(lists)));
+
+        private void RenderMPSaved()
+        {
+            if (_mpSaved == null)
+                return;
+            _mpSaved.Children.Clear();
+            var lists = LoadMPSaved();
+            var slots = MPSlots(_mpCategory);
+
+            var save = new DockPanel { Margin = new Thickness(0, 0, 0, 8) };
+            var name = new BareSearchBox(string.Format(CultureInfo.CurrentCulture, MPT("mp_save_hint", "Name for {0}…"), MPCategoryName(_mpCategory)));
+            name.Box.Text = _mpSaveName;
+            var button = MPButton(MPT("mp_save", "Save"), (_, __) =>
+            {
+                string n = name.Text.Trim();
+                if (n.Length == 0 || slots.Count == 0)
+                    return;
+                lists.RemoveAll(l => l.Table == _mpCategory.Table && string.Equals(l.Name, n, StringComparison.CurrentCultureIgnoreCase));
+                lists.Add(new MPSavedList { Name = n, Table = _mpCategory.Table, Hashes = slots.Select(x => x.IntegerValue.ToString("X8", CultureInfo.InvariantCulture)).ToList() });
+                StoreMPSaved(lists);
+                _mpSaveName = "";
+                RenderMPSaved();
+            }, icon: "M3,2 H11 L13,4 V14 H3 Z M5,2 V6 H10 V2 M5,14 V9 H11 V14");
+            button.IsEnabled = slots.Count > 0;
+            name.Changed += t => _mpSaveName = t;
+            DockPanel.SetDock(button, Dock.Right);
+            save.Children.Add(button);
+            save.Children.Add(name);
+            _mpSaved.Children.Add(save);
+
+            if (lists.Count == 0)
+            {
+                var none = new TextBlock { Text = MPT("mp_saved_none", "Save the models of a category to put them back with one click."), FontSize = 12, TextWrapping = TextWrapping.Wrap };
+                none.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
+                _mpSaved.Children.Add(none);
+                return;
+            }
+            foreach (var list in lists.OrderBy(l => l.Table == _mpCategory.Table ? 0 : 1).ThenBy(l => l.Name, StringComparer.CurrentCultureIgnoreCase))
+            {
+                var entry = list;
+                var category = MPCategories.FirstOrDefault(c => c.Table == entry.Table);
+                var row = new DockPanel { Margin = new Thickness(0, 0, 0, 6) };
+                var remove = MPButton("✕", (_, __) => { lists.Remove(entry); StoreMPSaved(lists); RenderMPSaved(); });
+                remove.MinWidth = 0;
+                remove.ToolTip = MPT("mp_delete", "Delete");
+                DockPanel.SetDock(remove, Dock.Right);
+                row.Children.Add(remove);
+                var apply = MPButton(MPT("mp_apply", "Apply"), (_, __) =>
+                {
+                    writeCategory(string.Join(",", entry.Hashes), entry.Table, _mpAllCreators);
+                    if (category != null)
+                        _mpCategory = category;
+                    RenderMPAll();
+                }, primary: true);
+                apply.IsEnabled = entry.Table < allprops.Count;
+                DockPanel.SetDock(apply, Dock.Right);
+                row.Children.Add(apply);
+                var text = new StackPanel { VerticalAlignment = VerticalAlignment.Center };
+                text.Children.Add(new TextBlock { Text = entry.Name, FontWeight = FontWeights.Bold, TextTrimming = TextTrimming.CharacterEllipsis });
+                var sub = new TextBlock { Text = (category != null ? MPCategoryName(category) : "#" + entry.Table) + " · " + string.Format(CultureInfo.CurrentCulture, MPT("mp_props_n", "{0} props"), entry.Hashes.Count), FontSize = 11.5 };
+                sub.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
+                text.Children.Add(sub);
+                row.Children.Add(text);
+                _mpSaved.Children.Add(row);
+            }
         }
 
         private void RenderMPCreators(bool[] loaded)
@@ -846,6 +1033,7 @@ namespace Xenvious
                 loaded = Enumerable.Range(0, sources.Count).Select(i => i < key.Length && key[i] == '1').ToArray();
             }
             _mpCreators.Children.Clear();
+            var items = new StackPanel { Orientation = Orientation.Horizontal };
             for (int i = 0; i < sources.Count; i++)
             {
                 int index = i;
@@ -853,40 +1041,63 @@ namespace Xenvious
                 var dot = new System.Windows.Shapes.Ellipse { Width = 7, Height = 7, Margin = new Thickness(0, 0, 6, 0), VerticalAlignment = VerticalAlignment.Center };
                 dot.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, loaded[i] ? "OkBrush" : "FaintTextBrush");
                 content.Children.Add(dot);
-                content.Children.Add(new TextBlock { Text = sources[i].DisplayName });
-                var b = MPSegment(null);
-                b.Content = content;
-                b.Margin = new Thickness(0, 0, 4, 0);
-                b.IsChecked = i == _mpCreator;
-                b.IsEnabled = loaded[i];
-                b.ToolTip = loaded[i] ? MPT("mp_tableloaded", "Prop table loaded") : MPT("mp_notloaded", "Creator not loaded");
-                b.Click += (_, __) => { if (index != _mpCreator) SelectMPCreator(index); else b.IsChecked = true; };
-                _mpCreators.Children.Add(b);
+                var name = new TextBlock { Text = sources[i].DisplayName, FontWeight = FontWeights.Bold, FontSize = 13 };
+                name.SetResourceReference(TextBlock.ForegroundProperty, i == _mpCreator ? "TextColor" : "MutedTextBrush");
+                content.Children.Add(name);
+                items.Children.Add(MPSegmentItem(content, i == _mpCreator, loaded[i], () => { if (index != _mpCreator) SelectMPCreator(index); },
+                    loaded[i] ? MPT("mp_tableloaded", "Prop table loaded") : MPT("mp_notloaded", "Creator not loaded")));
             }
+            var label = new TextBlock { Text = MPT("mp_creator", "Creator"), VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(0, 0, 10, 0), FontSize = 12 };
+            label.SetResourceReference(TextBlock.ForegroundProperty, "MutedTextBrush");
+            _mpCreators.Children.Add(label);
+            _mpCreators.Children.Add(MPSegmentTrack(items));
         }
 
         private List<GTA.MPEntry> MPSlots(MPCategory category)
             => category != null && category.Table < allprops.Count ? allprops[category.Table].prop : new List<GTA.MPEntry>();
 
-        // The creator's own models for a table, from the shipped defaults; null when unknown.
-        private int[] MPDefaults(int table)
+        // Originals per creator script: OfflineData/<edition>/mprops.json, made from the decompiled
+        // scripts (ysc-global-updater tools/mprops_originals.py). Null entries: not a constant.
+        private static Dictionary<string, List<int?[]>> _mpOriginals;
+        private static string _mpOriginalsBuild;
+
+        private static Dictionary<string, List<int?[]>> MPOriginals()
         {
-            if (_mpCreator < 0)
-                return null;
-            List<string> defaults;
-            switch (GTA.Editor.ModdedPropSources[_mpCreator].DisplayName)
+            if (_mpOriginals != null)
+                return _mpOriginals;
+            _mpOriginals = new Dictionary<string, List<int?[]>>();
+            try
             {
-                case "Race": defaults = GTA.Defaults.MPropsDefaultsRace; break;
-                case "LTS": defaults = GTA.Defaults.MPropsDefaultsLTS; break;
-                case "Capture": defaults = GTA.Defaults.MPropsDefaultsCapture; break;
-                case "Deathmatch": defaults = GTA.Defaults.MPropsDefaultsDM; break;
-                case "Survival": defaults = GTA.Defaults.MPropsDefaultsSurvival; break;
-                default: return null;
+                var root = JObject.Parse(OfflineData.ModdedPropOriginals);
+                _mpOriginalsBuild = (string)root["build"];
+                foreach (var creator in (JObject)root["creators"])
+                    _mpOriginals[creator.Key] = creator.Value.Select(g => g.Select(h => h.Type == JTokenType.Null ? (int?)null
+                        : unchecked((int)uint.Parse((string)h, NumberStyles.HexNumber, CultureInfo.InvariantCulture))).ToArray()).ToList();
             }
-            if (defaults == null || table >= defaults.Count || string.IsNullOrWhiteSpace(defaults[table]))
-                return null;
-            return defaults[table].Split(',').Select(Functions.int_parse).ToArray();
+            catch (Exception ex)
+            {
+                Log.Error("Reading the prop originals failed", ex, source: "mprops");
+            }
+            return _mpOriginals;
         }
+
+        // The originals only count when the table in the game has the same shape as the one the
+        // data was made from; a different build shows no "changed" at all instead of wrong ones.
+        private bool MPOriginalsMatch(out List<int?[]> table)
+        {
+            table = null;
+            if (_mpCreator < 0 || allprops.Count == 0 || !MPOriginals().TryGetValue(GTA.Editor.ModdedPropSources[_mpCreator].ScriptName, out table))
+                return false;
+            if (table.Count != allprops.Count)
+                return false;
+            for (int i = 0; i < table.Count; i++)
+                if (table[i].Length != allprops[i].prop.Count)
+                    return false;
+            return true;
+        }
+
+        private int?[] MPDefaults(int table)
+            => MPOriginalsMatch(out var data) && table < data.Count ? data[table] : null;
 
         private int MPChangedCount(MPCategory category)
         {
@@ -896,7 +1107,7 @@ namespace Xenvious
                 return 0;
             int n = 0;
             for (int i = 0; i < slots.Count && i < defaults.Length; i++)
-                if (slots[i].IntegerValue != defaults[i])
+                if (defaults[i].HasValue && slots[i].IntegerValue != defaults[i])
                     n++;
             return n;
         }
@@ -919,24 +1130,31 @@ namespace Xenvious
                     var category = c;
                     int changed = allprops.Count > 0 ? MPChangedCount(c) : 0;
                     int count = MPSlots(c).Count;
-                    var row = new DockPanel();
-                    var right = new TextBlock { FontSize = 11.5, VerticalAlignment = VerticalAlignment.Center };
+                    // Name left, slot count right; changed categories get an amber badge with the number.
+                    var row = new Grid { Width = 176 };
+                    row.ColumnDefinitions.Add(new ColumnDefinition());
+                    row.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+                    row.Children.Add(new TextBlock { Text = MPCategoryName(c), TextTrimming = TextTrimming.CharacterEllipsis, VerticalAlignment = VerticalAlignment.Center });
+                    FrameworkElement right;
                     if (changed > 0)
                     {
-                        right.Text = string.Format(CultureInfo.CurrentCulture, MPT("mp_changed_n", "{0} changed"), changed);
-                        right.FontWeight = FontWeights.Bold;
-                        right.SetResourceReference(TextBlock.ForegroundProperty, "WarnBrush");
+                        var n = new TextBlock { Text = changed.ToString(CultureInfo.CurrentCulture), FontSize = 11, FontWeight = FontWeights.Bold };
+                        n.SetResourceReference(TextBlock.ForegroundProperty, "HighlightForeground");
+                        var badge = new Border { CornerRadius = new CornerRadius(8), Padding = new Thickness(7, 0, 7, 1), Child = n, VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(8, 0, 0, 0),
+                            ToolTip = string.Format(CultureInfo.CurrentCulture, MPT("mp_changed_n", "{0} changed"), changed) };
+                        badge.SetResourceReference(Border.BackgroundProperty, "WarnBrush");
+                        right = badge;
                     }
                     else
                     {
-                        right.Text = count > 0 ? count.ToString(CultureInfo.CurrentCulture) : "";
-                        right.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
+                        var t = new TextBlock { Text = count > 0 ? count.ToString(CultureInfo.CurrentCulture) : "", FontSize = 11.5, VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(8, 0, 0, 0) };
+                        t.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
+                        right = t;
                     }
-                    DockPanel.SetDock(right, Dock.Right);
+                    Grid.SetColumn(right, 1);
                     row.Children.Add(right);
-                    row.Children.Add(new TextBlock { Text = MPCategoryName(c), TextTrimming = TextTrimming.CharacterEllipsis });
-                    var button = new Button { Style = (Style)FindResource("SideNavButton"), Content = row, HorizontalContentAlignment = HorizontalAlignment.Stretch, Tag = c == _mpCategory ? "active" : null };
-                    button.Click += (_, __) => { _mpCategory = category; _mpSlot = 0; _mpPick = null; RenderMPAll(); };
+                    var button = new Button { Style = (Style)FindResource("SideNavButton"), Content = row, Tag = c == _mpCategory ? "active" : null };
+                    button.Click += (_, __) => { _mpCategory = category; _mpSlot = 0; if (_mpFrom == null) _mpPick = null; RenderMPAll(); };
                     _mpCatList.Children.Add(button);
                 }
             }
@@ -953,6 +1171,30 @@ namespace Xenvious
             return string.IsNullOrWhiteSpace(info?.Name) ? "0x" + hash.ToString("X8", CultureInfo.InvariantCulture) : info.Name;
         }
 
+        // The model name the game knows (prop_...), for lists; the hash when there is none.
+        private string MPNativeName(int hash)
+        {
+            var item = PropCatalog.FirstOrDefault(c => c.Int32 == hash);
+            if (!string.IsNullOrWhiteSpace(item?.Native))
+                return item.Native;
+            var info = GTA.Editor.PropList?.FirstOrDefault(p => p.Integer == hash);
+            return string.IsNullOrWhiteSpace(info?.Name) ? MPHex(hash) : info.Name;
+        }
+
+        // "Barriers 3, Ramps 12": where a model already is in the loaded creator's menu.
+        private string MPWhere(int hash)
+        {
+            var hits = new List<string>();
+            foreach (var c in MPCategories)
+            {
+                var slots = MPSlots(c);
+                for (int i = 0; i < slots.Count; i++)
+                    if (slots[i].IntegerValue == hash)
+                        hits.Add(MPCategoryName(c) + " " + (i + 1).ToString(CultureInfo.CurrentCulture));
+            }
+            return string.Join(", ", hits.Take(4)) + (hits.Count > 4 ? " …" : "");
+        }
+
         private static string MPHex(int hash) => "0x" + hash.ToString("X8", CultureInfo.InvariantCulture);
 
         private void RenderMPSlots()
@@ -960,8 +1202,14 @@ namespace Xenvious
             if (_mpSlots == null)
                 return;
             _mpCatTitle.Text = MPCategoryName(_mpCategory);
-            _mpModeGrid.IsChecked = !_mpListMode;
-            _mpModeList.IsChecked = _mpListMode;
+            _mpModeSeg.Children.Clear();
+            foreach (var (list, key, fallback) in new[] { (false, "mp_tiles", "Tiles"), (true, "mp_list", "List") })
+            {
+                var item = MPSegmentItem(MPT(key, fallback), _mpListMode == list, true, () => { _mpListMode = list; RenderMPSlots(); });
+                item.Padding = new Thickness(10, 2, 10, 2);
+                ((TextBlock)item.Child).FontSize = 12.5;
+                _mpModeSeg.Children.Add(item);
+            }
             _mpSlots.Children.Clear();
             var slots = MPSlots(_mpCategory);
             var defaults = MPDefaults(_mpCategory.Table);
@@ -971,12 +1219,18 @@ namespace Xenvious
                 : slots.Count == 0 ? MPT("mp_empty", "This category has no slots in this creator.") : "";
             _mpStatus.Visibility = _mpStatus.Text.Length == 0 ? Visibility.Collapsed : Visibility.Visible;
             _mpSlotHint.Text = slots.Count == 0 ? "" : string.Format(CultureInfo.CurrentCulture, MPT("mp_slots_n", "{0} slots in the prop menu"), slots.Count);
+            MPOriginals();
+            bool match = MPOriginalsMatch(out _);
+            _mpSource.Text = allprops.Count == 0 ? ""
+                : match ? string.Format(CultureInfo.CurrentCulture, MPT("mp_source", "Originals: scripts {0}"), _mpOriginalsBuild)
+                : string.Format(CultureInfo.CurrentCulture, MPT("mp_source_mismatch", "Originals ({0}) do not fit this game build – \"changed\" is hidden"), _mpOriginalsBuild);
+            _mpSource.SetResourceReference(TextBlock.ForegroundProperty, match ? "FaintTextBrush" : "WarnBrush");
             int changed = 0;
             for (int i = 0; i < slots.Count; i++)
             {
                 int index = i;
                 var slot = slots[i];
-                bool isChanged = defaults != null && i < defaults.Length && slot.IntegerValue != defaults[i];
+                bool isChanged = defaults != null && i < defaults.Length && defaults[i].HasValue && slot.IntegerValue != defaults[i];
                 if (isChanged)
                     changed++;
                 var tile = new StackPanel { Width = 138 };
@@ -992,17 +1246,15 @@ namespace Xenvious
                 }
                 tile.Children.Add(head);
                 var item = PropCatalog.FirstOrDefault(c => c.Int32 == slot.IntegerValue);
-                var thumb = new Border { Height = 80, CornerRadius = new CornerRadius(5), Margin = new Thickness(0, 4, 0, 6), ClipToBounds = true };
+                var thumb = new Border { Height = 80, CornerRadius = new CornerRadius(5), Margin = new Thickness(0, 4, 0, 6), ClipToBounds = true, Child = MPThumb(item, 34) };
                 thumb.SetResourceReference(Border.BackgroundProperty, "DeepBrush");
-                if (item != null)
-                    thumb.Child = new System.Windows.Controls.Image { Source = item.Thumb, Stretch = Stretch.Uniform };
                 tile.Children.Add(thumb);
                 tile.Children.Add(new TextBlock { Text = MPModelName(slot.IntegerValue), FontSize = 12.5, FontWeight = FontWeights.SemiBold, TextTrimming = TextTrimming.CharacterEllipsis, ToolTip = MPModelName(slot.IntegerValue) });
                 var sub = new TextBlock { FontSize = 11, TextTrimming = TextTrimming.CharacterEllipsis };
                 sub.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
                 if (isChanged)
                 {
-                    sub.Text = MPModelName(defaults[i]);
+                    sub.Text = MPModelName(defaults[i].Value);
                     sub.TextDecorations = TextDecorations.Strikethrough;
                 }
                 else
@@ -1012,14 +1264,14 @@ namespace Xenvious
                 }
                 tile.Children.Add(sub);
                 var button = new System.Windows.Controls.Primitives.ToggleButton { Style = (Style)FindResource("ChoiceTile"), Content = tile, IsChecked = i == _mpSlot, Margin = new Thickness(0, 0, 8, 8), Padding = new Thickness(8), HorizontalContentAlignment = HorizontalAlignment.Stretch };
-                button.Click += (_, __) => { _mpSlot = index; _mpPick = null; RenderMPSlots(); RenderMPEditor(); };
+                button.Click += (_, __) => { _mpSlot = index; if (_mpFrom == null) _mpPick = null; RenderMPSlots(); RenderMPEditor(); };
                 _mpSlots.Children.Add(button);
             }
             _mpChanged.Text = changed > 0 ? string.Format(CultureInfo.CurrentCulture, MPT("mp_changed_of", "{0} of {1} changed"), changed, slots.Count) : "";
             _mpSlots.Visibility = _mpListMode ? Visibility.Collapsed : Visibility.Visible;
             _mpListPanel.Visibility = _mpListMode ? Visibility.Visible : Visibility.Collapsed;
             if (_mpListMode && !_mpBulk.IsKeyboardFocused)
-                _mpBulk.Text = string.Join(Environment.NewLine, slots.Select(s => MPModelName(s.IntegerValue)));
+                _mpBulk.Text = string.Join(Environment.NewLine, slots.Select(s => MPNativeName(s.IntegerValue)));
         }
 
         // A line of the list: a catalogue name or a hash (hex or decimal, see ModelIdParser).
@@ -1029,7 +1281,8 @@ namespace Xenvious
             line = (line ?? "").Trim();
             if (line.Length == 0)
                 return false;
-            var item = PropCatalog.FirstOrDefault(c => string.Equals(c.Name, line, StringComparison.OrdinalIgnoreCase));
+            var item = PropCatalog.FirstOrDefault(c => string.Equals(c.Native, line, StringComparison.OrdinalIgnoreCase))
+                ?? PropCatalog.FirstOrDefault(c => string.Equals(c.Name, line, StringComparison.OrdinalIgnoreCase));
             if (item != null)
             {
                 hash = item.Int32;
@@ -1099,7 +1352,8 @@ namespace Xenvious
             }
             var slot = slots[_mpSlot];
             var defaults = MPDefaults(_mpCategory.Table);
-            int original = defaults != null && _mpSlot < defaults.Length ? defaults[_mpSlot] : slot.IntegerValue;
+            int? known = defaults != null && _mpSlot < defaults.Length ? defaults[_mpSlot] : null;
+            int original = known ?? slot.IntegerValue;
 
             FrameworkElement Box(string label, int hash)
             {
@@ -1129,6 +1383,21 @@ namespace Xenvious
             var now = Box(MPT("mp_now", "Now"), _mpPick?.Int32 ?? slot.IntegerValue);
             Grid.SetColumn(now, 2);
             cmp.Children.Add(now);
+            if (_mpFrom != null && _mpPick != null)
+            {
+                string already = MPWhere(_mpPick.Int32);
+                string text = (_mpFrom == "dynamic"
+                    ? MPT("mp_from_dynamic", "From Dynamic props: pick a slot in Dynamics and press Set. Only the Dynamics category places props as dynamic; in any other category the model is placed static.")
+                    : MPT("mp_from_static", "From Props: pick a category and slot and press Set. In Dynamics the model would be placed as a dynamic prop."))
+                    + (already.Length > 0 ? "\n" + string.Format(CultureInfo.CurrentCulture, MPT("mp_already", "Already in the menu: {0}"), already) : "");
+                var note = new Border { CornerRadius = new CornerRadius(0, 6, 6, 0), BorderThickness = new Thickness(3, 0, 0, 0), Padding = new Thickness(10, 8, 10, 8), Margin = new Thickness(0, 0, 0, 10) };
+                note.SetResourceReference(Border.BorderBrushProperty, "AccentBrush");
+                note.SetResourceReference(Border.BackgroundProperty, "DeepBrush");
+                var nt = new TextBlock { Text = text, TextWrapping = TextWrapping.Wrap, FontSize = 12.5 };
+                nt.SetResourceReference(TextBlock.ForegroundProperty, "MutedTextBrush");
+                note.Child = nt;
+                _mpEditor.Children.Add(note);
+            }
             _mpEditor.Children.Add(new TextBlock { Style = (Style)FindResource("FieldLabel"), Text = string.Format(CultureInfo.CurrentCulture, MPT("mp_slot_n", "Slot {0}"), _mpSlot + 1) });
             _mpEditor.Children.Add(cmp);
 
@@ -1139,23 +1408,33 @@ namespace Xenvious
             {
                 list.Children.Clear();
                 string q = _mpPickQuery.Trim();
-                var hits = PropCatalog.Where(c => q.Length == 0 || c.Name.IndexOf(q, StringComparison.OrdinalIgnoreCase) >= 0 || MPHex(c.Int32).IndexOf(q, StringComparison.OrdinalIgnoreCase) >= 0).Take(60);
+                // Without a search the prop favourites (the star in the model catalogue) are shown.
+                var hits = q.Length == 0
+                    ? PropCatalog.Where(c => c.IsFavorite).Take(200)
+                    : PropCatalog.Where(c => c.Name.IndexOf(q, StringComparison.OrdinalIgnoreCase) >= 0 || (c.Native ?? "").IndexOf(q, StringComparison.OrdinalIgnoreCase) >= 0
+                        || MPHex(c.Int32).IndexOf(q, StringComparison.OrdinalIgnoreCase) >= 0).Take(60);
                 foreach (var hit in hits)
                 {
                     var item = hit;
                     var row = new DockPanel();
-                    var img = new Border { Width = 38, Height = 28, CornerRadius = new CornerRadius(4), Margin = new Thickness(0, 0, 8, 0), ClipToBounds = true, Child = new System.Windows.Controls.Image { Source = item.Thumb, Stretch = Stretch.Uniform } };
+                    var img = new Border { Width = 38, Height = 28, CornerRadius = new CornerRadius(4), Margin = new Thickness(0, 0, 8, 0), ClipToBounds = true, Child = MPThumb(item, 14) };
                     img.SetResourceReference(Border.BackgroundProperty, "DeepBrush");
                     row.Children.Add(img);
                     var t = new StackPanel { VerticalAlignment = VerticalAlignment.Center };
                     t.Children.Add(new TextBlock { Text = item.Name, FontSize = 12.5, TextTrimming = TextTrimming.CharacterEllipsis });
-                    var h = new TextBlock { Text = MPHex(item.Int32), FontSize = 10.5, FontFamily = new FontFamily("Consolas") };
+                    var h = new TextBlock { Text = string.IsNullOrWhiteSpace(item.Native) || item.Native == item.Name ? MPHex(item.Int32) : item.Native + " · " + MPHex(item.Int32), FontSize = 10.5, FontFamily = new FontFamily("Consolas"), TextTrimming = TextTrimming.CharacterEllipsis };
                     h.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
                     t.Children.Add(h);
                     row.Children.Add(t);
                     var b = new Button { Style = (Style)FindResource("SideNavButton"), Content = row, HorizontalContentAlignment = HorizontalAlignment.Stretch, Tag = _mpPick == item ? "active" : null };
                     b.Click += (_, __) => { _mpPick = item; RenderMPEditor(); };
                     list.Children.Add(b);
+                }
+                if (list.Children.Count == 0 && q.Length == 0)
+                {
+                    var none = new TextBlock { Text = MPT("mp_nofav", "No prop favourites yet. Search, or mark props with the star in the model catalogue."), TextWrapping = TextWrapping.Wrap, FontSize = 12, Margin = new Thickness(8) };
+                    none.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
+                    list.Children.Add(none);
                 }
                 if (list.Children.Count == 0 && TryParseMPLine(q, out int raw))
                 {
@@ -1174,7 +1453,7 @@ namespace Xenvious
             var buttons = new System.Windows.Controls.Primitives.UniformGrid { Columns = 2 };
             var reset = MPButton(MPT("mp_original", "Original"), (_, __) => { WriteMPSlot(slot, original, onlyChosen: true); _mpPick = null; RenderMPAll(); });
             reset.Margin = new Thickness(0, 0, 4, 0);
-            var set = MPButton(MPT("mp_set", "Set"), (_, __) => { if (_mpPick != null) { WriteMPSlot(slot, _mpPick.Int32); _mpPick = null; RenderMPAll(); } }, primary: true);
+            var set = MPButton(MPT("mp_set", "Set"), (_, __) => { if (_mpPick != null) { WriteMPSlot(slot, _mpPick.Int32); _mpPick = null; _mpFrom = null; RenderMPAll(); } }, primary: true);
             set.Margin = new Thickness(4, 0, 0, 0);
             set.IsEnabled = _mpPick != null;
             buttons.Children.Add(reset);
@@ -1274,29 +1553,37 @@ namespace Xenvious
             head.Children.Add(new TextBlock { Text = _mpImportedName, FontWeight = FontWeights.Bold, VerticalAlignment = VerticalAlignment.Center, TextTrimming = TextTrimming.CharacterEllipsis });
             _mpImport.Children.Add(head);
             int total = 0;
-            for (int n = 0; n < CprpTable.Length; n++)
+            for (int n = 0; n < CprpImportTable.Length; n++)
             {
                 string field = CprpField(_mpImported, n);
                 if (string.IsNullOrWhiteSpace(field))
                     continue;
                 int count = field.Split(',').Length;
                 total += count;
-                var category = MPCategories.FirstOrDefault(c => c.Table == CprpTable[n]);
+                var category = MPCategories.FirstOrDefault(c => c.Table == CprpImportTable[n]);
                 var row = new DockPanel { Margin = new Thickness(0, 0, 0, 4) };
-                var c1 = new TextBlock { Text = string.Format(CultureInfo.CurrentCulture, MPT("mp_props_n", "{0} props"), count), FontSize = 12 };
+                int table = CprpImportTable[n];
+                string hashes = field;
+                // One category on its own, like the category choice of the old import.
+                var only = MPButton(MPT("mp_import_one", "Only this"), (_, __) => { writeCategory(hashes, table, _mpAllCreators); RenderMPAll(); });
+                only.IsEnabled = table < allprops.Count;
+                only.Height = 24;
+                DockPanel.SetDock(only, Dock.Right);
+                row.Children.Add(only);
+                var c1 = new TextBlock { Text = string.Format(CultureInfo.CurrentCulture, MPT("mp_props_n", "{0} props"), count), FontSize = 12, VerticalAlignment = VerticalAlignment.Center };
                 c1.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
                 DockPanel.SetDock(c1, Dock.Right);
                 row.Children.Add(c1);
-                row.Children.Add(new TextBlock { Text = category != null ? MPCategoryName(category) : "#" + CprpTable[n], FontSize = 13 });
+                row.Children.Add(new TextBlock { Text = category != null ? MPCategoryName(category) : "#" + CprpImportTable[n], FontSize = 13, VerticalAlignment = VerticalAlignment.Center, TextTrimming = TextTrimming.CharacterEllipsis });
                 _mpImport.Children.Add(row);
             }
             var apply = MPButton(string.Format(CultureInfo.CurrentCulture, MPT("mp_import_apply", "Import {0} props"), total), (_, __) =>
             {
-                for (int n = 0; n < CprpTable.Length; n++)
+                for (int n = 0; n < CprpImportTable.Length; n++)
                 {
                     string field = CprpField(_mpImported, n);
-                    if (!string.IsNullOrWhiteSpace(field) && CprpTable[n] < allprops.Count)
-                        writeCategory(field, CprpTable[n], _mpAllCreators);
+                    if (!string.IsNullOrWhiteSpace(field) && CprpImportTable[n] < allprops.Count)
+                        writeCategory(field, CprpImportTable[n], _mpAllCreators);
                 }
                 _mpImported = null;
                 RenderMPAll();
@@ -1334,11 +1621,11 @@ namespace Xenvious
             if (!m.IsProcOpen || _mpCreator < 0 || allprops.Count == 0)
                 return;
             var file = new JSON.ModdedPropJSON.Rootobject();
-            for (int n = 0; n < CprpTable.Length; n++)
+            for (int n = 0; n < CprpExportTable.Length; n++)
             {
-                if (CprpTable[n] >= allprops.Count)
+                if (CprpExportTable[n] >= allprops.Count)
                     continue;
-                string value = string.Join(",", allprops[CprpTable[n]].prop.Select(x => m.memory(x.Address[_mpCreator]).Get<int>().ToString("X8", CultureInfo.InvariantCulture)));
+                string value = string.Join(",", allprops[CprpExportTable[n]].prop.Select(x => m.memory(x.Address[_mpCreator]).Get<int>().ToString("X8", CultureInfo.InvariantCulture)));
                 typeof(JSON.ModdedPropJSON.Rootobject).GetProperty("s" + n.ToString(CultureInfo.InvariantCulture))?.SetValue(file, value);
             }
             string json = JsonConvert.SerializeObject(file);
@@ -1365,8 +1652,8 @@ namespace Xenvious
                     continue;
                 var slots = MPSlots(category);
                 for (int i = 0; i < slots.Count && i < defaults.Length; i++)
-                    if (slots[i].IntegerValue != defaults[i])
-                        WriteMPSlot(slots[i], defaults[i], onlyChosen: true);
+                    if (defaults[i].HasValue && slots[i].IntegerValue != defaults[i])
+                        WriteMPSlot(slots[i], defaults[i].Value, onlyChosen: true);
             }
             RenderMPAll();
         }

@@ -495,9 +495,11 @@
     <EmbeddedResource Include="OfflineData\legacy\offsets.ini" />
     <EmbeddedResource Include="OfflineData\legacy\scrpatches.json" />
     <EmbeddedResource Include="OfflineData\legacy\scrpatchesdev.json" />
+    <EmbeddedResource Include="OfflineData\legacy\mprops.json" />
     <EmbeddedResource Include="OfflineData\enhanced\offsets.ini" />
     <EmbeddedResource Include="OfflineData\enhanced\scrpatches.json" />
     <EmbeddedResource Include="OfflineData\enhanced\scrpatchesdev.json" />
+    <EmbeddedResource Include="OfflineData\enhanced\mprops.json" />
     <EmbeddedResource Include="OfflineData\props.json" />
     <EmbeddedResource Include="OfflineData\vehicles.json" />
     <EmbeddedResource Include="OfflineData\placement_presets.json" />
