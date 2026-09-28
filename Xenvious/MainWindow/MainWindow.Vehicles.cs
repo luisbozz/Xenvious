@@ -925,7 +925,8 @@ namespace Xenvious
                 spwn = GTA.Offsets.Editor.Vehicle.spwn;
             }
 
-            new Global(spwn + GTA.Offsets.Editor.Vehicle.NEXT * ddvehno.SelectedIndex).SetInt(ddvehspawnon.SelectedIndex);
+            if (m.IsProcOpen && ddvehno.SelectedIndex > -1 && ddvehspawnon.SelectedIndex > -1)
+                SetVehicleSpawnOn(spwn, ddvehspawnon.SelectedIndex);
 
             GetVehicalASRLValues(true);
         }

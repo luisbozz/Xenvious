@@ -310,6 +310,7 @@ namespace Xenvious
             GTA.Offsets.Editor.Vehicle.vbvrr = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_veh_vbvrr"), 2);
             GTA.Offsets.Editor.Vehicle.vehcr = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_veh_vehcr"), 1);
             GTA.Offsets.Editor.Vehicle.vehct = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_veh_vehct"), 1);
+            GTA.Offsets.Editor.Vehicle.dspwn = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_veh_dspwn"), 1);
             GTA.Offsets.Editor.Vehicle.vehbr = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_veh_vehbr"), 1);
             GTA.Offsets.Editor.Vehicle.vehbc = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_veh_vehbc"), 1);
             GTA.Offsets.Editor.Vehicle.vehbs = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_veh_vehbs"), 1);

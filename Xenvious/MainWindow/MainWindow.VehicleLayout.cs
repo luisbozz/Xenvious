@@ -34,13 +34,41 @@ namespace Xenvious
             // because the page code reads and writes them.
             VehSpawnRulePick.SelectionChanged += (_, __) => PickToBox(VehSpawnRulePick, tbvehspawnrule);
             VehClearRulePick.SelectionChanged += (_, __) => PickToBox(VehClearRulePick, tbvehclearrule);
-            VehSpawnRulePick.DropDownOpened += (_, __) => UpdateVehicleMission();
-            VehClearRulePick.DropDownOpened += (_, __) => UpdateVehicleMission();
             foreach (var box in new Control[] { tbvehspawnrule, tbvehclearrule, ddvehspawnon, ddvehspawnteam, ddvehteamclear, ddvehrsp })
             {
                 if (box is TextBox t) t.TextChanged += (_, __) => QueueVehicleMission();
                 if (box is ComboBox c) c.SelectionChanged += (_, __) => QueueVehicleMission();
             }
+
+            // Mission Creator despawn trigger: -1 none, 1 at a rule of a team, 2 points, 3 team, 4 prerequisite
+            // (func_2537 lists these; func_2536 sets the defaults when the type changes).
+            foreach (var (value, key, fallback) in new[] { (-1, "lc_never", "never"), (1, "lc_trg_rule", "at a rule"), (2, "lc_trg_points", "points"),
+                (3, "lc_trg_team", "team"), (4, "lc_trg_prereq", "prerequisite") })
+                VehDespawnType.Items.Add(new ComboBoxItem { Content = TranslateOr(key, fallback), Tag = value });
+            for (int t = 0; t < 4; t++)
+                VehDespawnTeam.Items.Add(new ComboBoxItem { Content = TranslateOr("dash_team", "Team") + " " + (t + 1), Tag = t });
+            VehDespawnType.SelectionChanged += (_, __) =>
+            {
+                if (_vehPickSync || !(VehDespawnType.SelectedItem is ComboBoxItem item)) return;
+                int type = (int)item.Tag;
+                if (DespawnField(0) == type) return;
+                SetDespawnField(4, 0);
+                SetDespawnField(3, -1);
+                SetDespawnField(2, type == 1 ? 0 : -1);
+                SetDespawnField(1, type == 1 ? 0 : -1);
+                SetDespawnField(0, type);
+                QueueVehicleMission();
+            };
+            VehDespawnTeam.SelectionChanged += (_, __) => { if (!_vehPickSync && VehDespawnTeam.SelectedItem is ComboBoxItem i) { SetDespawnField(2, (int)i.Tag); QueueVehicleMission(); } };
+            VehDespawnFrom.SelectionChanged += (_, __) => { if (!_vehPickSync && VehDespawnFrom.SelectedItem is ComboBoxItem i) { SetDespawnField(1, (int)i.Tag); QueueVehicleMission(); } };
+            VehDespawnTo.SelectionChanged += (_, __) => { if (!_vehPickSync && VehDespawnTo.SelectedItem is ComboBoxItem i) { SetDespawnField(3, (int)i.Tag); QueueVehicleMission(); } };
+            VehDespawnValue.TextChanged += (_, __) =>
+            {
+                if (!_vehPickSync && int.TryParse(VehDespawnValue.Text, NumberStyles.Integer, CultureInfo.InvariantCulture, out int v))
+                    SetDespawnField(1, v);
+            };
+            VehDespawnMid.Checked += (_, __) => { if (!_vehPickSync) SetDespawnField(4, DespawnField(4) | 1); };
+            VehDespawnMid.Unchecked += (_, __) => { if (!_vehPickSync) SetDespawnField(4, DespawnField(4) & ~1); };
 
             foreach (var cb in VehFlags().SelectMany(g => g))
             {
@@ -106,6 +134,57 @@ namespace Xenvious
                 : string.Format(CultureInfo.CurrentCulture, TranslateOr("card_doors_set", "{0} set"), doors);
         }
 
+        private bool VehUsesDespawnTrigger => Rules.PublicCreator && GTA.Offsets.Editor.Vehicle.dspwn != 0 && m.IsProcOpen && ddvehno.SelectedIndex >= 0;
+
+        private long DespawnAddr(int field) => GTA.Offsets.Editor.Vehicle.dspwn + GTA.Offsets.Editor.Vehicle.NEXT * ddvehno.SelectedIndex + field;
+        private int DespawnField(int field) => VehUsesDespawnTrigger ? new Global(DespawnAddr(field)).Get<int>() : -1;
+        private void SetDespawnField(int field, int value) { if (VehUsesDespawnTrigger) new Global(DespawnAddr(field)).SetInt(value); }
+
+        private static UIElement LegendItem(string text, Func<UIElement> marker)
+        {
+            var row = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 0, 12, 2) };
+            row.Children.Add(marker());
+            var t = new TextBlock { Text = text, FontSize = 11.5, Margin = new Thickness(5, 0, 0, 0), VerticalAlignment = VerticalAlignment.Center };
+            t.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
+            row.Children.Add(t);
+            return row;
+        }
+
+        private static UIElement Swatch(string brush)
+        {
+            var grid = new Grid { Width = 12, Height = 12, VerticalAlignment = VerticalAlignment.Center };
+            grid.Children.Add(new Border { CornerRadius = new CornerRadius(3), Opacity = 0.16 }.Also(b => b.SetResourceReference(Border.BackgroundProperty, brush)));
+            grid.Children.Add(new Border { CornerRadius = new CornerRadius(3), BorderThickness = new Thickness(1) }.Also(b => b.SetResourceReference(Border.BorderBrushProperty, brush)));
+            return grid;
+        }
+
+        private static UIElement Dot(bool dashed)
+        {
+            var e = new System.Windows.Shapes.Ellipse { Width = 10, Height = 10, VerticalAlignment = VerticalAlignment.Center };
+            if (dashed)
+            {
+                e.StrokeThickness = 2;
+                e.StrokeDashArray = new DoubleCollection { 1.5, 1 };
+                e.SetResourceReference(System.Windows.Shapes.Shape.StrokeProperty, "AccentBrush");
+            }
+            else
+                e.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "AccentBrush");
+            return e;
+        }
+
+        private void BuildStripLegend(int team)
+        {
+            VehStripLegend.Children.Clear();
+            var head = new TextBlock { Text = string.Format(CultureInfo.CurrentCulture, TranslateOr("lc_legend_team", "Rules of team {0}"), team + 1),
+                FontSize = 11.5, FontWeight = FontWeights.SemiBold, Margin = new Thickness(0, 0, 12, 2), VerticalAlignment = VerticalAlignment.Center };
+            head.SetResourceReference(TextBlock.ForegroundProperty, "MutedTextBrush");
+            VehStripLegend.Children.Add(head);
+            VehStripLegend.Children.Add(LegendItem(TranslateOr("lc_lg_there", "there"), () => Swatch("OkBrush")));
+            VehStripLegend.Children.Add(LegendItem(TranslateOr("lc_lg_gone", "not there"), () => Swatch("BadBrush")));
+            VehStripLegend.Children.Add(LegendItem(TranslateOr("er_main", "Own rule"), () => Dot(false)));
+            VehStripLegend.Children.Add(LegendItem(TranslateOr("er_extra", "Extra objective"), () => Dot(true)));
+        }
+
         private static int ParseRule(string text, int fallback)
             => int.TryParse(text, NumberStyles.Integer, CultureInfo.InvariantCulture, out int v) ? v : fallback;
 
@@ -125,33 +204,67 @@ namespace Xenvious
             FillRulePicker(VehSpawnRulePick, spawnTeam >= 0 ? spawnTeam : team, spawnRule, false);
             FillRulePicker(VehClearRulePick, clearTeam >= 0 ? clearTeam : team, clearRule, true);
 
+            // The Mission Creator despawns vehicles through its own trigger, not team and rule.
+            bool trigger = VehUsesDespawnTrigger;
+            VehClearOld.Visibility = trigger ? Visibility.Collapsed : Visibility.Visible;
+            VehClearTrigger.Visibility = trigger ? Visibility.Visible : Visibility.Collapsed;
+            int dType = -1, dValue = -1, dTeam = -1, dEnd = -1, dBits = 0;
+            if (trigger)
+            {
+                dType = DespawnField(0); dValue = DespawnField(1); dTeam = DespawnField(2); dEnd = DespawnField(3); dBits = DespawnField(4);
+                if (!VehClearTrigger.IsKeyboardFocusWithin)
+                {
+                    _vehPickSync = true;
+                    try
+                    {
+                        VehDespawnType.SelectedItem = VehDespawnType.Items.Cast<ComboBoxItem>().FirstOrDefault(i => (int)i.Tag == dType);
+                        VehDespawnTeam.SelectedItem = VehDespawnTeam.Items.Cast<ComboBoxItem>().FirstOrDefault(i => (int)i.Tag == dTeam);
+                        VehDespawnMid.IsChecked = (dBits & 1) != 0;
+                        VehDespawnValue.Text = dValue.ToString(CultureInfo.InvariantCulture);
+                    }
+                    finally { _vehPickSync = false; }
+                    FillRulePicker(VehDespawnFrom, Math.Max(0, dTeam), dValue, false);
+                    FillRulePicker(VehDespawnTo, Math.Max(0, dTeam), dEnd, true, TranslateOr("lc_to_end", "to the end"));
+                }
+                VehDespawnTeamBox.Visibility = dType >= 1 && dType <= 3 ? Visibility.Visible : Visibility.Hidden;
+                VehDespawnRules.Visibility = VehDespawnMidBox.Visibility = dType == 1 ? Visibility.Visible : Visibility.Collapsed;
+                VehDespawnValueBox.Visibility = dType == 2 || dType == 4 ? Visibility.Visible : Visibility.Collapsed;
+                VehDespawnValueLabel.Text = dType == 2 ? TranslateOr("lc_trg_points", "points") : TranslateOr("lc_trg_prereq", "prerequisite");
+            }
+
             // Which rules of the shown team the vehicle exists in. Spawning after another team's
             // rule cannot be mapped onto this team's rules.
             bool unknown = spawnOn > 0 && spawnTeam >= 0 && spawnTeam != team;
             int from = spawnOn <= 0 ? 0 : spawnRule;
-            int until = clearTeam == team && clearRule >= 0 ? clearRule : count;
+            int until = !trigger && clearTeam == team && clearRule >= 0 ? clearRule : count;
+            int goneFrom = trigger && dType == 1 && dTeam == team && dValue >= 0 ? dValue : int.MaxValue;
+            int goneTo = dEnd >= 0 ? dEnd : int.MaxValue;
             var states = new List<RuleStrip.State>();
             for (int r = 0; r < count; r++)
             {
                 if (unknown) { states.Add(RuleStrip.State.Unknown); continue; }
-                bool live = r >= from && r < until && (spawnOn != 3 || r == from);
+                bool live = r >= from && r < until && (spawnOn != 3 || r == from) && !(r >= goneFrom && r <= goneTo);
                 states.Add(live ? RuleStrip.State.Live : RuleStrip.State.Gone);
             }
             var extras = new HashSet<int>(VehExtraRules.Extras.Select(e => e.Rule));
             VehRuleStrip.Show(states, VehExtraRules.MainRule, extras, r => string.Format(CultureInfo.CurrentCulture,
                 states[r] == RuleStrip.State.Live ? TranslateOr("lc_tip_live", "Rule {0}: the vehicle is there") :
                 states[r] == RuleStrip.State.Gone ? TranslateOr("lc_tip_gone", "Rule {0}: the vehicle is not there") : TranslateOr("lc_tip_unknown", "Rule {0}: depends on another team"), r + 1));
-            VehStripLegend.Text = string.Format(CultureInfo.CurrentCulture, TranslateOr("lc_legend", "Rules of team {0} · green: there · dot: its objective"), team + 1);
+            BuildStripLegend(team);
 
             VehSpawnText.Text = "  " + (spawnOn <= 0 ? TranslateOr("lc_at_start", "at mission start")
                 : string.Format(CultureInfo.CurrentCulture, TranslateOr("lc_with_rule", "with rule {0}"), spawnRule + 1)
                   + (spawnTeam >= 0 ? " · " + TranslateOr("dash_team", "Team") + " " + (spawnTeam + 1) : ""));
             VehRespawnText.Text = "  " + ((ddvehrsp.SelectedItem as ComboBoxItem)?.Content?.ToString() ?? "");
-            VehClearText.Text = "  " + (clearRule < 0 || clearTeam < 0 ? TranslateOr("lc_never", "never")
+            VehClearText.Text = "  " + (trigger
+                ? (dType == 1 ? string.Format(CultureInfo.CurrentCulture, TranslateOr("lc_with_rule", "with rule {0}"), dValue + 1) + " · " + TranslateOr("dash_team", "Team") + " " + (dTeam + 1)
+                   : (VehDespawnType.SelectedItem as ComboBoxItem)?.Content?.ToString() ?? TranslateOr("lc_never", "never"))
+                : clearRule < 0 || clearTeam < 0 ? TranslateOr("lc_never", "never")
                 : string.Format(CultureInfo.CurrentCulture, TranslateOr("lc_with_rule", "with rule {0}"), clearRule + 1) + " · " + TranslateOr("dash_team", "Team") + " " + (clearTeam + 1));
 
             string start = spawnOn <= 0 ? TranslateOr("lc_sum_start", "start") : "R" + (spawnRule + 1);
-            string end = clearRule < 0 || clearTeam < 0 ? TranslateOr("lc_sum_end", "end") : "R" + (clearRule + 1);
+            string end = trigger ? (dType == 1 ? "R" + (dValue + 1) : dType < 0 ? TranslateOr("lc_sum_end", "end") : "…")
+                : clearRule < 0 || clearTeam < 0 ? TranslateOr("lc_sum_end", "end") : "R" + (clearRule + 1);
             VehLifecycle.Summary = start + " → " + end;
             var goals = new[] { VehExtraRules.MainRule }.Concat(extras).Where(r => r >= 0 && r < states.Count && states[r] == RuleStrip.State.Gone).Select(r => r + 1).ToList();
             VehLifecycle.HeaderRight = goals.Count == 0 ? null : EntityRulesCard.SummaryChip(string.Format(CultureInfo.CurrentCulture,
@@ -171,17 +284,47 @@ namespace Xenvious
             VehModelCard.SetInfo(chips);
         }
 
+        /// <summary>
+        /// Writes "spawn on" like the creator's menu: spawning with a rule needs a team and a rule,
+        /// so empty ones (-1) get the shown team and rule 1 first; mission start clears the rule in
+        /// the Mission Creator. Otherwise the creator sees a broken setting and resets the vehicle.
+        /// Only runs when the value really changes (the page also sets the box while reading).
+        /// </summary>
+        private void SetVehicleSpawnOn(long spwn, int value)
+        {
+            long at = GTA.Offsets.Editor.Vehicle.NEXT * ddvehno.SelectedIndex;
+            long team, objt;
+            if (spwn == GTA.Offsets.Editor.Vehicle.spwn2) { team = GTA.Offsets.Editor.Vehicle.team2; objt = GTA.Offsets.Editor.Vehicle.objt2; }
+            else if (spwn == GTA.Offsets.Editor.Vehicle.spwn3) { team = GTA.Offsets.Editor.Vehicle.team3; objt = GTA.Offsets.Editor.Vehicle.objt3; }
+            else if (spwn == GTA.Offsets.Editor.Vehicle.spwn4) { team = GTA.Offsets.Editor.Vehicle.team4; objt = GTA.Offsets.Editor.Vehicle.objt4; }
+            else { team = GTA.Offsets.Editor.Vehicle.team; objt = GTA.Offsets.Editor.Vehicle.objt; }
+            if (spwn == 0 || new Global(spwn + at).Get<int>() == value)
+                return;
+            if (value > 0)
+            {
+                if (team != 0 && new Global(team + at).Get<int>() < 0)
+                    new Global(team + at).SetInt(Math.Max(0, VehExtraRules.Team));
+                if (objt != 0 && new Global(objt + at).Get<int>() < 0)
+                    new Global(objt + at).SetInt(0);
+            }
+            else if (value == 0 && Rules.PublicCreator && objt != 0)
+                new Global(objt + at).SetInt(-1);
+            new Global(spwn + at).SetInt(value);
+        }
+
         private static string PlainText(string text) => Regex.Replace(text ?? "", "~[A-Za-z_0-9]+~", "").Trim();
 
         /// <summary>"Rule N · objective text" entries; value -1 is "never" where allowed.</summary>
-        private void FillRulePicker(ComboBox pick, int team, int value, bool allowNever)
+        private void FillRulePicker(ComboBox pick, int team, int value, bool allowNever, string neverText = null)
         {
+            if (pick.IsDropDownOpen)
+                return;
             _vehPickSync = true;
             try
             {
                 pick.Items.Clear();
                 if (allowNever)
-                    pick.Items.Add(new ComboBoxItem { Content = TranslateOr("lc_never", "never"), Tag = -1 });
+                    pick.Items.Add(new ComboBoxItem { Content = neverText ?? TranslateOr("lc_never", "never"), Tag = -1 });
                 int count = Rules.Ready ? Rules.Count(team) : 0;
                 for (int r = 0; r < count; r++)
                 {

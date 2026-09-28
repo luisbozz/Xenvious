@@ -2621,7 +2621,7 @@
                                                                                    Icon="M3,12 L7,12 L10,5 L14,19 L17,12 L21,12">
                                                                     <StackPanel>
                                                                         <local:RuleStrip x:Name="VehRuleStrip"/>
-                                                                        <TextBlock x:Name="VehStripLegend" FontSize="11.5" Foreground="{DynamicResource FaintTextBrush}" Margin="0,5,0,0" TextWrapping="Wrap"/>
+                                                                        <WrapPanel x:Name="VehStripLegend" Margin="0,6,0,0"/>
                                                                         <Rectangle Height="1" Fill="{DynamicResource LineBrush}" Margin="0,12,0,12"/>
                                                                         <DockPanel>
                                                                             <Grid DockPanel.Dock="Left" Width="30" Height="30" VerticalAlignment="Top" Margin="0,0,12,0">
@@ -2726,27 +2726,70 @@
                                                                                     <Run Text="{Binding Translation[lc_clear], FallbackValue=Disappears}"/>
                                                                                     <Run x:Name="VehClearText" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource FaintTextBrush}"/>
                                                                                 </TextBlock>
-                                                                                <Grid>
-                                                                                    <Grid.ColumnDefinitions>
-                                                                                        <ColumnDefinition Width="*"/>
-                                                                                        <ColumnDefinition Width="8"/>
-                                                                                        <ColumnDefinition Width="*"/>
-                                                                                    </Grid.ColumnDefinitions>
-                                                                                    <StackPanel Grid.Column="0">
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[lc_rule], FallbackValue=Rule}"/>
-                                                                                        <ComboBox x:Name="VehClearRulePick" Height="30" IsEnabled="{Binding IsEnabled, ElementName=tbvehclearrule}"/>
+                                                                                <!-- Old creators: clean up by team at a rule. -->
+                                                                                <StackPanel x:Name="VehClearOld">
+                                                                                    <Grid>
+                                                                                        <Grid.ColumnDefinitions>
+                                                                                            <ColumnDefinition Width="*"/>
+                                                                                            <ColumnDefinition Width="8"/>
+                                                                                            <ColumnDefinition Width="*"/>
+                                                                                        </Grid.ColumnDefinitions>
+                                                                                        <StackPanel Grid.Column="0">
+                                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[lc_rule], FallbackValue=Rule}"/>
+                                                                                            <ComboBox x:Name="VehClearRulePick" Height="30" IsEnabled="{Binding IsEnabled, ElementName=tbvehclearrule}"/>
+                                                                                        </StackPanel>
+                                                                                        <StackPanel Grid.Column="2">
+                                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[lc_team], FallbackValue=Team}"/>
+                                                                                            <ComboBox x:Name="ddvehteamclear" IsEnabled="False" SelectionChanged="ddvehteamclear_SelectionChanged" Height="30">
+                                                                                                <ComboBoxItem Content="{Binding Translation[none], FallbackValue=None}"/>
+                                                                                                <ComboBoxItem Content="1"/>
+                                                                                                <ComboBoxItem Content="2"/>
+                                                                                                <ComboBoxItem Content="3"/>
+                                                                                                <ComboBoxItem Content="4"/>
+                                                                                            </ComboBox>
+                                                                                        </StackPanel>
+                                                                                    </Grid>
+                                                                                </StackPanel>
+                                                                                <!-- Mission Creator: its despawn trigger (vehicle f_529). -->
+                                                                                <StackPanel x:Name="VehClearTrigger" Visibility="Collapsed">
+                                                                                    <Grid>
+                                                                                        <Grid.ColumnDefinitions>
+                                                                                            <ColumnDefinition Width="*"/>
+                                                                                            <ColumnDefinition Width="8"/>
+                                                                                            <ColumnDefinition Width="*"/>
+                                                                                        </Grid.ColumnDefinitions>
+                                                                                        <StackPanel Grid.Column="0">
+                                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[lc_trigger], FallbackValue=Trigger}"/>
+                                                                                            <ComboBox x:Name="VehDespawnType" Height="30"/>
+                                                                                        </StackPanel>
+                                                                                        <StackPanel Grid.Column="2" x:Name="VehDespawnTeamBox">
+                                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[lc_team], FallbackValue=Team}"/>
+                                                                                            <ComboBox x:Name="VehDespawnTeam" Height="30"/>
+                                                                                        </StackPanel>
+                                                                                    </Grid>
+                                                                                    <Grid x:Name="VehDespawnRules" Margin="0,10,0,0">
+                                                                                        <Grid.ColumnDefinitions>
+                                                                                            <ColumnDefinition Width="*"/>
+                                                                                            <ColumnDefinition Width="8"/>
+                                                                                            <ColumnDefinition Width="*"/>
+                                                                                        </Grid.ColumnDefinitions>
+                                                                                        <StackPanel Grid.Column="0">
+                                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[lc_from], FallbackValue=From rule}"/>
+                                                                                            <ComboBox x:Name="VehDespawnFrom" Height="30"/>
+                                                                                        </StackPanel>
+                                                                                        <StackPanel Grid.Column="2">
+                                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[lc_to], FallbackValue=Until rule}"/>
+                                                                                            <ComboBox x:Name="VehDespawnTo" Height="30"/>
+                                                                                        </StackPanel>
+                                                                                    </Grid>
+                                                                                    <StackPanel x:Name="VehDespawnValueBox" Margin="0,10,0,0">
+                                                                                        <TextBlock x:Name="VehDespawnValueLabel" Style="{StaticResource FieldLabel}"/>
+                                                                                        <TextBox x:Name="VehDespawnValue" Style="{StaticResource Watermark}" Height="30" KeyDown="FormatTextForModel"/>
                                                                                     </StackPanel>
-                                                                                    <StackPanel Grid.Column="2">
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[lc_team], FallbackValue=Team}"/>
-                                                                                        <ComboBox x:Name="ddvehteamclear" IsEnabled="False" SelectionChanged="ddvehteamclear_SelectionChanged" Height="30">
-                                                                                            <ComboBoxItem Content="{Binding Translation[none], FallbackValue=None}"/>
-                                                                                            <ComboBoxItem Content="1"/>
-                                                                                            <ComboBoxItem Content="2"/>
-                                                                                            <ComboBoxItem Content="3"/>
-                                                                                            <ComboBoxItem Content="4"/>
-                                                                                        </ComboBox>
-                                                                                    </StackPanel>
-                                                                                </Grid>
+                                                                                    <WrapPanel x:Name="VehDespawnMidBox" Margin="0,10,0,0">
+                                                                                        <CheckBox x:Name="VehDespawnMid" Style="{StaticResource ChipToggle}" Content="{Binding Translation[lc_midrule], FallbackValue=From the middle of the rule}"/>
+                                                                                    </WrapPanel>
+                                                                                </StackPanel>
                                                                                 <WrapPanel Margin="0,10,0,0">
                                                                                     <CheckBox x:Name="cb_veh_clrlivc" Checked="cb_veh_clrlivc_Checked" Unchecked="cb_veh_clrlivc_Checked" IsEnabled="False" Style="{StaticResource ChipToggle}" Content="{Binding Translation[lc_ignorevis], FallbackValue=Even when a player looks}" ToolTip="{Binding Translation[clrlivc], FallbackValue=Ignore Visibility Check on Clean up}"/>
                                                                                 </WrapPanel>

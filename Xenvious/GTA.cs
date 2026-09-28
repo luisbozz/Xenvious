@@ -722,6 +722,7 @@ namespace Xenvious
                     public static long vbvrr = 0;
                     public static long vehcr = 0;
                     public static long vehct = 0;
+                    public static long dspwn = 0;
                     public static long vehbr = 0;
                     public static long vehbc = 0;
                     public static long vehbs = 0;
