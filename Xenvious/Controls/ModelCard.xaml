@@ -35,9 +35,10 @@
                     <!-- Lighter than the header bar, with a pencil and a verb, so it reads as the way to change the model. -->
                     <Button x:Name="CatalogButton" DockPanel.Dock="Right" Style="{StaticResource FormButtonPrimary}" Height="28" Padding="10,0" Click="CatalogButton_Click">
                         <StackPanel Orientation="Horizontal">
-                            <Path Data="M9,2 L12,5 L5,12 L2,12 L2,9 Z" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.6" StrokeLineJoin="Round"
+                            <Path Data="M9,2 L12,5 L5,12 L2,12 L2,9 Z" Stroke="{DynamicResource PrimaryButtonForeground}" StrokeThickness="1.6" StrokeLineJoin="Round"
                                   Width="14" Height="14" VerticalAlignment="Center" Margin="0,0,6,0"/>
-                            <TextBlock VerticalAlignment="Center" Text="{Binding Translation[catalog_change], FallbackValue='Change model'}"/>
+                            <!-- Explicit colour: the default TextBlock style would paint it in the text colour, white on the light button. -->
+                            <TextBlock VerticalAlignment="Center" FontWeight="Bold" Foreground="{DynamicResource PrimaryButtonForeground}" Text="{Binding Translation[catalog_change], FallbackValue='Change model'}"/>
                         </StackPanel>
                     </Button>
                     <!-- Icon tile like the entity page cards (SectionCard); only when a page sets HeaderIcon. -->

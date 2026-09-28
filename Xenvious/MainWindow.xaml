@@ -2571,11 +2571,11 @@
                                                                                    Icon="M12,21 C12,21 5,14.8 5,9.5 A7,7 0 0 1 19,9.5 C19,14.8 12,21 12,21 Z M9.5,9.5 A2.5,2.5 0 1 0 14.5,9.5 A2.5,2.5 0 1 0 9.5,9.5">
                                                                     <Grid>
                                                                         <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="Auto"/>
-                                                                            <ColumnDefinition Width="14"/>
                                                                             <ColumnDefinition Width="*"/>
+                                                                            <ColumnDefinition Width="12"/>
+                                                                            <ColumnDefinition Width="150"/>
                                                                         </Grid.ColumnDefinitions>
-                                                                        <StackPanel Width="250">
+                                                                        <StackPanel>
                                                                             <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[loc], FallbackValue=Location}"/>
                                                                             <Grid Margin="0,0,0,10">
                                                                                 <Grid.ColumnDefinitions>
@@ -2642,8 +2642,8 @@
                                                                                 <TextBox x:Name="tbvehhead" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehhead_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
                                                                             </Grid>
                                                                         </StackPanel>
-                                                                        <!-- Where the vehicle is: all vehicles of the job, the selected one larger in the accent colour. -->
-                                                                        <local:JobMap x:Name="VehMap" Grid.Column="2" MinHeight="180"/>
+                                                                        <!-- Where the vehicle is, kept small because the map image blurs up close: all vehicles of the job, the selected one larger in the accent colour. -->
+                                                                        <local:JobMap x:Name="VehMap" Grid.Column="2" MinSpan="70" VerticalAlignment="Stretch"/>
                                                                     </Grid>
                                                                 </local:SectionCard>
                                                             </Grid>

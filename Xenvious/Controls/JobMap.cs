@@ -37,9 +37,11 @@ namespace Xenvious
         // WorldToMap returns positions on that surface.
         private const double SurfaceWidth = 420;
         private const double SurfaceHeight = 578;
-        // Never zoom in further than this many surface pixels across, or a single prop
-        // would fill the whole view.
-        private const double MinSpan = 12;
+        /// <summary>
+        /// Never zoom in further than this many surface pixels across, or a single prop would fill
+        /// the whole view (and the map image gets blurry).
+        /// </summary>
+        public double MinSpan { get; set; } = 12;
 
         private static readonly ImageSource MapImage =
             new BitmapImage(new Uri("pack://application:,,,/Images/gtav_map.jpg", UriKind.Absolute));
@@ -54,6 +56,7 @@ namespace Xenvious
             Background = MainWindow.ThemeBrush("DeepBrush");
             CornerRadius = new CornerRadius(4);
             ClipToBounds = true;
+            RenderOptions.SetBitmapScalingMode(_image, BitmapScalingMode.HighQuality);
             _surface.Children.Add(_image);
             _surface.Children.Add(_dots);
             Child = _surface;
