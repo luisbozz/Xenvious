@@ -53,9 +53,7 @@ which game build.
 
 ## Scope
 
-Xenvious is a tool for building and testing creator jobs. Changes that aim at
-GTA Online gameplay, anti-cheat or other players are out of scope and will not
-be merged.
+Xenvious is for building and testing creator jobs and improve the overall experience creating jobs.
 
 ## Pull requests
 
