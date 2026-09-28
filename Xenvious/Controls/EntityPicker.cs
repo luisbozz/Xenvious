@@ -69,10 +69,10 @@ namespace Xenvious
                 var content = new StackPanel();
                 content.Children.Add(new Path
                 {
-                    Data = Geometry.Parse(t.Icon), StrokeThickness = 1.5, Width = 26, Height = 20, Stretch = Stretch.Uniform, HorizontalAlignment = HorizontalAlignment.Center,
+                    Data = Geometry.Parse(t.Icon), StrokeThickness = 1.5, Width = 30, Height = 24, Stretch = Stretch.Uniform, HorizontalAlignment = HorizontalAlignment.Center,
                 });
                 ((Path)content.Children[0]).SetBinding(Shape.StrokeProperty, new System.Windows.Data.Binding("Foreground") { RelativeSource = new System.Windows.Data.RelativeSource(System.Windows.Data.RelativeSourceMode.FindAncestor, typeof(ToggleButton), 1) });
-                content.Children.Add(new TextBlock { Text = T(t.Key, t.Fallback), FontSize = 12.5, FontWeight = FontWeights.SemiBold, HorizontalAlignment = HorizontalAlignment.Center, TextTrimming = TextTrimming.CharacterEllipsis, Margin = new Thickness(0, 4, 0, 0) });
+                content.Children.Add(new TextBlock { Text = T(t.Key, t.Fallback), FontSize = 13.5, FontWeight = FontWeights.SemiBold, HorizontalAlignment = HorizontalAlignment.Center, TextTrimming = TextTrimming.CharacterEllipsis, Margin = new Thickness(0, 4, 0, 0) });
                 var button = new ToggleButton { Style = (Style)FindResource("ChoiceTile"), Content = content, Margin = new Thickness(0, 0, 6, 6), Tag = t.Type };
                 int type = t.Type;
                 button.Click += (_, __) =>

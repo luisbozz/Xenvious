@@ -80,6 +80,41 @@
         </Setter>
     </Style>
 
+    <!-- A tab inside a page (play area, team, scope) that looks like the top navigation; checked = active. -->
+    <Style x:Key="NavTab" TargetType="{x:Type ToggleButton}">
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="FontFamily" Value="{DynamicResource Volte}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{DynamicResource NavMutedBrush}"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Padding" Value="11,7"/>
+        <Setter Property="Margin" Value="1,0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Border x:Name="border" CornerRadius="4" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}"
+                            BorderThickness="0,0,0,2" BorderBrush="Transparent">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource AccentSoftBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
+                            <Setter TargetName="border" Property="Background" Value="{DynamicResource SeactionHeaderBackgroundBrush}"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!-- Vertical page lists (Misc, later Edit): a muted group heading and full-width
          entries with the same hover and "active" look as the top navigation. -->
     <Style x:Key="SideNavGroup" TargetType="{x:Type TextBlock}">

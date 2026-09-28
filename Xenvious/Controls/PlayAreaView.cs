@@ -171,13 +171,21 @@ namespace Xenvious
             if (icon != null)
             {
                 var panel = new StackPanel();
-                var path = new System.Windows.Shapes.Path { Data = Geometry.Parse(icon), StrokeThickness = 1.5, Width = 26, Height = 20, Stretch = Stretch.Uniform, HorizontalAlignment = HorizontalAlignment.Center };
+                var path = new System.Windows.Shapes.Path { Data = Geometry.Parse(icon), StrokeThickness = 1.5, Width = 30, Height = 24, Stretch = Stretch.Uniform, HorizontalAlignment = HorizontalAlignment.Center };
                 path.SetBinding(System.Windows.Shapes.Shape.StrokeProperty, new System.Windows.Data.Binding("Foreground") { RelativeSource = new System.Windows.Data.RelativeSource(System.Windows.Data.RelativeSourceMode.FindAncestor, typeof(ToggleButton), 1) });
                 panel.Children.Add(path);
-                panel.Children.Add(new TextBlock { Text = text, FontSize = 12.5, FontWeight = FontWeights.SemiBold, HorizontalAlignment = HorizontalAlignment.Center, TextTrimming = TextTrimming.CharacterEllipsis, Margin = new Thickness(0, 4, 0, 0) });
+                panel.Children.Add(new TextBlock { Text = text, FontSize = 13.5, FontWeight = FontWeights.SemiBold, HorizontalAlignment = HorizontalAlignment.Center, TextTrimming = TextTrimming.CharacterEllipsis, Margin = new Thickness(0, 4, 0, 0) });
                 content = panel;
             }
             return new ToggleButton { Style = (Style)FindResource("ChoiceTile"), Content = content, Margin = new Thickness(0, 0, 6, 6) };
+        }
+
+        // A one-line tile: no fixed height, so the text is never cut off.
+        private static void Chip(ToggleButton b)
+        {
+            b.MinHeight = 34;
+            b.Padding = new Thickness(8, 5, 8, 5);
+            b.FontSize = 13.5;
         }
 
         // A labelled switch; load reads it, click writes it.
@@ -225,7 +233,7 @@ namespace Xenvious
                 for (int i = 0; i < labels.Length; i++)
                 {
                     int n = i;
-                    var b = new ToggleButton { Style = (Style)FindResource("ChoiceTile"), Content = labels[i], MinHeight = 32, Height = 32, Padding = new Thickness(12, 0, 12, 0), Margin = new Thickness(0, 0, 4, 0), FontSize = 13.5 };
+                    var b = new ToggleButton { Style = (Style)FindResource("NavTab"), Content = labels[i] };
                     b.Click += (_, __) => { pick(n); SelectTabs(); Load(); };
                     list.Add(b);
                     seg.Children.Add(b);
@@ -364,7 +372,10 @@ namespace Xenvious
             {
                 if (w == 0) continue;
                 var b = Tile(w < 0 ? T("pa_nowanted", "None") : new string('★', w));
-                b.MinHeight = 30; b.Height = 30; b.Tag = w;
+                Chip(b);
+                b.Tag = w;
+                // Volte has no star, and the fallback font's tall line box cut it off.
+                if (w > 0) b.FontFamily = new FontFamily("Segoe UI Symbol");
                 int level = w;
                 b.Click += (_, __) => { WriteInt(PlayAreas.WantedToGive, level); foreach (var sb in starButtons) sb.IsChecked = (int)sb.Tag == level; };
                 starButtons.Add(b);
@@ -592,7 +603,7 @@ namespace Xenvious
             {
                 int bit = t;
                 var b = Tile(T("actorteam", "Team") + " " + (t + 1));
-                b.MinHeight = 30; b.Height = 30;
+                Chip(b);
                 b.Click += (_, __) => WriteBit(bit, b.IsChecked == true);
                 _loaders.Add(() => b.IsChecked = (PlayAreas.GetInt(_area, _team, _rule, PlayAreas.BoundsBS) & (1 << bit)) != 0);
                 teams.Children.Add(b);
