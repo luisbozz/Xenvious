@@ -67,14 +67,12 @@ namespace Xenvious
         // grows north while image rows grow downwards. These defaults are an estimate;
         // "Kalibrieren" replaces them with numbers measured from two real camera positions
         // and stores them in the roaming config.
-        // Measured for the old 1200 px map (420x578 map surface), only a starting point for the HD map
-        // (8192 px satellite map, cropped to that surface); "Calibrate" and config.ini override it.
-        private static double _mapOriginX = -4822.4;    // Welt-X am linken Bildrand
-        private static double _mapUnitsPerPxX = 23.3424;
-        private static double _mapOriginY = 8877.83;    // Welt-Y am oberen Bildrand
-        private static double _mapUnitsPerPxY = 23.2309;
+        // Measured in game with "Calibrate" on the HD map (420x578 map surface); a calibration in config.ini overrides it.
+        private static double _mapOriginX = -3914.79;   // Welt-X am linken Bildrand
+        private static double _mapUnitsPerPxX = 21.5560;
+        private static double _mapOriginY = 8393.64;    // Welt-Y am oberen Bildrand
+        private static double _mapUnitsPerPxY = 21.5199;
 
-        // MAPMOVER held the calibration of the old 1200 px map; the HD map needs a new one.
         private const string MapCalibSection = "MAPMOVER_HD";
 
         // Also used by JobMap (Copy Jobs), so both follow the same calibration.
