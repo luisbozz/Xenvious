@@ -178,10 +178,9 @@ namespace Xenvious
                 _list.Children.Add(Faint(T("rl_none", "This team has no rules yet. Place entities with an objective in the creator."), 13.5));
             for (int i = 0; i < _rules.Count; i++)
             {
-                if (i > 0)
-                    _list.Children.Add(new Line { X1 = 0, Y1 = 0, X2 = 0, Y2 = 10, StrokeThickness = 2, StrokeDashArray = new DoubleCollection { 2, 2 }, Margin = new Thickness(29, 0, 0, 0) }
-                        .Also(l => l.SetResourceReference(Shape.StrokeProperty, "LineBrush")));
                 _list.Children.Add(RuleRow(_rules[i]));
+                if (i < _rules.Count - 1 || HasFlow(_rules[i]))
+                    _list.Children.Add(Connector(_rules[i], i < _rules.Count - 1));
             }
             ShowDetail();
         }
@@ -251,6 +250,11 @@ namespace Xenvious
                         extra ? T("rl_extra_tip", "Extra objective: this entity has another rule as well") : null));
                 }
             }
+            // An extra objective on the rule the entity already has does nothing new: the entity is
+            // done with this rule once, so the extra one belongs on a later rule.
+            foreach (var twice in rule.Links.Where(l => l.Extra && rule.Links.Any(o => !o.Extra && o.Kind == l.Kind && o.Index == l.Index)))
+                chips.Children.Add(Chip(string.Format(CultureInfo.CurrentCulture, T("rl_extra_same", "{0}: extra objective on its own rule"), KindName(twice.Kind) + " " + (twice.Index + 1)),
+                    ChipKind.Warn, T("rl_extra_same_tip", "The entity's extra objective sits on the same rule as its own objective. Give it a later rule, then the team gets it after this one.")));
             middle.Children.Add(chips);
             Grid.SetColumn(middle, 1);
             grid.Children.Add(middle);
@@ -262,12 +266,6 @@ namespace Xenvious
                 t.SetResourceReference(TextBlock.ForegroundProperty, brush);
                 side.Children.Add(t);
             }
-            foreach (var jump in rule.Links.Where(l => l.PassJump >= 0).Select(l => l.PassJump).Distinct())
-                Side("✓ → " + (jump + 1), "OkBrush");
-            foreach (var jump in rule.Links.Where(l => l.FailJump >= 0).Select(l => l.FailJump).Distinct())
-                Side("✗ → " + (jump + 1), "BadBrush");
-            if (rule.NextRules != 0)
-                Side("⇢ " + string.Join(" / ", Bits(rule.NextRules).Select(b => (b + 1).ToString(CultureInfo.CurrentCulture))), "AccentBrush");
             if (rule.TargetScore > 0)
                 Side(string.Format(CultureInfo.CurrentCulture, T("rl_chip_target", "{0} needed"), rule.TargetScore));
             if (rule.TimeLimit != 0)
@@ -278,6 +276,49 @@ namespace Xenvious
             grid.Children.Add(side);
             row.Child = grid;
             return row;
+        }
+
+        private static bool HasFlow(Rules.Rule rule)
+            => rule.NextRules != 0 || rule.Links.Any(l => l.PassJump >= 0 || l.FailJump >= 0);
+
+        /// <summary>
+        /// The line down to the next rule, with where the team goes instead when the rule has jumps or
+        /// a next-objective override. The line fades when the team never goes straight on.
+        /// </summary>
+        private static UIElement Connector(Rules.Rule rule, bool toNext)
+        {
+            var next = Bits(rule.NextRules).ToList();
+            bool straight = toNext && (next.Count == 0 || next.Contains(rule.Index + 1));
+            var labels = new WrapPanel { VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(14, 3, 0, 3) };
+            void Label(string text, string brush, string tip)
+            {
+                var t = new TextBlock { Text = text, FontSize = 12, FontWeight = FontWeights.SemiBold, Margin = new Thickness(0, 0, 14, 0), ToolTip = tip };
+                t.SetResourceReference(TextBlock.ForegroundProperty, brush);
+                labels.Children.Add(t);
+            }
+            string Rule(int index) => string.Format(CultureInfo.CurrentCulture, T("rl_rule_n", "Rule {0}"), index + 1);
+            if (next.Count == 1)
+                Label("⇢ " + Rule(next[0]), "AccentBrush", T("rl_flow_next_tip", "Next-objective override: the team goes on with this rule"));
+            else if (next.Count > 1)
+                Label("⇢ " + string.Format(CultureInfo.CurrentCulture, T("rl_flow_random", "one of {0} at random"),
+                    string.Join(" / ", next.Select(b => (b + 1).ToString(CultureInfo.CurrentCulture)))), "AccentBrush", T("rl_flow_next_tip", "Next-objective override: the team goes on with this rule"));
+            foreach (var jump in rule.Links.Where(l => l.PassJump >= 0).Select(l => l.PassJump).Distinct())
+                Label("✓ → " + Rule(jump), "OkBrush", T("rl_flow_pass_tip", "Jump when the objective is passed"));
+            foreach (var jump in rule.Links.Where(l => l.FailJump >= 0).Select(l => l.FailJump).Distinct())
+                Label("✗ → " + Rule(jump), "BadBrush", T("rl_flow_fail_tip", "Jump when the objective is failed"));
+
+            // A canvas clips the long line to the row's height, whatever the labels need.
+            var line = new Line { X1 = 30, Y1 = 0, X2 = 30, Y2 = 400, StrokeThickness = 2, StrokeDashArray = new DoubleCollection { 2, 1.5 }, Opacity = straight ? 0.7 : 0.25 };
+            line.SetResourceReference(Shape.StrokeProperty, "FaintTextBrush");
+            var holder = new Canvas { ClipToBounds = true, MinHeight = 14 };
+            holder.Children.Add(line);
+            var grid = new Grid();
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(48) });
+            grid.ColumnDefinitions.Add(new ColumnDefinition());
+            grid.Children.Add(holder);
+            Grid.SetColumn(labels, 1);
+            grid.Children.Add(labels);
+            return grid;
         }
 
         private enum ChipKind { Plain, Type, Warn }
@@ -612,8 +653,17 @@ namespace Xenvious
             Section(T("rl_order", "Order (later)"));
             var acts = new WrapPanel();
             foreach (var (key, fallback) in new[] { ("", "↑"), ("", "↓"), ("rl_insert", "Insert before"), ("rl_delete", "Delete") })
-                acts.Children.Add(new Button { Style = (Style)FindResource("NavButton"), Content = key.Length == 0 ? fallback : T(key, fallback), IsEnabled = false,
-                    Padding = new Thickness(11, 0, 11, 0), Height = 30, Margin = new Thickness(0, 0, 6, 0) });
+            {
+                // Bordered like the mockup's buttons; disabled until reordering renumbers every pointer.
+                var t = new TextBlock { Text = key.Length == 0 ? fallback : T(key, fallback), FontWeight = FontWeights.Bold, FontSize = 13, VerticalAlignment = VerticalAlignment.Center };
+                t.SetResourceReference(TextBlock.ForegroundProperty, "TextColor");
+                var b = new Border { Height = 30, Padding = new Thickness(11, 0, 11, 0), Margin = new Thickness(0, 0, 6, 6), CornerRadius = new CornerRadius(6), BorderThickness = new Thickness(1),
+                    Child = t, Opacity = 0.45, ToolTip = T("rl_order_later", "Comes later: every jump and link has to be renumbered") };
+                b.SetResourceReference(Border.BackgroundProperty, "DeepBrush");
+                b.SetResourceReference(Border.BorderBrushProperty, "LineBrush");
+                ToolTipService.SetShowOnDisabled(b, true);
+                acts.Children.Add(b);
+            }
             _detail.Children.Add(acts);
         }
 
