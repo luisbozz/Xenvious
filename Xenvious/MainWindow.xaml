@@ -7954,6 +7954,10 @@
                                                             </TabItem>
 
 
+                                                            <TabItem x:Name="PageInnerMissionRules" Header="Rules">
+                                                                <!-- A team's rules with what points at them, jumps and limits; Controls/RulesView.cs. -->
+                                                                <local:RulesView x:Name="rulesView" Margin="10,0"/>
+                                                            </TabItem>
                                                             <TabItem x:Name="PageInnerMissionExtra" Header="Extra objectives">
                                                                 <!-- All 30 extra objective slots and how they work; MainWindow.ExtraObjectives.cs. -->
                                                                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">

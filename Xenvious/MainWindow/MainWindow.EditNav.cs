@@ -76,6 +76,7 @@ namespace Xenvious
                 Page("zones", "Zones", "EditIconZone", 0, AllCreators, PageZone, () => BtnSectionZone_Click(null, null)),
 
                 Page("mission", "Mission", "EditIconMission", 1, "LCM", PageMission, () => BtnSectionMission_Click(null, null),
+                    new EditNavSub { Label = TranslateOr("rl_page", "Rules"), Open = OpenRules, Page = PageMission },
                     Sub(BtnMissionGeneral), Sub(BtnMissionTeamSettings), Sub(BtnMissionPlayerSettings), Sub(BtnMissionPA),
                     Sub(BtnMissionTPM), Counted(BtnMissionKill, () => GlobalCount(GTA.Offsets.Editor.Kill.number)), Counted(BtnMissionGC, GangChaseRuleCount),
                     Counted(BtnMissionotzone, () => GlobalCount(GTA.Offsets.Editor.otzone.number)), Counted(BtnMissionBlips, () => GlobalCount(GTA.Offsets.Editor.ddblip.number)),

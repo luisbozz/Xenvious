@@ -20,6 +20,13 @@ namespace Xenvious
             GotoExtraRules.HelpRequested += (_, __) => OpenExtraObjectives();
         }
 
+        /// <summary>Opens the rules page (Controls/RulesView.cs).</summary>
+        private void OpenRules()
+        {
+            BtnSectionMission_Click(null, null);
+            PageInnerMission.SelectedItem = PageInnerMissionRules;
+        }
+
         /// <summary>Opens the overview: the explanation and all 30 slots.</summary>
         private void OpenExtraObjectives()
         {
