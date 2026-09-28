@@ -29,7 +29,36 @@ namespace Xenvious
                     if (((ComboBoxItem)sender).IsMouseOver && Mouse.LeftButton == MouseButtonState.Released)
                         e.Handled = true;
                 }));
+
+            // Scrolling a page over a closed dropdown changed its value and stopped the page.
+            // The wheel only picks in a dropdown that has the focus and when the page was not
+            // just scrolled; otherwise it scrolls the page on.
+            EventManager.RegisterClassHandler(typeof(ComboBox), UIElement.PreviewMouseWheelEvent,
+                new MouseWheelEventHandler((sender, e) =>
+                {
+                    var box = (ComboBox)sender;
+                    if (box.IsDropDownOpen)
+                        return;
+                    if (box.IsKeyboardFocusWithin && Environment.TickCount - _lastPageScroll > 600)
+                        return;
+                    e.Handled = true;
+                    for (DependencyObject p = System.Windows.Media.VisualTreeHelper.GetParent(box); p != null; p = System.Windows.Media.VisualTreeHelper.GetParent(p))
+                        if (p is ScrollViewer sv && sv.ScrollableHeight > 0)
+                        {
+                            sv.ScrollToVerticalOffset(sv.VerticalOffset - e.Delta);
+                            _lastPageScroll = Environment.TickCount;
+                            break;
+                        }
+                }));
+            EventManager.RegisterClassHandler(typeof(ScrollViewer), ScrollViewer.ScrollChangedEvent,
+                new ScrollChangedEventHandler((sender, e) =>
+                {
+                    if (e.VerticalChange != 0 && Mouse.LeftButton == MouseButtonState.Released)
+                        _lastPageScroll = Environment.TickCount;
+                }));
         }
+
+        private static int _lastPageScroll = int.MinValue / 2;
 
         protected override void OnStartup(StartupEventArgs e)
         {
