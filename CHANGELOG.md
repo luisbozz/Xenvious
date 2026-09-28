@@ -24,7 +24,6 @@
 * **mission:** police dropdown, team and round count ranges, one team in LTS ([08949e4](https://github.com/luisbozz/Xenvious/commit/08949e49c84a17132c84ba20d2c6cc2eac4fd0d7))
 * **moddedprops:** no writes into wrong slots of other creators ([08949e4](https://github.com/luisbozz/Xenvious/commit/08949e49c84a17132c84ba20d2c6cc2eac4fd0d7))
 * **props:** moving a prop to dynamic no longer bricks the creator ([5fa87db](https://github.com/luisbozz/Xenvious/commit/5fa87db4f9c07ca3e371862a187a7c21fd28a08c))
-* **props:** moving a prop to dynamic no longer bricks the creator ([b497d37](https://github.com/luisbozz/Xenvious/commit/b497d374658b656d304c3ec2c23a016522f11513))
 * **ui:** mouse wheel scrolls lists and text boxes, page scroll no longer changes dropdowns ([08949e4](https://github.com/luisbozz/Xenvious/commit/08949e49c84a17132c84ba20d2c6cc2eac4fd0d7))
 
 ## [1.73.0](https://github.com/luisbozz/Xenvious/releases/tag/v1.73.0) (2026-09-25)
