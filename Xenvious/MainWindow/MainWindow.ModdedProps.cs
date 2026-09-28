@@ -209,27 +209,10 @@ namespace Xenvious
                 readTimer.Stop();
                 Log.Debug($"Read {buffer.Length} bytes for {source.DisplayName} in {readTimer.ElapsedMilliseconds} ms", source: logSource);
 
+                // Only the chosen creator gets addresses: another creator's table has another
+                // shape, so the same offset there is a different slot or no slot at all.
                 var dataRegions = new ulong?[sources.Count];
                 dataRegions[index] = dataRegion;
-                int resolvedRegions = 1;
-
-                var regionTimer = Stopwatch.StartNew();
-                for (int i = 0; i < sources.Count; i++)
-                {
-                    if (i == index)
-                    {
-                        continue;
-                    }
-
-                    if (sources[i].RefreshScriptPointer() && sources[i].DataRegion.HasValue)
-                    {
-                        dataRegions[i] = sources[i].DataRegion;
-                        resolvedRegions++;
-                    }
-                }
-                regionTimer.Stop();
-
-                Log.Debug($"Resolved {resolvedRegions} creator region(s) in {regionTimer.ElapsedMilliseconds} ms", source: logSource);
 
                 var categories = new List<PropC>();
                 int placeholderMatches = 0;
@@ -389,8 +372,8 @@ namespace Xenvious
         //
         // Left the categories of the prop menu, in the middle the slots of the chosen category as
         // tiles, on the right the editor for one slot, import and the creator options. Writes go
-        // to the chosen creator or, with "all loaded creators", to every creator whose table is
-        // known (MPEntry.Address holds one address per source).
+        // to the chosen creator; with "remember for all creators" ModdedPropMemory keeps them and
+        // writes them into every other creator when it is loaded.
 
         private sealed class MPCategory
         {
@@ -465,7 +448,6 @@ namespace Xenvious
         private int _mpCreator = -1;
         private MPCategory _mpCategory = MPCategories[0];
         private int _mpSlot;
-        private bool _mpAllCreators = true;
         private bool _mpListMode;
         private bool _mpLoading;
         private CatalogItem _mpPick;
@@ -479,6 +461,7 @@ namespace Xenvious
         private FrameworkElement _mpListPanel;
         private StackPanel _mpModeSeg;
         private CheckBox _mpAllBox, _mpMurica;
+        private Button _mpRememberCount;
         private JSON.ModdedPropJSON.Rootobject _mpImported;
         private StackPanel _mpSaved;
         private string _mpSaveName = "";
@@ -587,10 +570,20 @@ namespace Xenvious
             var actions = new StackPanel { Orientation = Orientation.Horizontal };
             DockPanel.SetDock(actions, Dock.Right);
             var allRow = new StackPanel { Orientation = Orientation.Horizontal, VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(0, 0, 12, 0) };
-            allRow.Children.Add(new TextBlock { Text = MPT("mp_allcreators", "All loaded creators"), VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(0, 0, 8, 0), Foreground = ThemeBrush("MutedTextBrush") });
-            _mpAllBox = new CheckBox { Style = (Style)FindResource("FormToggle"), IsChecked = true };
-            _mpAllBox.Click += (_, __) => { _mpAllCreators = _mpAllBox.IsChecked == true; RenderMPEditor(); };
+            allRow.ToolTip = MPT("mp_remember_tip", "Keeps every change and writes it into each creator as soon as it is loaded, also after a restart of Xenvious.");
+            _mpRememberCount = new Button { Style = (Style)FindResource("FormButton"), Height = 26, Padding = new Thickness(8, 0, 8, 0), Margin = new Thickness(0, 0, 10, 0), FontSize = 12 };
+            _mpRememberCount.Click += (_, __) => { ModdedPropMemory.Clear(); RenderMPEditor(); };
+            allRow.Children.Add(_mpRememberCount);
+            allRow.Children.Add(new TextBlock { Text = MPT("mp_remember", "Remember for all creators"), VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(0, 0, 8, 0), Foreground = ThemeBrush("MutedTextBrush") });
+            _mpAllBox = new CheckBox { Style = (Style)FindResource("FormToggle"), IsChecked = ModdedPropMemory.Enabled };
+            _mpAllBox.Click += (_, __) => { ModdedPropMemory.Enabled = _mpAllBox.IsChecked == true; RenderMPEditor(); };
             allRow.Children.Add(_mpAllBox);
+            ModdedPropMemory.Applied += script => Dispatcher.BeginInvoke(new Action(() =>
+            {
+                // Written behind the page's back: read the table again so the tiles show it.
+                if (_mpCreator >= 0 && !_mpLoading && GTA.Editor.ModdedPropSources[_mpCreator].ScriptName == script)
+                    SelectMPCreator(_mpCreator);
+            }));
             actions.Children.Add(allRow);
             actions.Children.Add(MPButton(MPT("mp_import", "Import"), (_, __) => ImportMProps(), icon: "M8,2 V10 M4.5,6.5 L8,10 L11.5,6.5 M2.5,13.5 H13.5"));
             actions.Children.Add(MPButton(MPT("mp_export", "Export"), (_, __) => ExportMProps(), icon: "M8,10 V2 M4.5,5.5 L8,2 L11.5,5.5 M2.5,13.5 H13.5"));
@@ -902,7 +895,7 @@ namespace Xenvious
                 row.Children.Add(remove);
                 var apply = MPButton(MPT("mp_apply", "Apply"), (_, __) =>
                 {
-                    writeCategory(string.Join(",", entry.Hashes), entry.Table, _mpAllCreators);
+                    writeCategory(string.Join(",", entry.Hashes), entry.Table);
                     if (category != null)
                         _mpCategory = category;
                     RenderMPAll();
@@ -1305,18 +1298,23 @@ namespace Xenvious
             RenderMPAll();
         }
 
-        // Writes one slot to the chosen creator, or to every creator whose table is known.
-        // Originals differ per creator, so putting them back only touches the chosen one.
-        private void WriteMPSlot(GTA.MPEntry slot, int hash, bool onlyChosen = false)
+        // Writes one slot of the chosen creator; with "remember" on it is also kept for the others.
+        private void WriteMPSlot(GTA.MPEntry slot, int hash)
         {
             if (!m.IsProcOpen || slot == null || _mpCreator < 0)
                 return;
-            var addresses = _mpAllCreators && !onlyChosen
-                ? slot.Address.Where(a => !string.IsNullOrWhiteSpace(a))
-                : new[] { slot.Address[_mpCreator] }.Where(a => !string.IsNullOrWhiteSpace(a));
-            foreach (var address in addresses)
-                m.memory(address).SetInt(hash);
+            string address = slot.Address[_mpCreator];
+            if (string.IsNullOrWhiteSpace(address))
+                return;
+            m.memory(address).SetInt(hash);
             UpdateModdedPropEntry(slot, hash);
+            int table = allprops.FindIndex(c => c.prop.Contains(slot));
+            if (table < 0)
+                return;
+            int index = allprops[table].prop.IndexOf(slot);
+            var defaults = MPDefaults(table);
+            int? original = defaults != null && index < defaults.Length ? defaults[index] : null;
+            ModdedPropMemory.Record(GTA.Editor.ModdedPropSources[_mpCreator].ScriptName, table, index, original, hash);
         }
 
         // A model brought over from Props / Dynamic props: a bar with the three steps, and a frame
@@ -1546,7 +1544,7 @@ namespace Xenvious
             Fill();
 
             var buttons = new System.Windows.Controls.Primitives.UniformGrid { Columns = 2 };
-            var reset = MPButton(MPT("mp_original", "Original"), (_, __) => { WriteMPSlot(slot, original, onlyChosen: true); _mpPick = null; RenderMPAll(); });
+            var reset = MPButton(MPT("mp_original", "Original"), (_, __) => { WriteMPSlot(slot, original); _mpPick = null; RenderMPAll(); });
             reset.Margin = new Thickness(0, 0, 4, 0);
             var set = MPButton(MPT("mp_set", "Set"), (_, __) => { if (_mpPick != null) { WriteMPSlot(slot, _mpPick.Int32); _mpPick = null; _mpFrom = null; RenderMPAll(); } }, primary: true);
             set.Margin = new Thickness(4, 0, 0, 0);
@@ -1555,9 +1553,17 @@ namespace Xenvious
             buttons.Children.Add(set);
             _mpEditor.Children.Add(buttons);
             var sources = GTA.Editor.ModdedPropSources;
-            string where = _mpAllCreators
-                ? MPT("mp_where_all", "Applies to: ") + string.Join(", ", sources.Where((s, i) => slot.Address.Count > i && !string.IsNullOrWhiteSpace(slot.Address[i])).Select(s => s.DisplayName))
-                : MPT("mp_where_one", "Applies only to: ") + (_mpCreator >= 0 ? sources[_mpCreator].DisplayName : "–");
+            string here = _mpCreator >= 0 ? sources[_mpCreator].DisplayName : "–";
+            string where = ModdedPropMemory.Enabled
+                ? string.Format(CultureInfo.CurrentCulture, MPT("mp_where_remember", "Applies to {0} and every creator loaded later."), here)
+                : MPT("mp_where_one", "Applies only to: ") + here;
+            if (_mpRememberCount != null)
+            {
+                int kept = ModdedPropMemory.Count;
+                _mpRememberCount.Visibility = kept > 0 ? Visibility.Visible : Visibility.Collapsed;
+                _mpRememberCount.Content = string.Format(CultureInfo.CurrentCulture, MPT("mp_remember_n", "{0} kept · forget"), kept);
+                _mpRememberCount.ToolTip = MPT("mp_remember_forget_tip", "Forget the kept changes; creators loaded later keep their own models.");
+            }
             var whereText = new TextBlock { Text = where, FontSize = 12, TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 8, 0, 0) };
             whereText.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
             _mpEditor.Children.Add(whereText);
@@ -1660,7 +1666,7 @@ namespace Xenvious
                 int table = CprpImportTable[n];
                 string hashes = field;
                 // One category on its own, like the category choice of the old import.
-                var only = MPButton(MPT("mp_import_one", "Only this"), (_, __) => { writeCategory(hashes, table, _mpAllCreators); RenderMPAll(); });
+                var only = MPButton(MPT("mp_import_one", "Only this"), (_, __) => { writeCategory(hashes, table); RenderMPAll(); });
                 only.IsEnabled = table < allprops.Count;
                 only.Height = 24;
                 DockPanel.SetDock(only, Dock.Right);
@@ -1678,7 +1684,7 @@ namespace Xenvious
                 {
                     string field = CprpField(_mpImported, n);
                     if (!string.IsNullOrWhiteSpace(field) && CprpImportTable[n] < allprops.Count)
-                        writeCategory(field, CprpImportTable[n], _mpAllCreators);
+                        writeCategory(field, CprpImportTable[n]);
                 }
                 _mpImported = null;
                 RenderMPAll();
@@ -1696,19 +1702,14 @@ namespace Xenvious
             return d as FrameworkElement;
         }
 
-        public void writeCategory(string basecategoryproplist, int category, bool all)
+        public void writeCategory(string basecategoryproplist, int category)
         {
             if (string.IsNullOrWhiteSpace(basecategoryproplist) || category >= allprops.Count || _mpCreator < 0)
                 return;
             var props = basecategoryproplist.Split(',').Select(Functions.int_parse).ToList();
             var proplist = allprops[category].prop;
             for (int i = 0; i < Math.Min(props.Count, proplist.Count); i++)
-            {
-                var addresses = all ? proplist[i].Address.Where(a => !string.IsNullOrWhiteSpace(a)) : new[] { proplist[i].Address[_mpCreator] };
-                foreach (var address in addresses)
-                    m.memory(address).SetInt(props[i]);
-                UpdateModdedPropEntry(proplist[i], props[i]);
-            }
+                WriteMPSlot(proplist[i], props[i]);
         }
 
         private void ExportMProps()
@@ -1735,11 +1736,13 @@ namespace Xenvious
                 File.WriteAllText(dialog.FileName, json);
         }
 
-        // Puts the creator's own models back into every table (chosen creator, or all loaded).
+        // Puts the creator's own models back into every table, and forgets the kept changes so
+        // the creators loaded later keep theirs too.
         private void RestoreMProps()
         {
             if (!m.IsProcOpen || _mpCreator < 0)
                 return;
+            ModdedPropMemory.Clear();
             foreach (var category in MPCategories)
             {
                 var defaults = MPDefaults(category.Table);
@@ -1748,7 +1751,7 @@ namespace Xenvious
                 var slots = MPSlots(category);
                 for (int i = 0; i < slots.Count && i < defaults.Length; i++)
                     if (defaults[i].HasValue && slots[i].IntegerValue != defaults[i])
-                        WriteMPSlot(slots[i], defaults[i].Value, onlyChosen: true);
+                        WriteMPSlot(slots[i], defaults[i].Value);
             }
             RenderMPAll();
         }

@@ -48,6 +48,8 @@ namespace Xenvious
                 {
                     ScrPatchesRunner.ApplyPatches(GTA.Editor.ScrPatchesDev);
                     ScrPatchesRunner.ApplyPatches(GTA.Editor.ScrPatches);
+                    // Same reason: a creator script that was just loaded gets the kept prop changes.
+                    ModdedPropMemory.Tick();
                 }
                 tick++;
                 Thread.Sleep(50);

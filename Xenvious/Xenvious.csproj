@@ -246,6 +246,7 @@
     <Compile Include="Creator Classes\PreciseTemplates.cs" />
     <Compile Include="Creator Classes\ScrProgramScanner.cs" />
     <Compile Include="Creator Classes\ModdedPropSource.cs" />
+    <Compile Include="Creator Classes\ModdedPropMemory.cs" />
     <Compile Include="Creator Classes\ModdedPropTable.cs" />
     <Compile Include="Creator Classes\nrcidcopy.cs" />
     <Compile Include="Creator Classes\Outfit.cs" />
