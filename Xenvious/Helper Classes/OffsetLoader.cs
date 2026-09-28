@@ -59,6 +59,7 @@ namespace Xenvious
             GTA.Offsets.Editor.OFFSET_current_creator_worker_dm = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_worker_dm"), 0);
             GTA.Offsets.Editor.OFFSET_current_creator_worker_capture = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_worker_capture"), 0);
             GTA.Offsets.Editor.OFFSET_current_creator_worker_lts = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_worker_lts"), 0);
+            GTA.Offsets.Editor.OFFSET_current_creator_worker_mission = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_worker_mission"), 0);
             GTA.Offsets.Editor.OFFSET_current_creator_worker_offset_refresh = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_worker_offset_refresh"), 0);
             GTA.Offsets.Editor.OFFSET_current_creator_worker_offset_editing_published = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_worker_offset_editing_published"), 0);
             GTA.Offsets.Editor.load_job_flag = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_load_job_flag"), 0);
@@ -79,6 +80,7 @@ namespace Xenvious
             GTA.Offsets.Editor.OFFSET_current_creator_pre_dm = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_pre_dm"), 0);
             GTA.Offsets.Editor.OFFSET_current_creator_pre_capture = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_pre_capture"), 0);
             GTA.Offsets.Editor.OFFSET_current_creator_pre_lts = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_pre_lts"), 0);
+            GTA.Offsets.Editor.OFFSET_current_creator_pre_mission = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_pre_mission"), 0);
             GTA.Offsets.Editor.OFFSET_current_creator_pre_menu_gm = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_pre_menu_gm"), 0);
             GTA.Offsets.Editor.OFFSET_current_creator_pre_test1 = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_pre_test1"), 0);
             GTA.Offsets.Editor.OFFSET_current_creator_pre_test2 = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_pre_test2"), 0);
@@ -88,6 +90,7 @@ namespace Xenvious
             GTA.Offsets.Editor.OFFSET_current_creator_pre_alignment = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_pre_alignment"), 0);
             GTA.Offsets.Editor.OFFSET_current_creator_placement_race = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_placement_race"), 0);
             GTA.Offsets.Editor.OFFSET_current_creator_placement_lts = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_placement_lts"), 0);
+            GTA.Offsets.Editor.OFFSET_current_creator_placement_mission = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_placement_mission"), 0);
             GTA.Offsets.Editor.OFFSET_current_creator_placement_capture = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_placement_capture"), 0);
             GTA.Offsets.Editor.OFFSET_current_creator_placement_dm = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_placement_dm"), 0);
             GTA.Offsets.Editor.OFFSET_current_creator_placement_survival = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_placement_survival"), 0);
@@ -108,6 +111,7 @@ namespace Xenvious
             GTA.Offsets.Editor.OFFSET_current_creator_test_dm = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_test_dm"), 0);
             GTA.Offsets.Editor.OFFSET_current_creator_test_capture = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_test_capture"), 0);
             GTA.Offsets.Editor.OFFSET_current_creator_test_lts = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_test_lts"), 0);
+            GTA.Offsets.Editor.OFFSET_current_creator_test_mission = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_test_mission"), 0);
             GTA.Offsets.Editor.OFFSET_current_creator_refresh_lts = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_refresh_lts"), 0);
             GTA.Offsets.Editor.OFFSET_current_creator_refresh_mission = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_refresh_mission"), 0);
             GTA.Offsets.Editor.OFFSET_current_creator_refresh_capture = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_refresh_capture"), 0);

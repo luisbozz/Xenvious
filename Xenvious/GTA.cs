@@ -393,7 +393,7 @@ namespace Xenvious
         public static readonly string[] CreatorScripts =
         {
             "fm_lts_creator", "fm_capture_creator", "fm_deathmatch_creator",
-            "fm_race_creator", "fm_survival_creator", "fm_mission_creator"
+            "fm_race_creator", "fm_survival_creator", "public_mission_creator"
         };
 
         /// <summary>
@@ -1461,6 +1461,7 @@ namespace Xenvious
                 public static long OFFSET_current_creator_worker_dm = 0x0;
                 public static long OFFSET_current_creator_worker_capture = 0x0;
                 public static long OFFSET_current_creator_worker_lts = 0x0;
+                public static long OFFSET_current_creator_worker_mission = 0x0;
                 public static long OFFSET_current_creator_worker_offset_refresh = 0x0;
                 public static long OFFSET_current_creator_worker_offset_editing_published = 0x0;
                 public static long load_job_flag = 0;
@@ -1481,6 +1482,7 @@ namespace Xenvious
                 public static long OFFSET_current_creator_pre_dm = 0x0;
                 public static long OFFSET_current_creator_pre_capture = 0x0;
                 public static long OFFSET_current_creator_pre_lts = 0x0;
+                public static long OFFSET_current_creator_pre_mission = 0x0;
                 public static long OFFSET_current_creator_pre_menu_gm = 0x0;
                 public static long OFFSET_current_creator_pre_test1 = 0x0;
                 public static long OFFSET_current_creator_pre_test2 = 0x0;
@@ -1489,6 +1491,7 @@ namespace Xenvious
                 public static long OFFSET_current_creator_pre_alignment = 0x0;
                 public static long OFFSET_current_creator_placement_race = 0x0;
                 public static long OFFSET_current_creator_placement_lts = 0x0;
+                public static long OFFSET_current_creator_placement_mission = 0x0;
                 public static long OFFSET_current_creator_placement_capture = 0x0;
                 public static long OFFSET_current_creator_placement_dm = 0x0;
                 public static long OFFSET_current_creator_placement_survival = 0x0;
@@ -1509,6 +1512,7 @@ namespace Xenvious
                 public static long OFFSET_current_creator_test_dm = 0x0;
                 public static long OFFSET_current_creator_test_capture = 0x0;
                 public static long OFFSET_current_creator_test_lts = 0x0;
+                public static long OFFSET_current_creator_test_mission = 0x0;
                 public static long OFFSET_current_creator_refresh_lts = 0x0;
                 public static long OFFSET_current_creator_refresh_mission = 0x0;
                 public static long OFFSET_current_creator_refresh_capture = 0x0;
