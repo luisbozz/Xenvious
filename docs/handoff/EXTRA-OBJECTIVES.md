@@ -78,3 +78,9 @@ Check the Legacy numbers the same way before use.
 
 Also built since (commit 05f0336): the card for objects and go-tos, the overview page of all 30
 slots with the explanation, warnings. Next: test in game (Enhanced + Legacy), duplicate handling.
+
+Redesign (2026-09-28): the overview page is gone. Extra objectives are managed on the rules page:
+the selected rule lists its entities (extras with an "Extra" chip), each with a button to its page
+and one to take it out, plus a row to add one (Mission Creator: through the rule list; elsewhere
+`ExtraObjectives.Add`). The "?" there shows `eo_help_text`. Every entity page (actor, vehicle,
+object, go-to) has the `EntityRulesCard`; its rows open the rules page at that rule.

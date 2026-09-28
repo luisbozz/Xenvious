@@ -7941,32 +7941,6 @@
                                                                 <!-- A team's rules with what points at them, jumps and limits; Controls/RulesView.cs. -->
                                                                 <local:RulesView x:Name="rulesView" Margin="10,0"/>
                                                             </TabItem>
-                                                            <TabItem x:Name="PageInnerMissionExtra" Header="Extra objectives">
-                                                                <!-- All 30 extra objective slots and how they work; MainWindow.ExtraObjectives.cs. -->
-                                                                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                                                    <StackPanel Margin="10,12,10,12">
-                                                                        <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
-                                                                            <DockPanel>
-                                                                                <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
-                                                                                    <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[eo_help_title], FallbackValue='Extra rules'}"/>
-                                                                                </Border>
-                                                                                <TextBlock Margin="14,12,14,14" TextWrapping="Wrap" FontSize="14" LineHeight="21" MaxWidth="820" HorizontalAlignment="Left" Text="{Binding Translation[eo_help_text], FallbackValue=''}"/>
-                                                                            </DockPanel>
-                                                                        </Border>
-                                                                        <Border Style="{StaticResource DashCard}">
-                                                                            <DockPanel>
-                                                                                <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
-                                                                                    <DockPanel>
-                                                                                        <TextBlock x:Name="ExtraOverviewCount" DockPanel.Dock="Right" VerticalAlignment="Center" FontSize="12" Foreground="{DynamicResource NavMutedBrush}"/>
-                                                                                        <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[eo_all], FallbackValue='All slots'}"/>
-                                                                                    </DockPanel>
-                                                                                </Border>
-                                                                                <StackPanel x:Name="ExtraOverviewList" Margin="14,10,14,14"/>
-                                                                            </DockPanel>
-                                                                        </Border>
-                                                                    </StackPanel>
-                                                                </ScrollViewer>
-                                                            </TabItem>
                                                             <TabItem x:Name="PageInnerMissionGoto" Header="Goto" >
 
                                                                 <!-- Card layout (docs/handoff/auto_page.py): one card per old column, headings as sub titles. -->
