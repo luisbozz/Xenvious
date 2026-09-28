@@ -140,8 +140,7 @@ When bumping a NuGet package, update `Xenvious/packages.config` **and** the
 
 ## Scope
 
-Xenvious is for building and testing creator jobs. Do not add anything aimed
-at GTA Online gameplay, anti-cheat bypasses or other players.
+Xenvious is for building and testing creator jobs and improve the overall experience creating jobs.
 
 ## More
 
