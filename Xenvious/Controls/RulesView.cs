@@ -230,7 +230,7 @@ namespace Xenvious
                 Cursor = System.Windows.Input.Cursors.Hand };
             row.SetResourceReference(Border.BackgroundProperty, "SectionBackgroundBrush");
             row.SetResourceReference(Border.BorderBrushProperty, selected ? "AccentBrush" : "LineBrush");
-            row.MouseLeftButtonUp += (_, __) => { _selected = rule.Index; Reload(true); };
+            row.MouseLeftButtonUp += (_, __) => { _selected = rule.Index; _joinError = null; Reload(true); };
 
             var grid = new Grid();
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(48) });
@@ -509,35 +509,70 @@ namespace Xenvious
                 : T("rl_text_hint", "Select text for colours and font, Ctrl+Space for icons and codes. Saved when you leave the field."));
         }
 
+        // Shown under "What points at this rule" while the "?" is on.
+        private bool _extraHelp;
+
         private void LinksSection(Rules.Rule rule)
         {
             string types = string.Join(", ", rule.Links.Select(TypeName).Distinct());
-            Section(T("rl_links", "What points at this rule") + (types.Length > 0 ? " · " + types : ""));
-            if (rule.Links.Count == 0)
+            var head = new DockPanel { Margin = new Thickness(0, _detail.Children.Count == 0 ? 0 : 14, 0, 6) };
+            var help = new ToggleButton { Style = (Style)FindResource("DashTeamButton"), Content = "?", Width = 22, Height = 22, Padding = new Thickness(0), FontSize = 12,
+                IsChecked = _extraHelp, ToolTip = T("eo_help_tip", "How extra rules work"), VerticalAlignment = VerticalAlignment.Center };
+            help.Click += (_, __) => { _extraHelp = help.IsChecked == true; ShowDetail(); };
+            DockPanel.SetDock(help, Dock.Right);
+            head.Children.Add(help);
+            var title = new TextBlock { Text = T("rl_links", "What points at this rule") + (types.Length > 0 ? " · " + types : ""), FontSize = 12, VerticalAlignment = VerticalAlignment.Center,
+                TextTrimming = TextTrimming.CharacterEllipsis };
+            title.SetResourceReference(TextBlock.ForegroundProperty, "MutedTextBrush");
+            head.Children.Add(title);
+            _detail.Children.Add(head);
+            if (_extraHelp)
             {
-                Hint(T("rl_links_none", "Nothing points at this rule. The game reaches it only through a jump or the next-objective override, otherwise the team gets stuck here."));
-                return;
+                var text = Faint(T("eo_help_text", ""), 12);
+                text.Margin = new Thickness(0, 0, 0, 8);
+                _detail.Children.Add(Field(text));
             }
+
+            if (rule.Links.Count == 0)
+                Hint(T("rl_links_none", "Nothing points at this rule. The game reaches it only through a jump or the next-objective override, otherwise the team gets stuck here."));
             foreach (var link in rule.Links)
             {
                 var row = new DockPanel();
                 var right = new StackPanel { Orientation = Orientation.Horizontal, VerticalAlignment = VerticalAlignment.Center };
                 if (link.HasPass) right.Children.Add(JumpBox(link, true));
                 if (link.HasFail) right.Children.Add(JumpBox(link, false));
-                if (right.Children.Count == 0)
+                int type = EoType(link.Kind);
+                if (link.Extra && !EntityRules.UsesRuleList)
+                    right.Children.Add(ExtraTypeBox(rule, link, type));
+                else if (right.Children.Count == 0)
                 {
-                    var t = Faint(TypeName(link) + (link.Extra ? "  +" : ""), 12);
+                    var t = Faint(TypeName(link), 12);
                     t.VerticalAlignment = VerticalAlignment.Center;
                     right.Children.Add(t);
                 }
+                if (type != 0)
+                {
+                    right.Children.Add(IconButton("M5,3 H1 V11 H9 V7 M7,1 H11 V5 M11,1 L5,7", T("rl_open_entity", "Open its page"),
+                        () => MainWindow.Instance?.OpenEntity(type, link.Index)));
+                    // The Mission Creator's rule list decides own and extra rules; elsewhere only extras are separate entries.
+                    if (EntityRules.UsesRuleList || link.Extra)
+                        right.Children.Add(IconButton("M2,2 L10,10 M10,2 L2,10", T("rl_leave_rule", "Take it out of this rule"), () => LeaveRule(rule, link, type)));
+                }
                 DockPanel.SetDock(right, Dock.Right);
                 row.Children.Add(right);
+                if (link.Extra)
+                {
+                    var chip = ExtraChip();
+                    DockPanel.SetDock(chip, Dock.Left);
+                    row.Children.Add(chip);
+                }
                 var name = new TextBlock { Text = EntityName(link), FontSize = 13, TextTrimming = TextTrimming.CharacterEllipsis, VerticalAlignment = VerticalAlignment.Center,
                     ToolTip = EntityName(link) + " · " + TypeName(link) + (link.Extra ? " (" + T("rl_extra", "extra objective") + ")" : "") };
                 name.SetResourceReference(TextBlock.ForegroundProperty, "TextColor");
                 row.Children.Add(name);
                 _detail.Children.Add(Field(row));
             }
+            JoinRow(rule);
             if (rule.Links.Any(l => l.HasPass || l.HasFail))
                 Hint(Rules.PublicCreator
                     ? T("rl_jump_hint_pmc", "✓ / ✗: where the team goes when this objective is passed or failed. The Mission Creator only jumps forward.")
@@ -549,6 +584,152 @@ namespace Xenvious
                 warn.SetResourceReference(TextBlock.ForegroundProperty, "WarnBrush");
                 _detail.Children.Add(warn);
             }
+        }
+
+        private static int EoType(Rules.Kind kind)
+        {
+            switch (kind)
+            {
+                case Rules.Kind.Ped: return ExtraObjectives.TypePed;
+                case Rules.Kind.Vehicle: return ExtraObjectives.TypeVehicle;
+                case Rules.Kind.Object: return ExtraObjectives.TypeObject;
+                case Rules.Kind.GoTo: return ExtraObjectives.TypeGoTo;
+                default: return 0;
+            }
+        }
+
+        private static FrameworkElement ExtraChip()
+        {
+            var grid = new Grid { Margin = new Thickness(0, 0, 7, 0), VerticalAlignment = VerticalAlignment.Center, ToolTip = T("rl_extra_tip", "Extra objective: this entity has another rule as well") };
+            var frame = new Rectangle { RadiusX = 5, RadiusY = 5, StrokeThickness = 1, StrokeDashArray = new DoubleCollection { 3, 2 } };
+            frame.SetResourceReference(Shape.StrokeProperty, "AccentBrush");
+            grid.Children.Add(frame);
+            var t = new TextBlock { Text = T("er_extra_short", "Extra"), FontSize = 11, FontWeight = FontWeights.Bold, Margin = new Thickness(6, 1, 6, 2) };
+            t.SetResourceReference(TextBlock.ForegroundProperty, "AccentBrush");
+            grid.Children.Add(t);
+            return grid;
+        }
+
+        private Button IconButton(string geometry, string tip, Action click)
+        {
+            var icon = new Path { Data = Geometry.Parse(geometry), StrokeThickness = 1.5, Width = 11, Height = 11, Stretch = Stretch.Uniform,
+                StrokeLineJoin = PenLineJoin.Round, StrokeStartLineCap = PenLineCap.Round, StrokeEndLineCap = PenLineCap.Round };
+            icon.SetResourceReference(Shape.StrokeProperty, "MutedTextBrush");
+            var b = new Button { Style = (Style)FindResource("FieldIconButton"), Width = 24, Height = 24, Margin = new Thickness(4, 0, 0, 0), Content = icon, ToolTip = tip, VerticalAlignment = VerticalAlignment.Center };
+            b.Click += (_, __) => click();
+            return b;
+        }
+
+        // Other creators: an extra objective's own type, stored with it (eoir).
+        private FrameworkElement ExtraTypeBox(Rules.Rule rule, Rules.Link link, int type)
+        {
+            var box = new ComboBox { Height = 26, MinWidth = 100, FontSize = 12, Margin = new Thickness(8, 0, 0, 0) };
+            foreach (var r in ExtraObjectives.RuleTypesFor(type))
+            {
+                var item = new ComboBoxItem { Content = T("eo_r_" + r.Value, r.Name), Tag = r.Value };
+                box.Items.Add(item);
+                if (r.Value == link.Type)
+                    box.SelectedItem = item;
+            }
+            box.SelectionChanged += (_, __) =>
+            {
+                if (_loading || !Live || !(box.SelectedItem is ComboBoxItem item))
+                    return;
+                var entry = EntityRules.Read(type, link.Index, _team).FirstOrDefault(e => !e.Main && e.Rule == rule.Index);
+                if (entry != null)
+                    ExtraObjectives.SetRule(entry.Slot, entry.Place, _team, (int)item.Tag, rule.Index);
+                Changed(null);
+            };
+            return box;
+        }
+
+        private void LeaveRule(Rules.Rule rule, Rules.Link link, int type)
+        {
+            if (!Live)
+                return;
+            if (EntityRules.UsesRuleList)
+            {
+                Changed(EntityRules.SetMember(type, link.Index, _team, rule.Index, false));
+                return;
+            }
+            var entry = EntityRules.Read(type, link.Index, _team).FirstOrDefault(e => !e.Main && e.Rule == rule.Index);
+            if (entry != null)
+                ExtraObjectives.Remove(entry.Slot, entry.Place, _team);
+            Changed(null);
+        }
+
+        private string _joinError;
+
+        private void Changed(string error)
+        {
+            _joinError = error;
+            _shownKey = null;
+            Dispatcher.BeginInvoke(new Action(() => Reload(true)), DispatcherPriority.Background);
+        }
+
+        // Adds an entity to the rule. In the Mission Creator it joins the rule list (the first rule
+        // of an entity is its own, later ones become extra objectives); elsewhere it becomes an
+        // extra objective of the entity.
+        private void JoinRow(Rules.Rule rule)
+        {
+            bool list = EntityRules.UsesRuleList;
+            int cls = list ? EntityRules.ClassOf(EntityRules.RuleSelection(_team, rule.Index)) : 0;
+            if (list && (cls < ExtraObjectives.TypePed || cls > ExtraObjectives.TypeGoTo))
+                return;
+
+            var kinds = new ComboBox { Height = 28, Width = 92, FontSize = 12, Margin = new Thickness(0, 0, 6, 0), Visibility = list ? Visibility.Collapsed : Visibility.Visible };
+            foreach (var (t, key, fallback) in new[] { (ExtraObjectives.TypePed, "eo_k_ped", "Actor"), (ExtraObjectives.TypeVehicle, "eo_k_veh", "Vehicle"),
+                (ExtraObjectives.TypeObject, "eo_k_obj", "Object"), (ExtraObjectives.TypeGoTo, "rl_k_loc", "Location") })
+                kinds.Items.Add(new ComboBoxItem { Content = T(key, fallback), Tag = t });
+            kinds.SelectedIndex = list ? cls - 1 : 1;
+            var entities = new ComboBox { Height = 28, FontSize = 12, Margin = new Thickness(0, 0, 6, 0) };
+            var types = new ComboBox { Height = 28, Width = 110, FontSize = 12, Margin = new Thickness(0, 0, 6, 0), Visibility = list ? Visibility.Collapsed : Visibility.Visible };
+            int Kind() => kinds.SelectedItem is ComboBoxItem k ? (int)k.Tag : 0;
+            void Fill()
+            {
+                int type = Kind();
+                entities.Items.Clear();
+                var taken = new HashSet<int>(rule.Links.Where(l => EoType(l.Kind) == type).Select(l => l.Index));
+                for (int i = 0; i < EntityPicker.Count(type); i++)
+                    if (!taken.Contains(i))
+                        entities.Items.Add(new ComboBoxItem { Content = EntityPicker.Label(type, i), Tag = i });
+                entities.SelectedIndex = entities.Items.Count > 0 ? 0 : -1;
+                types.Items.Clear();
+                foreach (var r in ExtraObjectives.RuleTypesFor(type))
+                    types.Items.Add(new ComboBoxItem { Content = T("eo_r_" + r.Value, r.Name), Tag = r.Value });
+                types.SelectedIndex = 0;
+            }
+            Fill();
+            kinds.SelectionChanged += (_, __) => Fill();
+            var add = new Button { Style = (Style)FindResource("FormButton"), Height = 28, Padding = new Thickness(10, 0, 10, 0), Content = "+ " + T("eo_add", "Add") };
+            add.Click += (_, __) =>
+            {
+                if (!Live || !(entities.SelectedItem is ComboBoxItem e))
+                    return;
+                int type = Kind(), index = (int)e.Tag;
+                Changed(list ? EntityRules.SetMember(type, index, _team, rule.Index, true)
+                    : types.SelectedItem is ComboBoxItem t ? ExtraObjectives.Add(type, index, _team, rule.Index, (int)t.Tag) : null);
+            };
+            var row = new DockPanel { Margin = new Thickness(0, 2, 0, 0) };
+            DockPanel.SetDock(add, Dock.Right);
+            row.Children.Add(add);
+            DockPanel.SetDock(kinds, Dock.Left);
+            row.Children.Add(kinds);
+            DockPanel.SetDock(types, Dock.Right);
+            row.Children.Add(types);
+            row.Children.Add(entities);
+            _detail.Children.Add(row);
+            if (_joinError != null)
+            {
+                var error = Faint(T(_joinError, _joinError), 12);
+                error.Margin = new Thickness(0, 4, 0, 0);
+                error.SetResourceReference(TextBlock.ForegroundProperty, "BadBrush");
+                _detail.Children.Add(error);
+            }
+            Hint((list
+                ? T("rl_join_hint_pmc", "Adds an entity to this rule. Its first rule is its own, later ones become extra objectives, as in the creator's rules menu.")
+                : T("rl_join_hint", "Adds an extra objective. It only runs when the entity's own rule comes earlier."))
+                + " " + string.Format(CultureInfo.CurrentCulture, T("er_slots", "Extra objectives: {0} of 30 entities"), ExtraObjectives.UsedSlots()));
         }
 
         private FrameworkElement JumpBox(Rules.Link link, bool pass)
