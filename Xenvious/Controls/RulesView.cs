@@ -35,13 +35,6 @@ namespace Xenvious
         private readonly StackPanel _list = new StackPanel { Margin = new Thickness(12) };
         private readonly StackPanel _detail = new StackPanel { Margin = new Thickness(14, 12, 14, 14) };
 
-        // The game's colour codes in objective texts (~y~ ... ~s~), as the mockup shows them.
-        private static readonly Dictionary<char, Color> TextColours = new Dictionary<char, Color>
-        {
-            ['y'] = Color.FromRgb(0xF0, 0xC8, 0x50), ['r'] = Color.FromRgb(0xE0, 0x60, 0x5A), ['b'] = Color.FromRgb(0x5B, 0x9B, 0xE6),
-            ['d'] = Color.FromRgb(0x5B, 0x9B, 0xE6), ['g'] = Color.FromRgb(0x43, 0xB5, 0x81), ['o'] = Color.FromRgb(0xFA, 0xA6, 0x1A), ['p'] = Color.FromRgb(0xB0, 0x8B, 0xE6),
-        };
-
         private static string T(string key, string fallback) => MainWindow.Instance?.TranslateOr(key, fallback) ?? fallback;
 
         public RulesView()
@@ -330,23 +323,36 @@ namespace Xenvious
             }
             block.SetResourceReference(TextBlock.ForegroundProperty, "TextColor");
             Color? colour = null;
-            foreach (var part in Regex.Split(text, "(~[a-zA-Z0-9]~)"))
+            bool italic = false;
+            foreach (var part in Regex.Split(text, "(~[A-Za-z_0-9]+~)"))
             {
-                var m = Regex.Match(part, "^~([a-zA-Z0-9])~$");
-                if (m.Success)
-                {
-                    char c = char.ToLowerInvariant(m.Groups[1].Value[0]);
-                    colour = TextColours.TryGetValue(c, out var col) ? col : (Color?)null;
-                    continue;
-                }
                 if (part.Length == 0)
                     continue;
-                var run = new Run(part);
-                if (colour.HasValue)
-                    run.Foreground = new SolidColorBrush(colour.Value);
-                block.Inlines.Add(run);
+                if (Regex.IsMatch(part, "^~[A-Za-z_0-9]+~$"))
+                {
+                    string code = part.ToLowerInvariant();
+                    if (code == "~n~") block.Inlines.Add(new LineBreak());
+                    else if (code == "~italic~") italic = !italic;
+                    else if (code == "~ws~") block.Inlines.Add(Styled("★", colour, italic));
+                    // The list shows every text bold already, so ~bold~ and ~h~ change nothing here.
+                    else if (code.Length == 3) colour = GtaTextAssist.ColourOf(code);
+                    continue;
+                }
+                foreach (var piece in Regex.Split(part, "([¦‹›÷∑Ω])"))
+                    if (piece.Length > 0)
+                        block.Inlines.Add(Styled(GtaTextAssist.IconPreview(piece) ?? piece, colour, italic));
             }
             return block;
+        }
+
+        private static Run Styled(string text, Color? colour, bool italic)
+        {
+            var run = new Run(text);
+            if (colour.HasValue)
+                run.Foreground = new SolidColorBrush(colour.Value);
+            if (italic)
+                run.FontStyle = FontStyles.Italic;
+            return run;
         }
 
         // ----- the selected rule -----
@@ -403,6 +409,18 @@ namespace Xenvious
             var box = new TextBox { Text = rule.Text ?? "", MaxLength = 63, BorderThickness = new Thickness(0), Background = Brushes.Transparent, Padding = new Thickness(0), FontSize = 13.5 };
             box.SetResourceReference(Control.ForegroundProperty, "TextColor");
             box.SetResourceReference(TextBoxBase.CaretBrushProperty, "TextColor");
+            GtaTextAssist.Attach(box);
+            // Codes count against the game's limit, so the length stays in view.
+            var count = Faint("", 11.5);
+            count.VerticalAlignment = VerticalAlignment.Center;
+            count.Margin = new Thickness(8, 0, 0, 0);
+            void Count() => count.Text = box.Text.Length + "/" + box.MaxLength;
+            Count();
+            box.TextChanged += (_, __) => Count();
+            var line = new DockPanel();
+            DockPanel.SetDock(count, Dock.Right);
+            line.Children.Add(count);
+            line.Children.Add(box);
             box.LostKeyboardFocus += (_, __) =>
             {
                 if (_loading || !Live || box.Text == (rule.Text ?? "")) return;
@@ -411,10 +429,10 @@ namespace Xenvious
                 _shownKey = null;
                 Dispatcher.BeginInvoke(new Action(() => Reload(true)), DispatcherPriority.Background);
             };
-            _detail.Children.Add(Field(box));
+            _detail.Children.Add(Field(line));
             Hint(string.IsNullOrWhiteSpace(rule.Text)
-                ? T("rl_text_empty_hint", "Empty: the game shows its default text for this objective. Colour codes like ~y~ ... ~s~ work.")
-                : T("rl_text_hint", "Colour codes like ~y~ ... ~s~ work as in the creator. Saved when you leave the field."));
+                ? T("rl_text_empty_hint", "Empty: the game shows its default text for this objective. Select text for colours, Ctrl+Space for icons and codes.")
+                : T("rl_text_hint", "Select text for colours and font, Ctrl+Space for icons and codes. Saved when you leave the field."));
         }
 
         private void LinksSection(Rules.Rule rule)

@@ -183,6 +183,7 @@
     <Compile Include="Controls\EntityPicker.cs" />
     <Compile Include="Controls\ExtraRulesCard.cs" />
     <Compile Include="Controls\PlayAreaView.cs" />
+    <Compile Include="Controls\GtaTextAssist.cs" />
     <Compile Include="Controls\RulesView.cs" />
     <Compile Include="Controls\MenuBitsView.cs" />
     <Compile Include="Controls\VisibilityCard.cs" />
