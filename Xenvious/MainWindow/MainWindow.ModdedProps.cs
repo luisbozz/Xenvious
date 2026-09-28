@@ -731,6 +731,7 @@ namespace Xenvious
             catBody.Children.Add(catSearch);
             catBody.Children.Add(new ScrollViewer { VerticalScrollBarVisibility = ScrollBarVisibility.Auto, Content = _mpCatList });
             var catCard = MPCard(MPT("mp_categories", "Categories"), catBody, null);
+            catCard.VerticalAlignment = VerticalAlignment.Stretch;
             grid.Children.Add(catCard);
 
             // Slots
@@ -781,6 +782,8 @@ namespace Xenvious
             slotHost.Children.Add(listPanel);
             slotsBody.Children.Add(slotHost);
             var slotCard = MPCard(null, slotsBody, seg, _mpCatTitle);
+            // Stretch, so the tile area and the list box get the height of the page and scroll.
+            slotCard.VerticalAlignment = VerticalAlignment.Stretch;
             Grid.SetColumn(slotCard, 2);
             grid.Children.Add(slotCard);
 
@@ -1179,8 +1182,9 @@ namespace Xenvious
         }
 
         // "Barriers 3, Ramps 12": where a model already is in the loaded creator's menu.
-        // Models on the prop blacklist (offsets.ini [OTHER] prop_model_blacklisted), as marked on
-        // the props pages too.
+        // Models on the prop blacklist (offsets.ini [OTHER] prop_model_blacklisted, from the
+        // scripts' IS_PROP_A_DEV_ONLY_PLACEABLE_PROP): a user-made job gets them replaced by
+        // PROP_CONST_FENCE02B when it loads. The props pages mark the same list.
         private static HashSet<int> _mpBlacklist;
         private static bool MPBlacklisted(int hash)
         {
@@ -1195,14 +1199,18 @@ namespace Xenvious
         }
 
         // A small outlined pill, as in the mockup ("changed", "Blacklist").
+        // Soft fill in the colour instead of an outline: a 1 px ring on such a small rounded
+        // shape renders fuzzy at most scalings.
         private static Border MPPill(string text, string brush)
         {
             var t = new TextBlock { Text = text, FontSize = 10.5, FontWeight = FontWeights.Bold };
             t.SetResourceReference(TextBlock.ForegroundProperty, brush);
-            var pill = new Border { CornerRadius = new CornerRadius(8), Padding = new Thickness(6, 0, 6, 1), BorderThickness = new Thickness(1), Child = t, Margin = new Thickness(4, 0, 0, 0) };
-            pill.SetResourceReference(Border.BorderBrushProperty, brush);
-            pill.SetResourceReference(Border.BackgroundProperty, "SectionBackgroundBrush");
-            return pill;
+            var colour = (ThemeBrush(brush) as SolidColorBrush)?.Color ?? Colors.Gray;
+            return new Border
+            {
+                CornerRadius = new CornerRadius(4), Padding = new Thickness(6, 1, 6, 2), Child = t, Margin = new Thickness(4, 0, 0, 0),
+                Background = new SolidColorBrush(Color.FromArgb(0x33, colour.R, colour.G, colour.B)), UseLayoutRounding = true, SnapsToDevicePixels = true,
+            };
         }
 
         private string MPWhere(int hash)
@@ -1246,6 +1254,7 @@ namespace Xenvious
             bool match = MPOriginalsMatch(out _);
             _mpSource.Text = allprops.Count == 0 ? ""
                 : match ? string.Format(CultureInfo.CurrentCulture, MPT("mp_source", "Originals: scripts {0}"), _mpOriginalsBuild)
+                    + (GTA.GameVersion().Length > 0 && GTA.BuildNumber(GTA.GameVersion()) != GTA.BuildNumber(_mpOriginalsBuild) ? " · " + MPT("mp_game", "game") + " " + GTA.GameVersion() : "")
                 : string.Format(CultureInfo.CurrentCulture, MPT("mp_source_mismatch", "Originals ({0}) do not fit this game build – \"changed\" is hidden"), _mpOriginalsBuild);
             _mpSource.SetResourceReference(TextBlock.ForegroundProperty, match ? "FaintTextBrush" : "WarnBrush");
             int changed = 0, blacklisted = 0;
@@ -1433,7 +1442,7 @@ namespace Xenvious
                 var warn = new Border { CornerRadius = new CornerRadius(0, 6, 6, 0), BorderThickness = new Thickness(3, 0, 0, 0), Padding = new Thickness(10, 8, 10, 8), Margin = new Thickness(0, 0, 0, 10) };
                 warn.SetResourceReference(Border.BorderBrushProperty, "BadBrush");
                 warn.SetResourceReference(Border.BackgroundProperty, "DeepBrush");
-                var wt = new TextBlock { Text = MPT("mp_blacklist_warn", "This model is on the prop blacklist (the same list the props pages mark)."), TextWrapping = TextWrapping.Wrap, FontSize = 12.5 };
+                var wt = new TextBlock { Text = MPT("mp_blacklist_warn", "Dev-only prop: when a user-made job loads, the game replaces this model with a construction fence (PROP_CONST_FENCE02B)."), TextWrapping = TextWrapping.Wrap, FontSize = 12.5 };
                 wt.SetResourceReference(TextBlock.ForegroundProperty, "MutedTextBrush");
                 warn.Child = wt;
                 _mpEditor.Children.Add(warn);
