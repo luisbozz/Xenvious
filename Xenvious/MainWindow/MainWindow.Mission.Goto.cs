@@ -369,6 +369,10 @@ namespace Xenvious
                                 new Global(gotobase + d).SetInt(valuesafterdeletedgoto[i][d]);
                             }
                         }
+                        // Extra objectives refer to this entity type by index; follow the shift.
+                        ExtraObjectives.OnEntityDeleted(ExtraObjectives.TypeGoTo, index);
+                        GotoExtraRules.Refresh();
+
                     }
                     catch (Exception)
                     {

@@ -195,6 +195,10 @@ namespace Xenvious
                                 new Global(actorbase + d).SetInt(valuesafterdeletedactor[i][d]);
                             }
                         }
+
+                        // Extra objectives refer to peds by index; follow the shift.
+                        ExtraObjectives.OnEntityDeleted(ExtraObjectives.TypePed, index);
+                        ActorExtraRules.Refresh();
                     }
                     catch (Exception)
                     {
@@ -254,6 +258,10 @@ namespace Xenvious
                                 new Global(vehbase + d).SetInt(valuesafterdeletedveh[i][d]);
                             }
                         }
+
+                        // Extra objectives refer to vehicles by index; follow the shift.
+                        ExtraObjectives.OnEntityDeleted(ExtraObjectives.TypeVehicle, index);
+                        VehExtraRules.Refresh();
                     }
                     catch (Exception)
                     {

@@ -5,71 +5,57 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d"
              xmlns:local="clr-namespace:Xenvious"
-             Height="185.333" Width="175" >
+             Width="200" Margin="0,0,12,12">
 
-    <Border BorderThickness="1" CornerRadius="5" BorderBrush="{DynamicResource SectionBackgroundBrush}" Background="{DynamicResource SectionBackgroundBrush}">
-        <Border.Effect>
-            <DropShadowEffect BlurRadius="5" ShadowDepth="0"/>
-        </Border.Effect>
-        <Grid>
-
-            <Grid.RowDefinitions>
-                <RowDefinition Height="0.13*" MinHeight="50" MaxHeight="100"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-
-            <!--Top-->
-
-            <Border Grid.Row="0" CornerRadius="5" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="8,5,8,0">
+    <!-- One interior as a card: name and on/off switch in the header, position and teleport below. -->
+    <!-- Darker than the card it sits on, with an outline; an interior that is on gets the accent outline. -->
+    <Border CornerRadius="6" BorderThickness="1.5">
+        <Border.Style>
+            <Style TargetType="{x:Type Border}">
+                <Setter Property="Background" Value="{DynamicResource DeepBrush}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource LineBrush}"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsChecked, ElementName=cbenable}" Value="True">
+                        <Setter Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Border.Style>
+        <DockPanel>
+            <Border DockPanel.Dock="Top" CornerRadius="5,5,0,0" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Padding="12,8">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <Viewbox VerticalAlignment="Stretch" HorizontalAlignment="Left">
-                        <Label Foreground="{DynamicResource TextColor}" FontFamily="{DynamicResource Volte}" FontWeight="Bold" Content="{Binding HeaderText, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=Header}" />
-                    </Viewbox>
-                    <Border CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="0,0,5,0" Grid.Column="1" Height="22" Width="22" VerticalAlignment="Center" HorizontalAlignment="Right" >
-                        <Border.Effect>
-                            <DropShadowEffect BlurRadius="5" ShadowDepth="2"/>
-                        </Border.Effect>
-                        <CheckBox x:Name="cbenable" Checked="cbenable_Checked" Unchecked="cbenable_Checked" Height="22" Width="22"/>
-                    </Border>
+                    <TextBlock Foreground="{DynamicResource TextColor}" FontSize="15" FontWeight="SemiBold" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Text="{Binding HeaderText, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=Header}"/>
+                    <CheckBox x:Name="cbenable" Grid.Column="1" VerticalAlignment="Center" Checked="cbenable_Checked" Unchecked="cbenable_Checked"/>
                 </Grid>
             </Border>
 
-            <!--Bottom-->
-            <Grid Grid.Row="1" Margin="8,10,8,10" MouseLeftButtonDown="Grid_MouseLeftButtonDown" >
+            <Grid Margin="12,10,12,12" MouseLeftButtonDown="Grid_MouseLeftButtonDown" Background="Transparent">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="25"/>
-                    <RowDefinition Height="25"/>
-                    <RowDefinition Height="25"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="22"/>
+                    <RowDefinition Height="22"/>
+                    <RowDefinition Height="22"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="0.5*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Text="{Binding Translation[vector3x], FallbackValue=X-Component}" Foreground="{DynamicResource TextColor}" FontSize="10" FontFamily="{DynamicResource Volte}" Grid.Row="0" VerticalAlignment="Center" Margin="10,0,0,0" />
-                <TextBlock Text="{Binding Translation[vector3y], FallbackValue=Y-Component}" Foreground="{DynamicResource TextColor}" FontSize="10" FontFamily="{DynamicResource Volte}" Grid.Row="1" VerticalAlignment="Center" Margin="10,0,0,0" />
-                <TextBlock Text="{Binding Translation[vector3z], FallbackValue=Z-Component}" Foreground="{DynamicResource TextColor}" FontSize="10" FontFamily="{DynamicResource Volte}" Grid.Row="2" VerticalAlignment="Center" Margin="10,0,0,0" />
-                
-                <TextBlock x:Name="locx" Foreground="{DynamicResource TextColor}" FontSize="10" FontFamily="{DynamicResource Volte}" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0" />
-                <TextBlock x:Name="locy" Foreground="{DynamicResource TextColor}" FontSize="10" FontFamily="{DynamicResource Volte}" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0" />
-                <TextBlock x:Name="locz" Foreground="{DynamicResource TextColor}" FontSize="10" FontFamily="{DynamicResource Volte}" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0" />
+                <TextBlock Text="X" Foreground="{DynamicResource FaintTextBrush}" FontSize="12" FontWeight="Bold" Grid.Row="0" VerticalAlignment="Center"/>
+                <TextBlock Text="Y" Foreground="{DynamicResource FaintTextBrush}" FontSize="12" FontWeight="Bold" Grid.Row="1" VerticalAlignment="Center"/>
+                <TextBlock Text="Z" Foreground="{DynamicResource FaintTextBrush}" FontSize="12" FontWeight="Bold" Grid.Row="2" VerticalAlignment="Center"/>
 
-                <Border Grid.ColumnSpan="2" Grid.Row="6" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5 0" Height="26" VerticalAlignment="Bottom">
-                    <Border.Effect>
-                        <DropShadowEffect BlurRadius="5" ShadowDepth="2"/>
-                    </Border.Effect>
-                    <Button x:Name="Btnteleport" Style="{DynamicResource CustomButton}" Content="{Binding Translation[teleport], FallbackValue=Teleport}" local:CornerRadiusSetter.CornerRadius="5" Click="Btnteleport_Click"/>
-                </Border>
+                <TextBlock x:Name="locx" Foreground="{DynamicResource TextColor}" FontSize="14" FontWeight="SemiBold" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                <TextBlock x:Name="locy" Foreground="{DynamicResource TextColor}" FontSize="14" FontWeight="SemiBold" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                <TextBlock x:Name="locz" Foreground="{DynamicResource TextColor}" FontSize="14" FontWeight="SemiBold" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right"/>
 
+                <Button x:Name="Btnteleport" Grid.Row="3" Grid.ColumnSpan="2" Style="{StaticResource FormButton}" Height="30" Margin="0,10,0,0" Content="{Binding Translation[teleport], FallbackValue=Teleport}" Click="Btnteleport_Click"/>
             </Grid>
-
-        </Grid>
+        </DockPanel>
     </Border>
 
 </UserControl>

@@ -263,6 +263,7 @@ namespace Xenvious
 
 
                 if (!tbvehmodel.IsFocused || ignore_focus) tbvehmodel.Text = model.ToString();
+                VehModelCard.SetModel(unchecked((uint)model));
                 if (!tbvehlocx.IsFocused || ignore_focus) tbvehlocx.Text = new Global((GTA.Offsets.Editor.Vehicle.loc + 0 + GTA.Offsets.Editor.Vehicle.NEXT * index)).Get<float>().ToString();
                 if (!tbvehlocy.IsFocused || ignore_focus) tbvehlocy.Text = new Global((GTA.Offsets.Editor.Vehicle.loc + 1 + GTA.Offsets.Editor.Vehicle.NEXT * index)).Get<float>().ToString();
                 if (!tbvehlocz.IsFocused || ignore_focus) tbvehlocz.Text = new Global((GTA.Offsets.Editor.Vehicle.loc + 2 + GTA.Offsets.Editor.Vehicle.NEXT * index)).Get<float>().ToString();
@@ -895,12 +896,12 @@ namespace Xenvious
 
         private void cb_veh_clrlivc_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(20, GTA.Offsets.Editor.Vehicle.drbs, cb_veh_clrlivc);
+            Functions.Write.writebinary(20, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_clrlivc);
         }
 
         private void cb_veh_spwnrlivc_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(19, GTA.Offsets.Editor.Vehicle.drbs, cb_veh_spwnrlivc);
+            Functions.Write.writebinary(19, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_spwnrlivc);
         }
 
         private void ddvehspawnon_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -924,7 +925,8 @@ namespace Xenvious
                 spwn = GTA.Offsets.Editor.Vehicle.spwn;
             }
 
-            new Global(spwn + GTA.Offsets.Editor.Vehicle.NEXT * ddvehno.SelectedIndex).SetInt(ddvehspawnon.SelectedIndex);
+            if (m.IsProcOpen && ddvehno.SelectedIndex > -1 && ddvehspawnon.SelectedIndex > -1)
+                SetVehicleSpawnOn(spwn, ddvehspawnon.SelectedIndex);
 
             GetVehicalASRLValues(true);
         }

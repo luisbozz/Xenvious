@@ -149,7 +149,8 @@ namespace Xenvious
                                             {
                                                 ddjobsubtype.SelectedIndex = 1;
                                             }
-                                            else if (new Global(GTA.Offsets.Editor.subtype).Get<int>() == 4)
+                                            // 14: Public Mission Creator content; 4: old Rockstar missions
+                                            else if (new Global(GTA.Offsets.Editor.subtype).Get<int>() == 14 || new Global(GTA.Offsets.Editor.subtype).Get<int>() == 4)
                                             {
                                                 ddjobsubtype.SelectedIndex = 2;
                                             }
@@ -605,14 +606,6 @@ namespace Xenvious
                                         if (!tbmbs32.IsFocused) tbmbs32.Text = new Global(GTA.Offsets.Editor.menubs32).Get<int>().ToString();
 
                                     }
-                                    else if (PageInnerMission.SelectedItem == PageInnerMissionPA)
-                                    {
-                                        GetOUTBValues();
-                                    }
-                                    else if (PageInnerMission.SelectedItem == PageInnerMissionRA)
-                                    {
-                                        GetBD2Values();
-                                    }
                                     else if (PageInnerMission.SelectedItem == PageInnerMissionInventory)
                                     {
                                         CheckMissionInventory();
@@ -926,14 +919,10 @@ namespace Xenvious
                             {
                                 if (PageInnerProps.SelectedItem == PageInnerModdedProps)
                                 {
-                                    if (!cbMPropsForceMurica.IsFocused)
+                                    await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (System.Action)(() =>
                                     {
-                                        cbMPropsForceMurica.IsChecked = new Global(GTA.Offsets.Editor.enable_murica).Get<int>() == 1;
-                                        await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (System.Action)(() =>
-                                        {
-                                            EnsureModdedPropSourcesInitialized();
-                                        }));
-                                    }
+                                        EnsureModdedPropSourcesInitialized();
+                                    }));
                                 }
                             }
                         }
@@ -943,13 +932,13 @@ namespace Xenvious
                             {
                                 getjoblinks();
                             }
-                            else if (PageInnerMod.SelectedItem == PageInnerModnrcidjc)
-                            {
-                                if (!tbnrcidjcstartlocx.IsFocused) tbnrcidjcstartlocx.Text = new Global(GTA.Offsets.Editor.start).Get<float>().ToString();
-                                if (!tbnrcidjcstartlocy.IsFocused) tbnrcidjcstartlocy.Text = new Global(GTA.Offsets.Editor.start + 1).Get<float>().ToString();
-                                if (!tbnrcidjcstartlocz.IsFocused) tbnrcidjcstartlocz.Text = new Global(GTA.Offsets.Editor.start + 2).Get<float>().ToString();
-                                getNRCIDValuesJC(false);
-                            }
+                        }
+                        else if (MainPages.SelectedItem == PageCopyJobs && CopyNrcidPanel.Visibility == Visibility.Visible)
+                        {
+                            if (!tbnrcidjcstartlocx.IsFocused) tbnrcidjcstartlocx.Text = new Global(GTA.Offsets.Editor.start).Get<float>().ToString();
+                            if (!tbnrcidjcstartlocy.IsFocused) tbnrcidjcstartlocy.Text = new Global(GTA.Offsets.Editor.start + 1).Get<float>().ToString();
+                            if (!tbnrcidjcstartlocz.IsFocused) tbnrcidjcstartlocz.Text = new Global(GTA.Offsets.Editor.start + 2).Get<float>().ToString();
+                            getNRCIDValuesJC(false);
                         }
                         else if (MainPages.SelectedItem == PageSettings)
                         {

@@ -35,95 +35,11 @@ namespace Xenvious
 
         private void ddcolor_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            switch (ddcolor.SelectedIndex)
-            {
-                case 0:
-                    new ini_reader(Functions.getRoamingConfigFilePath()).Write("Settings", "color", "gray");
-                    break;
-                case 1:
-                    new ini_reader(Functions.getRoamingConfigFilePath()).Write("Settings", "color", "white");
-                    break;
-                default:
-                    new ini_reader(Functions.getRoamingConfigFilePath()).Write("Settings", "color", "gray");
-                    break;
-            }
-
-            switch (ddcolor.SelectedIndex)
-            {
-                case 0:
-                    this.Resources["SelectedBackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#232529"));
-                    this.Resources["HoverBackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2A2C30"));
-                    this.Resources["DisabledForegroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#888"));
-                    this.Resources["ButtonHoverBackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#34373C"));
-                    this.Resources["ButtonClickBackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#37393F"));
-                    this.Resources["BackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#202225"));
-                    this.Resources["SeactionHeaderBackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#36393F"));
-                    this.Resources["CheckBoxBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#36393F"));
-                    this.Resources["TextBoxBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#303339"));
-                    this.Resources["TextBoxBorder"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#131517"));
-                    this.Resources["TextBoxBorderInner"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#232529"));
-                    this.Resources["SectionBackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2F3136"));
-                    this.Resources["ComboBoxBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#303339"));
-                    this.Resources["ComboBoxBorder"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#131517"));
-                    this.Resources["ComboBoxBorderInner"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#232529"));
-                    this.Resources["ComboBoxSelected"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#232529"));
-                    this.Resources["ComboBoxHighlighted"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2A2C30"));
-                    this.Resources["ComboBoxArrow"] = new SolidColorBrush(Colors.White);
-                    this.Resources["TextColor"] = new SolidColorBrush(Colors.White);
-                    this.Resources["TextBoxForegroundThemeBrush"] = new SolidColorBrush(Colors.White);
-                    this.Resources["ShadowColor"] = Colors.Black;
-                    this.XenviousImage.Source = (BitmapImage)FindResource("ogimage256");
-
-                    break;
-                case 1:
-                    this.Resources["SelectedBackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#DCDDDE"));
-                    this.Resources["HoverBackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F6F6F7"));
-                    this.Resources["DisabledForegroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#888"));
-                    this.Resources["ButtonHoverBackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#D4D7DC"));
-                    this.Resources["ButtonClickBackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#DBDBDB"));
-                    this.Resources["BackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#E3E5E8"));
-                    this.Resources["SeactionHeaderBackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#EBEDEF"));
-                    this.Resources["CheckBoxBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#DBDBDB"));
-                    this.Resources["TextBoxBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FCFCFC"));
-                    this.Resources["TextBoxBorder"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B9BBBE"));
-                    this.Resources["TextBoxBorderInner"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CFD0D2"));
-                    this.Resources["SectionBackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F2F3F5"));
-                    this.Resources["ComboBoxBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FCFCFC"));
-                    this.Resources["ComboBoxBorder"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B9BBBE"));
-                    this.Resources["ComboBoxBorderInner"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CFD0D2"));
-                    this.Resources["ComboBoxSelected"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#DCDDDE"));
-                    this.Resources["ComboBoxHighlighted"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F6F6F7"));
-                    this.Resources["ComboBoxArrow"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B9BBBE"));
-                    this.Resources["TextColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4F5660"));
-                    this.Resources["TextBoxForegroundThemeBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4F5660"));
-                    this.Resources["ShadowColor"] = Colors.White;
-                    this.XenviousImage.Source = (BitmapImage)FindResource("ogimageb256");
-                    break;
-                case 2:
-                    this.Resources["SelectedBackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#DCDDDE"));
-                    this.Resources["HoverBackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2D3755"));
-                    this.Resources["DisabledForegroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#888"));
-                    this.Resources["ButtonHoverBackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2D3755"));
-                    this.Resources["ButtonClickBackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#96A0BE"));
-                    this.Resources["BackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#161C32"));
-                    this.Resources["SeactionHeaderBackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#27304B"));
-                    this.Resources["TextBoxBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1E253D"));
-                    this.Resources["TextBoxBorder"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#90A0BC"));
-                    this.Resources["TextBoxBorderInner"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2D3755"));
-                    this.Resources["SectionBackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1C233D"));
-                    this.Resources["ComboBoxBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1E253D"));
-                    this.Resources["ComboBoxBorder"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#90A0BC"));
-                    this.Resources["ComboBoxBorderInner"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2D3755"));
-                    this.Resources["ComboBoxSelected"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1C233D"));
-                    this.Resources["ComboBoxHighlighted"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2D3755"));
-                    this.Resources["ComboBoxArrow"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B9BBBE"));
-                    this.Resources["TextColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#90A0BC"));
-                    this.Resources["TextBoxForegroundThemeBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#90A0BC"));
-                    this.Resources["ShadowColor"] = Colors.Black;
-                    break;
-                default:
-                    break;
-            }
+            if (ddcolor.SelectedIndex < 0 || ddcolor.SelectedIndex >= Themes.All.Count)
+                return;
+            var theme = Themes.All[ddcolor.SelectedIndex];
+            new ini_reader(Functions.getRoamingConfigFilePath()).Write("Settings", "color", theme.Key);
+            ApplyTheme(theme);
         }
 
         private void InitializeTranslation(ini_reader ini)
@@ -686,18 +602,8 @@ namespace Xenvious
                         ini.Write("Settings", "translation", "en");
                         break;
                 }
-                switch (ddcolor.SelectedIndex)
-                {
-                    case 0:
-                        ini.Write("Settings", "color", "gray");
-                        break;
-                    case 1:
-                        ini.Write("Settings", "color", "white");
-                        break;
-                    default:
-                        ini.Write("Settings", "color", "gray");
-                        break;
-                }
+                if (ddcolor.SelectedIndex >= 0 && ddcolor.SelectedIndex < Themes.All.Count)
+                    ini.Write("Settings", "color", Themes.All[ddcolor.SelectedIndex].Key);
                 ini.Write("Settings", "propshasexpanded", haslistcontainer.Visibility == Visibility.Visible ? true : false);
             }
             catch (Exception e)
@@ -742,15 +648,25 @@ namespace Xenvious
         // functions, bit 30 for the dev patches. Bit 5 makes the race creator flicker, so it
         // is only set inside the other creators (and outside a creator it waits until one
         // is known, so the race creator never runs a frame with it).
+        // Bits 2 and 3 (customfuncs fn3 play areas, fn4 gang chase areas) also follow their
+        // switches on the "Show in game" card.
         private static void WriteScriptFeatureBits(bool enable)
         {
             string creator = GTA.CurrentCreatorName();
             for (int bit = 1; bit <= 5; bit++)
             {
-                bool wanted = enable && (bit != 5 || (creator != "" && creator != "fm_race_creator"));
+                bool wanted = enable && (bit != 5 || (creator != "" && creator != "fm_race_creator"))
+                    && (bit != 2 || VisibilityGroups.IsOn(VisibilityGroups.PlayAreaBit))
+                    && (bit != 3 || VisibilityGroups.IsOn(VisibilityGroups.GangChaseBit));
                 Functions.Write.writebinary(bit, GTA.Offsets.Editor.custom_check, wanted);
             }
             Functions.Write.writebinary(30, GTA.Offsets.Editor.custom_check, enable);
+        }
+
+        public void RefreshScriptFeatureBits()
+        {
+            if (m.IsProcOpen && GTA.Offsets.Editor.custom_check != 0)
+                WriteScriptFeatureBits(cbsettingsexpscrfeat.IsChecked == true);
         }
 
         private void cbsettingsswitchcamkey_Checked(object sender, RoutedEventArgs e)

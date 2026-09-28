@@ -23,8 +23,10 @@ namespace Xenvious
         private const int StateStart = 0;
         private static readonly TimeSpan Timeout = TimeSpan.FromSeconds(90);
 
+        // The Public Mission Creator loads jobs outside its start state, so not this way.
         public static bool CanLoad(string creator) =>
-            CreatorMap.CanRebuild(creator)
+            creator != "public_mission_creator"
+            && CreatorMap.CanRebuild(creator)
             && GTA.Offsets.Editor.load_job_flag != 0
             && GTA.Offsets.Editor.load_job_id != 0
             && GTA.Offsets.Editor.OFFSET_current_creator_worker_offset_editing_published != 0;

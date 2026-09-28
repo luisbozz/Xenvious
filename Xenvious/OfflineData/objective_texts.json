@@ -1,0 +1,426 @@
+{
+ "PMC_C_PED": {
+  "de": "Hole den ~b~Akteur~s~ ab.",
+  "en": "Collect the ~b~Actor.",
+  "ru": "Заберите ~b~персонажа.",
+  "pl": "Odbierz ~b~aktora~s~.",
+  "fr": "Récupérez l'~b~acteur~s~.",
+  "zh_cn": "接到~b~演员~s~。"
+ },
+ "PMC_C_PEDS": {
+  "de": "Hole einen der ~b~Akteure~s~ ab.",
+  "en": "Collect one of the ~b~Actors.",
+  "ru": "Заберите одного из ~b~персонажей.",
+  "pl": "Odbierz jednego z ~b~aktorów~s~.",
+  "fr": "Récupérez un des ~b~acteurs~s~.",
+  "zh_cn": "接上其中一名~b~演员~s~。"
+ },
+ "PMC_C_VEH": {
+  "de": "Hole dir das ~d~Fahrzeug~s~.",
+  "en": "Collect the ~d~Vehicle.",
+  "ru": "Заберите ~d~транспортное средство.",
+  "pl": "Odbierz ~d~pojazd~s~.",
+  "fr": "Récupérez le ~d~véhicule~s~.",
+  "zh_cn": "取得~d~载具~s~。"
+ },
+ "PMC_C_VEHS": {
+  "de": "Hole dir eins der ~d~Fahrzeuge~s~.",
+  "en": "Collect one of the ~d~Vehicles.",
+  "ru": "Заберите одно из ~d~транспортных средств.",
+  "pl": "Odbierz jeden z ~d~pojazdów~s~.",
+  "fr": "Récupérez l'un des ~d~véhicules~s~.",
+  "zh_cn": "获取其中一辆~d~载具~s~。"
+ },
+ "PMC_C_OBJ": {
+  "de": "Sammle das ~g~Objekt~s~ ein.",
+  "en": "Collect the ~g~Object.",
+  "ru": "Заберите ~g~объект.",
+  "pl": "Odbierz ~g~obiekt~s~.",
+  "fr": "Récupérez l'~g~objet~s~.",
+  "zh_cn": "取得~g~物品~s~。"
+ },
+ "PMC_C_OBJS": {
+  "de": "Sammle die ~g~Objekte~s~ ein.",
+  "en": "Collect the ~g~Objects.",
+  "ru": "Заберите ~g~объекты.",
+  "pl": "Odbierz ~g~obiekty~s~.",
+  "fr": "Récupérez les ~g~objets~s~.",
+  "zh_cn": "取得~g~物品~s~。"
+ },
+ "PMC_K_PED": {
+  "de": "Erledige den ~r~Akteur~s~.",
+  "en": "Take out the ~r~Actor.",
+  "ru": "Убейте ~r~персонажа.",
+  "pl": "Zabij ~r~aktora~s~.",
+  "fr": "Tuez l'~r~acteur~s~.",
+  "zh_cn": "干掉~r~演员~s~。"
+ },
+ "PMC_K_PEDS": {
+  "de": "Erledige die ~r~Akteure~s~.",
+  "en": "Take out the ~r~Actors.",
+  "ru": "Убейте ~r~персонажей.",
+  "pl": "Zabij ~r~aktorów~s~.",
+  "fr": "Tuez les ~r~acteurs~s~.",
+  "zh_cn": "干掉~r~演员~s~。"
+ },
+ "PMC_K_VEH": {
+  "de": "Zerstöre das ~r~Fahrzeug~s~.",
+  "en": "Destroy the ~r~Vehicle.",
+  "ru": "Уничтожьте ~r~транспорт.",
+  "pl": "Zniszcz ~r~pojazd~s~.",
+  "fr": "Détruisez le ~r~véhicule~s~.",
+  "zh_cn": "摧毁~r~载具~s~。"
+ },
+ "PMC_K_VEHS": {
+  "de": "Zerstöre die ~r~Fahrzeuge~s~.",
+  "en": "Destroy the ~r~Vehicles.",
+  "ru": "Уничтожьте ~r~транспорт.",
+  "pl": "Zniszcz ~r~pojazdy~s~.",
+  "fr": "Détruisez les ~r~véhicules~s~.",
+  "zh_cn": "摧毁~r~载具~s~。"
+ },
+ "PMC_K_OBJ": {
+  "de": "Zerstöre das ~r~Objekt~s~.",
+  "en": "Destroy the ~r~Object.",
+  "ru": "Уничтожьте ~r~объект.",
+  "pl": "Zniszcz ~r~obiekt~s~.",
+  "fr": "Détruisez l'~r~objet~s~.",
+  "zh_cn": "摧毁~r~物品~s~。"
+ },
+ "PMC_K_OBJS": {
+  "de": "Zerstöre die ~r~Objekte~s~.",
+  "en": "Destroy the ~r~Objects.",
+  "ru": "Уничтожьте ~r~объекты.",
+  "pl": "Zniszcz ~r~obiekty~s~.",
+  "fr": "Détruisez les ~r~objets~s~.",
+  "zh_cn": "摧毁~r~物品~s~。"
+ },
+ "PMC_P_PED": {
+  "de": "Beschütze den ~b~Akteur~s~.",
+  "en": "Protect the ~b~Actor.",
+  "ru": "Защитите ~b~персонажа.",
+  "pl": "Chroń ~b~aktora~s~.",
+  "fr": "Protégez l'~b~acteur~s~.",
+  "zh_cn": "保护~b~演员~s~。"
+ },
+ "PMC_P_PEDS": {
+  "de": "Beschütze die ~b~Akteure~s~.",
+  "en": "Protect the ~b~Actors.",
+  "ru": "Защитите ~b~персонажей.",
+  "pl": "Chroń ~b~aktorów~s~.",
+  "fr": "Protégez les ~b~acteurs~s~.",
+  "zh_cn": "保护~b~演员~s~。"
+ },
+ "PMC_P_VEH": {
+  "de": "Schütze das ~d~Fahrzeug~s~.",
+  "en": "Protect the ~d~Vehicle.",
+  "ru": "Защищайте ~d~транспорт.",
+  "pl": "Chroń ~d~pojazd~s~.",
+  "fr": "Protégez le ~d~véhicule~s~.",
+  "zh_cn": "保护~d~载具~s~。"
+ },
+ "PMC_P_VEHS": {
+  "de": "Schütze die ~d~Fahrzeuge~s~.",
+  "en": "Protect the ~d~Vehicles.",
+  "ru": "Защищайте ~d~транспорт.",
+  "pl": "Chroń ~d~pojazdy~s~.",
+  "fr": "Protégez les ~d~véhicules~s~.",
+  "zh_cn": "保护~d~载具~s~。"
+ },
+ "PMC_P_OBJ": {
+  "de": "Beschütze das ~g~Objekt~s~.",
+  "en": "Protect the ~g~Object.",
+  "ru": "Защитите ~g~объект.",
+  "pl": "Chroń ~g~obiekt~s~.",
+  "fr": "Protégez l'~g~objet~s~.",
+  "zh_cn": "保护~g~物品~s~。"
+ },
+ "PMC_P_OBJS": {
+  "de": "Beschütze die ~g~Objekte~s~.",
+  "en": "Protect the ~g~Objects.",
+  "ru": "Защитите ~g~объекты.",
+  "pl": "Chroń ~g~obiekty~s~.",
+  "fr": "Protégez les ~g~objets~s~.",
+  "zh_cn": "保护~g~物品~s~。"
+ },
+ "PMC_GOTO_PED": {
+  "de": "Begib dich zum ~b~Akteur~s~.",
+  "en": "Go to the ~b~Actor.",
+  "ru": "Доберитесь до ~b~персонажа.",
+  "pl": "Udaj się do ~b~aktora~s~.",
+  "fr": "Rejoignez l'~b~acteur~s~.",
+  "zh_cn": "前往~b~演员~s~处。"
+ },
+ "PMC_GOTO_PEDS": {
+  "de": "Begib dich zu einem der ~b~Akteure~s~.",
+  "en": "Go to one of the ~b~Actors.",
+  "ru": "Доберитесь до одного из ~b~персонажей.",
+  "pl": "Udaj się do jednego z ~b~aktorów~s~.",
+  "fr": "Rejoignez l'un des ~b~acteurs~s~.",
+  "zh_cn": "前往一名~b~演员~s~处。"
+ },
+ "PMC_GOTO_VEH": {
+  "de": "Begib dich zum ~d~Fahrzeug~s~.",
+  "en": "Go to the ~d~Vehicle.",
+  "ru": "Доберитесь до ~d~транспорта.",
+  "pl": "Udaj się do ~d~pojazdu~s~.",
+  "fr": "Rejoignez le ~d~véhicule~s~.",
+  "zh_cn": "前往~d~载具~s~处。"
+ },
+ "PMC_GOTO_VEHS": {
+  "de": "Begib dich zu einem der ~d~Fahrzeuge~s~.",
+  "en": "Go to one of the ~d~Vehicles.",
+  "ru": "Доберитесь до ~d~транспорта.",
+  "pl": "Udaj się do jednego z ~d~pojazdów~s~.",
+  "fr": "Rejoignez l'un des ~d~véhicules~s~.",
+  "zh_cn": "前往其中一辆~d~载具~s~处。"
+ },
+ "PMC_GOTO_OBJ": {
+  "de": "Begib dich zum ~g~Objekt~s~.",
+  "en": "Go to the ~g~Object.",
+  "ru": "Доберитесь до ~g~объекта.",
+  "pl": "Udaj się do ~g~obiektu~s~.",
+  "fr": "Rejoignez l'~g~objet~s~.",
+  "zh_cn": "前往~g~物品~s~处。"
+ },
+ "PMC_GOTO_OBJS": {
+  "de": "Begib dich zu einem der ~g~Objekte~s~.",
+  "en": "Go to one of the ~g~Objects.",
+  "ru": "Доберитесь до одного из ~g~объектов.",
+  "pl": "Udaj się do jednego z ~g~obiektów~s~.",
+  "fr": "Rejoignez l'un des ~g~objets~s~.",
+  "zh_cn": "前往其中一件~g~物品的所在地~s~。"
+ },
+ "PMC_CON_PED": {
+  "de": "Fasse den ~b~Akteur~s~.",
+  "en": "Capture the ~b~Actor.",
+  "ru": "Захватите ~b~персонажа.",
+  "pl": "Przechwyć ~b~aktora~s~.",
+  "fr": "Capturez l'~b~acteur~s~.",
+  "zh_cn": "夺取~b~演员~s~。"
+ },
+ "PMC_CON_PEDS": {
+  "de": "Fasse die ~b~Akteure~s~.",
+  "en": "Capture the ~b~Actors.",
+  "ru": "Захватите ~b~персонажей.",
+  "pl": "Przechwyć ~b~aktorów~s~.",
+  "fr": "Capturez les ~b~acteurs~s~.",
+  "zh_cn": "夺取~b~演员~s~。"
+ },
+ "PMC_CON_VEH": {
+  "de": "Erobere das ~d~Fahrzeug~s~.",
+  "en": "Capture the ~d~Vehicle.",
+  "ru": "Захватите ~d~транспортное средство.",
+  "pl": "Przechwyć ~d~pojazd~s~.",
+  "fr": "Capturez le ~d~véhicule~s~.",
+  "zh_cn": "夺取~d~载具~s~。"
+ },
+ "PMC_CON_VEHS": {
+  "de": "Erobere eins der ~d~Fahrzeuge~s~.",
+  "en": "Capture one of the ~d~Vehicles.",
+  "ru": "Захватите одно из ~d~транспортных средств.",
+  "pl": "Przechwyć jeden z ~d~pojazdów~s~.",
+  "fr": "Capturez l'un des ~d~véhicules~s~.",
+  "zh_cn": "夺取其中一辆~d~载具~s~。"
+ },
+ "PMC_CON_OBJ": {
+  "de": "Erobere das ~g~Objekt~s~.",
+  "en": "Capture the ~g~Object.",
+  "ru": "Захватите ~g~объект.",
+  "pl": "Przechwyć ~g~obiekt~s~.",
+  "fr": "Capturez l'~g~objet~s~.",
+  "zh_cn": "夺取~g~物品~s~。"
+ },
+ "PMC_CON_OBJS": {
+  "de": "Erobere die ~g~Objekte~s~.",
+  "en": "Capture the ~g~Objects.",
+  "ru": "Захватите ~g~объекты.",
+  "pl": "Przechwyć ~g~obiekty~s~.",
+  "fr": "Capturez les ~g~objets~s~.",
+  "zh_cn": "夺取~g~物品~s~。"
+ },
+ "PMC_DMG_PED": {
+  "de": "Verletze den ~r~Akteur~s~.",
+  "en": "Damage the ~r~Actor.",
+  "ru": "Нанесите увечья ~r~персонажу.",
+  "pl": "Zrań ~r~aktora~s~.",
+  "fr": "Infligez des dégâts à l'~r~acteur~s~.",
+  "zh_cn": "伤害~r~演员~s~。"
+ },
+ "PMC_DMG_PEDS": {
+  "de": "Verletze die ~r~Akteure~s~.",
+  "en": "Damage the ~r~Actors.",
+  "ru": "Нанесите увечья ~r~персонажам.",
+  "pl": "Zrań ~r~aktorów~s~.",
+  "fr": "Infligez des dégâts aux ~r~acteurs~s~.",
+  "zh_cn": "伤害~r~演员~s~。"
+ },
+ "PMC_DMG_VEH": {
+  "de": "Beschädige das ~r~Fahrzeug~s~.",
+  "en": "Damage the ~r~Vehicle.",
+  "ru": "Нанесите урон ~r~транспортному средству.",
+  "pl": "Uszkodź ~r~pojazd~s~.",
+  "fr": "Endommagez le ~r~véhicule~s~.",
+  "zh_cn": "损坏~r~载具~s~。"
+ },
+ "PMC_DMG_VEHS": {
+  "de": "Beschädige die ~r~Fahrzeuge~s~.",
+  "en": "Damage the ~r~Vehicles.",
+  "ru": "Нанесите урон ~r~транспортным средствам.",
+  "pl": "Uszkodź ~r~pojazdy~s~.",
+  "fr": "Endommagez les ~r~véhicules~s~.",
+  "zh_cn": "损坏~r~载具~s~。"
+ },
+ "PMC_DMG_OBJ": {
+  "de": "Beschädige das ~r~Objekt~s~.",
+  "en": "Damage the ~r~Object.",
+  "ru": "Нанесите урон ~r~объекту.",
+  "pl": "Uszkodź ~r~obiekt~s~.",
+  "fr": "Endommagez l'~r~objet~s~.",
+  "zh_cn": "损坏~r~物品~s~。"
+ },
+ "PMC_DMG_OBJS": {
+  "de": "Beschädige die ~r~Objekte~s~.",
+  "en": "Damage the ~r~Objects.",
+  "ru": "Нанесите урон ~r~объектам.",
+  "pl": "Uszkodź ~r~obiekty~s~.",
+  "fr": "Endommagez les ~r~objets~s~.",
+  "zh_cn": "损坏~r~物品~s~。"
+ },
+ "PMC_LEAV_PED": {
+  "de": "Lasse den ~r~Akteur~s~ zurück.",
+  "en": "Leave the ~r~Actor.",
+  "ru": "Покиньте ~r~персонажа.",
+  "pl": "Opuść ~r~aktora~s~.",
+  "fr": "Quittez l'~r~acteur~s~.",
+  "zh_cn": "离开~r~演员~s~。"
+ },
+ "PMC_LEAV_PEDS": {
+  "de": "Lasse die ~r~Akteure~s~ zurück.",
+  "en": "Leave the ~r~Actors.",
+  "ru": "Покиньте ~r~персонажей.",
+  "pl": "Opuść ~r~aktorów~s~.",
+  "fr": "Quittez les ~r~acteurs~s~.",
+  "zh_cn": "离开~r~演员~s~。"
+ },
+ "PMC_LEAV_VEH": {
+  "de": "Lasse das ~d~Fahrzeug~s~ zurück.",
+  "en": "Leave the ~d~Vehicle.",
+  "ru": "Покиньте ~d~транспорт.",
+  "pl": "Opuść ~d~pojazd~s~.",
+  "fr": "Quittez le ~d~véhicule~s~.",
+  "zh_cn": "离开~d~载具~s~。"
+ },
+ "PMC_LEAV_VEHS": {
+  "de": "Lasse die ~d~Fahrzeuge~s~ zurück.",
+  "en": "Leave the ~d~Vehicles.",
+  "ru": "Покиньте ~d~транспорт.",
+  "pl": "Opuść ~d~pojazdy~s~.",
+  "fr": "Quittez les ~d~véhicules~s~.",
+  "zh_cn": "离开~d~载具~s~。"
+ },
+ "PMC_LEAV_OBJ": {
+  "de": "Lasse das ~g~Objekt~s~ zurück.",
+  "en": "Leave the ~g~Object.",
+  "ru": "Покиньте ~g~объект.",
+  "pl": "Opuść ~g~obiekt~s~.",
+  "fr": "Laissez l'~g~objet~s~.",
+  "zh_cn": "离开~g~物品~s~。"
+ },
+ "PMC_LEAV_OBJS": {
+  "de": "Lasse die ~g~Objekte~s~ zurück.",
+  "en": "Leave the ~g~Objects.",
+  "ru": "Покиньте ~g~объекты.",
+  "pl": "Opuść ~g~obiekty~s~.",
+  "fr": "Laissez les ~g~objets~s~.",
+  "zh_cn": "离开~g~物品~s~。"
+ },
+ "PMC_GOTO_LOC": {
+  "de": "Begib dich zum ~y~Ort~s~.",
+  "en": "Go to the ~y~Location.",
+  "ru": "Доберитесь до ~y~локации.",
+  "pl": "Udaj się do ~y~lokalizacji~s~.",
+  "fr": "Rejoignez l'~y~emplacement indiqué~s~.",
+  "zh_cn": "前往~y~地点~s~。"
+ },
+ "PMC_GOTO_LOCS": {
+  "de": "Begib dich zu einem der ~y~Orte~s~.",
+  "en": "Go to one of the ~y~Locations.",
+  "ru": "Доберитесь до одной из ~y~локаций.",
+  "pl": "Udaj się do jednej z ~y~lokalizacji~s~.",
+  "fr": "Rejoignez l'un des ~y~emplacements indiqués~s~.",
+  "zh_cn": "前往其中一处~y~地点~s~。"
+ },
+ "PMC_GO_AREA": {
+  "de": "Erobere den ~y~Ort~s~.",
+  "en": "Capture the ~y~Location.",
+  "ru": "Захватите ~y~локацию.",
+  "pl": "Przechwyć ~y~lokalizację~s~.",
+  "fr": "Capturez le ~y~lieu~s~.",
+  "zh_cn": "夺取~y~地点~s~。"
+ },
+ "PMC_GO_AREAS": {
+  "de": "Erobere einen der ~y~Orte~s~.",
+  "en": "Capture one of the ~y~Locations.",
+  "ru": "Захватите одну из ~y~локаций.",
+  "pl": "Przechwyć jedną z ~y~lokalizacji~s~.",
+  "fr": "Capturez un des ~y~lieux~s~.",
+  "zh_cn": "夺取其中一个~y~地点~s~。"
+ },
+ "PMC_LVELOC": {
+  "de": "Verlasse den ~y~Ort~s~.",
+  "en": "Leave the ~y~Location.",
+  "ru": "Покиньте ~y~локацию.",
+  "pl": "Opuść ~y~lokalizację~s~.",
+  "fr": "Quittez le ~y~lieu~s~.",
+  "zh_cn": "离开~y~地点~s~。"
+ },
+ "PMC_MINIG": {
+  "de": "Schließe das ~g~Minispiel~s~ ab.",
+  "en": "Complete the ~g~Minigame.",
+  "ru": "Завершите ~g~мини-игру.",
+  "pl": "Ukończ ~g~minigrę~s~.",
+  "fr": "Terminez le ~g~mini-jeu~s~.",
+  "zh_cn": "完成~g~小游戏~s~。"
+ },
+ "PMC_D_PED": {
+  "de": "Bringe den ~b~Akteur~s~ zum ~y~Übergabeort~s~.",
+  "en": "Deliver the ~b~Actor ~s~to the ~y~drop-off.",
+  "ru": "Доставьте ~b~персонажа ~s~в ~y~точку сброса.",
+  "pl": "Dostarcz ~b~aktora~s~ do ~y~punktu~s~.",
+  "fr": "Déposez l'~b~acteur~s~ au ~y~point de chute~s~.",
+  "zh_cn": "将~b~演员~s~送到~y~投放点~s~。"
+ },
+ "PMC_D_PEDS": {
+  "de": "Bringe die ~b~Akteure~s~ zum ~y~Übergabeort~s~.",
+  "en": "Deliver the ~b~Actors ~s~to the ~y~drop-off.",
+  "ru": "Доставьте ~b~персонажей ~s~в ~y~точку сброса.",
+  "pl": "Dostarcz ~b~aktorów~s~ do ~y~punktu~s~.",
+  "fr": "Déposez les ~b~acteurs~s~ au ~y~point de chute~s~.",
+  "zh_cn": "护送~b~演员~s~前往~y~投放点~s~。"
+ },
+ "PMC_D_VEH": {
+  "de": "Bringe das ~d~Fahrzeug~s~ zum ~y~Übergabeort~s~.",
+  "en": "Deliver the ~d~Vehicle ~s~to the ~y~drop-off.",
+  "ru": "Доставьте ~d~транспорт ~s~в ~y~точку сброса.",
+  "pl": "Dostarcz ~d~pojazd~s~ do ~y~punktu~s~.",
+  "fr": "Livrez le ~d~véhicule ~s~au ~y~point de livraison~s~.",
+  "zh_cn": "将~d~载具~s~送至~y~投放点~s~。"
+ },
+ "PMC_D_OBJ": {
+  "de": "Bringe das ~g~Objekt ~s~zum ~y~Übergabeort~s~.",
+  "en": "Deliver the ~g~Object ~s~to the ~y~drop-off.",
+  "ru": "Доставьте ~g~объект ~s~в ~y~точку сброса.",
+  "pl": "Dostarcz ~g~obiekt~s~ do ~y~punktu~s~.",
+  "fr": "Amenez l'~g~objet ~s~au ~y~point de livraison~s~.",
+  "zh_cn": "将~g~物品~s~运送至~y~投放点~s~。"
+ },
+ "PMC_D_OBJS": {
+  "de": "Bringe die ~g~Objekte ~s~zum ~y~Übergabeort~s~.",
+  "en": "Deliver the ~g~Objects ~s~to the ~y~drop-off.",
+  "ru": "Доставьте ~g~объекты ~s~в ~y~точку сброса.",
+  "pl": "Dostarcz ~g~obiekty~s~ do ~y~punktu~s~.",
+  "fr": "Amenez les ~g~objets ~s~au ~y~point de livraison~s~.",
+  "zh_cn": "将~g~物品~s~运送至~y~投放点~s~。"
+ }
+}

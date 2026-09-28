@@ -161,6 +161,7 @@ namespace Xenvious
                 case "fm_capture_creator": return GTA.Offsets.Editor.OFFSET_current_creator_placement_capture;
                 case "fm_deathmatch_creator": return GTA.Offsets.Editor.OFFSET_current_creator_placement_dm;
                 case "fm_survival_creator": return GTA.Offsets.Editor.OFFSET_current_creator_placement_survival;
+                case "public_mission_creator": return GTA.Offsets.Editor.OFFSET_current_creator_placement_mission;
                 default: return 0;
             }
         }

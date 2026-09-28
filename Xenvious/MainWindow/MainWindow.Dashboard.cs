@@ -59,12 +59,17 @@ namespace Xenvious
                 string creator = inCreator ? GTA.CurrentCreatorName() : "";
                 // The creator hub ("Load Creation", "Create a Race", ...) runs as the script
                 // "creator"; from there the player picks a creator in the game itself.
-                bool creatorMenu = globals && !inCreator && GTA.getLocalScriptAddy("creator") != null;
+                bool creatorMenu = globals && !inCreator && GTA.IsScriptRunning("creator");
+                UpdateGameState(game, globals, inCreator, creatorMenu);
+                if (inCreator)
+                    VisibilityGroups.Apply();
 
                 AdvanceLaunch(game, inCreator);
                 UpdateLaunchButton(inCreator);
                 UpdateStatusStrip(game, inCreator, creatorMenu, creator);
+                UpdateEditNav(inCreator ? creator : "");
                 OfferLaunchInStoryMode(globals, inCreator, creatorMenu);
+                ScriptThreadLog.Tick($"state={CurrentGameState} creator={(inCreator ? creator : "-")} transition={(globals && GTA.Offsets.Editor.transitionState != 0 ? new Global(GTA.Offsets.Editor.transitionState).Get<int>() : -1)}");
             }
             catch (Exception ex)
             {
@@ -76,7 +81,7 @@ namespace Xenvious
         {
             if (game)
             {
-                string build = Lblbuildversion?.Text;
+                string build = GTA.GameVersion(Lblonlineversion?.Text, Lblbuildversion?.Text);
                 DashStatusGame.Text = "GTA V " + (GameVariant.IsEnhanced ? "Enhanced" : "Legacy")
                     + (string.IsNullOrWhiteSpace(build) ? "" : " · " + build.Trim());
                 DashStatusGameDot.Fill = DotOk;
@@ -104,22 +109,63 @@ namespace Xenvious
                     DashStatusCreatorDot.Fill = DotBad;
                     break;
                 default:
-                    DashStatusCreator.Text = inCreator ? CreatorDisplayName(creator)
-                        : creatorMenu ? TranslateOr("dash_creator_menu", "Creator-Menü")
-                        : TranslateOr("dash_creator_none", "Kein Creator");
-                    DashStatusCreatorDot.Fill = inCreator ? DotOk : creatorMenu ? DotWarn : DotOff;
+                    // Where the game is right now, from UpdateGameState.
+                    switch (CurrentGameState)
+                    {
+                        case GameState.Creator:
+                            DashStatusCreator.Text = CreatorDisplayName(creator);
+                            DashStatusCreatorDot.Fill = DotOk;
+                            break;
+                        case GameState.CreatorMenu:
+                            DashStatusCreator.Text = TranslateOr("dash_creator_menu", "Creator-Menü");
+                            DashStatusCreatorDot.Fill = DotWarn;
+                            break;
+                        case GameState.Loading:
+                            DashStatusCreator.Text = TranslateOr("dash_state_loading", "Lädt …");
+                            DashStatusCreatorDot.Fill = DotWarn;
+                            break;
+                        case GameState.MainMenu:
+                            DashStatusCreator.Text = TranslateOr("dash_state_mainmenu", "Hauptmenü");
+                            DashStatusCreatorDot.Fill = DotOff;
+                            break;
+                        case GameState.StoryMode:
+                            DashStatusCreator.Text = TranslateOr("dash_state_story", "Story Mode");
+                            DashStatusCreatorDot.Fill = DotOff;
+                            break;
+                        case GameState.Online:
+                            DashStatusCreator.Text = TranslateOr("dash_state_online", "GTA Online");
+                            DashStatusCreatorDot.Fill = DotOff;
+                            break;
+                        default:
+                            DashStatusCreator.Text = TranslateOr("dash_creator_none", "Kein Creator");
+                            DashStatusCreatorDot.Fill = DotOff;
+                            break;
+                    }
                     break;
             }
 
-            // The chip is the Border around the text's StackPanel; only meaningful in a creator.
-            var propsChip = (FrameworkElement)((FrameworkElement)DashStatusProps.Parent).Parent;
-            propsChip.Visibility = inCreator ? Visibility.Visible : Visibility.Collapsed;
+            DashTileGame.ToolTip = string.IsNullOrWhiteSpace(Lblonlineversion?.Text)
+                ? null
+                : TranslateOr("onlineversion", "Online Version") + ": " + Lblonlineversion.Text.Trim()
+                    + " · " + TranslateOr("patches_build", "Build") + ": " + (Lblbuildversion?.Text ?? "").Trim();
+
+            string scName = Lbl_SCName.Text;
+            DashSCInitial.Text = string.IsNullOrWhiteSpace(scName) ? "" : scName.Trim().Substring(0, 1).ToUpperInvariant();
+            BtnDashSC.IsEnabled = !string.IsNullOrWhiteSpace(scName);
+            UpdateDashboardJobId(inCreator);
+
+            // Props and the creator's own count only mean something inside a creator.
+            DashTileProps.Visibility = inCreator ? Visibility.Visible : Visibility.Collapsed;
+            DashTileMode.Visibility = inCreator ? Visibility.Visible : Visibility.Collapsed;
             if (inCreator)
             {
                 int count = new Global(GTA.Offsets.Editor.Props.number).Get<int>();
                 int limit = PropPlacementService.PropLimit;
-                DashStatusProps.Text = string.Format(CultureInfo.CurrentCulture, "Props {0} / {1}", count, limit);
-                DashStatusPropsDot.Fill = count >= limit ? DotBad : count >= limit * 0.9 ? DotWarn : DotOk;
+                DashStatusProps.Text = string.Format(CultureInfo.CurrentCulture, "{0} / {1}", count, limit);
+                DashStatusDynamic.Text = new Global(GTA.Offsets.Editor.DProps.number).Get<int>().ToString(CultureInfo.CurrentCulture);
+                DashPropsBar.Width = 170.0 * Math.Max(0, Math.Min(count, limit)) / limit;
+                DashPropsBar.Fill = count >= limit ? DotBad : count >= limit * 0.9 ? DotWarn : (Brush)DashTileProps.FindResource("DashPropBrush");
+                UpdateDashboardCreatorCounts(creator);
             }
 
             bool script = cbsettingsexpscrfeat.IsChecked == true;
@@ -127,6 +173,8 @@ namespace Xenvious
                 ? TranslateOr("dash_script_on", "Script-Funktionen an")
                 : TranslateOr("dash_script_off", "Script-Funktionen aus");
             DashStatusScriptDot.Fill = script ? DotOk : DotOff;
+
+            UpdateDashboardForCreator(inCreator ? creator : null);
         }
 
         private static string CreatorDisplayName(string script)
@@ -138,30 +186,50 @@ namespace Xenvious
                 case "fm_capture_creator": return "Capture Creator";
                 case "fm_deathmatch_creator": return "Deathmatch Creator";
                 case "fm_survival_creator": return "Survival Creator";
-                case "fm_mission_creator": return "Mission Creator";
+                case "public_mission_creator": return "Mission Creator";
                 default: return "Creator";
             }
         }
 
         private bool _storyModeChecked;
 
+        /// <summary>Where the game is, as far as Xenvious can tell from the running scripts.</summary>
+        public enum GameState { NoGame, Loading, MainMenu, StoryMode, Online, CreatorMenu, Creator }
+
+        public GameState CurrentGameState { get; private set; } = GameState.NoGame;
+
+        // Markers from the thread log (Enhanced 1.0.1158 and Legacy): story mode runs flow_controller (there
+        // is no respawn_controller), a switch between modes runs maintransition, the creator hub
+        // runs creator, GTA Online freemode. In the game's own main menu no thread is live. Only
+        // live threads count (GTA.IsLiveThread); Legacy was checked the same way.
+        private void UpdateGameState(bool game, bool globals, bool inCreator, bool creatorMenu)
+        {
+            GameState state = !game ? GameState.NoGame
+                : !globals || GTA.IsScriptRunning("maintransition") ? GameState.Loading
+                : inCreator ? GameState.Creator
+                : creatorMenu ? GameState.CreatorMenu
+                : GTA.IsScriptRunning("freemode") ? GameState.Online
+                // startup_positioning places the player while the loading screen is still up.
+                : GTA.IsScriptRunning("flow_controller") ? (GTA.IsScriptRunning("startup_positioning") ? GameState.Loading : GameState.StoryMode)
+                : GameState.MainMenu;
+            if (state != CurrentGameState)
+                Log.Info($"game state: {CurrentGameState} -> {state}", source: "dashboard");
+            CurrentGameState = state;
+        }
+
         /// <summary>
-        /// Once per Xenvious start: in story mode (no creator, no creator menu, no
-        /// freemode) the creator is one click away, so offer it.
+        /// Once per Xenvious start: in story mode the creator is one click away, so offer it.
         /// </summary>
         private async void OfferLaunchInStoryMode(bool globals, bool inCreator, bool creatorMenu)
         {
             if (_storyModeChecked || !globals)
                 return;
             _storyModeChecked = true;
-            if (inCreator || creatorMenu || _launchPhase != LaunchPhase.None)
-                return;
-            if (GTA.getLocalScriptAddy("freemode") != null)
-                return;   // GTA Online: the creator is reached from its own menus
-            if (GTA.getLocalScriptAddy("respawn_controller") == null)
+            if (_launchPhase != LaunchPhase.None || CurrentGameState != GameState.StoryMode)
             {
-                // Story mode runs respawn_controller; the game's main menu does not.
-                _storyModeChecked = false;   // look again once story mode has loaded
+                // Story mode is still to come from the main menu or a loading screen; look again then.
+                if (CurrentGameState == GameState.MainMenu || CurrentGameState == GameState.Loading)
+                    _storyModeChecked = false;
                 return;
             }
 
@@ -245,7 +313,6 @@ namespace Xenvious
             if (!m.IsProcOpen)
                 return;
             _launchStarted = DateTime.UtcNow;
-            _launchReport = true;
             if (!GameVariant.IsEnhanced || GameHasFocus())
             {
                 FireLaunch();
@@ -308,26 +375,10 @@ namespace Xenvious
             }
         }
 
-        private bool _launchReport;
-
         /// <summary>
         /// GTA has the focus while the creator starts, so Xenvious tells the player what
         /// happened when they come back: one dialog per launch.
         /// </summary>
-        private async void ReportLaunch(bool started, double seconds)
-        {
-            if (!_launchReport)
-                return;
-            _launchReport = false;
-            await ConfirmAsync(
-                started ? TranslateOr("launch_done_title", "Creator gestartet")
-                        : TranslateOr("launch_failed_title", "Creator-Start fehlgeschlagen"),
-                started
-                    ? string.Format(CultureInfo.CurrentCulture, TranslateOr("launch_done_text", "Der Creator lief nach {0:0} Sekunden."), seconds)
-                    : TranslateOr("launch_failed_text", "Der Creator ist nicht innerhalb von 2 Minuten gestartet. Prüfe in GTA, wo das Spiel steht, und versuch es noch einmal."),
-                "OK", null, danger: !started);
-        }
-
         private void FireLaunch()
         {
             LaunchCreator();
@@ -348,12 +399,13 @@ namespace Xenvious
                         _launchPhase = LaunchPhase.None;
                         return;
                     }
-                    if (inCreator)
+                    // The launch ends in the game's creator hub, where the player picks the
+                    // creator; reaching the hub (or a creator) is the end of it.
+                    if (inCreator || CurrentGameState == GameState.CreatorMenu)
                     {
                         _launchPhase = LaunchPhase.None;
                         double took = (DateTime.UtcNow - _launchStarted).TotalSeconds;
-                        Log.Info($"Creator ready after {took:0.0} s", source: "dashboard");
-                        ReportLaunch(true, took);
+                        Log.Info($"{(inCreator ? "Creator" : "Creator menu")} ready after {took:0.0} s", source: "dashboard");
                         return;
                     }
                     if (_launchPhase == LaunchPhase.Requested && GTA.getCurrentCreatorAddy() != null)
@@ -363,7 +415,6 @@ namespace Xenvious
                         Log.Warn($"Creator did not start within {LaunchTimeout.TotalSeconds:0} s ({_launchPhase})", source: "dashboard");
                         _launchPhase = LaunchPhase.Failed;
                         _launchFailedAt = DateTime.UtcNow;
-                        ReportLaunch(false, LaunchTimeout.TotalSeconds);
                     }
                     break;
                 case LaunchPhase.Failed:

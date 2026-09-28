@@ -67,14 +67,16 @@ namespace Xenvious
         // grows north while image rows grow downwards. These defaults are an estimate;
         // "Kalibrieren" replaces them with numbers measured from two real camera positions
         // and stores them in the roaming config.
-        private static double _mapOriginX = -4150;      // Welt-X am linken Bildrand
-        private static double _mapUnitsPerPxX = 8750.0 / 420.0;
-        private static double _mapOriginY = 7750;       // Welt-Y am oberen Bildrand
-        private static double _mapUnitsPerPxY = 12050.0 / 578.0;
+        // Measured in game with "Calibrate" on the HD map (420x578 map surface); a calibration in config.ini overrides it.
+        private static double _mapOriginX = -3914.79;   // Welt-X am linken Bildrand
+        private static double _mapUnitsPerPxX = 21.5560;
+        private static double _mapOriginY = 8393.64;    // Welt-Y am oberen Bildrand
+        private static double _mapUnitsPerPxY = 21.5199;
 
-        private const string MapCalibSection = "MAPMOVER";
+        private const string MapCalibSection = "MAPMOVER_HD";
 
-        private Point WorldToMap(double wx, double wy)
+        // Also used by JobMap (Copy Jobs), so both follow the same calibration.
+        internal static Point WorldToMap(double wx, double wy)
         {
             return new Point((wx - _mapOriginX) / _mapUnitsPerPxX,
                              (_mapOriginY - wy) / _mapUnitsPerPxY);
@@ -533,7 +535,7 @@ namespace Xenvious
         private static readonly string[] CreatorScriptNames =
         {
             "fm_lts_creator", "fm_capture_creator", "fm_deathmatch_creator",
-            "fm_race_creator", "fm_survival_creator", "fm_mission_creator"
+            "fm_race_creator", "fm_survival_creator", "public_mission_creator"
         };
 
         private static string AsciiPattern(string text)
@@ -566,6 +568,7 @@ namespace Xenvious
                 case "fm_capture_creator": return GTA.Offsets.Editor.OFFSET_current_creator_worker_capture;
                 case "fm_deathmatch_creator": return GTA.Offsets.Editor.OFFSET_current_creator_worker_dm;
                 case "fm_race_creator": return GTA.Offsets.Editor.OFFSET_current_creator_worker_race;
+                case "public_mission_creator": return GTA.Offsets.Editor.OFFSET_current_creator_worker_mission;
                 default: return GTA.Offsets.Editor.OFFSET_current_creator_worker_lts;
             }
         }
@@ -762,6 +765,7 @@ namespace Xenvious
                 case "fm_capture_creator": return GTA.Offsets.Editor.OFFSET_current_creator_cam_heading_capture;
                 case "fm_deathmatch_creator": return GTA.Offsets.Editor.OFFSET_current_creator_cam_heading_dm;
                 case "fm_race_creator": return GTA.Offsets.Editor.OFFSET_current_creator_cam_heading_race;
+                case "public_mission_creator": return GTA.Offsets.Editor.OFFSET_current_creator_cam_heading_mission;
                 default: return GTA.Offsets.Editor.OFFSET_current_creator_cam_heading_lts;
             }
         }

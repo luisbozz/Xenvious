@@ -154,6 +154,7 @@ namespace Xenvious
 
 
                 if (!tbactormodel.IsFocused || ignore_focus) tbactormodel.Text = model.ToString();
+                ActorModelCard.SetModel(unchecked((uint)model));
                 if (!tbactorlocx.IsFocused || ignore_focus) tbactorlocx.Text = new Global((GTA.Offsets.Editor.Actor.locx + GTA.Offsets.Editor.Actor.NEXT * index)).Get<float>().ToString();
                 if (!tbactorlocy.IsFocused || ignore_focus) tbactorlocy.Text = new Global((GTA.Offsets.Editor.Actor.locy + GTA.Offsets.Editor.Actor.NEXT * index)).Get<float>().ToString();
                 if (!tbactorlocz.IsFocused || ignore_focus) tbactorlocz.Text = new Global((GTA.Offsets.Editor.Actor.locz + GTA.Offsets.Editor.Actor.NEXT * index)).Get<float>().ToString();

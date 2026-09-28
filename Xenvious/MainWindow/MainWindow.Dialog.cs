@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Documents;
 using System.Windows;
@@ -36,10 +36,8 @@ namespace Xenvious
             DialogText.Text = message ?? "";
             DialogText.Visibility = string.IsNullOrEmpty(message) ? Visibility.Collapsed : Visibility.Visible;
             DialogConfirm.Content = confirmText;
-            DialogConfirmContainer.Background = danger
-                ? new SolidColorBrush(Color.FromRgb(0xD9, 0x53, 0x4F))
-                : new SolidColorBrush(Color.FromRgb(0xFA, 0xC8, 0x28));
-            DialogConfirm.Foreground = danger ? Brushes.White : new SolidColorBrush(Color.FromRgb(0x20, 0x22, 0x25));
+            DialogConfirmContainer.Background = ThemeBrush(danger ? "BadBrush" : "HighlightBrush");
+            DialogConfirm.Foreground = danger ? Brushes.White : ThemeBrush("HighlightForeground");
             DialogCancel.Content = cancelText ?? "";
             DialogCancelContainer.Visibility = cancelText == null ? Visibility.Collapsed : Visibility.Visible;
 

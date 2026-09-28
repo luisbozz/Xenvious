@@ -73,13 +73,6 @@ namespace Xenvious
             new Kill.Values(new int[] { 0,0,0,0 }, new int[] { 99999,99999,99999,99999 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, -1,-1)
         });
         public static List<int> plylfreeze;
-        public static List<List<string>> bfmfreeze = new List<List<string>>
-        {
-            new List<string>{ "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!" },
-            new List<string>{ "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!" },
-            new List<string>{ "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!" },
-            new List<string>{ "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!", "Get back to Action!" }
-        };
         public static nrcidcopy nrcidcopy;
 
         public HashSet<ulong> appliedPatches = new HashSet<ulong>();
@@ -99,6 +92,8 @@ namespace Xenvious
         private Translator<string, string> _Translation;
         private static readonly string[] LanguageCodes = { "de", "en", "ru", "pl", "fr", "zh_cn" };
         private string _currentLanguageCode = _Language.DefaultCode;
+        /// <summary>The app language (de, en, ru, pl, fr, zh_cn).</summary>
+        public string LanguageCode => _currentLanguageCode;
         private bool _suppressLanguageChange;
 
         public AdvancedPropPlacementViewModel AdvancedPropPlacementVm { get; }
@@ -328,18 +323,8 @@ namespace Xenvious
             }
 
             Log.Debug("Load Color", source: "init");
-            switch (ini.ReadString("Settings", "color"))
-            {
-                case "gray":
-                    ddcolor.SelectedIndex = 0;
-                    break;
-                case "white":
-                    ddcolor.SelectedIndex = 1;
-                    break;
-                default:
-                    ddcolor.SelectedIndex = 0;
-                    break;
-            }
+            ddcolor.ItemsSource = System.Linq.Enumerable.Select(Themes.All, t => TranslateOr(t.NameKey, t.Fallback));
+            ddcolor.SelectedIndex = System.Linq.Enumerable.ToList(Themes.All).IndexOf(Themes.Find(ini.ReadString("Settings", "color")));
 
             tbsettingsincrementsize.Text = incrementsize.ToString();
 
@@ -356,7 +341,6 @@ namespace Xenvious
             //panelTopSwitcher.Visibility = Visibility.Hidden;
             BtnOnlineEnabler.Visibility = Visibility.Collapsed;
             BtnLaunchCreator.Visibility = Visibility.Collapsed;
-            mpropspanelmainmain.Visibility = Visibility.Collapsed;
 
 
             Log.Debug("Start timercheckgta", source: "init");
@@ -380,6 +364,10 @@ namespace Xenvious
             mWorker.DoWork += new DoWorkEventHandler(worker_DoWork);
 
             StartDashboardStatus();
+            InitModelCards();
+            InitExtraRules();
+            InitAreaEditors();
+            InitEntityPicker();
         }
 
         public bool globalPtrSanityCheck(long value)
@@ -387,27 +375,18 @@ namespace Xenvious
             return (value > 0x10000 && value < 0x7FFFFFF);
         }
 
+        // Reads all 8 description labels: a label shorter than 63 bytes does not end the
+        // text, because labels are cut at character boundaries.
         public string getDescribtion()
         {
-            string describtion = "";
+            var describtion = new StringBuilder();
             try
             {
-
-                for (int i = 0; i < 8; i++)
-                {
-                    if (Encoding.UTF8.GetBytes(new Global((GTA.Offsets.Editor.dec + i * 16)).GetString()).Length < 63)
-                    {
-                        describtion += new Global((GTA.Offsets.Editor.dec + i * 16)).GetString();
-                        break;
-                    }
-                    else
-                    {
-                        describtion += new Global((GTA.Offsets.Editor.dec + i * 16)).GetString();
-                    }
-                }
+                for (int i = 0; i < DescriptionChunks; i++)
+                    describtion.Append(new Global(GTA.Offsets.Editor.dec + i * 16).GetString());
             }
             catch (Exception) { }
-            return describtion;
+            return describtion.ToString();
         }
 
 
@@ -486,6 +465,9 @@ namespace Xenvious
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             MainPages.SelectedIndex = -1;
+            // The first edit page opened without a tab change; its entry bar goes to the header too.
+            QueueEntryBarMove();
+            WatchRebuildRequests();
 
             // Offline mode: no authentication, no updater, no roles.
             // Every feature is unlocked for everyone; the default control
@@ -642,6 +624,10 @@ namespace Xenvious
 
         private void UIElement_OnMouseWheel(object sender, MouseWheelEventArgs e)
         {
+            // A text box's content host leaves the wheel to the text box itself, which scrolls
+            // only while the event is unhandled; marking it here froze multi-line boxes.
+            if (sender is ScrollViewer sv && sv.TemplatedParent is System.Windows.Controls.Primitives.TextBoxBase)
+                return;
             e.Handled = true;
         }
 
@@ -674,35 +660,6 @@ namespace Xenvious
             return current as T;
         }
 
-        private void Window_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
-        {
-            var item = FindUpVisualTree<ComboBox>(Mouse.DirectlyOver as UIElement);
-            bool parentSV = FindUpVisualTree<ScrollViewer>(item) != null;
-            if (item is ComboBox && item.IsFocused == false)
-            {
-                int index = item.SelectedIndex;
-                if (e.Delta > 0)
-                {
-                    if (index > 0)
-                    {
-                        item.SelectedIndex = index - 1;
-                    }
-                }
-                else if (e.Delta < 0)
-                {
-                    if (index < item.Items.Count)
-                    {
-                        item.SelectedIndex = index + 1;
-                    }
-                }
-                //stop scrollviewer to scroll if mouse is over combobox
-                if (parentSV)
-                {
-                    e.Handled = true;
-                }
-            }
-        }
-
         [DllImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool AllocConsole();
@@ -728,16 +685,6 @@ namespace Xenvious
                 return m.memory(addr.ToString("X")).GetString(64).TrimEnd('\0');
             }
             return issteam ? m.memory(GTA.Offsets.Editor.steam_accname).GetString() : isrstar ? m.memory(GTA.Offsets.Editor.rstar_accname).GetString() : m.memory(GTA.Offsets.Editor.epic_accname).GetString();
-        }
-
-        private void cb_race_nononcontact_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void mpropspanelmain_DragEnter(object sender, DragEventArgs e)
-        {
-            mpropsdrop.Visibility = Visibility.Visible;
         }
 
         public static bool freeze = false;

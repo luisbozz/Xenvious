@@ -1,13 +1,14 @@
 ﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 
 namespace Xenvious
 {
     // Part of MainWindow: Edit page.
     public partial class MainWindow
     {
+        private bool _catalogPreloaded;
+
         private void BtnSectionProps_Click(object sender, RoutedEventArgs e)
         {
             EditPages.SelectedItem = PageProps;
@@ -50,81 +51,21 @@ namespace Xenvious
         private void EditPages_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             checkSection();
-
-
-            BtnSectionProps.Background = (SolidColorBrush)Resources["SeactionHeaderBackgroundBrush"];
-            BtnSectionActor.Background = (SolidColorBrush)Resources["SeactionHeaderBackgroundBrush"];
-            BtnSectioncentity.Background = (SolidColorBrush)Resources["SeactionHeaderBackgroundBrush"];
-            BtnSectionDeathmatch.Background = (SolidColorBrush)Resources["SeactionHeaderBackgroundBrush"];
-            BtnSectionSurvival.Background = (SolidColorBrush)Resources["SeactionHeaderBackgroundBrush"];
-            BtnSectionMission.Background = (SolidColorBrush)Resources["SeactionHeaderBackgroundBrush"];
-            BtnSectionObj.Background = (SolidColorBrush)Resources["SeactionHeaderBackgroundBrush"];
-            BtnSectionRace.Background = (SolidColorBrush)Resources["SeactionHeaderBackgroundBrush"];
-            BtnSectionDoors.Background = (SolidColorBrush)Resources["SeactionHeaderBackgroundBrush"];
-            BtnSectionVeh.Background = (SolidColorBrush)Resources["SeactionHeaderBackgroundBrush"];
-            BtnSectionWeap.Background = (SolidColorBrush)Resources["SeactionHeaderBackgroundBrush"];
-            BtnSectionZone.Background = (SolidColorBrush)Resources["SeactionHeaderBackgroundBrush"];
-
-            if (EditPages.SelectedItem == PageProps)
+            // The page or one of its inner tabs changed: its entry bar moves into the header.
+            if (e.OriginalSource is TabControl && IsLoaded)
+                QueueEntryBarMove();
+            // Selection changes of dropdowns inside the pages bubble up to here as well.
+            // Not while the window is being built: the side list needs the whole page tree.
+            if (e.Source == EditPages && IsLoaded)
             {
-                BtnSectionProps.Background = (SolidColorBrush)Resources["ButtonHoverBackgroundBrush"];
-                HeaderLabel.SetBinding(Label.ContentProperty, BtnSectionProps.GetBindingExpression(Button.ContentProperty).ParentBinding);
+                OnEditPageChanged();
+                // The first time the props page opens, fetch the favourite and recent pictures.
+                if (EditPages.SelectedItem == PageProps && !_catalogPreloaded)
+                {
+                    _catalogPreloaded = true;
+                    ModelCatalog.Preload(PropCatalog);
+                }
             }
-            else if (EditPages.SelectedItem == PageActor)
-            {
-                BtnSectionActor.Background = (SolidColorBrush)Resources["ButtonHoverBackgroundBrush"];
-                HeaderLabel.SetBinding(Label.ContentProperty, BtnSectionActor.GetBindingExpression(Button.ContentProperty).ParentBinding);
-            }
-            else if (EditPages.SelectedItem == Pagecentity)
-            {
-                BtnSectioncentity.Background = (SolidColorBrush)Resources["ButtonHoverBackgroundBrush"];
-            }
-            else if (EditPages.SelectedItem == PageDeathmatch)
-            {
-                BtnSectionDeathmatch.Background = (SolidColorBrush)Resources["ButtonHoverBackgroundBrush"];
-                HeaderLabel.SetBinding(Label.ContentProperty, BtnSectionDeathmatch.GetBindingExpression(Button.ContentProperty).ParentBinding);
-            }
-            else if (EditPages.SelectedItem == PageSurvival)
-            {
-                BtnSectionSurvival.Background = (SolidColorBrush)Resources["ButtonHoverBackgroundBrush"];
-                HeaderLabel.SetBinding(Label.ContentProperty, BtnSectionSurvival.GetBindingExpression(Button.ContentProperty).ParentBinding);
-            }
-            else if (EditPages.SelectedItem == PageMission)
-            {
-                BtnSectionMission.Background = (SolidColorBrush)Resources["ButtonHoverBackgroundBrush"];
-                HeaderLabel.SetBinding(Label.ContentProperty, BtnSectionMission.GetBindingExpression(Button.ContentProperty).ParentBinding);
-            }
-            else if (EditPages.SelectedItem == PageCapture)
-            {
-                BtnSectionObj.Background = (SolidColorBrush)Resources["ButtonHoverBackgroundBrush"];
-                HeaderLabel.SetBinding(Label.ContentProperty, BtnSectionObj.GetBindingExpression(Button.ContentProperty).ParentBinding);
-            }
-            else if (EditPages.SelectedItem == PageRace)
-            {
-                BtnSectionRace.Background = (SolidColorBrush)Resources["ButtonHoverBackgroundBrush"];
-                HeaderLabel.SetBinding(Label.ContentProperty, BtnSectionRace.GetBindingExpression(Button.ContentProperty).ParentBinding);
-            }
-            else if (EditPages.SelectedItem == PageDoors)
-            {
-                BtnSectionDoors.Background = (SolidColorBrush)Resources["ButtonHoverBackgroundBrush"];
-                HeaderLabel.SetBinding(Label.ContentProperty, BtnSectionDoors.GetBindingExpression(Button.ContentProperty).ParentBinding);
-            }
-            else if (EditPages.SelectedItem == PageVehicle)
-            {
-                BtnSectionVeh.Background = (SolidColorBrush)Resources["ButtonHoverBackgroundBrush"];
-                HeaderLabel.SetBinding(Label.ContentProperty, BtnSectionVeh.GetBindingExpression(Button.ContentProperty).ParentBinding);
-            }
-            else if (EditPages.SelectedItem == PageWeapon)
-            {
-                BtnSectionWeap.Background = (SolidColorBrush)Resources["ButtonHoverBackgroundBrush"];
-                HeaderLabel.SetBinding(Label.ContentProperty, BtnSectionWeap.GetBindingExpression(Button.ContentProperty).ParentBinding);
-            }
-            else if (EditPages.SelectedItem == PageZone)
-            {
-                BtnSectionZone.Background = (SolidColorBrush)Resources["ButtonHoverBackgroundBrush"];
-                HeaderLabel.SetBinding(Label.ContentProperty, BtnSectionZone.GetBindingExpression(Button.ContentProperty).ParentBinding);
-            }
-
         }
 
         private void BtnSectionZone_Click(object sender, RoutedEventArgs e)

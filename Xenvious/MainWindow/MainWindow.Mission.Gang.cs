@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using Newtonsoft.Json.Linq;
 using static Xenvious.GTA;
 using static Xenvious.GTA.Offsets.Editor;
@@ -61,6 +63,7 @@ namespace Xenvious
             tbmissiongangv1locx.Text = loc[0].ToString();
             tbmissiongangv1locy.Text = loc[1].ToString();
             tbmissiongangv1locz.Text = loc[2].ToString();
+            gangArea.StartPicked();
         }
 
         private void Btmissiongangv2getloc_Click(object sender, RoutedEventArgs e)
@@ -70,6 +73,7 @@ namespace Xenvious
             tbmissiongangv2locx.Text = loc[0].ToString();
             tbmissiongangv2locy.Text = loc[1].ToString();
             tbmissiongangv2locz.Text = loc[2].ToString();
+            gangArea.EndPicked();
         }
 
         public void getGangValues(bool ignore_focus = false)
@@ -107,14 +111,7 @@ namespace Xenvious
                 if (enable)
                 {
                     int gangtype = new Global(GTA.Offsets.Editor.gbtp + index + tindex * GTA.Offsets.Editor.team_NEXT).Get<int>();
-                    try
-                    {
-                        ddmissiongangtype.SelectedItem = ddmissiongangtype.ItemsSource.Cast<Gang>().ToArray().Where(y => y.Value == gangtype).First();
-                    }
-                    catch (Exception)
-                    {
-                        ddmissiongangtype.SelectedIndex = -1;
-                    }
+                    ShowGangType(gangtype);
 
                     ddmissiongbat.SelectedIndex = new Global(GTA.Offsets.Editor.gbat + index + tindex * GTA.Offsets.Editor.team_NEXT).Get<int>();
 
@@ -179,8 +176,96 @@ namespace Xenvious
 
         private void ddmissiongangtype_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (ddmissiongangtype.SelectedIndex > -1)
-                new Global(GTA.Offsets.Editor.gbtp + ddmissiongangno.SelectedIndex + ddmissiongangteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT).SetInt(((Gang)ddmissiongangtype.SelectedItem).Value);
+            if (_gangTypeSync || _gangSearch == null || _gangSearch.Syncing || !(ddmissiongangtype.SelectedItem is SearchItem item))
+                return;
+            if (m.IsProcOpen && ddmissiongangno.SelectedIndex > -1 && ddmissiongangteamno.SelectedIndex > -1)
+                new Global(GTA.Offsets.Editor.gbtp + ddmissiongangno.SelectedIndex + ddmissiongangteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT).SetInt(item.Id);
+            ShowGangType(item.Id);
+        }
+
+        // ----- Gang type picker: all 53 types by group, with what each one sends -----
+
+        private bool _gangTypeSync;
+        private string _gangTypeLang;
+
+        private SearchableCombo _gangSearch;
+
+        private static string GangTypeText(GangTypes.GangType t, Func<string, string, string> tr)
+        {
+            string faction = tr("gt_f_" + t.Faction, t.Faction);
+            return t.Vehicle == null ? $"{t.Id}  {faction}" : $"{t.Id}  {faction} · {t.Vehicle}";
+        }
+
+        // Grouped list with a search box, the same as the zone types. Built again only when the
+        // language changed.
+        private void FillGangTypes()
+        {
+            string lang = TranslateOr("gt_f_none", "");
+            if (_gangSearch != null && lang == _gangTypeLang)
+                return;
+            _gangTypeLang = lang;
+            if (_gangSearch == null)
+                _gangSearch = new SearchableCombo(ddmissiongangtype);
+            _gangTypeSync = true;
+            _gangSearch.SetItems(GangTypes.All.Select(t => new SearchItem { Id = t.Id, Text = GangTypeText(t, TranslateOr), Group = t.Group }),
+                GangTypes.Groups, g => g == "none" ? "" : TranslateOr("gt_grp_" + g, g));
+            _gangTypeSync = false;
+        }
+
+        private void ddmissiongangtype_DropDownOpened(object sender, EventArgs e) => FillGangTypes();
+
+        private void ShowGangType(int id)
+        {
+            FillGangTypes();
+            var type = GangTypes.Find(id);
+            _gangSearch.Select(id);
+
+            ShowGangDetails(id, type);
+            if (type == null)
+                lblgangtypeinfo.Text = string.Format(TranslateOr("gt_unknown", "Type {0} is not a gang chase type."), id);
+            else if (type.Group == "none")
+                lblgangtypeinfo.Text = TranslateOr("gt_none_info", "No gang chase on this rule.");
+            else if (type.Group == "custom")
+                lblgangtypeinfo.Text = TranslateOr("gt_custom_info", "Uses a gang chase unit the job sets up itself (vehicle, peds and weapon come from there).");
+            else
+                lblgangtypeinfo.Text = string.Format(TranslateOr("gt_info", "{0} with {1} peds ({2}), weapon: {3}."), type.Vehicle, type.Peds, type.Ped, type.Weapon);
+        }
+
+        // Name, the game's label, weapon, random weapons, vehicle, ped model and count, like the
+        // first versions showed them. The label and the random weapon list come from Gangtypes.json.
+        private void ShowGangDetails(int id, GangTypes.GangType type)
+        {
+            GangDetails.Children.Clear();
+            GangDetails.RowDefinitions.Clear();
+            GangDetails.ColumnDefinitions.Clear();
+            if (type == null || type.Vehicle == null)
+                return;
+            var json = GTA.Editor.GangTypes.FirstOrDefault(g => g.Value == id);
+            var rows = new (string Key, string Fallback, string Value)[]
+            {
+                ("gt_d_name", "Name", TranslateOr("gt_f_" + type.Faction, type.Faction)),
+                ("gt_d_label", "Game name", json?.InfoName),
+                ("gt_d_weapon", "Weapon", type.Weapon),
+                ("gt_d_random", "Random weapons", json?.RandonizedWeapons?.Replace("weapon_", "").Replace(",", ", ")),
+                ("gt_d_vehicle", "Vehicle", type.Vehicle),
+                ("gt_d_ped", "Enemy", type.Ped),
+                ("gt_d_count", "Enemies per vehicle", type.Peds.ToString(System.Globalization.CultureInfo.CurrentCulture)),
+            };
+            GangDetails.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(140) });
+            GangDetails.ColumnDefinitions.Add(new ColumnDefinition());
+            int r = 0;
+            foreach (var row in rows.Where(x => !string.IsNullOrEmpty(x.Value)))
+            {
+                GangDetails.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+                var key = new TextBlock { Text = TranslateOr(row.Key, row.Fallback), FontSize = 12.5, Margin = new Thickness(0, 2, 8, 2) };
+                key.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
+                var value = new TextBox { Text = row.Value, Style = null, IsReadOnly = true, BorderThickness = new Thickness(0), Background = Brushes.Transparent, FontSize = 12.5, Margin = new Thickness(-2, 2, 0, 2), TextWrapping = TextWrapping.Wrap };
+                value.SetResourceReference(TextBox.ForegroundProperty, "TextColor");
+                Grid.SetRow(key, r); Grid.SetRow(value, r); Grid.SetColumn(value, 1);
+                GangDetails.Children.Add(key);
+                GangDetails.Children.Add(value);
+                r++;
+            }
         }
 
         private void cbmissiongangnewrule_Checked(object sender, RoutedEventArgs e)

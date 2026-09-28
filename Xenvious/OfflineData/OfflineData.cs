@@ -85,5 +85,17 @@ namespace Xenvious
 
         /// <summary>Built-in advanced placement presets (JSON array).</summary>
         public static string PlacementPresets => LoadShared("placement_presets.json");
+
+        /// <summary>Names of the job option bits per menubs field (JSON), from Rockstar's constants.</summary>
+        public static string MenuBits => LoadShared("menubits.json");
+
+        /// <summary>
+        /// The game's default objective texts (label -> language -> text), taken from the labels
+        /// the Mission Controller shows when a rule has no own text (global.gxt2 of the game).
+        /// </summary>
+        public static string ObjectiveTexts => LoadShared("objective_texts.json");
+
+        /// <summary>Original models of the creators' prop-menu slots (JSON), from tools/mprops_originals.py.</summary>
+        public static string ModdedPropOriginals => LoadCurrent("mprops.json");
     }
 }

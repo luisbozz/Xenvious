@@ -240,6 +240,10 @@ namespace Xenvious
                                 new Global(objbase + d).SetInt(valuesafterdeletedobj[i][d]);
                             }
                         }
+                        // Extra objectives refer to this entity type by index; follow the shift.
+                        ExtraObjectives.OnEntityDeleted(ExtraObjectives.TypeObject, index);
+                        ObjExtraRules.Refresh();
+
                     }
                     catch (Exception)
                     {
@@ -373,6 +377,7 @@ namespace Xenvious
                 int model = new Global(GTA.Offsets.Editor.Objects.model + GTA.Offsets.Editor.Objects.NEXT * index).Get<int>();
 
                 if (!tbobjmodel.IsFocused || ignore_focus) tbobjmodel.Text = model.ToString();
+                ObjModelCard.SetModel(unchecked((uint)model));
                 if (!tbobjlocx.IsFocused || ignore_focus) tbobjlocx.Text = new Global((GTA.Offsets.Editor.Objects.loc + 0 + GTA.Offsets.Editor.Objects.NEXT * index)).Get<float>().ToString();
                 if (!tbobjlocy.IsFocused || ignore_focus) tbobjlocy.Text = new Global((GTA.Offsets.Editor.Objects.loc + 1 + GTA.Offsets.Editor.Objects.NEXT * index)).Get<float>().ToString();
                 if (!tbobjlocz.IsFocused || ignore_focus) tbobjlocz.Text = new Global((GTA.Offsets.Editor.Objects.loc + 2 + GTA.Offsets.Editor.Objects.NEXT * index)).Get<float>().ToString();
@@ -654,6 +659,22 @@ namespace Xenvious
         private void dddzvariation_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             new Global(GTA.Offsets.Editor.dpost + dddzno.SelectedIndex + dddzteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT).SetInt(dddzvariation.SelectedIndex == 0 ? 1 : 6);
+            _dzShapeSync = true;
+            if (rbdzshape0 != null)
+            {
+                rbdzshape0.IsChecked = dddzvariation.SelectedIndex == 0;
+                rbdzshape1.IsChecked = dddzvariation.SelectedIndex == 1;
+            }
+            _dzShapeSync = false;
+        }
+
+        private bool _dzShapeSync;
+
+        // The shape tiles of a delivery zone set the hidden variation dropdown, which writes it.
+        private void DzShape_Checked(object sender, RoutedEventArgs e)
+        {
+            if (!_dzShapeSync && sender is RadioButton button && int.TryParse(button.Tag as string, out int shape))
+                dddzvariation.SelectedIndex = shape;
         }
 
         private void cb_obj_invisible_Checked(object sender, RoutedEventArgs e)

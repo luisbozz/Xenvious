@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Management.Instrumentation;
 using System.Threading;
 using System.Threading.Tasks;
@@ -90,8 +91,23 @@ namespace Xenvious.Logging
         public override string ToString()
         {
             var src = string.IsNullOrWhiteSpace(Source) ? string.Empty : $" [{Source}]";
-            var ex  = Exception == null ? string.Empty : $" | EX: {Exception.GetType().Name}: {Exception.Message}";
+            var ex  = Exception == null ? string.Empty : $" | EX: {Exception.GetType().Name}: {Exception.Message}" + InnerChain(Exception);
             return $"[{Timestamp:HH:mm:ss.fff}] {Level.ToString().ToUpper(),-5}{src} {Message}{ex}";
+        }
+
+        // Wrappers like TargetInvocationException or XamlParseException say little on their own;
+        // the cause is further in, together with where it was thrown.
+        private static string InnerChain(Exception exception)
+        {
+            var text = new System.Text.StringBuilder();
+            for (var inner = exception.InnerException; inner != null; inner = inner.InnerException)
+            {
+                text.Append($" <- {inner.GetType().Name}: {inner.Message}");
+                string frame = inner.StackTrace?.Split('\n').FirstOrDefault()?.Trim();
+                if (!string.IsNullOrEmpty(frame))
+                    text.Append($" ({frame})");
+            }
+            return text.ToString();
         }
     }
 

@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media;
 using Xenvious.JSON;
 using static Xenvious.GTA;
 using static Xenvious.GTA.Offsets.Editor;
 
 namespace Xenvious
 {
-    // Part of MainWindow: Zones page.
+    // Part of MainWindow: Zones page, and the area editors of zones, play areas and gang chase.
     public partial class MainWindow
     {
         public void GetZone()
@@ -71,6 +74,7 @@ namespace Xenvious
                 tbzonestartx.Text = loc[0];
                 tbzonestarty.Text = loc[1];
                 tbzonestartz.Text = loc[2];
+                zoneArea.StartPicked();
             }
         }
 
@@ -83,6 +87,7 @@ namespace Xenvious
                 tbzoneendx.Text = loc[0];
                 tbzoneendy.Text = loc[1];
                 tbzoneendz.Text = loc[2];
+                zoneArea.EndPicked();
             }
         }
 
@@ -160,11 +165,111 @@ namespace Xenvious
         private void ddzonevariation_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             new Global((GTA.Offsets.Editor.Zones.znatp + GTA.Offsets.Editor.Zones.NEXT * ddzoneno.SelectedIndex)).SetInt(ddzonevariation.SelectedIndex);
+            ShowZoneShape();
+        }
+
+        // ----- Shape buttons: stand in for the hidden ddzonevariation -----
+
+        private bool _zoneShapeSync;
+
+        private void ZoneShape_Checked(object sender, RoutedEventArgs e)
+        {
+            if (_zoneShapeSync || !(sender is RadioButton button) || !int.TryParse(button.Tag as string, out int shape))
+                return;
+            ddzonevariation.SelectedIndex = shape;
+        }
+
+        private void InitAreaEditors()
+        {
+            zoneArea.Attach(tbzonestartx, tbzonestarty, tbzonestartz, tbzoneendx, tbzoneendy, tbzoneendz, tbzonewidth, tbzoneheight);
+            // Gang chase trigger area: IS_ENTITY_IN_ANGLED_AREA(vGangTriggerPos1, vGangTriggerPos2, fGangTriggerWidth).
+            gangArea.Attach(tbmissiongangv1locx, tbmissiongangv1locy, tbmissiongangv1locz, tbmissiongangv2locx, tbmissiongangv2locy, tbmissiongangv2locz, tbmissiongbaw);
+        }
+
+        private void ShowZoneShape()
+        {
+            if (rbzoneshape0 == null)
+                return;
+            if (ddzonevariation.SelectedIndex >= 0 && ddzonevariation.SelectedIndex <= 3)
+                zoneArea.Kind = (AreaShape)ddzonevariation.SelectedIndex;
+            _zoneShapeSync = true;
+            var buttons = new[] { rbzoneshape0, rbzoneshape1, rbzoneshape2, rbzoneshape3 };
+            for (int i = 0; i < buttons.Length; i++)
+                buttons[i].IsChecked = ddzonevariation.SelectedIndex == i;
+            _zoneShapeSync = false;
         }
 
         private void tbzonezntp_TextChanged(object sender, TextChangedEventArgs e)
         {
             new Global((GTA.Offsets.Editor.Zones.zntp + GTA.Offsets.Editor.Zones.NEXT * ddzoneno.SelectedIndex)).SetInt(tbzonezntp.Text);
+            ShowZoneType();
+        }
+
+        // ----- Zone type picker: names and help for the numbers in tbzonezntp -----
+
+        private bool _zoneTypeSync;
+        private string _zoneTypeLang;
+
+
+        private SearchableCombo _zoneSearch;
+
+        // Built again only when the language changed: replacing the source while the list opens
+        // leaves the popup with the group headers but no items.
+        private void FillZoneTypes()
+        {
+            string lang = TranslateOr("zt_name_0", "");
+            if (_zoneSearch != null && lang == _zoneTypeLang)
+                return;
+            _zoneTypeLang = lang;
+            if (_zoneSearch == null)
+                _zoneSearch = new SearchableCombo(ddzonetype);
+            _zoneTypeSync = true;
+            _zoneSearch.SetItems(ZoneTypes.All.OrderBy(t => t.Id).Select(t => new SearchItem
+            {
+                Id = t.Id,
+                Text = t.Id + "  " + TranslateOr("zt_name_" + t.Id, t.Name),
+                Group = t.Group,
+            }), ZoneTypes.Groups, g => TranslateOr("zt_grp_" + g, g));
+            _zoneTypeSync = false;
+            ShowZoneType();
+        }
+
+        private void ddzonetype_DropDownOpened(object sender, EventArgs e) => FillZoneTypes();
+
+        private void ddzonetype_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_zoneTypeSync || _zoneSearch == null || _zoneSearch.Syncing || !(ddzonetype.SelectedItem is SearchItem item))
+                return;
+            // The number field writes the type into the zone, as if it was typed in.
+            tbzonezntp.Text = item.Id.ToString(CultureInfo.InvariantCulture);
+        }
+
+        // Selects the type of the number field in the list and explains it; both value fields
+        // get the name of what the type reads from them.
+        private void ShowZoneType()
+        {
+            if (ddzonetype == null || lblzonetypeinfo == null)
+                return;
+            if (_zoneSearch == null)
+            {
+                FillZoneTypes();
+                return;
+            }
+
+            bool known = int.TryParse(tbzonezntp.Text, NumberStyles.Integer, CultureInfo.InvariantCulture, out int id);
+            var type = known ? ZoneTypes.Find(id) : null;
+
+            _zoneSearch.Select(type?.Id ?? -1);
+
+            if (type != null)
+                lblzonetypeinfo.Text = TranslateOr("zt_desc_" + type.Id, type.Description);
+            else if (known)
+                lblzonetypeinfo.Text = string.Format(TranslateOr("zt_unknown", "Type {0} is newer than Rockstar's source (types 0 to 78); its name and effect are unknown."), id);
+            else
+                lblzonetypeinfo.Text = TranslateOr("zt_pick", "Pick a zone type to see what it does.");
+
+            lblzoneznwd.Text = type?.Value1Key != null ? TranslateOr(type.Value1Key, type.Value1Fallback) + " (znwd)" : "znwd";
+            lblzoneznwvd.Text = type?.Value2Key != null ? TranslateOr(type.Value2Key, type.Value2Fallback) + " (znwvd)" : "znwvd";
         }
 
         private void BtnZoneDelete_Click(object sender, RoutedEventArgs e)

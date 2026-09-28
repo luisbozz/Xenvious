@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -260,6 +261,37 @@ namespace Xenvious
         private void tb_JobDec_TextChanged(object sender, TextChangedEventArgs e)
         {
             setDescribtionNew(tb_JobDec.Text);
+            UpdateDescriptionBytes();
+        }
+
+        // The creator keeps the description as 8 text labels of 63 bytes (UTF-8), 16 slots
+        // apart: 504 bytes at most, fewer characters when umlauts or emoji take 2-4 bytes.
+        public const int DescriptionChunkBytes = 63;
+        public const int DescriptionChunks = 8;
+        public const int DescriptionMaxBytes = DescriptionChunkBytes * DescriptionChunks;
+
+        // Splits the text into chunks of at most 63 bytes without cutting a character in
+        // two, like the creator's own keyboard does; anything past 8 chunks is dropped.
+        public static List<byte[]> SplitDescription(string text)
+        {
+            var chunks = new List<byte[]>();
+            var current = new List<byte>();
+            var info = System.Globalization.StringInfo.GetTextElementEnumerator(text ?? string.Empty);
+            while (info.MoveNext() && chunks.Count < DescriptionChunks)
+            {
+                byte[] element = Encoding.UTF8.GetBytes(info.GetTextElement());
+                if (current.Count + element.Length > DescriptionChunkBytes)
+                {
+                    chunks.Add(current.ToArray());
+                    current.Clear();
+                    if (chunks.Count == DescriptionChunks)
+                        break;
+                }
+                current.AddRange(element);
+            }
+            if (current.Count > 0 && chunks.Count < DescriptionChunks)
+                chunks.Add(current.ToArray());
+            return chunks;
         }
 
         public void setDescribtionNew(string describtion)
@@ -267,47 +299,30 @@ namespace Xenvious
             if (m == null || !m.IsProcOpen)
                 return;
 
-            const int ChunkSize = 63;   // Nutzbytes je Segment
-            const int ClearSize = ChunkSize + 1; // +1 für das Terminator-Byte im Segment
-            const int SlotStride = 16;   // Abstand zwischen Segment-Basen
-            const int MaxSlots = 8;    // 0..7
+            const int SlotStride = 16;   // script slots between two labels
             var baseAddr = GTA.Offsets.Editor.dec;
-
-            var bytes = Encoding.UTF8.GetBytes(describtion ?? string.Empty);
-            int maxData = ChunkSize * MaxSlots;
-            int total = Math.Min(bytes.Length, maxData);
-
-            // 1) Erst alles löschen (wichtig für "Text löschen"):
-            //    Wir schreiben pro Segment 64 NUL-Bytes (63 + Terminator-Position).
-            var zeros64 = new byte[ClearSize];
-            for (int i = 0; i < MaxSlots; i++)
-                new Global(baseAddr + SlotStride * i).SetBytes(zeros64);
-
-            // Kein Text? Dann sind wir fertig (alles genullt).
-            if (total == 0)
+            if (baseAddr == 0)
                 return;
 
-            // 2) Daten in 63-Byte-Chunks schreiben
-            int slotsNeeded = (total + ChunkSize - 1) / ChunkSize; // ceil(total/63)
-            for (int i = 0; i < slotsNeeded; i++)
-            {
-                int start = i * ChunkSize;
-                int length = Math.Min(ChunkSize, total - start);
-                if (length <= 0) break;
+            // Clear every label first (64 bytes: 63 characters and the terminator), so a
+            // shorter text leaves nothing of the old one behind; the zeros also terminate
+            // what is written below.
+            var zeros = new byte[DescriptionChunkBytes + 1];
+            for (int i = 0; i < DescriptionChunks; i++)
+                new Global(baseAddr + SlotStride * i).SetBytes(zeros);
 
-                var chunk = new byte[length];
-                Buffer.BlockCopy(bytes, start, chunk, 0, length);
+            var chunks = SplitDescription(describtion);
+            for (int i = 0; i < chunks.Count; i++)
+                new Global(baseAddr + SlotStride * i).SetBytes(chunks[i]);
+        }
 
-                new Global(baseAddr + SlotStride * i).SetBytes(chunk);
-            }
-
-            // 3) Explizit nach dem letzten Zeichen einen 0-Byte-Terminator setzen.
-            //    (Durch das Pre-Clear wäre das schon 0, aber so ist’s eindeutig.)
-            int lastSlot = slotsNeeded - 1;
-            int lastLen = total - lastSlot * ChunkSize;
-            new Global(baseAddr + SlotStride * lastSlot + lastLen).SetBytes(new byte[] { 0 });
-
-            if (bytes.Length > maxData) Log.Debug($"Description truncated to {maxData} bytes.");
+        // "412 / 504 bytes" under the description on the dashboard.
+        private void UpdateDescriptionBytes()
+        {
+            int used = SplitDescription(tb_JobDec.Text).Sum(c => c.Length);
+            int wanted = Encoding.UTF8.GetByteCount(tb_JobDec.Text ?? string.Empty);
+            DashDescBytes.Text = string.Format(System.Globalization.CultureInfo.CurrentCulture, "{0} / {1} Bytes", used, DescriptionMaxBytes);
+            DashDescBytes.Foreground = wanted > used ? DotBad : used >= DescriptionMaxBytes * 0.9 ? DotWarn : (Brush)FindResource("NavMutedBrush");
         }
 
         private void tb_JobTitle_TextChanged(object sender, TextChangedEventArgs e)
@@ -543,7 +558,8 @@ namespace Xenvious
                                 new Global(GTA.Offsets.Editor.subtype).SetInt(5);
                                 break;
                             case 2:
-                                new Global(GTA.Offsets.Editor.subtype).SetInt(4);
+                                // The Public Mission Creator's subtype; fmmc_launcher runs it in public_mission_controller.
+                                new Global(GTA.Offsets.Editor.subtype).SetInt(14);
                                 break;
                             default:
                                 break;
@@ -845,10 +861,16 @@ namespace Xenvious
                             new Global(GTA.Offsets.Editor.current_team_test).SetInt(index);
                             Functions.Write.writebinarytoaddy(26, m.memory(GTA.Offsets.Editor.localptr[0], new long[] { GTA.Offsets.Editor.localptr[1], GTA.Offsets.Editor.OFFSET_script_local_start, GTA.Offsets.Editor.OFFSET_current_creator_test_capture * 8 }).GetAddress());
                             break;
-                        case "fm_mission_creator":
                         case "fm_lts_creator":
                             new Global(GTA.Offsets.Editor.current_team_test).SetInt(index);
                             Functions.Write.writebinarytoaddy(26, m.memory(GTA.Offsets.Editor.localptr[0], new long[] { GTA.Offsets.Editor.localptr[1], GTA.Offsets.Editor.OFFSET_script_local_start, GTA.Offsets.Editor.OFFSET_current_creator_test_lts * 8 }).GetAddress());
+                            break;
+                        case "public_mission_creator":
+                            new Global(GTA.Offsets.Editor.current_team_test).SetInt(index);
+                            // Like the creator's own Test entry: bit 18 first (test running, so camera and map
+                            // stop following the cursor during the fade), then bit 25 starts the test.
+                            Functions.Write.writebinarytoaddy(19, m.memory(GTA.Offsets.Editor.localptr[0], new long[] { GTA.Offsets.Editor.localptr[1], GTA.Offsets.Editor.OFFSET_script_local_start, GTA.Offsets.Editor.OFFSET_current_creator_test_mission * 8 }).GetAddress());
+                            Functions.Write.writebinarytoaddy(26, m.memory(GTA.Offsets.Editor.localptr[0], new long[] { GTA.Offsets.Editor.localptr[1], GTA.Offsets.Editor.OFFSET_script_local_start, GTA.Offsets.Editor.OFFSET_current_creator_test_mission * 8 }).GetAddress());
                             break;
                         case "fm_deathmatch_creator":
                             displayScreenMessage("currently not possible for deathmatch");

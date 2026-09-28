@@ -144,7 +144,6 @@ namespace Xenvious
             BtnMissionPlayerSettings.Background = (SolidColorBrush)Resources["SeactionHeaderBackgroundBrush"];
             BtnMissionTeamSettings.Background = (SolidColorBrush)Resources["SeactionHeaderBackgroundBrush"];
             BtnMissionPA.Background = (SolidColorBrush)Resources["SeactionHeaderBackgroundBrush"];
-            BtnMissionRA.Background = (SolidColorBrush)Resources["SeactionHeaderBackgroundBrush"];
             BtnMissionTPM.Background = (SolidColorBrush)Resources["SeactionHeaderBackgroundBrush"];
             BtnMissionKill.Background = (SolidColorBrush)Resources["SeactionHeaderBackgroundBrush"];
             BtnMissionGC.Background = (SolidColorBrush)Resources["SeactionHeaderBackgroundBrush"];
@@ -174,10 +173,6 @@ namespace Xenvious
             else if (PageInnerMission.SelectedItem == PageInnerMissionPA)
             {
                 BtnMissionPA.Background = (SolidColorBrush)Resources["ButtonHoverBackgroundBrush"];
-            }
-            else if (PageInnerMission.SelectedItem == PageInnerMissionRA)
-            {
-                BtnMissionRA.Background = (SolidColorBrush)Resources["ButtonHoverBackgroundBrush"];
             }
             else if (PageInnerMission.SelectedItem == PageInnerMissionTeleportMarkers)
             {
@@ -255,11 +250,6 @@ namespace Xenvious
             {
                 ddmissionotzoneno.SelectedIndex = 0;
             }
-        }
-
-        private void BtnMissionRA_Click(object sender, RoutedEventArgs e)
-        {
-            PageInnerMission.SelectedItem = PageInnerMissionRA;
         }
 
         private void BtnMissionBlips_Click(object sender, RoutedEventArgs e)

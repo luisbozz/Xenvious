@@ -190,6 +190,7 @@ namespace Xenvious
                 GTA.Offsets.Editor.AOB_nextcp_ptr, GTA.Offsets.Editor.AOB_session_ptr, GTA.Offsets.Editor.AOB_img_ptr,
                 GTA.Offsets.Editor.AOB_cursor_ptr, GTA.Offsets.Editor.AOB_scrProgramptr, GTA.Offsets.Editor.AOB_devptr,
                 GTA.Offsets.Editor.AOB_camptr, GTA.Offsets.Editor.AOB_versionptr, GTA.Offsets.Editor.AOB_creator_camptr,
+                GTA.Offsets.Editor.AOB_creator_cam_nocollision, GTA.Offsets.Editor.AOB_creator_budget, GTA.Offsets.Editor.AOB_testmode
             };
             ulong ignored;
             return patterns.Where(p => !string.IsNullOrWhiteSpace(p)).All(p => AobCache.TryGet(p, out ignored));
@@ -297,12 +298,12 @@ namespace Xenvious
         // instructions, so the displacements cannot be shared.
         //
         // Legacy   "4C 8D 05 ..."  online at +3, build 165 bytes *before* the site
-        // Enhanced "4C 8D 0D ..."  build at +3, online at +0x47
+        // Enhanced "4C 8D 0D ..."  build at +3, online in the lea at +0x47 (displacement +0x4A)
         //
-        // Measured against 1.73-3889 and enhanced-1.73-1158: on Enhanced +3 reads
-        // "1158.16" and +0x47 reads "1.73", while -165 lands outside the module.
+        // Legacy checked in the running game (1.73-3889): +3 reads "1.73", -165 reads
+        // "3889.0". Enhanced as in the scanner of another creator tool (Add(0x47).Add(3).Rip()).
         private static int VersionDelta(bool online) =>
-            GameVariant.IsEnhanced ? (online ? 0x47 : 3) : (online ? 3 : -165);
+            GameVariant.IsEnhanced ? (online ? 0x47 + 3 : 3) : (online ? 3 : -165);
 
         private static string VersionString(bool online, int length)
         {
@@ -311,12 +312,45 @@ namespace Xenvious
 
             IntPtr site = IntPtr.Add((IntPtr)GTA.Offsets.Editor.versionptr, VersionDelta(online));
             IntPtr p = (IntPtr)(MainWindow.m.rip(site).ToInt64() - (long)MainWindow.m.getBaseAddress());
-            return Encoding.UTF8.GetString(MainWindow.m.memory(p.ToInt64()).GetBytes(length));
+            // C strings: read a little more and stop at the terminator, so a longer build
+            // number is not cut and nothing behind a shorter one is shown.
+            string text = Encoding.ASCII.GetString(MainWindow.m.memory(p.ToInt64()).GetBytes(Math.Max(length, 32)));
+            int end = text.IndexOf('\0');
+            return end >= 0 ? text.Substring(0, end) : text.Substring(0, length);
         }
 
         public static string getOnlineVersion(byte[] buffer = null)
         {
             return VersionString(online: true, length: GameVariant.IsEnhanced ? 4 : 5);
+        }
+
+        /// <summary>
+        /// The game version the way the tool shows it everywhere: online version and build
+        /// number, "1.73-3889" (Enhanced "1.73-1158"), "" when unknown.
+        /// </summary>
+        public static string GameVersion()
+        {
+            if (MainWindow.m == null || !MainWindow.m.IsProcOpen)
+                return "";
+            return GameVersion(getOnlineVersion(), getBuildVersion());
+        }
+
+        public static string GameVersion(string online, string build)
+        {
+            build = BuildNumber(build);
+            online = (online ?? "").Trim();
+            return online.Length > 0 && build.Length > 0 ? online + "-" + build : online + build;
+        }
+
+        /// <summary>"3889.0" / "1158.16" / "1.73-3889" -> "3889": the part builds are compared by.</summary>
+        public static string BuildNumber(string version)
+        {
+            version = (version ?? "").Trim();
+            int dash = version.LastIndexOf('-');
+            if (dash >= 0)
+                version = version.Substring(dash + 1);
+            int dot = version.IndexOf('.');
+            return dot > 0 ? version.Substring(0, dot) : version;
         }
 
         public static string getBuildVersion(byte[] buffer = null)
@@ -359,7 +393,7 @@ namespace Xenvious
         public static readonly string[] CreatorScripts =
         {
             "fm_lts_creator", "fm_capture_creator", "fm_deathmatch_creator",
-            "fm_race_creator", "fm_survival_creator", "fm_mission_creator"
+            "fm_race_creator", "fm_survival_creator", "public_mission_creator"
         };
 
         /// <summary>
@@ -414,6 +448,31 @@ namespace Xenvious
             return null;
         }
 
+        /// <summary>
+        /// A slot of the thread list keeps the script hash after its thread ended, so a hash alone
+        /// also finds scripts that are gone (the creator hub after going back to the main menu).
+        /// A live thread has an id and is not in the killed state (2). Without the two offsets for
+        /// this edition every slot counts as live, as before.
+        /// </summary>
+        public static bool IsLiveThread(long listPtr, long slot)
+        {
+            if (GTA.Offsets.Editor.OFFSET_script_id == 0 || GTA.Offsets.Editor.OFFSET_script_state == 0)
+                return true;
+            try
+            {
+                uint id = MainWindow.m.memory(listPtr, new long[] { slot, GTA.Offsets.Editor.OFFSET_script_id }).Get<uint>();
+                uint state = MainWindow.m.memory(listPtr, new long[] { slot, GTA.Offsets.Editor.OFFSET_script_state }).Get<uint>();
+                return id != 0 && state != 2;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>True when a live thread of the script runs.</summary>
+        public static bool IsScriptRunning(string scriptname) => getLocalScriptAddy(scriptname) != null;
+
         public static long[] getLocalScriptAddy(string scriptname)
         {
             long localaddy = getLocalPointer().ToInt64();
@@ -428,10 +487,10 @@ namespace Xenvious
                     // Beliebiges Script, nicht nur Creator: Hash direkt vergleichen.
                     uint hash = 0;
                     try { hash = MainWindow.m.memory(localaddy, new long[] { d, GTA.Offsets.Editor.OFFSET_script_hash }).Get<uint>(); } catch { }
-                    if (hash == wantedHash)
+                    if (hash == wantedHash && IsLiveThread(localaddy, d))
                         return new long[] { localaddy, d };
                 }
-                else if (ReadScriptName(localaddy, d) == wanted)
+                else if (ReadScriptName(localaddy, d) == wanted && IsLiveThread(localaddy, d))
                 {
                     return new long[] { localaddy, d };
                 }
@@ -627,6 +686,8 @@ namespace Xenvious
                     public static long model = 0;
                     public static long rule = 0;
                     public static long pri = 0;
+                    public static long jtp = 0;
+                    public static long jtf = 0;
                     public static long jtop = 0;
                     public static long jtof = 0;
                     public static long loc = 0;
@@ -650,6 +711,7 @@ namespace Xenvious
                     public static long vbs9 = 0;
                     public static long vbs10 = 0;
                     public static long vbs11 = 0;
+                    public static long vbs12 = 0;   // bit 14 + team: mission critical "Auto"
                     public static long vebs = 0;
                     public static long enghp = 0;
                     public static long ptrhp = 0;
@@ -661,6 +723,7 @@ namespace Xenvious
                     public static long vbvrr = 0;
                     public static long vehcr = 0;
                     public static long vehct = 0;
+                    public static long dspwn = 0;
                     public static long vehbr = 0;
                     public static long vehbc = 0;
                     public static long vehbs = 0;
@@ -704,9 +767,12 @@ namespace Xenvious
                     public static long bits1 = 0;
                     public static long bits2 = 0;
                     public static long bits3 = 0;
+                    public static long bits6 = 0;   // bit 22 + team: mission critical "Auto"
                     public static long bits4 = 0;
                     public static long rule = 0;
                     public static long pri = 0;
+                    public static long jtp = 0;
+                    public static long jtf = 0;
                     public static long jtop = 0;
                     public static long jtof = 0;
                     public static long team = 0;
@@ -746,6 +812,7 @@ namespace Xenvious
                 public class Zones
                 {
                     public static long zntp = 0;
+                    public static long zcid = 0;    // number the creator shows for the zone, 0-based, -1 = none
                     public static long vtox = 0;
                     public static long vtoy = 0;
                     public static long vtoz = 0;
@@ -780,6 +847,7 @@ namespace Xenvious
                 {
                     public static long rule = 0;
                     public static long pri = 0;
+                    public static long jtp = 0;
                     public static long locx = 0;
                     public static long locy = 0;
                     public static long locz = 0;
@@ -854,6 +922,9 @@ namespace Xenvious
                     public static long group = 0;
                     public static long rule = 0;
                     public static long pri = 0;
+                    // Jump to objective on pass / fail per team (see docs/handoff/RULES.md for the values).
+                    public static long jtp = 0;
+                    public static long jtf = 0;
                     public static long dmv = 0;
                     public static long jtop = 0;
                     public static long jtof = 0;
@@ -912,6 +983,7 @@ namespace Xenvious
                     public static long pbs21 = 0;
                     public static long pbs22 = 0;
                     public static long pbs23 = 0;
+                    public static long pbs25 = 0;   // bit 13 + team: mission critical "Auto"
                     public static long psort = 0;
                     public static long pcash = 0;
                     public static long number = 0;
@@ -982,6 +1054,19 @@ namespace Xenvious
                     public static long outonfv = 0;
                     public static long outhc = 0;
                     public static long pribt = 0;
+                    // Per team, one bit per rule (timers: ms), outside the bounds structs: what area 1 / 2 does.
+                    public static long timer = 0;
+                    public static long leavebs = 0;
+                    public static long playbs = 0;
+                    public static long spawnbs = 0;
+                    public static long spawnwhilebs = 0;
+                    public static long spawnbs2 = 0;
+                    public static long spawnwhilebs2 = 0;
+                    public static long wantedbs = 0;
+                    public static long leavebs2 = 0;
+                    public static long playbs2 = 0;
+                    public static long timer2 = 0;
+                    public static long wantedbs2 = 0;
                     public static long bd2t = 0;
                     public static long bd2vx = 0;
                     public static long bd2vy = 0;
@@ -1331,6 +1416,9 @@ namespace Xenvious
                 public static string AOB_camptr = "";
                 public static string AOB_versionptr = "";
                 public static string AOB_creator_camptr = "";
+                public static string AOB_creator_cam_nocollision = "";
+                public static string AOB_creator_budget = "";
+                public static string AOB_testmode = "";
                 public static string AOB_nextcp_ptr = "";
                 public static string AOB_img_ptr = "";
                 public static string AOB_session_ptr = "";
@@ -1376,6 +1464,8 @@ namespace Xenvious
                 public static long templates = 0x0;
                 public static long templates_count = 0x0;
                 public static long OFFSET_script_name = 0x0;
+                public static long OFFSET_script_id = 0x0;
+                public static long OFFSET_script_state = 0x0;
                 // Enhanced keeps no name in the thread, only the joaat hash of its script.
                 // 0 means "match by name" (Legacy).
                 public static long OFFSET_script_hash = 0x0;
@@ -1385,6 +1475,7 @@ namespace Xenvious
                 public static long OFFSET_current_creator_worker_dm = 0x0;
                 public static long OFFSET_current_creator_worker_capture = 0x0;
                 public static long OFFSET_current_creator_worker_lts = 0x0;
+                public static long OFFSET_current_creator_worker_mission = 0x0;
                 public static long OFFSET_current_creator_worker_offset_refresh = 0x0;
                 public static long OFFSET_current_creator_worker_offset_editing_published = 0x0;
                 public static long load_job_flag = 0;
@@ -1405,6 +1496,7 @@ namespace Xenvious
                 public static long OFFSET_current_creator_pre_dm = 0x0;
                 public static long OFFSET_current_creator_pre_capture = 0x0;
                 public static long OFFSET_current_creator_pre_lts = 0x0;
+                public static long OFFSET_current_creator_pre_mission = 0x0;
                 public static long OFFSET_current_creator_pre_menu_gm = 0x0;
                 public static long OFFSET_current_creator_pre_test1 = 0x0;
                 public static long OFFSET_current_creator_pre_test2 = 0x0;
@@ -1413,6 +1505,7 @@ namespace Xenvious
                 public static long OFFSET_current_creator_pre_alignment = 0x0;
                 public static long OFFSET_current_creator_placement_race = 0x0;
                 public static long OFFSET_current_creator_placement_lts = 0x0;
+                public static long OFFSET_current_creator_placement_mission = 0x0;
                 public static long OFFSET_current_creator_placement_capture = 0x0;
                 public static long OFFSET_current_creator_placement_dm = 0x0;
                 public static long OFFSET_current_creator_placement_survival = 0x0;
@@ -1426,12 +1519,14 @@ namespace Xenvious
                 public static long OFFSET_current_creator_pre_publish = 0x0;
                 public static long OFFSET_current_creator_pre_previous_menu = 0x0;
                 public static long OFFSET_current_creator_pre_current_menu = 0x0;
+                public static long OFFSET_current_creator_pre_visgroups = 0x0;
                 public static long OFFSET_current_creator_pre_idk = 0x0;
                 public static long OFFSET_current_creator_test_survival = 0x0;
                 public static long OFFSET_current_creator_test_race = 0x0;
                 public static long OFFSET_current_creator_test_dm = 0x0;
                 public static long OFFSET_current_creator_test_capture = 0x0;
                 public static long OFFSET_current_creator_test_lts = 0x0;
+                public static long OFFSET_current_creator_test_mission = 0x0;
                 public static long OFFSET_current_creator_refresh_lts = 0x0;
                 public static long OFFSET_current_creator_refresh_mission = 0x0;
                 public static long OFFSET_current_creator_refresh_capture = 0x0;
@@ -1571,6 +1666,13 @@ namespace Xenvious
                 public static long trrt = 0;
                 public static long tmt = 0;
                 public static long tms = 0;
+                public static long nxtrulb = 0;
+                public static long ttime = 0;
+                public static long teamfail = 0;
+                public static long rulelist = 0;
+                public static long rulelist_count = 0;
+                public static long rulelist_NEXT = 0;
+                public static long rulelist_rule_NEXT = 0;
                 public static long numRounds = 0;
                 public static long weth = 0;
                 public static long tod = 0;
@@ -1661,6 +1763,8 @@ namespace Xenvious
                 public static long itvsd = 0;
                 public static long itved = 0;
                 public static long dpos = 0;
+                public static long dozn = 0;        // per team and rule int[3]: Mission Creator drop-off zones
+                public static long dozn_NEXT = 0;
                 public static long dpos2 = 0;
                 public static long dpost = 0;
                 public static long dost = 0;
@@ -1717,6 +1821,8 @@ namespace Xenvious
                 public static long eoet = 0;
                 public static long eoir = 0;
                 public static long eoep = 0;
+                public static long optbs = 0;
+                public static long musmustr = 0;
                 public static long trsrl = 0;
                 public static long trstf = 0;
                 public static long trcmn = 0;
@@ -1726,6 +1832,8 @@ namespace Xenvious
                 public static long mcpbs2 = 0;
                 public static long mcpbs3 = 0;
                 public static long mcobs = 0;
+                public static long mcpbs = 0;       // per team int[3]: actors mission critical "Yes"
+                public static long mcpbs_NEXT = 0;
                 public static long rpgbs1 = 0;
                 public static long rpgbs2 = 0;
                 public static long rpgbs3 = 0;
@@ -1750,6 +1858,8 @@ namespace Xenvious
             public static List<string> prop_model_centitydef_whitelist = new List<string>();
             public static List<string> prop_model_stunt_with_color_option = new List<string>();
             public static List<string> prop_model_blacklisted = new List<string>();
+            // IS_PROP_A_RACE_ONLY_PROP: outside races a loaded job gets these as the fence.
+            public static List<string> prop_model_raceonly = new List<string>();
             public static List<string> dprop_model_activationtimer = new List<string>();
 
             public static List<ScrPatches> ScrPatches = new List<ScrPatches>();
@@ -1796,7 +1906,7 @@ namespace Xenvious
             {
                 new ModdedPropSource("fm_race_creator", "Race"),
                 new ModdedPropSource("fm_lts_creator", "LTS"),
-                new ModdedPropSource("fm_dm_creator", "Deathmatch"),
+                new ModdedPropSource("fm_deathmatch_creator", "Deathmatch"),
                 new ModdedPropSource("fm_capture_creator", "Capture"),
                 new ModdedPropSource("fm_survival_creator", "Survival")
             };
@@ -2397,245 +2507,6 @@ namespace Xenvious
             public static List<int> Zone { get => zone; }
             public static List<int> Location { get => location; }
 
-            private static List<string> mpropsdefaultsrace = new List<string>(new string[] { "2E7C9A23,7C3C9BEA,A085E47C,5687D081,3EA83D4D,306BE0C4,B34BC429,45DFEF67,295B365E,18C49531,B6CACC47,F7752D66,BB188579,E56A5A1C,F724026D,9DDA7E0,65DCD413,6D51EECB,1F319BE4,50C22184,B87E6DE1,E15CA04A,2DA13CC7,DE469BCF,ACF07F3A,CE14C182,7E86A267,B1A00899,7B9FAAA0,A105F56C,8FE85331,8F12D266,A56CFF1A,723E18BD,C7EDC41F,46A74190,D783C7C7,FF374A2B,A1E58F89,BB9B09AC,40D23ECE,7DA7C387,B5DD1656,C689B79B,5972FB1,4ED9C235,B9C69815,CC003C88,1649D11A,673AB38B,532B112B,6558B586,1FCA2A6A,7C9F3E0C,CA0958DF,D84B7563,575CF388,25A7101D,BF741865,9882DA0,2929EE13,2E4DF59F,F676077C,F79A0AF4,292C078E,4C0D000B,FF3FCB5,A77C9A44,E40962FD,C53D2685,2CC1641D,A0133A76,2761E158,38BF0080,0B0332DF,72E2F577,7F02DF82",
-                                                                                             "9EC80810,FBBE41FB,6BA514AC,E7ED1A59,9CD81E9F,3AA93E76",
-                                                                                             "1B276762,2BE688E0,4653780,1D0FB6F4",
-                                                                                             "E51F88D9,BEC44B8F,BE862050,A1ED363,F9B71F35,F872EFF,122C438C,3C5EBE3C,EE80FD5A",
-                                                                                             "71325391,8BB2A762,4B444DBC,DE962965,9303E1A6,8FD48CB3,AF650A95,27C67B62,127150B8,8333C3C,517E8858,B94857EA,6EF2433F,D3D69366,6608DC0F,74F6B8BE,3C4ECDB",
-                                                                                             "E40A0F8E,7D02B479,BC4649E5,342160A2,AEB63C4B,74E9F5BB,C7C649FF,5F5E76C9,C44ECA22,527818A3",
-                                                                                             "B8465008,9910206D,51B12338,45709EF7,876CBCD2,B131133A,E44D5CEC,F2BD35BB,357CBA6D,2575D371,2EFBB698,5FF8D96F,47595E26,7C24C0B8,FFC4E948,91868CCD,8467C8D0,11E9FD7B,E5FECF61,5EEEF81F,CC23D613",
-                                                                                             "74A3557,683475EE,F3AE2877,28B2940F,CFFB6B0,27BAEB1A,FC8394AC,5FB619D7",
-                                                                                             "808B5D53,1D6F7B34,8C195886,B0833E3A,6C7C6A45,C44DD309,5A9789A0,69E9413E,7FB36CD2,E0A6FEFB,6F849B90,5748690C,FC96F411,A2023E64,3454C0D,DA1A2626",
-                                                                                             "AEF01947,B01315B4,C0B9BCDA,4CEBD53C,17236AA7,E1497820,BF8918DE,EC0725C8,E0171018",
-                                                                                             "5D011F16,BE9BB86F,E5257DB,D44163BA,B08A1C4C,A94763AB,A3C1D8A0,D0DD10A,1FC47677,9D8DF1FC,2F4B9579,7EE762D5",
-                                                                                             "EFC4165A,4AF2CCB6,E0545565,44AEA99C,F88282E4",
-                                                                                             "F9B8B7A0,376CB307,3FC3D20B,5580FD85,CA88E79F,97CB0224,42CE3C8A,206F9EB5,233DFD6A,C972C9D5,EFB6165B,1338DD60,9A382361,7125B4CE,AE8D2FA8,7C964BAF",
-                                                                                             "B5AE3861,9A515D3F,9D47AFF9,3EBFCA03,E2AA93CA,E2048E2C,29E51C94,B83FBAA3,55908EC0,379FB809,79C0A750,2B3C88AE,174B35D6,FB9D3051,B3B836B0,DCA5159A,34E04379,B1367227,A37FD6BA,3F7E8EB1,29C26335,1C14C7DA",
-                                                                                             "D2D24770,C4932AF2,AFDD8CBB,89F828EB,3C1B83BA,C2339364,E0264F5D,A6C23161,51400793,36AF4BB5,418F055A,C25DE433,E4DB3322,5AE0A333,7F8C93D0,9C7F3F08,FD389C44,D647866B,4A46E08E,70B0E25A,FDC8BCF7,ADA71CB1,5B385FFF,6277EC7E,BF1B2B36,8C9FC63C,FD3D779F,FF69E270,EAEED302,2EDD9003,4BBBAC6E,C2A63045,8DA442A2,4AF4BD44,7F7927AC,D7F1D89C,333332ED,893BA3A0,5779131A,53724BB0,0286F5F0,C00C3530,DB2C3E38,8DEB227B,0C0CF205,FE4E5688,F0873AFA,4A1BAE33,6881B256,A09BA29D,9BA61A22,81ED04F0,52DC99B6,E2FFAB8E,3DEFCE4D,C04ED1FD,6BEC23AD,CBE2A89C,BF77D87C,153F040D,23A8A0E0,4D306507,B2B841A3,97D0969C",
-                                                                                             "AC7EC6AE,5981477A,0499AA60,9109DFBC,C08841A0,D1DDE44B,A7378EFF,B6602D50,C676CD85,D0FFE297,9A91F5AC,B48A29AC,7906B296,7C1AABEC,25054043,FE18F26F,FA10E36E,63F9CEA3,5DD2F986,9C1D6A5B,3CA58296,CB4D298C,39D75A93,B9319CBB,EF650831,E7F10145,1A76E4F0,CDE820A1,E2C51D69,45D81E73,A11AD1D7,A6E54878,249D1342,1CB21205,357CBA6D,F2BD35BB,2575D371,7C24C0B8,873F5C24,B56E3881,CC8478D8,C7116D1E,9C391ADE,276886A1,CA6ACA41,8A68CE9D,74503C56,2DE41B51,392D62AA,A7CF17C4,EDD0E658,918D2BAE,6AB3B57B,7A845307,01457D66,4014C50C,5CD2E1EA,3EA37E15,27BAEB1A,DCA9A809,74219CCB,417EC5DE,FCDB5E71,2DA13CC7,B17EAD7D,4F3FA437,A24CE57E,3794ACC9,A420E7B0,350F045E,E27289B5,3F0E8CE3,9D4F3537,6C38D8FA,534ACC12,B7DD5FD1,8538A366,158C9081,6B795EBC,B892B90D,E56BA797,876DEB81,D02ABBB2,22751A56,3E6FF91D,30699A93,C18B8FA3,B2614DD1,8CA6EAD9,7C041BDB",
-                                                                                             "522CE28E,F7752D66,5DB600C9,848B8ABA,11FFB28C,40E01BC1,889E3E33,2DE41B51,8C4D43C4,6204EF38,49344B5A,FB120943,CAB94BE5,8E58F6AE,4EFF1313,671C5C38,3F2EC2B6,88D6CD61,7A9EBC92,4AF9D1D9,72BFC423,9FED6275,B22E8314,8C842A43,33D1F786,F5D9C598,B46EE154,9026C985,D593F420,33A12F6E,2652CBD9,CA6ACA41,070DBA50,276886A1,71C6E744,7CE1C05F,DF435615,E210FECF,66C0304D,25967365,1DA1220D,2F61C58E,4293EBF2,55411B30,677FBFAD,82900FDB,05993A0E,1A97B9A2,3C21B172,88476B1F,C46EFE43,E62441AD,861070B1,5778A9B1,389E11B5,DFF7CC31,34DD0DC9,DA96560A",
-                                                                                             "5A5C0189,5ABD03F2,4259D185,ADFAAA90,748EB5EE,42EFD478,0A4723A5,3C314954,6D8066A2,BE577E09,A857DD30,218EC9A2,BF18A65C,285A9FE7,B1CA32D4,8810DF5E,6373EEF4,162A902D,7FDB66E9,E40743D1,392ED991,F475E4AE,2A783C24,0F8B1AD8,F9A05949,F821EFA6,087E7705,01C802F2,96CA139E,C8821067,99CBDED8,F4BD03EC,84B09BF2,DF7F5979,76138C75,EB8754FB,2EF52FC7,FE3FE726,3CB2CB42,58CFB07D,946BDDF0,785F56EE,2B862DA0,A8EBDD48,38B8C805,7F0A0985,BC835FE5,BDBD6259,04CA7DF2",
-                                                                                             "27F13BA6,DA6EE30A,15BB173A,AFDE0DE9,4B2E021F,BC342695,8057D1CD,9792ED2B,5D7D8C19,A523884C,4E8CEE2C,79263052,56E458B3,20E736B0,A1736DDC,129E1A1E,82B3305C,4574FFCB,112321D8,7394BF68,26654C5C,8554E2E8,EF675E51,96300452,BB5B8306,E772C534,21E1D015,393268B6,4F762B3D,CBCA0DE3,06901972,1E7EB34F,38D1FDF5,292BC8A9,71A7F702,AD2857C2,CCEAAF2D,CF457E16,56833FF6",
-                                                                                             "D7ADE0B8,69702115,8978ACE1,F590C75E,549E6D6B,289AB86D,4D02ED6A,5F2D2615,974101E9,6DD3C362,CC526C0B,70F9805A,EFA2443E,34A9E824,D04E18F0,6C6CD789,C618FE56,231CC3D2,204BE438,469E8AD5,74721347,A8B59980,EF3AA68D,229D5A2D,BA8C3D2D,474E1975,0189CB2B,6F5FF065,197F0168,AFFE67A4,6CA1E917,42561AA1,827092E6,F97807C6,F1FD3CFF,3EDD1DC3,3898738E,7A5F8915,F275DF37,D46BC199,62DD7CBE",
-                                                                                             "C3FABAEE,FC0D2F15,E8D688A8,F2740D0C,6D3F1D16,554EED06,51E7E4F5,41EE5902,3BA14C68,2BEDCF90,BD511D34,DF7B1B6E,FDE81647,2BF6BBCF,989B0462,9BB260EF",
-                                                                                             "C3F00C20,237861B3,C78E90F8,55F4B55D,6EF7C1E5,80B96568,B96AD9F2,C745F5A8",
-                                                                                             "A11DB377,493F5F6F,56F7FAE0,5A990226,6A20A135,7FDECCB1,8D8D680E,B1EEB0DC,912C6F58,D7627BC3,2AFF21A7,64C7153A,8E8068AC,C69958DD,784E3C48,35C41C32,983947B2,1A78B62B,08BE12B6,E405C946,C15B03F1,D25BA5F2,BD95FC67,AC7E5A38,9AC036BC,763DEDB8,3DF8913E,F6A38295,0D56AFFB,A93DE7CB,770C0368,53ACBCA6,875C14A6,CAE6B5E9,666CEAA3,96A6B33B,F2B6EB52,E5054FEF,88AA173A,4095E943,B34EE0EC,E7904742,3D1B24C8,B4621358,9DE6F54D,68E40B48,9637D7B4,4366B213,39BC9EBF,67877A54,5661D809,FCA1249D,D7F1DB3B,7DAB26AB,389F3C9D,844BD3E9,4D64E628,282F9BBE,43B4D2BC,563777C1,342CBDB4,400F041D,55C92F91,5BBF8F23,CA96ECD0,7F4D563E,6A1B2BDA,4EDBF564,1D769048,264AD095,380C7418,5F5642AB,71ABE756,A72625EF,878D66CA,719B3AE6,2B682E7D,150B01C3,95A52A74,F0BDDF93,FE8B7B2E,F08418BA,641C7FE9,16B8E523,78E4ACB9,A45B47E0,0BF69604,17B9AD8A,5C9B374C,9AE5ED7F,3F32B616,55A82AC6,67F5CF61,A78D86DA,DF8F76DD,93EE5A7E,4E829BBB,B7126C6D,C8630F0E,D29D2382,5DE7B9A4,1C2A7F48,159E12C2,AC9D8713,4D720F4E,60B435D2,B0EF5647,8A0BBF9D,E2717BD5",
-                                                                                             "1173612A,577BA63C,07214C86,7322DD8A,14E631A8,4E6FED66",
-                                                                                             "F1337DE5,D7AB5EDB,808A8D98,B6B7AB45,D3E08775,F2099C08,15F3B86C,F8E728AB,5AEB062C,0BEBE82F,471CC681,55D2619B,DBBC6FBE,9EE25FAF,6393E913,62F370D4,23C8E97A,123C23E9,89696AD0,31BA3B53,32C96A52,A5196261,370C2079,5A666558,E5CFF3D4,7BD571D9,ADBA2D46,3C2C4BF0,CD5E5D8D,AF2D6CB2,2D80FC8A,3C04C081,B0AFD3E2,BE7FCC0F,11105A79,AB0391C1,060C1123,E794E24D,6BB55C74,F5DDA35D,06924B81,14A157DE,58A16E84,CC87476A,B856A8FD,92A53EF6,D27DC540,84DFAC51,C917B3E8",
-                                                                                             "AD8C4C69,DF90308C,2A667310,D17A9461,3DA676E8,161AA7D5,00161AA7,8035DC01,2E5F6892,87A67D61,C779FFF6,7E1928FC,644BCB4C,628549ED,4BE9928B,31FF22CC,6FC3E5E0,89855E6F,8A85AF58,44952A09,3C7A3036,A325F1CF,C90AE498,80620730,EF1D64A5,27055474,7B5AB510,188FEF7C",
-                                                                                             "85111220,8CD63A06,273CF578,78A811AA,073061F3,09FCBDE7,44AE05DE,CDD1A3EB,C43E9C6D,29DD35B8,D1A401A3,55778682,19A7DA0D,F3541068,049FFB40,B611EB07,6C51261A,B0B986C4,1B3287F3,C5755176,C114CE95,B4212798,B98797F6,BD9E98C9,8875B882,9A5C431D,421E102A,8AA61FD1,B15BA2D4,05F74459,7565C0E7,0739AE23,3C3649B8,C7BA5FD9,0DF3D3A7,F2515F80,91B91F7D,097099E6,9358DD56,97FD512A,5CC3CE68",
-                                                                                             "0E2A823E,DBA04CB1,EEB1A195,34554245,D98C3759,49979437,3B40315A,F0E7834D,F6B52431,555D81D8,7CCA0A5E,F765DC2F,E7C48647,BBDC4F1A,CB9421B9,3BDD92D4,38543636,7661B973,D2822EE0,14917E66,B6687031,6A077455,793BC737,D048B4F5,F734D17A,18D5C385,776B8A11",
-                                                                                             "431B529E,FDB8A439,42FFA24E,FD3A1616,7C17D532,3F3BCE2F,0E26794D,D0A67102,E07C9DFA,C3CCD74F,D187A7B4,A6DC4761,4FBEE77F,5B6835E7,7F71FA19,083DF517,CF989620,5F911F1D,05213D35,8BB5D808,88525AE3,21A0465B,0A21DE74,2A55D7E6,9CE203F6,5B7C3A32,B65E519A,3551D083,3D2730D1,4F120520,4F8DE627,AF7E2606,A2490B9C,14006F09,F6B83479,C41B8039,2E72D572,27391A04,BA3C2825,56217F90,A18079A5",
-                                                                                             "651ED9A0,C2D7F2C7,3BBD0FF6,817F0D0E,4B6E534B,E143B9B2,202056B3,E0C0CEAD,85389651,26E644F4,1EEB7E4A,A26133FA,8E9E5130,1BFE545D,2AB8F1D2,C8A18A81,33E46105,3D3C9C28,2B1E3BFB",
-                                                                                             "39D75A93,B9319CBB,EF650831,E7F10145,1A76E4F0,CDE820A1,E2C51D69,45D81E73,A11AD1D7,A6E54878,CC8478D8,C7116D1E,9C391ADE,0208A347,389B4DA3,9292F5F3,A0639194,B56E3881,873F5C24,0A312D63,F86E89DE,66E26804,350F045E,0EE23BD0,9868B672,C5387D57,45DA9996,2B45E599,F1C07967,DECE46FF,85049A3D,D2CB36ED",
-                                                                                             "7EC70E5A,9D440B24,77A1B032,87BCE2A7,3EA497DD,4640E9FC,F02A7163,BC92BEA4,2B9FEA8C,87289B3B,88402278,70F2B3DE,757CAAD4,96880EDD,52B6E0D1,436DBEA2,85E7B733,9BC77D46,A5A35D61,D7753887,94B3BC1F,8B486959,C29CC3DB,17FF8EBA,408EBB61,A7E00235,9EAFE72B,444754AF,6B838CE6,E43C4EAD,A0E2D595,28D625D6,CB8B54A0,02015F32,B0569C0B,A2A3F651,6D410DBA,E85100D0,052B3F13,E525CA93,E6CE6B97,0D78A2A6,553B5E42,A516AADA,046F4313,4125B7B6,E8320096,C4463793,D16ED66F,ADBD3F8B",
-                                                                                             "EE9D9F22,63C62308,65D5D133,F902FAC4,FC6C3ABF,A2049F84,DF869348,DEBCC638,D083E2EB,CF537A21,F1D637E7,6359CF70,CDFDE752,E067AB34,32A5CFB3,034470ED,0614768D,97E99A39,D721F01A,ADFC9DD0",
-                                                                                             "14A07210,DB6BFF98,24FD56C0,5750BB66,0516376C,F3289391,1CD6B125,F57FE274,377D9206,669B7041,64024CC0,13142AE5,2A3FDC0C,38ABFBC0,B4DBE72A,90379A82,CC742196,B25DE10E,5A7DE93C,16F063CB,08ADC746,06FBDEE8,A7C9A19D",
-                                                                                             "14791163,7FCCC104,7756B8BD,0AB4DF9F,9B25007D,D077AE75,03096DC5,CCF7E186,D3C5CBF8,7CB7364D,5A73A10E,74193851,A474F821,70EF8CD7,CA10FD05,B71CEEEF,FB1BC2EB,6EA72DF5,F2B19E6C,182743D3,753B7DFE,77C48318,BACB21DB,FB3C2945,A0860CA4,4933EA45,F6078ECB,3F966352,EF51DAC0,C04B3C88,DA63243F,E8D3ED7C,FD0415E0,0E53387E,EA87F0ED,889B632B,7C5B1ACC,F5411BB5,43CFF024,79C30A9D,23118A7E",
-                                                                                             "8D49232F,F500A753,8B316741,DA1F051B,17507F7D,B25D5BBF,52AD0B0B,3787C289,5CC31D0E,592F0B89,1C816A7C",
-                                                                                             "A6CDE189,D40F3C0B,06961D74,14A1B98B,9C4AE98B,9EC3D01D,AB836F80",
-                                                                                             "0488BBD7,519A49D8,F6FE94AA,357BEFA7,667B7E0E,8DB64C83,A2FEECEF,90894804,7F2B2550,DCAD4137,C8DE4156,DF176DC8,61AD1E25,647023AB,57CF0A75,1930DA61,28CE1BAC,97C21DE3,F5A7FCEA,D81D9B1C,27B9AD13,4B7A2059,511100D2,F40C5722,522DAFE9,EB3ECDE7,8B2812EC",
-                                                                                             "EAE5AB7C,9F5710E8,E74A21F5,73D22E7F,31829521,A935AD92,5BD391EF,2A88C695",
-                                                                                             "77C2A9F1,5C6CE824,7C46A803,2B3FF42A,197D50A5,4FABBD01,61CE6146,92E29019,7FFBC1E2,5B386B9A,BDA3605C,392D7653,09E13C63,14445129,B1048AAB,C2C12E24,109A860F,4A03746E,ECE8DC86,B467C540,D03B3780,5DF38783,6BD1233E,C60F5AC3,10951EEC,22E5438C,60DABFAA,720CE20E,77210061,7B5026A9,2730DD95,9E30CD97,0834E3B2,D6C700D7,A8231F27,75A8446C,442F28A7,225BB56B,77C6E168,1458E1D7,6077632D,B1078EFD,7F65E2C7,5AE7BFF9,3DC4C741,427BADC1,813C7637,AA9E9321,CEA2D48E,935DE6A4,34713C62,09FB0974,28655EA8,5774CDAD,C853667B,CC6DEB6F,75AEE460,7376DFF0,1A59ADB7,9CA884DD,CB4D298C,7E6CAA3B,633FC452,0B3502AA,39655F0A,91000CC3,BFB6EA30,E56BA797,F5E87E89,C33719A0,F66F2146,5144D666,757C28D,BABEA183,64544401,5CCC56BA,A5F93E5E,624E4227,FE89EE4A,8CA6EAD9,A4EF297F,38088E4C,42EAF9E3,8A0D7B1A,8CEEDDAC,D2463525,09DA3EB9,6EFF2315,B01B091D,54F96425",
-                                                                                             "56EA110C,4755F0BC,1EC69582,B86147A1,BDE0764E,FA98958C,3E675324,8C6CD70C,B4F4281A,4DAD98E3,35DC769D,50534AD4,F00BEC6F,6180E18B,F37D111D,C75C27F0,CF33387E,0239246D,141252D1,D8344CA2",
-                                                                                             "FD5601DD,C33233FC,A53214DB,549C9517,976207EA,04D8CE01,2F685727,D7F7B22F,D1B5EE46,E86AF833,0827E835,F1D55C6B,44F95782,7842AD45,D28BE7B5,D028B5E7,B177A5DD,746FBD5D,3AC67077",
-                                                                                             "42F59AF7,BC66A271,A55107A9,4D96D6DC,3153C97F,A004C97E,24CB3D69,65A13FE4,3A915583,639B5E46,BD10D1EF,5758A1F8,7372B010,A1DD84AE,C672CB17,A3888C97,17CF71B3,0E1050E4,6E15D391",
-                                                                                             "84A4A2D1,85D60DE1,545DB0AD,071D1295,63FB0227,43DCC0BB,97BEF533,DC8F4A09,6B676D83,5CC32DE7,AB104A84,732F5ABF,7A03865F,DC799A5A,CDE2FD2D,B794D091,379C509E,2952B40B,69AA5BA5,A44AB305,E75B5849,310A5999,AA30C7AB,2426622A,76EB3D6A,07E9F2EE,B131A564,A4D194D1,1DA179C0,5AADE199,A24DAE3A,66DA3567,C2DD62CD,A9780F53,B6E4AA2C,B2BE6261,702F82C3,81EC263C,2AC8F7FF,F3E48A37,5CD56F3C,271E03CE,3A358389,5554B9C7,62C9D4B1,A68C4885,B8B4ECD6,884F0C03,489F4F55,28108D50,B582FDE3,1B614A86,9C421940,81BFE434,991613C8,8B9BF8CC,F274C684,E0BB2311,95B3ED4D,8743D06D,798934F8,D9A059C4,CB66BD51,C1615682,5169C3D3,24B78AEE,C5B42D86,18A6E847",
-                                                                                             "8A635002,DF6B1251,81ACAD01,311535BA,B0F1C510,ED8EDDE3,CF22ED6E,1D1FEC83,B5380B02,77DD0621,EDD6E52B,706EAEB2,58C04660,B664C1F7,1810CDFF,AF08F987,0A34A69E,7DB0927C,0863DBC2,6A0CED95,F89041E9,F88C016E,3910FFE1",
-                                                                                             "AF500B3C,135A0165,68ADBF92,711C2F18,7272BFAE,D4F96B44,BE49C6B2,89B3BE30,328A1773,8ECE318C,933DAD77,46D50E48,AB33F7A4,E29885C5,B276E13C,30E04D69,0D348D76,B4979EA4,F4D00A10,CFABD85D,AD6499D7,8050C367,FAF5970E,4EAB4556,A9C2CA39,3CD6346A,711E2239,F0577203,63BC2835,E5C3E6F1",
-                                                                                             "5B6970E0,DC696305,3E370A61,434FEF5D,3817A594,F21EA8EF,2DDCBF5A,BD96243C,C6969C9A,1C63B932,26272411,AFAEDD0C,7B7D6DE1,A397C20A,803D96B0,3456126C,971772A1,4C2A22F5,B3F8198E,65DC08FD,F34136D4,66C45C6B,EE7F6CC3,03A51292",
-                                                                                             "431869C5,AD14A264,425D5157,5DEA9F07",
-                                                                                             "4DE126A4,B67CFFA2,F140D36C,C3F4FCDB,922F1950,F5AD127C",
-                                                                                             "B33F4E61,56160347,D85F50FA,6BF39D6E,80DD7FA0,98D55E94,FDC63019,AE472B97,2AE88985,22AFCA27,9E49F1D8,27E85255,5A0E36A0,55CE2E24,40080298,714BE51F,6B7CD981,BC725D51,8B6B1656,0EFC5D6F,E5111098,D8FA917A,356FB097,380ABA31,EBE08E71,4C60C225",
-                                                                                             "13C3630D,3B1FD771,6AA4331B,F1ED9D32,8E925153,B8F04FB2,8172DF65,EC8D70CD,3B93FF26,E73DF637,80053E1A,9B1A6442,CBC704A4,5D259626,AE9FBC19,DEE640A5,5541612F,C3ED980F,6384F654,CA4D116E,9F1AA33A,90018062,B6F51E6D,B7A70CBE,625852A7" });
-
-            private static List<string> mpropsdefaultssurvival = new List<string>(new string[] { "2E7C9A23,7C3C9BEA,A085E47C,5687D081,3EA83D4D,306BE0C4,B34BC429,45DFEF67,295B365E,18C49531,B6CACC47,F7752D66,BB188579,E56A5A1C,F724026D,9B5FAA3B,65DCD413,6D51EECB,1F319BE4,50C22184,B87E6DE1,E15CA04A,2DA13CC7,DE469BCF,ACF07F3A,CE14C182,7E86A267,B1A00899,7B9FAAA0,A105F56C,8FE85331,8F12D266,A56CFF1A,723E18BD,C7EDC41F,46A74190,D783C7C7,FF374A2B,A1E58F89,BB9B09AC,40D23ECE,7DA7C387,B5DD1656,C689B79B,51AB960C,4ED9C235,B9C69815,CC003C88,1649D11A,673AB38B,532B112B,6558B586,1FCA2A6A,7C9F3E0C,CA0958DF,D84B7563,575CF388,25A7101D,BF741865,8169CBE1,2929EE13,2E4DF59F,F676077C,F79A0AF4,292C078E,4C0D000B,F893E9B0,A77C9A44,E40962FD,C53D2685,2CC1641D,A0133A76,2761E158,38BF0080,0B0332DF,72E2F577,7F02DF82",
-                                                                                                 "9EC80810,FBBE41FB,6BA514AC,E7ED1A59,9CD81E9F,3AA93E76",
-                                                                                                 "1B276762,2BE688E0,004702D4,1D0FB6F4",
-                                                                                                 "E51F88D9,BEC44B8F,BE862050,FDBC7BB9,F9B71F35,0892B679,122C438C,3C5EBE3C,EE80FD5A",
-                                                                                                 "044056CF,8BB2A762,4B444DBC,DE962965,9303E1A6,8FD48CB3,AF650A95,27C67B62,127150B8,E979601E,517E8858,B94857EA,6EF2433F,D3D69366,6608DC0F,74F6B8BE,A3402550",
-                                                                                                 "E40A0F8E,7D02B479,BC4649E5,342160A2,AEB63C4B,74E9F5BB,C7C649FF,5F5E76C9,C44ECA22,527818A3",
-                                                                                                 "B8465008,9910206D,51B12338,45709EF7,876CBCD2,B131133A,E44D5CEC,F2BD35BB,357CBA6D,2575D371,2EFBB698,5FF8D96F,47595E26,7C24C0B8,FFC4E948,91868CCD,8467C8D0,11E9FD7B,E5FECF61,5EEEF81F,CC23D613",
-                                                                                                 "995BA588,683475EE,F3AE2877,28B2940F,2D756082,27BAEB1A,FC8394AC,5FB619D7",
-                                                                                                 "808B5D53,1D6F7B34,8C195886,B0833E3A,6C7C6A45,C44DD309,5A9789A0,69E9413E,7FB36CD2,E0A6FEFB,6F849B90,5748690C,FC96F411,A2023E64,2AE8B60D,DA1A2626",
-                                                                                                 "AEF01947,B01315B4,C0B9BCDA,4CEBD53C,17236AA7,E1497820,BF8918DE,EC0725C8,E0171018",
-                                                                                                 "5D011F16,BE9BB86F,DAEEEAB6,D44163BA,B08A1C4C,A94763AB,A3C1D8A0,5251EAD9,1FC47677,9D8DF1FC,2F4B9579,7EE762D5",
-                                                                                                 "EFC4165A,4AF2CCB6,E0545565,44AEA99C,F88282E4",
-                                                                                                 "F9B8B7A0,376CB307,3FC3D20B,5580FD85,CA88E79F,97CB0224,42CE3C8A,206F9EB5,233DFD6A,C972C9D5,EFB6165B,1338DD60,9A382361,7125B4CE,AE8D2FA8,7C964BAF",
-                                                                                                 "B5AE3861,9A515D3F,9D47AFF9,3EBFCA03,E2AA93CA,E2048E2C,29E51C94,B83FBAA3,55908EC0,379FB809,79C0A750,2B3C88AE,174B35D6,FB9D3051,B3B836B0,DCA5159A,34E04379,B1367227,A37FD6BA,3F7E8EB1,29C26335,1C14C7DA",
-                                                                                                 "D2D24770,C4932AF2,AFDD8CBB,89F828EB,3C1B83BA,C2339364,E0264F5D,A6C23161,51400793,36AF4BB5,418F055A,C25DE433,E4DB3322,5AE0A333,7F8C93D0,9C7F3F08,FD389C44,D647866B,4A46E08E,70B0E25A,FDC8BCF7,ADA71CB1,5B385FFF,6277EC7E,BF1B2B36,8C9FC63C,FD3D779F,FF69E270,EAEED302,2EDD9003,4BBBAC6E,C2A63045,8DA442A2,4AF4BD44,7F7927AC,D7F1D89C,333332ED,893BA3A0,5779131A,53724BB0,0286F5F0,C00C3530,DB2C3E38,8DEB227B,0C0CF205,FE4E5688,F0873AFA,4A1BAE33,6881B256,A09BA29D,9BA61A22,81ED04F0,52DC99B6,E2FFAB8E,3DEFCE4D,C04ED1FD,6BEC23AD,CBE2A89C,BF77D87C,153F040D,23A8A0E0,4D306507,B2B841A3,97D0969C",
-                                                                                                 "AC7EC6AE,5981477A,0499AA60,9109DFBC,C08841A0,D1DDE44B,A7378EFF,B6602D50,C676CD85,D0FFE297,9A91F5AC,B48A29AC,7906B296,7C1AABEC,25054043,FE18F26F,FA10E36E,63F9CEA3,5DD2F986,9C1D6A5B,3CA58296,CB4D298C,39D75A93,B9319CBB,EF650831,E7F10145,1A76E4F0,CDE820A1,E2C51D69,45D81E73,A11AD1D7,A6E54878,249D1342,1CB21205,357CBA6D,F2BD35BB,2575D371,7C24C0B8,873F5C24,B56E3881,CC8478D8,C7116D1E,9C391ADE,276886A1,CA6ACA41,8A68CE9D,74503C56,2DE41B51,392D62AA,A7CF17C4,EDD0E658,918D2BAE,6AB3B57B,7A845307,01457D66,4014C50C,5CD2E1EA,3EA37E15,27BAEB1A,DCA9A809,74219CCB,417EC5DE,FCDB5E71,2DA13CC7,B17EAD7D,4F3FA437,A24CE57E,3794ACC9,A420E7B0,350F045E,E27289B5,3F0E8CE3,9D4F3537,6C38D8FA,534ACC12,B7DD5FD1,8538A366,158C9081,6B795EBC,B892B90D,E56BA797,876DEB81,D02ABBB2,22751A56,3E6FF91D,30699A93,C18B8FA3,B2614DD1,8CA6EAD9,7C041BDB",
-                                                                                                 "522CE28E,F7752D66,5DB600C9,848B8ABA,11FFB28C,40E01BC1,889E3E33,2DE41B51,8C4D43C4,6204EF38,49344B5A,FB120943,CAB94BE5,8E58F6AE,4EFF1313,671C5C38,3F2EC2B6,88D6CD61,7A9EBC92,4AF9D1D9,72BFC423,9FED6275,B22E8314,8C842A43,33D1F786,F5D9C598,B46EE154,9026C985,D593F420,33A12F6E,2652CBD9,CA6ACA41,070DBA50,276886A1,71C6E744,7CE1C05F,DF435615,E210FECF,66C0304D,25967365,1DA1220D,2F61C58E,4293EBF2,55411B30,677FBFAD,82900FDB,05993A0E,1A97B9A2,3C21B172,88476B1F,C46EFE43,E62441AD,861070B1,5778A9B1,389E11B5,DFF7CC31,34DD0DC9,DA96560A",
-                                                                                                 "5A5C0189,5ABD03F2,4259D185,ADFAAA90,748EB5EE,42EFD478,0A4723A5,3C314954,6D8066A2,BE577E09,A857DD30,218EC9A2,BF18A65C,285A9FE7,B1CA32D4,8810DF5E,6373EEF4,162A902D,7FDB66E9,E40743D1,392ED991,F475E4AE,2A783C24,0F8B1AD8,F9A05949,F821EFA6,087E7705,01C802F2,96CA139E,C8821067,99CBDED8,F4BD03EC,84B09BF2,DF7F5979,76138C75,EB8754FB,2EF52FC7,FE3FE726,3CB2CB42,58CFB07D,946BDDF0,785F56EE,2B862DA0,A8EBDD48,38B8C805,7F0A0985,BC835FE5,BDBD6259,04CA7DF2",
-                                                                                                 "27F13BA6,DA6EE30A,15BB173A,AFDE0DE9,4B2E021F,BC342695,8057D1CD,9792ED2B,5D7D8C19,A523884C,4E8CEE2C,79263052,56E458B3,20E736B0,A1736DDC,129E1A1E,82B3305C,4574FFCB,112321D8,7394BF68,26654C5C,8554E2E8,EF675E51,96300452,BB5B8306,E772C534,21E1D015,393268B6,4F762B3D,CBCA0DE3,06901972,1E7EB34F,38D1FDF5,292BC8A9,71A7F702,AD2857C2,CCEAAF2D,CF457E16,56833FF6",
-                                                                                                 "D7ADE0B8,69702115,8978ACE1,F590C75E,549E6D6B,289AB86D,4D02ED6A,5F2D2615,974101E9,6DD3C362,CC526C0B,70F9805A,EFA2443E,34A9E824,D04E18F0,6C6CD789,C618FE56,231CC3D2,204BE438,469E8AD5,74721347,A8B59980,EF3AA68D,229D5A2D,BA8C3D2D,474E1975,0189CB2B,6F5FF065,197F0168,AFFE67A4,6CA1E917,42561AA1,827092E6,F97807C6,F1FD3CFF,3EDD1DC3,3898738E,7A5F8915,F275DF37,D46BC199,62DD7CBE",
-                                                                                                 "C3FABAEE,FC0D2F15,E8D688A8,F2740D0C,6D3F1D16,554EED06,51E7E4F5,41EE5902,3BA14C68,2BEDCF90,BD511D34,DF7B1B6E,FDE81647,2BF6BBCF,989B0462,9BB260EF",
-                                                                                                 "C3F00C20,237861B3,C78E90F8,55F4B55D,6EF7C1E5,80B96568,B96AD9F2,C745F5A8",
-                                                                                                 "A11DB377,493F5F6F,56F7FAE0,5A990226,6A20A135,7FDECCB1,8D8D680E,B1EEB0DC,912C6F58,D7627BC3,2AFF21A7,64C7153A,8E8068AC,C69958DD,784E3C48,35C41C32,983947B2,1A78B62B,08BE12B6,E405C946,C15B03F1,D25BA5F2,BD95FC67,AC7E5A38,9AC036BC,763DEDB8,3DF8913E,F6A38295,0D56AFFB,A93DE7CB,770C0368,53ACBCA6,875C14A6,CAE6B5E9,666CEAA3,96A6B33B,F2B6EB52,E5054FEF,88AA173A,4095E943,B34EE0EC,E7904742,3D1B24C8,B4621358,9DE6F54D,68E40B48,9637D7B4,4366B213,39BC9EBF,67877A54,5661D809,FCA1249D,D7F1DB3B,7DAB26AB,389F3C9D,844BD3E9,4D64E628,282F9BBE,43B4D2BC,563777C1,342CBDB4,400F041D,55C92F91,5BBF8F23,CA96ECD0,7F4D563E,6A1B2BDA,4EDBF564,1D769048,264AD095,380C7418,5F5642AB,71ABE756,A72625EF,878D66CA,719B3AE6,2B682E7D,150B01C3,95A52A74,F0BDDF93,FE8B7B2E,F08418BA,641C7FE9,16B8E523,78E4ACB9,A45B47E0,0BF69604,17B9AD8A,5C9B374C,9AE5ED7F,3F32B616,55A82AC6,67F5CF61,A78D86DA,DF8F76DD,93EE5A7E,4E829BBB,B7126C6D,C8630F0E,D29D2382,5DE7B9A4,1C2A7F48,159E12C2,AC9D8713,4D720F4E,60B435D2,B0EF5647,8A0BBF9D,E2717BD5",
-                                                                                                 "1173612A,577BA63C,07214C86,7322DD8A,14E631A8,4E6FED66",
-                                                                                                 "F1337DE5,D7AB5EDB,808A8D98,B6B7AB45,D3E08775,F2099C08,15F3B86C,F8E728AB,5AEB062C,0BEBE82F,471CC681,55D2619B,DBBC6FBE,9EE25FAF,6393E913,62F370D4,23C8E97A,123C23E9,89696AD0,31BA3B53,32C96A52,A5196261,370C2079,5A666558,E5CFF3D4,7BD571D9,ADBA2D46,3C2C4BF0,CD5E5D8D,AF2D6CB2,2D80FC8A,3C04C081,B0AFD3E2,BE7FCC0F,11105A79,AB0391C1,060C1123,E794E24D,6BB55C74,F5DDA35D,06924B81,14A157DE,58A16E84,CC87476A,B856A8FD,92A53EF6,D27DC540,84DFAC51,C917B3E8",
-                                                                                                 "AD8C4C69,DF90308C,2A667310,D17A9461,3DA676E8,161AA7D5,8035DC01,2E5F6892,87A67D61,C779FFF6,7E1928FC,644BCB4C,628549ED,4BE9928B,31FF22CC,6FC3E5E0,89855E6F,8A85AF58,44952A09,3C7A3036,A325F1CF,C90AE498,80620730,EF1D64A5,27055474,7B5AB510,188FEF7C",
-                                                                                                 "85111220,8CD63A06,273CF578,78A811AA,073061F3,09FCBDE7,44AE05DE,CDD1A3EB,C43E9C6D,29DD35B8,D1A401A3,55778682,19A7DA0D,F3541068,049FFB40,00049FFB,B611EB07,6C51261A,B0B986C4,1B3287F3,C5755176,C114CE95,B4212798,B98797F6,BD9E98C9,8875B882,9A5C431D,421E102A,8AA61FD1,B15BA2D4,05F74459,7565C0E7,0739AE23,3C3649B8,C7BA5FD9,0DF3D3A7,F2515F80,91B91F7D,097099E6,9358DD56,97FD512A,5CC3CE68",
-                                                                                                 "0E2A823E,DBA04CB1,EEB1A195,34554245,D98C3759,49979437,3B40315A,F0E7834D,F6B52431,555D81D8,7CCA0A5E,F765DC2F,E7C48647,BBDC4F1A,CB9421B9,3BDD92D4,38543636,7661B973,D2822EE0,14917E66,B6687031,6A077455,793BC737,D048B4F5,F734D17A,18D5C385,776B8A11",
-                                                                                                 "431B529E,FDB8A439,42FFA24E,FD3A1616,7C17D532,3F3BCE2F,0E26794D,D0A67102,E07C9DFA,C3CCD74F,D187A7B4,A6DC4761,4FBEE77F,5B6835E7,7F71FA19,083DF517,CF989620,5F911F1D,05213D35,8BB5D808,88525AE3,21A0465B,0A21DE74,2A55D7E6,9CE203F6,5B7C3A32,B65E519A,3551D083,3D2730D1,4F120520,4F8DE627,AF7E2606,A2490B9C,14006F09,F6B83479,C41B8039,2E72D572,27391A04,BA3C2825,56217F90,A18079A5",
-                                                                                                 "651ED9A0,C2D7F2C7,3BBD0FF6,817F0D0E,4B6E534B,E143B9B2,202056B3,E0C0CEAD,85389651,26E644F4,1EEB7E4A,A26133FA,8E9E5130,1BFE545D,2AB8F1D2,C8A18A81,33E46105,3D3C9C28,2B1E3BFB",
-                                                                                                 "39D75A93,B9319CBB,EF650831,E7F10145,1A76E4F0,CDE820A1,E2C51D69,45D81E73,A11AD1D7,A6E54878,CC8478D8,C7116D1E,9C391ADE,0208A347,389B4DA3,9292F5F3,A0639194,B56E3881,873F5C24,0A312D63,F86E89DE,66E26804,350F045E,0EE23BD0,9868B672,C5387D57,45DA9996,2B45E599,F1C07967,DECE46FF,85049A3D,D2CB36ED",
-                                                                                                 "7EC70E5A,9D440B24,77A1B032,87BCE2A7,3EA497DD,4640E9FC,F02A7163,BC92BEA4,2B9FEA8C,87289B3B,88402278,70F2B3DE,757CAAD4,96880EDD,52B6E0D1,436DBEA2,85E7B733,9BC77D46,A5A35D61,D7753887,94B3BC1F,8B486959,C29CC3DB,17FF8EBA,408EBB61,A7E00235,9EAFE72B,444754AF,6B838CE6,E43C4EAD,A0E2D595,28D625D6,CB8B54A0,02015F32,B0569C0B,A2A3F651,6D410DBA,E85100D0,052B3F13,E525CA93,E6CE6B97,0D78A2A6,553B5E42,A516AADA,046F4313,4125B7B6,E8320096,C4463793,D16ED66F,ADBD3F8B",
-                                                                                                 "EE9D9F22,63C62308,65D5D133,F902FAC4,FC6C3ABF,A2049F84,DF869348,DEBCC638,D083E2EB,CF537A21,F1D637E7,6359CF70,CDFDE752,E067AB34,32A5CFB3,034470ED,0614768D,97E99A39,D721F01A,ADFC9DD0",
-                                                                                                 "14A07210,DB6BFF98,24FD56C0,5750BB66,0516376C,F3289391,1CD6B125,F57FE274,377D9206,669B7041,64024CC0,13142AE5,2A3FDC0C,38ABFBC0,B4DBE72A,90379A82,CC742196,B25DE10E,5A7DE93C,16F063CB,08ADC746,06FBDEE8,A7C9A19D",
-                                                                                                 "14791163,7FCCC104,7756B8BD,0AB4DF9F,9B25007D,D077AE75,03096DC5,CCF7E186,D3C5CBF8,7CB7364D,5A73A10E,74193851,A474F821,70EF8CD7,CA10FD05,B71CEEEF,FB1BC2EB,6EA72DF5,F2B19E6C,182743D3,753B7DFE,77C48318,BACB21DB,FB3C2945,A0860CA4,4933EA45,F6078ECB,3F966352,EF51DAC0,C04B3C88,DA63243F,E8D3ED7C,FD0415E0,0E53387E,EA87F0ED,889B632B,7C5B1ACC,F5411BB5,43CFF024,79C30A9D,23118A7E",
-                                                                                                 "8D49232F,F500A753,8B316741,DA1F051B,17507F7D,B25D5BBF,52AD0B0B,3787C289,5CC31D0E,592F0B89,1C816A7C",
-                                                                                                 "A6CDE189,D40F3C0B,06961D74,14A1B98B,9C4AE98B,9EC3D01D,AB836F80",
-                                                                                                 "0488BBD7,519A49D8,F6FE94AA,357BEFA7,667B7E0E,8DB64C83,A2FEECEF,90894804,7F2B2550,DCAD4137,C8DE4156,DF176DC8,61AD1E25,647023AB,57CF0A75,1930DA61,28CE1BAC,97C21DE3,F5A7FCEA,D81D9B1C,27B9AD13,4B7A2059,511100D2,F40C5722,522DAFE9,EB3ECDE7,8B2812EC",
-                                                                                                 "EAE5AB7C,9F5710E8,E74A21F5,73D22E7F,31829521,A935AD92,5BD391EF,2A88C695",
-                                                                                                 "77C2A9F1,5C6CE824,7C46A803,2B3FF42A,197D50A5,4FABBD01,61CE6146,92E29019,7FFBC1E2,5B386B9A,BDA3605C,392D7653,09E13C63,14445129,B1048AAB,C2C12E24,109A860F,4A03746E,ECE8DC86,B467C540,D03B3780,5DF38783,6BD1233E,C60F5AC3,10951EEC,22E5438C,60DABFAA,720CE20E,77210061,7B5026A9,2730DD95,9E30CD97,0834E3B2,D6C700D7,A8231F27,75A8446C,442F28A7,225BB56B,77C6E168,1458E1D7,6077632D,B1078EFD,7F65E2C7,5AE7BFF9,3DC4C741,427BADC1,813C7637,AA9E9321,CEA2D48E,935DE6A4,34713C62,09FB0974,28655EA8,5774CDAD,C853667B,CC6DEB6F,75AEE460,7376DFF0,1A59ADB7,9CA884DD,CB4D298C,7E6CAA3B,633FC452,0B3502AA,39655F0A,91000CC3,BFB6EA30,E56BA797,F5E87E89,C33719A0,F66F2146,5144D666,757C28D,BABEA183,64544401,5CCC56BA,A5F93E5E,624E4227,FE89EE4A,8CA6EAD9,A4EF297F,38088E4C,42EAF9E3,8A0D7B1A,8CEEDDAC,D2463525,09DA3EB9,6EFF2315,B01B091D,54F96425",
-                                                                                                 "56EA110C,4755F0BC,1EC69582,B86147A1,BDE0764E,FA98958C,3E675324,8C6CD70C,B4F4281A,4DAD98E3,35DC769D,50534AD4,F00BEC6F,6180E18B,F37D111D,C75C27F0,CF33387E,0239246D,141252D1,D8344CA2",
-                                                                                                 "FD5601DD,C33233FC,A53214DB,549C9517,976207EA,04D8CE01,2F685727,D7F7B22F,D1B5EE46,E86AF833,0827E835,F1D55C6B,44F95782,7842AD45,D28BE7B5,D028B5E7,B177A5DD,746FBD5D,3AC67077",
-                                                                                                 "42F59AF7,BC66A271,A55107A9,4D96D6DC,3153C97F,A004C97E,24CB3D69,65A13FE4,3A915583,639B5E46,BD10D1EF,5758A1F8,7372B010,A1DD84AE,C672CB17,A3888C97,17CF71B3,0E1050E4,6E15D391",
-                                                                                                 "84A4A2D1,85D60DE1,545DB0AD,071D1295,63FB0227,43DCC0BB,97BEF533,DC8F4A09,6B676D83,5CC32DE7,AB104A84,732F5ABF,7A03865F,DC799A5A,CDE2FD2D,B794D091,379C509E,2952B40B,69AA5BA5,A44AB305,E75B5849,310A5999,AA30C7AB,2426622A,76EB3D6A,07E9F2EE,B131A564,A4D194D1,1DA179C0,5AADE199,A24DAE3A,66DA3567,C2DD62CD,A9780F53,B6E4AA2C,B2BE6261,702F82C3,81EC263C,2AC8F7FF,F3E48A37,5CD56F3C,271E03CE,3A358389,5554B9C7,62C9D4B1,A68C4885,B8B4ECD6,884F0C03,489F4F55,28108D50,B582FDE3,1B614A86,9C421940,81BFE434,991613C8,8B9BF8CC,F274C684,E0BB2311,95B3ED4D,8743D06D,798934F8,D9A059C4,CB66BD51,C1615682,5169C3D3,24B78AEE,C5B42D86,18A6E847",
-                                                                                                 "8A635002,DF6B1251,81ACAD01,311535BA,B0F1C510,ED8EDDE3,CF22ED6E,1D1FEC83,B5380B02,77DD0621,EDD6E52B,706EAEB2,58C04660,B664C1F7,1810CDFF,AF08F987,0A34A69E,7DB0927C,0863DBC2,6A0CED95,F89041E9,F88C016E,3910FFE1",
-                                                                                                 "AF500B3C,135A0165,68ADBF92,711C2F18,7272BFAE,D4F96B44,BE49C6B2,89B3BE30,328A1773,8ECE318C,933DAD77,46D50E48,AB33F7A4,E29885C5,B276E13C,30E04D69,0D348D76,B4979EA4,F4D00A10,CFABD85D,AD6499D7,8050C367,FAF5970E,4EAB4556,A9C2CA39,3CD6346A,711E2239,F0577203,63BC2835,E5C3E6F1",
-                                                                                                 "5B6970E0,DC696305,3E370A61,434FEF5D,3817A594,F21EA8EF,2DDCBF5A,BD96243C,C6969C9A,1C63B932,26272411,AFAEDD0C,7B7D6DE1,A397C20A,803D96B0,3456126C,971772A1,4C2A22F5,B3F8198E,65DC08FD,F34136D4,66C45C6B,EE7F6CC3,03A51292",
-                                                                                                 "431869C5,AD14A264,425D5157,5DEA9F07",
-                                                                                                 "4DE126A4,B67CFFA2,F140D36C,C3F4FCDB,922F1950,F5AD127C",
-                                                                                                 "B33F4E61,56160347,D85F50FA,6BF39D6E,80DD7FA0,98D55E94,FDC63019,AE472B97,2AE88985,22AFCA27,9E49F1D8,27E85255,5A0E36A0,55CE2E24,40080298,714BE51F,6B7CD981,BC725D51,8B6B1656,0EFC5D6F,E5111098,D8FA917A,356FB097,380ABA31,EBE08E71,4C60C225",
-                                                                                                 "13C3630D,3B1FD771,6AA4331B,F1ED9D32,8E925153,B8F04FB2,8172DF65,EC8D70CD,3B93FF26,E73DF637,80053E1A,9B1A6442,CBC704A4,5D259626,AE9FBC19,DEE640A5,5541612F,C3ED980F,6384F654,CA4D116E,9F1AA33A,90018062,B6F51E6D,B7A70CBE,625852A7",
-                                                                                                 "6E003455,A2719263,CDC174B0,08D4BE52,2024F4E8,2024F4E8,F6773201",
-                                                                                                 "1B06D571,5EF9FEC4,22D8FE39,13532244,7846A318,EFE7E2DF,99AEEB3B,93E220BD,FDBC8A50,2C3731D9,24B17070,AB564B93,6E01022E,A2719263,A2719263,97EA20B8,3813FC08,184140A1",
-                                                                                                 "4BFB42D1,8F707C18,2C014CA6,6773257D,098D79EF,A5B8CAA9",
-                                                                                                 "A54AE7B7,D0AACEF7,CC8B3905,B86AEE5B,2E071B5A,68605A36,D3A39366,A717F898,2C804FE3,65A7D8E9,84D676D4,098D79EF,A5B8CAA9"});
-
-            private static List<string> mpropsdefaultslts = new List<string>(new string[] { "2E7C9A23,7C3C9BEA,A085E47C,5687D081,3EA83D4D,306BE0C4,B34BC429,45DFEF67,295B365E,18C49531,B6CACC47,F7752D66,BB188579,E56A5A1C,F724026D,9DDA7E0,65DCD413,6D51EECB,1F319BE4,50C22184,B87E6DE1,E15CA04A,2DA13CC7,DE469BCF,ACF07F3A,CE14C182,7E86A267,B1A00899,7B9FAAA0,A105F56C,8FE85331,8F12D266,A56CFF1A,723E18BD,C7EDC41F,46A74190,D783C7C7,FF374A2B,A1E58F89,BB9B09AC,40D23ECE,7DA7C387,B5DD1656,C689B79B,5972FB1,4ED9C235,B9C69815,CC003C88,1649D11A,673AB38B,532B112B,6558B586,1FCA2A6A,7C9F3E0C,CA0958DF,D84B7563,575CF388,25A7101D,BF741865,9882DA0,2929EE13,2E4DF59F,F676077C,F79A0AF4,292C078E,4C0D000B,FF3FCB5,A77C9A44,E40962FD,C53D2685,2CC1641D,A0133A76,2761E158,38BF0080,0B0332DF,72E2F577,7F02DF82",
-                                                                                            "9EC80810,FBBE41FB,6BA514AC,E7ED1A59,9CD81E9F,3AA93E76",
-                                                                                            "1B276762,2BE688E0,4653780,1D0FB6F4",
-                                                                                            "E51F88D9,BEC44B8F,BE862050,A1ED363,F9B71F35,F872EFF,122C438C,3C5EBE3C,EE80FD5A",
-                                                                                            "71325391,8BB2A762,4B444DBC,DE962965,9303E1A6,8FD48CB3,AF650A95,27C67B62,127150B8,8333C3C,517E8858,B94857EA,6EF2433F,D3D69366,6608DC0F,74F6B8BE,3C4ECDB",
-                                                                                            "E40A0F8E,7D02B479,BC4649E5,342160A2,AEB63C4B,74E9F5BB,C7C649FF,5F5E76C9,C44ECA22,527818A3",
-                                                                                            "B8465008,9910206D,51B12338,45709EF7,876CBCD2,B131133A,E44D5CEC,F2BD35BB,357CBA6D,2575D371,2EFBB698,5FF8D96F,47595E26,7C24C0B8,FFC4E948,91868CCD,8467C8D0,11E9FD7B,E5FECF61,5EEEF81F,CC23D613",
-                                                                                            "74A3557,683475EE,F3AE2877,28B2940F,CFFB6B0,27BAEB1A,FC8394AC,5FB619D7",
-                                                                                            "808B5D53,1D6F7B34,8C195886,B0833E3A,6C7C6A45,C44DD309,5A9789A0,69E9413E,7FB36CD2,E0A6FEFB,6F849B90,5748690C,FC96F411,A2023E64,3454C0D,DA1A2626",
-                                                                                            "AEF01947,B01315B4,C0B9BCDA,4CEBD53C,17236AA7,E1497820,BF8918DE,EC0725C8,E0171018",
-                                                                                            "5D011F16,BE9BB86F,E5257DB,D44163BA,B08A1C4C,A94763AB,A3C1D8A0,D0DD10A,1FC47677,9D8DF1FC,2F4B9579,7EE762D5",
-                                                                                            "EFC4165A,4AF2CCB6,E0545565,44AEA99C,F88282E4",
-                                                                                            "F9B8B7A0,376CB307,3FC3D20B,5580FD85,CA88E79F,97CB0224,42CE3C8A,206F9EB5,233DFD6A,C972C9D5,EFB6165B,1338DD60,9A382361,7125B4CE,AE8D2FA8,7C964BAF",
-                                                                                            "B5AE3861,9A515D3F,9D47AFF9,3EBFCA03,E2AA93CA,E2048E2C,29E51C94,B83FBAA3,55908EC0,379FB809,79C0A750,2B3C88AE,174B35D6,FB9D3051,B3B836B0,DCA5159A,34E04379,B1367227,A37FD6BA,3F7E8EB1,29C26335,1C14C7DA",
-                                                                                            "D2D24770,C4932AF2,AFDD8CBB,89F828EB,3C1B83BA,C2339364,E0264F5D,A6C23161,51400793,36AF4BB5,418F055A,C25DE433,E4DB3322,5AE0A333,7F8C93D0,9C7F3F08,FD389C44,D647866B,4A46E08E,70B0E25A,FDC8BCF7,ADA71CB1,5B385FFF,6277EC7E,BF1B2B36,8C9FC63C,FD3D779F,FF69E270,EAEED302,2EDD9003,4BBBAC6E,C2A63045,8DA442A2,4AF4BD44,7F7927AC,D7F1D89C,333332ED,893BA3A0,5779131A,53724BB0,0286F5F0,C00C3530,DB2C3E38,8DEB227B,0C0CF205,FE4E5688,F0873AFA,4A1BAE33,6881B256,A09BA29D,9BA61A22,81ED04F0,52DC99B6,E2FFAB8E,3DEFCE4D,C04ED1FD,6BEC23AD,CBE2A89C,BF77D87C,153F040D,23A8A0E0,4D306507,B2B841A3,97D0969C",
-                                                                                            "AC7EC6AE,5981477A,0499AA60,9109DFBC,C08841A0,D1DDE44B,A7378EFF,B6602D50,C676CD85,D0FFE297,9A91F5AC,B48A29AC,7906B296,7C1AABEC,25054043,FE18F26F,FA10E36E,63F9CEA3,5DD2F986,9C1D6A5B,3CA58296,CB4D298C,39D75A93,B9319CBB,EF650831,E7F10145,1A76E4F0,CDE820A1,E2C51D69,45D81E73,A11AD1D7,A6E54878,249D1342,1CB21205,357CBA6D,F2BD35BB,2575D371,7C24C0B8,873F5C24,B56E3881,CC8478D8,C7116D1E,9C391ADE,276886A1,CA6ACA41,8A68CE9D,74503C56,2DE41B51,392D62AA,A7CF17C4,EDD0E658,918D2BAE,6AB3B57B,7A845307,01457D66,4014C50C,5CD2E1EA,3EA37E15,27BAEB1A,DCA9A809,74219CCB,417EC5DE,FCDB5E71,2DA13CC7,B17EAD7D,4F3FA437,A24CE57E,3794ACC9,A420E7B0,350F045E,E27289B5,3F0E8CE3,9D4F3537,6C38D8FA,534ACC12,B7DD5FD1,8538A366,158C9081,6B795EBC,B892B90D,E56BA797,876DEB81,D02ABBB2,22751A56,3E6FF91D,30699A93,C18B8FA3,B2614DD1,8CA6EAD9,7C041BDB",
-                                                                                            "522CE28E,F7752D66,5DB600C9,848B8ABA,11FFB28C,40E01BC1,889E3E33,2DE41B51,8C4D43C4,6204EF38,49344B5A,FB120943,CAB94BE5,8E58F6AE,4EFF1313,671C5C38,3F2EC2B6,88D6CD61,7A9EBC92,4AF9D1D9,72BFC423,9FED6275,B22E8314,8C842A43,33D1F786,F5D9C598,B46EE154,9026C985,D593F420,33A12F6E,2652CBD9,CA6ACA41,070DBA50,276886A1,71C6E744,7CE1C05F,DF435615,E210FECF,66C0304D,25967365,1DA1220D,2F61C58E,4293EBF2,55411B30,677FBFAD,82900FDB,05993A0E,1A97B9A2,3C21B172,88476B1F,C46EFE43,E62441AD,861070B1,5778A9B1,389E11B5,DFF7CC31,34DD0DC9,DA96560A",
-                                                                                            "5A5C0189,5ABD03F2,4259D185,ADFAAA90,748EB5EE,42EFD478,0A4723A5,3C314954,6D8066A2,BE577E09,A857DD30,218EC9A2,BF18A65C,285A9FE7,B1CA32D4,8810DF5E,6373EEF4,162A902D,7FDB66E9,E40743D1,392ED991,F475E4AE,2A783C24,0F8B1AD8,F9A05949,F821EFA6,087E7705,01C802F2,96CA139E,C8821067,99CBDED8,F4BD03EC,84B09BF2,DF7F5979,76138C75,EB8754FB,2EF52FC7,FE3FE726,3CB2CB42,58CFB07D,946BDDF0,785F56EE,2B862DA0,A8EBDD48,38B8C805,7F0A0985,BC835FE5,BDBD6259,04CA7DF2",
-                                                                                            "27F13BA6,DA6EE30A,15BB173A,AFDE0DE9,4B2E021F,BC342695,8057D1CD,9792ED2B,5D7D8C19,A523884C,4E8CEE2C,79263052,56E458B3,20E736B0,A1736DDC,129E1A1E,82B3305C,4574FFCB,112321D8,7394BF68,26654C5C,8554E2E8,EF675E51,96300452,BB5B8306,E772C534,21E1D015,393268B6,4F762B3D,CBCA0DE3,06901972,1E7EB34F,38D1FDF5,292BC8A9,71A7F702,AD2857C2,CCEAAF2D,CF457E16,56833FF6",
-                                                                                            "D7ADE0B8,69702115,8978ACE1,F590C75E,549E6D6B,289AB86D,4D02ED6A,5F2D2615,974101E9,6DD3C362,CC526C0B,70F9805A,EFA2443E,34A9E824,D04E18F0,6C6CD789,C618FE56,231CC3D2,204BE438,469E8AD5,74721347,A8B59980,EF3AA68D,229D5A2D,BA8C3D2D,474E1975,0189CB2B,6F5FF065,197F0168,AFFE67A4,6CA1E917,42561AA1,827092E6,F97807C6,F1FD3CFF,3EDD1DC3,3898738E,7A5F8915,F275DF37,D46BC199,62DD7CBE",
-                                                                                            "C3FABAEE,FC0D2F15,E8D688A8,F2740D0C,6D3F1D16,554EED06,51E7E4F5,41EE5902,3BA14C68,2BEDCF90,BD511D34,DF7B1B6E,FDE81647,2BF6BBCF,989B0462,9BB260EF",
-                                                                                            "C3F00C20,237861B3,C78E90F8,55F4B55D,6EF7C1E5,80B96568,B96AD9F2,C745F5A8",
-                                                                                            "A11DB377,493F5F6F,56F7FAE0,5A990226,6A20A135,7FDECCB1,8D8D680E,B1EEB0DC,912C6F58,D7627BC3,2AFF21A7,64C7153A,8E8068AC,C69958DD,784E3C48,35C41C32,983947B2,1A78B62B,08BE12B6,E405C946,C15B03F1,D25BA5F2,BD95FC67,AC7E5A38,9AC036BC,763DEDB8,3DF8913E,F6A38295,0D56AFFB,A93DE7CB,770C0368,53ACBCA6,875C14A6,CAE6B5E9,666CEAA3,96A6B33B,F2B6EB52,E5054FEF,88AA173A,4095E943,B34EE0EC,E7904742,3D1B24C8,B4621358,9DE6F54D,68E40B48,9637D7B4,4366B213,39BC9EBF,67877A54,5661D809,FCA1249D,D7F1DB3B,7DAB26AB,389F3C9D,844BD3E9,4D64E628,282F9BBE,43B4D2BC,563777C1,342CBDB4,400F041D,55C92F91,5BBF8F23,CA96ECD0,7F4D563E,6A1B2BDA,4EDBF564,1D769048,264AD095,380C7418,5F5642AB,71ABE756,A72625EF,878D66CA,719B3AE6,2B682E7D,150B01C3,95A52A74,F0BDDF93,FE8B7B2E,F08418BA,641C7FE9,16B8E523,78E4ACB9,A45B47E0,0BF69604,17B9AD8A,5C9B374C,9AE5ED7F,3F32B616,55A82AC6,67F5CF61,A78D86DA,DF8F76DD,93EE5A7E,4E829BBB,B7126C6D,C8630F0E,D29D2382,5DE7B9A4,1C2A7F48,159E12C2,AC9D8713,4D720F4E,60B435D2,B0EF5647,8A0BBF9D,E2717BD5",
-                                                                                            "1173612A,577BA63C,07214C86,7322DD8A,14E631A8,4E6FED66",
-                                                                                            "F1337DE5,D7AB5EDB,808A8D98,B6B7AB45,D3E08775,F2099C08,15F3B86C,F8E728AB,5AEB062C,0BEBE82F,471CC681,55D2619B,DBBC6FBE,9EE25FAF,6393E913,62F370D4,23C8E97A,123C23E9,89696AD0,31BA3B53,32C96A52,A5196261,370C2079,5A666558,E5CFF3D4,7BD571D9,ADBA2D46,3C2C4BF0,CD5E5D8D,AF2D6CB2,2D80FC8A,3C04C081,B0AFD3E2,BE7FCC0F,11105A79,AB0391C1,060C1123,E794E24D,6BB55C74,F5DDA35D,06924B81,14A157DE,58A16E84,CC87476A,B856A8FD,92A53EF6,D27DC540,84DFAC51,C917B3E8",
-                                                                                            "AD8C4C69,DF90308C,2A667310,D17A9461,3DA676E8,161AA7D5,8035DC01,2E5F6892,87A67D61,C779FFF6,7E1928FC,644BCB4C,628549ED,4BE9928B,31FF22CC,6FC3E5E0,89855E6F,8A85AF58,44952A09,3C7A3036,A325F1CF,C90AE498,80620730,EF1D64A5,27055474,7B5AB510,188FEF7C",
-                                                                                            "85111220,8CD63A06,273CF578,78A811AA,073061F3,09FCBDE7,44AE05DE,CDD1A3EB,C43E9C6D,29DD35B8,D1A401A3,55778682,19A7DA0D,F3541068,049FFB40,B611EB07,6C51261A,B0B986C4,1B3287F3,C5755176,C114CE95,B4212798,B98797F6,BD9E98C9,8875B882,9A5C431D,421E102A,8AA61FD1,B15BA2D4,05F74459,7565C0E7,0739AE23,3C3649B8,C7BA5FD9,0DF3D3A7,F2515F80,91B91F7D,097099E6,9358DD56,97FD512A,5CC3CE68",
-                                                                                            "0E2A823E,DBA04CB1,EEB1A195,34554245,D98C3759,49979437,3B40315A,F0E7834D,F6B52431,555D81D8,7CCA0A5E,F765DC2F,E7C48647,BBDC4F1A,CB9421B9,3BDD92D4,38543636,7661B973,D2822EE0,14917E66,B6687031,6A077455,793BC737,D048B4F5,F734D17A,18D5C385,776B8A11",
-                                                                                            "431B529E,FDB8A439,42FFA24E,FD3A1616,7C17D532,3F3BCE2F,0E26794D,D0A67102,E07C9DFA,C3CCD74F,D187A7B4,A6DC4761,4FBEE77F,5B6835E7,7F71FA19,083DF517,CF989620,5F911F1D,05213D35,8BB5D808,88525AE3,21A0465B,0A21DE74,2A55D7E6,9CE203F6,5B7C3A32,B65E519A,3551D083,3D2730D1,4F120520,4F8DE627,AF7E2606,A2490B9C,14006F09,F6B83479,C41B8039,2E72D572,27391A04,BA3C2825,56217F90,A18079A5",
-                                                                                            "651ED9A0,C2D7F2C7,3BBD0FF6,817F0D0E,4B6E534B,E143B9B2,202056B3,E0C0CEAD,85389651,26E644F4,1EEB7E4A,A26133FA,8E9E5130,1BFE545D,2AB8F1D2,C8A18A81,33E46105,3D3C9C28,2B1E3BFB",
-                                                                                            "39D75A93,B9319CBB,EF650831,E7F10145,1A76E4F0,CDE820A1,E2C51D69,45D81E73,A11AD1D7,A6E54878,CC8478D8,C7116D1E,9C391ADE,0208A347,389B4DA3,9292F5F3,A0639194,B56E3881,873F5C24,0A312D63,F86E89DE,66E26804,350F045E,0EE23BD0,9868B672,C5387D57,45DA9996,2B45E599,F1C07967,DECE46FF,85049A3D,D2CB36ED",
-                                                                                            "7EC70E5A,9D440B24,77A1B032,87BCE2A7,3EA497DD,4640E9FC,F02A7163,BC92BEA4,2B9FEA8C,87289B3B,88402278,70F2B3DE,757CAAD4,96880EDD,52B6E0D1,436DBEA2,85E7B733,9BC77D46,A5A35D61,D7753887,94B3BC1F,8B486959,C29CC3DB,17FF8EBA,408EBB61,A7E00235,9EAFE72B,444754AF,6B838CE6,E43C4EAD,A0E2D595,28D625D6,CB8B54A0,02015F32,B0569C0B,A2A3F651,6D410DBA,E85100D0,052B3F13,E525CA93,E6CE6B97,0D78A2A6,553B5E42,A516AADA,046F4313,4125B7B6,E8320096,C4463793,D16ED66F,ADBD3F8B",
-                                                                                            "EE9D9F22,63C62308,65D5D133,F902FAC4,FC6C3ABF,A2049F84,DF869348,DEBCC638,D083E2EB,CF537A21,F1D637E7,6359CF70,CDFDE752,E067AB34,32A5CFB3,034470ED,0614768D,97E99A39,D721F01A,ADFC9DD0",
-                                                                                            "14A07210,DB6BFF98,24FD56C0,5750BB66,0516376C,F3289391,1CD6B125,F57FE274,377D9206,669B7041,64024CC0,13142AE5,2A3FDC0C,38ABFBC0,B4DBE72A,90379A82,CC742196,B25DE10E,5A7DE93C,16F063CB,08ADC746,06FBDEE8,A7C9A19D",
-                                                                                            "14791163,7FCCC104,7756B8BD,0AB4DF9F,9B25007D,D077AE75,03096DC5,CCF7E186,D3C5CBF8,7CB7364D,5A73A10E,74193851,A474F821,70EF8CD7,CA10FD05,B71CEEEF,FB1BC2EB,6EA72DF5,F2B19E6C,182743D3,753B7DFE,77C48318,BACB21DB,FB3C2945,A0860CA4,4933EA45,F6078ECB,3F966352,EF51DAC0,C04B3C88,DA63243F,E8D3ED7C,FD0415E0,0E53387E,EA87F0ED,889B632B,7C5B1ACC,F5411BB5,43CFF024,79C30A9D,23118A7E",
-                                                                                            "8D49232F,F500A753,8B316741,DA1F051B,17507F7D,B25D5BBF,52AD0B0B,3787C289,5CC31D0E,592F0B89,1C816A7C",
-                                                                                            "A6CDE189,D40F3C0B,06961D74,14A1B98B,9C4AE98B,9EC3D01D,AB836F80",
-                                                                                            "0488BBD7,519A49D8,F6FE94AA,357BEFA7,667B7E0E,8DB64C83,A2FEECEF,90894804,7F2B2550,DCAD4137,C8DE4156,DF176DC8,61AD1E25,647023AB,57CF0A75,1930DA61,28CE1BAC,97C21DE3,F5A7FCEA,D81D9B1C,27B9AD13,4B7A2059,511100D2,F40C5722,522DAFE9,EB3ECDE7,8B2812EC",
-                                                                                            "EAE5AB7C,9F5710E8,E74A21F5,73D22E7F,31829521,A935AD92,5BD391EF,2A88C695",
-                                                                                            "77C2A9F1,5C6CE824,7C46A803,2B3FF42A,197D50A5,4FABBD01,61CE6146,92E29019,7FFBC1E2,5B386B9A,BDA3605C,392D7653,09E13C63,14445129,B1048AAB,C2C12E24,109A860F,4A03746E,ECE8DC86,B467C540,D03B3780,5DF38783,6BD1233E,C60F5AC3,10951EEC,22E5438C,60DABFAA,720CE20E,77210061,7B5026A9,2730DD95,9E30CD97,0834E3B2,D6C700D7,A8231F27,75A8446C,442F28A7,225BB56B,77C6E168,1458E1D7,6077632D,B1078EFD,7F65E2C7,5AE7BFF9,3DC4C741,427BADC1,813C7637,AA9E9321,CEA2D48E,935DE6A4,34713C62,09FB0974,28655EA8,5774CDAD,C853667B,CC6DEB6F,75AEE460,7376DFF0,1A59ADB7,9CA884DD,CB4D298C,7E6CAA3B,633FC452,0B3502AA,39655F0A,91000CC3,BFB6EA30,E56BA797,F5E87E89,C33719A0,F66F2146,5144D666,757C28D,BABEA183,64544401,5CCC56BA,A5F93E5E,624E4227,FE89EE4A,8CA6EAD9,A4EF297F,38088E4C,42EAF9E3,8A0D7B1A,8CEEDDAC,D2463525,09DA3EB9,6EFF2315,B01B091D,54F96425",
-                                                                                            "56EA110C,4755F0BC,1EC69582,B86147A1,BDE0764E,FA98958C,3E675324,8C6CD70C,B4F4281A,4DAD98E3,35DC769D,50534AD4,F00BEC6F,6180E18B,F37D111D,C75C27F0,CF33387E,0239246D,141252D1,D8344CA2",
-                                                                                            "FD5601DD,C33233FC,A53214DB,549C9517,976207EA,04D8CE01,2F685727,D7F7B22F,D1B5EE46,E86AF833,0827E835,F1D55C6B,44F95782,7842AD45,D28BE7B5,D028B5E7,B177A5DD,746FBD5D,3AC67077",
-                                                                                            "42F59AF7,BC66A271,A55107A9,4D96D6DC,3153C97F,A004C97E,24CB3D69,65A13FE4,3A915583,639B5E46,BD10D1EF,5758A1F8,7372B010,A1DD84AE,C672CB17,A3888C97,17CF71B3,0E1050E4,6E15D391",
-                                                                                            "84A4A2D1,85D60DE1,545DB0AD,071D1295,63FB0227,43DCC0BB,97BEF533,DC8F4A09,6B676D83,5CC32DE7,AB104A84,732F5ABF,7A03865F,DC799A5A,CDE2FD2D,B794D091,379C509E,2952B40B,69AA5BA5,A44AB305,E75B5849,310A5999,AA30C7AB,2426622A,76EB3D6A,07E9F2EE,B131A564,A4D194D1,1DA179C0,5AADE199,A24DAE3A,66DA3567,C2DD62CD,A9780F53,B6E4AA2C,B2BE6261,702F82C3,81EC263C,2AC8F7FF,F3E48A37,5CD56F3C,271E03CE,3A358389,5554B9C7,62C9D4B1,A68C4885,B8B4ECD6,884F0C03,489F4F55,28108D50,B582FDE3,1B614A86,9C421940,81BFE434,991613C8,8B9BF8CC,F274C684,E0BB2311,95B3ED4D,8743D06D,798934F8,D9A059C4,CB66BD51,C1615682,5169C3D3,24B78AEE,C5B42D86,18A6E847",
-                                                                                            "8A635002,DF6B1251,81ACAD01,311535BA,B0F1C510,ED8EDDE3,CF22ED6E,1D1FEC83,B5380B02,77DD0621,EDD6E52B,706EAEB2,58C04660,B664C1F7,1810CDFF,AF08F987,0A34A69E,7DB0927C,0863DBC2,6A0CED95,F89041E9,F88C016E,3910FFE1",
-                                                                                            "AF500B3C,135A0165,68ADBF92,711C2F18,7272BFAE,D4F96B44,BE49C6B2,89B3BE30,328A1773,8ECE318C,933DAD77,46D50E48,AB33F7A4,E29885C5,B276E13C,30E04D69,0D348D76,B4979EA4,F4D00A10,CFABD85D,AD6499D7,8050C367,FAF5970E,4EAB4556,A9C2CA39,3CD6346A,711E2239,F0577203,63BC2835,E5C3E6F1",
-                                                                                            "5B6970E0,DC696305,3E370A61,434FEF5D,3817A594,F21EA8EF,2DDCBF5A,BD96243C,C6969C9A,1C63B932,26272411,AFAEDD0C,7B7D6DE1,A397C20A,803D96B0,3456126C,971772A1,4C2A22F5,B3F8198E,65DC08FD,F34136D4,66C45C6B,EE7F6CC3,03A51292",
-                                                                                            "431869C5,AD14A264,425D5157,5DEA9F07",
-                                                                                            "4DE126A4,B67CFFA2,F140D36C,C3F4FCDB,922F1950,F5AD127C",
-                                                                                            "B33F4E61,56160347,D85F50FA,6BF39D6E,80DD7FA0,98D55E94,FDC63019,AE472B97,2AE88985,22AFCA27,9E49F1D8,27E85255,5A0E36A0,55CE2E24,40080298,714BE51F,6B7CD981,BC725D51,8B6B1656,0EFC5D6F,E5111098,D8FA917A,356FB097,380ABA31,EBE08E71,4C60C225",
-                                                                                            "13C3630D,3B1FD771,6AA4331B,F1ED9D32,8E925153,B8F04FB2,8172DF65,EC8D70CD,3B93FF26,E73DF637,80053E1A,9B1A6442,CBC704A4,5D259626,AE9FBC19,DEE640A5,5541612F,C3ED980F,6384F654,CA4D116E,9F1AA33A,90018062,B6F51E6D,B7A70CBE,625852A7",
-                                                                                            "6E003455,A2719263,CDC174B0,08D4BE52,2024F4E8,2024F4E8,F6773201",
-                                                                                            "1B06D571,5EF9FEC4,22D8FE39,13532244,7846A318,EFE7E2DF,99AEEB3B,93E220BD,FDBC8A50,2C3731D9,24B17070,AB564B93,6E01022E,A2719263,A2719263,97EA20B8,3813FC08,184140A1",
-                                                                                            "4BFB42D1,8F707C18,2C014CA6,6773257D,098D79EF,A5B8CAA9",
-                                                                                            "A54AE7B7,D0AACEF7,CC8B3905,B86AEE5B,2E071B5A,68605A36,D3A39366,A717F898,2C804FE3,65A7D8E9,84D676D4,098D79EF,A5B8CAA9"});
-
-            private static List<string> mpropsdefaultscapture = new List<string>(new string[] { "2E7C9A23,7C3C9BEA,A085E47C,5687D081,3EA83D4D,306BE0C4,B34BC429,45DFEF67,295B365E,18C49531,B6CACC47,F7752D66,BB188579,E56A5A1C,F724026D,9DDA7E0,65DCD413,6D51EECB,1F319BE4,50C22184,B87E6DE1,E15CA04A,2DA13CC7,DE469BCF,ACF07F3A,CE14C182,7E86A267,B1A00899,7B9FAAA0,A105F56C,8FE85331,8F12D266,A56CFF1A,723E18BD,C7EDC41F,46A74190,D783C7C7,FF374A2B,A1E58F89,BB9B09AC,40D23ECE,7DA7C387,B5DD1656,C689B79B,5972FB1,4ED9C235,B9C69815,CC003C88,1649D11A,673AB38B,532B112B,6558B586,1FCA2A6A,7C9F3E0C,CA0958DF,D84B7563,575CF388,25A7101D,BF741865,9882DA0,2929EE13,2E4DF59F,F676077C,F79A0AF4,292C078E,4C0D000B,FF3FCB5,A77C9A44,E40962FD,C53D2685,2CC1641D,A0133A76,2761E158,38BF0080,0B0332DF,72E2F577,7F02DF82",
-                                                                                                "9EC80810,FBBE41FB,6BA514AC,E7ED1A59,9CD81E9F,3AA93E76",
-                                                                                                "1B276762,2BE688E0,4653780,1D0FB6F4",
-                                                                                                "E51F88D9,BEC44B8F,BE862050,A1ED363,F9B71F35,F872EFF,122C438C,3C5EBE3C,EE80FD5A",
-                                                                                                "71325391,8BB2A762,4B444DBC,DE962965,9303E1A6,8FD48CB3,AF650A95,27C67B62,127150B8,8333C3C,517E8858,B94857EA,6EF2433F,D3D69366,6608DC0F,74F6B8BE,3C4ECDB",
-                                                                                                "E40A0F8E,7D02B479,BC4649E5,342160A2,AEB63C4B,74E9F5BB,C7C649FF,5F5E76C9,C44ECA22,527818A3",
-                                                                                                "B8465008,9910206D,51B12338,45709EF7,876CBCD2,B131133A,E44D5CEC,F2BD35BB,357CBA6D,2575D371,2EFBB698,5FF8D96F,47595E26,7C24C0B8,FFC4E948,91868CCD,8467C8D0,11E9FD7B,E5FECF61,5EEEF81F,CC23D613",
-                                                                                                "74A3557,683475EE,F3AE2877,28B2940F,CFFB6B0,27BAEB1A,FC8394AC,5FB619D7",
-                                                                                                "808B5D53,1D6F7B34,8C195886,B0833E3A,6C7C6A45,C44DD309,5A9789A0,69E9413E,7FB36CD2,E0A6FEFB,6F849B90,5748690C,FC96F411,A2023E64,3454C0D,DA1A2626",
-                                                                                                "AEF01947,B01315B4,C0B9BCDA,4CEBD53C,17236AA7,E1497820,BF8918DE,EC0725C8,E0171018",
-                                                                                                "5D011F16,BE9BB86F,E5257DB,D44163BA,B08A1C4C,A94763AB,A3C1D8A0,D0DD10A,1FC47677,9D8DF1FC,2F4B9579,7EE762D5",
-                                                                                                "EFC4165A,4AF2CCB6,E0545565,44AEA99C,F88282E4",
-                                                                                                "F9B8B7A0,376CB307,3FC3D20B,5580FD85,CA88E79F,97CB0224,42CE3C8A,206F9EB5"});
-
-            private static List<string> mpropsdefaultsdm = new List<string>(new string[] {"2E7C9A23,7C3C9BEA,A085E47C,5687D081,3EA83D4D,306BE0C4,B34BC429,45DFEF67,295B365E,18C49531,B6CACC47,F7752D66,BB188579,E56A5A1C,F724026D,9DDA7E0,65DCD413,6D51EECB,1F319BE4,50C22184,B87E6DE1,E15CA04A,2DA13CC7,DE469BCF,ACF07F3A,CE14C182,7E86A267,B1A00899,7B9FAAA0,A105F56C,8FE85331,8F12D266,A56CFF1A,723E18BD,C7EDC41F,46A74190,D783C7C7,FF374A2B,A1E58F89,BB9B09AC,40D23ECE,7DA7C387,B5DD1656,C689B79B,5972FB1,4ED9C235,B9C69815,CC003C88,1649D11A,673AB38B,532B112B,6558B586,1FCA2A6A,7C9F3E0C,CA0958DF,D84B7563,575CF388,25A7101D,BF741865,9882DA0,2929EE13,2E4DF59F,F676077C,F79A0AF4,292C078E,4C0D000B,FF3FCB5,A77C9A44,E40962FD,C53D2685,2CC1641D,A0133A76,2761E158,38BF0080,0B0332DF,72E2F577,7F02DF82",
-                                                                                          "9EC80810,FBBE41FB,6BA514AC,E7ED1A59,9CD81E9F,3AA93E76",
-                                                                                          "1B276762,2BE688E0,4653780,1D0FB6F4",
-                                                                                          "E51F88D9,BEC44B8F,BE862050,A1ED363,F9B71F35,F872EFF,122C438C,3C5EBE3C,EE80FD5A",
-                                                                                          "71325391,8BB2A762,4B444DBC,DE962965,9303E1A6,8FD48CB3,AF650A95,27C67B62,127150B8,8333C3C,517E8858,B94857EA,6EF2433F,D3D69366,6608DC0F,74F6B8BE,3C4ECDB",
-                                                                                          "E40A0F8E,7D02B479,BC4649E5,342160A2,AEB63C4B,74E9F5BB,C7C649FF,5F5E76C9,C44ECA22,527818A3",
-                                                                                          "B8465008,9910206D,51B12338,45709EF7,876CBCD2,B131133A,E44D5CEC,F2BD35BB,357CBA6D,2575D371,2EFBB698,5FF8D96F,47595E26,7C24C0B8,FFC4E948,91868CCD,8467C8D0,11E9FD7B,E5FECF61,5EEEF81F,CC23D613",
-                                                                                          "74A3557,683475EE,F3AE2877,28B2940F,CFFB6B0,27BAEB1A,FC8394AC,5FB619D7",
-                                                                                          "808B5D53,1D6F7B34,8C195886,B0833E3A,6C7C6A45,C44DD309,5A9789A0,69E9413E,7FB36CD2,E0A6FEFB,6F849B90,5748690C,FC96F411,A2023E64,3454C0D,DA1A2626",
-                                                                                          "AEF01947,B01315B4,C0B9BCDA,4CEBD53C,17236AA7,E1497820,BF8918DE,EC0725C8,E0171018",
-                                                                                          "5D011F16,BE9BB86F,E5257DB,D44163BA,B08A1C4C,A94763AB,A3C1D8A0,D0DD10A,1FC47677,9D8DF1FC,2F4B9579,7EE762D5",
-                                                                                          "EFC4165A,4AF2CCB6,E0545565,44AEA99C,F88282E4",
-                                                                                          "F9B8B7A0,376CB307,3FC3D20B,5580FD85,CA88E79F,97CB0224,42CE3C8A,206F9EB5,233DFD6A,C972C9D5,EFB6165B,1338DD60,9A382361,7125B4CE,AE8D2FA8,7C964BAF",
-                                                                                          "B5AE3861,9A515D3F,9D47AFF9,3EBFCA03,E2AA93CA,E2048E2C,29E51C94,B83FBAA3,55908EC0,379FB809,79C0A750,2B3C88AE,174B35D6,FB9D3051,B3B836B0,DCA5159A,34E04379,B1367227,A37FD6BA,3F7E8EB1,29C26335,1C14C7DA",
-                                                                                          "D2D24770,C4932AF2,AFDD8CBB,89F828EB,3C1B83BA,C2339364,E0264F5D,A6C23161,51400793,36AF4BB5,418F055A,C25DE433,E4DB3322,5AE0A333,7F8C93D0,9C7F3F08,FD389C44,D647866B,4A46E08E,70B0E25A,FDC8BCF7,ADA71CB1,5B385FFF,6277EC7E,BF1B2B36,8C9FC63C,FD3D779F,FF69E270,EAEED302,2EDD9003,4BBBAC6E,C2A63045,8DA442A2,4AF4BD44,7F7927AC,D7F1D89C,333332ED,893BA3A0,5779131A,53724BB0,0286F5F0,C00C3530,DB2C3E38,8DEB227B,0C0CF205,FE4E5688,F0873AFA,4A1BAE33,6881B256,A09BA29D,9BA61A22,81ED04F0,52DC99B6,E2FFAB8E,3DEFCE4D,C04ED1FD,6BEC23AD,CBE2A89C,BF77D87C,153F040D,23A8A0E0,4D306507,B2B841A3,97D0969C",
-                                                                                          "AC7EC6AE,5981477A,0499AA60,9109DFBC,C08841A0,D1DDE44B,A7378EFF,B6602D50,C676CD85,D0FFE297,9A91F5AC,B48A29AC,7906B296,7C1AABEC,25054043,FE18F26F,FA10E36E,63F9CEA3,5DD2F986,9C1D6A5B,3CA58296,CB4D298C,39D75A93,B9319CBB,EF650831,E7F10145,1A76E4F0,CDE820A1,E2C51D69,45D81E73,A11AD1D7,A6E54878,249D1342,1CB21205,357CBA6D,F2BD35BB,2575D371,7C24C0B8,873F5C24,B56E3881,CC8478D8,C7116D1E,9C391ADE,276886A1,CA6ACA41,8A68CE9D,74503C56,2DE41B51,392D62AA,A7CF17C4,EDD0E658,918D2BAE,6AB3B57B,7A845307,01457D66,4014C50C,5CD2E1EA,3EA37E15,27BAEB1A,DCA9A809,74219CCB,417EC5DE,FCDB5E71,2DA13CC7,B17EAD7D,4F3FA437,A24CE57E,3794ACC9,A420E7B0,350F045E,E27289B5,3F0E8CE3,9D4F3537,6C38D8FA,534ACC12,B7DD5FD1,8538A366,158C9081,6B795EBC,B892B90D,E56BA797,876DEB81,D02ABBB2,22751A56,3E6FF91D,30699A93,C18B8FA3,B2614DD1,8CA6EAD9,7C041BDB",
-                                                                                          "522CE28E,F7752D66,5DB600C9,848B8ABA,11FFB28C,40E01BC1,889E3E33,2DE41B51,8C4D43C4,6204EF38,49344B5A,FB120943,CAB94BE5,8E58F6AE,4EFF1313,671C5C38,3F2EC2B6,88D6CD61,7A9EBC92,4AF9D1D9,72BFC423,9FED6275,B22E8314,8C842A43,33D1F786,F5D9C598,B46EE154,9026C985,D593F420,33A12F6E,2652CBD9,CA6ACA41,070DBA50,276886A1,71C6E744,7CE1C05F,DF435615,E210FECF,66C0304D,25967365,1DA1220D,2F61C58E,4293EBF2,55411B30,677FBFAD,82900FDB,05993A0E,1A97B9A2,3C21B172,88476B1F,C46EFE43,E62441AD,861070B1,5778A9B1,389E11B5,DFF7CC31,34DD0DC9,DA96560A",
-                                                                                          "5A5C0189,5ABD03F2,4259D185,ADFAAA90,748EB5EE,42EFD478,0A4723A5,3C314954,6D8066A2,BE577E09,A857DD30,218EC9A2,BF18A65C,285A9FE7,B1CA32D4,8810DF5E,6373EEF4,162A902D,7FDB66E9,E40743D1,392ED991,F475E4AE,2A783C24,0F8B1AD8,F9A05949,F821EFA6,087E7705,01C802F2,96CA139E,C8821067,99CBDED8,F4BD03EC,84B09BF2,DF7F5979,76138C75,EB8754FB,2EF52FC7,FE3FE726,3CB2CB42,58CFB07D,946BDDF0,785F56EE,2B862DA0,A8EBDD48,38B8C805,7F0A0985,BC835FE5,BDBD6259,04CA7DF2",
-                                                                                          "27F13BA6,DA6EE30A,15BB173A,AFDE0DE9,4B2E021F,BC342695,8057D1CD,9792ED2B,5D7D8C19,A523884C,4E8CEE2C,79263052,56E458B3,20E736B0,A1736DDC,129E1A1E,82B3305C,4574FFCB,112321D8,7394BF68,26654C5C,8554E2E8,EF675E51,96300452,BB5B8306,E772C534,21E1D015,393268B6,4F762B3D,CBCA0DE3,06901972,1E7EB34F,38D1FDF5,292BC8A9,71A7F702,AD2857C2,CCEAAF2D,CF457E16,56833FF6",
-                                                                                          "D7ADE0B8,69702115,8978ACE1,F590C75E,549E6D6B,289AB86D,4D02ED6A,5F2D2615,974101E9,6DD3C362,CC526C0B,70F9805A,EFA2443E,34A9E824,D04E18F0,6C6CD789,C618FE56,231CC3D2,204BE438,469E8AD5,74721347,A8B59980,EF3AA68D,229D5A2D,BA8C3D2D,474E1975,0189CB2B,6F5FF065,197F0168,AFFE67A4,6CA1E917,42561AA1,827092E6,F97807C6,F1FD3CFF,3EDD1DC3,3898738E,7A5F8915,F275DF37,D46BC199,62DD7CBE",
-                                                                                          "C3FABAEE,FC0D2F15,E8D688A8,F2740D0C,6D3F1D16,554EED06,51E7E4F5,41EE5902,3BA14C68,2BEDCF90,BD511D34,DF7B1B6E,FDE81647,2BF6BBCF,989B0462,9BB260EF",
-                                                                                          "C3F00C20,237861B3,C78E90F8,55F4B55D,6EF7C1E5,80B96568,B96AD9F2,C745F5A8",
-                                                                                          "A11DB377,493F5F6F,56F7FAE0,5A990226,6A20A135,7FDECCB1,8D8D680E,B1EEB0DC,912C6F58,D7627BC3,2AFF21A7,64C7153A,8E8068AC,C69958DD,784E3C48,35C41C32,983947B2,1A78B62B,08BE12B6,E405C946,C15B03F1,D25BA5F2,BD95FC67,AC7E5A38,9AC036BC,763DEDB8,3DF8913E,F6A38295,0D56AFFB,A93DE7CB,770C0368,53ACBCA6,875C14A6,CAE6B5E9,666CEAA3,96A6B33B,F2B6EB52,E5054FEF,88AA173A,4095E943,B34EE0EC,E7904742,3D1B24C8,B4621358,9DE6F54D,68E40B48,9637D7B4,4366B213,39BC9EBF,67877A54,5661D809,FCA1249D,D7F1DB3B,7DAB26AB,389F3C9D,844BD3E9,4D64E628,282F9BBE,43B4D2BC,563777C1,342CBDB4,400F041D,55C92F91,5BBF8F23,CA96ECD0,7F4D563E,6A1B2BDA,4EDBF564,1D769048,264AD095,380C7418,5F5642AB,71ABE756,A72625EF,878D66CA,719B3AE6,2B682E7D,150B01C3,95A52A74,F0BDDF93,FE8B7B2E,F08418BA,641C7FE9,16B8E523,78E4ACB9,A45B47E0,0BF69604,17B9AD8A,5C9B374C,9AE5ED7F,3F32B616,55A82AC6,67F5CF61,A78D86DA,DF8F76DD,93EE5A7E,4E829BBB,B7126C6D,C8630F0E,D29D2382,5DE7B9A4,1C2A7F48,159E12C2,AC9D8713,4D720F4E,60B435D2,B0EF5647,8A0BBF9D,E2717BD5",
-                                                                                          "1173612A,577BA63C,07214C86,7322DD8A,14E631A8,4E6FED66",
-                                                                                          "F1337DE5,D7AB5EDB,808A8D98,B6B7AB45,D3E08775,F2099C08,15F3B86C,F8E728AB,5AEB062C,0BEBE82F,471CC681,55D2619B,DBBC6FBE,9EE25FAF,6393E913,62F370D4,23C8E97A,123C23E9,89696AD0,31BA3B53,32C96A52,A5196261,370C2079,5A666558,E5CFF3D4,7BD571D9,ADBA2D46,3C2C4BF0,CD5E5D8D,AF2D6CB2,2D80FC8A,3C04C081,B0AFD3E2,BE7FCC0F,11105A79,AB0391C1,060C1123,E794E24D,6BB55C74,F5DDA35D,06924B81,14A157DE,58A16E84,CC87476A,B856A8FD,92A53EF6,D27DC540,84DFAC51,C917B3E8",
-                                                                                          "AD8C4C69,DF90308C,2A667310,D17A9461,3DA676E8,161AA7D5,8035DC01,2E5F6892,87A67D61,C779FFF6,7E1928FC,644BCB4C,628549ED,4BE9928B,31FF22CC,6FC3E5E0,89855E6F,8A85AF58,44952A09,3C7A3036,A325F1CF,C90AE498,80620730,EF1D64A5,27055474,7B5AB510,188FEF7C",
-                                                                                          "85111220,8CD63A06,273CF578,78A811AA,073061F3,09FCBDE7,44AE05DE,CDD1A3EB,C43E9C6D,29DD35B8,D1A401A3,55778682,19A7DA0D,F3541068,049FFB40,B611EB07,6C51261A,B0B986C4,1B3287F3,C5755176,C114CE95,B4212798,B98797F6,BD9E98C9,8875B882,9A5C431D,421E102A,8AA61FD1,B15BA2D4,05F74459,7565C0E7,0739AE23,3C3649B8,C7BA5FD9,0DF3D3A7,F2515F80,91B91F7D,097099E6,9358DD56,97FD512A,5CC3CE68",
-                                                                                          "0E2A823E,DBA04CB1,EEB1A195,34554245,D98C3759,49979437,3B40315A,F0E7834D,F6B52431,555D81D8,7CCA0A5E,F765DC2F,E7C48647,BBDC4F1A,CB9421B9,3BDD92D4,38543636,7661B973,D2822EE0,14917E66,B6687031,6A077455,793BC737,D048B4F5,F734D17A,18D5C385,776B8A11",
-                                                                                          "431B529E,FDB8A439,42FFA24E,FD3A1616,7C17D532,3F3BCE2F,0E26794D,D0A67102,E07C9DFA,C3CCD74F,D187A7B4,A6DC4761,4FBEE77F,5B6835E7,7F71FA19,083DF517,CF989620,5F911F1D,05213D35,8BB5D808,88525AE3,21A0465B,0A21DE74,2A55D7E6,9CE203F6,5B7C3A32,B65E519A,3551D083,3D2730D1,4F120520,4F8DE627,AF7E2606,A2490B9C,14006F09,F6B83479,C41B8039,2E72D572,27391A04,BA3C2825,56217F90,A18079A5",
-                                                                                          "651ED9A0,C2D7F2C7,3BBD0FF6,817F0D0E,4B6E534B,E143B9B2,202056B3,E0C0CEAD,85389651,26E644F4,1EEB7E4A,A26133FA,8E9E5130,1BFE545D,2AB8F1D2,C8A18A81,33E46105,3D3C9C28,2B1E3BFB",
-                                                                                          "39D75A93,B9319CBB,EF650831,E7F10145,1A76E4F0,CDE820A1,E2C51D69,45D81E73,A11AD1D7,A6E54878,CC8478D8,C7116D1E,9C391ADE,0208A347,389B4DA3,9292F5F3,A0639194,B56E3881,873F5C24,0A312D63,F86E89DE,66E26804,350F045E,0EE23BD0,9868B672,C5387D57,45DA9996,2B45E599,F1C07967,DECE46FF,85049A3D,D2CB36ED",
-                                                                                          "7EC70E5A,9D440B24,77A1B032,87BCE2A7,3EA497DD,4640E9FC,F02A7163,BC92BEA4,2B9FEA8C,87289B3B,88402278,70F2B3DE,757CAAD4,96880EDD,52B6E0D1,436DBEA2,85E7B733,9BC77D46,A5A35D61,D7753887,94B3BC1F,8B486959,C29CC3DB,17FF8EBA,408EBB61,A7E00235,9EAFE72B,444754AF,6B838CE6,E43C4EAD,A0E2D595,28D625D6,CB8B54A0,02015F32,B0569C0B,A2A3F651,6D410DBA,E85100D0,052B3F13,E525CA93,E6CE6B97,0D78A2A6,553B5E42,A516AADA,046F4313,4125B7B6,E8320096,C4463793,D16ED66F,ADBD3F8B",
-                                                                                          "EE9D9F22,63C62308,65D5D133,F902FAC4,FC6C3ABF,A2049F84,DF869348,DEBCC638,D083E2EB,CF537A21,F1D637E7,6359CF70,CDFDE752,E067AB34,32A5CFB3,034470ED,0614768D,97E99A39,D721F01A,ADFC9DD0",
-                                                                                          "14A07210,DB6BFF98,24FD56C0,5750BB66,0516376C,F3289391,1CD6B125,F57FE274,377D9206,669B7041,64024CC0,13142AE5,2A3FDC0C,38ABFBC0,B4DBE72A,90379A82,CC742196,B25DE10E,5A7DE93C,16F063CB,08ADC746,06FBDEE8,A7C9A19D",
-                                                                                          "14791163,7FCCC104,7756B8BD,0AB4DF9F,9B25007D,D077AE75,03096DC5,CCF7E186,D3C5CBF8,7CB7364D,5A73A10E,74193851,A474F821,70EF8CD7,CA10FD05,B71CEEEF,FB1BC2EB,6EA72DF5,F2B19E6C,182743D3,753B7DFE,77C48318,BACB21DB,FB3C2945,A0860CA4,4933EA45,F6078ECB,3F966352,EF51DAC0,C04B3C88,DA63243F,E8D3ED7C,FD0415E0,0E53387E,EA87F0ED,889B632B,7C5B1ACC,F5411BB5,43CFF024,79C30A9D,23118A7E",
-                                                                                          "8D49232F,F500A753,8B316741,DA1F051B,17507F7D,B25D5BBF,52AD0B0B,3787C289,5CC31D0E,592F0B89,1C816A7C",
-                                                                                          "A6CDE189,D40F3C0B,06961D74,14A1B98B,9C4AE98B,9EC3D01D,AB836F80",
-                                                                                          "0488BBD7,519A49D8,F6FE94AA,357BEFA7,667B7E0E,8DB64C83,A2FEECEF,90894804,7F2B2550,DCAD4137,C8DE4156,DF176DC8,61AD1E25,647023AB,57CF0A75,1930DA61,28CE1BAC,97C21DE3,F5A7FCEA,D81D9B1C,27B9AD13,4B7A2059,511100D2,F40C5722,522DAFE9,EB3ECDE7,8B2812EC",
-                                                                                          "EAE5AB7C,9F5710E8,E74A21F5,73D22E7F,31829521,A935AD92,5BD391EF,2A88C695",
-                                                                                          "77C2A9F1,5C6CE824,7C46A803,2B3FF42A,197D50A5,4FABBD01,61CE6146,92E29019,7FFBC1E2,5B386B9A,BDA3605C,392D7653,09E13C63,14445129,B1048AAB,C2C12E24,109A860F,4A03746E,ECE8DC86,B467C540,D03B3780,5DF38783,6BD1233E,C60F5AC3,10951EEC,22E5438C,60DABFAA,720CE20E,77210061,7B5026A9,2730DD95,9E30CD97,0834E3B2,D6C700D7,A8231F27,75A8446C,442F28A7,225BB56B,77C6E168,1458E1D7,6077632D,B1078EFD,7F65E2C7,5AE7BFF9,3DC4C741,427BADC1,813C7637,AA9E9321,CEA2D48E,935DE6A4,34713C62,09FB0974,28655EA8,5774CDAD,C853667B,CC6DEB6F,75AEE460,7376DFF0,1A59ADB7,9CA884DD,CB4D298C,7E6CAA3B,633FC452,0B3502AA,39655F0A,91000CC3,BFB6EA30,E56BA797,F5E87E89,C33719A0,F66F2146,5144D666,757C28D,BABEA183,64544401,5CCC56BA,A5F93E5E,624E4227,FE89EE4A,8CA6EAD9,A4EF297F,38088E4C,42EAF9E3,8A0D7B1A,8CEEDDAC,D2463525,09DA3EB9,6EFF2315,B01B091D,54F96425",
-                                                                                          "56EA110C,4755F0BC,1EC69582,B86147A1,BDE0764E,FA98958C,3E675324,8C6CD70C,B4F4281A,4DAD98E3,35DC769D,50534AD4,F00BEC6F,6180E18B,F37D111D,C75C27F0,CF33387E,0239246D,141252D1,D8344CA2",
-                                                                                          "FD5601DD,C33233FC,A53214DB,549C9517,976207EA,04D8CE01,2F685727,D7F7B22F,D1B5EE46,E86AF833,0827E835,F1D55C6B,44F95782,7842AD45,D28BE7B5,D028B5E7,B177A5DD,746FBD5D,3AC67077",
-                                                                                          "42F59AF7,BC66A271,A55107A9,4D96D6DC,3153C97F,A004C97E,24CB3D69,65A13FE4,3A915583,639B5E46,BD10D1EF,5758A1F8,7372B010,A1DD84AE,C672CB17,A3888C97,17CF71B3,0E1050E4,6E15D391",
-                                                                                          "84A4A2D1,85D60DE1,545DB0AD,071D1295,63FB0227,43DCC0BB,97BEF533,DC8F4A09,6B676D83,5CC32DE7,AB104A84,732F5ABF,7A03865F,DC799A5A,CDE2FD2D,B794D091,379C509E,2952B40B,69AA5BA5,A44AB305,E75B5849,310A5999,AA30C7AB,2426622A,76EB3D6A,07E9F2EE,B131A564,A4D194D1,1DA179C0,5AADE199,A24DAE3A,66DA3567,C2DD62CD,A9780F53,B6E4AA2C,B2BE6261,702F82C3,81EC263C,2AC8F7FF,F3E48A37,5CD56F3C,271E03CE,3A358389,5554B9C7,62C9D4B1,A68C4885,B8B4ECD6,884F0C03,489F4F55,28108D50,B582FDE3,1B614A86,9C421940,81BFE434,991613C8,8B9BF8CC,F274C684,E0BB2311,95B3ED4D,8743D06D,798934F8,D9A059C4,CB66BD51,C1615682,5169C3D3,24B78AEE,C5B42D86,18A6E847",
-                                                                                          "8A635002,DF6B1251,81ACAD01,311535BA,B0F1C510,ED8EDDE3,CF22ED6E,1D1FEC83,B5380B02,77DD0621,EDD6E52B,706EAEB2,58C04660,B664C1F7,1810CDFF,AF08F987,0A34A69E,7DB0927C,0863DBC2,6A0CED95,F89041E9,F88C016E,3910FFE1",
-                                                                                          "AF500B3C,135A0165,68ADBF92,711C2F18,7272BFAE,D4F96B44,BE49C6B2,89B3BE30,328A1773,8ECE318C,933DAD77,46D50E48,AB33F7A4,E29885C5,B276E13C,30E04D69,0D348D76,B4979EA4,F4D00A10,CFABD85D,AD6499D7,8050C367,FAF5970E,4EAB4556,A9C2CA39,3CD6346A,711E2239,F0577203,63BC2835,E5C3E6F1",
-                                                                                          "5B6970E0,DC696305,3E370A61,434FEF5D,3817A594,F21EA8EF,2DDCBF5A,BD96243C,C6969C9A,1C63B932,26272411,AFAEDD0C,7B7D6DE1,A397C20A,803D96B0,3456126C,971772A1,4C2A22F5,B3F8198E,65DC08FD,F34136D4,66C45C6B,EE7F6CC3,03A51292",
-                                                                                          "431869C5,AD14A264,425D5157,5DEA9F07",
-                                                                                          "4DE126A4,B67CFFA2,F140D36C,C3F4FCDB,922F1950,F5AD127C",
-                                                                                          "B33F4E61,56160347,D85F50FA,6BF39D6E,80DD7FA0,98D55E94,FDC63019,AE472B97,2AE88985,22AFCA27,9E49F1D8,27E85255,5A0E36A0,55CE2E24,40080298,714BE51F,6B7CD981,BC725D51,8B6B1656,0EFC5D6F,E5111098,D8FA917A,356FB097,380ABA31,EBE08E71,4C60C225",
-                                                                                          "13C3630D,3B1FD771,6AA4331B,F1ED9D32,8E925153,B8F04FB2,8172DF65,EC8D70CD,3B93FF26,E73DF637,80053E1A,9B1A6442,CBC704A4,5D259626,AE9FBC19,DEE640A5,5541612F,C3ED980F,6384F654,CA4D116E,9F1AA33A,90018062,B6F51E6D,B7A70CBE,625852A7",
-                                                                                          "6E003455,A2719263,CDC174B0,08D4BE52,2024F4E8,2024F4E8,F6773201",
-                                                                                          "1B06D571,5EF9FEC4,22D8FE39,13532244,7846A318,EFE7E2DF,99AEEB3B,93E220BD,FDBC8A50,2C3731D9,24B17070,AB564B93,6E01022E,A2719263,A2719263,97EA20B8,3813FC08,184140A1",
-                                                                                          "4BFB42D1,8F707C18,2C014CA6,6773257D,098D79EF,A5B8CAA9",
-                                                                                          "A54AE7B7,D0AACEF7,CC8B3905,B86AEE5B,2E071B5A,68605A36,D3A39366,A717F898,2C804FE3,65A7D8E9,84D676D4,098D79EF,A5B8CAA9"});
-
-            public static List<string> MPropsDefaultsRace { get => mpropsdefaultsrace; }
-            public static List<string> MPropsDefaultsSurvival { get => mpropsdefaultssurvival; }
-            public static List<string> MPropsDefaultsLTS { get => mpropsdefaultslts; }
-            public static List<string> MPropsDefaultsCapture { get => mpropsdefaultscapture; }
-            public static List<string> MPropsDefaultsDM { get => mpropsdefaultsdm; }
         }
 
         public class ScrPatchValue

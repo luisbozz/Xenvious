@@ -29,11 +29,11 @@
 
             <!-- Top bar -->
             <DockPanel Margin="0,0,0,10">
-                <TextBlock Text="Debug Log" FontSize="16" FontWeight="SemiBold" Foreground="#E6EAF2" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                <TextBlock Text="Debug Log" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource TextColor}" DockPanel.Dock="Left" VerticalAlignment="Center"/>
                 <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="#6C7378" Width="1" Margin="15,8,15,8" />
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
                     <Label Content="{Binding Translation[logger_autoscroll], FallbackValue=Auto-Scroll}" Foreground="{DynamicResource TextColor}" VerticalAlignment="Center"/>
-                    <CheckBox x:Name="AutoScrollCheck" IsChecked="True" Content="Auto-Scroll" Foreground="#E6EAF2"/>
+                    <CheckBox x:Name="AutoScrollCheck" IsChecked="True" Content="Auto-Scroll" Foreground="{DynamicResource TextColor}"/>
                     <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="#6C7378" Width="1" Margin="15,8,15,8" />
                     <Border CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="4" VerticalAlignment="Bottom" MaxHeight="30">
                         <Border.Effect>
@@ -61,7 +61,7 @@
 
             <!-- Log list -->
             <ListBox x:Name="List" Grid.Row="2" Margin="0,10,0,0" FontFamily="Cascadia Code, Consolas, 'Segoe UI Mono'"
-                     Background="{DynamicResource SeactionHeaderBackgroundBrush}" Foreground="#E6EAF2" BorderBrush="#232637" BorderThickness="1"
+                     Background="{DynamicResource SeactionHeaderBackgroundBrush}" Foreground="{DynamicResource TextColor}" BorderBrush="{DynamicResource LineBrush}" BorderThickness="1"
                      SelectionMode="Extended" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.ScrollUnit="Pixel">
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type logging:LogEntry}">
@@ -69,6 +69,7 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="120"/>
                                 <ColumnDefinition Width="70"/>
+                                <ColumnDefinition Width="130"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="{Binding Timestamp, StringFormat=HH:mm:ss.fff}" Opacity="0.8"/>
@@ -114,9 +115,9 @@
                                     </Style>
                                 </Border.Style>
                             </Border>
-                            <TextBlock Grid.Column="2" TextWrapping="Wrap">
-                                <Run Text="{Binding Source, Mode=OneWay, StringFormat=[{0}], TargetNullValue=''}"/>
-                                <Run Text=" "/>
+                            <!-- Source in its own column, so every message starts at the same place. -->
+                            <TextBlock Grid.Column="2" Text="{Binding Source, Mode=OneWay, StringFormat=[{0}], TargetNullValue=''}" Opacity="0.8" TextTrimming="CharacterEllipsis" ToolTip="{Binding Source}" Margin="0,0,8,0"/>
+                            <TextBlock Grid.Column="3" TextWrapping="Wrap">
                                 <Run Text="{Binding Message, Mode=OneWay}"/>
                                 <Run Text="{Binding ExceptionMessage, Mode=OneWay, TargetNullValue='', StringFormat=  (EX: {0})}"/>
                             </TextBlock>

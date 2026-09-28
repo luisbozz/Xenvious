@@ -20,12 +20,14 @@ namespace Xenvious
 
         public bool RefreshScriptPointer()
         {
-            ScriptPointer = ScrProgramScanner.GetScrProgramByName(ScriptName);
-            if (ScriptPointer == 0)
-            {
+            ulong pointer = ScrProgramScanner.GetScrProgramByName(ScriptName);
+            // A script loaded again sits somewhere else; the old table address now belongs to
+            // unrelated memory, so it must be searched again.
+            if (pointer != ScriptPointer)
                 DataRegion = null;
+            ScriptPointer = pointer;
+            if (ScriptPointer == 0)
                 return false;
-            }
 
             return true;
         }

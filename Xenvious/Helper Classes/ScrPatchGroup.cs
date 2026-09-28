@@ -75,6 +75,7 @@ namespace Xenvious
                 case "fm_race_creator": return "Race";
                 case "fm_lts_creator": return "LTS";
                 case "fm_capture_creator": return "Capture";
+                case "public_mission_creator": return "Mission";
                 case "fm_deathmatch_creator": return "Deathmatch";
                 case "fm_survival_creator": return "Survival";
                 default: return script;

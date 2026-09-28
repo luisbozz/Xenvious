@@ -7,14 +7,14 @@
              d:DesignHeight="400" Width="800"
              x:Name="CPanel">
 
-    <Border Background="#2F3136" CornerRadius="5" Padding="0,0,0,5">
+    <Border Background="{DynamicResource SectionBackgroundBrush}" CornerRadius="5" Padding="0,0,0,5">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Border Margin="3" CornerRadius="5" Background="#36393F" Grid.Row="0">
+            <Border Margin="3" CornerRadius="5" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Grid.Row="0">
                 <Viewbox VerticalAlignment="Center" HorizontalAlignment="Center">
                     <Label Name="HeaderLabel" Foreground="{DynamicResource TextColor}" FontFamily="{DynamicResource Volte}" FontWeight="Bold" Content="{Binding Path=HeaderText, ElementName=CPanel}"/>
                 </Viewbox>

@@ -175,6 +175,32 @@
     <Compile Include="Helper Classes\HudColors.cs" />
     <Compile Include="AES\AES.cs" />
     <Compile Include="Controls\ComboBoxHelper.cs" />
+    <Compile Include="Controls\JobMap.cs" />
+    <Compile Include="Controls\MasonryPanel.cs" />
+    <Compile Include="Controls\SearchableCombo.cs" />
+    <Compile Include="Controls\AreaEditor.cs" />
+    <Compile Include="Controls\BareSearchBox.cs" />
+    <Compile Include="Controls\EntityPicker.cs" />
+    <Compile Include="Controls\PlayAreaView.cs" />
+    <Compile Include="Controls\GtaTextAssist.cs" />
+    <Compile Include="Controls\RulesView.cs" />
+    <Compile Include="Controls\RulesView.Flow.cs" />
+    <Compile Include="Controls\EntityRulesCard.cs" />
+    <Compile Include="Controls\SectionCard.cs" />
+    <Compile Include="Controls\RuleStrip.cs" />
+    <Compile Include="Controls\MenuBitsView.cs" />
+    <Compile Include="Controls\VisibilityCard.cs" />
+    <Compile Include="Controls\ModelCard.xaml.cs">
+      <DependentUpon>ModelCard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ModelCatalog.xaml.cs">
+      <DependentUpon>ModelCatalog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Creator Classes\ModelCatalogStore.cs" />
+    <Compile Include="Creator Classes\ModelImageCache.cs" />
+    <Compile Include="Creator Classes\ActorCategories.cs" />
+    <Compile Include="Creator Classes\ZoneTypes.cs" />
+    <Compile Include="MainWindow\MainWindow.ModelCatalog.cs" />
     <Compile Include="Controls\CustomPanel.xaml.cs">
       <DependentUpon>CustomPanel.xaml</DependentUpon>
     </Compile>
@@ -201,6 +227,15 @@
       <DependentUpon>PlacementPreview3D.xaml</DependentUpon>
     </Compile>
     <Compile Include="Creator Classes\Gangs.cs" />
+    <Compile Include="Creator Classes\GangTypes.cs" />
+    <Compile Include="Creator Classes\ExtraObjectives.cs" />
+    <Compile Include="Creator Classes\GamePatches.cs" />
+    <Compile Include="Creator Classes\PlayAreas.cs" />
+    <Compile Include="Creator Classes\Rules.cs" />
+    <Compile Include="Creator Classes\EntityRules.cs" />
+    <Compile Include="Creator Classes\RuleFlow.cs" />
+    <Compile Include="Creator Classes\VisibilityGroups.cs" />
+    <Compile Include="Creator Classes\ScriptThreadLog.cs" />
     <Compile Include="Creator Classes\LocalFreezer.cs" />
     <Compile Include="Creator Classes\GlobalFreezer.cs" />
     <Compile Include="Creator Classes\JobTime.cs" />
@@ -210,6 +245,8 @@
     <Compile Include="Creator Classes\PreciseTemplates.cs" />
     <Compile Include="Creator Classes\ScrProgramScanner.cs" />
     <Compile Include="Creator Classes\ModdedPropSource.cs" />
+    <Compile Include="Creator Classes\ModdedPropMemory.cs" />
+    <Compile Include="Creator Classes\ModdedPropTable.cs" />
     <Compile Include="Creator Classes\nrcidcopy.cs" />
     <Compile Include="Creator Classes\Outfit.cs" />
     <Compile Include="Creator Classes\rspvehs.cs" />
@@ -278,6 +315,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\CustomButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ModelCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ModelCatalog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\NavBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -383,7 +432,6 @@
     <Compile Include="MainWindow\MainWindow.Misc.MapMover.cs" />
     <Compile Include="MainWindow\MainWindow.Misc.MenuSwitcher.cs" />
     <Compile Include="MainWindow\MainWindow.Misc.NrcidJobCopy.cs" />
-    <Compile Include="MainWindow\MainWindow.Misc.SCJobs.cs" />
     <Compile Include="MainWindow\MainWindow.Misc.ScrPatches.cs" />
     <Compile Include="MainWindow\MainWindow.GameConnection.cs" />
     <Compile Include="MainWindow\MainWindow.Misc.cs" />
@@ -397,9 +445,7 @@
     <Compile Include="MainWindow\MainWindow.Mission.Kill.cs" />
     <Compile Include="MainWindow\MainWindow.Mission.Menubs.cs" />
     <Compile Include="MainWindow\MainWindow.Mission.OtZone.cs" />
-    <Compile Include="MainWindow\MainWindow.Mission.PA.cs" />
     <Compile Include="MainWindow\MainWindow.Mission.PlayerSettings.cs" />
-    <Compile Include="MainWindow\MainWindow.Mission.RA.cs" />
     <Compile Include="MainWindow\MainWindow.Mission.SMS.cs" />
     <Compile Include="MainWindow\MainWindow.Mission.TeamSettings.cs" />
     <Compile Include="MainWindow\MainWindow.Mission.TeleportMarkers.cs" />
@@ -416,11 +462,23 @@
     <Compile Include="MainWindow\MainWindow.Survival.cs" />
     <Compile Include="MainWindow\MainWindow.Teleport.cs" />
     <Compile Include="MainWindow\MainWindow.Vehicles.cs" />
+    <Compile Include="MainWindow\MainWindow.VehicleLayout.cs" />
     <Compile Include="MainWindow\MainWindow.Weapons.cs" />
     <Compile Include="MainWindow\MainWindow.Worker.cs" />
     <Compile Include="MainWindow\MainWindow.Zones.cs" />
     <Compile Include="MainWindow\MainWindow.Dialog.cs" />
     <Compile Include="MainWindow\MainWindow.Dashboard.cs" />
+    <Compile Include="MainWindow\MainWindow.DashboardCreator.cs" />
+    <Compile Include="MainWindow\MainWindow.EditNav.cs" />
+    <Compile Include="MainWindow\MainWindow.EditSearch.cs" />
+    <Compile Include="MainWindow\MainWindow.PlayArea.cs" />
+    <Compile Include="MainWindow\MainWindow.EntryBar.cs" />
+    <Compile Include="MainWindow\MainWindow.EditHeaderBar.cs" />
+    <Compile Include="MainWindow\MainWindow.RebuildRequest.cs" />
+    <Compile Include="MainWindow\MainWindow.ExtraObjectives.cs" />
+    <Compile Include="MainWindow\MainWindow.RuleHelp.cs" />
+    <Compile Include="MainWindow\MainWindow.Themes.cs" />
+    <Compile Include="Helper Classes\Themes.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -448,14 +506,18 @@
     <EmbeddedResource Include="OfflineData\legacy\offsets.ini" />
     <EmbeddedResource Include="OfflineData\legacy\scrpatches.json" />
     <EmbeddedResource Include="OfflineData\legacy\scrpatchesdev.json" />
+    <EmbeddedResource Include="OfflineData\legacy\mprops.json" />
     <EmbeddedResource Include="OfflineData\enhanced\offsets.ini" />
     <EmbeddedResource Include="OfflineData\enhanced\scrpatches.json" />
     <EmbeddedResource Include="OfflineData\enhanced\scrpatchesdev.json" />
+    <EmbeddedResource Include="OfflineData\enhanced\mprops.json" />
     <EmbeddedResource Include="OfflineData\props.json" />
+    <EmbeddedResource Include="OfflineData\objective_texts.json" />
     <EmbeddedResource Include="OfflineData\vehicles.json" />
     <EmbeddedResource Include="OfflineData\placement_presets.json" />
     <EmbeddedResource Include="OfflineData\weapons.json" />
     <EmbeddedResource Include="OfflineData\actors.json" />
+    <EmbeddedResource Include="OfflineData\menubits.json" />
     <None Include=".manifest" />
     <Resource Include="Fonts\Nunito\Nunito-Black.ttf" />
     <Resource Include="Fonts\Nunito\Nunito-BlackItalic.ttf" />
@@ -489,6 +551,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\gtatext\gta_blank.png" />
+    <Resource Include="Images\gtatext\gta_created.png" />
+    <Resource Include="Images\gtatext\gta_lock.png" />
+    <Resource Include="Images\gtatext\gta_rockstar.png" />
+    <Resource Include="Images\gtatext\gta_star.png" />
+    <Resource Include="Images\gtatext\gta_verified.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\ogimage256.png">
