@@ -37,6 +37,7 @@ namespace Xenvious
             public Action Open;             // instead of Button, e.g. a page of its own
             public TabItem Page;            // for Open: the page that counts as this sub-page
             public Func<int> Count;         // entries of this sub-page in the job, shown as a badge
+            public string Icon;             // geometry key; null: no icon (the parent's in favourites)
         }
 
         private List<EditNavEntry> _editNav;
@@ -58,8 +59,8 @@ namespace Xenvious
                 entry.Subs.AddRange(subs);
                 return entry;
             }
-            EditNavSub Sub(Button button) => new EditNavSub { Button = button };
-            EditNavSub Counted(Button button, Func<int> count) => new EditNavSub { Button = button, Count = count };
+            EditNavSub Sub(Button button, string icon = null) => new EditNavSub { Button = button, Icon = icon };
+            EditNavSub Counted(Button button, Func<int> count, string icon) => new EditNavSub { Button = button, Count = count, Icon = icon };
 
             return new List<EditNavEntry>
             {
@@ -76,12 +77,15 @@ namespace Xenvious
                 Page("zones", "Zones", "EditIconZone", 0, AllCreators, PageZone, () => BtnSectionZone_Click(null, null)),
 
                 Page("mission", "Mission", "EditIconMission", 1, "LCM", PageMission, () => BtnSectionMission_Click(null, null),
-                    new EditNavSub { Label = TranslateOr("rl_page", "Rules"), Open = OpenRules, Page = PageMission },
-                    Sub(BtnMissionGeneral), Sub(BtnMissionTeamSettings), Sub(BtnMissionPlayerSettings), Sub(BtnMissionPA),
-                    Sub(BtnMissionTPM), Counted(BtnMissionKill, () => GlobalCount(GTA.Offsets.Editor.Kill.number)), Counted(BtnMissionGC, GangChaseRuleCount),
-                    Counted(BtnMissionotzone, () => GlobalCount(GTA.Offsets.Editor.otzone.number)), Counted(BtnMissionBlips, () => GlobalCount(GTA.Offsets.Editor.ddblip.number)),
-                    Sub(BtnSectionInventory), Counted(BtnSectionSMS, SmsCount), Counted(BtnSectionGoto, () => GlobalCount(GTA.Offsets.Editor.Locations.number)),
-                    new EditNavSub { Label = TranslateOr("eo_page", "Extra objectives"), Open = OpenExtraObjectives, Page = PageMission, Count = ExtraObjectives.UsedSlots }),
+                    new EditNavSub { Label = TranslateOr("rl_page", "Rules"), Open = OpenRules, Page = PageMission, Icon = "EditIconRules" },
+                    Sub(BtnMissionGeneral, "EditIconGeneral"), Sub(BtnMissionTeamSettings, "EditIconTeams"), Sub(BtnMissionPlayerSettings, "EditIconPlayer"),
+                    Sub(BtnMissionPA, "EditIconPlayArea"), Sub(BtnMissionTPM, "EditIconTeleportMarker"),
+                    Counted(BtnMissionKill, () => GlobalCount(GTA.Offsets.Editor.Kill.number), "EditIconKill"), Counted(BtnMissionGC, GangChaseRuleCount, "EditIconGangChase"),
+                    Counted(BtnMissionotzone, () => GlobalCount(GTA.Offsets.Editor.otzone.number), "EditIconOvertime"),
+                    Counted(BtnMissionBlips, () => GlobalCount(GTA.Offsets.Editor.ddblip.number), "EditIconBlip"),
+                    Sub(BtnSectionInventory, "EditIconInventory"), Counted(BtnSectionSMS, SmsCount, "EditIconSms"),
+                    Counted(BtnSectionGoto, () => GlobalCount(GTA.Offsets.Editor.Locations.number), "EditIconGoto"),
+                    new EditNavSub { Label = TranslateOr("eo_page", "Extra objectives"), Open = OpenExtraObjectives, Page = PageMission, Count = ExtraObjectives.UsedSlots, Icon = "EditIconExtra" }),
                 Page("jobsubtype_mission_capture", "Capture", "EditIconCapture", 1, "C", PageCapture, () => BtnSectionObj_Click(null, null),
                     Sub(BtnCaptureGeneral), Sub(BtnCaptureObjects), Sub(BtnCaptureDelivery)),
                 Page("race", "Race", "EditIconRace", 1, "R", PageRace, () => BtnSectionRace_Click(null, null),
@@ -264,6 +268,13 @@ namespace Xenvious
             };
         }
 
+        private FrameworkElement SmallNavIcon(string key)
+        {
+            var icon = NavIcon(key);
+            icon.Width = icon.Height = 14;
+            return icon;
+        }
+
         private FrameworkElement NavSubList(EditNavEntry entry)
         {
             var list = new StackPanel { Margin = new Thickness(28, 0, 0, 6) };
@@ -290,9 +301,18 @@ namespace Xenvious
         {
             var label = new TextBlock { Text = SubLabel(sub), Style = (Style)FindResource("NavLabel") };
             int count = SafeCount(sub);
-            if (count <= 0)
-                return label;
             var row = new DockPanel { LastChildFill = true };
+            if (sub.Icon != null)
+            {
+                var icon = SmallNavIcon(sub.Icon);
+                DockPanel.SetDock(icon, Dock.Left);
+                row.Children.Add(icon);
+            }
+            if (count <= 0)
+            {
+                row.Children.Add(label);
+                return row;
+            }
             var badge = new Border
             {
                 CornerRadius = new CornerRadius(9), Padding = new Thickness(7, 0, 7, 1), Margin = new Thickness(8, 0, 0, 0),
@@ -488,15 +508,20 @@ namespace Xenvious
             if (favorites.Count == 0)
                 return;
             if (!_editNavCollapsed)
-                EditNavList.Children.Add(new TextBlock { Text = TranslateOr("editnav_grp_fav", "Favourites"), Style = (Style)FindResource("SideNavGroup") });
+            {
+                var star = new Path { Data = (Geometry)FindResource("EditIconFavorite"), Stretch = Stretch.Uniform, Width = 11, Height = 11, StrokeThickness = 1.6,
+                    StrokeLineJoin = PenLineJoin.Round, Margin = new Thickness(10, 14, 6, 4), VerticalAlignment = VerticalAlignment.Center };
+                star.SetResourceReference(Shape.StrokeProperty, "AccentBrush");
+                star.SetResourceReference(Shape.FillProperty, "AccentBrush");
+                var title = new TextBlock { Text = TranslateOr("editnav_grp_fav", "Favourites"), Style = (Style)FindResource("SideNavGroup"), Margin = new Thickness(0, 14, 0, 4) };
+                EditNavList.Children.Add(new StackPanel { Orientation = Orientation.Horizontal, Children = { star, title } });
+            }
             foreach (var (entry, sub) in favorites)
             {
                 // Compact like the sub-page rows: one line, the parent page after it in grey.
                 string page = TranslateOr(entry.Key, entry.Fallback);
                 var content = new StackPanel { Orientation = Orientation.Horizontal };
-                var icon = NavIcon(entry.Icon);
-                icon.Width = icon.Height = 14;
-                content.Children.Add(icon);
+                content.Children.Add(SmallNavIcon(sub?.Icon ?? entry.Icon));
                 if (!_editNavCollapsed)
                 {
                     content.Children.Add(new TextBlock { Text = sub == null ? page : SubLabel(sub), Style = (Style)FindResource("NavLabel") });
