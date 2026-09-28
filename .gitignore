@@ -378,3 +378,4 @@ Xenvious/tmp/
 .vscode/settings.json
 .vscode/sftp.json
 .vscode/tasks.json
+.claude/
