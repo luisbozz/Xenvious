@@ -377,7 +377,7 @@ namespace Xenvious
                     if (!tbmissionnumpt.IsFocused || ignore_focus) tbmissionnumpt.Text = new Global(GTA.Offsets.Editor.numpt + ddmissionteamno.SelectedIndex).Get<int>().ToString();
                     if (!tbmissionboud.IsFocused || ignore_focus) tbmissionboud.Text = new Global(GTA.Offsets.Editor.boud + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT).Get<int>().ToString();
                     if (!tbmissionmts.IsFocused || ignore_focus) tbmissionmts.Text = new Global(GTA.Offsets.Editor.mts + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT).Get<int>().ToString();
-                    if (!tbmissionmcvbs.IsFocused || ignore_focus) tbmissionmcvbs.Text = new Global(GTA.Offsets.Editor.mcvbs + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT).Get<int>().ToString();
+                    if (!tbmissionmcvbs.IsFocused || ignore_focus) tbmissionmcvbs.Text = new Global(GTA.Offsets.Editor.mcvbs + ddmissionteamno.SelectedIndex).Get<int>().ToString();
                     if (!tbmissionclrovr.IsFocused || ignore_focus) tbmissionclrovr.Text = new Global(GTA.Offsets.Editor.clrovr + ddmissionteamno.SelectedIndex).Get<int>().ToString();
                     if (!tbmissiontblpv1.IsFocused || ignore_focus) tbmissiontblpv1.Text = new Global(GTA.Offsets.Editor.tblpv1 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT).Get<int>().ToString();
                     if (!tbmissiontblpv2.IsFocused || ignore_focus) tbmissiontblpv2.Text = new Global(GTA.Offsets.Editor.tblpv2 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT).Get<int>().ToString();
@@ -1282,7 +1282,7 @@ namespace Xenvious
         private void tbmissionmcvbs_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (IsValidInt(tbmissionmcvbs.Text))
-                new Global(GTA.Offsets.Editor.mcvbs + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT).SetInt(tbmissionmcvbs.Text);
+                new Global(GTA.Offsets.Editor.mcvbs + ddmissionteamno.SelectedIndex).SetInt(tbmissionmcvbs.Text);
         }
 
         private void tbmissionmcry_TextChanged(object sender, TextChangedEventArgs e)
