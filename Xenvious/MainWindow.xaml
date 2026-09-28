@@ -2642,8 +2642,8 @@
                                                                                 <TextBox x:Name="tbvehhead" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehhead_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
                                                                             </Grid>
                                                                         </StackPanel>
-                                                                        <!-- Where the vehicle is, kept small because the map image blurs up close: all vehicles of the job, the selected one larger in the accent colour. -->
-                                                                        <local:JobMap x:Name="VehMap" Grid.Column="2" MinSpan="70" VerticalAlignment="Stretch"/>
+                                                                        <!-- Where the vehicle is: all vehicles of the job, the selected one larger in the accent colour. -->
+                                                                        <local:JobMap x:Name="VehMap" Grid.Column="2" MinSpan="25" VerticalAlignment="Stretch"/>
                                                                     </Grid>
                                                                 </local:SectionCard>
                                                             </Grid>
