@@ -80,6 +80,31 @@ The public creator keeps a rule list per team that its Rules menu shows:
 - Adding a rule in the creator (`func_1369`) writes the selection and presets per type: objective
   score, take-over time, time limit, etc.
 
+#### The rule list decides the priorities (checked 2026-09-28)
+
+Function numbers from `ysc-global-updater/scripts/1.73-3889/public_mission_creator.c` (Legacy).
+
+- `func_5301` rebuilds every ped, vehicle, object and go-to priority and type from the rule list:
+  it sets all of them to 99999 / 0, then walks the rules in order and gives each entity whose bit
+  is set in `.f_2` the first rule it appears in (`!func_5302`: an entity that already has a type
+  is skipped). `nrl` (`f_3838[t].f_60`) becomes `.f_103`. It runs on test start (`func_48`), after
+  moving and deleting rules, after adding an entity to a rule, and in `func_6148`.
+- Consequence: a priority or type that Xenvious writes only into the job data is lost at the next
+  test. Seen in game: a go-to set to rule 7 while the list had 6 rules came back as 99999.
+- Rule settings (`tsc`, `tms`, `tmt`, texts, jumps on the entities, `nxtrulb`) are not touched by
+  `func_5301`; edits to them stay.
+- Extra objectives are not rebuilt either. The creator makes one itself when an entity is added to
+  a second rule in the rules menu (`func_1348` → `func_1358`, errors `PMCF_ER_EOE` "all 30 slots
+  used" and `PMCF_ER_EOER` "all 13 rules of the entity used"). The entity's bit is then set in both
+  rules.
+- The controller skips an extra objective whose priority equals the entity's current rule
+  (`public_mission_controller` `func_153`), and it only takes priorities 0–16.
+- In the rules menu: delete a rule (`PMCI_BTN_RLD`, `func_1456`), move it up / down
+  (`PMCI_BTN_RLMV`, `func_1451` + `func_1440` + `func_1438` + `func_1395`). `func_1395` renumbers
+  rule references in 18 helper functions (`func_1435` … `func_1396`, one per entity kind and
+  setting); `func_1442` / `func_1443` swap the per-rule arrays (several hundred lines).
+- Rebuilding this in Xenvious means copying all of that, with new offsets for both editions.
+
 ## Where the wiring is stored
 
 Per team `t` (0–3). Memory offsets are for 1.73-3889 Legacy; `offsets.ini` names in brackets where
