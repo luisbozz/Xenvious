@@ -55,6 +55,8 @@ namespace Xenvious
             Title = T("er_card", "Rules");
             Icon = Geometry.Parse("M5,21 L5,4 M5,4 L16,4 L14,8 L16,12 L5,12");
             Content = _body;
+            // An implicit style only matches its exact type, so this subclass asks for SectionCard's look.
+            SetResourceReference(StyleProperty, typeof(SectionCard));
             Loaded += (_, __) => Build();
             IsVisibleChanged += (_, __) =>
             {
@@ -138,7 +140,8 @@ namespace Xenvious
             var entries = ready ? EntityRules.Read(_type, Index, _team) : new List<EntityRules.Entry>();
             bool list = ready && EntityRules.UsesRuleList;
             string key = string.Join("|", Index, _team, _adding, _error, list, string.Join(";", rules.Select(r => r.Text + "/" + string.Join(",", r.Links.Select(l => $"{l.Kind}{l.Index}:{l.Type}:{l.Extra}")))),
-                string.Join(";", entries.Select(e => $"{e.Rule}:{e.Selection}:{e.Main}")), list ? string.Join(",", Enumerable.Range(0, rules.Count).Select(r => EntityRules.RuleSelection(_team, r) + ":" + (EntityRules.InRule(_team, r, Index) ? 1 : 0))) : "");
+                string.Join(";", entries.Select(e => $"{e.Rule}:{e.Selection}:{e.Main}")), list ? string.Join(",", Enumerable.Range(0, rules.Count).Select(r => EntityRules.RuleSelection(_team, r) + ":" + (EntityRules.InRule(_team, r, Index) ? 1 : 0))) : "",
+                EntityRules.UsesRuleList);
             if (!force && key == _shownKey)
                 return;
             _shownKey = key;
@@ -212,7 +215,8 @@ namespace Xenvious
         {
             int index = Index;
             // Extra objectives the creator would not make: set by hand, dropped the next time the entity joins or leaves a rule.
-            var stray = entries.Where(e => !e.Main && (e.Rule >= rules.Count || !EntityRules.InRule(_team, e.Rule, index))).ToList();
+            var stray = entries.Where(e => !e.Main && (e.Rule >= rules.Count || EntityRules.ClassOf(EntityRules.RuleSelection(_team, e.Rule)) != _type
+                || !EntityRules.InRule(_team, e.Rule, index))).ToList();
             if (stray.Count > 0)
             {
                 var fix = SmallButton(T("er_fix", "Tidy up"), () => Apply(EntityRules.Sync(_type, index, _team)));
@@ -224,7 +228,8 @@ namespace Xenvious
                 int rule = r;
                 int selection = EntityRules.RuleSelection(_team, r);
                 int cls = EntityRules.ClassOf(selection);
-                bool member = EntityRules.InRule(_team, r, index);
+                // The bitset holds entity numbers of the rule's own kind: vehicle 2 and actor 2 share a bit.
+                bool member = cls == _type && EntityRules.InRule(_team, r, index);
                 string type = Rules.SelectionName(selection) ?? T("er_type_player", "Player rule");
                 var right = new StackPanel { Orientation = Orientation.Horizontal, VerticalAlignment = VerticalAlignment.Center };
                 RowKind kind;

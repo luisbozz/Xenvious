@@ -265,13 +265,12 @@ namespace Xenvious
             text.SetResourceReference(TextBlock.ForegroundProperty, selected ? "TextColor" : "MutedTextBrush");
             text.Inlines.Add(new Run(label));
             text.Inlines.Add(new Run("  " + count.ToString(CultureInfo.CurrentCulture)) { FontSize = 11.5, Foreground = ThemeBrush("FaintTextBrush") });
-            var chip = new Border
-            {
-                CornerRadius = new CornerRadius(12), Padding = new Thickness(11, 3, 11, 4), Margin = new Thickness(0, 0, 6, 6), Cursor = Cursors.Hand,
-                BorderThickness = new Thickness(1), UseLayoutRounding = true, SnapsToDevicePixels = true, Child = text,
-            };
-            chip.SetResourceReference(Border.BorderBrushProperty, selected ? "AccentBrush" : "LineBrush");
-            chip.SetResourceReference(Border.BackgroundProperty, selected ? "AccentSoftBrush" : "SectionBackgroundBrush");
+            var fill = new Grid();
+            fill.Children.Add(new Border { CornerRadius = new CornerRadius(12) }.Also(b => b.SetResourceReference(Border.BackgroundProperty, "SectionBackgroundBrush")));
+            if (selected)
+                fill.Children.Add(new Border { CornerRadius = new CornerRadius(12), Opacity = 0.16 }.Also(b => b.SetResourceReference(Border.BackgroundProperty, "AccentBrush")));
+            fill.Children.Add(new Border { Padding = new Thickness(11, 3, 11, 4), Child = text });
+            var chip = new Border { Margin = new Thickness(0, 0, 6, 6), Cursor = Cursors.Hand, Child = Framed(fill, 12, selected) };
             chip.MouseLeftButtonUp += (_, __) => { _scrPatchScript = script; _patchesShownKey = null; RenderPatchesPage(); };
             return chip;
         }
@@ -308,13 +307,29 @@ namespace Xenvious
                 Grid.SetColumn(box, 1);
                 grid.Children.Add(box);
             }
-            // Plain rounded border (no DashCard shadow) and layout rounding: the 1 px accent outline
-            // stays crisp instead of blurring on the shadow at fractional positions.
-            var card = new Border { CornerRadius = new CornerRadius(8), Padding = new Thickness(14, 12, 14, 10), Margin = new Thickness(0, 0, 10, 10), Child = grid, BorderThickness = new Thickness(1),
-                UseLayoutRounding = true, SnapsToDevicePixels = true };
-            card.SetResourceReference(Border.BackgroundProperty, "SectionBackgroundBrush");
-            card.SetResourceReference(Border.BorderBrushProperty, on ? "AccentBrush" : "LineBrush");
-            return card;
+            var body = new Border { CornerRadius = new CornerRadius(8), Padding = new Thickness(14, 12, 14, 10), Child = grid };
+            body.SetResourceReference(Border.BackgroundProperty, "SectionBackgroundBrush");
+            return new Border { Margin = new Thickness(0, 0, 10, 10), Child = Framed(body, 8, on) };
+        }
+
+        /// <summary>
+        /// The outline goes over the content as its own layer, so rounded corners stay clean; an
+        /// active item gets the accent outline and a soft accent ring around it.
+        /// </summary>
+        internal static Grid Framed(UIElement content, double radius, bool active)
+        {
+            var grid = new Grid();
+            if (active)
+            {
+                var ring = new Border { Margin = new Thickness(-3), CornerRadius = new CornerRadius(radius + 3), BorderThickness = new Thickness(2), Opacity = 0.22, IsHitTestVisible = false };
+                ring.SetResourceReference(Border.BorderBrushProperty, "AccentBrush");
+                grid.Children.Add(ring);
+            }
+            grid.Children.Add(content);
+            var frame = new Border { CornerRadius = new CornerRadius(radius), BorderThickness = new Thickness(active ? 1.5 : 1), IsHitTestVisible = false, UseLayoutRounding = true };
+            frame.SetResourceReference(Border.BorderBrushProperty, active ? "AccentBrush" : "LineBrush");
+            grid.Children.Add(frame);
+            return grid;
         }
 
         // A small rounded status chip with a coloured dot (null: no dot).

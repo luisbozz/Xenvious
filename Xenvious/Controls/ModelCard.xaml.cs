@@ -27,8 +27,9 @@ namespace Xenvious
         {
             set
             {
-                if (value) Root.SetResourceReference(System.Windows.Controls.Border.BorderBrushProperty, "AccentBrush");
-                else Root.BorderBrush = System.Windows.Media.Brushes.Transparent;
+                if (value) Frame.SetResourceReference(System.Windows.Controls.Border.BorderBrushProperty, "AccentBrush");
+                else Frame.BorderBrush = System.Windows.Media.Brushes.Transparent;
+                Ring.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
             }
         }
 

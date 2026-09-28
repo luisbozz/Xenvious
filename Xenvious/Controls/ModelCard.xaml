@@ -25,14 +25,17 @@
         </Style>
     </UserControl.Resources>
 
-    <Border x:Name="Root" Background="{DynamicResource SectionBackgroundBrush}" CornerRadius="6" BorderThickness="1" BorderBrush="Transparent">
+    <Grid>
+    <!-- Accent frame of a hero card, drawn over the card so the header corners stay under it (as SectionCard). -->
+    <Border x:Name="Ring" Margin="-3" CornerRadius="9" BorderThickness="2" BorderBrush="{DynamicResource AccentBrush}" Opacity="0.22" Visibility="Collapsed" IsHitTestVisible="False"/>
+    <Border x:Name="Root" Background="{DynamicResource SectionBackgroundBrush}" CornerRadius="6">
         <DockPanel>
             <Border DockPanel.Dock="Top" Background="{DynamicResource SeactionHeaderBackgroundBrush}" CornerRadius="6,6,0,0" Padding="12,8">
                 <DockPanel>
                     <!-- Lighter than the header bar, with a pencil and a verb, so it reads as the way to change the model. -->
-                    <Button x:Name="CatalogButton" DockPanel.Dock="Right" Style="{StaticResource FormButton}" Background="{DynamicResource ButtonHoverBackgroundBrush}" Height="28" Padding="10,0" Click="CatalogButton_Click">
+                    <Button x:Name="CatalogButton" DockPanel.Dock="Right" Style="{StaticResource FormButtonPrimary}" Height="28" Padding="10,0" Click="CatalogButton_Click">
                         <StackPanel Orientation="Horizontal">
-                            <Path Data="M9,2 L12,5 L5,12 L2,12 L2,9 Z" Stroke="{DynamicResource TextColor}" StrokeThickness="1.6" StrokeLineJoin="Round"
+                            <Path Data="M9,2 L12,5 L5,12 L2,12 L2,9 Z" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.6" StrokeLineJoin="Round"
                                   Width="14" Height="14" VerticalAlignment="Center" Margin="0,0,6,0"/>
                             <TextBlock VerticalAlignment="Center" Text="{Binding Translation[catalog_change], FallbackValue='Change model'}"/>
                         </StackPanel>
@@ -77,7 +80,17 @@
                             <ControlTemplate TargetType="{x:Type Button}">
                                 <Grid>
                                     <Border CornerRadius="4" Background="{DynamicResource DeepBrush}" ClipToBounds="True">
-                                        <ContentPresenter/>
+                                        <Grid>
+                                            <!-- Shown until the picture has loaded, or when the model has none. -->
+                                            <Rectangle RadiusX="4" RadiusY="4" Margin="6" Stroke="{DynamicResource LineBrush}" StrokeThickness="1.5" StrokeDashArray="4 3"/>
+                                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                <Path Data="M5,17 L19,17 M3,13 L5,7 L19,7 L21,13 L21,17 L3,17 Z M5.7,17 A1.8,1.8 0 1 1 9.3,17 A1.8,1.8 0 1 1 5.7,17 M14.7,17 A1.8,1.8 0 1 1 18.3,17 A1.8,1.8 0 1 1 14.7,17"
+                                                      Stroke="{DynamicResource FaintTextBrush}" StrokeThickness="1.6" StrokeLineJoin="Round" Stretch="Uniform" Width="26" Height="20" HorizontalAlignment="Center"/>
+                                                <TextBlock FontSize="11" FontWeight="Bold" Foreground="{DynamicResource FaintTextBrush}" Margin="0,6,0,0" HorizontalAlignment="Center"
+                                                           Text="{Binding Translation[catalog_nopreview], FallbackValue=Preview}"/>
+                                            </StackPanel>
+                                            <ContentPresenter/>
+                                        </Grid>
                                     </Border>
                                     <Border x:Name="overlay" CornerRadius="4" Background="#8C000000" Opacity="0">
                                         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="11" FontWeight="Bold" Foreground="White"
@@ -113,4 +126,6 @@
             </StackPanel>
         </DockPanel>
     </Border>
+    <Border x:Name="Frame" CornerRadius="6" BorderThickness="1.5" BorderBrush="Transparent" IsHitTestVisible="False" UseLayoutRounding="True"/>
+    </Grid>
 </UserControl>
