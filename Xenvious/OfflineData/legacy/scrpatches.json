@@ -260,15 +260,6 @@
         "enabled": true
     },
     {
-        "patch_name": "nrl fix",
-        "script_name": "public_mission_creator",
-        "pattern": "72 38 04 61 ? ? ? 46 ? ? 49 ? ? 42 ? 61 ? ? ?",
-        "offset": 0,
-        "bytes_to_patch": "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00",
-        "dev": false,
-        "enabled": true
-    },
-    {
         "patch_name": "set switch camera to caps lock",
         "script_name": "fm_race_creator",
         "pattern": "5D ? ? ? 55 04 00 72 2E 01 01",
