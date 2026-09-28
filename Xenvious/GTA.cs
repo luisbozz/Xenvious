@@ -190,7 +190,7 @@ namespace Xenvious
                 GTA.Offsets.Editor.AOB_nextcp_ptr, GTA.Offsets.Editor.AOB_session_ptr, GTA.Offsets.Editor.AOB_img_ptr,
                 GTA.Offsets.Editor.AOB_cursor_ptr, GTA.Offsets.Editor.AOB_scrProgramptr, GTA.Offsets.Editor.AOB_devptr,
                 GTA.Offsets.Editor.AOB_camptr, GTA.Offsets.Editor.AOB_versionptr, GTA.Offsets.Editor.AOB_creator_camptr,
-                GTA.Offsets.Editor.AOB_creator_cam_nocollision, GTA.Offsets.Editor.AOB_creator_budget,
+                GTA.Offsets.Editor.AOB_creator_cam_nocollision, GTA.Offsets.Editor.AOB_creator_budget, GTA.Offsets.Editor.AOB_testmode
             };
             ulong ignored;
             return patterns.Where(p => !string.IsNullOrWhiteSpace(p)).All(p => AobCache.TryGet(p, out ignored));
