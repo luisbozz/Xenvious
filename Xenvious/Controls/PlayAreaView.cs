@@ -366,7 +366,7 @@ namespace Xenvious
             body.Children.Add(Toggle("pa_spawnhere", "Respawn in this area", () => PlayAreas.GetSpawn(_area, _team, _rule), on => ForTargets((t, r) => PlayAreas.SetSpawn(_area, t, r, on))));
             body.Children.Add(Toggle("pa_wanted", "Wanted level for leaving", () => PlayAreas.GetWanted(_area, _team, _rule), on => ForTargets((t, r) => PlayAreas.SetWanted(_area, t, r, on))));
 
-            var stars = new UniformGrid { Columns = 6, Margin = new Thickness(0, 4, -6, 6) };
+            var stars = new UniformGrid { Columns = 3, Margin = new Thickness(0, 4, -6, 6) };
             var starButtons = new List<ToggleButton>();
             for (int w = -1; w <= 5; w++)
             {
