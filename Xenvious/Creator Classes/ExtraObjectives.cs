@@ -29,13 +29,13 @@ namespace Xenvious
             switch (type)
             {
                 case TypePed:
-                    return new[] { (1, "Collect"), (2, "Kill"), (3, "Protect"), (4, "Go to"), (5, "Capture"), (23, "Collect and hold"),
+                    return new[] { (1, "Collect & deliver"), (2, "Kill"), (3, "Protect"), (4, "Go to"), (5, "Capture"), (23, "Collect and hold"),
                         (26, "Photograph"), (32, "Crowd control"), (33, "Charm"), (46, "Damage"), (47, "Leave"), (55, "Ped goes to location") };
                 case TypeVehicle:
-                    return new[] { (6, "Collect"), (7, "Destroy"), (8, "Protect"), (9, "Go to"), (10, "Capture"), (24, "Collect and hold"),
+                    return new[] { (6, "Collect & deliver"), (7, "Destroy"), (8, "Protect"), (9, "Go to"), (10, "Capture"), (24, "Collect and hold"),
                         (27, "Photograph"), (48, "Leave"), (50, "Damage") };
                 case TypeObject:
-                    return new[] { (11, "Collect"), (12, "Destroy"), (13, "Protect"), (14, "Go to"), (15, "Capture"), (25, "Collect and hold"),
+                    return new[] { (11, "Collect & deliver"), (12, "Destroy"), (13, "Protect"), (14, "Go to"), (15, "Capture"), (25, "Collect and hold"),
                         (28, "Photograph"), (30, "Hack"), (49, "Leave"), (51, "Damage") };
                 case TypeGoTo:
                     return new[] { (16, "Go to"), (17, "Capture"), (29, "Photograph"), (41, "Leave"), (40, "Destroy") };

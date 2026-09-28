@@ -75,7 +75,10 @@ namespace Xenvious
 
         public static int Count(int team)
         {
-            int n = new Global(GTA.Offsets.Editor.nrl + Team(team)).Get<int>();
+            // The Mission Creator's rule list is live; nrl only follows it at the next test.
+            int n = PublicCreator && GTA.Offsets.Editor.rulelist_count != 0
+                ? new Global(GTA.Offsets.Editor.rulelist_count + team * GTA.Offsets.Editor.rulelist_NEXT).Get<int>()
+                : new Global(GTA.Offsets.Editor.nrl + Team(team)).Get<int>();
             return n < 0 ? 0 : n > MaxRules ? MaxRules : n;
         }
 
@@ -343,10 +346,23 @@ namespace Xenvious
             return "PMC_" + k + (entities > 1 ? "S" : "");
         }
 
-        /// <summary>The default text of a rule in the app's language, null when it cannot be told.</summary>
+        /// <summary>
+        /// The default text of a rule in the app's language, null when it cannot be told. Collect
+        /// and deliver rules get the second text too, shown once the entity is picked up.
+        /// </summary>
         public static string DefaultText(int selection, int entities)
         {
-            string label = DefaultLabel(selection, entities);
+            string first = LabelText(DefaultLabel(selection, entities));
+            if (first == null)
+                return null;
+            string kind = selection == 1 ? "PED" : selection == 6 ? "VEH" : selection == 11 ? "OBJ" : null;
+            // There is no plural label for delivering vehicles.
+            string deliver = kind == null ? null : LabelText("PMC_D_" + kind + (entities > 1 && kind != "VEH" ? "S" : ""));
+            return deliver == null ? first : first + "~n~" + deliver;
+        }
+
+        private static string LabelText(string label)
+        {
             if (label == null)
                 return null;
             if (_defaultTexts == null)

@@ -382,5 +382,45 @@
   "pl": "Ukończ ~g~minigrę~s~.",
   "fr": "Terminez le ~g~mini-jeu~s~.",
   "zh_cn": "完成~g~小游戏~s~。"
+ },
+ "PMC_D_PED": {
+  "de": "Bringe den ~b~Akteur~s~ zum ~y~Übergabeort~s~.",
+  "en": "Deliver the ~b~Actor ~s~to the ~y~drop-off.",
+  "ru": "Доставьте ~b~персонажа ~s~в ~y~точку сброса.",
+  "pl": "Dostarcz ~b~aktora~s~ do ~y~punktu~s~.",
+  "fr": "Déposez l'~b~acteur~s~ au ~y~point de chute~s~.",
+  "zh_cn": "将~b~演员~s~送到~y~投放点~s~。"
+ },
+ "PMC_D_PEDS": {
+  "de": "Bringe die ~b~Akteure~s~ zum ~y~Übergabeort~s~.",
+  "en": "Deliver the ~b~Actors ~s~to the ~y~drop-off.",
+  "ru": "Доставьте ~b~персонажей ~s~в ~y~точку сброса.",
+  "pl": "Dostarcz ~b~aktorów~s~ do ~y~punktu~s~.",
+  "fr": "Déposez les ~b~acteurs~s~ au ~y~point de chute~s~.",
+  "zh_cn": "护送~b~演员~s~前往~y~投放点~s~。"
+ },
+ "PMC_D_VEH": {
+  "de": "Bringe das ~d~Fahrzeug~s~ zum ~y~Übergabeort~s~.",
+  "en": "Deliver the ~d~Vehicle ~s~to the ~y~drop-off.",
+  "ru": "Доставьте ~d~транспорт ~s~в ~y~точку сброса.",
+  "pl": "Dostarcz ~d~pojazd~s~ do ~y~punktu~s~.",
+  "fr": "Livrez le ~d~véhicule ~s~au ~y~point de livraison~s~.",
+  "zh_cn": "将~d~载具~s~送至~y~投放点~s~。"
+ },
+ "PMC_D_OBJ": {
+  "de": "Bringe das ~g~Objekt ~s~zum ~y~Übergabeort~s~.",
+  "en": "Deliver the ~g~Object ~s~to the ~y~drop-off.",
+  "ru": "Доставьте ~g~объект ~s~в ~y~точку сброса.",
+  "pl": "Dostarcz ~g~obiekt~s~ do ~y~punktu~s~.",
+  "fr": "Amenez l'~g~objet ~s~au ~y~point de livraison~s~.",
+  "zh_cn": "将~g~物品~s~运送至~y~投放点~s~。"
+ },
+ "PMC_D_OBJS": {
+  "de": "Bringe die ~g~Objekte ~s~zum ~y~Übergabeort~s~.",
+  "en": "Deliver the ~g~Objects ~s~to the ~y~drop-off.",
+  "ru": "Доставьте ~g~объекты ~s~в ~y~точку сброса.",
+  "pl": "Dostarcz ~g~obiekty~s~ do ~y~punktu~s~.",
+  "fr": "Amenez les ~g~objets ~s~au ~y~point de livraison~s~.",
+  "zh_cn": "将~g~物品~s~运送至~y~投放点~s~。"
  }
 }
