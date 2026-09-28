@@ -104,14 +104,6 @@
         "dev": false
     },
     {
-        "patch_name": "show stunt prop item cycle",
-        "script_name": "public_mission_creator",
-        "pattern": "25 33 61 ? ? ? 64 ? ? ? 3F 41 ? 64 ? ? ?",
-        "offset": 0,
-        "bytes_to_patch": "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00",
-        "dev": false
-    },
-    {
         "patch_name": "dont force plyl to 1",
         "script_name": "fm_lts_creator",
         "pattern": "72 38 02 61 ? ? ? 46 ? ? 49 ? ?",
