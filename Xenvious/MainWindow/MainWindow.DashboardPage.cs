@@ -558,7 +558,8 @@ namespace Xenvious
                                 new Global(GTA.Offsets.Editor.subtype).SetInt(5);
                                 break;
                             case 2:
-                                new Global(GTA.Offsets.Editor.subtype).SetInt(4);
+                                // The Public Mission Creator's subtype; fmmc_launcher runs it in public_mission_controller.
+                                new Global(GTA.Offsets.Editor.subtype).SetInt(14);
                                 break;
                             default:
                                 break;

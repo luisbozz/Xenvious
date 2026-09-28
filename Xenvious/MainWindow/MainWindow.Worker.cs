@@ -149,7 +149,8 @@ namespace Xenvious
                                             {
                                                 ddjobsubtype.SelectedIndex = 1;
                                             }
-                                            else if (new Global(GTA.Offsets.Editor.subtype).Get<int>() == 4)
+                                            // 14: Public Mission Creator content; 4: old Rockstar missions
+                                            else if (new Global(GTA.Offsets.Editor.subtype).Get<int>() == 14 || new Global(GTA.Offsets.Editor.subtype).Get<int>() == 4)
                                             {
                                                 ddjobsubtype.SelectedIndex = 2;
                                             }
