@@ -134,10 +134,7 @@ namespace Xenvious
             Dispatcher.BeginInvoke(new Action(() =>
             {
                 hit.Label.BringIntoView();
-                Flash(hit.Label);
-                var input = InputFor(hit.Label);
-                if (input != null)
-                    FlashOutline.Show(input);
+                FlashOutline.Show(hit.Label, InputFor(hit.Label));
             }), DispatcherPriority.Loaded);
         }
 
@@ -174,48 +171,65 @@ namespace Xenvious
                 }
             return null;
         }
-
-        // A short accent glow behind the label.
-        private static void Flash(TextBlock label)
-        {
-            var accent = ThemeBrush("AccentBrush") as SolidColorBrush;
-            var color = accent?.Color ?? Colors.SteelBlue;
-            var brush = new SolidColorBrush(Color.FromArgb(0x90, color.R, color.G, color.B));
-            label.Background = brush;
-            var fade = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(1800)) { BeginTime = TimeSpan.FromMilliseconds(600) };
-            fade.Completed += (_, __) => label.Background = null;
-            brush.BeginAnimation(Brush.OpacityProperty, fade);
-        }
     }
 
-    /// <summary>A rounded accent frame around a field that fades out: where a search hit landed.</summary>
+    /// <summary>
+    /// One rounded accent frame around a label and its field that blinks twice and fades out:
+    /// where a search hit landed.
+    /// </summary>
     internal sealed class FlashOutline : Adorner
     {
+        private readonly FrameworkElement[] _parts;
         private readonly Pen _pen;
+        private readonly Brush _fill;
 
-        private FlashOutline(UIElement element, Color color) : base(element)
+        private FlashOutline(UIElement host, FrameworkElement[] parts, Color color) : base(host)
         {
             IsHitTestVisible = false;
-            _pen = new Pen(new SolidColorBrush(color), 2.5);
+            _parts = parts;
+            _pen = new Pen(new SolidColorBrush(color), 2);
+            _fill = new SolidColorBrush(Color.FromArgb(0x26, color.R, color.G, color.B));
         }
 
-        public static void Show(FrameworkElement element)
+        public static void Show(FrameworkElement label, FrameworkElement input)
         {
+            var parts = input == null ? new[] { label } : new[] { label, input };
+            // The frame is drawn on the closest element that holds both, so it covers the pair.
+            DependencyObject host = label;
+            while (host != null && !(host is UIElement u && parts.All(p => u == p || u.IsAncestorOf(p))))
+                host = VisualTreeHelper.GetParent(host);
+            if (!(host is UIElement element))
+                return;
             var layer = AdornerLayer.GetAdornerLayer(element);
             if (layer == null)
                 return;
             var accent = (MainWindow.ThemeBrush("AccentBrush") as SolidColorBrush)?.Color ?? Colors.SteelBlue;
-            var outline = new FlashOutline(element, accent);
+            var outline = new FlashOutline(element, parts, accent);
             layer.Add(outline);
-            var fade = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(1800)) { BeginTime = TimeSpan.FromMilliseconds(900) };
-            fade.Completed += (_, __) => layer.Remove(outline);
-            outline.BeginAnimation(OpacityProperty, fade);
+            var blink = new DoubleAnimationUsingKeyFrames();
+            double[] steps = { 0, 1, 0.25, 1, 0.25, 1 };
+            for (int i = 0; i < steps.Length; i++)
+                blink.KeyFrames.Add(new LinearDoubleKeyFrame(steps[i], KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(i * 220))));
+            blink.KeyFrames.Add(new LinearDoubleKeyFrame(1, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(2000))));
+            blink.KeyFrames.Add(new LinearDoubleKeyFrame(0, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(3200))));
+            blink.Completed += (_, __) => layer.Remove(outline);
+            outline.BeginAnimation(OpacityProperty, blink);
         }
 
         protected override void OnRender(DrawingContext dc)
         {
-            var size = AdornedElement.RenderSize;
-            dc.DrawRoundedRectangle(null, _pen, new Rect(-3, -3, size.Width + 6, size.Height + 6), 7, 7);
+            Rect area = Rect.Empty;
+            foreach (var part in _parts)
+            {
+                if (part == AdornedElement)
+                    area.Union(new Rect(part.RenderSize));
+                else if (part.IsVisible && AdornedElement.IsAncestorOf(part))
+                    area.Union(part.TransformToAncestor(AdornedElement).TransformBounds(new Rect(part.RenderSize)));
+            }
+            if (area.IsEmpty)
+                return;
+            area.Inflate(6, 4);
+            dc.DrawRoundedRectangle(_fill, _pen, area, 8, 8);
         }
     }
 }
