@@ -55,6 +55,10 @@ namespace Xenvious
                 Log.Warn($"{Name}: match at 0x{hit:X} resolved to 0; the pattern needs updating.", source: "GamePatches");
                 return;
             }
+            else
+            {
+                Log.Debug($"{Name} matched at 0x{hit:X} and resolved to 0x{address:X}.", source: "GamePatches");
+            }
             byte[] original = Read(address);
             if (original == null || original.SequenceEqual(_patch))
                 return;

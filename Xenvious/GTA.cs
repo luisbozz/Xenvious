@@ -1405,6 +1405,7 @@ namespace Xenvious
                 public static string AOB_creator_camptr = "";
                 public static string AOB_creator_cam_nocollision = "";
                 public static string AOB_creator_budget = "";
+                public static string AOB_testmode = "";
                 public static string AOB_nextcp_ptr = "";
                 public static string AOB_img_ptr = "";
                 public static string AOB_session_ptr = "";
