@@ -660,35 +660,6 @@ namespace Xenvious
             return current as T;
         }
 
-        private void Window_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
-        {
-            var item = FindUpVisualTree<ComboBox>(Mouse.DirectlyOver as UIElement);
-            bool parentSV = FindUpVisualTree<ScrollViewer>(item) != null;
-            if (item is ComboBox && item.IsFocused == false)
-            {
-                int index = item.SelectedIndex;
-                if (e.Delta > 0)
-                {
-                    if (index > 0)
-                    {
-                        item.SelectedIndex = index - 1;
-                    }
-                }
-                else if (e.Delta < 0)
-                {
-                    if (index < item.Items.Count)
-                    {
-                        item.SelectedIndex = index + 1;
-                    }
-                }
-                //stop scrollviewer to scroll if mouse is over combobox
-                if (parentSV)
-                {
-                    e.Handled = true;
-                }
-            }
-        }
-
         [DllImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool AllocConsole();

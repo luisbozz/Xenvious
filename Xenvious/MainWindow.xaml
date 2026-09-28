@@ -10,7 +10,7 @@
         xmlns:System="clr-namespace:System;assembly=mscorlib" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         x:Class="Xenvious.MainWindow"
         mc:Ignorable="d"
-        Title="Xenvious" Height="933" Width="1532" WindowStyle="None" FontFamily="{DynamicResource Volte}" FontSize="14" MinHeight="575" MinWidth="825" Loaded="Window_Loaded" Background="{DynamicResource BackgroundBrush}" Closed="Window_Closed" PreviewMouseWheel="Window_PreviewMouseWheel">
+        Title="Xenvious" Height="933" Width="1532" WindowStyle="None" FontFamily="{DynamicResource Volte}" FontSize="14" MinHeight="575" MinWidth="825" Loaded="Window_Loaded" Background="{DynamicResource BackgroundBrush}" Closed="Window_Closed">
 
 
     <Window.Resources>
