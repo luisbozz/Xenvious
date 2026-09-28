@@ -188,6 +188,36 @@ namespace Xenvious
         }
 
         /// <summary>
+        /// Mission Creator: changes the type of a whole rule (its selection), then gives every
+        /// entity in it the new type again, like the rule list does at the next test.
+        /// </summary>
+        public static string SetRuleType(int team, int rule, int selection)
+        {
+            if (!UsesRuleList)
+                return "er_err_list";
+            int cls = ClassOf(RuleSelection(team, rule));
+            if (ClassOf(selection) != cls)
+                return "er_err_class";
+            new Global(EntryAddr(team, rule)).SetInt(selection);
+            for (int i = 0; i < 96; i++)
+                if (InRule(team, rule, i))
+                {
+                    string error = Sync(cls, i, team);
+                    if (error != null)
+                        return error;
+                }
+            return null;
+        }
+
+        /// <summary>Other creators: the entity's own rule type (the rule logic of the selection).</summary>
+        public static void SetOwnType(int eoType, int index, int team, int selection)
+        {
+            long type = TypeOffset(eoType);
+            if (type != 0 && index >= 0)
+                new Global(type + team + Next(eoType) * index).SetInt(LogicOf(selection));
+        }
+
+        /// <summary>
         /// func_1349 for one team: the first rule of the entity's class that has its bit becomes
         /// its own rule, the later ones its extra objectives. A slot without extra objectives in
         /// every team is freed.

@@ -78,7 +78,27 @@ namespace Xenvious
             foreach (var box in new[] { ddvehcol1, ddvehcol2, ddvehicon })
                 box.SelectionChanged += (_, __) => QueueVehicleSummaries();
             tbvehhlth.TextChanged += (_, __) => QueueVehicleSummaries();
-            ddvehno.SelectionChanged += (_, __) => { QueueVehicleSummaries(); QueueVehicleMission(); };
+
+            // Icon size: slider and box stay in step; the box writes the game.
+            bool iconSync = false;
+            VehIconSizeSlider.ValueChanged += (_, __) =>
+            {
+                if (iconSync) return;
+                iconSync = true;
+                tbvehiconsize.Text = Math.Round(VehIconSizeSlider.Value, 1).ToString(CultureInfo.CurrentCulture);
+                iconSync = false;
+            };
+            tbvehiconsize.TextChanged += (_, __) =>
+            {
+                if (iconSync || !float.TryParse(tbvehiconsize.Text, NumberStyles.Float, CultureInfo.CurrentCulture, out float v)) return;
+                iconSync = true;
+                VehIconSizeSlider.Value = Math.Max(VehIconSizeSlider.Minimum, Math.Min(VehIconSizeSlider.Maximum, v));
+                iconSync = false;
+            };
+
+            foreach (var box in new[] { tbvehlocx, tbvehlocy })
+                box.TextChanged += (_, __) => QueueVehicleMap();
+            ddvehno.SelectionChanged += (_, __) => { QueueVehicleSummaries(); QueueVehicleMission(); QueueVehicleMap(); };
         }
 
         private CheckBox[][] VehFlags() => new[]
@@ -90,7 +110,35 @@ namespace Xenvious
                 cb_veh_door_open_rr, cb_veh_door_close_rr, cb_veh_door_open_hood, cb_veh_door_close_hood, cb_veh_door_open_trunk, cb_veh_door_close_trunk },
         };
 
-        private bool _vehSummaryQueued, _vehMissionQueued;
+        private bool _vehSummaryQueued, _vehMissionQueued, _vehMapQueued;
+
+        private void QueueVehicleMap()
+        {
+            if (_vehMapQueued) return;
+            _vehMapQueued = true;
+            Dispatcher.BeginInvoke(new Action(() => { _vehMapQueued = false; UpdateVehicleMap(); }), DispatcherPriority.Background);
+        }
+
+        /// <summary>All vehicles of the job on the map, the selected one larger in the accent colour.</summary>
+        private void UpdateVehicleMap()
+        {
+            var markers = new List<JobMap.Marker>();
+            if (m.IsProcOpen && GTA.Offsets.Editor.Vehicle.loc != 0)
+            {
+                int count = ddvehno.Items.Count, selected = ddvehno.SelectedIndex;
+                var faint = ThemeBrush("FaintTextBrush");
+                for (int i = 0; i < count && i < 200; i++)
+                {
+                    if (i == selected) continue;
+                    long at = GTA.Offsets.Editor.Vehicle.loc + GTA.Offsets.Editor.Vehicle.NEXT * i;
+                    markers.Add(new JobMap.Marker(new Global(at).Get<float>(), new Global(at + 1).Get<float>(), faint, 5));
+                }
+                if (selected >= 0 && float.TryParse(tbvehlocx.Text, NumberStyles.Float, CultureInfo.CurrentCulture, out float x)
+                    && float.TryParse(tbvehlocy.Text, NumberStyles.Float, CultureInfo.CurrentCulture, out float y))
+                    markers.Add(new JobMap.Marker(x, y, ThemeBrush("AccentBrush"), 11));
+            }
+            VehMap.SetMarkers(markers);
+        }
 
         private void QueueVehicleSummaries()
         {

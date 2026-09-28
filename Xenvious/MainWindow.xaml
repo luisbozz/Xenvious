@@ -222,13 +222,46 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+            <!-- One button of a segmented control (team switch of the entity cards): the chosen one raised, with an accent line. -->
+            <Style x:Key="TeamSegButton" TargetType="{x:Type ToggleButton}">
+                <Setter Property="Foreground" Value="{DynamicResource MutedTextBrush}"/>
+                <Setter Property="FontSize" Value="13"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                <Setter Property="Margin" Value="0,0,3,0"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ToggleButton}">
+                            <Grid>
+                                <Border x:Name="bg" CornerRadius="5" Background="Transparent"/>
+                                <Border x:Name="line" Height="2" VerticalAlignment="Bottom" Margin="6,0,6,1" CornerRadius="1" Background="{DynamicResource AccentBrush}" Visibility="Collapsed"/>
+                                <ContentPresenter Margin="12,5,12,6" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
+                                </Trigger>
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Setter TargetName="bg" Property="Background" Value="{DynamicResource SectionBackgroundBrush}"/>
+                                    <Setter TargetName="line" Property="Visibility" Value="Visible"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Opacity" Value="0.4"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
             <!-- Section label of an entity page: small caps text and a line to the right edge. -->
             <Style x:Key="PageSectionLabel" TargetType="{x:Type TextBlock}">
-                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="FontSize" Value="16"/>
                 <Setter Property="FontWeight" Value="Bold"/>
-                <Setter Property="Foreground" Value="{DynamicResource MutedTextBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
                 <Setter Property="VerticalAlignment" Value="Center"/>
-                <Setter Property="Margin" Value="0,0,10,0"/>
+                <Setter Property="Margin" Value="0,0,12,0"/>
             </Style>
             <!-- Inside cards: the label above a field, the X/Y/Z over a vector box, the name of a raw value, a small heading. -->
             <Style x:Key="FieldLabel" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
@@ -2536,77 +2569,86 @@
                                                                 <local:ModelCard x:Name="VehModelCard" Margin="0,0,0,12"/>
                                                                 <local:SectionCard Grid.Column="2" IsHero="True" CanCollapse="False" Title="{Binding Translation[card_position], FallbackValue=Placement}"
                                                                                    Icon="M12,21 C12,21 5,14.8 5,9.5 A7,7 0 0 1 19,9.5 C19,14.8 12,21 12,21 Z M9.5,9.5 A2.5,2.5 0 1 0 14.5,9.5 A2.5,2.5 0 1 0 9.5,9.5">
-                                                                    <StackPanel>
-                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[loc], FallbackValue=Location}"/>
-                                                                        <Grid Margin="0,0,0,10">
-                                                                            <Grid.ColumnDefinitions>
-                                                                                <ColumnDefinition Width="*"/>
-                                                                                <ColumnDefinition Width="6"/>
-                                                                                <ColumnDefinition Width="*"/>
-                                                                                <ColumnDefinition Width="6"/>
-                                                                                <ColumnDefinition Width="*"/>
-                                                                                <ColumnDefinition Width="6"/>
-                                                                                <ColumnDefinition Width="30"/>
-                                                                            </Grid.ColumnDefinitions>
-                                                                            <StackPanel Grid.Column="0">
-                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="X"/>
-                                                                                <TextBox x:Name="tbvehlocx" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehlocx_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangeVEHLocationXPlusMinus" Height="30"/>
-                                                                            </StackPanel>
-                                                                            <StackPanel Grid.Column="2">
-                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="Y"/>
-                                                                                <TextBox x:Name="tbvehlocy" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehlocy_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangeVEHLocationYPlusMinus" Height="30"/>
-                                                                            </StackPanel>
-                                                                            <StackPanel Grid.Column="4">
-                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="Z"/>
-                                                                                <TextBox x:Name="tbvehlocz" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehlocz_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangeVEHLocationZPlusMinus" Height="30"/>
-                                                                            </StackPanel>
-                                                                            <Border Grid.Column="6" Width="30" Height="30" VerticalAlignment="Bottom">
-                                                                                <Button x:Name="Btnvehgetloc" Style="{StaticResource FieldIconButton}" Click="Btnvehgetloc_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Translation[getcursorloc], FallbackValue=Get Cursor Location}" IsEnabled="False" >
+                                                                    <Grid>
+                                                                        <Grid.ColumnDefinitions>
+                                                                            <ColumnDefinition Width="Auto"/>
+                                                                            <ColumnDefinition Width="14"/>
+                                                                            <ColumnDefinition Width="*"/>
+                                                                        </Grid.ColumnDefinitions>
+                                                                        <StackPanel Width="250">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[loc], FallbackValue=Location}"/>
+                                                                            <Grid Margin="0,0,0,10">
+                                                                                <Grid.ColumnDefinitions>
+                                                                                    <ColumnDefinition Width="*"/>
+                                                                                    <ColumnDefinition Width="5"/>
+                                                                                    <ColumnDefinition Width="*"/>
+                                                                                    <ColumnDefinition Width="5"/>
+                                                                                    <ColumnDefinition Width="*"/>
+                                                                                    <ColumnDefinition Width="5"/>
+                                                                                    <ColumnDefinition Width="30"/>
+                                                                                </Grid.ColumnDefinitions>
+                                                                                <StackPanel Grid.Column="0">
+                                                                                    <TextBlock Style="{StaticResource FieldAxis}" Text="X"/>
+                                                                                    <TextBox x:Name="tbvehlocx" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehlocx_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangeVEHLocationXPlusMinus" Height="30"/>
+                                                                                </StackPanel>
+                                                                                <StackPanel Grid.Column="2">
+                                                                                    <TextBlock Style="{StaticResource FieldAxis}" Text="Y"/>
+                                                                                    <TextBox x:Name="tbvehlocy" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehlocy_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangeVEHLocationYPlusMinus" Height="30"/>
+                                                                                </StackPanel>
+                                                                                <StackPanel Grid.Column="4">
+                                                                                    <TextBlock Style="{StaticResource FieldAxis}" Text="Z"/>
+                                                                                    <TextBox x:Name="tbvehlocz" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehlocz_TextChanged" KeyDown="FormatTextForFloat" KeyUp="ChangeVEHLocationZPlusMinus" Height="30"/>
+                                                                                </StackPanel>
+                                                                                <Border Grid.Column="6" Width="30" Height="30" VerticalAlignment="Bottom">
+                                                                                    <Button x:Name="Btnvehgetloc" Style="{StaticResource FieldIconButton}" Click="Btnvehgetloc_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Translation[getcursorloc], FallbackValue=Get Cursor Location}" IsEnabled="False" >
                                                                                     <Path x:Name="vehgetlocpath" Data="M8,1.5 L8,4.5 M8,11.5 L8,14.5 M1.5,8 L4.5,8 M11.5,8 L14.5,8 M8,5 A3,3 0 1 1 7.99,5" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.6" Width="16" Height="16" />
-                                                                                </Button>
-                                                                            </Border>
-                                                                        </Grid>
-                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[vrot], FallbackValue=Rotation}"/>
-                                                                        <Grid Margin="0,0,0,10">
-                                                                            <Grid.ColumnDefinitions>
-                                                                                <ColumnDefinition Width="*"/>
-                                                                                <ColumnDefinition Width="6"/>
-                                                                                <ColumnDefinition Width="*"/>
-                                                                                <ColumnDefinition Width="6"/>
-                                                                                <ColumnDefinition Width="*"/>
-                                                                                <ColumnDefinition Width="6"/>
-                                                                                <ColumnDefinition Width="30"/>
-                                                                            </Grid.ColumnDefinitions>
-                                                                            <StackPanel Grid.Column="0">
-                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="X"/>
-                                                                                <TextBox x:Name="tbvehrotx" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehrotx_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
-                                                                            </StackPanel>
-                                                                            <StackPanel Grid.Column="2">
-                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="Y"/>
-                                                                                <TextBox x:Name="tbvehroty" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehroty_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
-                                                                            </StackPanel>
-                                                                            <StackPanel Grid.Column="4">
-                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="Z"/>
-                                                                                <TextBox x:Name="tbvehrotz" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehrotz_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
-                                                                            </StackPanel>
-                                                                        </Grid>
-                                                                        <Grid>
-                                                                            <Grid.ColumnDefinitions>
-                                                                                <ColumnDefinition Width="*"/>
-                                                                                <ColumnDefinition Width="6"/>
-                                                                                <ColumnDefinition Width="*"/>
-                                                                                <ColumnDefinition Width="36"/>
-                                                                                <ColumnDefinition Width="*"/>
-                                                                            </Grid.ColumnDefinitions>
-                                                                            <StackPanel Grid.Column="0">
-                                                                                <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[heading], FallbackValue=Heading}"/>
+                                                                                    </Button>
+                                                                                </Border>
+                                                                            </Grid>
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[vrot], FallbackValue=Rotation}"/>
+                                                                            <Grid Margin="0,0,0,10">
+                                                                                <Grid.ColumnDefinitions>
+                                                                                    <ColumnDefinition Width="*"/>
+                                                                                    <ColumnDefinition Width="5"/>
+                                                                                    <ColumnDefinition Width="*"/>
+                                                                                    <ColumnDefinition Width="5"/>
+                                                                                    <ColumnDefinition Width="*"/>
+                                                                                    <ColumnDefinition Width="5"/>
+                                                                                    <ColumnDefinition Width="30"/>
+                                                                                </Grid.ColumnDefinitions>
+                                                                                <StackPanel Grid.Column="0">
+                                                                                    <TextBlock Style="{StaticResource FieldAxis}" Text="X"/>
+                                                                                    <TextBox x:Name="tbvehrotx" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehrotx_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
+                                                                                </StackPanel>
+                                                                                <StackPanel Grid.Column="2">
+                                                                                    <TextBlock Style="{StaticResource FieldAxis}" Text="Y"/>
+                                                                                    <TextBox x:Name="tbvehroty" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehroty_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
+                                                                                </StackPanel>
+                                                                                <StackPanel Grid.Column="4">
+                                                                                    <TextBlock Style="{StaticResource FieldAxis}" Text="Z"/>
+                                                                                    <TextBox x:Name="tbvehrotz" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehrotz_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
+                                                                                </StackPanel>
+                                                                            </Grid>
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[heading], FallbackValue=Heading}"/>
+                                                                            <Grid>
+                                                                                <Grid.ColumnDefinitions>
+                                                                                    <ColumnDefinition Width="*"/>
+                                                                                    <ColumnDefinition Width="5"/>
+                                                                                    <ColumnDefinition Width="*"/>
+                                                                                    <ColumnDefinition Width="5"/>
+                                                                                    <ColumnDefinition Width="*"/>
+                                                                                    <ColumnDefinition Width="35"/>
+                                                                                </Grid.ColumnDefinitions>
                                                                                 <TextBox x:Name="tbvehhead" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehhead_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
-                                                                            </StackPanel>
-                                                                        </Grid>
-                                                                    </StackPanel>
+                                                                            </Grid>
+                                                                        </StackPanel>
+                                                                        <!-- Where the vehicle is: all vehicles of the job, the selected one larger in the accent colour. -->
+                                                                        <local:JobMap x:Name="VehMap" Grid.Column="2" MinHeight="180"/>
+                                                                    </Grid>
                                                                 </local:SectionCard>
                                                             </Grid>
-                                                            <DockPanel Margin="0,6,0,10">
+                                                            <DockPanel Margin="0,14,0,14">
+                                                                <Border DockPanel.Dock="Left" Width="4" Height="18" CornerRadius="2" Background="{DynamicResource AccentBrush}" Margin="0,0,10,0"/>
                                                                 <TextBlock Style="{StaticResource PageSectionLabel}" Text="{Binding Translation[sec_mission], FallbackValue=MISSION}"/>
                                                                 <Rectangle Height="1" Fill="{DynamicResource LineBrush}" VerticalAlignment="Center"/>
                                                             </DockPanel>
@@ -2799,7 +2841,8 @@
                                                                     </StackPanel>
                                                                 </local:SectionCard>
                                                             </Grid>
-                                                            <DockPanel Margin="0,6,0,10">
+                                                            <DockPanel Margin="0,14,0,14">
+                                                                <Border DockPanel.Dock="Left" Width="4" Height="18" CornerRadius="2" Background="{DynamicResource AccentBrush}" Margin="0,0,10,0"/>
                                                                 <TextBlock Style="{StaticResource PageSectionLabel}" Text="{Binding Translation[sec_props], FallbackValue=PROPERTIES}"/>
                                                                 <Rectangle Height="1" Fill="{DynamicResource LineBrush}" VerticalAlignment="Center"/>
                                                             </DockPanel>
@@ -2867,7 +2910,14 @@
                                                                             </StackPanel>
                                                                             <StackPanel Grid.Column="2">
                                                                                 <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[iconsize], FallbackValue=Icon Size}"/>
-                                                                                <TextBox x:Name="tbvehiconsize" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehiconsize_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
+                                                                                <Grid>
+                                                                                    <Grid.ColumnDefinitions>
+                                                                                        <ColumnDefinition Width="*"/>
+                                                                                        <ColumnDefinition Width="58"/>
+                                                                                    </Grid.ColumnDefinitions>
+                                                                                    <Slider x:Name="VehIconSizeSlider" Minimum="0" Maximum="3" SmallChange="0.1" LargeChange="0.5" VerticalAlignment="Center" Margin="0,0,8,0" IsEnabled="{Binding IsEnabled, ElementName=tbvehiconsize}"/>
+                                                                                    <TextBox Grid.Column="1" x:Name="tbvehiconsize" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbvehiconsize_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
+                                                                                </Grid>
                                                                             </StackPanel>
                                                                         </Grid>
                                                                         <WrapPanel Margin="0,12,0,0">

@@ -31,6 +31,7 @@ namespace Xenvious
         private readonly StackPanel _teamButtons = new StackPanel { Orientation = Orientation.Horizontal };
         private readonly TextBlock _slots = new TextBlock { FontSize = 12, VerticalAlignment = VerticalAlignment.Center };
         private readonly StackPanel _messages = new StackPanel();
+        private readonly WrapPanel _legend = new WrapPanel { Margin = new Thickness(0, 10, 0, 0) };
         private readonly StackPanel _track = new StackPanel { Margin = new Thickness(0, 8, 0, 0) };
         private readonly StackPanel _footer = new StackPanel();
         private readonly DispatcherTimer _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(2) };
@@ -102,22 +103,14 @@ namespace Xenvious
             _slots.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
             DockPanel.SetDock(_slots, Dock.Right);
             top.Children.Add(_slots);
-            var holder = new Border { CornerRadius = new CornerRadius(5), Padding = new Thickness(3), HorizontalAlignment = HorizontalAlignment.Left };
-            holder.SetResourceReference(Border.BackgroundProperty, "TextBoxBackground");
-            var teamRow = new StackPanel { Orientation = Orientation.Horizontal };
-            var teamLabel = new TextBlock { Text = T("dash_team", "Team"), FontSize = 11, FontWeight = FontWeights.Bold, VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(6, 0, 6, 0) };
-            teamLabel.SetResourceReference(TextBlock.ForegroundProperty, "NavMutedBrush");
-            teamRow.Children.Add(teamLabel);
-            teamRow.Children.Add(_teamButtons);
-            holder.Child = teamRow;
+            // Segmented control as in the mockup: the chosen team raised, with an accent line under it.
+            var holder = new Border { CornerRadius = new CornerRadius(7), Padding = new Thickness(3), BorderThickness = new Thickness(1), HorizontalAlignment = HorizontalAlignment.Left, Child = _teamButtons };
+            holder.SetResourceReference(Border.BackgroundProperty, "DeepBrush");
+            holder.SetResourceReference(Border.BorderBrushProperty, "LineBrush");
             top.Children.Add(holder);
             _body.Children.Add(top);
 
-            var legend = new WrapPanel { Margin = new Thickness(0, 10, 0, 0) };
-            legend.Children.Add(LegendItem(Marker(true, false, 12), T("er_main", "Own rule")));
-            legend.Children.Add(LegendItem(Marker(false, true, 12), T("er_extra", "Extra objective")));
-            legend.Children.Add(LegendItem(Marker(false, false, 12).Also(m => m.Opacity = 0.45), EntityRules.UsesRuleList ? T("er_other_class", "rule for other entities") : T("er_before", "before the own rule")));
-            _body.Children.Add(legend);
+            _body.Children.Add(_legend);
 
             _body.Children.Add(_messages);
             _body.Children.Add(_track);
@@ -148,8 +141,14 @@ namespace Xenvious
 
             _messages.Children.Clear();
             _track.Children.Clear();
+            _legend.Children.Clear();
+            _legend.Children.Add(LegendItem(Marker(true, false, 12), T("er_main", "Own rule")));
+            _legend.Children.Add(LegendItem(Marker(false, true, 12), T("er_extra", "Extra objective")));
+            _legend.Children.Add(LegendItem(Marker(false, false, 12).Also(m => m.Opacity = 0.45), T("er_before", "before the own rule")));
+            if (list)
+                _legend.Children.Add(LegendItem(Marker(false, false, 12).Also(m => m.Opacity = 0.45), T("er_other_class", "rule for other entities")));
             _footer.Children.Clear();
-            _slots.Text = ready ? string.Format(CultureInfo.CurrentCulture, T("er_slots", "{0} of 30 extra places used"), ExtraObjectives.UsedSlots()) : "";
+            _slots.Text = ready ? string.Format(CultureInfo.CurrentCulture, T("er_slots", "Extra objectives: {0} of 30 entities"), ExtraObjectives.UsedSlots()) : "";
 
             RuleCount = rules.Count;
             var main = entries.FirstOrDefault(e => e.Main);
@@ -200,7 +199,7 @@ namespace Xenvious
                 for (int i = 0; i < teams; i++)
                 {
                     int n = i;
-                    var b = new ToggleButton { Content = (i + 1).ToString(CultureInfo.InvariantCulture), Style = (Style)FindResource("DashTeamButton") };
+                    var b = new ToggleButton { Content = T("dash_team", "Team") + " " + (i + 1).ToString(CultureInfo.InvariantCulture), Style = (Style)FindResource("TeamSegButton") };
                     b.Click += (_, __) => { if (n == _team) Redraw(true); else SetTeam(n); };
                     _teamButtons.Children.Add(b);
                 }
@@ -237,23 +236,26 @@ namespace Xenvious
                 {
                     kind = RowKind.Main;
                     right.Children.Add(Chip(T("er_main", "Own rule"), ChipKind.Main));
-                    right.Children.Add(Chip(type, ChipKind.Plain));
+                    right.Children.Add(TypeCombo(selection, value => Apply(EntityRules.SetRuleType(_team, rule, value)), T("er_type_rule_tip", "Changes the type of the whole rule, for every entity in it.")));
                     right.Children.Add(Remove(() => Apply(EntityRules.SetMember(_type, index, _team, rule, false))));
                 }
                 else if (member)
                 {
                     kind = RowKind.Extra;
                     right.Children.Add(Chip(T("er_extra_short", "Extra"), ChipKind.Extra));
-                    right.Children.Add(Chip(type, ChipKind.Plain));
+                    right.Children.Add(TypeCombo(selection, value => Apply(EntityRules.SetRuleType(_team, rule, value)), T("er_type_rule_tip", "Changes the type of the whole rule, for every entity in it.")));
                     right.Children.Add(Remove(() => Apply(EntityRules.SetMember(_type, index, _team, rule, false))));
+                }
+                else if (cls == _type && MainRule >= 0 && r < MainRule)
+                {
+                    kind = RowKind.Faded;
+                    right.Children.Add(Faint(T("er_before", "before the own rule"), 12).Also(t => t.ToolTip = T("er_before_tip", "Extra objectives only run after the own rule.")));
                 }
                 else if (cls == _type)
                 {
                     kind = RowKind.Free;
-                    bool becomesMain = MainRule < 0 || r < MainRule;
-                    right.Children.Add(Faint(type, 12).Also(t => { t.VerticalAlignment = VerticalAlignment.Center; t.Margin = new Thickness(0, 0, 8, 0); }));
-                    right.Children.Add(AddButton(becomesMain ? T("er_add_main", "Own rule") : T("er_extra_short", "Extra"),
-                        becomesMain ? T("er_add_main_tip", "The entity joins this rule; it comes first, so it becomes the own rule and the old one an extra objective.") : null,
+                    bool becomesMain = MainRule < 0;
+                    right.Children.Add(AddButton(becomesMain ? T("er_add_main", "Own rule") : T("er_extra_short", "Extra"), null,
                         () => Apply(EntityRules.SetMember(_type, index, _team, rule, true))));
                 }
                 else
@@ -291,7 +293,8 @@ namespace Xenvious
                 {
                     kind = extra != null ? RowKind.Warn : RowKind.Main;
                     right.Children.Add(Chip(T("er_main", "Own rule"), ChipKind.Main));
-                    right.Children.Add(Chip(MainName ?? "", ChipKind.Plain));
+                    right.Children.Add(TypeCombo(Rules.Selection(EntityRules.KindOf(_type), EntityRules.OwnLogic(_type, index, _team)),
+                        value => { EntityRules.SetOwnType(_type, index, _team, value); Redraw(true); }));
                     if (extra != null)
                     {
                         right.Children.Add(Chip(string.Format(CultureInfo.CurrentCulture, T("er_twice", "+ extra {0} twice"), Rules.SelectionName(extra.Selection)), ChipKind.Warn,
@@ -374,7 +377,7 @@ namespace Xenvious
             if (rule == null)
                 middle.Children.Add(Faint(T("er_norule", "This rule does not exist"), 13).Also(t => t.FontStyle = FontStyles.Italic));
             else
-                middle.Children.Add(RulesView.ObjectiveText(rule.Text, 13));
+                middle.Children.Add(RulesView.ObjectiveText(rule.Text, 13, Rules.DefaultTextFor(_team, rule)));
             string sub = rule == null ? string.Format(CultureInfo.CurrentCulture, T("er_only_rules", "The team has {0} rules"), RuleCount)
                 : (type.Length > 0 ? type : T("er_empty_rule", "nothing points at it"));
             middle.Children.Add(Faint(sub, 11.5));
@@ -561,9 +564,9 @@ namespace Xenvious
             return b;
         }
 
-        private ComboBox TypeCombo(int selected, Action<int> changed)
+        private ComboBox TypeCombo(int selected, Action<int> changed, string tip = null)
         {
-            var box = new ComboBox { Height = 26, MinWidth = 110, Margin = new Thickness(0, 0, 6, 0), VerticalAlignment = VerticalAlignment.Center };
+            var box = new ComboBox { Height = 26, MinWidth = 110, Margin = new Thickness(0, 0, 6, 0), VerticalAlignment = VerticalAlignment.Center, ToolTip = tip };
             foreach (var r in ExtraObjectives.RuleTypesFor(_type))
             {
                 var item = new ComboBoxItem { Content = T("eo_r_" + r.Value, r.Name), Tag = r.Value };
