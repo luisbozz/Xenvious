@@ -36,7 +36,7 @@ namespace Xenvious
         private readonly StackPanel _footer = new StackPanel();
         private readonly DispatcherTimer _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(2) };
 
-        /// <summary>Opens the explanation (the extra objectives overview).</summary>
+        /// <summary>Opens the explanation (on the rules page).</summary>
         public event EventHandler HelpRequested;
         /// <summary>The team shown changed (the page follows with its per-team fields).</summary>
         public event EventHandler TeamChanged;
@@ -371,6 +371,12 @@ namespace Xenvious
             var num = NumberCircle(r, kind);
             DockPanel.SetDock(num, Dock.Left);
             dock.Children.Add(num);
+            if (rule != null)
+            {
+                var open = ShowInRules(r);
+                DockPanel.SetDock(open, Dock.Right);
+                dock.Children.Add(open);
+            }
             DockPanel.SetDock(right, Dock.Right);
             dock.Children.Add(right);
             var middle = new StackPanel { Margin = new Thickness(10, 0, 10, 0), VerticalAlignment = VerticalAlignment.Center };
@@ -553,6 +559,19 @@ namespace Xenvious
             b.MouseEnter += (_, __) => frame.StrokeThickness = 1.6;
             b.MouseLeave += (_, __) => frame.StrokeThickness = 1;
             b.Click += (_, __) => click();
+            return b;
+        }
+
+        // Opens the rules page at this rule, where its entities, jumps and texts are.
+        private Button ShowInRules(int rule)
+        {
+            var icon = new Path { Data = Geometry.Parse("M5,3 H1 V11 H9 V7 M7,1 H11 V5 M11,1 L5,7"), StrokeThickness = 1.5, Width = 12, Height = 12, Stretch = Stretch.Uniform,
+                StrokeLineJoin = PenLineJoin.Round, StrokeStartLineCap = PenLineCap.Round, StrokeEndLineCap = PenLineCap.Round };
+            icon.SetResourceReference(Shape.StrokeProperty, "MutedTextBrush");
+            var b = new Button { Style = (Style)FindResource("FieldIconButton"), Width = 26, Height = 26, Margin = new Thickness(4, 0, 0, 0), Content = icon,
+                ToolTip = T("er_show_rule", "Show in the rules"), VerticalAlignment = VerticalAlignment.Center };
+            int team = _team;
+            b.Click += (_, __) => MainWindow.Instance?.OpenRules(team, rule);
             return b;
         }
 

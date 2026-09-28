@@ -8000,7 +8000,7 @@
                                                                     </Border>
                                                                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                                                                         <local:MasonryPanel Margin="0,12,0,12">
-                                                                            <local:ExtraRulesCard x:Name="GotoExtraRules"/>
+                                                                            <local:EntityRulesCard x:Name="GotoExtraRules" VerticalAlignment="Top"/>
                                                                             <StackPanel>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <DockPanel>
@@ -8338,7 +8338,7 @@
                                                             <StackPanel>
                                                                 <local:ModelCard x:Name="ActorModelCard" Margin="0,0,0,12"/>
                                                             </StackPanel>
-<local:ExtraRulesCard x:Name="ActorExtraRules"/>
+<local:EntityRulesCard x:Name="ActorExtraRules" VerticalAlignment="Top"/>
                                                             <StackPanel>
                                                                 <Border Style="{StaticResource DashCard}">
                                                                     <DockPanel>
@@ -9741,7 +9741,7 @@
                                                                         <StackPanel>
                                                                             <local:ModelCard x:Name="ObjModelCard" Margin="0,0,0,12"/>
                                                                         </StackPanel>
-                                                                        <local:ExtraRulesCard x:Name="ObjExtraRules"/>
+                                                                        <local:EntityRulesCard x:Name="ObjExtraRules" VerticalAlignment="Top"/>
                                                                         <StackPanel>
                                                                             <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                 <DockPanel>

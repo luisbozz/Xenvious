@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -10,15 +11,17 @@ namespace Xenvious
     {
         private void InitExtraRules()
         {
+            // "?" on a rules card: the explanation is on the rules page, at the entity's own rule.
+            void Help(EntityRulesCard card) => card.HelpRequested += (_, __) => OpenRules(card.Team, Math.Max(0, card.MainRule));
             VehExtraRules.Attach(ddvehno, ExtraObjectives.TypeVehicle);
-            VehExtraRules.HelpRequested += (_, __) => OpenExtraObjectives();
+            Help(VehExtraRules);
             InitVehicleLayout();
             ActorExtraRules.Attach(ddactorno, ExtraObjectives.TypePed);
-            ActorExtraRules.HelpRequested += (_, __) => OpenExtraObjectives();
+            Help(ActorExtraRules);
             ObjExtraRules.Attach(ddobjno, ExtraObjectives.TypeObject);
-            ObjExtraRules.HelpRequested += (_, __) => OpenExtraObjectives();
+            Help(ObjExtraRules);
             GotoExtraRules.Attach(ddgotono, ExtraObjectives.TypeGoTo);
-            GotoExtraRules.HelpRequested += (_, __) => OpenExtraObjectives();
+            Help(GotoExtraRules);
         }
 
         /// <summary>Opens the rules page (Controls/RulesView.cs).</summary>

@@ -181,7 +181,6 @@
     <Compile Include="Controls\AreaEditor.cs" />
     <Compile Include="Controls\BareSearchBox.cs" />
     <Compile Include="Controls\EntityPicker.cs" />
-    <Compile Include="Controls\ExtraRulesCard.cs" />
     <Compile Include="Controls\PlayAreaView.cs" />
     <Compile Include="Controls\GtaTextAssist.cs" />
     <Compile Include="Controls\RulesView.cs" />
