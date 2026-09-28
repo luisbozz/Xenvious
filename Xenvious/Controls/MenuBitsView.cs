@@ -98,7 +98,7 @@ namespace Xenvious
             _onlySet.Style = (Style)FindResource("FormToggle");
             _onlySet.Click += (_, __) => Render(force: true);
 
-            var filter = new Grid { Margin = new Thickness(0, 0, 0, 8) };
+            var filter = new Grid();
             filter.ColumnDefinitions.Add(new ColumnDefinition());
             filter.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
             filter.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
@@ -116,15 +116,26 @@ namespace Xenvious
             };
             hint.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
 
-            var body = new StackPanel { Margin = new Thickness(14, 12, 14, 8) };
-            body.Children.Add(hint);
-            body.Children.Add(filter);
-            body.Children.Add(_list);
+            // Search and filter in their own band under a line, as on the rules page.
+            var tools = new StackPanel();
+            tools.Children.Add(hint);
+            tools.Children.Add(filter);
+            var band = new Border { Padding = new Thickness(14, 10, 14, 10), BorderThickness = new Thickness(0, 0, 0, 1), Child = tools };
+            band.SetResourceReference(Border.BorderBrushProperty, "LineBrush");
+            _list.Margin = new Thickness(14, 12, 14, 8);
+            _list.SizeChanged += (_, e) =>
+            {
+                if (e.WidthChanged)
+                    foreach (var grid in _list.Children.OfType<System.Windows.Controls.Primitives.UniformGrid>())
+                        grid.Columns = ColumnCount;
+            };
             var dock = new DockPanel();
             var head = new Border { Style = (Style)FindResource("DashCardHeader"), Child = header };
             DockPanel.SetDock(head, Dock.Top);
             dock.Children.Add(head);
-            dock.Children.Add(body);
+            DockPanel.SetDock(band, Dock.Top);
+            dock.Children.Add(band);
+            dock.Children.Add(_list);
             Child = dock;
             Refresh();
         }
@@ -203,6 +214,10 @@ namespace Xenvious
                 _list.Children.Add(GroupLabel(T("mb_favorites", "Favourites")));
                 _list.Children.Add(Columns(favRows));
                 shown += favRows.Count;
+                // A line under the favourites, across the card, so they read as their own block.
+                var line = new Border { Height = 1, Margin = new Thickness(-14, 8, -14, 0) };
+                line.SetResourceReference(Border.BackgroundProperty, "LineBrush");
+                _list.Children.Add(line);
             }
 
             for (int set = 1; set <= Sets; set++)
@@ -241,10 +256,12 @@ namespace Xenvious
             }
         }
 
-        // Three rows side by side; the page is wide enough.
-        private static FrameworkElement Columns(List<FrameworkElement> rows)
+        // As many rows side by side as fit: a name needs about 300 px next to its switch.
+        private int ColumnCount => Math.Max(1, Math.Min(3, (int)(_list.ActualWidth / 300)));
+
+        private FrameworkElement Columns(List<FrameworkElement> rows)
         {
-            var grid = new System.Windows.Controls.Primitives.UniformGrid { Columns = 3 };
+            var grid = new System.Windows.Controls.Primitives.UniformGrid { Columns = ColumnCount };
             foreach (var row in rows)
             {
                 row.Margin = new Thickness(0, 0, 18, 2);

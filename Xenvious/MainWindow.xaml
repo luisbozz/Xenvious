@@ -5541,255 +5541,144 @@
                                                                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                                                                         <!-- Left the options by name (MenuBitsView), right the raw fields. -->
                                                                         <Grid Margin="0,12,0,12">
-                                                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="12"/><ColumnDefinition Width="400"/></Grid.ColumnDefinitions>
+                                                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="12"/><ColumnDefinition Width="440"/></Grid.ColumnDefinitions>
                                                                             <local:MenuBitsView x:Name="menuBitsView" Grid.Column="0" VerticalAlignment="Top"/>
                                                                             <Border Grid.Column="2" Style="{StaticResource DashCard}" VerticalAlignment="Top">
                                                                                 <DockPanel>
                                                                                     <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
                                                                                         <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[mb_raw], FallbackValue='Raw values'}"/>
                                                                                     </Border>
-                                                                        <StackPanel Margin="14,12,14,8">
-                                                                                        <Grid>
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="10"/>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <StackPanel Grid.Column="0">
-                                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="1"/>
-                                                                                            <TextBox x:Name="tbmbs1"  Style="{StaticResource Watermark}" TextChanged="tbmbs1_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                            </StackPanel>
-                                                                                            <StackPanel Grid.Column="2">
-                                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="2"/>
-                                                                                            <TextBox x:Name="tbmbs2"  Style="{StaticResource Watermark}" TextChanged="tbmbs2_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                            </StackPanel>
-                                                                                        </Grid>
-                                                                                        <Grid>
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="10"/>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <StackPanel Grid.Column="0">
-                                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="3"/>
-                                                                                            <TextBox x:Name="tbmbs3"  Style="{StaticResource Watermark}" TextChanged="tbmbs3_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                            </StackPanel>
-                                                                                            <StackPanel Grid.Column="2">
-                                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="4"/>
-                                                                                            <TextBox x:Name="tbmbs4"  Style="{StaticResource Watermark}" TextChanged="tbmbs4_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                            </StackPanel>
-                                                                                        </Grid>
-                                                                                        <Grid>
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="10"/>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <StackPanel Grid.Column="0">
-                                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="5"/>
-                                                                                            <TextBox x:Name="tbmbs5"  Style="{StaticResource Watermark}" TextChanged="tbmbs5_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                            </StackPanel>
-                                                                                            <StackPanel Grid.Column="2">
-                                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="6"/>
-                                                                                            <TextBox x:Name="tbmbs6"  Style="{StaticResource Watermark}" TextChanged="tbmbs6_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                            </StackPanel>
-                                                                                        </Grid>
-                                                                                        <Grid>
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="10"/>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <StackPanel Grid.Column="0">
-                                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="7"/>
-                                                                                            <TextBox x:Name="tbmbs7"  Style="{StaticResource Watermark}" TextChanged="tbmbs7_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                            </StackPanel>
-                                                                                            <StackPanel Grid.Column="2">
-                                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="8"/>
-                                                                                            <TextBox x:Name="tbmbs8"  Style="{StaticResource Watermark}" TextChanged="tbmbs8_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                            </StackPanel>
-                                                                                        </Grid>
-                                                                                        <Grid>
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="10"/>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <StackPanel Grid.Column="0">
-                                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="9"/>
-                                                                                            <TextBox x:Name="tbmbs9"  Style="{StaticResource Watermark}" TextChanged="tbmbs9_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                            </StackPanel>
-                                                                                            <StackPanel Grid.Column="2">
-                                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="10"/>
-                                                                                            <TextBox x:Name="tbmbs10" Style="{StaticResource Watermark}"  TextChanged="tbmbs10_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                            </StackPanel>
-                                                                                        </Grid>
-                                                                                        <Grid>
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="10"/>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <StackPanel Grid.Column="0">
-                                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="11"/>
-                                                                                            <TextBox x:Name="tbmbs11" Style="{StaticResource Watermark}"  TextChanged="tbmbs11_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                            </StackPanel>
-                                                                                            <StackPanel Grid.Column="2">
-                                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="12"/>
-                                                                                            <TextBox x:Name="tbmbs12" Style="{StaticResource Watermark}"  TextChanged="tbmbs12_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                            </StackPanel>
-                                                                                        </Grid>
-                                                                                        <Grid>
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="10"/>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <StackPanel Grid.Column="0">
-                                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="13"/>
-                                                                                            <TextBox x:Name="tbmbs13" Style="{StaticResource Watermark}"  TextChanged="tbmbs13_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                            </StackPanel>
-                                                                                            <StackPanel Grid.Column="2">
-                                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="14"/>
-                                                                                            <TextBox x:Name="tbmbs14" Style="{StaticResource Watermark}"  TextChanged="tbmbs14_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                            </StackPanel>
-                                                                                        </Grid>
-                                                                                        <Grid>
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="10"/>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <StackPanel Grid.Column="0">
-                                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="15"/>
-                                                                                            <TextBox x:Name="tbmbs15" Style="{StaticResource Watermark}"  TextChanged="tbmbs15_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                            </StackPanel>
-                                                                                            <StackPanel Grid.Column="2">
-                                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="16"/>
-                                                                                            <TextBox x:Name="tbmbs16" Style="{StaticResource Watermark}"  TextChanged="tbmbs16_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                            </StackPanel>
-                                                                                        </Grid>
-                                                                                        <Grid>
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="10"/>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <StackPanel Grid.Column="0">
-                                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="17"/>
-                                                                                            <TextBox x:Name="tbmbs17" Style="{StaticResource Watermark}"  TextChanged="tbmbs17_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                            </StackPanel>
-                                                                                            <StackPanel Grid.Column="2">
-                                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="18"/>
-                                                                                            <TextBox x:Name="tbmbs18" Style="{StaticResource Watermark}"  TextChanged="tbmbs18_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                            </StackPanel>
-                                                                                        </Grid>
-                                                                                        <Grid>
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="10"/>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <StackPanel Grid.Column="0">
-                                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="19"/>
-                                                                                            <TextBox x:Name="tbmbs19" Style="{StaticResource Watermark}"  TextChanged="tbmbs19_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                            </StackPanel>
-                                                                                            <StackPanel Grid.Column="2">
-                                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="20"/>
-                                                                                            <TextBox x:Name="tbmbs20" Style="{StaticResource Watermark}"  TextChanged="tbmbs20_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                            </StackPanel>
-                                                                                        </Grid>
-                                                                                        <Grid>
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="10"/>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <StackPanel Grid.Column="0">
-                                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="21"/>
-                                                                                            <TextBox x:Name="tbmbs21" Style="{StaticResource Watermark}"  TextChanged="tbmbs21_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                            </StackPanel>
-                                                                                            <StackPanel Grid.Column="2">
-                                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="22"/>
-                                                                                            <TextBox x:Name="tbmbs22" Style="{StaticResource Watermark}"  TextChanged="tbmbs22_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                            </StackPanel>
-                                                                                        </Grid>
-                                                                                        <Grid>
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="10"/>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <StackPanel Grid.Column="0">
-                                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="23"/>
-                                                                                            <TextBox x:Name="tbmbs23" Style="{StaticResource Watermark}"  TextChanged="tbmbs23_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                            </StackPanel>
-                                                                                            <StackPanel Grid.Column="2">
-                                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="24"/>
-                                                                                            <TextBox x:Name="tbmbs24" Style="{StaticResource Watermark}"  TextChanged="tbmbs24_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                            </StackPanel>
-                                                                                        </Grid>
-                                                                                        <Grid>
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="10"/>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <StackPanel Grid.Column="0">
-                                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="25"/>
-                                                                                            <TextBox x:Name="tbmbs25" Style="{StaticResource Watermark}"  TextChanged="tbmbs25_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                            </StackPanel>
-                                                                                            <StackPanel Grid.Column="2">
-                                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="26"/>
-                                                                                            <TextBox x:Name="tbmbs26" Style="{StaticResource Watermark}"  TextChanged="tbmbs26_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                            </StackPanel>
-                                                                                        </Grid>
-                                                                                        <Grid>
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="10"/>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <StackPanel Grid.Column="0">
-                                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="27"/>
-                                                                                            <TextBox x:Name="tbmbs27" Style="{StaticResource Watermark}"  TextChanged="tbmbs27_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                            </StackPanel>
-                                                                                            <StackPanel Grid.Column="2">
-                                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="28"/>
-                                                                                            <TextBox x:Name="tbmbs28" Style="{StaticResource Watermark}"  TextChanged="tbmbs28_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                            </StackPanel>
-                                                                                        </Grid>
-                                                                                        <Grid>
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="10"/>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <StackPanel Grid.Column="0">
-                                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="29"/>
-                                                                                            <TextBox x:Name="tbmbs29" Style="{StaticResource Watermark}"  TextChanged="tbmbs29_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                            </StackPanel>
-                                                                                            <StackPanel Grid.Column="2">
-                                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="30"/>
-                                                                                            <TextBox x:Name="tbmbs30" Style="{StaticResource Watermark}"  TextChanged="tbmbs30_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                            </StackPanel>
-                                                                                        </Grid>
-                                                                                        <Grid>
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="10"/>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <StackPanel Grid.Column="0">
-                                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="31"/>
-                                                                                            <TextBox x:Name="tbmbs31" Style="{StaticResource Watermark}"  TextChanged="tbmbs31_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                            </StackPanel>
-                                                                                            <StackPanel Grid.Column="2">
-                                                                                            <TextBlock Style="{StaticResource FieldLabelRaw}" Text="32"/>
-                                                                                            <TextBox x:Name="tbmbs32" Style="{StaticResource Watermark}"  TextChanged="tbmbs32_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                            </StackPanel>
-                                                                                        </Grid>
-                                                                        </StackPanel>
+                                                                        <!-- Three fields a row: the card is narrow and the values are short. -->
+                                                                        <UniformGrid Columns="3" Margin="14,12,8,8">
+                                                                            <StackPanel Margin="0,0,6,0">
+                                                                                <TextBlock Style="{StaticResource FieldLabelRaw}" Text="1"/>
+                                                                                <TextBox x:Name="tbmbs1"  Style="{StaticResource Watermark}" TextChanged="tbmbs1_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Margin="0,0,6,0">
+                                                                                <TextBlock Style="{StaticResource FieldLabelRaw}" Text="2"/>
+                                                                                <TextBox x:Name="tbmbs2"  Style="{StaticResource Watermark}" TextChanged="tbmbs2_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Margin="0,0,6,0">
+                                                                                <TextBlock Style="{StaticResource FieldLabelRaw}" Text="3"/>
+                                                                                <TextBox x:Name="tbmbs3"  Style="{StaticResource Watermark}" TextChanged="tbmbs3_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Margin="0,0,6,0">
+                                                                                <TextBlock Style="{StaticResource FieldLabelRaw}" Text="4"/>
+                                                                                <TextBox x:Name="tbmbs4"  Style="{StaticResource Watermark}" TextChanged="tbmbs4_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Margin="0,0,6,0">
+                                                                                <TextBlock Style="{StaticResource FieldLabelRaw}" Text="5"/>
+                                                                                <TextBox x:Name="tbmbs5"  Style="{StaticResource Watermark}" TextChanged="tbmbs5_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Margin="0,0,6,0">
+                                                                                <TextBlock Style="{StaticResource FieldLabelRaw}" Text="6"/>
+                                                                                <TextBox x:Name="tbmbs6"  Style="{StaticResource Watermark}" TextChanged="tbmbs6_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Margin="0,0,6,0">
+                                                                                <TextBlock Style="{StaticResource FieldLabelRaw}" Text="7"/>
+                                                                                <TextBox x:Name="tbmbs7"  Style="{StaticResource Watermark}" TextChanged="tbmbs7_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Margin="0,0,6,0">
+                                                                                <TextBlock Style="{StaticResource FieldLabelRaw}" Text="8"/>
+                                                                                <TextBox x:Name="tbmbs8"  Style="{StaticResource Watermark}" TextChanged="tbmbs8_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Margin="0,0,6,0">
+                                                                                <TextBlock Style="{StaticResource FieldLabelRaw}" Text="9"/>
+                                                                                <TextBox x:Name="tbmbs9"  Style="{StaticResource Watermark}" TextChanged="tbmbs9_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Margin="0,0,6,0">
+                                                                                <TextBlock Style="{StaticResource FieldLabelRaw}" Text="10"/>
+                                                                                <TextBox x:Name="tbmbs10" Style="{StaticResource Watermark}"  TextChanged="tbmbs10_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Margin="0,0,6,0">
+                                                                                <TextBlock Style="{StaticResource FieldLabelRaw}" Text="11"/>
+                                                                                <TextBox x:Name="tbmbs11" Style="{StaticResource Watermark}"  TextChanged="tbmbs11_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Margin="0,0,6,0">
+                                                                                <TextBlock Style="{StaticResource FieldLabelRaw}" Text="12"/>
+                                                                                <TextBox x:Name="tbmbs12" Style="{StaticResource Watermark}"  TextChanged="tbmbs12_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Margin="0,0,6,0">
+                                                                                <TextBlock Style="{StaticResource FieldLabelRaw}" Text="13"/>
+                                                                                <TextBox x:Name="tbmbs13" Style="{StaticResource Watermark}"  TextChanged="tbmbs13_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Margin="0,0,6,0">
+                                                                                <TextBlock Style="{StaticResource FieldLabelRaw}" Text="14"/>
+                                                                                <TextBox x:Name="tbmbs14" Style="{StaticResource Watermark}"  TextChanged="tbmbs14_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Margin="0,0,6,0">
+                                                                                <TextBlock Style="{StaticResource FieldLabelRaw}" Text="15"/>
+                                                                                <TextBox x:Name="tbmbs15" Style="{StaticResource Watermark}"  TextChanged="tbmbs15_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Margin="0,0,6,0">
+                                                                                <TextBlock Style="{StaticResource FieldLabelRaw}" Text="16"/>
+                                                                                <TextBox x:Name="tbmbs16" Style="{StaticResource Watermark}"  TextChanged="tbmbs16_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Margin="0,0,6,0">
+                                                                                <TextBlock Style="{StaticResource FieldLabelRaw}" Text="17"/>
+                                                                                <TextBox x:Name="tbmbs17" Style="{StaticResource Watermark}"  TextChanged="tbmbs17_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Margin="0,0,6,0">
+                                                                                <TextBlock Style="{StaticResource FieldLabelRaw}" Text="18"/>
+                                                                                <TextBox x:Name="tbmbs18" Style="{StaticResource Watermark}"  TextChanged="tbmbs18_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Margin="0,0,6,0">
+                                                                                <TextBlock Style="{StaticResource FieldLabelRaw}" Text="19"/>
+                                                                                <TextBox x:Name="tbmbs19" Style="{StaticResource Watermark}"  TextChanged="tbmbs19_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Margin="0,0,6,0">
+                                                                                <TextBlock Style="{StaticResource FieldLabelRaw}" Text="20"/>
+                                                                                <TextBox x:Name="tbmbs20" Style="{StaticResource Watermark}"  TextChanged="tbmbs20_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Margin="0,0,6,0">
+                                                                                <TextBlock Style="{StaticResource FieldLabelRaw}" Text="21"/>
+                                                                                <TextBox x:Name="tbmbs21" Style="{StaticResource Watermark}"  TextChanged="tbmbs21_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Margin="0,0,6,0">
+                                                                                <TextBlock Style="{StaticResource FieldLabelRaw}" Text="22"/>
+                                                                                <TextBox x:Name="tbmbs22" Style="{StaticResource Watermark}"  TextChanged="tbmbs22_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Margin="0,0,6,0">
+                                                                                <TextBlock Style="{StaticResource FieldLabelRaw}" Text="23"/>
+                                                                                <TextBox x:Name="tbmbs23" Style="{StaticResource Watermark}"  TextChanged="tbmbs23_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Margin="0,0,6,0">
+                                                                                <TextBlock Style="{StaticResource FieldLabelRaw}" Text="24"/>
+                                                                                <TextBox x:Name="tbmbs24" Style="{StaticResource Watermark}"  TextChanged="tbmbs24_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Margin="0,0,6,0">
+                                                                                <TextBlock Style="{StaticResource FieldLabelRaw}" Text="25"/>
+                                                                                <TextBox x:Name="tbmbs25" Style="{StaticResource Watermark}"  TextChanged="tbmbs25_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Margin="0,0,6,0">
+                                                                                <TextBlock Style="{StaticResource FieldLabelRaw}" Text="26"/>
+                                                                                <TextBox x:Name="tbmbs26" Style="{StaticResource Watermark}"  TextChanged="tbmbs26_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Margin="0,0,6,0">
+                                                                                <TextBlock Style="{StaticResource FieldLabelRaw}" Text="27"/>
+                                                                                <TextBox x:Name="tbmbs27" Style="{StaticResource Watermark}"  TextChanged="tbmbs27_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Margin="0,0,6,0">
+                                                                                <TextBlock Style="{StaticResource FieldLabelRaw}" Text="28"/>
+                                                                                <TextBox x:Name="tbmbs28" Style="{StaticResource Watermark}"  TextChanged="tbmbs28_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Margin="0,0,6,0">
+                                                                                <TextBlock Style="{StaticResource FieldLabelRaw}" Text="29"/>
+                                                                                <TextBox x:Name="tbmbs29" Style="{StaticResource Watermark}"  TextChanged="tbmbs29_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Margin="0,0,6,0">
+                                                                                <TextBlock Style="{StaticResource FieldLabelRaw}" Text="30"/>
+                                                                                <TextBox x:Name="tbmbs30" Style="{StaticResource Watermark}"  TextChanged="tbmbs30_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Margin="0,0,6,0">
+                                                                                <TextBlock Style="{StaticResource FieldLabelRaw}" Text="31"/>
+                                                                                <TextBox x:Name="tbmbs31" Style="{StaticResource Watermark}"  TextChanged="tbmbs31_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                            <StackPanel Margin="0,0,6,0">
+                                                                                <TextBlock Style="{StaticResource FieldLabelRaw}" Text="32"/>
+                                                                                <TextBox x:Name="tbmbs32" Style="{StaticResource Watermark}"  TextChanged="tbmbs32_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
+                                                                            </StackPanel>
+                                                                        </UniformGrid>
                                                                                 </DockPanel>
                                                                             </Border>
                                                                         </Grid>
