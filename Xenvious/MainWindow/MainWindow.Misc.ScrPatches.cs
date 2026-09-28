@@ -210,19 +210,16 @@ namespace Xenvious
         // Edition as a segmented control (the running one raised), then build and open creator.
         private void RenderPatchesHeader(string creator)
         {
-            var items = new StackPanel { Orientation = Orientation.Horizontal };
-            foreach (bool enhanced in new[] { false, true })
-            {
-                bool current = GameVariant.IsEnhanced == enhanced;
-                var text = new TextBlock { Text = enhanced ? "Enhanced" : "Legacy", FontWeight = FontWeights.Bold, FontSize = 13 };
-                text.SetResourceReference(TextBlock.ForegroundProperty, current ? "TextColor" : "MutedTextBrush");
-                var item = new Border { CornerRadius = new CornerRadius(5), Padding = new Thickness(12, 4, 12, 4), Margin = new Thickness(0, 0, enhanced ? 0 : 3, 0), Child = text, BorderThickness = new Thickness(0, 0, 0, current ? 2 : 0) };
-                item.SetResourceReference(Border.BackgroundProperty, current ? "SectionBackgroundBrush" : "DeepBrush");
-                item.SetResourceReference(Border.BorderBrushProperty, "AccentBrush");
-                items.Children.Add(item);
-            }
-            var track = new Border { CornerRadius = new CornerRadius(7), Padding = new Thickness(3), BorderThickness = new Thickness(1), Child = items,
-                ToolTip = TranslateOr("patches_edition_tip", "The game edition Xenvious is connected to") };
+            // Only information: the edition follows the game Xenvious is attached to.
+            var edition = new StackPanel { Orientation = Orientation.Horizontal };
+            var dot = new System.Windows.Shapes.Ellipse { Width = 8, Height = 8, Margin = new Thickness(0, 0, 7, 0), VerticalAlignment = VerticalAlignment.Center };
+            dot.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, m != null && m.IsProcOpen ? "OkBrush" : "FaintTextBrush");
+            edition.Children.Add(dot);
+            var name = new TextBlock { Text = "GTA V " + GameVariant.DisplayName(GameVariant.Current), FontWeight = FontWeights.Bold, FontSize = 13, VerticalAlignment = VerticalAlignment.Center };
+            name.SetResourceReference(TextBlock.ForegroundProperty, "TextColor");
+            edition.Children.Add(name);
+            var track = new Border { CornerRadius = new CornerRadius(12), Padding = new Thickness(10, 4, 12, 5), BorderThickness = new Thickness(1), Child = edition,
+                ToolTip = TranslateOr("patches_edition_tip", "The game edition Xenvious is connected to"), UseLayoutRounding = true };
             track.SetResourceReference(Border.BackgroundProperty, "DeepBrush");
             track.SetResourceReference(Border.BorderBrushProperty, "LineBrush");
             patchesEdition.Child = track;
@@ -232,8 +229,8 @@ namespace Xenvious
             if (m != null && m.IsProcOpen)
             {
                 string online = GTA.getOnlineVersion(), number = GTA.getBuildVersion();
-                int dot = number.IndexOf('.');
-                build = (online + "-" + (dot > 0 ? number.Substring(0, dot) : number)).Trim('-');
+                int cut = number.IndexOf('.');
+                build = (online + "-" + (cut > 0 ? number.Substring(0, cut) : number)).Trim('-');
             }
             patchesMeta.Inlines.Clear();
             patchesMeta.Inlines.Add(new Run(TranslateOr("patches_build", "Build") + " "));
@@ -265,19 +262,21 @@ namespace Xenvious
                 scrPatchesFilter.Children.Add(ScrPatchFilterChip(ScrPatchScriptLabel(script), script, Count(script)));
         }
 
-        // Selected chip filled yellow, the others yellow text on the hover colour (as before).
+        // Chips as in the mockup: outlined, the chosen one with the accent outline and a soft fill.
         private Border ScrPatchFilterChip(string label, string script, int count)
         {
             bool selected = _scrPatchScript == script;
-            var text = new TextBlock { FontSize = 12, FontWeight = selected ? FontWeights.Bold : FontWeights.Normal, Foreground = ThemeBrush(selected ? "HighlightForeground" : "HighlightBrush") };
+            var text = new TextBlock { FontSize = 12.5 };
+            text.SetResourceReference(TextBlock.ForegroundProperty, selected ? "TextColor" : "MutedTextBrush");
             text.Inlines.Add(new Run(label));
-            text.Inlines.Add(new Run("  " + count.ToString(CultureInfo.CurrentCulture)) { FontSize = 11, FontWeight = FontWeights.Normal });
-            // No outline: a 1 px border on a rounded chip renders blurry at non-100 % scaling.
+            text.Inlines.Add(new Run("  " + count.ToString(CultureInfo.CurrentCulture)) { FontSize = 11.5, Foreground = ThemeBrush("FaintTextBrush") });
             var chip = new Border
             {
-                CornerRadius = new CornerRadius(10), Padding = new Thickness(12, 4, 12, 4), Margin = new Thickness(0, 0, 6, 6), Cursor = Cursors.Hand,
-                UseLayoutRounding = true, SnapsToDevicePixels = true, Background = ThemeBrush(selected ? "HighlightBrush" : "HoverBackgroundBrush"), Child = text,
+                CornerRadius = new CornerRadius(12), Padding = new Thickness(11, 3, 11, 4), Margin = new Thickness(0, 0, 6, 6), Cursor = Cursors.Hand,
+                BorderThickness = new Thickness(1), UseLayoutRounding = true, SnapsToDevicePixels = true, Child = text,
             };
+            chip.SetResourceReference(Border.BorderBrushProperty, selected ? "AccentBrush" : "LineBrush");
+            chip.SetResourceReference(Border.BackgroundProperty, selected ? "AccentSoftBrush" : "SectionBackgroundBrush");
             chip.MouseLeftButtonUp += (_, __) => { _scrPatchScript = script; _patchesShownKey = null; RenderPatchesPage(); };
             return chip;
         }
@@ -314,7 +313,11 @@ namespace Xenvious
                 Grid.SetColumn(box, 1);
                 grid.Children.Add(box);
             }
-            var card = new Border { Style = (Style)FindResource("DashCard"), Padding = new Thickness(14, 12, 14, 10), Margin = new Thickness(0, 0, 10, 10), Child = grid, BorderThickness = new Thickness(1) };
+            // Plain rounded border (no DashCard shadow) and layout rounding: the 1 px accent outline
+            // stays crisp instead of blurring on the shadow at fractional positions.
+            var card = new Border { CornerRadius = new CornerRadius(8), Padding = new Thickness(14, 12, 14, 10), Margin = new Thickness(0, 0, 10, 10), Child = grid, BorderThickness = new Thickness(1),
+                UseLayoutRounding = true, SnapsToDevicePixels = true };
+            card.SetResourceReference(Border.BackgroundProperty, "SectionBackgroundBrush");
             card.SetResourceReference(Border.BorderBrushProperty, on ? "AccentBrush" : "LineBrush");
             return card;
         }
@@ -329,11 +332,13 @@ namespace Xenvious
                 dot.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, dotBrush);
                 panel.Children.Add(dot);
             }
-            var t = new TextBlock { Text = text, FontSize = 11 };
-            t.SetResourceReference(TextBlock.ForegroundProperty, "HighlightBrush");
+            var t = new TextBlock { Text = text, FontSize = 11.5, FontWeight = FontWeights.SemiBold };
+            t.SetResourceReference(TextBlock.ForegroundProperty, "MutedTextBrush");
             panel.Children.Add(t);
-            var chip = new Border { CornerRadius = new CornerRadius(9), Padding = new Thickness(8, 2, 9, 2), Margin = new Thickness(0, 0, 6, 4), Child = panel, ToolTip = tooltip, SnapsToDevicePixels = true };
-            chip.SetResourceReference(Border.BackgroundProperty, "HoverBackgroundBrush");
+            var chip = new Border { CornerRadius = new CornerRadius(9), Padding = new Thickness(8, 1, 9, 2), Margin = new Thickness(0, 0, 6, 4), BorderThickness = new Thickness(1), Child = panel, ToolTip = tooltip,
+                UseLayoutRounding = true, SnapsToDevicePixels = true };
+            chip.SetResourceReference(Border.BackgroundProperty, "DeepBrush");
+            chip.SetResourceReference(Border.BorderBrushProperty, "LineBrush");
             return chip;
         }
 

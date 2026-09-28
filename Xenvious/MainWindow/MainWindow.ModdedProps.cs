@@ -1131,19 +1131,16 @@ namespace Xenvious
                     int changed = allprops.Count > 0 ? MPChangedCount(c) : 0;
                     int count = MPSlots(c).Count;
                     // Name left, slot count right; changed categories get an amber badge with the number.
-                    var row = new Grid { Width = 176 };
+                    var row = new Grid { Width = 150 };
                     row.ColumnDefinitions.Add(new ColumnDefinition());
                     row.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
                     row.Children.Add(new TextBlock { Text = MPCategoryName(c), TextTrimming = TextTrimming.CharacterEllipsis, VerticalAlignment = VerticalAlignment.Center });
                     FrameworkElement right;
                     if (changed > 0)
                     {
-                        var n = new TextBlock { Text = changed.ToString(CultureInfo.CurrentCulture), FontSize = 11, FontWeight = FontWeights.Bold };
-                        n.SetResourceReference(TextBlock.ForegroundProperty, "HighlightForeground");
-                        var badge = new Border { CornerRadius = new CornerRadius(8), Padding = new Thickness(7, 0, 7, 1), Child = n, VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(8, 0, 0, 0),
-                            ToolTip = string.Format(CultureInfo.CurrentCulture, MPT("mp_changed_n", "{0} changed"), changed) };
-                        badge.SetResourceReference(Border.BackgroundProperty, "WarnBrush");
-                        right = badge;
+                        var n = new TextBlock { Text = string.Format(CultureInfo.CurrentCulture, MPT("mp_changed_n", "{0} changed"), changed), FontSize = 11, FontWeight = FontWeights.Bold, VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(8, 0, 0, 0) };
+                        n.SetResourceReference(TextBlock.ForegroundProperty, "WarnBrush");
+                        right = n;
                     }
                     else
                     {
@@ -1182,6 +1179,32 @@ namespace Xenvious
         }
 
         // "Barriers 3, Ramps 12": where a model already is in the loaded creator's menu.
+        // Models on the prop blacklist (offsets.ini [OTHER] prop_model_blacklisted), as marked on
+        // the props pages too.
+        private static HashSet<int> _mpBlacklist;
+        private static bool MPBlacklisted(int hash)
+        {
+            if (_mpBlacklist == null)
+            {
+                var list = GTA.Editor.prop_model_blacklisted;
+                if (list == null || list.Count == 0)
+                    return false;
+                _mpBlacklist = new HashSet<int>(list.Select(x => int.TryParse(x, NumberStyles.Integer, CultureInfo.InvariantCulture, out int v) ? v : 0));
+            }
+            return _mpBlacklist.Contains(hash);
+        }
+
+        // A small outlined pill, as in the mockup ("changed", "Blacklist").
+        private static Border MPPill(string text, string brush)
+        {
+            var t = new TextBlock { Text = text, FontSize = 10.5, FontWeight = FontWeights.Bold };
+            t.SetResourceReference(TextBlock.ForegroundProperty, brush);
+            var pill = new Border { CornerRadius = new CornerRadius(8), Padding = new Thickness(6, 0, 6, 1), BorderThickness = new Thickness(1), Child = t, Margin = new Thickness(4, 0, 0, 0) };
+            pill.SetResourceReference(Border.BorderBrushProperty, brush);
+            pill.SetResourceReference(Border.BackgroundProperty, "SectionBackgroundBrush");
+            return pill;
+        }
+
         private string MPWhere(int hash)
         {
             var hits = new List<string>();
@@ -1225,7 +1248,7 @@ namespace Xenvious
                 : match ? string.Format(CultureInfo.CurrentCulture, MPT("mp_source", "Originals: scripts {0}"), _mpOriginalsBuild)
                 : string.Format(CultureInfo.CurrentCulture, MPT("mp_source_mismatch", "Originals ({0}) do not fit this game build – \"changed\" is hidden"), _mpOriginalsBuild);
             _mpSource.SetResourceReference(TextBlock.ForegroundProperty, match ? "FaintTextBrush" : "WarnBrush");
-            int changed = 0;
+            int changed = 0, blacklisted = 0;
             for (int i = 0; i < slots.Count; i++)
             {
                 int index = i;
@@ -1234,16 +1257,20 @@ namespace Xenvious
                 if (isChanged)
                     changed++;
                 var tile = new StackPanel { Width = 138 };
-                var head = new DockPanel();
-                var no = new TextBlock { Text = (i + 1).ToString(CultureInfo.CurrentCulture), FontSize = 11 };
+                var head = new DockPanel { Height = 18 };
+                var pills = new StackPanel { Orientation = Orientation.Horizontal };
+                DockPanel.SetDock(pills, Dock.Right);
+                head.Children.Add(pills);
+                var no = new TextBlock { Text = (i + 1).ToString(CultureInfo.CurrentCulture), FontSize = 11, VerticalAlignment = VerticalAlignment.Center };
                 no.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
                 head.Children.Add(no);
-                if (isChanged)
+                if (MPBlacklisted(slot.IntegerValue))
                 {
-                    var badge = new TextBlock { Text = MPT("mp_changed", "changed"), FontSize = 10.5, FontWeight = FontWeights.Bold, HorizontalAlignment = HorizontalAlignment.Right };
-                    badge.SetResourceReference(TextBlock.ForegroundProperty, "WarnBrush");
-                    head.Children.Add(badge);
+                    blacklisted++;
+                    pills.Children.Add(MPPill(MPT("mp_blacklist", "Blacklist"), "BadBrush"));
                 }
+                if (isChanged)
+                    pills.Children.Add(MPPill(MPT("mp_changed", "changed"), "WarnBrush"));
                 tile.Children.Add(head);
                 var item = PropCatalog.FirstOrDefault(c => c.Int32 == slot.IntegerValue);
                 var thumb = new Border { Height = 80, CornerRadius = new CornerRadius(5), Margin = new Thickness(0, 4, 0, 6), ClipToBounds = true, Child = MPThumb(item, 34) };
@@ -1268,6 +1295,8 @@ namespace Xenvious
                 _mpSlots.Children.Add(button);
             }
             _mpChanged.Text = changed > 0 ? string.Format(CultureInfo.CurrentCulture, MPT("mp_changed_of", "{0} of {1} changed"), changed, slots.Count) : "";
+            if (blacklisted > 0)
+                _mpChanged.Text += (_mpChanged.Text.Length > 0 ? " · " : "") + string.Format(CultureInfo.CurrentCulture, MPT("mp_blacklisted_n", "{0} blacklisted"), blacklisted);
             _mpSlots.Visibility = _mpListMode ? Visibility.Collapsed : Visibility.Visible;
             _mpListPanel.Visibility = _mpListMode ? Visibility.Visible : Visibility.Collapsed;
             if (_mpListMode && !_mpBulk.IsKeyboardFocused)
@@ -1398,6 +1427,17 @@ namespace Xenvious
                 note.Child = nt;
                 _mpEditor.Children.Add(note);
             }
+            int shown = _mpPick?.Int32 ?? slot.IntegerValue;
+            if (MPBlacklisted(shown))
+            {
+                var warn = new Border { CornerRadius = new CornerRadius(0, 6, 6, 0), BorderThickness = new Thickness(3, 0, 0, 0), Padding = new Thickness(10, 8, 10, 8), Margin = new Thickness(0, 0, 0, 10) };
+                warn.SetResourceReference(Border.BorderBrushProperty, "BadBrush");
+                warn.SetResourceReference(Border.BackgroundProperty, "DeepBrush");
+                var wt = new TextBlock { Text = MPT("mp_blacklist_warn", "This model is on the prop blacklist (the same list the props pages mark)."), TextWrapping = TextWrapping.Wrap, FontSize = 12.5 };
+                wt.SetResourceReference(TextBlock.ForegroundProperty, "MutedTextBrush");
+                warn.Child = wt;
+                _mpEditor.Children.Add(warn);
+            }
             _mpEditor.Children.Add(new TextBlock { Style = (Style)FindResource("FieldLabel"), Text = string.Format(CultureInfo.CurrentCulture, MPT("mp_slot_n", "Slot {0}"), _mpSlot + 1) });
             _mpEditor.Children.Add(cmp);
 
@@ -1421,7 +1461,15 @@ namespace Xenvious
                     img.SetResourceReference(Border.BackgroundProperty, "DeepBrush");
                     row.Children.Add(img);
                     var t = new StackPanel { VerticalAlignment = VerticalAlignment.Center };
-                    t.Children.Add(new TextBlock { Text = item.Name, FontSize = 12.5, TextTrimming = TextTrimming.CharacterEllipsis });
+                    var nameRow = new DockPanel();
+                    if (MPBlacklisted(item.Int32))
+                    {
+                        var pill = MPPill(MPT("mp_blacklist", "Blacklist"), "BadBrush");
+                        DockPanel.SetDock(pill, Dock.Right);
+                        nameRow.Children.Add(pill);
+                    }
+                    nameRow.Children.Add(new TextBlock { Text = item.Name, FontSize = 12.5, TextTrimming = TextTrimming.CharacterEllipsis });
+                    t.Children.Add(nameRow);
                     var h = new TextBlock { Text = string.IsNullOrWhiteSpace(item.Native) || item.Native == item.Name ? MPHex(item.Int32) : item.Native + " · " + MPHex(item.Int32), FontSize = 10.5, FontFamily = new FontFamily("Consolas"), TextTrimming = TextTrimming.CharacterEllipsis };
                     h.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
                     t.Children.Add(h);
