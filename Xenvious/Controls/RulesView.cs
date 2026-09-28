@@ -351,7 +351,7 @@ namespace Xenvious
         }
 
         /// <summary>The objective text with the game's colour codes, or a note that the default text is shown.</summary>
-        private static TextBlock ObjectiveText(string text, double size)
+        internal static TextBlock ObjectiveText(string text, double size)
         {
             var block = new TextBlock { TextWrapping = TextWrapping.Wrap, FontSize = size, FontWeight = FontWeights.Bold };
             if (string.IsNullOrWhiteSpace(text))
@@ -690,21 +690,7 @@ namespace Xenvious
         }
 
         /// <summary>The rule type as the creator names it for this kind of entity (a vehicle is destroyed, not killed).</summary>
-        private static string TypeName(Rules.Link link)
-        {
-            int selection = link.Extra ? link.Type : Rules.Selection(link.Kind, link.Type);
-            if (selection > 0 && link.Kind != Rules.Kind.Player)
-            {
-                int eoType = link.Kind == Rules.Kind.Ped ? ExtraObjectives.TypePed : link.Kind == Rules.Kind.Vehicle ? ExtraObjectives.TypeVehicle
-                    : link.Kind == Rules.Kind.Object ? ExtraObjectives.TypeObject : ExtraObjectives.TypeGoTo;
-                var known = ExtraObjectives.RuleTypesFor(eoType).FirstOrDefault(r => r.Value == selection);
-                if (known.Name != null)
-                    return T("eo_r_" + selection, known.Name);
-            }
-            if (link.Extra)
-                return link.Type.ToString(CultureInfo.InvariantCulture);
-            return link.Type >= 0 && link.Type < Rules.LogicNames.Length ? T("rl_logic_" + link.Type, Rules.LogicNames[link.Type]) : link.Type.ToString(CultureInfo.InvariantCulture);
-        }
+        private static string TypeName(Rules.Link link) => Rules.TypeName(link);
 
         private static string TimeLabel(int sec)
             => sec >= 60 ? TimeSpan.FromSeconds(sec).ToString(@"m\:ss", CultureInfo.InvariantCulture) + " min" : sec.ToString(CultureInfo.CurrentCulture) + " s";

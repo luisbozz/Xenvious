@@ -171,6 +171,18 @@ namespace Xenvious
             ClearSlot(slot);
         }
 
+        /// <summary>Frees the entity's slot when no team has an extra rule left in it.</summary>
+        public static void FreeIfEmpty(int type, int index)
+        {
+            int slot = FindSlot(type, index);
+            if (slot < 0)
+                return;
+            for (int t = 0; t < Teams; t++)
+                if (Rules(slot, t).Count > 0)
+                    return;
+            ClearSlot(slot);
+        }
+
         private static void ClearSlot(int slot)
         {
             for (int n = 0; n < RulesPerEntity; n++)

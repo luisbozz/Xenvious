@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace Xenvious
@@ -271,6 +272,31 @@ namespace Xenvious
                 case 35: return k == 0 ? 55 : -1;
                 default: return -1;
             }
+        }
+
+        private static string T(string key, string fallback) => MainWindow.Instance?.TranslateOr(key, fallback) ?? fallback;
+
+        /// <summary>Name of a creator selection as the creator shows it ("Destroy" for a vehicle), null when unknown.</summary>
+        public static string SelectionName(int selection)
+        {
+            foreach (int eoType in new[] { ExtraObjectives.TypePed, ExtraObjectives.TypeVehicle, ExtraObjectives.TypeObject, ExtraObjectives.TypeGoTo })
+            {
+                var known = ExtraObjectives.RuleTypesFor(eoType).FirstOrDefault(r => r.Value == selection);
+                if (known.Name != null)
+                    return T("eo_r_" + selection, known.Name);
+            }
+            return null;
+        }
+
+        /// <summary>What a link asks for, in the creator's words where there are some.</summary>
+        public static string TypeName(Link link)
+        {
+            int selection = link.Extra ? link.Type : Selection(link.Kind, link.Type);
+            if (selection > 0 && link.Kind != Kind.Player && SelectionName(selection) is string name)
+                return name;
+            if (link.Extra)
+                return link.Type.ToString(CultureInfo.InvariantCulture);
+            return link.Type >= 0 && link.Type < LogicNames.Length ? T("rl_logic_" + link.Type, LogicNames[link.Type]) : link.Type.ToString(CultureInfo.InvariantCulture);
         }
 
         /// <summary>Time limit selections (tmt) in seconds, from public_mission_controller 1.73, sorted by time.</summary>
