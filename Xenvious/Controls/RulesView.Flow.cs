@@ -259,6 +259,15 @@ namespace Xenvious
                 var c = p.Num.TranslatePoint(new Point(p.Num.ActualWidth / 2, p.Num.ActualHeight / 2), _flowGrid);
                 return (Left: top.X, Top: top.Y, Bottom: top.Y + p.Row.ActualHeight, Cx: c.X, Cy: c.Y, NumTop: c.Y - p.Num.ActualHeight / 2, NumBottom: c.Y + p.Num.ActualHeight / 2);
             }).ToList();
+            // The end sits under the rules' numbers, so the line to it runs straight down.
+            var endRow = _parts[_flow.Count].Row;
+            double shift = boxes[0].Cx - boxes[_flow.Count].Cx;
+            if (Math.Abs(shift) > 0.5 && _flow.Reached[0] == RuleFlow.Reach.Main)
+            {
+                endRow.Margin = new Thickness(endRow.Margin.Left + shift, 0, 0, 0);
+                Dispatcher.BeginInvoke(new Action(DrawArrows), DispatcherPriority.Loaded);
+                return;
+            }
             bool anySelected = _selected >= 0 && _selected < _flow.Count;
             double gutter = _rows.Margin.Left;
             string F(double v) => v.ToString("0.#", CultureInfo.InvariantCulture);
