@@ -51,6 +51,22 @@ namespace Xenvious
 
         private bool Live => _built && Rules.Ready;
 
+        /// <summary>Shows a team's rule selected and scrolled into view (from an entity page).</summary>
+        public void ShowRule(int team, int rule)
+        {
+            _team = Math.Max(0, team);
+            _selected = Math.Max(0, rule);
+            _shownKey = null;
+            if (_built)
+                Reload(true);
+            // After the page is shown and laid out; before that the row has no place to scroll to.
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                if (_selected < _parts.Count)
+                    _parts[_selected].Row.BringIntoView();
+            }), DispatcherPriority.Loaded);
+        }
+
         // ----- building -----
 
         private void Build()

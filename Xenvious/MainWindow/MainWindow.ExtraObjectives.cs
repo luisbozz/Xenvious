@@ -28,6 +28,13 @@ namespace Xenvious
             PageInnerMission.SelectedItem = PageInnerMissionRules;
         }
 
+        /// <summary>Opens the rules page at a team's rule.</summary>
+        public void OpenRules(int team, int rule)
+        {
+            OpenRules();
+            rulesView.ShowRule(team, rule);
+        }
+
         /// <summary>Opens the overview: the explanation and all 30 slots.</summary>
         private void OpenExtraObjectives()
         {
