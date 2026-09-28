@@ -255,7 +255,7 @@ namespace Xenvious
                         continue;
                     }
 
-                    if (sources[i].DataRegion.HasValue)
+                    if (sources[i].RefreshScriptPointer() && sources[i].DataRegion.HasValue)
                     {
                         dataRegions[i] = sources[i].DataRegion;
                         resolvedRegions++;
@@ -657,9 +657,17 @@ namespace Xenvious
         {
             BuildModdedPropsPage();
             var sources = GTA.Editor.ModdedPropSources;
+            // Asked every time: a creator left and entered again is loaded somewhere else, and the
+            // table addresses read before would then point into unrelated memory.
             var loaded = new bool[sources.Count];
+            bool moved = false;
             for (int i = 0; i < sources.Count; i++)
-                loaded[i] = sources[i].ScriptPointer != 0 || sources[i].RefreshScriptPointer();
+            {
+                ulong before = sources[i].ScriptPointer;
+                loaded[i] = sources[i].RefreshScriptPointer();
+                if (sources[i].ScriptPointer != before && before != 0)
+                    moved = true;
+            }
             string key = string.Concat(loaded.Select(l => l ? "1" : "0"));
             if (!Equals(_mpCreators.Tag, key))
             {
@@ -672,6 +680,8 @@ namespace Xenvious
                 if (first >= 0 && first != _mpCreator)
                     SelectMPCreator(first);
             }
+            else if (moved && !_mpLoading)
+                SelectMPCreator(_mpCreator);
             if (_mpMurica != null && !_mpMurica.IsFocused && GTA.Offsets.Editor.enable_murica != 0)
                 _mpMurica.IsChecked = new Global(GTA.Offsets.Editor.enable_murica).Get<int>() == 1;
         }
