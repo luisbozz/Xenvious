@@ -157,7 +157,7 @@ namespace Xenvious
         {
             EnsurePatchesPage();
             string creator = m != null && m.IsProcOpen ? GTA.CurrentCreatorName() ?? "" : "";
-            var natives = NativeRows();
+            var natives = GamePatchRows();
             string key = string.Join(",", natives.Select(n => n.State)) + "|" + creator + "|" + _scrPatchScript + "|" + _patchesQuery + "|"
                 + string.Join(",", _scrPatchGroups.Select(g => (g.Enabled ? "1" : "0") + string.Concat(g.Patches.Select(p => ScrPatchesRunner.IsApplied(p) ? "a" : "-"))));
             if (key == _patchesShownKey)
@@ -167,10 +167,10 @@ namespace Xenvious
             RenderPatchesHeader(creator);
             patchesExe.Text = GameVariant.IsEnhanced ? "GTA5_Enhanced.exe" : "GTA5.exe";
 
-            patchesNative.Children.Clear();
+            patchesGame.Children.Clear();
             foreach (var row in natives)
                 if (MatchesPatchQuery(row.Name + " " + row.Description))
-                    patchesNative.Children.Add(NativeCard(row));
+                    patchesGame.Children.Add(GamePatchCard(row));
 
             RenderScrPatchFilter();
             patchesScripts.Children.Clear();
@@ -225,13 +225,7 @@ namespace Xenvious
             patchesEdition.Child = track;
 
             // "1.73-3889": online version and the build number without its ".0" / ".16" part.
-            string build = "";
-            if (m != null && m.IsProcOpen)
-            {
-                string online = GTA.getOnlineVersion(), number = GTA.getBuildVersion();
-                int cut = number.IndexOf('.');
-                build = (online + "-" + (cut > 0 ? number.Substring(0, cut) : number)).Trim('-');
-            }
+            string build = GTA.GameVersion();
             patchesMeta.Inlines.Clear();
             patchesMeta.Inlines.Add(new Run(TranslateOr("patches_build", "Build") + " "));
             patchesMeta.Inlines.Add(new Run(build.Length == 0 ? "–" : build) { FontFamily = new FontFamily("Consolas"), FontWeight = FontWeights.Bold, Foreground = ThemeBrush("TextColor") });
@@ -390,59 +384,59 @@ namespace Xenvious
 
         // ----- patches in the game executable -----
 
-        private enum NativeState { Active, Found, Stuck, NoPattern, Offline }
+        private enum GamePatchState { Active, Found, Stuck, NoPattern, Offline }
 
-        private sealed class NativeRow
+        private sealed class GamePatchRow
         {
             public string Name, Description, Warning, Key;
-            public NativeState State;
+            public GamePatchState State;
             public Action<bool> Set;
         }
 
-        private List<NativeRow> NativeRows()
+        private List<GamePatchRow> GamePatchRows()
         {
-            var rows = new List<NativeRow>();
+            var rows = new List<GamePatchRow>();
             bool open = m != null && m.IsProcOpen;
             // Developer mode: one int at the dev pointer (also on the dashboard).
             bool devFound = open && GTA.Offsets.Editor.dev != 0;
-            rows.Add(new NativeRow
+            rows.Add(new GamePatchRow
             {
                 Name = TranslateOr("developermode", "Developer Mode"), Key = "devptr",
                 Description = TranslateOr("patches_dev_desc", "Unlocks the game's developer functions that several script patches need."),
-                State = !open ? NativeState.Offline : !devFound ? NativeState.NoPattern : m.memory(GTA.Offsets.Editor.dev).Get<int>() == GTA.DevPatched ? NativeState.Active : NativeState.Found,
+                State = !open ? GamePatchState.Offline : !devFound ? GamePatchState.NoPattern : m.memory(GTA.Offsets.Editor.dev).Get<int>() == GTA.DevPatched ? GamePatchState.Active : GamePatchState.Found,
                 Set = on => { if (m.IsProcOpen && GTA.Offsets.Editor.dev != 0) m.memory(GTA.Offsets.Editor.dev).SetInt(on ? GTA.DevPatched : GTA.DevOriginal); },
             });
-            rows.Add(NativeRowFor(NativePatches.CameraNoCollision, TranslateOr("np_camnocol", "Creator camera without collision"), TranslateOr("np_camnocol_tip", "The creator camera passes through walls and the ground."), null,
+            rows.Add(GamePatchRowFor(GamePatches.CameraNoCollision, TranslateOr("np_camnocol", "Creator camera without collision"), TranslateOr("np_camnocol_tip", "The creator camera passes through walls and the ground."), null,
                 "creator_cam_nocollision", GTA.Offsets.Editor.AOB_creator_cam_nocollision));
-            rows.Add(NativeRowFor(NativePatches.NoBudget, TranslateOr("np_nobudget", "Ignore creator budget"), TranslateOr("patches_budget_desc", "The budget bar stays empty."),
+            rows.Add(GamePatchRowFor(GamePatches.NoBudget, TranslateOr("np_nobudget", "Ignore creator budget"), TranslateOr("patches_budget_desc", "The budget bar stays empty."),
                 TranslateOr("patches_budget_warn", "Too many entities can make the job fail to save or load."), "creator_budget", GTA.Offsets.Editor.AOB_creator_budget));
             return rows;
         }
 
-        private NativeRow NativeRowFor(NativePatch patch, string name, string description, string warning, string key, string pattern)
+        private GamePatchRow GamePatchRowFor(GamePatch patch, string name, string description, string warning, string key, string pattern)
         {
-            var state = string.IsNullOrWhiteSpace(pattern) ? NativeState.NoPattern
-                : !(m != null && m.IsProcOpen) ? NativeState.Offline
-                : !patch.Available ? NativeState.Stuck
-                : patch.IsOn ? NativeState.Active : NativeState.Found;
-            return new NativeRow { Name = name, Description = description, Warning = warning, Key = key, State = state, Set = patch.Set };
+            var state = string.IsNullOrWhiteSpace(pattern) ? GamePatchState.NoPattern
+                : !(m != null && m.IsProcOpen) ? GamePatchState.Offline
+                : !patch.Available ? GamePatchState.Stuck
+                : patch.IsOn ? GamePatchState.Active : GamePatchState.Found;
+            return new GamePatchRow { Name = name, Description = description, Warning = warning, Key = key, State = state, Set = patch.Set };
         }
 
-        private Border NativeCard(NativeRow row)
+        private Border GamePatchCard(GamePatchRow row)
         {
             string text, brush;
             switch (row.State)
             {
-                case NativeState.Active: text = TranslateOr("patches_st_active", "active"); brush = "OkBrush"; break;
-                case NativeState.Found: text = TranslateOr("patches_st_found", "found"); brush = null; break;
-                case NativeState.Stuck: text = TranslateOr("patches_st_stuck", "not found – still patched? Restart GTA"); brush = "WarnBrush"; break;
-                case NativeState.Offline: text = TranslateOr("patches_st_offline", "GTA not connected"); brush = "FaintTextBrush"; break;
+                case GamePatchState.Active: text = TranslateOr("patches_st_active", "active"); brush = "OkBrush"; break;
+                case GamePatchState.Found: text = TranslateOr("patches_st_found", "found"); brush = null; break;
+                case GamePatchState.Stuck: text = TranslateOr("patches_st_stuck", "not found – still patched? Restart GTA"); brush = "WarnBrush"; break;
+                case GamePatchState.Offline: text = TranslateOr("patches_st_offline", "GTA not connected"); brush = "FaintTextBrush"; break;
                 default: text = string.Format(CultureInfo.CurrentCulture, TranslateOr("patches_st_nopattern", "no pattern for {0}"), GameVariant.DisplayName(GameVariant.Current)); brush = "BadBrush"; break;
             }
             var key = new TextBlock { Text = row.Key, FontSize = 11, FontFamily = new FontFamily("Consolas"), VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(2, 0, 0, 4) };
             key.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
-            bool usable = row.State == NativeState.Active || row.State == NativeState.Found;
-            return PatchCard(row.Name, row.Description, row.Warning, row.State == NativeState.Active, usable, row.Set, new FrameworkElement[] { StatusChip(text, brush), key });
+            bool usable = row.State == GamePatchState.Active || row.State == GamePatchState.Found;
+            return PatchCard(row.Name, row.Description, row.Warning, row.State == GamePatchState.Active, usable, row.Set, new FrameworkElement[] { StatusChip(text, brush), key });
         }
 
         internal string TranslateOr(string key, string fallback)

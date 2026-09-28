@@ -81,7 +81,7 @@ namespace Xenvious
         {
             if (game)
             {
-                string build = Lblbuildversion?.Text;
+                string build = GTA.GameVersion(Lblonlineversion?.Text, Lblbuildversion?.Text);
                 DashStatusGame.Text = "GTA V " + (GameVariant.IsEnhanced ? "Enhanced" : "Legacy")
                     + (string.IsNullOrWhiteSpace(build) ? "" : " · " + build.Trim());
                 DashStatusGameDot.Fill = DotOk;
@@ -146,7 +146,8 @@ namespace Xenvious
 
             DashTileGame.ToolTip = string.IsNullOrWhiteSpace(Lblonlineversion?.Text)
                 ? null
-                : TranslateOr("onlineversion", "Online Version") + ": " + Lblonlineversion.Text.Trim();
+                : TranslateOr("onlineversion", "Online Version") + ": " + Lblonlineversion.Text.Trim()
+                    + " · " + TranslateOr("patches_build", "Build") + ": " + (Lblbuildversion?.Text ?? "").Trim();
 
             string scName = Lbl_SCName.Text;
             DashSCInitial.Text = string.IsNullOrWhiteSpace(scName) ? "" : scName.Trim().Substring(0, 1).ToUpperInvariant();

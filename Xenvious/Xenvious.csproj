@@ -224,7 +224,7 @@
     <Compile Include="Creator Classes\Gangs.cs" />
     <Compile Include="Creator Classes\GangTypes.cs" />
     <Compile Include="Creator Classes\ExtraObjectives.cs" />
-    <Compile Include="Creator Classes\NativePatches.cs" />
+    <Compile Include="Creator Classes\GamePatches.cs" />
     <Compile Include="Creator Classes\PlayAreas.cs" />
     <Compile Include="Creator Classes\VisibilityGroups.cs" />
     <Compile Include="Creator Classes\ScriptThreadLog.cs" />

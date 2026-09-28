@@ -324,6 +324,35 @@ namespace Xenvious
             return VersionString(online: true, length: GameVariant.IsEnhanced ? 4 : 5);
         }
 
+        /// <summary>
+        /// The game version the way the tool shows it everywhere: online version and build
+        /// number, "1.73-3889" (Enhanced "1.73-1158"), "" when unknown.
+        /// </summary>
+        public static string GameVersion()
+        {
+            if (MainWindow.m == null || !MainWindow.m.IsProcOpen)
+                return "";
+            return GameVersion(getOnlineVersion(), getBuildVersion());
+        }
+
+        public static string GameVersion(string online, string build)
+        {
+            build = BuildNumber(build);
+            online = (online ?? "").Trim();
+            return online.Length > 0 && build.Length > 0 ? online + "-" + build : online + build;
+        }
+
+        /// <summary>"3889.0" / "1158.16" / "1.73-3889" -> "3889": the part builds are compared by.</summary>
+        public static string BuildNumber(string version)
+        {
+            version = (version ?? "").Trim();
+            int dash = version.LastIndexOf('-');
+            if (dash >= 0)
+                version = version.Substring(dash + 1);
+            int dot = version.IndexOf('.');
+            return dot > 0 ? version.Substring(0, dot) : version;
+        }
+
         public static string getBuildVersion(byte[] buffer = null)
         {
             return VersionString(online: false, length: GameVariant.IsEnhanced ? 7 : 8);

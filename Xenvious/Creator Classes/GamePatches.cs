@@ -12,7 +12,7 @@ namespace Xenvious
     /// Once patched the pattern no longer matches, so a patch left on by an earlier Xenvious run
     /// cannot be found again: it stays on until GTA restarts, and the switch shows as unavailable.
     /// </summary>
-    public sealed class NativePatch
+    public sealed class GamePatch
     {
         public string Name { get; }
         private readonly Func<string> _pattern;
@@ -21,7 +21,7 @@ namespace Xenvious
         private long _address;
         private byte[] _original;
 
-        public NativePatch(string name, Func<string> pattern, int offset, byte[] patch)
+        public GamePatch(string name, Func<string> pattern, int offset, byte[] patch)
         {
             Name = name;
             _pattern = pattern;
@@ -38,13 +38,13 @@ namespace Xenvious
             string pattern = _pattern();
             if (string.IsNullOrWhiteSpace(pattern))
             {
-                Log.Info($"No {Name} pattern for GTA {GameVariant.DisplayName(GameVariant.Current)}; the switch stays unavailable.", source: "NativePatches");
+                Log.Info($"No {Name} pattern for GTA {GameVariant.DisplayName(GameVariant.Current)}; the switch stays unavailable.", source: "GamePatches");
                 return;
             }
             ulong hit = GTA.ScanModule(pattern, buffer);
             if (hit == 0)
             {
-                Log.Warn($"{Name} did not match; either it is still patched from an earlier run (restart GTA) or the pattern needs updating.", source: "NativePatches");
+                Log.Warn($"{Name} did not match; either it is still patched from an earlier run (restart GTA) or the pattern needs updating.", source: "GamePatches");
                 return;
             }
             long address = (long)hit + _offset;
@@ -69,17 +69,17 @@ namespace Xenvious
             => MainWindow.m.IsProcOpen ? MainWindow.m.memory(address.ToString("X")).GetBytes(_patch.Length) : null;
     }
 
-    public static class NativePatches
+    public static class GamePatches
     {
         // Creator camera: 11 bytes from 5 before the match are the collision handling; NOPs let
         // the camera pass through walls and the ground.
-        public static readonly NativePatch CameraNoCollision = new NativePatch("AOB_creator_cam_nocollision",
+        public static readonly GamePatch CameraNoCollision = new GamePatch("AOB_creator_cam_nocollision",
             () => GTA.Offsets.Editor.AOB_creator_cam_nocollision, -5,
             Enumerable.Repeat((byte)0x90, 11).ToArray());
 
         // The function that returns how much of the creator budget is used: xorps xmm0, xmm0; ret
         // makes it return 0.0, so the budget bar never fills.
-        public static readonly NativePatch NoBudget = new NativePatch("AOB_creator_budget",
+        public static readonly GamePatch NoBudget = new GamePatch("AOB_creator_budget",
             () => GTA.Offsets.Editor.AOB_creator_budget, 0,
             new byte[] { 0x0F, 0x57, 0xC0, 0xC3 });
 

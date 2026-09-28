@@ -11584,7 +11584,7 @@
                                                             <Run Text="{Binding Translation[patches_game], FallbackValue=Game, Mode=OneWay}"/><Run Text="  "/><Run x:Name="patchesExe" FontSize="12" FontWeight="Normal" FontFamily="Consolas" Foreground="{DynamicResource FaintTextBrush}"/>
                                                         </TextBlock>
                                                     </DockPanel>
-                                                    <UniformGrid x:Name="patchesNative" Columns="3" Margin="0,0,-10,12"/>
+                                                    <UniformGrid x:Name="patchesGame" Columns="3" Margin="0,0,-10,12"/>
                                                     <DockPanel Margin="0,4,0,8">
                                                         <WrapPanel x:Name="scrPatchesFilter" DockPanel.Dock="Right" VerticalAlignment="Bottom"/>
                                                         <TextBlock FontSize="15" FontWeight="Bold" Foreground="{DynamicResource TextColor}" VerticalAlignment="Center">

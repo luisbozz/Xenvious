@@ -70,7 +70,7 @@ namespace Xenvious
                         () => GTA.Offsets.Editor.WORLDversion = GTA.getWorldPointer(buff).ToInt64(),
                         () => GTA.Offsets.Editor.GlobalPTRversion = globalptr,
                         () => GTA.Offsets.Editor.dev = GTA.getDEVPointer(buff).ToInt64(),
-                        () => NativePatches.Resolve(buff),
+                        () => GamePatches.Resolve(buff),
                         () => GTA.Offsets.Editor.camptr = GTA.getCAMPointer(buff).ToInt64(),
                         () => GTA.Offsets.Editor.versionptr = GTA.getVersionPointer(buff).ToInt64(),
                         () => GTA.Offsets.Editor.creator_camptr = GTA.getCreatorCamPointer(buff).ToInt64(),
@@ -104,6 +104,8 @@ namespace Xenvious
                             Log.Error("Resolving pointers failed", ex, source: "timercheckgta");
                         }
                     }
+
+                    Log.Info($"Connected to GTA V {GameVariant.DisplayName(GameVariant.Current)} {GTA.GameVersion()}", source: "timercheckgta");
 
                     GTA.Offsets.Editor.preset_version = IntPtr.Subtract((IntPtr)GTA.Offsets.Editor.GlobalPTRversion, 304).ToInt64();
                     GTA.Offsets.Editor.version = GTA.Offsets.Editor.GlobalPTRversion + 0x90;

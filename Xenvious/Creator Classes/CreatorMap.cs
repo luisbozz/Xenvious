@@ -256,7 +256,7 @@ namespace Xenvious
             var snap = new Snapshot
             {
                 Edition = GameVariant.IsEnhanced ? "Enhanced" : "Legacy",
-                Build = (GTA.getBuildVersion() ?? "").Trim(),
+                Build = GTA.GameVersion(),
                 Creator = creator,
                 Name = name,
                 SavedAt = DateTime.Now
@@ -286,8 +286,9 @@ namespace Xenvious
             string edition = GameVariant.IsEnhanced ? "Enhanced" : "Legacy";
             if (!string.Equals(snap.Edition, edition, StringComparison.OrdinalIgnoreCase))
                 return $"edition:{snap.Edition}";
-            string build = (GTA.getBuildVersion() ?? "").Trim();
-            if (!string.IsNullOrEmpty(snap.Build) && !string.IsNullOrEmpty(build) && snap.Build != build)
+            // Compared by build number: older backups stored "3889.0", newer ones "1.73-3889".
+            string build = GTA.GameVersion();
+            if (!string.IsNullOrEmpty(snap.Build) && !string.IsNullOrEmpty(build) && GTA.BuildNumber(snap.Build) != GTA.BuildNumber(build))
                 return $"build:{snap.Build}";
             return null;
         }
