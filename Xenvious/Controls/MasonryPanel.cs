@@ -21,6 +21,17 @@ namespace Xenvious
             nameof(Spacing), typeof(double), typeof(MasonryPanel),
             new FrameworkPropertyMetadata(12.0, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
+        /// <summary>At most this many columns (0 = no limit), so a few cards grow with the window instead of leaving it half empty.</summary>
+        public static readonly DependencyProperty MaxColumnsProperty = DependencyProperty.Register(
+            nameof(MaxColumns), typeof(int), typeof(MasonryPanel),
+            new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.AffectsMeasure));
+
+        public int MaxColumns
+        {
+            get => (int)GetValue(MaxColumnsProperty);
+            set => SetValue(MaxColumnsProperty, value);
+        }
+
         public double MinColumnWidth
         {
             get => (double)GetValue(MinColumnWidthProperty);
@@ -52,6 +63,8 @@ namespace Xenvious
             double spacing = Spacing;
             double width = double.IsInfinity(available.Width) ? (MinColumnWidth + spacing) * 3 - spacing : available.Width;
             int columns = Math.Max(1, (int)((width + spacing) / (MinColumnWidth + spacing)));
+            if (MaxColumns > 0)
+                columns = Math.Min(columns, MaxColumns);
             double columnWidth = Math.Max(0, (width - spacing * (columns - 1)) / columns);
             var heights = new double[columns];
 

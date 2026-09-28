@@ -116,7 +116,7 @@ namespace Xenvious
             var page = new StackPanel { Margin = new Thickness(0, 12, 0, 12) };
             _explain = Explanations();
             page.Children.Add(_explain);
-            var masonry = new MasonryPanel();
+            var masonry = new MasonryPanel { MaxColumns = 3 };
             masonry.Children.Add(Column(ModeCard(), ShapeCard()));
             masonry.Children.Add(Column(FollowCard(), LeaveCard()));
             masonry.Children.Add(Column(LookCard(), MoreCard()));
