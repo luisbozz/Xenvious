@@ -234,7 +234,7 @@ namespace Xenvious
             grid.Children.Add(num);
 
             var middle = new StackPanel { Margin = new Thickness(0, 1, 0, 0) };
-            middle.Children.Add(ObjectiveText(rule.Text, 14));
+            middle.Children.Add(ObjectiveText(rule.Text, 14, Rules.DefaultTextFor(_team, rule)));
             var chips = new WrapPanel { Margin = new Thickness(0, 6, 0, 0) };
             if (rule.Links.Count == 0)
                 chips.Children.Add(Chip(T("rl_empty", "nothing points at this rule"), ChipKind.Warn));
@@ -351,18 +351,35 @@ namespace Xenvious
         }
 
         /// <summary>The objective text with the game's colour codes, or a note that the default text is shown.</summary>
-        internal static TextBlock ObjectiveText(string text, double size)
+        /// <summary>
+        /// The objective text with the game's codes. Without own text the game's default text for
+        /// the rule type is shown (defaultText, marked as such); when that cannot be told, a note.
+        /// </summary>
+        internal static TextBlock ObjectiveText(string text, double size, string defaultText = null)
         {
             var block = new TextBlock { TextWrapping = TextWrapping.Wrap, FontSize = size, FontWeight = FontWeights.Bold };
-            if (string.IsNullOrWhiteSpace(text))
+            bool own = !string.IsNullOrWhiteSpace(text);
+            if (!own && defaultText == null)
             {
-                block.Text = T("rl_default_text", "No own text: the game shows its default text for this objective");
+                block.Text = T("rl_default_unknown", "No own text; the game's default text for this rule was not found");
                 block.FontStyle = FontStyles.Italic;
                 block.FontWeight = FontWeights.SemiBold;
                 block.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
                 return block;
             }
             block.SetResourceReference(TextBlock.ForegroundProperty, "TextColor");
+            AddCodes(block, own ? text : defaultText, size);
+            if (!own)
+            {
+                var mark = new Run("  " + T("rl_default_mark", "default text")) { FontSize = size - 2.5, FontWeight = FontWeights.SemiBold, FontStyle = FontStyles.Italic };
+                mark.SetResourceReference(TextElement.ForegroundProperty, "FaintTextBrush");
+                block.Inlines.Add(mark);
+            }
+            return block;
+        }
+
+        private static void AddCodes(TextBlock block, string text, double size)
+        {
             Color? colour = null;
             bool italic = false;
             foreach (var part in Regex.Split(text, "(~[A-Za-z_0-9]+~)"))
@@ -383,7 +400,6 @@ namespace Xenvious
                     if (piece.Length > 0)
                         block.Inlines.Add(GtaTextAssist.IsIcon(piece) ? Icon(piece, size, colour) : Styled(piece, colour, italic));
             }
-            return block;
         }
 
         private static Inline Icon(string code, double size, Color? colour)

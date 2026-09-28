@@ -92,6 +92,8 @@ namespace Xenvious
         private Translator<string, string> _Translation;
         private static readonly string[] LanguageCodes = { "de", "en", "ru", "pl", "fr", "zh_cn" };
         private string _currentLanguageCode = _Language.DefaultCode;
+        /// <summary>The app language (de, en, ru, pl, fr, zh_cn).</summary>
+        public string LanguageCode => _currentLanguageCode;
         private bool _suppressLanguageChange;
 
         public AdvancedPropPlacementViewModel AdvancedPropPlacementVm { get; }

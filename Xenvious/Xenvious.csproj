@@ -509,6 +509,7 @@
     <EmbeddedResource Include="OfflineData\enhanced\scrpatchesdev.json" />
     <EmbeddedResource Include="OfflineData\enhanced\mprops.json" />
     <EmbeddedResource Include="OfflineData\props.json" />
+    <EmbeddedResource Include="OfflineData\objective_texts.json" />
     <EmbeddedResource Include="OfflineData\vehicles.json" />
     <EmbeddedResource Include="OfflineData\placement_presets.json" />
     <EmbeddedResource Include="OfflineData\weapons.json" />

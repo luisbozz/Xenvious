@@ -299,6 +299,96 @@ namespace Xenvious
             return link.Type >= 0 && link.Type < LogicNames.Length ? T("rl_logic_" + link.Type, LogicNames[link.Type]) : link.Type.ToString(CultureInfo.InvariantCulture);
         }
 
+        // ----- default objective texts -----
+
+        private static Dictionary<string, Dictionary<string, string>> _defaultTexts;
+
+        /// <summary>
+        /// The label the Mission Controller shows for a rule without own text (func_3673 of
+        /// public_mission_controller 1.73): per creator selection, plural when several entities
+        /// share the rule. null when the game picks its text another way (photo, charm, ...).
+        /// </summary>
+        public static string DefaultLabel(int selection, int entities)
+        {
+            string k;
+            switch (selection)
+            {
+                case 1: case 23: k = "C_PED"; break;
+                case 2: k = "K_PED"; break;
+                case 3: k = "P_PED"; break;
+                case 4: k = "GOTO_PED"; break;
+                case 5: k = "CON_PED"; break;
+                case 46: k = "DMG_PED"; break;
+                case 47: k = "LEAV_PED"; break;
+                case 6: case 24: k = "C_VEH"; break;
+                case 7: k = "K_VEH"; break;
+                case 8: k = "P_VEH"; break;
+                case 9: k = "GOTO_VEH"; break;
+                case 10: k = "CON_VEH"; break;
+                case 48: k = "LEAV_VEH"; break;
+                case 50: k = "DMG_VEH"; break;
+                case 11: case 25: k = "C_OBJ"; break;
+                case 12: k = "K_OBJ"; break;
+                case 13: k = "P_OBJ"; break;
+                case 14: k = "GOTO_OBJ"; break;
+                case 15: k = "CON_OBJ"; break;
+                case 49: k = "LEAV_OBJ"; break;
+                case 51: k = "DMG_OBJ"; break;
+                case 16: k = "GOTO_LOC"; break;
+                case 17: k = "GO_AREA"; break;
+                case 30: return "PMC_MINIG";
+                case 41: return "PMC_LVELOC";
+                default: return null;
+            }
+            return "PMC_" + k + (entities > 1 ? "S" : "");
+        }
+
+        /// <summary>The default text of a rule in the app's language, null when it cannot be told.</summary>
+        public static string DefaultText(int selection, int entities)
+        {
+            string label = DefaultLabel(selection, entities);
+            if (label == null)
+                return null;
+            if (_defaultTexts == null)
+            {
+                try { _defaultTexts = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, string>>>(OfflineData.ObjectiveTexts); }
+                catch { _defaultTexts = new Dictionary<string, Dictionary<string, string>>(); }
+            }
+            if (!_defaultTexts.TryGetValue(label, out var texts))
+                return null;
+            string lang = MainWindow.Instance?.LanguageCode ?? "en";
+            return texts.TryGetValue(lang, out string text) ? text : texts.TryGetValue("en", out text) ? text : null;
+        }
+
+        /// <summary>
+        /// The creator selection that decides a rule's default text: the Mission Creator's rule
+        /// type, elsewhere the type of the first entity on the rule. Also returns how many entities
+        /// of that kind share the rule. -1 when the rule has none.
+        /// </summary>
+        public static int DefaultSelection(int team, Rule rule, out int entities)
+        {
+            entities = 0;
+            var own = rule.Links.Where(l => !l.Extra && l.Kind != Kind.Player).ToList();
+            if (EntityRules.UsesRuleList)
+            {
+                int sel = EntityRules.RuleSelection(team, rule.Index);
+                int cls = EntityRules.ClassOf(sel);
+                entities = own.Count(l => EntityRules.KindOf(cls) == l.Kind);
+                return sel;
+            }
+            if (own.Count == 0)
+                return -1;
+            var first = own[0];
+            entities = own.Count(l => l.Kind == first.Kind && l.Type == first.Type);
+            return Selection(first.Kind, first.Type);
+        }
+
+        public static string DefaultTextFor(int team, Rule rule)
+        {
+            int selection = DefaultSelection(team, rule, out int entities);
+            return selection < 0 ? null : DefaultText(selection, entities);
+        }
+
         /// <summary>Time limit selections (tmt) in seconds, from public_mission_controller 1.73, sorted by time.</summary>
         public static readonly (int Selection, int Seconds)[] TimeLimits =
         {
