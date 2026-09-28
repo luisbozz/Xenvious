@@ -19,7 +19,7 @@ namespace Xenvious
     /// the right. Moving, adding and deleting rules is not here yet (every pointer would have to be
     /// renumbered). Memory: Rules.
     /// </summary>
-    public class RulesView : DockPanel
+    public partial class RulesView : DockPanel
     {
         private int _team, _selected;
         private bool _built, _loading;
@@ -176,13 +176,8 @@ namespace Xenvious
             _list.Children.Clear();
             if (_rules.Count == 0)
                 _list.Children.Add(Faint(T("rl_none", "This team has no rules yet. Place entities with an objective in the creator."), 13.5));
-            var skipped = SkippedRules(_rules);
-            for (int i = 0; i < _rules.Count; i++)
-            {
-                _list.Children.Add(RuleRow(_rules[i], skipped.TryGetValue(i, out string why) ? why : null));
-                if (i < _rules.Count - 1 || HasFlow(_rules[i]))
-                    _list.Children.Add(Connector(_rules[i], i < _rules.Count - 1));
-            }
+            else
+                ShowFlow();
             ShowDetail();
         }
 
@@ -211,57 +206,10 @@ namespace Xenvious
 
         // ----- the list -----
 
-        /// <summary>
-        /// Where the team goes after a rule: the next-objective override if set, else the pass
-        /// jumps if any entity has one, else the next rule; fail jumps on top.
-        /// </summary>
-        private static IEnumerable<int> NextOf(Rules.Rule rule, int count)
-        {
-            var next = new List<int>();
-            var pass = rule.Links.Where(l => l.PassJump >= 0).Select(l => l.PassJump).Distinct().ToList();
-            if (rule.NextRules != 0) next.AddRange(Bits(rule.NextRules));
-            else if (pass.Count > 0) next.AddRange(pass);
-            else next.Add(rule.Index + 1);
-            next.AddRange(rule.Links.Where(l => l.FailJump >= 0).Select(l => l.FailJump));
-            return next.Where(n => n > rule.Index && n < count).Distinct();
-        }
-
-        /// <summary>Rules the team never reaches from rule 1, with the jump that goes past them.</summary>
-        private static Dictionary<int, string> SkippedRules(List<Rules.Rule> rules)
-        {
-            var reached = new HashSet<int>();
-            var queue = new Queue<int>();
-            if (rules.Count > 0) { reached.Add(0); queue.Enqueue(0); }
-            while (queue.Count > 0)
-                foreach (int n in NextOf(rules[queue.Dequeue()], rules.Count))
-                    if (reached.Add(n))
-                        queue.Enqueue(n);
-            var result = new Dictionary<int, string>();
-            for (int r = 0; r < rules.Count; r++)
-            {
-                if (reached.Contains(r))
-                    continue;
-                // The nearest earlier rule that jumps over this one names the reason.
-                string why = T("rl_skip_never", "never reached");
-                for (int s = r - 1; s >= 0; s--)
-                {
-                    var rule = rules[s];
-                    int pass = rule.Links.Where(l => l.PassJump > r).Select(l => l.PassJump).DefaultIfEmpty(-1).Min();
-                    int over = rule.NextRules != 0 ? Bits(rule.NextRules).Where(b => b > r).DefaultIfEmpty(-1).Min() : -1;
-                    if (over > r || pass > r)
-                    {
-                        why = string.Format(CultureInfo.CurrentCulture, T("rl_skip_by", "skipped: rule {0} goes on with rule {1}"), s + 1, (over > r ? over : pass) + 1);
-                        break;
-                    }
-                }
-                result[r] = why;
-            }
-            return result;
-        }
-
-        private Border RuleRow(Rules.Rule rule, string skipped = null)
+        private FrameworkElement RuleRow(Rules.Rule rule, out FrameworkElement numOut)
         {
             bool selected = rule.Index == _selected;
+            var reach = _flow.Reached[rule.Index];
             var row = new Border { CornerRadius = new CornerRadius(8), BorderThickness = new Thickness(selected ? 2 : 1), Padding = new Thickness(selected ? 11 : 12, selected ? 9 : 10, 12, 10),
                 Cursor = System.Windows.Input.Cursors.Hand };
             row.SetResourceReference(Border.BackgroundProperty, "SectionBackgroundBrush");
@@ -280,13 +228,17 @@ namespace Xenvious
             if (selected) numText.Foreground = Brushes.White;
             else numText.SetResourceReference(TextBlock.ForegroundProperty, "TextColor");
             num.Child = numText;
+            if (reach == RuleFlow.Reach.Branch && !selected)
+            {
+                num.SetResourceReference(Border.BorderBrushProperty, "BadBrush");
+                numText.SetResourceReference(TextBlock.ForegroundProperty, "BadBrush");
+            }
             grid.Children.Add(num);
+            numOut = num;
 
             var middle = new StackPanel { Margin = new Thickness(0, 1, 0, 0) };
             middle.Children.Add(ObjectiveText(rule.Text, 14, Rules.DefaultTextFor(_team, rule)));
             var chips = new WrapPanel { Margin = new Thickness(0, 6, 0, 0) };
-            if (skipped != null)
-                chips.Children.Add(Chip("↷ " + skipped, ChipKind.Warn, T("rl_skip_tip", "The team never gets here: an earlier rule jumps past it and nothing leads back.")));
             if (rule.Links.Count == 0)
                 chips.Children.Add(Chip(T("rl_empty", "nothing points at this rule"), ChipKind.Warn));
             foreach (var group in rule.Links.GroupBy(l => TypeName(l)))
@@ -307,6 +259,9 @@ namespace Xenvious
                 chips.Children.Add(Chip(string.Format(CultureInfo.CurrentCulture, T("rl_extra_same", "{0}: extra objective on its own rule"), KindName(twice.Kind) + " " + (twice.Index + 1)),
                     ChipKind.Warn, T("rl_extra_same_tip", "The entity's extra objective sits on the same rule as its own objective. Give it a later rule, then the team gets it after this one.")));
             middle.Children.Add(chips);
+            var flowChips = FlowChips(rule.Index);
+            if (flowChips != null)
+                middle.Children.Add(flowChips);
             Grid.SetColumn(middle, 1);
             grid.Children.Add(middle);
 
@@ -325,55 +280,12 @@ namespace Xenvious
                 Side(T("rl_chip_fail", "fail = mission over"), "BadBrush");
             Grid.SetColumn(side, 2);
             grid.Children.Add(side);
+            // A rule the team never reaches is greyed out; the note why stays readable.
+            if (reach == RuleFlow.Reach.Never && !selected)
+                foreach (var part in new UIElement[] { num, middle.Children[0], chips, side })
+                    part.Opacity = 0.5;
             row.Child = grid;
-            // A rule the team never reaches is greyed out, as the creator's list would suggest nothing.
-            if (skipped != null && !selected)
-                grid.Opacity = 0.5;
-            return row;
-        }
-
-        private static bool HasFlow(Rules.Rule rule)
-            => rule.NextRules != 0 || rule.Links.Any(l => l.PassJump >= 0 || l.FailJump >= 0);
-
-        /// <summary>
-        /// The line down to the next rule, with where the team goes instead when the rule has jumps or
-        /// a next-objective override. The line fades when the team never goes straight on.
-        /// </summary>
-        private static UIElement Connector(Rules.Rule rule, bool toNext)
-        {
-            var next = Bits(rule.NextRules).ToList();
-            bool jumps = rule.Links.Any(l => l.PassJump >= 0);
-            bool straight = toNext && (next.Count > 0 ? next.Contains(rule.Index + 1) : !jumps);
-            var labels = new WrapPanel { VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(14, 3, 0, 3) };
-            void Label(string text, string brush, string tip)
-            {
-                var t = new TextBlock { Text = text, FontSize = 12, FontWeight = FontWeights.SemiBold, Margin = new Thickness(0, 0, 14, 0), ToolTip = tip };
-                t.SetResourceReference(TextBlock.ForegroundProperty, brush);
-                labels.Children.Add(t);
-            }
-            string Rule(int index) => string.Format(CultureInfo.CurrentCulture, T("rl_rule_n", "Rule {0}"), index + 1);
-            if (next.Count == 1)
-                Label("⇢ " + Rule(next[0]), "AccentBrush", T("rl_flow_next_tip", "Next-objective override: the team goes on with this rule"));
-            else if (next.Count > 1)
-                Label("⇢ " + string.Format(CultureInfo.CurrentCulture, T("rl_flow_random", "one of {0} at random"),
-                    string.Join(" / ", next.Select(b => (b + 1).ToString(CultureInfo.CurrentCulture)))), "AccentBrush", T("rl_flow_next_tip", "Next-objective override: the team goes on with this rule"));
-            foreach (var jump in rule.Links.Where(l => l.PassJump >= 0).Select(l => l.PassJump).Distinct())
-                Label("✓ → " + Rule(jump), "OkBrush", T("rl_flow_pass_tip", "Jump when the objective is passed"));
-            foreach (var jump in rule.Links.Where(l => l.FailJump >= 0).Select(l => l.FailJump).Distinct())
-                Label("✗ → " + Rule(jump), "BadBrush", T("rl_flow_fail_tip", "Jump when the objective is failed"));
-
-            // A canvas clips the long line to the row's height, whatever the labels need.
-            var line = new Line { X1 = 30, Y1 = 0, X2 = 30, Y2 = 400, StrokeThickness = 2, StrokeDashArray = new DoubleCollection { 2, 1.5 }, Opacity = straight ? 0.7 : 0.25 };
-            line.SetResourceReference(Shape.StrokeProperty, "FaintTextBrush");
-            var holder = new Canvas { ClipToBounds = true, MinHeight = 14 };
-            holder.Children.Add(line);
-            var grid = new Grid();
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(48) });
-            grid.ColumnDefinitions.Add(new ColumnDefinition());
-            grid.Children.Add(holder);
-            Grid.SetColumn(labels, 1);
-            grid.Children.Add(labels);
-            return grid;
+            return Indented(row, reach, selected);
         }
 
         private enum ChipKind { Plain, Type, Warn }
@@ -651,6 +563,13 @@ namespace Xenvious
             holder.SetResourceReference(Border.BackgroundProperty, "TextBoxBackground");
             _detail.Children.Add(holder);
             Hint(T("rl_next_hint", "Normally the team goes on with the next rule. Pick one rule to go there instead, or several to pick one at random."));
+            if (rule.NextRules != 0 && rule.Links.Any(l => l.PassJump > rule.Index))
+            {
+                var warn = Faint(T("rl_flow_noeffect_tip", "A ✓ jump is set on this rule. In the game the jump wins, so the next objective does nothing."), 12);
+                warn.Margin = new Thickness(0, 4, 0, 0);
+                warn.SetResourceReference(TextBlock.ForegroundProperty, "WarnBrush");
+                _detail.Children.Add(warn);
+            }
         }
 
         private void LimitsSection(Rules.Rule rule)
