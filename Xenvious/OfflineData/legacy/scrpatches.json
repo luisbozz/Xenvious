@@ -65,6 +65,15 @@
     },
     {
         "patch_name": "blue fence props fix",
+        "script_name": "public_mission_creator",
+        "pattern": "39 03 38 03 70 58 ? ? 72",
+        "offset": 0,
+        "bytes_to_patch": "72 2E 01 01",
+        "dev": false,
+        "enabled": true
+    },
+    {
+        "patch_name": "blue fence props fix",
         "script_name": "fm_deathmatch_creator",
         "pattern": "39 03 38 03 70 58 ? ? 72",
         "offset": 0,
@@ -91,6 +100,15 @@
         "enabled": true
     },
     {
+        "patch_name": "dev mode",
+        "script_name": "public_mission_creator",
+        "pattern": "2D 00 02 00 00 71 2E ? ? 5D ? ? ?",
+        "offset": 5,
+        "bytes_to_patch": "72 2E 00 01",
+        "dev": false,
+        "enabled": true
+    },
+    {
         "patch_name": "show stunt prop item cycle",
         "script_name": "fm_lts_creator",
         "pattern": "25 33 61 ? ? ? 64 ? ? ? 3F 41 ? 64 ? ? ?",
@@ -98,6 +116,15 @@
         "bytes_to_patch": "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00",
         "dev": false,
         "derived_for": "1.73-3889",
+        "enabled": true
+    },
+    {
+        "patch_name": "show stunt prop item cycle",
+        "script_name": "public_mission_creator",
+        "pattern": "25 33 61 ? ? ? 64 ? ? ? 3F 41 ? 64 ? ? ?",
+        "offset": 0,
+        "bytes_to_patch": "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00",
+        "dev": false,
         "enabled": true
     },
     {
@@ -189,6 +216,15 @@
     },
     {
         "patch_name": "cam fix",
+        "script_name": "public_mission_creator",
+        "pattern": "2D 00 02 00 00 28 E6 2E F0 96 2C ? ? ? 2E 00 01",
+        "offset": 5,
+        "bytes_to_patch": "72 00 00 00 00 00 00 00 00",
+        "dev": false,
+        "enabled": true
+    },
+    {
+        "patch_name": "cam fix",
         "script_name": "fm_deathmatch_creator",
         "pattern": "2D 00 02 00 00 28 E6 2E F0 96 2C ? ? ? 2E 00 01",
         "offset": 5,
@@ -226,6 +262,15 @@
     {
         "patch_name": "nrl fix",
         "script_name": "fm_lts_creator",
+        "pattern": "72 38 04 61 ? ? ? 46 ? ? 49 ? ? 42 ? 61 ? ? ?",
+        "offset": 0,
+        "bytes_to_patch": "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00",
+        "dev": false,
+        "enabled": true
+    },
+    {
+        "patch_name": "nrl fix",
+        "script_name": "public_mission_creator",
         "pattern": "72 38 04 61 ? ? ? 46 ? ? 49 ? ? 42 ? 61 ? ? ?",
         "offset": 0,
         "bytes_to_patch": "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00",
@@ -808,6 +853,14 @@
     {
         "patch_name": "show placed angled zones brighter",
         "script_name": "fm_lts_creator",
+        "pattern": "38 ? 29 33 33 B3 3E 10 39 ? 38 ? 41 0B 25 25",
+        "offset": 3,
+        "bytes_to_patch": "CD CC 4C 3F",
+        "dev": false
+    },
+    {
+        "patch_name": "show placed angled zones brighter",
+        "script_name": "public_mission_creator",
         "pattern": "38 ? 29 33 33 B3 3E 10 39 ? 38 ? 41 0B 25 25",
         "offset": 3,
         "bytes_to_patch": "CD CC 4C 3F",

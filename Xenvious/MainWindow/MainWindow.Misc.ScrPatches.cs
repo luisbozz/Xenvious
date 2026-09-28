@@ -69,7 +69,7 @@ namespace Xenvious
 
         private static readonly string[] ScrPatchScriptOrder =
         {
-            "fm_race_creator", "fm_lts_creator", "fm_capture_creator", "fm_deathmatch_creator", "fm_survival_creator", "fmmc_launcher"
+            "fm_race_creator", "fm_lts_creator", "fm_capture_creator", "public_mission_creator", "fm_deathmatch_creator", "fm_survival_creator", "fmmc_launcher"
         };
 
         private static string ScrPatchScriptLabel(string script)
@@ -79,6 +79,7 @@ namespace Xenvious
                 case "fm_race_creator": return "Race";
                 case "fm_lts_creator": return "LTS";
                 case "fm_capture_creator": return "Capture";
+                case "public_mission_creator": return "Mission";
                 case "fm_deathmatch_creator": return "Deathmatch";
                 case "fm_survival_creator": return "Survival";
                 case "fmmc_launcher": return "Launcher";
