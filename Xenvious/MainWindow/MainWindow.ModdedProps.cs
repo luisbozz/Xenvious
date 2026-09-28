@@ -133,40 +133,6 @@ namespace Xenvious
         }
 
         List<PropC> allprops = new List<PropC>();
-        private static readonly byte[] MPropsPlaceholder = new byte[] { 0x2E, 0x02, 0x01, 0x28 };
-
-        // Checked against all five creators on both builds: the first run of 3 or more
-        // placeholders 7-8 bytes apart is the table start in every case, and still is at 8.
-        private const int MPropsRunLength = 4;
-
-        private static bool PlaceholderAt(byte[] buffer, int at)
-        {
-            if (at < 0 || at + MPropsPlaceholder.Length > buffer.Length)
-                return false;
-            for (int k = 0; k < MPropsPlaceholder.Length; k++)
-                if (buffer[at + k] != MPropsPlaceholder[k])
-                    return false;
-            return true;
-        }
-
-        private static int IndexOfPlaceholderRun(byte[] buffer, int runLength)
-        {
-            for (int i = IndexOfPattern(buffer, MPropsPlaceholder); i >= 0; i = IndexOfPattern(buffer, MPropsPlaceholder, i + 1))
-            {
-                // Entries are normally 8 bytes apart, occasionally 7.
-                int n = 1, at = i;
-                while (n < runLength)
-                {
-                    if (PlaceholderAt(buffer, at + 8)) at += 8;
-                    else if (PlaceholderAt(buffer, at + 7)) at += 7;
-                    else break;
-                    n++;
-                }
-                if (n >= runLength)
-                    return i;
-            }
-            return -1;
-        }
         private void UpdateModdedPropEntry(GTA.MPEntry entry, int value)
         {
             if (entry == null)
@@ -232,7 +198,7 @@ namespace Xenvious
                 var readTimer = Stopwatch.StartNew();
                 try
                 {
-                    buffer = m.memory(dataRegion.ToString("X")).GetBytes(50000);
+                    buffer = m.memory(dataRegion.ToString("X")).GetBytes(ModdedPropTable.ReadLength);
                 }
                 catch (Exception ex)
                 {
@@ -266,8 +232,6 @@ namespace Xenvious
                 Log.Debug($"Resolved {resolvedRegions} creator region(s) in {regionTimer.ElapsedMilliseconds} ms", source: logSource);
 
                 var categories = new List<PropC>();
-                var currentCategory = new List<GTA.MPEntry>();
-                int previousPlaceholderOffset = -MPropsPlaceholder.Length;
                 int placeholderMatches = 0;
                 var propNameCache = new Dictionary<int, string>();
                 var propList = GTA.Editor.PropList;
@@ -289,53 +253,30 @@ namespace Xenvious
 
                 var parseTimer = Stopwatch.StartNew();
 
-                for (int offset = IndexOfPattern(buffer, MPropsPlaceholder); offset >= 0; offset = IndexOfPattern(buffer, MPropsPlaceholder, offset + MPropsPlaceholder.Length))
+                foreach (var group in ModdedPropTable.Parse(buffer))
                 {
-                    if (offset < 4)
+                    var currentCategory = new List<GTA.MPEntry>();
+                    foreach (var (propOffset, propId) in group)
                     {
-                        continue;
-                    }
-
-                    if (offset - previousPlaceholderOffset > 40 && currentCategory.Count > 0)
-                    {
-                        categories.Add(new PropC(currentCategory, categories.Count));
-                        currentCategory = new List<GTA.MPEntry>();
-                    }
-
-                    previousPlaceholderOffset = offset;
-                    placeholderMatches++;
-
-                    int propId = BitConverter.ToInt32(buffer, offset - 4);
-                    int propOffset = offset - 4;
-
-                    var addresses = new List<string>(sources.Count);
-                    for (int i = 0; i < sources.Count; i++)
-                    {
-                        var region = dataRegions[i];
-                        addresses.Add(region.HasValue ? (region.Value + (ulong)propOffset).ToString("X") : string.Empty);
-                    }
-
-                    if (!propNameCache.TryGetValue(propId, out string propName))
-                    {
-                        if (propLookup != null && propLookup.TryGetValue(propId, out var lookupName))
+                        placeholderMatches++;
+                        var addresses = new List<string>(sources.Count);
+                        for (int i = 0; i < sources.Count; i++)
                         {
-                            propName = lookupName?.Trim();
+                            var region = dataRegions[i];
+                            addresses.Add(region.HasValue ? (region.Value + (ulong)propOffset).ToString("X") : string.Empty);
                         }
 
-                        if (string.IsNullOrEmpty(propName))
+                        if (!propNameCache.TryGetValue(propId, out string propName))
                         {
-                            propName = string.Empty;
+                            if (propLookup != null && propLookup.TryGetValue(propId, out var lookupName))
+                                propName = lookupName?.Trim();
+                            if (string.IsNullOrEmpty(propName))
+                                propName = string.Empty;
+                            propNameCache[propId] = propName;
                         }
 
-                        propNameCache[propId] = propName;
+                        currentCategory.Add(new GTA.MPEntry(propName, addresses, propId, propId.ToString("X8")));
                     }
-
-                    string hexValue = propId.ToString("X8");
-                    currentCategory.Add(new GTA.MPEntry(propName, addresses, propId, hexValue));
-                }
-
-                if (currentCategory.Count > 0)
-                {
                     categories.Add(new PropC(currentCategory, categories.Count));
                 }
 
@@ -355,85 +296,16 @@ namespace Xenvious
         private bool TryLocateModdedPropDataRegion(ModdedPropSource source, string logSource, out ulong dataRegion)
         {
             var locateTimer = Stopwatch.StartNew();
-            dataRegion = 0;
-
-            var codePages = ScrProgramScanner.GetScrProgramByteCodeRegion(source.ScriptPointer);
-            if (codePages == null || codePages.Count == 0)
+            dataRegion = ModdedPropTable.Locate(source.ScriptPointer);
+            locateTimer.Stop();
+            if (dataRegion == 0)
             {
-                locateTimer.Stop();
-                Log.Debug($"Failed to read code pages for {source.DisplayName}", source: logSource);
+                Log.Debug($"Failed to locate prop data for {source.DisplayName} ({locateTimer.ElapsedMilliseconds} ms)", source: logSource);
                 return false;
             }
-
-            foreach (var (pagePtr, pageSize) in codePages)
-            {
-                byte[] pageBytes;
-                try
-                {
-                    pageBytes = m.memory(pagePtr.ToString("X")).GetBytes(pageSize);
-                }
-                catch
-                {
-                    continue;
-                }
-
-                // The table is a run of "PUSH_CONST_U32 <hash>; LEAVE 2,1" entries, one every
-                // 8 bytes. The placeholder alone also occurs in ordinary code -- in
-                // fm_race_creator eleven times before the table, which put the region 165 KB
-                // too early and filled the list with CALL operands. Those stray matches stand
-                // alone; the table is the first place where they follow each other. That is
-                // structure, not a value, so it still holds after the props were edited.
-                int idx = IndexOfPlaceholderRun(pageBytes, MPropsRunLength);
-                if (idx >= 0)
-                {
-                    if (idx < 4 && pagePtr < (ulong)(4 - idx))
-                    {
-                        continue;
-                    }
-
-                    ulong candidateAddress = idx >= 4
-                        ? pagePtr + (ulong)(idx - 4)
-                        : pagePtr - (ulong)(4 - idx);
-
-                    dataRegion = candidateAddress;
-                    source.DataRegion = dataRegion;
-                    locateTimer.Stop();
-                    Log.Debug($"Located prop data for {source.DisplayName} at 0x{dataRegion:X} in {locateTimer.ElapsedMilliseconds} ms", source: logSource);
-                    return true;
-                }
-            }
-
-            locateTimer.Stop();
-            Log.Debug($"Failed to locate prop data for {source.DisplayName} ({locateTimer.ElapsedMilliseconds} ms)", source: logSource);
-            return false;
-        }
-
-        private static int IndexOfPattern(byte[] buffer, byte[] pattern, int startIndex = 0)
-        {
-            if (buffer == null || pattern == null || pattern.Length == 0 || buffer.Length < pattern.Length || startIndex < 0)
-            {
-                return -1;
-            }
-
-            for (int i = startIndex; i <= buffer.Length - pattern.Length; i++)
-            {
-                bool match = true;
-                for (int j = 0; j < pattern.Length; j++)
-                {
-                    if (buffer[i + j] != pattern[j])
-                    {
-                        match = false;
-                        break;
-                    }
-                }
-
-                if (match)
-                {
-                    return i;
-                }
-            }
-
-            return -1;
+            source.DataRegion = dataRegion;
+            Log.Debug($"Located prop data for {source.DisplayName} at 0x{dataRegion:X} in {locateTimer.ElapsedMilliseconds} ms", source: logSource);
+            return true;
         }
 
         public void enableMProps()
