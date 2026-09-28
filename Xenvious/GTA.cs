@@ -1762,6 +1762,8 @@ namespace Xenvious
                 public static long itvsd = 0;
                 public static long itved = 0;
                 public static long dpos = 0;
+                public static long dozn = 0;        // per team and rule int[3]: Mission Creator drop-off zones
+                public static long dozn_NEXT = 0;
                 public static long dpos2 = 0;
                 public static long dpost = 0;
                 public static long dost = 0;

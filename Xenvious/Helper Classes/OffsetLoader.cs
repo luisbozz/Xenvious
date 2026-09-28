@@ -1001,6 +1001,9 @@ namespace Xenvious
             GTA.Offsets.Editor.fiispr = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_fiispr"), 0);
             GTA.Offsets.Editor.itvsd = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_itvsd"), 2);
             GTA.Offsets.Editor.dpos = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_dpos"), 2);
+            // Team array, rule array and the rule's own int[3]: three size slots before bit word 0.
+            GTA.Offsets.Editor.dozn = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_dozn"), 3);
+            GTA.Offsets.Editor.dozn_NEXT = ini.ReadInteger("OFFSETS", "OFFSET_dozn_NEXT");
             GTA.Offsets.Editor.dpos2 = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_dpos2"), 2);
             GTA.Offsets.Editor.dpost = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_dpost"), 2);
             GTA.Offsets.Editor.dost = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_dost"), 2);
