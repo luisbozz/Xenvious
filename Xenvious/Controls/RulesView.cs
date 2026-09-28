@@ -333,16 +333,24 @@ namespace Xenvious
                     string code = part.ToLowerInvariant();
                     if (code == "~n~") block.Inlines.Add(new LineBreak());
                     else if (code == "~italic~") italic = !italic;
-                    else if (code == "~ws~") block.Inlines.Add(Styled("★", colour, italic));
+                    else if (code == "~ws~") block.Inlines.Add(Icon(code, size, colour));
                     // The list shows every text bold already, so ~bold~ and ~h~ change nothing here.
                     else if (code.Length == 3) colour = GtaTextAssist.ColourOf(code);
                     continue;
                 }
-                foreach (var piece in Regex.Split(part, "([¦‹›÷∑Ω])"))
+                foreach (var piece in Regex.Split(part, "([¦‹›∑Ω])"))
                     if (piece.Length > 0)
-                        block.Inlines.Add(Styled(GtaTextAssist.IconPreview(piece) ?? piece, colour, italic));
+                        block.Inlines.Add(GtaTextAssist.IsIcon(piece) ? Icon(piece, size, colour) : Styled(piece, colour, italic));
             }
             return block;
+        }
+
+        private static Inline Icon(string code, double size, Color? colour)
+        {
+            var icon = GtaTextAssist.IconImage(code, size + 4, null);
+            if (colour.HasValue) ((Shape)icon).Fill = new SolidColorBrush(colour.Value);
+            else icon.SetResourceReference(Shape.FillProperty, "TextColor");
+            return new InlineUIContainer(icon) { BaselineAlignment = BaselineAlignment.Center };
         }
 
         private static Run Styled(string text, Color? colour, bool italic)

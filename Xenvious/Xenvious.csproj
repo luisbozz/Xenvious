@@ -544,6 +544,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\gtatext\gta_blank.png" />
+    <Resource Include="Images\gtatext\gta_created.png" />
+    <Resource Include="Images\gtatext\gta_lock.png" />
+    <Resource Include="Images\gtatext\gta_rockstar.png" />
+    <Resource Include="Images\gtatext\gta_star.png" />
+    <Resource Include="Images\gtatext\gta_verified.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Resource Include="Images\ogimage256.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>

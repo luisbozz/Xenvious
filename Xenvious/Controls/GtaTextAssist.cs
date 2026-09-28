@@ -9,6 +9,8 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 using System.Windows.Threading;
 
 namespace Xenvious
@@ -33,13 +35,13 @@ namespace Xenvious
             }
         }
 
-        // The icons are characters the game's font draws as symbols; the Windows fonts show other glyphs.
+        // The icons are characters the game's font draws as symbols; the Windows fonts show other glyphs,
+        // so previews use pictures taken from the game (Images/gtatext).
         public static readonly Code[] Codes =
         {
             new Code(Group.Icon, "¦", "gt_verified", "Rockstar Verified icon"),
             new Code(Group.Icon, "‹", "gt_created", "Rockstar Created icon"),
-            new Code(Group.Icon, "÷", "gt_rockstar", "Rockstar icon"),
-            new Code(Group.Icon, "∑", "gt_rockstar2", "Rockstar icon 2"),
+            new Code(Group.Icon, "∑", "gt_rockstar", "Rockstar icon"),
             new Code(Group.Icon, "›", "gt_blank", "Blank white icon"),
             new Code(Group.Icon, "Ω", "gt_lock", "Lock icon"),
             new Code(Group.Icon, "~ws~", "gt_star", "Wanted star"),
@@ -75,19 +77,37 @@ namespace Xenvious
             }
         }
 
-        /// <summary>A stand-in for an icon character, since the Windows fonts do not have the game's symbols.</summary>
-        public static string IconPreview(string icon)
+        private static readonly Dictionary<string, string> IconFiles = new Dictionary<string, string>
         {
-            switch (icon)
+            ["¦"] = "verified", ["‹"] = "created", ["∑"] = "rockstar", ["›"] = "blank", ["Ω"] = "lock", ["~ws~"] = "star",
+        };
+        private static readonly Dictionary<string, BitmapImage> IconCache = new Dictionary<string, BitmapImage>();
+
+        public static bool IsIcon(string code) => IconFiles.ContainsKey(code);
+
+        /// <summary>
+        /// The game's picture of an icon code in the given brush, or null. The game colours icons like
+        /// text (~r~¦ is a red badge), so the pictures are white masks.
+        /// </summary>
+        public static FrameworkElement IconImage(string code, double height, Brush fill)
+        {
+            if (!IconFiles.TryGetValue(code, out var file)) return null;
+            if (!IconCache.TryGetValue(file, out var bmp))
             {
-                case "¦": return "✔";
-                case "‹": return "✪";
-                case "÷": case "∑": return "R*";
-                case "›": return "■";
-                case "Ω": return "🔒";
-                case "~ws~": return "★";
-                default: return null;
+                bmp = new BitmapImage(new Uri("pack://application:,,,/Images/gtatext/gta_" + file + ".png", UriKind.Absolute));
+                bmp.Freeze();
+                IconCache[file] = bmp;
             }
+            var mask = new ImageBrush(bmp) { Stretch = Stretch.Uniform };
+            mask.Freeze();
+            return new Rectangle
+            {
+                Height = height,
+                Width = height * bmp.PixelWidth / bmp.PixelHeight,
+                Fill = fill,
+                OpacityMask = mask,
+                VerticalAlignment = VerticalAlignment.Center,
+            };
         }
 
         private static string T(string key, string fallback) => MainWindow.Instance?.TranslateOr(key, fallback) ?? fallback;
@@ -395,16 +415,18 @@ namespace Xenvious
                 UIElement preview;
                 if (c.Colour.HasValue)
                     preview = new Border { Width = 14, Height = 14, CornerRadius = new CornerRadius(7), Background = new SolidColorBrush(c.Colour.Value), BorderBrush = Res(_box, "LineBrush", Brushes.Gray), BorderThickness = new Thickness(1) };
+                else if (IsIcon(c.Text))
+                    preview = IconImage(c.Text, 18, Res(_box, "TextColor", Brushes.White));
                 else
                     preview = new TextBlock
                     {
-                        Text = IconPreview(c.Text) ?? (c.Group == Group.Format ? (c.Text == "~bold~" ? "B" : c.Text == "~italic~" ? "I" : "↵") : c.Text),
+                        Text = c.Text == "~bold~" ? "B" : c.Text == "~italic~" ? "I" : "↵",
                         FontWeight = c.Text == "~bold~" ? FontWeights.Bold : FontWeights.Normal,
                         FontStyle = c.Text == "~italic~" ? FontStyles.Italic : FontStyles.Normal,
                         FontSize = 13, HorizontalAlignment = HorizontalAlignment.Center,
                     };
                 var grid = new Grid();
-                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(26) });
+                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(72) });
                 grid.ColumnDefinitions.Add(new ColumnDefinition());
                 grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
                 var holder = new Border { Child = preview, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center };
