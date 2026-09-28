@@ -772,8 +772,10 @@ namespace Xenvious
             listFoot.Children.Add(_mpBulkInfo);
             DockPanel.SetDock(listFoot, Dock.Bottom);
             listPanel.Children.Add(listFoot);
-            _mpBulk = new TextBox { AcceptsReturn = true, FontFamily = new FontFamily("Consolas"), FontSize = 12.5, MinHeight = 220, VerticalScrollBarVisibility = ScrollBarVisibility.Auto, TextWrapping = TextWrapping.NoWrap };
+            _mpBulk = new TextBox { AcceptsReturn = true, FontFamily = new FontFamily("Consolas"), FontSize = 12.5, Height = 460, VerticalContentAlignment = VerticalAlignment.Stretch, HorizontalScrollBarVisibility = ScrollBarVisibility.Auto, VerticalScrollBarVisibility = ScrollBarVisibility.Auto, TextWrapping = TextWrapping.NoWrap };
             _mpBulk.SetResourceReference(StyleProperty, "Watermark");
+            // The Watermark template sizes its scroll host by VerticalContentAlignment; only
+            // Stretch gives it the box height, so long lists scroll instead of being cut off.
             _mpBulk.TextChanged += (_, __) => UpdateMPBulkInfo();
             listPanel.Children.Add(_mpBulk);
             _mpListPanel = listPanel;
@@ -1198,17 +1200,38 @@ namespace Xenvious
             return _mpBlacklist.Contains(hash);
         }
 
+        // The creators turn a placed prop into PROP_CONST_FENCE02B (the blue fence) unless the game
+        // knows the model as a creator prop (_GET_CONTENT_PROP_TYPE) or it is in the Dynamics (14)
+        // or Special (15) table, which the check reads from the script and so sees our changes
+        // (the function the "blue fence props fix" patch hits, e.g. func_2147 in the 1.73 capture
+        // creator; the caller then writes PROP_CONST_FENCE02B). The patch makes it always pass. Known creator props are
+        // taken as every model in the original tables.
+        private static HashSet<int> _mpOfficial;
+
+        private bool MPBecomesFence(int hash, int table)
+        {
+            if (table == 14 || table == 15 || _mpCreator < 0)
+                return false;
+            if (_mpOfficial == null)
+                _mpOfficial = new HashSet<int>(MPOriginals().Values.SelectMany(t => t).SelectMany(g => g).Where(h => h.HasValue).Select(h => h.Value));
+            if (_mpOfficial.Count == 0 || _mpOfficial.Contains(hash))
+                return false;
+            string script = GTA.Editor.ModdedPropSources[_mpCreator].ScriptName;
+            bool patched = GTA.Editor.ScrPatches?.Any(p => p.patch_name == "blue fence props fix" && p.script_name == script && p.enabled) == true;
+            return !patched;
+        }
+
         // A small outlined pill, as in the mockup ("changed", "Blacklist").
         // Soft fill in the colour instead of an outline: a 1 px ring on such a small rounded
         // shape renders fuzzy at most scalings.
         private static Border MPPill(string text, string brush)
         {
-            var t = new TextBlock { Text = text, FontSize = 10.5, FontWeight = FontWeights.Bold };
+            var t = new TextBlock { Text = text, FontSize = 10.5, FontWeight = FontWeights.Bold, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center };
             t.SetResourceReference(TextBlock.ForegroundProperty, brush);
             var colour = (ThemeBrush(brush) as SolidColorBrush)?.Color ?? Colors.Gray;
             return new Border
             {
-                CornerRadius = new CornerRadius(4), Padding = new Thickness(6, 1, 6, 2), Child = t, Margin = new Thickness(4, 0, 0, 0),
+                CornerRadius = new CornerRadius(4), Padding = new Thickness(6, 0, 6, 0), Height = 17, Child = t, Margin = new Thickness(4, 0, 0, 0), VerticalAlignment = VerticalAlignment.Center,
                 Background = new SolidColorBrush(Color.FromArgb(0x33, colour.R, colour.G, colour.B)), UseLayoutRounding = true, SnapsToDevicePixels = true,
             };
         }
@@ -1277,6 +1300,12 @@ namespace Xenvious
                 {
                     blacklisted++;
                     pills.Children.Add(MPPill(MPT("mp_blacklist", "Blacklist"), "BadBrush"));
+                }
+                if (MPBecomesFence(slot.IntegerValue, _mpCategory.Table))
+                {
+                    var fence = MPPill(MPT("mp_fence", "Fence"), "BadBrush");
+                    fence.ToolTip = MPT("mp_fence_tip", "The creator turns this model into the blue fence: it is not a creator prop. Put it into Dynamics or Special, or switch on the patch \"Prevent the blue fence\".");
+                    pills.Children.Add(fence);
                 }
                 if (isChanged)
                     pills.Children.Add(MPPill(MPT("mp_changed", "changed"), "WarnBrush"));
@@ -1437,6 +1466,16 @@ namespace Xenvious
                 _mpEditor.Children.Add(note);
             }
             int shown = _mpPick?.Int32 ?? slot.IntegerValue;
+            if (MPBecomesFence(shown, _mpCategory.Table))
+            {
+                var fence = new Border { CornerRadius = new CornerRadius(0, 6, 6, 0), BorderThickness = new Thickness(3, 0, 0, 0), Padding = new Thickness(10, 8, 10, 8), Margin = new Thickness(0, 0, 0, 10) };
+                fence.SetResourceReference(Border.BorderBrushProperty, "WarnBrush");
+                fence.SetResourceReference(Border.BackgroundProperty, "DeepBrush");
+                var ft = new TextBlock { Text = MPT("mp_fence_tip", "The creator turns this model into the blue fence: it is not a creator prop. Put it into Dynamics or Special, or switch on the patch \"Prevent the blue fence\"."), TextWrapping = TextWrapping.Wrap, FontSize = 12.5 };
+                ft.SetResourceReference(TextBlock.ForegroundProperty, "MutedTextBrush");
+                fence.Child = ft;
+                _mpEditor.Children.Add(fence);
+            }
             if (MPBlacklisted(shown))
             {
                 var warn = new Border { CornerRadius = new CornerRadius(0, 6, 6, 0), BorderThickness = new Thickness(3, 0, 0, 0), Padding = new Thickness(10, 8, 10, 8), Margin = new Thickness(0, 0, 0, 10) };

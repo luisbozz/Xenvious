@@ -104,7 +104,7 @@ namespace Xenvious
                 case "dont_force_kill_rule_to_6_and_number_to_1":
                 case "dont_force_round_pa_with_dev_mode":
                 case "nrl_fix":
-                case "fm_capture_creator_blue_fence_props_fix":
+                case "blue_fence_props_fix":
                 case "selected_spawn_veicle_stays_after_testing_ends":
                     return "fixes";
                 case "dev_mode":

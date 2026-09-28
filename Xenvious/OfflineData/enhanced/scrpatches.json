@@ -32,8 +32,40 @@
         "dev": false
     },
     {
-        "patch_name": "fm_capture_creator blue fence props fix",
+        "patch_name": "blue fence props fix",
         "script_name": "fm_capture_creator",
+        "pattern": "39 03 38 03 70 58 ? ? 72",
+        "offset": 0,
+        "bytes_to_patch": "72 2E 01 01",
+        "dev": false
+    },
+    {
+        "patch_name": "blue fence props fix",
+        "script_name": "fm_race_creator",
+        "pattern": "39 03 38 03 70 58 ? ? 72",
+        "offset": 0,
+        "bytes_to_patch": "72 2E 01 01",
+        "dev": false
+    },
+    {
+        "patch_name": "blue fence props fix",
+        "script_name": "fm_lts_creator",
+        "pattern": "39 03 38 03 70 58 ? ? 72",
+        "offset": 0,
+        "bytes_to_patch": "72 2E 01 01",
+        "dev": false
+    },
+    {
+        "patch_name": "blue fence props fix",
+        "script_name": "fm_deathmatch_creator",
+        "pattern": "39 03 38 03 70 58 ? ? 72",
+        "offset": 0,
+        "bytes_to_patch": "72 2E 01 01",
+        "dev": false
+    },
+    {
+        "patch_name": "blue fence props fix",
+        "script_name": "fm_survival_creator",
         "pattern": "39 03 38 03 70 58 ? ? 72",
         "offset": 0,
         "bytes_to_patch": "72 2E 01 01",
