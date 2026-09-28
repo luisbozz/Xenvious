@@ -896,12 +896,12 @@ namespace Xenvious
 
         private void cb_veh_clrlivc_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(20, GTA.Offsets.Editor.Vehicle.drbs, cb_veh_clrlivc);
+            Functions.Write.writebinary(20, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_clrlivc);
         }
 
         private void cb_veh_spwnrlivc_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(19, GTA.Offsets.Editor.Vehicle.drbs, cb_veh_spwnrlivc);
+            Functions.Write.writebinary(19, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_spwnrlivc);
         }
 
         private void ddvehspawnon_SelectionChanged(object sender, SelectionChangedEventArgs e)
