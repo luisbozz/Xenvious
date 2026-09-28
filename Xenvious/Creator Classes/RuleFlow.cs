@@ -113,11 +113,15 @@ namespace Xenvious
             }
         }
 
-        // Short jumps inside, long jumps outside, so the lines do not cross each other.
+        /// <summary>A jump out of a rule the team never reaches: it can never happen.</summary>
+        public bool IsDead(Edge e) => e.From < Count && Reached[e.From] == Reach.Never;
+
+        // Short jumps inside, long jumps outside, so the lines do not cross each other. Jumps that
+        // can happen get the inner lanes; dead ones only show while their rule is selected.
         private void AssignLanes()
         {
             var lanes = new List<List<Edge>>();
-            foreach (var e in Edges.Where(e => e.IsJump).OrderBy(e => e.To - e.From))
+            foreach (var e in Edges.Where(e => e.IsJump).OrderBy(e => IsDead(e)).ThenBy(e => e.To - e.From))
             {
                 int lane = 0;
                 while (lane < lanes.Count && lanes[lane].Any(o => !(e.To <= o.From || e.From >= o.To)))

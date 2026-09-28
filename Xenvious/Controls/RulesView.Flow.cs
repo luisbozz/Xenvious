@@ -288,6 +288,23 @@ namespace Xenvious
             double gutter = _rows.Margin.Left;
             string F(double v) => v.ToString("0.#", CultureInfo.InvariantCulture);
 
+            // Jumps that show: a dead one (out of a rule the team never reaches) only while its rule is selected.
+            var shown = _flow.Edges.Where(e => e.IsJump && (!_flow.IsDead(e) || e.From == _selected)).ToList();
+            // Several jumps at one rule get their own height there: at the target the inner lane
+            // arrives on top, at the source the outer lane leaves on top, so no line crosses another.
+            var arrive = new Dictionary<RuleFlow.Edge, double>();
+            var leave = new Dictionary<RuleFlow.Edge, double>();
+            foreach (var g in shown.GroupBy(e => e.To))
+            {
+                var list = g.OrderBy(e => e.Lane).ToList();
+                for (int i = 0; i < list.Count; i++) arrive[list[i]] = (i - (list.Count - 1) / 2.0) * 7;
+            }
+            foreach (var g in shown.GroupBy(e => e.From))
+            {
+                var list = g.OrderByDescending(e => e.Lane).ToList();
+                for (int i = 0; i < list.Count; i++) leave[list[i]] = (i - (list.Count - 1) / 2.0) * 7;
+            }
+
             foreach (var e in _flow.Edges)
             {
                 var a = boxes[e.From];
@@ -296,6 +313,9 @@ namespace Xenvious
                 double dim = anySelected && !hot ? 0.35 : 1;
                 if (!e.IsJump)
                 {
+                    // The straight way a rule with a jump does not take says nothing the chips don't.
+                    if (e.Kind == RuleFlow.Kind.Unused && _flow.Reached[e.From] != RuleFlow.Reach.Never)
+                        continue;
                     // Down to the next rule through the gap; faint when the team never takes it.
                     bool unused = e.Kind == RuleFlow.Kind.Unused || _flow.Reached[e.From] == RuleFlow.Reach.Never;
                     double y1 = a.Bottom, y2 = e.To == _flow.Count ? b.NumTop : b.Top, mid = (y1 + y2) / 2;
@@ -304,22 +324,26 @@ namespace Xenvious
                     _arrows.Children.Add(line);
                     continue;
                 }
+                if (!arrive.ContainsKey(e))
+                    continue;
+                bool dead = _flow.IsDead(e);
                 bool fail = e.Kind == RuleFlow.Kind.Fail || e.Kind == RuleFlow.Kind.FailBlocked;
                 string brush = e.Kind == RuleFlow.Kind.Pass ? "OkBrush" : fail ? "BadBrush" : e.Kind == RuleFlow.Kind.Next ? "AccentBrush" : "FaintTextBrush";
                 bool ignored = e.Kind == RuleFlow.Kind.NextIgnored || e.Kind == RuleFlow.Kind.FailBlocked;
-                double x = gutter - 14 - e.Lane * LaneWidth, r = 7;
-                double ys = a.Cy + (fail ? 8 : ignored ? -8 : 0), ye = b.Cy;
+                double x = gutter - 14 - e.Lane * LaneWidth, r = 8;
+                double ys = a.Cy + leave[e], ye = b.Cy + arrive[e];
                 double xe = e.To == _flow.Count ? b.Cx - 20 : b.Left - 2;
                 var path = Stroke($"M{F(a.Left)},{F(ys)} H{F(x + r)} Q{F(x)},{F(ys)} {F(x)},{F(ys + r)} V{F(ye - r)} Q{F(x)},{F(ye)} {F(x + r)},{F(ye)} H{F(xe)}",
-                    brush, ignored ? new DoubleCollection { 2, 2 } : null, (ignored ? 0.7 : 1) * dim);
+                    brush, ignored || dead ? new DoubleCollection { 2, 2 } : null, (ignored || dead ? 0.6 : 1) * dim);
                 _arrows.Children.Add(path);
                 var head = new Polygon { Points = new PointCollection { new Point(xe - 7, ye - 4), new Point(xe, ye), new Point(xe - 7, ye + 4) }, Opacity = path.Opacity };
                 head.SetResourceReference(Shape.FillProperty, brush);
                 _arrows.Children.Add(head);
                 if (ignored)
                 {
-                    double my = (ys + ye) / 2;
-                    _arrows.Children.Add(Stroke($"M{F(x - 4)},{F(my - 4)} L{F(x + 4)},{F(my + 4)} M{F(x + 4)},{F(my - 4)} L{F(x - 4)},{F(my + 4)}", "FaintTextBrush", null, dim));
+                    // The cross sits where the jump leaves its rule, so it is clear which one never happens.
+                    double mx = (a.Left + x) / 2;
+                    _arrows.Children.Add(Stroke($"M{F(mx - 4)},{F(ys - 4)} L{F(mx + 4)},{F(ys + 4)} M{F(mx + 4)},{F(ys - 4)} L{F(mx - 4)},{F(ys + 4)}", brush, null, dim));
                 }
             }
         }
