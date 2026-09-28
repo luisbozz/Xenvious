@@ -624,6 +624,10 @@ namespace Xenvious
 
         private void UIElement_OnMouseWheel(object sender, MouseWheelEventArgs e)
         {
+            // A text box's content host leaves the wheel to the text box itself, which scrolls
+            // only while the event is unhandled; marking it here froze multi-line boxes.
+            if (sender is ScrollViewer sv && sv.TemplatedParent is System.Windows.Controls.Primitives.TextBoxBase)
+                return;
             e.Handled = true;
         }
 
