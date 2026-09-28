@@ -41,7 +41,7 @@ namespace Xenvious
             public int TakeoverMs;     // ttime
             public int TimeLimit;      // tmt selection index
             public bool FailsMission;  // bit in the team fail bitset
-            public List<int> DropZones = new List<int>(); // Mission Creator: zone indices of the drop-off
+            public List<int> DropZones = new List<int>(); // Mission Creator: zone numbers of the drop-off as the creator shows them
             public float DropRadius;   // older creators: radius of the drop-off point, 0 = none
         }
 
@@ -123,6 +123,18 @@ namespace Xenvious
                         zones.Add(word * 32 + b);
             }
             return zones;
+        }
+
+        /// <summary>
+        /// The number the Mission Creator shows for a zone ("Drop-off Zone 1"): its zcid + 1, which
+        /// is not the zone's index (func_1885 lists zones by zcid).
+        /// </summary>
+        public static int ZoneNumber(int zone)
+        {
+            if (GTA.Offsets.Editor.Zones.zcid == 0 || GTA.Offsets.Editor.Zones.NEXT == 0)
+                return zone + 1;
+            int id = new Global(GTA.Offsets.Editor.Zones.zcid + zone * GTA.Offsets.Editor.Zones.NEXT).Get<int>();
+            return id < 0 ? zone + 1 : id + 1;
         }
 
         /// <summary>The older creators' drop-off point of a rule: its radius, 0 when none is placed.</summary>
@@ -262,7 +274,7 @@ namespace Xenvious
                     TakeoverMs = GetField(GTA.Offsets.Editor.ttime, team, r),
                     TimeLimit = GetField(GTA.Offsets.Editor.tmt, team, r),
                     FailsMission = FailsMission(team, r),
-                    DropZones = DropOffZones(team, r),
+                    DropZones = DropOffZones(team, r).Select(ZoneNumber).OrderBy(n => n).ToList(),
                     DropRadius = DropOffRadius(team, r),
                 });
 

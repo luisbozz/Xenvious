@@ -812,6 +812,7 @@ namespace Xenvious
                 public class Zones
                 {
                     public static long zntp = 0;
+                    public static long zcid = 0;    // number the creator shows for the zone, 0-based, -1 = none
                     public static long vtox = 0;
                     public static long vtoy = 0;
                     public static long vtoz = 0;

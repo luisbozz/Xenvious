@@ -392,6 +392,7 @@ namespace Xenvious
             GTA.Offsets.Editor.DHProp.NEXT = ini.ReadInteger("OFFSETS", "OFFSET_dhprop_NEXT");
 
             GTA.Offsets.Editor.Zones.zntp = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_zones_zntp"), 1);
+            GTA.Offsets.Editor.Zones.zcid = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_zones_zcid"), 1);
             GTA.Offsets.Editor.Zones.vtox = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_zones_vtox"), 2);
             GTA.Offsets.Editor.Zones.vtoy = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_zones_vtoy"), 2);
             GTA.Offsets.Editor.Zones.vtoz = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_zones_vtoz"), 2);

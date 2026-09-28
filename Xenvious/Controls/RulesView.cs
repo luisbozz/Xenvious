@@ -254,7 +254,7 @@ namespace Xenvious
                 }
             }
             foreach (int zone in rule.DropZones)
-                chips.Children.Add(DropChip(string.Format(CultureInfo.CurrentCulture, T("rl_drop_zone", "Drop-off zone {0}"), zone + 1),
+                chips.Children.Add(DropChip(string.Format(CultureInfo.CurrentCulture, T("rl_drop_zone", "Drop-off zone {0}"), zone),
                     T("rl_drop_zone_tip", "Drop-off zone of this rule. In the creator: the rule's Specify Drop-off Zones.")));
             if (rule.DropRadius > 0)
                 chips.Children.Add(DropChip(string.Format(CultureInfo.CurrentCulture, T("rl_drop_point", "Drop-off point · {0} m"), rule.DropRadius.ToString("0.#", CultureInfo.CurrentCulture)),
