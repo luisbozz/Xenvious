@@ -54,13 +54,17 @@ namespace Xenvious
         public JobMap()
         {
             Background = MainWindow.ThemeBrush("DeepBrush");
-            CornerRadius = new CornerRadius(4);
-            ClipToBounds = true;
+            CornerRadius = new CornerRadius(8);
             RenderOptions.SetBitmapScalingMode(_image, BitmapScalingMode.HighQuality);
             _surface.Children.Add(_image);
             _surface.Children.Add(_dots);
             Child = _surface;
-            SizeChanged += (_, __) => Redraw();
+            SizeChanged += (_, __) =>
+            {
+                // CornerRadius only rounds the background; the map on top is cut to the same shape.
+                _surface.Clip = new RectangleGeometry(new Rect(0, 0, ActualWidth, ActualHeight), CornerRadius.TopLeft, CornerRadius.TopLeft);
+                Redraw();
+            };
         }
 
         public void SetMarkers(IEnumerable<Marker> markers)
