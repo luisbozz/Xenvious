@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
@@ -514,7 +515,8 @@ namespace Xenvious
                 star.SetResourceReference(Shape.StrokeProperty, "AccentBrush");
                 star.SetResourceReference(Shape.FillProperty, "AccentBrush");
                 var title = new TextBlock { Text = TranslateOr("editnav_grp_fav", "Favourites"), Style = (Style)FindResource("SideNavGroup"), Margin = new Thickness(0, 14, 0, 4) };
-                EditNavList.Children.Add(new StackPanel { Orientation = Orientation.Horizontal, Children = { star, title } });
+                EditNavList.Children.Add(new StackPanel { Orientation = Orientation.Horizontal, Children = { star, title },
+                    ToolTip = TranslateOr("editnav_fav_drag", "Drag a favourite to change the order.") });
             }
             foreach (var (entry, sub) in favorites)
             {
@@ -539,8 +541,66 @@ namespace Xenvious
                     ToolTip = _editNavCollapsed ? (sub == null ? page : SubLabel(sub)) : null,
                 };
                 button.Click += (_, __) => OpenEditNav(entry, sub, rememberBack: false);
-                EditNavList.Children.Add(WithStar(button, FavoriteId(entry, sub)));
+                EditNavList.Children.Add(Draggable(WithStar(button, FavoriteId(entry, sub)), button, FavoriteId(entry, sub)));
             }
+        }
+
+        private const string FavoriteDragFormat = "XenviousEditNavFavorite";
+
+        // A favourite row that can be dragged onto another one; the line shows where it lands.
+        private FrameworkElement Draggable(FrameworkElement row, Button button, string id)
+        {
+            var holder = new Border { BorderThickness = new Thickness(0, 2, 0, 2), BorderBrush = Brushes.Transparent, Child = row, AllowDrop = true };
+            Point? down = null;
+            holder.PreviewMouseLeftButtonDown += (_, e) => down = e.GetPosition(holder);
+            holder.PreviewMouseLeftButtonUp += (_, __) => down = null;
+            holder.PreviewMouseMove += (_, e) =>
+            {
+                if (down == null || e.LeftButton != MouseButtonState.Pressed)
+                    return;
+                var at = e.GetPosition(holder);
+                if (Math.Abs(at.Y - down.Value.Y) < SystemParameters.MinimumVerticalDragDistance)
+                    return;
+                down = null;
+                // The button holds the mouse since the press; without letting go it would click on release.
+                button.ReleaseMouseCapture();
+                DragDrop.DoDragDrop(holder, new DataObject(FavoriteDragFormat, id), DragDropEffects.Move);
+            };
+            bool Below(DragEventArgs e) => e.GetPosition(holder).Y > holder.ActualHeight / 2;
+            holder.DragOver += (_, e) =>
+            {
+                if (!e.Data.GetDataPresent(FavoriteDragFormat))
+                {
+                    e.Effects = DragDropEffects.None;
+                    e.Handled = true;
+                    return;
+                }
+                // One brush for both edges: its upper half paints the top line, the lower half the bottom one.
+                var accent = (ThemeBrush("AccentBrush") as SolidColorBrush)?.Color ?? Colors.SteelBlue;
+                var top = Below(e) ? Colors.Transparent : accent;
+                var bottom = Below(e) ? accent : Colors.Transparent;
+                holder.BorderBrush = new LinearGradientBrush(new GradientStopCollection
+                {
+                    new GradientStop(top, 0), new GradientStop(top, 0.5), new GradientStop(bottom, 0.5), new GradientStop(bottom, 1),
+                }, new Point(0, 0), new Point(0, 1));
+                e.Effects = DragDropEffects.Move;
+                e.Handled = true;
+            };
+            holder.DragLeave += (_, __) => holder.BorderBrush = Brushes.Transparent;
+            holder.Drop += (_, e) =>
+            {
+                holder.BorderBrush = Brushes.Transparent;
+                if (!(e.Data.GetData(FavoriteDragFormat) is string moved) || moved == id)
+                    return;
+                var list = EditNavFavorites;
+                if (!list.Remove(moved))
+                    return;
+                int to = list.IndexOf(id);
+                list.Insert(to < 0 ? list.Count : Below(e) ? to + 1 : to, moved);
+                new ini_reader(Functions.getRoamingConfigFilePath()).Write("Settings", "editnavfav", string.Join("|", list));
+                Dispatcher.BeginInvoke(new Action(RenderEditNav));
+            };
+            return holder;
         }
 
         private static ControlTemplate _starTemplate;
