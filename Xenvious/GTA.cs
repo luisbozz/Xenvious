@@ -711,6 +711,7 @@ namespace Xenvious
                     public static long vbs9 = 0;
                     public static long vbs10 = 0;
                     public static long vbs11 = 0;
+                    public static long vbs12 = 0;   // bit 14 + team: mission critical "Auto"
                     public static long vebs = 0;
                     public static long enghp = 0;
                     public static long ptrhp = 0;
@@ -766,6 +767,7 @@ namespace Xenvious
                     public static long bits1 = 0;
                     public static long bits2 = 0;
                     public static long bits3 = 0;
+                    public static long bits6 = 0;   // bit 22 + team: mission critical "Auto"
                     public static long bits4 = 0;
                     public static long rule = 0;
                     public static long pri = 0;
@@ -980,6 +982,7 @@ namespace Xenvious
                     public static long pbs21 = 0;
                     public static long pbs22 = 0;
                     public static long pbs23 = 0;
+                    public static long pbs25 = 0;   // bit 13 + team: mission critical "Auto"
                     public static long psort = 0;
                     public static long pcash = 0;
                     public static long number = 0;
@@ -1826,6 +1829,8 @@ namespace Xenvious
                 public static long mcpbs2 = 0;
                 public static long mcpbs3 = 0;
                 public static long mcobs = 0;
+                public static long mcpbs = 0;       // per team int[3]: actors mission critical "Yes"
+                public static long mcpbs_NEXT = 0;
                 public static long rpgbs1 = 0;
                 public static long rpgbs2 = 0;
                 public static long rpgbs3 = 0;

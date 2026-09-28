@@ -299,6 +299,7 @@ namespace Xenvious
             GTA.Offsets.Editor.Vehicle.vbs9 = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_veh_vbs9"), 1);
             GTA.Offsets.Editor.Vehicle.vbs10 = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_veh_vbs10"), 1);
             GTA.Offsets.Editor.Vehicle.vbs11 = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_veh_vbs11"), 1);
+            GTA.Offsets.Editor.Vehicle.vbs12 = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_veh_vbs12"), 1);
             GTA.Offsets.Editor.Vehicle.vebs = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_veh_vebs"), 1);
             GTA.Offsets.Editor.Vehicle.enghp = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_veh_enghp"), 1);
             GTA.Offsets.Editor.Vehicle.ptrhp = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_veh_ptrhp"), 1);
@@ -347,6 +348,7 @@ namespace Xenvious
             GTA.Offsets.Editor.Objects.bits1 = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_obj_bits1"), 1);
             GTA.Offsets.Editor.Objects.bits2 = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_obj_bits2"), 1);
             GTA.Offsets.Editor.Objects.bits3 = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_obj_bits3"), 1);
+            GTA.Offsets.Editor.Objects.bits6 = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_obj_bits6"), 1);
             GTA.Offsets.Editor.Objects.bits4 = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_obj_bits4"), 1);
             GTA.Offsets.Editor.Objects.rule = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_obj_rule"), 2);
             GTA.Offsets.Editor.Objects.pri = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_obj_pri"), 2);
@@ -552,6 +554,7 @@ namespace Xenvious
             GTA.Offsets.Editor.Actor.pbs21 = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_actor_pbs21"), 1);
             GTA.Offsets.Editor.Actor.pbs22 = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_actor_pbs22"), 1);
             GTA.Offsets.Editor.Actor.pbs23 = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_actor_pbs23"), 1);
+            GTA.Offsets.Editor.Actor.pbs25 = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_actor_pbs25"), 1);
             GTA.Offsets.Editor.Actor.psort = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_actor_psort"), 1);
             GTA.Offsets.Editor.Actor.pcash = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_actor_pcash"), 1);
             GTA.Offsets.Editor.Actor.number = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_actor_number"), 0);
@@ -1065,6 +1068,9 @@ namespace Xenvious
             GTA.Offsets.Editor.mcpbs2 = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_mcpbs2"), 1);
             GTA.Offsets.Editor.mcpbs3 = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_mcpbs3"), 1);
             GTA.Offsets.Editor.mcobs = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_mcobs"), 1);
+            // Outer array size slot, then the team's own int[3] size slot: element 0 of team 0.
+            GTA.Offsets.Editor.mcpbs = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_mcpbs"), 2);
+            GTA.Offsets.Editor.mcpbs_NEXT = ini.ReadInteger("OFFSETS", "OFFSET_mcpbs_NEXT");
             GTA.Offsets.Editor.rpgbs1 = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_rpgbs1"), 1);
             GTA.Offsets.Editor.rpgbs2 = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_rpgbs2"), 1);
             GTA.Offsets.Editor.rpgbs3 = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_rpgbs3"), 1);
