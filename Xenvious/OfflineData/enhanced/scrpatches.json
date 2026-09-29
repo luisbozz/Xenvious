@@ -706,5 +706,21 @@
         "offset": 3,
         "bytes_to_patch": "CD CC 4C 3F",
         "dev": false
+    },
+    {
+        "patch_name": "race small grid all classes",
+        "script_name": "fm_race_creator",
+        "pattern": "64 4E 06 02 3F 2F 71 57 ? ? 61 00 00 48 64",
+        "offset": 7,
+        "bytes_to_patch": "5B",
+        "dev": false
+    },
+    {
+        "patch_name": "race small grid all classes",
+        "script_name": "fm_race_creator",
+        "pattern": "64 4E 06 02 3F 2F 72 57 ? ? 61 00 00 48 64",
+        "offset": 7,
+        "bytes_to_patch": "5C",
+        "dev": false
     }
 ]
