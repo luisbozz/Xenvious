@@ -161,8 +161,7 @@ namespace Xenvious
         {
             _dashCounts.Clear();
             DashCounts.Children.Clear();
-            if (creator.Length == 0)
-                return;
+            // Outside a creator the tiles stay with "–", so the card keeps its layout.
 
             var propBrush = (Brush)DashTileProps.FindResource("DashPropBrush");
             var dynamicBrush = (Brush)DashTileProps.FindResource("DashDynamicBrush");
