@@ -107,7 +107,7 @@ namespace Xenvious
             body.Children.Add(_strip);
             body.Children.Add(Separator());
             body.Children.Add(Section("lc_spawn", "Appears", _spawnText, "OkBrush", "M12,19 L12,5 M5,12 L12,5 L19,12",
-                Row((T("lc_when", "When"), _when), (T("lc_rule", "Rule"), _spawnRulePick), (T("lc_team", "Team"), _spawnTeamPick))));
+                Stack(Row((T("lc_when", "When"), _when)), Row((T("lc_rule", "Rule"), _spawnRulePick), (T("lc_team", "Team"), _spawnTeamPick)))));
             _spawnRuleCell = (FrameworkElement)_spawnRulePick.Parent;
             body.Children.Add(Separator());
             body.Children.Add(Section("lc_clear", "Disappears", _clearText, "BadBrush", "M4,12 A8,8 0 1 0 20,12 A8,8 0 1 0 4,12 M8,8 L16,16",
@@ -165,6 +165,18 @@ namespace Xenvious
                 grid.Children.Add(cell);
             }
             return grid;
+        }
+
+        // The card sits in a narrow column: "when" gets its own line, rule and team share one.
+        private static FrameworkElement Stack(params FrameworkElement[] rows)
+        {
+            var panel = new StackPanel();
+            for (int i = 0; i < rows.Length; i++)
+            {
+                if (i > 0) rows[i].Margin = new Thickness(0, 8, 0, 0);
+                panel.Children.Add(rows[i]);
+            }
+            return panel;
         }
 
         private static int Parse(string text, int fallback)
