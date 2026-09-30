@@ -157,10 +157,12 @@ namespace Xenvious
             return found;
         }
 
-        private void OpenEditPage(TabItem page)
+        // Opens the page through the Edit menu, so the sub page (dynamic props, fixtures) is
+        // the one that shows and the menu marks it.
+        private void OpenEditPage(TabItem page, Button subButton = null)
         {
             MainPages.SelectedItem = PageEdit;
-            EditPages.SelectedItem = page;
+            OpenEditNavPage(page, subButton);
         }
 
         // "Placed in this job": props and dynamic props first, then what the creator adds.
@@ -177,13 +179,13 @@ namespace Xenvious
             {
                 Label = TranslateOr("props", "Props"), Dot = propBrush,
                 Read = () => CountOf(GTA.Offsets.Editor.Props.number) + " / " + PropPlacementService.PropLimit.ToString(CultureInfo.CurrentCulture),
-                Open = () => { OpenEditPage(PageProps); PageInnerProps.SelectedItem = PageInnerNormalProps; }
+                Open = () => OpenEditPage(PageProps, BtnNormalProps)
             });
             _dashCounts.Add(new DashCount
             {
                 Label = TranslateOr("dash_dynprops", "Dynamic Props"), Dot = dynamicBrush,
                 Read = () => CountOf(GTA.Offsets.Editor.DProps.number),
-                Open = () => { OpenEditPage(PageProps); PageInnerProps.SelectedItem = PageInnerDynamicProps; }
+                Open = () => OpenEditPage(PageProps, BtnDynamicProps)
             });
 
             // Actors, vehicles and weapons in the colours of their blips in the creator.
@@ -191,7 +193,7 @@ namespace Xenvious
             var vehicles = new DashCount { Label = TranslateOr("vehicles", "Vehicles"), Dot = DashBrush("DashVehicleBrush"), Read = () => CountOf(GTA.Offsets.Editor.Vehicle.number, CreatorLimits.Vehicles), Open = () => OpenEditPage(PageVehicle) };
             var weapons = new DashCount { Label = TranslateOr("weapons", "Weapons"), Dot = DashBrush("DashWeaponBrush"), Icon = TryFindResource("EditIconWeapon") as Geometry, Read = () => CountOf(GTA.Offsets.Editor.Weapon.number, CreatorLimits.Weapons), Open = () => OpenEditPage(PageWeapon) };
             var zones = new DashCount { Label = TranslateOr("zones", "Zones"), Dot = DashBrush("DashZoneBrush"), Read = () => CountOf(GTA.Offsets.Editor.Zones.number, CreatorLimits.Zones), Open = () => OpenEditPage(PageZone) };
-            var fixtures = new DashCount { Label = TranslateOr("editnav_fixtures", "Fixtures"), Dot = DashBrush("DashFixtureBrush"), Read = () => CountOf(GTA.Offsets.Editor.DHProp.number, CreatorLimits.Fixtures), Open = () => BtnSectioncentity_Click(null, null) };
+            var fixtures = new DashCount { Label = TranslateOr("editnav_fixtures", "Fixtures"), Dot = DashBrush("DashFixtureBrush"), Read = () => CountOf(GTA.Offsets.Editor.DHProp.number, CreatorLimits.Fixtures), Open = () => OpenEditPage(Pagecentity) };
 
             switch (creator)
             {

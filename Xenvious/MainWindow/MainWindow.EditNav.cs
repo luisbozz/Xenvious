@@ -434,6 +434,24 @@ namespace Xenvious
             RenderEditNav();
         }
 
+        /// <summary>
+        /// Opens <paramref name="page"/> as the menu would: its entry, or the sub page that has
+        /// this page or <paramref name="subButton"/>. Falls back to selecting the page.
+        /// </summary>
+        private void OpenEditNavPage(TabItem page, Button subButton = null)
+        {
+            foreach (var entry in EditNav)
+            {
+                var sub = entry.Subs.FirstOrDefault(s => subButton != null ? s.Button == subButton : s.Page == page && s.Open != null);
+                if (sub != null || (subButton == null && entry.Page == page && entry.Group < 2))
+                {
+                    OpenEditNav(entry, sub, false);
+                    return;
+                }
+            }
+            EditPages.SelectedItem = page;
+        }
+
         private bool _openingFromNav;
 
         // A page opened some other way (dashboard tiles, restrictions, code): follow it.
