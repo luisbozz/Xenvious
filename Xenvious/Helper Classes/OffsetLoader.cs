@@ -777,6 +777,7 @@ namespace Xenvious
             GTA.Offsets.Editor.Race.adlc = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_adlc"), 2);
             GTA.Offsets.Editor.Race.adlc2 = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_adlc"), 3);
             GTA.Offsets.Editor.Race.adlc3 = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_adlc"), 4);
+            GTA.Offsets.Editor.Race.adlc4 = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_adlc"), 5);
             GTA.Offsets.Editor.Race.adlc_NEXT = ini.ReadInteger("OFFSETS", "OFFSET_adlc_NEXT");
 
             GTA.Offsets.Editor.cordmbs = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_cordmbs"), 0);

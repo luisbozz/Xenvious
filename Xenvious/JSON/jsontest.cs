@@ -19364,6 +19364,9 @@ namespace Xenvious.JSON
         [JsonProperty("adlc3", NullValueHandling = NullValueHandling.Ignore)]
         public List<long> Adlc3 { get; set; }
 
+        [JsonProperty("adlc4", NullValueHandling = NullValueHandling.Ignore)]
+        public List<long> Adlc4 { get; set; }
+
         [JsonProperty("aveh", NullValueHandling = NullValueHandling.Ignore)]
         public List<long> Aveh { get; set; }
 

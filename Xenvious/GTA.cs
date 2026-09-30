@@ -1128,6 +1128,7 @@ namespace Xenvious
                     public static long adlc = 0;
                     public static long adlc2 = 0;
                     public static long adlc3 = 0;
+                    public static long adlc4 = 0;
                     public static long adlc_NEXT = 0;
                     public class Checkpoints
                     {

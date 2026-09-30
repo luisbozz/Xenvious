@@ -993,6 +993,13 @@ namespace Xenvious
                                 new Global(GTA.Offsets.Editor.Race.adlc3 + (i * GTA.Offsets.Editor.Race.adlc_NEXT)).SetInt((int)jobjson.Mission.Race.Adlc3[i]);
                             }
                         }
+                        if (jobjson.Mission.Race.Adlc4 != null)
+                        {
+                            for (int i = 0; i < jobjson.Mission.Race.Adlc4.Count(); i++)
+                            {
+                                new Global(GTA.Offsets.Editor.Race.adlc4 + (i * GTA.Offsets.Editor.Race.adlc_NEXT)).SetInt((int)jobjson.Mission.Race.Adlc4[i]);
+                            }
+                        }
 
                         if (jobjson.Mission.Race.Clbs != null) new Global(GTA.Offsets.Editor.Race.Checkpoints.clbs).SetInt((int)jobjson.Mission.Race.Clbs);
                         if (jobjson.Mission.Race.Icv != null) new Global(GTA.Offsets.Editor.Race.Checkpoints.icv).SetInt((int)jobjson.Mission.Race.Icv);
