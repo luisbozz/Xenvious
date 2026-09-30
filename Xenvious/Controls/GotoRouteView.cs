@@ -21,8 +21,8 @@ namespace Xenvious
 
     /// <summary>
     /// An actor's goto points as a route (mockup https://claude.ai/artifact/VifG8TGRs71syLT1EsWBmP):
-    /// route options, a top view (start = the actor), the points as numbered steps with what
-    /// happens there, and the selected point's fields right under its step. The creator counts
+    /// a top view (start = the actor), the points as numbered steps with what happens there, the
+    /// selected point's fields right under its step, and the route-wide options at the bottom. The creator counts
     /// the points itself (set = position not 0,0,0, from point 1 on), so points stay contiguous:
     /// deleting one moves the ones after it up.
     /// Point bits (f_9[j][0], menu labels FMMC_AOGT_*): 0 exit vehicle, 1 cover only,
@@ -71,12 +71,6 @@ namespace Xenvious
             _toCursor = toCursor;
             _swap = swap;
             _setBit = setBit;
-
-            if (routeOptions != null)
-            {
-                routeOptions.Margin = new Thickness(0, 0, 0, 10);
-                Children.Add(routeOptions);
-            }
 
             var frame = new Border { CornerRadius = new CornerRadius(8), BorderThickness = new Thickness(1), Child = _map, Margin = new Thickness(0, 0, 0, 12) };
             frame.Background = new RadialGradientBrush(Color.FromRgb(0x2C, 0x3A, 0x33), Color.FromRgb(0x23, 0x25, 0x29)) { Center = new Point(0.3, 0.4), GradientOrigin = new Point(0.3, 0.4), RadiusX = 0.8, RadiusY = 0.8 };
@@ -147,6 +141,15 @@ namespace Xenvious
             var hint = new TextBlock { FontSize = 12, TextWrapping = TextWrapping.Wrap, Text = T("gr_hint", "Click a step to edit it right below. ⌖ moves the point to the cursor.") };
             hint.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
             Children.Add(hint);
+
+            // Route-wide settings (loop, vehicle speed, hover/rappel) below the points.
+            if (routeOptions != null)
+            {
+                var line = new Rectangle { Height = 1, Margin = new Thickness(0, 12, 0, 12) };
+                line.SetResourceReference(Shape.FillProperty, "LineBrush");
+                Children.Add(line);
+                Children.Add(routeOptions);
+            }
 
             _map.SizeChanged += (_, __) => Draw();
             _pointBox.SelectionChanged += (_, __) => Refresh();
