@@ -22,7 +22,6 @@ namespace Xenvious
         private ComboBox _spawnOn, _spawnTeam, _clearTeam;
         private TextBox _spawnRule, _clearRule;
         private bool _sync;
-        private FrameworkElement _spawnRuleCell;
 
         private readonly ComboBox _when = new ComboBox { Height = 30 };
         private readonly ComboBox _spawnRulePick = new ComboBox { Height = 30 };
@@ -102,13 +101,19 @@ namespace Xenvious
         private FrameworkElement Body()
         {
             var body = new StackPanel();
-            _stripTeam.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
-            body.Children.Add(_stripTeam);
             body.Children.Add(_strip);
+            // Same legend as the Vehicles page's lifecycle.
+            var legend = new WrapPanel { Margin = new Thickness(0, 6, 0, 0) };
+            legend.Children.Add(LegendItem(T("lc_lg_there", "there"), "OkBrush"));
+            legend.Children.Add(LegendItem(T("lc_lg_gone", "not there"), "BadBrush"));
+            _stripTeam.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
+            _stripTeam.FontSize = 11.5;
+            _stripTeam.VerticalAlignment = VerticalAlignment.Center;
+            legend.Children.Add(_stripTeam);
+            body.Children.Add(legend);
             body.Children.Add(Separator());
             body.Children.Add(Section("lc_spawn", "Appears", _spawnText, "OkBrush", "M12,19 L12,5 M5,12 L12,5 L19,12",
-                Stack(Row((T("lc_when", "When"), _when)), Row((T("lc_rule", "Rule"), _spawnRulePick), (T("lc_team", "Team"), _spawnTeamPick)))));
-            _spawnRuleCell = (FrameworkElement)_spawnRulePick.Parent;
+                Row((T("lc_when", "When"), _when), (T("lc_rule", "Rule"), _spawnRulePick), (T("lc_team", "Team"), _spawnTeamPick))));
             body.Children.Add(Separator());
             body.Children.Add(Section("lc_clear", "Disappears", _clearText, "BadBrush", "M4,12 A8,8 0 1 0 20,12 A8,8 0 1 0 4,12 M8,8 L16,16",
                 Row((T("lc_rule", "Rule"), _clearRulePick), (T("lc_team", "Team"), _clearTeamPick))));
@@ -123,6 +128,23 @@ namespace Xenvious
                 body.Children.Add(Separator());
                 body.Children.Add(Section(key, fallback, new TextBlock { FontSize = 12, FontWeight = FontWeights.SemiBold }, brush, icon, content));
             }
+        }
+
+        private static UIElement LegendItem(string text, string brush)
+        {
+            var row = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 0, 12, 2) };
+            var swatch = new Grid { Width = 12, Height = 12, VerticalAlignment = VerticalAlignment.Center };
+            var tint = new Border { CornerRadius = new CornerRadius(3), Opacity = 0.16 };
+            tint.SetResourceReference(Border.BackgroundProperty, brush);
+            var frame = new Border { CornerRadius = new CornerRadius(3), BorderThickness = new Thickness(1) };
+            frame.SetResourceReference(Border.BorderBrushProperty, brush);
+            swatch.Children.Add(tint);
+            swatch.Children.Add(frame);
+            row.Children.Add(swatch);
+            var t = new TextBlock { Text = text, FontSize = 11.5, Margin = new Thickness(5, 0, 0, 0), VerticalAlignment = VerticalAlignment.Center };
+            t.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
+            row.Children.Add(t);
+            return row;
         }
 
         private static Rectangle Separator()
@@ -177,18 +199,6 @@ namespace Xenvious
             return grid;
         }
 
-        // The card sits in a narrow column: "when" gets its own line, rule and team share one.
-        private static FrameworkElement Stack(params FrameworkElement[] rows)
-        {
-            var panel = new StackPanel();
-            for (int i = 0; i < rows.Length; i++)
-            {
-                if (i > 0) rows[i].Margin = new Thickness(0, 8, 0, 0);
-                panel.Children.Add(rows[i]);
-            }
-            return panel;
-        }
-
         private static int Parse(string text, int fallback)
             => int.TryParse(text, NumberStyles.Integer, CultureInfo.InvariantCulture, out int v) ? v : fallback;
 
@@ -223,8 +233,7 @@ namespace Xenvious
                 FillRules(_clearRulePick, clearTeam >= 0 ? clearTeam : team, clearRule, true);
                 _spawnRulePick.IsEnabled = _clearRulePick.IsEnabled = enabled;
                 // At mission start the spawn rule is not used.
-                if (_spawnRuleCell != null)
-                    _spawnRuleCell.Visibility = spawnOn <= 0 ? Visibility.Hidden : Visibility.Visible;
+                _spawnRulePick.IsEnabled = enabled && spawnOn > 0;
 
                 int count = enabled && Rules.Ready ? Rules.Count(team) : 0;
                 bool unknown = spawnOn > 0 && spawnTeam >= 0 && spawnTeam != team;
@@ -240,7 +249,7 @@ namespace Xenvious
                 _strip.Show(states, -1, new int[0], r => string.Format(CultureInfo.CurrentCulture,
                     states[r] == RuleStrip.State.Live ? T("lc_tip_live_e", "Rule {0}: it is there") : states[r] == RuleStrip.State.Gone ? T("lc_tip_gone_e", "Rule {0}: it is not there")
                     : T("lc_tip_unknown", "Rule {0}: depends on another team"), r + 1));
-                _stripTeam.Text = T("dash_team", "Team") + " " + (team + 1);
+                _stripTeam.Text = "· " + T("dash_team", "Team") + " " + (team + 1);
 
                 _spawnText.Text = spawnOn <= 0 ? T("lc_at_start", "at mission start")
                     : string.Format(CultureInfo.CurrentCulture, T("lc_with_rule", "with rule {0}"), spawnRule + 1) + (spawnTeam >= 0 ? " · " + T("dash_team", "Team") + " " + (spawnTeam + 1) : "");
