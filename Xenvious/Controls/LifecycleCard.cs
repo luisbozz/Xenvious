@@ -155,7 +155,7 @@ namespace Xenvious
                     grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(8) });
                 grid.ColumnDefinitions.Add(new ColumnDefinition());
                 var cell = new StackPanel();
-                cell.Children.Add(new TextBlock { Style = (Style)FindResource("FieldLabel"), Text = fields[i].Label });
+                cell.Children.Add(new TextBlock { Style = (Style)MainWindow.Instance.FindResource("FieldLabel"), Text = fields[i].Label });
                 cell.Children.Add(fields[i].Box);
                 Grid.SetColumn(cell, i * 2);
                 grid.Children.Add(cell);
