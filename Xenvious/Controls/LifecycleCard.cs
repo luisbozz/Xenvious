@@ -22,6 +22,7 @@ namespace Xenvious
         private ComboBox _spawnOn, _spawnTeam, _clearTeam;
         private TextBox _spawnRule, _clearRule;
         private bool _sync;
+        private FrameworkElement _spawnRuleCell;
 
         private readonly ComboBox _when = new ComboBox { Height = 30 };
         private readonly ComboBox _spawnRulePick = new ComboBox { Height = 30 };
@@ -51,6 +52,8 @@ namespace Xenvious
         public void Attach(ComboBox spawnOn, ComboBox spawnTeam, TextBox spawnRule, ComboBox clearTeam, TextBox clearRule, bool expanded)
         {
             _spawnOn = spawnOn; _spawnTeam = spawnTeam; _spawnRule = spawnRule; _clearTeam = clearTeam; _clearRule = clearRule;
+            // The window's implicit style is keyed to SectionCard and does not reach a subclass.
+            Style = (Style)MainWindow.Instance.FindResource(typeof(SectionCard));
             IsExpanded = expanded;
             Content = Body();
 
@@ -105,6 +108,7 @@ namespace Xenvious
             body.Children.Add(Separator());
             body.Children.Add(Section("lc_spawn", "Appears", _spawnText, "OkBrush", "M12,19 L12,5 M5,12 L12,5 L19,12",
                 Row((T("lc_when", "When"), _when), (T("lc_rule", "Rule"), _spawnRulePick), (T("lc_team", "Team"), _spawnTeamPick))));
+            _spawnRuleCell = (FrameworkElement)_spawnRulePick.Parent;
             body.Children.Add(Separator());
             body.Children.Add(Section("lc_clear", "Disappears", _clearText, "BadBrush", "M4,12 A8,8 0 1 0 20,12 A8,8 0 1 0 4,12 M8,8 L16,16",
                 Row((T("lc_rule", "Rule"), _clearRulePick), (T("lc_team", "Team"), _clearTeamPick))));
@@ -196,6 +200,9 @@ namespace Xenvious
                 FillRules(_spawnRulePick, spawnTeam >= 0 ? spawnTeam : team, spawnRule, false);
                 FillRules(_clearRulePick, clearTeam >= 0 ? clearTeam : team, clearRule, true);
                 _spawnRulePick.IsEnabled = _clearRulePick.IsEnabled = enabled;
+                // At mission start the spawn rule is not used.
+                if (_spawnRuleCell != null)
+                    _spawnRuleCell.Visibility = spawnOn <= 0 ? Visibility.Hidden : Visibility.Visible;
 
                 int count = enabled && Rules.Ready ? Rules.Count(team) : 0;
                 bool unknown = spawnOn > 0 && spawnTeam >= 0 && spawnTeam != team;
