@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -219,6 +219,7 @@ namespace Xenvious
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(38) });
             grid.ColumnDefinitions.Add(new ColumnDefinition());
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
 
             if (more)
             {
@@ -244,11 +245,25 @@ namespace Xenvious
             Grid.SetColumn(text, 1);
             grid.Children.Add(text);
 
-            var here = new Button { Content = "⌖", Width = 30, Height = 30, FontSize = 14, VerticalAlignment = VerticalAlignment.Top, ToolTip = T("gr_tocursor", "Move this point to the cursor") };
-            here.SetResourceReference(StyleProperty, "FormButton");
+            // The same cross-hair button as the page's "get cursor location".
+            var cross = new Path { Data = Geometry.Parse("M8,1.5 L8,4.5 M8,11.5 L8,14.5 M1.5,8 L4.5,8 M11.5,8 L14.5,8 M8,5 A3,3 0 1 1 7.99,5"), StrokeThickness = 1.5, Width = 15, Height = 15, Stretch = Stretch.Uniform };
+            cross.SetResourceReference(Shape.StrokeProperty, "TextColor");
+            var here = new Button { Content = cross, Width = 30, Height = 30, VerticalAlignment = VerticalAlignment.Top, ToolTip = T("gr_tocursor", "Move this point to the cursor") };
+            here.SetResourceReference(StyleProperty, "FieldIconButton");
             here.Click += (_, e) => { _pointBox.SelectedIndex = index; _toCursor(index); Refresh(); e.Handled = true; };
             Grid.SetColumn(here, 2);
             grid.Children.Add(here);
+
+            // Open / close the point's fields (clicking the step does the same).
+            var chevron = new Path { Data = Geometry.Parse(current ? "M2,5 L8,11 L14,5" : "M5,2 L11,8 L5,14"), StrokeThickness = 1.8, Width = 12, Height = 12, Stretch = Stretch.Uniform,
+                StrokeLineJoin = PenLineJoin.Round, StrokeStartLineCap = PenLineCap.Round, StrokeEndLineCap = PenLineCap.Round };
+            chevron.SetResourceReference(Shape.StrokeProperty, "TextColor");
+            var open = new Button { Content = chevron, Width = 30, Height = 30, Margin = new Thickness(6, 0, 0, 0), VerticalAlignment = VerticalAlignment.Top,
+                ToolTip = current ? T("gr_close", "Close") : T("gr_open", "Edit this point") };
+            open.SetResourceReference(StyleProperty, "FieldIconButton");
+            open.Click += (_, e) => { _pointBox.SelectedIndex = current ? -1 : index; e.Handled = true; };
+            Grid.SetColumn(open, 3);
+            grid.Children.Add(open);
 
             grid.MouseLeftButtonUp += (_, __) => _pointBox.SelectedIndex = current ? -1 : index;
             return grid;

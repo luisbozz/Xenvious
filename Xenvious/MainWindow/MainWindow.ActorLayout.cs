@@ -109,7 +109,10 @@ namespace Xenvious
             {
                 var cell = box.Parent is StackPanel c && c.Children.Count <= 2 ? (FrameworkElement)c : box;
                 if (key != null && cell is StackPanel sc && sc.Children.Count == 2 && sc.Children[0] is TextBlock label)
+                {
                     label.Text = TranslateOr(key, fallback);
+                    label.SetResourceReference(StyleProperty, "FieldLabel");
+                }
                 return Detach(cell);
             }
             Grid Pair(FrameworkElement a, FrameworkElement b)
@@ -118,6 +121,8 @@ namespace Xenvious
                 g.ColumnDefinitions.Add(new ColumnDefinition());
                 g.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(10) });
                 g.ColumnDefinitions.Add(new ColumnDefinition());
+                // The cells keep the column they had in the page's grid; reset it.
+                Grid.SetColumn(a, 0);
                 g.Children.Add(a);
                 if (b != null) { Grid.SetColumn(b, 2); g.Children.Add(b); }
                 return g;
@@ -129,19 +134,37 @@ namespace Xenvious
             var sizeCell = CellOf(tbactoractvsize, "gr_radius", "Arrival radius");
             routeOptions.Children.Add(Pair(vehSpeed, null));
 
+            TextBlock Heading(string key, string fallback)
+            {
+                var t = new TextBlock { Text = TranslateOr(key, fallback) };
+                t.SetResourceReference(StyleProperty, "FieldLabel");
+                return t;
+            }
+            TextBlock Note(string key, string fallback)
+            {
+                var t = new TextBlock { Text = TranslateOr(key, fallback), FontSize = 12, TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 0, 0, 6) };
+                t.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
+                return t;
+            }
             var details = new StackPanel();
+            details.Children.Add(Heading("gr_pos", "Position"));
             details.Children.Add(Detach(RowOf(tbactoractvx)));
             details.Children.Add(Pair(sizeCell, CellOf(tbactoractvspeed, "gr_speed", "Speed")));
-            details.Children.Add(Pair(CellOf(tbactoractvawt, "gr_waitms", "Wait (ms)"), CellOf(tbactoractvawlr, "gr_trigr", "Trigger radius")));
-            var trigger = Detach(RowOf(tbactoractvawlx));
-            details.Children.Add(trigger);
-            var rawGoto = new Expander { Header = TranslateOr("gr_raw", "Raw values"), IsExpanded = false, Margin = new Thickness(0, 4, 0, 0) };
-            rawGoto.SetResourceReference(StyleProperty, "CardExpander");
-            var rawPanel = new StackPanel { Margin = new Thickness(0, 8, 0, 0) };
+            details.Children.Add(Pair(CellOf(tbactoractvawt, "gr_waitms", "Wait (ms)"), null));
+            // Trigger area (FMMC_AOGT_TAP / _TAR): position and radius belong together.
+            details.Children.Add(Heading("gr_trigger", "Trigger area"));
+            details.Children.Add(Note("gr_trigger_hint", "Optional. Position 0,0,0 = no trigger area."));
+            details.Children.Add(Detach(RowOf(tbactoractvawlx)));
+            details.Children.Add(Pair(CellOf(tbactoractvawlr, "gr_trigr", "Trigger radius"), null));
+            // Raw fields behind a plain text toggle, not a big expander.
+            var rawPanel = new StackPanel { Visibility = Visibility.Collapsed, Margin = new Thickness(0, 6, 0, 0) };
             rawPanel.Children.Add(Pair(CellOf(tbactoractvachf), CellOf(tbactoractvawr)));
             rawPanel.Children.Add(Pair(CellOf(tbactoractvags), CellOf(tbactoractvbs)));
-            rawGoto.Content = rawPanel;
-            details.Children.Add(rawGoto);
+            var rawToggle = new CheckBox { Content = TranslateOr("gr_raw", "Raw values"), HorizontalAlignment = HorizontalAlignment.Left, Margin = new Thickness(0, 4, 0, 0) };
+            rawToggle.SetResourceReference(StyleProperty, "ChipToggle");
+            rawToggle.Click += (_, __) => rawPanel.Visibility = rawToggle.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
+            details.Children.Add(rawToggle);
+            details.Children.Add(rawPanel);
             // Whatever is left of the old card body (separators, labels) stays out of sight.
             gotoBody.Visibility = Visibility.Collapsed;
 
