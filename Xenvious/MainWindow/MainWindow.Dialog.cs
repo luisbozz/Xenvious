@@ -30,6 +30,10 @@ namespace Xenvious
             DialogAltContainer.Visibility = Visibility.Collapsed;
             DialogButtons.Visibility = Visibility.Visible;
             DialogProgress.Visibility = Visibility.Collapsed;
+            DialogImageBox.Visibility = Visibility.Collapsed;
+            DialogConfirm.IsEnabled = true;
+            _dialogAltAction = null;
+            _dialogPaste = null;
             SetDialogDetails(details);
 
             DialogTitle.Text = title ?? "";
@@ -66,8 +70,18 @@ namespace Xenvious
             return _dialogAlternative ? DialogChoice.Alternative : confirmed ? DialogChoice.Confirm : DialogChoice.Cancel;
         }
 
+        // Set by a caller whose third button acts inside the open dialog instead of closing it
+        // (choosing a file for the job image), and whose dialog takes Ctrl+V.
+        private System.Action _dialogAltAction;
+        private System.Action _dialogPaste;
+
         private void DialogAlt_Click(object sender, RoutedEventArgs e)
         {
+            if (_dialogAltAction != null)
+            {
+                _dialogAltAction();
+                return;
+            }
             _dialogAlternative = true;
             CloseDialog(false);
         }
@@ -146,7 +160,12 @@ namespace Xenvious
                 CloseDialog(false);
                 e.Handled = true;
             }
-            else if (e.Key == Key.Enter)
+            else if (e.Key == Key.V && Keyboard.Modifiers == ModifierKeys.Control && _dialogPaste != null)
+            {
+                _dialogPaste();
+                e.Handled = true;
+            }
+            else if (e.Key == Key.Enter && DialogConfirm.IsEnabled)
             {
                 CloseDialog(true);
                 e.Handled = true;

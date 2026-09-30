@@ -1014,6 +1014,15 @@
                                                                                 <Button x:Name="BtnJobView" Focusable="False" FontSize="14" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" Click="JobImage_MouseLeftButtonDown" Content="{Binding Translation[view], FallbackValue=display}"/>
                                                                             </Border>
                                                                             <Border CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="10 3" Height="28" Width="170">
+                                                                                <Border.Resources>
+                                                                                    <Style TargetType="Border">
+                                                                                        <Style.Triggers>
+                                                                                            <DataTrigger Binding="{Binding ElementName=JobImage, Path=Source}" Value="{StaticResource emptyblank}">
+                                                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                                                            </DataTrigger>
+                                                                                        </Style.Triggers>
+                                                                                    </Style>
+                                                                                </Border.Resources>
                                                                                 <Button x:Name="BtnJobImageSave" Focusable="False" FontSize="14" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" Click="BtnJobImageSave_Click" Content="{Binding Translation[saveimage], FallbackValue=Save Image}"/>
                                                                             </Border>
                                                                             <Border CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="10 3" Height="28" Width="170">
@@ -12153,6 +12162,13 @@
                         <ScrollViewer x:Name="DialogDetailsScroll" MaxHeight="320" Margin="0,12,0,0" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">
                             <TextBlock x:Name="DialogDetails" FontSize="13" Foreground="{DynamicResource TextColor}" TextWrapping="Wrap" Margin="0,0,8,0"/>
                         </ScrollViewer>
+                        <!-- Preview for the job image dialog; Ctrl+V pastes an image into it. -->
+                        <Border x:Name="DialogImageBox" Visibility="Collapsed" CornerRadius="4" Background="{DynamicResource TextBoxBackground}" Width="480" Height="270" Margin="0,14,0,0">
+                            <Grid>
+                                <TextBlock x:Name="DialogImageHint" FontSize="15" FontWeight="Bold" Foreground="{DynamicResource MutedTextBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Ctrl + V"/>
+                                <Image x:Name="DialogImage" Stretch="Uniform"/>
+                            </Grid>
+                        </Border>
                         <ProgressBar x:Name="DialogProgress" Height="6" Margin="0,18,0,0" Minimum="0" Maximum="1" Visibility="Collapsed" Foreground="{DynamicResource HighlightBrush}" Background="#33FFFFFF" BorderThickness="0"/>
                         <StackPanel x:Name="DialogButtons" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,22,0,0">
                             <Border x:Name="DialogCancelContainer" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Height="34" MinWidth="110" Margin="0,0,10,0">
