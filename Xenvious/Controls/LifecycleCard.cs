@@ -33,7 +33,7 @@ namespace Xenvious
         private readonly TextBlock _clearText = new TextBlock { FontSize = 12, FontWeight = FontWeights.SemiBold };
         private readonly TextBlock _stripTeam = new TextBlock { FontSize = 12, Margin = new Thickness(0, 0, 0, 2) };
 
-        private static string T(string key, string fallback) => MainWindow.Instance?.TranslateOr(key, fallback) ?? fallback;
+        protected static string T(string key, string fallback) => MainWindow.Instance?.TranslateOr(key, fallback) ?? fallback;
 
         public LifecycleCard()
         {
@@ -130,7 +130,7 @@ namespace Xenvious
             }
         }
 
-        private static UIElement LegendItem(string text, string brush)
+        protected static UIElement LegendItem(string text, string brush)
         {
             var row = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 0, 12, 2) };
             var swatch = new Grid { Width = 12, Height = 12, VerticalAlignment = VerticalAlignment.Center };
@@ -147,14 +147,14 @@ namespace Xenvious
             return row;
         }
 
-        private static Rectangle Separator()
+        protected static Rectangle Separator()
         {
             var line = new Rectangle { Height = 1, Margin = new Thickness(0, 12, 0, 12) };
             line.SetResourceReference(Shape.FillProperty, "LineBrush");
             return line;
         }
 
-        private FrameworkElement Section(string key, string fallback, TextBlock status, string brush, string icon, FrameworkElement content)
+        protected FrameworkElement Section(string key, string fallback, TextBlock status, string brush, string icon, FrameworkElement content)
         {
             var dock = new DockPanel();
             var badge = new Grid { Width = 30, Height = 30, VerticalAlignment = VerticalAlignment.Top, Margin = new Thickness(0, 0, 12, 0) };
@@ -182,7 +182,7 @@ namespace Xenvious
             return dock;
         }
 
-        private FrameworkElement Row(params (string Label, ComboBox Box)[] fields)
+        protected FrameworkElement Row(params (string Label, ComboBox Box)[] fields)
         {
             var grid = new Grid();
             for (int i = 0; i < fields.Length; i++)
@@ -276,7 +276,7 @@ namespace Xenvious
             to.SelectedIndex = from.SelectedIndex;
         }
 
-        private static void FillRules(ComboBox pick, int team, int value, bool allowNever)
+        protected static void FillRules(ComboBox pick, int team, int value, bool allowNever)
         {
             if (pick.IsDropDownOpen)
                 return;

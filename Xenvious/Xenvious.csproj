@@ -192,6 +192,8 @@
     <Compile Include="Controls\GotoRouteView.cs" />
     <Compile Include="Controls\GroupCard.cs" />
     <Compile Include="Controls\LifecycleCard.cs" />
+    <Compile Include="Controls\ZoneLifecycleCard.cs" />
+    <Compile Include="Controls\ComboViews.cs" />
     <Compile Include="Controls\RuleStrip.cs" />
     <Compile Include="Controls\MenuBitsView.cs" />
     <Compile Include="Controls\VisibilityCard.cs" />
