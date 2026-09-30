@@ -2618,6 +2618,7 @@ namespace Xenvious
         {
             public string Name;
             public uint UInt32;
+            public string Model;
 
             public Actor(string name, uint uInt32)
             {

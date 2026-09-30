@@ -67,10 +67,25 @@ namespace Xenvious
             }
         }
 
-        /// <summary>Where a prop's picture can be found online. Actors have no source yet.</summary>
+        /// <summary>Where a model's picture can be found online.</summary>
         private static string SourceUrl(string kind, string name, uint hash)
         {
-            return kind == "prop" ? $"https://cdn.rage.mp/public/odb/imgs/{name}-{hash}.jpg" : null;
+            // Vehicle and ped pictures are WebP only; WPF decodes them through the Windows WebP
+            // codec (built into Windows 10 1809 and later). Without it Shrink throws and the
+            // tile keeps its placeholder.
+            switch (kind)
+            {
+                case "prop":
+                    return $"https://cdn.rage.mp/public/odb/imgs/{name}-{hash}.jpg";
+                case "vehicle":
+                    return $"https://docs.fivem.net/vehicles/{name.ToLowerInvariant()}.webp";
+                case "actor":
+                    return $"https://docs.fivem.net/peds/{name.ToLowerInvariant()}.webp";
+                case "weapon":
+                    return $"https://docs.fivem.net/weapons/{name.ToUpperInvariant()}.png";
+                default:
+                    return null;
+            }
         }
 
         /// <summary>The thumbnail, or null when there is none (no source, offline, unknown model).</summary>
@@ -87,7 +102,7 @@ namespace Xenvious
                     return null;
             }
 
-            string file = Path.Combine(Folder, kind, Sanitize(name) + ".jpg");
+            string file = Path.Combine(Folder, kind, Sanitize(name) + Extension(kind));
             ImageSource image = null;
             try
             {
@@ -125,7 +140,7 @@ namespace Xenvious
                     if (!response.IsSuccessStatusCode)
                         return null;
                     byte[] full = await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
-                    byte[] thumb = Shrink(full);
+                    byte[] thumb = Shrink(full, Transparent(kind));
                     if (Enabled)
                     {
                         Directory.CreateDirectory(Path.GetDirectoryName(file));
@@ -140,7 +155,13 @@ namespace Xenvious
             }
         }
 
-        private static byte[] Shrink(byte[] picture)
+        // Vehicle, ped and weapon pictures are cut out on a transparent background; PNG keeps
+        // it, JPEG would turn it black. Prop pictures are photos and stay JPEG (smaller).
+        private static bool Transparent(string kind) => kind != "prop";
+
+        private static string Extension(string kind) => Transparent(kind) ? ".png" : ".jpg";
+
+        private static byte[] Shrink(byte[] picture, bool transparent)
         {
             var source = new BitmapImage();
             source.BeginInit();
@@ -148,7 +169,7 @@ namespace Xenvious
             source.DecodePixelWidth = ThumbWidth;
             source.StreamSource = new MemoryStream(picture);
             source.EndInit();
-            var encoder = new JpegBitmapEncoder { QualityLevel = 80 };
+            BitmapEncoder encoder = transparent ? (BitmapEncoder)new PngBitmapEncoder() : new JpegBitmapEncoder { QualityLevel = 80 };
             encoder.Frames.Add(BitmapFrame.Create(source));
             using (var stream = new MemoryStream())
             {
@@ -181,7 +202,7 @@ namespace Xenvious
             {
                 if (!Directory.Exists(Folder))
                     return (0, 0);
-                var files = new DirectoryInfo(Folder).GetFiles("*.jpg", SearchOption.AllDirectories);
+                var files = new DirectoryInfo(Folder).GetFiles("*.*", SearchOption.AllDirectories);
                 return (files.Length, files.Sum(f => f.Length));
             }
             catch

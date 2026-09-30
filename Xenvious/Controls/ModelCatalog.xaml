@@ -85,7 +85,7 @@
                                                 <Border x:Name="b" CornerRadius="4" Padding="6,4" Background="Transparent">
                                                     <DockPanel>
                                                         <Border Width="52" Height="40" CornerRadius="3" Background="{DynamicResource DeepBrush}" Margin="0,0,10,0" ClipToBounds="True">
-                                                            <Image Source="{Binding Thumb}" Stretch="UniformToFill"/>
+                                                            <Image Source="{Binding Thumb}" Stretch="Uniform"/>
                                                         </Border>
                                                         <!-- Star: add to or remove from the favourites. -->
                                                         <ToggleButton DockPanel.Dock="Right" IsChecked="{Binding IsFavorite, Mode=TwoWay}" Width="26" Height="26" Cursor="Hand" Focusable="False"

@@ -1,2217 +1,2955 @@
 [
     {
         "Name": "Michael",
-        "uint32": 225514697
+        "uint32": 225514697,
+        "Model": "player_zero"
     }, {
         "Name": "Franklin",
-        "uint32": 2602752943
+        "uint32": 2602752943,
+        "Model": "player_one"
     }, {
         "Name": "Trevor",
-        "uint32": 2608926626
+        "uint32": 2608926626,
+        "Model": "player_two"
     }, {
         "Name": "Abigail",
-        "uint32": 1074457665
+        "uint32": 1074457665,
+        "Model": "ig_abigail"
     }, {
         "Name": "Agent",
-        "uint32": 610988552
+        "uint32": 610988552,
+        "Model": "ig_agent"
     }, {
         "Name": "Agent14",
-        "uint32": 4227433577
+        "uint32": 4227433577,
+        "Model": "ig_mp_agent14"
     }, {
         "Name": "AmandaTownley",
-        "uint32": 1830688247
+        "uint32": 1830688247,
+        "Model": "ig_amandatownley"
     }, {
         "Name": "Andreas",
-        "uint32": 1206185632
+        "uint32": 1206185632,
+        "Model": "ig_andreas"
     }, {
         "Name": "Ashley",
-        "uint32": 2129936603
+        "uint32": 2129936603,
+        "Model": "ig_ashley"
     }, {
         "Name": "AviSchwartzman",
-        "uint32": 939183526
+        "uint32": 939183526,
+        "Model": "ig_money"
     }, {
         "Name": "Ballasog",
-        "uint32": 2802535058
+        "uint32": 2802535058,
+        "Model": "ig_ballasog"
     }, {
         "Name": "Bankman",
-        "uint32": 2426248831
+        "uint32": 2426248831,
+        "Model": "ig_bankman"
     }, {
         "Name": "Barry",
-        "uint32": 797459875
+        "uint32": 797459875,
+        "Model": "ig_barry"
     }, {
         "Name": "Bestmen",
-        "uint32": 1464257942
+        "uint32": 1464257942,
+        "Model": "ig_bestmen"
     }, {
         "Name": "Beverly",
-        "uint32": 3181518428
+        "uint32": 3181518428,
+        "Model": "ig_beverly"
     }, {
         "Name": "Brad",
-        "uint32": 3183167778
+        "uint32": 3183167778,
+        "Model": "ig_brad"
     }, {
         "Name": "Bride",
-        "uint32": 1633872967
+        "uint32": 1633872967,
+        "Model": "ig_bride"
     }, {
         "Name": "Car3Guy1",
-        "uint32": 2230970679
+        "uint32": 2230970679,
+        "Model": "ig_car3guy1"
     }, {
         "Name": "Car3Guy2",
-        "uint32": 1975732938
+        "uint32": 1975732938,
+        "Model": "ig_car3guy2"
     }, {
         "Name": "Casey",
-        "uint32": 3774489940
+        "uint32": 3774489940,
+        "Model": "ig_casey"
     }, {
         "Name": "Chef",
-        "uint32": 1240128502
+        "uint32": 1240128502,
+        "Model": "ig_chef"
     }, {
         "Name": "Chef2",
-        "uint32": 2240322243
+        "uint32": 2240322243,
+        "Model": "ig_chef2"
     }, {
         "Name": "Clay",
-        "uint32": 1825562762
+        "uint32": 1825562762,
+        "Model": "ig_clay"
     }, {
         "Name": "Claypain",
-        "uint32": 2634057640
+        "uint32": 2634057640,
+        "Model": "ig_claypain"
     }, {
         "Name": "Cletus",
-        "uint32": 3865252245
+        "uint32": 3865252245,
+        "Model": "ig_cletus"
     }, {
         "Name": "CrisFormage",
-        "uint32": 678319271
+        "uint32": 678319271,
+        "Model": "ig_chrisformage"
     }, {
         "Name": "Dale",
-        "uint32": 1182012905
+        "uint32": 1182012905,
+        "Model": "ig_dale"
     }, {
         "Name": "DaveNorton",
-        "uint32": 365775923
+        "uint32": 365775923,
+        "Model": "ig_davenorton"
     }, {
         "Name": "Denise",
-        "uint32": 2181772221
+        "uint32": 2181772221,
+        "Model": "ig_denise"
     }, {
         "Name": "Devin",
-        "uint32": 1952555184
+        "uint32": 1952555184,
+        "Model": "ig_devin"
     }, {
         "Name": "DoaMan",
-        "uint32": 1646160893
+        "uint32": 1646160893,
+        "Model": "u_m_m_doa_01"
     }, {
         "Name": "Dom",
-        "uint32": 2620240008
+        "uint32": 2620240008,
+        "Model": "ig_dom"
     }, {
         "Name": "Dreyfuss",
-        "uint32": 3666413874
+        "uint32": 3666413874,
+        "Model": "ig_dreyfuss"
     }, {
         "Name": "DrFriedlander",
-        "uint32": 3422293493
+        "uint32": 3422293493,
+        "Model": "ig_drfriedlander"
     }, {
         "Name": "EdToh",
-        "uint32": 712602007
+        "uint32": 712602007,
+        "Model": "u_m_m_edtoh"
     }, {
         "Name": "Fabien",
-        "uint32": 3499148112
+        "uint32": 3499148112,
+        "Model": "ig_fabien"
     }, {
         "Name": "FbiSuit01",
-        "uint32": 988062523
+        "uint32": 988062523,
+        "Model": "ig_fbisuit_01"
     }, {
         "Name": "Floyd",
-        "uint32": 2981205682
+        "uint32": 2981205682,
+        "Model": "ig_floyd"
     }, {
         "Name": "G",
-        "uint32": 2216405299
+        "uint32": 2216405299,
+        "Model": "ig_g"
     }, {
         "Name": "Groom",
-        "uint32": 4274948997
+        "uint32": 4274948997,
+        "Model": "ig_groom"
     }, {
         "Name": "Hao",
-        "uint32": 1704428387
+        "uint32": 1704428387,
+        "Model": "ig_hao"
     }, {
         "Name": "Hunter",
-        "uint32": 3457361118
+        "uint32": 3457361118,
+        "Model": "ig_hunter"
     }, {
         "Name": "Janet",
-        "uint32": 225287241
+        "uint32": 225287241,
+        "Model": "ig_janet"
     }, {
         "Name": "JayNorris",
-        "uint32": 2050158196
+        "uint32": 2050158196,
+        "Model": "ig_jay_norris"
     }, {
         "Name": "Jewelass",
-        "uint32": 257763003
+        "uint32": 257763003,
+        "Model": "ig_jewelass"
     }, {
         "Name": "JimmyBoston",
-        "uint32": 3986688045
+        "uint32": 3986688045,
+        "Model": "ig_jimmyboston"
     }, {
         "Name": "JimmyDisanto",
-        "uint32": 1459905209
+        "uint32": 1459905209,
+        "Model": "ig_jimmydisanto"
     }, {
         "Name": "JoeMinuteman",
-        "uint32": 3189787803
+        "uint32": 3189787803,
+        "Model": "ig_joeminuteman"
     }, {
         "Name": "JohnnyKlebitz",
-        "uint32": 2278195374
+        "uint32": 2278195374,
+        "Model": "ig_johnnyklebitz"
     }, {
         "Name": "Josef",
-        "uint32": 3776618420
+        "uint32": 3776618420,
+        "Model": "ig_josef"
     }, {
         "Name": "Josh",
-        "uint32": 2040438510
+        "uint32": 2040438510,
+        "Model": "ig_josh"
     }, {
         "Name": "KarenDaniels",
-        "uint32": 3948009817
+        "uint32": 3948009817,
+        "Model": "ig_karen_daniels"
     }, {
         "Name": "KerryMcintosh",
-        "uint32": 1530648845
+        "uint32": 1530648845,
+        "Model": "ig_kerrymcintosh"
     }, {
         "Name": "LamarDavis",
-        "uint32": 1706635382
+        "uint32": 1706635382,
+        "Model": "ig_lamardavis"
     }, {
         "Name": "Lazlow",
-        "uint32": 3756278757
+        "uint32": 3756278757,
+        "Model": "ig_lazlow"
     }, {
         "Name": "LesterCrest",
-        "uint32": 1302784073
+        "uint32": 1302784073,
+        "Model": "ig_lestercrest"
     }, {
         "Name": "Lifeinvad01",
-        "uint32": 1401530684
+        "uint32": 1401530684,
+        "Model": "ig_lifeinvad_01"
     }, {
         "Name": "Lifeinvad02",
-        "uint32": 666718676
+        "uint32": 666718676,
+        "Model": "ig_lifeinvad_02"
     }, {
         "Name": "Magenta",
-        "uint32": 4242313482
+        "uint32": 4242313482,
+        "Model": "ig_magenta"
     }, {
         "Name": "Malc",
-        "uint32": 4055673113
+        "uint32": 4055673113,
+        "Model": "ig_malc"
     }, {
         "Name": "Manuel",
-        "uint32": 4248931856
+        "uint32": 4248931856,
+        "Model": "ig_manuel"
     }, {
         "Name": "Marnie",
-        "uint32": 411185872
+        "uint32": 411185872,
+        "Model": "ig_marnie"
     }, {
         "Name": "MaryAnn",
-        "uint32": 2741999622
+        "uint32": 2741999622,
+        "Model": "ig_maryann"
     }, {
         "Name": "Maude",
-        "uint32": 1005070462
+        "uint32": 1005070462,
+        "Model": "ig_maude"
     }, {
         "Name": "Michelle",
-        "uint32": 3214308084
+        "uint32": 3214308084,
+        "Model": "ig_michelle"
     }, {
         "Name": "Milton",
-        "uint32": 3408943538
+        "uint32": 3408943538,
+        "Model": "ig_milton"
     }, {
         "Name": "Molly",
-        "uint32": 2936266209
+        "uint32": 2936266209,
+        "Model": "ig_molly"
     }, {
         "Name": "MrK",
-        "uint32": 3990661997
+        "uint32": 3990661997,
+        "Model": "ig_mrk"
     }, {
         "Name": "MrsPhillips",
-        "uint32": 946007720
+        "uint32": 946007720,
+        "Model": "ig_mrsphillips"
     }, {
         "Name": "MrsThornhill",
-        "uint32": 503621995
+        "uint32": 503621995,
+        "Model": "ig_mrs_thornhill"
     }, {
         "Name": "Natalia",
-        "uint32": 3726105915
+        "uint32": 3726105915,
+        "Model": "ig_natalia"
     }, {
         "Name": "NervousRon",
-        "uint32": 3170921201
+        "uint32": 3170921201,
+        "Model": "ig_nervousron"
     }, {
         "Name": "Nigel",
-        "uint32": 3367442045
+        "uint32": 3367442045,
+        "Model": "ig_nigel"
     }, {
         "Name": "OldMan1a",
-        "uint32": 1906124788
+        "uint32": 1906124788,
+        "Model": "ig_old_man1a"
     }, {
         "Name": "OldMan2",
-        "uint32": 4011150407
+        "uint32": 4011150407,
+        "Model": "ig_old_man2"
     }, {
         "Name": "Omega",
-        "uint32": 1625728984
+        "uint32": 1625728984,
+        "Model": "ig_omega"
     }, {
         "Name": "ONeil",
-        "uint32": 768005095
+        "uint32": 768005095,
+        "Model": "ig_oneil"
     }, {
         "Name": "Orleans",
-        "uint32": 1641334641
+        "uint32": 1641334641,
+        "Model": "ig_orleans"
     }, {
         "Name": "Ortega",
-        "uint32": 648372919
+        "uint32": 648372919,
+        "Model": "ig_ortega"
     }, {
         "Name": "Paper",
-        "uint32": 2577072326
+        "uint32": 2577072326,
+        "Model": "ig_paper"
     }, {
         "Name": "Patricia",
-        "uint32": 3312325004
+        "uint32": 3312325004,
+        "Model": "ig_patricia"
     }, {
         "Name": "Popov",
-        "uint32": 645279998
+        "uint32": 645279998,
+        "Model": "ig_popov"
     }, {
         "Name": "Paige",
-        "uint32": 357551935
+        "uint32": 357551935,
+        "Model": "ig_paige"
     }, {
         "Name": "Priest",
-        "uint32": 1681385341
+        "uint32": 1681385341,
+        "Model": "ig_priest"
     }, {
         "Name": "PrologueDriver",
-        "uint32": 2237544099
+        "uint32": 2237544099,
+        "Model": "u_m_y_proldriver_01"
     }, {
         "Name": "PrologueSec01",
-        "uint32": 1888624839
+        "uint32": 1888624839,
+        "Model": "u_m_m_prolsec_01"
     }, {
         "Name": "PrologueSec02",
-        "uint32": 666086773
+        "uint32": 666086773,
+        "Model": "ig_prolsec_02"
     }, {
         "Name": "RampGang",
-        "uint32": 3845001836
+        "uint32": 3845001836,
+        "Model": "ig_ramp_gang"
     }, {
         "Name": "RampHic",
-        "uint32": 1165307954
+        "uint32": 1165307954,
+        "Model": "ig_ramp_hic"
     }, {
         "Name": "RampHipster",
-        "uint32": 3740245870
+        "uint32": 3740245870,
+        "Model": "ig_ramp_hipster"
     }, {
         "Name": "RampMex",
-        "uint32": 3870061732
+        "uint32": 3870061732,
+        "Model": "ig_ramp_mex"
     }, {
         "Name": "Rashkovsky",
-        "uint32": 940330470
+        "uint32": 940330470,
+        "Model": "ig_rashcosvki"
     }, {
         "Name": "RoccoPelosi",
-        "uint32": 3585757951
+        "uint32": 3585757951,
+        "Model": "ig_roccopelosi"
     }, {
         "Name": "RussianDrunk",
-        "uint32": 1024089777
+        "uint32": 1024089777,
+        "Model": "ig_russiandrunk"
     }, {
         "Name": "ScreenWriter",
-        "uint32": 4293277303
+        "uint32": 4293277303,
+        "Model": "ig_screen_writer"
     }, {
         "Name": "SiemonYetarian",
-        "uint32": 1283141381
+        "uint32": 1283141381,
+        "Model": "ig_siemonyetarian"
     }, {
         "Name": "Solomon",
-        "uint32": 2260598310
+        "uint32": 2260598310,
+        "Model": "ig_solomon"
     }, {
         "Name": "SteveHains",
-        "uint32": 941695432
+        "uint32": 941695432,
+        "Model": "ig_stevehains"
     }, {
         "Name": "Stretch",
-        "uint32": 915948376
+        "uint32": 915948376,
+        "Model": "ig_stretch"
     }, {
         "Name": "Talina",
-        "uint32": 3885222120
+        "uint32": 3885222120,
+        "Model": "ig_talina"
     }, {
         "Name": "Tanisha",
-        "uint32": 226559113
+        "uint32": 226559113,
+        "Model": "ig_tanisha"
     }, {
         "Name": "TaoCheng",
-        "uint32": 3697041061
+        "uint32": 3697041061,
+        "Model": "ig_taocheng"
     }, {
         "Name": "TaosTranslator",
-        "uint32": 2089096292
+        "uint32": 2089096292,
+        "Model": "ig_taostranslator"
     }, {
         "Name": "TennisCoach",
-        "uint32": 2721800023
+        "uint32": 2721800023,
+        "Model": "ig_tenniscoach"
     }, {
         "Name": "Terry",
-        "uint32": 1728056212
+        "uint32": 1728056212,
+        "Model": "ig_terry"
     }, {
         "Name": "TomEpsilon",
-        "uint32": 3447159466
+        "uint32": 3447159466,
+        "Model": "ig_tomepsilon"
     }, {
         "Name": "Tonya",
-        "uint32": 3402126148
+        "uint32": 3402126148,
+        "Model": "ig_tonya"
     }, {
         "Name": "TracyDisanto",
-        "uint32": 3728026165
+        "uint32": 3728026165,
+        "Model": "ig_tracydisanto"
     }, {
         "Name": "TrafficWarden",
-        "uint32": 1461287021
+        "uint32": 1461287021,
+        "Model": "ig_trafficwarden"
     }, {
         "Name": "TylerDixon",
-        "uint32": 1382414087
+        "uint32": 1382414087,
+        "Model": "ig_tylerdix"
     }, {
         "Name": "VagosSpeak",
-        "uint32": 4194109068
+        "uint32": 4194109068,
+        "Model": "ig_vagspeak"
     }, {
         "Name": "Wade",
-        "uint32": 2459507570
+        "uint32": 2459507570,
+        "Model": "ig_wade"
     }, {
         "Name": "WeiCheng",
-        "uint32": 2867128955
+        "uint32": 2867128955,
+        "Model": "ig_chengsr"
     }, {
         "Name": "Zimbor",
-        "uint32": 188012277
+        "uint32": 188012277,
+        "Model": "ig_zimbor"
     }, {
         "Name": "AbigailCutscene",
-        "uint32": 2306246977
+        "uint32": 2306246977,
+        "Model": "csb_abigail"
     }, {
         "Name": "AgentCutscene",
-        "uint32": 3614493108
+        "uint32": 3614493108,
+        "Model": "csb_agent"
     }, {
         "Name": "Agent14Cutscene",
-        "uint32": 1841036427
+        "uint32": 1841036427,
+        "Model": "csb_mp_agent14"
     }, {
         "Name": "AmandaTownleyCutscene",
-        "uint32": 2515474659
+        "uint32": 2515474659,
+        "Model": "cs_amandatownley"
     }, {
         "Name": "AndreasCutscene",
-        "uint32": 3881194279
+        "uint32": 3881194279,
+        "Model": "cs_andreas"
     }, {
         "Name": "AnitaCutscene",
-        "uint32": 117698822
+        "uint32": 117698822,
+        "Model": "csb_anita"
     }, {
         "Name": "AntonCutscene",
-        "uint32": 2781317046
+        "uint32": 2781317046,
+        "Model": "csb_anton"
     }, {
         "Name": "AshleyCutscene",
-        "uint32": 650367097
+        "uint32": 650367097,
+        "Model": "cs_ashley"
     }, {
         "Name": "AviSchwartzmanCutscene",
-        "uint32": 2560490906
+        "uint32": 2560490906,
+        "Model": "csb_money"
     }, {
         "Name": "BallasogCutscene",
-        "uint32": 2884567044
+        "uint32": 2884567044,
+        "Model": "csb_ballasog"
     }, {
         "Name": "BankmanCutscene",
-        "uint32": 2539657518
+        "uint32": 2539657518,
+        "Model": "cs_bankman"
     }, {
         "Name": "BarryCutscene",
-        "uint32": 1767447799
+        "uint32": 1767447799,
+        "Model": "cs_barry"
     }, {
         "Name": "BeverlyCutscene",
-        "uint32": 3027157846
+        "uint32": 3027157846,
+        "Model": "cs_beverly"
     }, {
         "Name": "BradCutscene",
-        "uint32": 4024807398
+        "uint32": 4024807398,
+        "Model": "cs_brad"
     }, {
         "Name": "BradCadaverCutscene",
-        "uint32": 1915268960
+        "uint32": 1915268960,
+        "Model": "cs_bradcadaver"
     }, {
         "Name": "BrideCutscene",
-        "uint32": 2193587873
+        "uint32": 2193587873,
+        "Model": "csb_bride"
     }, {
         "Name": "BurgerDrugCutscene",
-        "uint32": 2363277399
+        "uint32": 2363277399,
+        "Model": "csb_burgerdrug"
     }, {
         "Name": "Car3Guy1Cutscene",
-        "uint32": 71501447
+        "uint32": 71501447,
+        "Model": "csb_car3guy1"
     }, {
         "Name": "Car3Guy2Cutscene",
-        "uint32": 327394568
+        "uint32": 327394568,
+        "Model": "csb_car3guy2"
     }, {
         "Name": "CarBuyerCutscene",
-        "uint32": 2362341647
+        "uint32": 2362341647,
+        "Model": "cs_carbuyer"
     }, {
         "Name": "CaseyCutscene",
-        "uint32": 3935738944
+        "uint32": 3935738944,
+        "Model": "cs_casey"
     }, {
         "Name": "ChefCutscene",
-        "uint32": 2739391114
+        "uint32": 2739391114,
+        "Model": "csb_chef"
     }, {
         "Name": "Chef2Cutscene",
-        "uint32": 2925257274
+        "uint32": 2925257274,
+        "Model": "csb_chef2"
     }, {
         "Name": "ChinGoonCutscene",
-        "uint32": 2831296918
+        "uint32": 2831296918,
+        "Model": "csb_chin_goon"
     }, {
         "Name": "ClayCutscene",
-        "uint32": 3687553076
+        "uint32": 3687553076,
+        "Model": "cs_clay"
     }, {
         "Name": "CletusCutscene",
-        "uint32": 3404326357
+        "uint32": 3404326357,
+        "Model": "csb_cletus"
     }, {
         "Name": "CopCutscene",
-        "uint32": 2595446627
+        "uint32": 2595446627,
+        "Model": "csb_cop"
     }, {
         "Name": "CrisFormageCutscene",
-        "uint32": 3253960934
+        "uint32": 3253960934,
+        "Model": "cs_chrisformage"
     }, {
         "Name": "CustomerCutscene",
-        "uint32": 2756669323
+        "uint32": 2756669323,
+        "Model": "csb_customer"
     }, {
         "Name": "DaleCutscene",
-        "uint32": 216536661
+        "uint32": 216536661,
+        "Model": "cs_dale"
     }, {
         "Name": "DaveNortonCutscene",
-        "uint32": 2240226444
+        "uint32": 2240226444,
+        "Model": "cs_davenorton"
     }, {
         "Name": "DebraCutscene",
-        "uint32": 3973074921
+        "uint32": 3973074921,
+        "Model": "cs_debra"
     }, {
         "Name": "DeniseCutscene",
-        "uint32": 1870669624
+        "uint32": 1870669624,
+        "Model": "cs_denise"
     }, {
         "Name": "DeniseFriendCutscene",
-        "uint32": 3045926185
+        "uint32": 3045926185,
+        "Model": "csb_denise_friend"
     }, {
         "Name": "DevinCutscene",
-        "uint32": 788622594
+        "uint32": 788622594,
+        "Model": "cs_devin"
     }, {
         "Name": "DomCutscene",
-        "uint32": 1198698306
+        "uint32": 1198698306,
+        "Model": "cs_dom"
     }, {
         "Name": "DreyfussCutscene",
-        "uint32": 1012965715
+        "uint32": 1012965715,
+        "Model": "cs_dreyfuss"
     }, {
         "Name": "DrFriedlanderCutscene",
-        "uint32": 2745392175
+        "uint32": 2745392175,
+        "Model": "cs_drfriedlander"
     }, {
         "Name": "FabienCutscene",
-        "uint32": 1191403201
+        "uint32": 1191403201,
+        "Model": "cs_fabien"
     }, {
         "Name": "FbiSuit01Cutscene",
-        "uint32": 1482427218
+        "uint32": 1482427218,
+        "Model": "cs_fbisuit_01"
     }, {
         "Name": "FloydCutscene",
-        "uint32": 103106535
+        "uint32": 103106535,
+        "Model": "cs_floyd"
     }, {
         "Name": "FosRepCutscene",
-        "uint32": 466359675
+        "uint32": 466359675,
+        "Model": "csb_fos_rep"
     }, {
         "Name": "GCutscene",
-        "uint32": 2727244247
+        "uint32": 2727244247,
+        "Model": "csb_g"
     }, {
         "Name": "GroomCutscene",
-        "uint32": 2058033618
+        "uint32": 2058033618,
+        "Model": "csb_groom"
     }, {
         "Name": "GroveStrDlrCutscene",
-        "uint32": 3898166818
+        "uint32": 3898166818,
+        "Model": "csb_grove_str_dlr"
     }, {
         "Name": "GuadalopeCutscene",
-        "uint32": 261428209
+        "uint32": 261428209,
+        "Model": "cs_guadalope"
     }, {
         "Name": "GurkCutscene",
-        "uint32": 3272931111
+        "uint32": 3272931111,
+        "Model": "cs_gurk"
     }, {
         "Name": "HaoCutscene",
-        "uint32": 3969814300
+        "uint32": 3969814300,
+        "Model": "csb_hao"
     }, {
         "Name": "HughCutscene",
-        "uint32": 1863555924
+        "uint32": 1863555924,
+        "Model": "csb_hugh"
     }, {
         "Name": "HunterCutscene",
-        "uint32": 1531218220
+        "uint32": 1531218220,
+        "Model": "cs_hunter"
     }, {
         "Name": "ImranCutscene",
-        "uint32": 3812756443
+        "uint32": 3812756443,
+        "Model": "csb_imran"
     }, {
         "Name": "JackHowitzerCutscene",
-        "uint32": 1153203121
+        "uint32": 1153203121,
+        "Model": "csb_jackhowitzer"
     }, {
         "Name": "JanetCutscene",
-        "uint32": 808778210
+        "uint32": 808778210,
+        "Model": "cs_janet"
     }, {
         "Name": "JanitorCutscene",
-        "uint32": 3254803008
+        "uint32": 3254803008,
+        "Model": "csb_janitor"
     }, {
         "Name": "JewelassCutscene",
-        "uint32": 1145088004
+        "uint32": 1145088004,
+        "Model": "cs_jewelass"
     }, {
         "Name": "JimmyBostonCutscene",
-        "uint32": 60192701
+        "uint32": 60192701,
+        "Model": "cs_jimmyboston"
     }, {
         "Name": "JimmyDisantoCutscene",
-        "uint32": 3100414644
+        "uint32": 3100414644,
+        "Model": "cs_jimmydisanto"
     }, {
         "Name": "JoeMinutemanCutscene",
-        "uint32": 4036845097
+        "uint32": 4036845097,
+        "Model": "cs_joeminuteman"
     }, {
         "Name": "JohnnyKlebitzCutscene",
-        "uint32": 4203395201
+        "uint32": 4203395201,
+        "Model": "cs_johnnyklebitz"
     }, {
         "Name": "JosefCutscene",
-        "uint32": 1167549130
+        "uint32": 1167549130,
+        "Model": "cs_josef"
     }, {
         "Name": "JoshCutscene",
-        "uint32": 1158606749
+        "uint32": 1158606749,
+        "Model": "cs_josh"
     }, {
         "Name": "KarenDanielsCutscene",
-        "uint32": 1269774364
+        "uint32": 1269774364,
+        "Model": "cs_karen_daniels"
     }, {
         "Name": "LamarDavisCutscene",
-        "uint32": 1162230285
+        "uint32": 1162230285,
+        "Model": "cs_lamardavis"
     }, {
         "Name": "LazlowCutscene",
-        "uint32": 949295643
+        "uint32": 949295643,
+        "Model": "cs_lazlow"
     }, {
         "Name": "LesterCrestCutscene",
-        "uint32": 3046438339
+        "uint32": 3046438339,
+        "Model": "cs_lestercrest"
     }, {
         "Name": "Lifeinvad01Cutscene",
-        "uint32": 1918178165
+        "uint32": 1918178165,
+        "Model": "cs_lifeinvad_01"
     }, {
         "Name": "MagentaCutscene",
-        "uint32": 1477887514
+        "uint32": 1477887514,
+        "Model": "cs_magenta"
     }, {
         "Name": "ManuelCutscene",
-        "uint32": 4222842058
+        "uint32": 4222842058,
+        "Model": "cs_manuel"
     }, {
         "Name": "MarnieCutscene",
-        "uint32": 1464721716
+        "uint32": 1464721716,
+        "Model": "cs_marnie"
     }, {
         "Name": "MartinMadrazoCutscene",
-        "uint32": 1129928304
+        "uint32": 1129928304,
+        "Model": "cs_martinmadrazo"
     }, {
         "Name": "MaryannCutscene",
-        "uint32": 161007533
+        "uint32": 161007533,
+        "Model": "cs_maryann"
     }, {
         "Name": "MaudeCutscene",
-        "uint32": 3166991819
+        "uint32": 3166991819,
+        "Model": "csb_maude"
     }, {
         "Name": "MerryWeatherCutscene",
-        "uint32": 1631478380
+        "uint32": 1631478380,
+        "Model": "csb_mweather"
     }, {
         "Name": "MichelleCutscene",
-        "uint32": 1890499016
+        "uint32": 1890499016,
+        "Model": "cs_michelle"
     }, {
         "Name": "MiltonCutscene",
-        "uint32": 3077190415
+        "uint32": 3077190415,
+        "Model": "cs_milton"
     }, {
         "Name": "MollyCutscene",
-        "uint32": 1167167044
+        "uint32": 1167167044,
+        "Model": "cs_molly"
     }, {
         "Name": "MoviePremFemaleCutscene",
-        "uint32": 1270514905
+        "uint32": 1270514905,
+        "Model": "cs_movpremf_01"
     }, {
         "Name": "MoviePremMaleCutscene",
-        "uint32": 2372398717
+        "uint32": 2372398717,
+        "Model": "cs_movpremmale"
     }, {
         "Name": "MrKCutscene",
-        "uint32": 3284966005
+        "uint32": 3284966005,
+        "Model": "cs_mrk"
     }, {
         "Name": "MrsPhillipsCutscene",
-        "uint32": 3422397391
+        "uint32": 3422397391,
+        "Model": "cs_mrsphillips"
     }, {
         "Name": "MrsThornhillCutscene",
-        "uint32": 1334976110
+        "uint32": 1334976110,
+        "Model": "cs_mrs_thornhill"
     }, {
         "Name": "NataliaCutscene",
-        "uint32": 1325314544
+        "uint32": 1325314544,
+        "Model": "cs_natalia"
     }, {
         "Name": "NervousRonCutscene",
-        "uint32": 2023152276
+        "uint32": 2023152276,
+        "Model": "cs_nervousron"
     }, {
         "Name": "NigelCutscene",
-        "uint32": 3779566603
+        "uint32": 3779566603,
+        "Model": "cs_nigel"
     }, {
         "Name": "OldMan1aCutscene",
-        "uint32": 518814684
+        "uint32": 518814684,
+        "Model": "cs_old_man1a"
     }, {
         "Name": "OldMan2Cutscene",
-        "uint32": 2566514544
+        "uint32": 2566514544,
+        "Model": "cs_old_man2"
     }, {
         "Name": "OmegaCutscene",
-        "uint32": 2339419141
+        "uint32": 2339419141,
+        "Model": "cs_omega"
     }, {
         "Name": "OrleansCutscene",
-        "uint32": 2905870170
+        "uint32": 2905870170,
+        "Model": "cs_orleans"
     }, {
         "Name": "OrtegaCutscene",
-        "uint32": 3235579087
+        "uint32": 3235579087,
+        "Model": "csb_ortega"
     }, {
         "Name": "OscarCutscene",
-        "uint32": 4095687067
+        "uint32": 4095687067,
+        "Model": "csb_oscar"
     }, {
         "Name": "PaigeCutscene",
-        "uint32": 1528799427
+        "uint32": 1528799427,
+        "Model": "csb_paige"
     }, {
         "Name": "PaperCutscene",
-        "uint32": 1798879480
+        "uint32": 1798879480,
+        "Model": "cs_paper"
     }, {
         "Name": "PopovCutscene",
-        "uint32": 1635617250
+        "uint32": 1635617250,
+        "Model": "csb_popov"
     }, {
         "Name": "PatriciaCutscene",
-        "uint32": 3750433537
+        "uint32": 3750433537,
+        "Model": "cs_patricia"
     }, {
         "Name": "PornDudesCutscene",
-        "uint32": 793443893
+        "uint32": 793443893,
+        "Model": "csb_porndudes"
     }, {
         "Name": "PriestCutscene",
-        "uint32": 1299047806
+        "uint32": 1299047806,
+        "Model": "cs_priest"
     }, {
         "Name": "PrologueDriverCutscene",
-        "uint32": 4027271643
+        "uint32": 4027271643,
+        "Model": "csb_prologuedriver"
     }, {
         "Name": "PrologueSec01Cutscene",
-        "uint32": 2141384740
+        "uint32": 2141384740,
+        "Model": "csb_prolsec"
     }, {
         "Name": "PrologueSec02Cutscene",
-        "uint32": 512955554
+        "uint32": 512955554,
+        "Model": "cs_prolsec_02"
     }, {
         "Name": "RampGangCutscene",
-        "uint32": 3263172030
+        "uint32": 3263172030,
+        "Model": "csb_ramp_gang"
     }, {
         "Name": "RampHicCutscene",
-        "uint32": 2240582840
+        "uint32": 2240582840,
+        "Model": "csb_ramp_hic"
     }, {
         "Name": "RampHipsterCutscene",
-        "uint32": 569740212
+        "uint32": 569740212,
+        "Model": "csb_ramp_hipster"
     }, {
         "Name": "RampMarineCutscene",
-        "uint32": 1634506681
+        "uint32": 1634506681,
+        "Model": "csb_ramp_marine"
     }, {
         "Name": "RampMexCutscene",
-        "uint32": 4132362192
+        "uint32": 4132362192,
+        "Model": "csb_ramp_mex"
     }, {
         "Name": "RashkovskyCutscene",
-        "uint32": 411081129
+        "uint32": 411081129,
+        "Model": "csb_rashcosvki"
     }, {
         "Name": "ReporterCutscene",
-        "uint32": 776079908
+        "uint32": 776079908,
+        "Model": "csb_reporter"
     }, {
         "Name": "RoccoPelosiCutscene",
-        "uint32": 2858686092
+        "uint32": 2858686092,
+        "Model": "csb_roccopelosi"
     }, {
         "Name": "RussianDrunkCutscene",
-        "uint32": 1179785778
+        "uint32": 1179785778,
+        "Model": "cs_russiandrunk"
     }, {
         "Name": "ScreenWriterCutscene",
-        "uint32": 2346790124
+        "uint32": 2346790124,
+        "Model": "csb_screen_writer"
     }, {
         "Name": "SiemonYetarianCutscene",
-        "uint32": 3230888450
+        "uint32": 3230888450,
+        "Model": "cs_siemonyetarian"
     }, {
         "Name": "SolomonCutscene",
-        "uint32": 4140949582
+        "uint32": 4140949582,
+        "Model": "cs_solomon"
     }, {
         "Name": "SteveHainsCutscene",
-        "uint32": 2766184958
+        "uint32": 2766184958,
+        "Model": "cs_stevehains"
     }, {
         "Name": "StretchCutscene",
-        "uint32": 2302502917
+        "uint32": 2302502917,
+        "Model": "cs_stretch"
     }, {
         "Name": "Stripper01Cutscene",
-        "uint32": 2934601397
+        "uint32": 2934601397,
+        "Model": "csb_stripper_01"
     }, {
         "Name": "Stripper02Cutscene",
-        "uint32": 2168724337
+        "uint32": 2168724337,
+        "Model": "csb_stripper_02"
     }, {
         "Name": "TanishaCutscene",
-        "uint32": 1123963760
+        "uint32": 1123963760,
+        "Model": "cs_tanisha"
     }, {
         "Name": "TaoChengCutscene",
-        "uint32": 2288257085
+        "uint32": 2288257085,
+        "Model": "cs_taocheng"
     }, {
         "Name": "TaosTranslatorCutscene",
-        "uint32": 1397974313
+        "uint32": 1397974313,
+        "Model": "cs_taostranslator"
     }, {
         "Name": "TennisCoachCutscene",
-        "uint32": 1545995274
+        "uint32": 1545995274,
+        "Model": "cs_tenniscoach"
     }, {
         "Name": "TerryCutscene",
-        "uint32": 978452933
+        "uint32": 978452933,
+        "Model": "cs_terry"
     }, {
         "Name": "TomCutscene",
-        "uint32": 1776856003
+        "uint32": 1776856003,
+        "Model": "cs_tom"
     }, {
         "Name": "TomEpsilonCutscene",
-        "uint32": 2349847778
+        "uint32": 2349847778,
+        "Model": "cs_tomepsilon"
     }, {
         "Name": "TonyaCutscene",
-        "uint32": 1665391897
+        "uint32": 1665391897,
+        "Model": "csb_tonya"
     }, {
         "Name": "TracyDisantoCutscene",
-        "uint32": 101298480
+        "uint32": 101298480,
+        "Model": "cs_tracydisanto"
     }, {
         "Name": "TrafficWardenCutscene",
-        "uint32": 3727243251
+        "uint32": 3727243251,
+        "Model": "csb_trafficwarden"
     }, {
         "Name": "UndercoverCopCutscene",
-        "uint32": 4017642090
+        "uint32": 4017642090,
+        "Model": "csb_undercover"
     }, {
         "Name": "VagosSpeakCutscene",
-        "uint32": 1224690857
+        "uint32": 1224690857,
+        "Model": "csb_vagspeak"
     }, {
         "Name": "WadeCutscene",
-        "uint32": 3529955798
+        "uint32": 3529955798,
+        "Model": "cs_wade"
     }, {
         "Name": "WeiChengCutscene",
-        "uint32": 819699067
+        "uint32": 819699067,
+        "Model": "cs_chengsr"
     }, {
         "Name": "ZimborCutscene",
-        "uint32": 3937184496
+        "uint32": 3937184496,
+        "Model": "cs_zimbor"
     }, {
         "Name": "Boar",
-        "uint32": 3462393972
+        "uint32": 3462393972,
+        "Model": "a_c_boar"
     }, {
         "Name": "Cat",
-        "uint32": 1462895032
+        "uint32": 1462895032,
+        "Model": "a_c_cat_01"
     }, {
         "Name": "ChickenHawk",
-        "uint32": 2864127842
+        "uint32": 2864127842,
+        "Model": "a_c_chickenhawk"
     }, {
         "Name": "Chimp",
-        "uint32": 2825402133
+        "uint32": 2825402133,
+        "Model": "a_c_chimp"
     }, {
         "Name": "Chop",
-        "uint32": 351016938
+        "uint32": 351016938,
+        "Model": "a_c_chop"
     }, {
         "Name": "Cormorant",
-        "uint32": 1457690978
+        "uint32": 1457690978,
+        "Model": "a_c_cormorant"
     }, {
         "Name": "Cow",
-        "uint32": 4244282910
+        "uint32": 4244282910,
+        "Model": "a_c_cow"
     }, {
         "Name": "Coyote",
-        "uint32": 1682622302
+        "uint32": 1682622302,
+        "Model": "a_c_coyote"
     }, {
         "Name": "Crow",
-        "uint32": 402729631
+        "uint32": 402729631,
+        "Model": "a_c_crow"
     }, {
         "Name": "Deer",
-        "uint32": 3630914197
+        "uint32": 3630914197,
+        "Model": "a_c_deer"
     }, {
         "Name": "Dolphin",
-        "uint32": 2344268885
+        "uint32": 2344268885,
+        "Model": "a_c_dolphin"
     }, {
         "Name": "Fish",
-        "uint32": 802685111
+        "uint32": 802685111,
+        "Model": "a_c_fish"
     }, {
         "Name": "Hen",
-        "uint32": 1794449327
+        "uint32": 1794449327,
+        "Model": "a_c_hen"
     }, {
         "Name": "HammerShark",
-        "uint32": 1015224100
+        "uint32": 1015224100,
+        "Model": "a_c_sharkhammer"
     }, {
         "Name": "Humpback",
-        "uint32": 1193010354
+        "uint32": 1193010354,
+        "Model": "a_c_humpback"
     }, {
         "Name": "Husky",
-        "uint32": 1318032802
+        "uint32": 1318032802,
+        "Model": "a_c_husky"
     }, {
         "Name": "KillerWhale",
-        "uint32": 2374682809
+        "uint32": 2374682809,
+        "Model": "a_c_killerwhale"
     }, {
         "Name": "MountainLion",
-        "uint32": 307287994
+        "uint32": 307287994,
+        "Model": "a_c_mtlion"
     }, {
         "Name": "Pig",
-        "uint32": 2971380566
+        "uint32": 2971380566,
+        "Model": "a_c_pig"
     }, {
         "Name": "Pigeon",
-        "uint32": 111281960
+        "uint32": 111281960,
+        "Model": "a_c_pigeon"
     }, {
         "Name": "Poodle",
-        "uint32": 1125994524
+        "uint32": 1125994524,
+        "Model": "a_c_poodle"
     }, {
         "Name": "Pug",
-        "uint32": 1832265812
+        "uint32": 1832265812,
+        "Model": "a_c_pug"
     }, {
         "Name": "Rabbit",
-        "uint32": 3753204865
+        "uint32": 3753204865,
+        "Model": "a_c_rabbit_01"
     }, {
         "Name": "Rat",
-        "uint32": 3283429734
+        "uint32": 3283429734,
+        "Model": "a_c_rat"
     }, {
         "Name": "Retriever",
-        "uint32": 882848737
+        "uint32": 882848737,
+        "Model": "a_c_retriever"
     }, {
         "Name": "Rhesus",
-        "uint32": 3268439891
+        "uint32": 3268439891,
+        "Model": "a_c_rhesus"
     }, {
         "Name": "Rottweiler",
-        "uint32": 2506301981
+        "uint32": 2506301981,
+        "Model": "a_c_rottweiler"
     }, {
         "Name": "Seagull",
-        "uint32": 3549666813
+        "uint32": 3549666813,
+        "Model": "a_c_seagull"
     }, {
         "Name": "Shepherd",
-        "uint32": 1126154828
+        "uint32": 1126154828,
+        "Model": "a_c_shepherd"
     }, {
         "Name": "Stingray",
-        "uint32": 2705875277
+        "uint32": 2705875277,
+        "Model": "a_c_stingray"
     }, {
         "Name": "TigerShark",
-        "uint32": 113504370
+        "uint32": 113504370,
+        "Model": "a_c_sharktiger"
     }, {
         "Name": "Westy",
-        "uint32": 2910340283
+        "uint32": 2910340283,
+        "Model": "a_c_westy"
     }, {
         "Name": "Abner",
-        "uint32": 4037813798
+        "uint32": 4037813798,
+        "Model": "u_m_y_abner"
     }, {
         "Name": "AlDiNapoli",
-        "uint32": 4042020578
+        "uint32": 4042020578,
+        "Model": "u_m_m_aldinapoli"
     }, {
         "Name": "Antonb",
-        "uint32": 3479321132
+        "uint32": 3479321132,
+        "Model": "u_m_y_antonb"
     }, {
         "Name": "Armoured01",
-        "uint32": 3455013896
+        "uint32": 3455013896,
+        "Model": "mp_s_m_armoured_01"
     }, {
         "Name": "Babyd",
-        "uint32": 3658575486
+        "uint32": 3658575486,
+        "Model": "u_m_y_babyd"
     }, {
         "Name": "Bankman01",
-        "uint32": 3272005365
+        "uint32": 3272005365,
+        "Model": "u_m_m_bankman"
     }, {
         "Name": "Baygor",
-        "uint32": 1380197501
+        "uint32": 1380197501,
+        "Model": "u_m_y_baygor"
     }, {
         "Name": "Benny",
-        "uint32": 3300333010
+        "uint32": 3300333010,
+        "Model": "ig_benny"
     }, {
         "Name": "BikeHire01",
-        "uint32": 1984382277
+        "uint32": 1984382277,
+        "Model": "u_m_m_bikehire_01"
     }, {
         "Name": "BikerChic",
-        "uint32": 4198014287
+        "uint32": 4198014287,
+        "Model": "u_f_y_bikerchic"
     }, {
         "Name": "BoatStaff01M",
-        "uint32": 3361671816
+        "uint32": 3361671816,
+        "Model": "mp_m_boatstaff_01"
     }, {
         "Name": "BoatStaff01F",
-        "uint32": 848542158
+        "uint32": 848542158,
+        "Model": "mp_f_boatstaff_01"
     }, {
         "Name": "BurgerDrug",
-        "uint32": 2340239206
+        "uint32": 2340239206,
+        "Model": "u_m_y_burgerdrug_01"
     }, {
         "Name": "CarDesignFemale01",
-        "uint32": 606876839
+        "uint32": 606876839,
+        "Model": "mp_f_cardesign_01"
     }, {
         "Name": "Chip",
-        "uint32": 610290475
+        "uint32": 610290475,
+        "Model": "u_m_y_chip"
     }, {
         "Name": "Claude01",
-        "uint32": 3237179831
+        "uint32": 3237179831,
+        "Model": "mp_m_claude_01"
     }, {
         "Name": "ClubhouseBar01",
-        "uint32": 3287737221
+        "uint32": 3287737221,
+        "Model": "mp_f_chbar_01"
     }, {
         "Name": "CocaineFemale01",
-        "uint32": 1264941816
+        "uint32": 1264941816,
+        "Model": "mp_f_cocaine_01"
     }, {
         "Name": "CocaineMale01",
-        "uint32": 1456705429
+        "uint32": 1456705429,
+        "Model": "mp_m_cocaine_01"
     }, {
         "Name": "ComJane",
-        "uint32": 3064628686
+        "uint32": 3064628686,
+        "Model": "u_f_y_comjane"
     }, {
         "Name": "Corpse01UFY",
-        "uint32": 2624589981
+        "uint32": 2624589981,
+        "Model": "u_f_y_corpse_01"
     }, {
         "Name": "Corpse01UMY",
-        "uint32": 773063444
+        "uint32": 773063444,
+        "Model": "u_f_m_corpse_01"
     }, {
         "Name": "Corpse02UFY",
-        "uint32": 228356856
+        "uint32": 228356856,
+        "Model": "u_f_y_corpse_02"
     }, {
         "Name": "CounterfeitFemale01",
-        "uint32": 3079205365
+        "uint32": 3079205365,
+        "Model": "mp_f_counterfeit_01"
     }, {
         "Name": "CounterfeitMale01",
-        "uint32": 2555758964
+        "uint32": 2555758964,
+        "Model": "mp_m_counterfeit_01"
     }, {
         "Name": "Cyclist01",
-        "uint32": 755956971
+        "uint32": 755956971,
+        "Model": "u_m_y_cyclist_01"
     }, {
         "Name": "DeadHooker",
-        "uint32": 1943971979
+        "uint32": 1943971979,
+        "Model": "mp_f_deadhooker"
     }, {
         "Name": "Drowned",
-        "uint32": 3623056905
+        "uint32": 3623056905,
+        "Model": "u_f_m_drowned_01"
     }, {
         "Name": "ExArmy01",
-        "uint32": 1161072059
+        "uint32": 1161072059,
+        "Model": "mp_m_exarmy_01"
     }, {
         "Name": "ExecutivePAMale01",
-        "uint32": 1048844220
+        "uint32": 1048844220,
+        "Model": "mp_m_execpa_01"
     }, {
         "Name": "ExecutivePAFemale01",
-        "uint32": 1126998116
+        "uint32": 1126998116,
+        "Model": "mp_f_execpa_01"
     }, {
         "Name": "ExecutivePAFemale02",
-        "uint32": 1500695792
+        "uint32": 1500695792,
+        "Model": "mp_f_execpa_02"
     }, {
         "Name": "Famdd01",
-        "uint32": 866411749
+        "uint32": 866411749,
+        "Model": "mp_m_famdd_01"
     }, {
         "Name": "FemaleAgent",
-        "uint32": 1348537411
+        "uint32": 1348537411,
+        "Model": "a_f_y_femaleagent"
     }, {
         "Name": "FibArchitect",
-        "uint32": 874722259
+        "uint32": 874722259,
+        "Model": "u_m_m_fibarchitect"
     }, {
         "Name": "FibMugger01",
-        "uint32": 2243544680
+        "uint32": 2243544680,
+        "Model": "u_m_y_fibmugger_01"
     }, {
         "Name": "FibSec01",
-        "uint32": 1558115333
+        "uint32": 1558115333,
+        "Model": "mp_m_fibsec_01"
     }, {
         "Name": "FilmDirector",
-        "uint32": 728636342
+        "uint32": 728636342,
+        "Model": "u_m_m_filmdirector"
     }, {
         "Name": "FilmNoir",
-        "uint32": 732742363
+        "uint32": 732742363,
+        "Model": "u_m_o_filmnoir"
     }, {
         "Name": "Finguru01",
-        "uint32": 1189322339
+        "uint32": 1189322339,
+        "Model": "u_m_o_finguru_01"
     }, {
         "Name": "ForgeryFemale01",
-        "uint32": 2014985464
+        "uint32": 2014985464,
+        "Model": "mp_f_forgery_01"
     }, {
         "Name": "ForgeryMale01",
-        "uint32": 1631482011
+        "uint32": 1631482011,
+        "Model": "mp_m_forgery_01"
     }, {
         "Name": "FreemodeFemale01",
-        "uint32": 2627665880
+        "uint32": 2627665880,
+        "Model": "mp_f_freemode_01"
     }, {
         "Name": "FreemodeMale01",
-        "uint32": 1885233650
+        "uint32": 1885233650,
+        "Model": "mp_m_freemode_01"
     }, {
         "Name": "Glenstank01",
-        "uint32": 1169888870
+        "uint32": 1169888870,
+        "Model": "u_m_m_glenstank_01"
     }, {
         "Name": "Griff01",
-        "uint32": 3293887675
+        "uint32": 3293887675,
+        "Model": "u_m_m_griff_01"
     }, {
         "Name": "Guido01",
-        "uint32": 3333724719
+        "uint32": 3333724719,
+        "Model": "u_m_y_guido_01"
     }, {
         "Name": "GunVend01",
-        "uint32": 3005388626
+        "uint32": 3005388626,
+        "Model": "u_m_y_gunvend_01"
     }, {
         "Name": "Hacker",
-        "uint32": 2579169528
+        "uint32": 2579169528,
+        "Model": "hc_hacker"
     }, {
         "Name": "HeliStaff01",
-        "uint32": 431423238
+        "uint32": 431423238,
+        "Model": "mp_f_helistaff_01"
     }, {
         "Name": "Hippie01",
-        "uint32": 4030826507
+        "uint32": 4030826507,
+        "Model": "u_m_y_hippie_01"
     }, {
         "Name": "Hotposh01",
-        "uint32": 2526768638
+        "uint32": 2526768638,
+        "Model": "u_f_y_hotposh_01"
     }, {
         "Name": "Imporage",
-        "uint32": 880829941
+        "uint32": 880829941,
+        "Model": "u_m_y_imporage"
     }, {
         "Name": "ImportExportFemale01",
-        "uint32": 2225189146
+        "uint32": 2225189146,
+        "Model": "g_f_importexport_01"
     }, {
         "Name": "ImportExportMale01",
-        "uint32": 3164785898
+        "uint32": 3164785898,
+        "Model": "g_m_importexport_01"
     }, {
         "Name": "Jesus01",
-        "uint32": 3459037009
+        "uint32": 3459037009,
+        "Model": "u_m_m_jesus_01"
     }, {
         "Name": "Jewelass01",
-        "uint32": 4040474158
+        "uint32": 4040474158,
+        "Model": "u_f_y_jewelass_01"
     }, {
         "Name": "JewelSec01",
-        "uint32": 2899099062
+        "uint32": 2899099062,
+        "Model": "u_m_m_jewelsec_01"
     }, {
         "Name": "JewelThief",
-        "uint32": 3872144604
+        "uint32": 3872144604,
+        "Model": "u_m_m_jewelthief"
     }, {
         "Name": "Justin",
-        "uint32": 2109968527
+        "uint32": 2109968527,
+        "Model": "u_m_y_justin"
     }, {
         "Name": "Mani",
-        "uint32": 3367706194
+        "uint32": 3367706194,
+        "Model": "u_m_y_mani"
     }, {
         "Name": "Markfost",
-        "uint32": 479578891
+        "uint32": 479578891,
+        "Model": "u_m_m_markfost"
     }, {
         "Name": "Marston01",
-        "uint32": 943915367
+        "uint32": 943915367,
+        "Model": "mp_m_marston_01"
     }, {
         "Name": "MethFemale01",
-        "uint32": 3534913217
+        "uint32": 3534913217,
+        "Model": "mp_f_meth_01"
     }, {
         "Name": "MethMale01",
-        "uint32": 3988008767
+        "uint32": 3988008767,
+        "Model": "mp_m_meth_01"
     }, {
         "Name": "MilitaryBum",
-        "uint32": 1191548746
+        "uint32": 1191548746,
+        "Model": "u_m_y_militarybum"
     }, {
         "Name": "Miranda",
-        "uint32": 1095737979
+        "uint32": 1095737979,
+        "Model": "u_f_m_miranda"
     }, {
         "Name": "Mistress",
-        "uint32": 1573528872
+        "uint32": 1573528872,
+        "Model": "u_f_y_mistress"
     }, {
         "Name": "Misty01",
-        "uint32": 3509125021
+        "uint32": 3509125021,
+        "Model": "mp_f_misty_01"
     }, {
         "Name": "MovieStar",
-        "uint32": 894928436
+        "uint32": 894928436,
+        "Model": "u_f_o_moviestar"
     }, {
         "Name": "MPros01",
-        "uint32": 1822283721
+        "uint32": 1822283721,
+        "Model": "mp_g_m_pros_01"
     }, {
         "Name": "Niko01",
-        "uint32": 4007317449
+        "uint32": 4007317449,
+        "Model": "mp_m_niko_01"
     }, {
         "Name": "Paparazzi",
-        "uint32": 1346941736
+        "uint32": 1346941736,
+        "Model": "u_m_y_paparazzi"
     }, {
         "Name": "Party01",
-        "uint32": 921110016
+        "uint32": 921110016,
+        "Model": "u_m_y_party_01"
     }, {
         "Name": "PartyTarget",
-        "uint32": 2180468199
+        "uint32": 2180468199,
+        "Model": "u_m_m_partytarget"
     }, {
         "Name": "PestContDriver",
-        "uint32": 994527967
+        "uint32": 994527967,
+        "Model": "hc_driver"
     }, {
         "Name": "PestContGunman",
-        "uint32": 193469166
+        "uint32": 193469166,
+        "Model": "hc_gunman"
     }, {
         "Name": "Pogo01",
-        "uint32": 3696858125
+        "uint32": 3696858125,
+        "Model": "u_m_y_pogo_01"
     }, {
         "Name": "Poppymich",
-        "uint32": 602513566
+        "uint32": 602513566,
+        "Model": "u_f_y_poppymich"
     }, {
         "Name": "Princess",
-        "uint32": 3538133636
+        "uint32": 3538133636,
+        "Model": "u_f_y_princess"
     }, {
         "Name": "Prisoner01",
-        "uint32": 2073775040
+        "uint32": 2073775040,
+        "Model": "u_m_y_prisoner_01"
     }, {
         "Name": "PrologueHostage01",
-        "uint32": 3306347811
+        "uint32": 3306347811,
+        "Model": "u_f_o_prolhost_01"
     }, {
         "Name": "PrologueMournFemale01",
-        "uint32": 2718472679
+        "uint32": 2718472679,
+        "Model": "u_f_m_promourn_01"
     }, {
         "Name": "PrologueMournMale01",
-        "uint32": 3465937675
+        "uint32": 3465937675,
+        "Model": "u_m_m_promourn_01"
     }, {
         "Name": "RivalPaparazzi",
-        "uint32": 1624626906
+        "uint32": 1624626906,
+        "Model": "u_m_m_rivalpap"
     }, {
         "Name": "SecuroGuardMale01",
-        "uint32": 3660355662
+        "uint32": 3660355662,
+        "Model": "mp_m_securoguard_01"
     }, {
         "Name": "ShopKeep01",
-        "uint32": 416176080
+        "uint32": 416176080,
+        "Model": "mp_m_shopkeep_01"
     }, {
         "Name": "SmugMech01",
-        "uint32": 3446096293
+        "uint32": 3446096293,
+        "Model": "u_m_y_smugmech_01"
     }, {
         "Name": "SpyActor",
-        "uint32": 2886641112
+        "uint32": 2886641112,
+        "Model": "u_m_m_spyactor"
     }, {
         "Name": "SpyActress",
-        "uint32": 1535236204
+        "uint32": 1535236204,
+        "Model": "u_f_y_spyactress"
     }, {
         "Name": "StreetArt01",
-        "uint32": 1813637474
+        "uint32": 1813637474,
+        "Model": "u_m_m_streetart_01"
     }, {
         "Name": "StripperLite",
-        "uint32": 695248020
+        "uint32": 695248020,
+        "Model": "mp_f_stripperlite"
     }, {
         "Name": "Taphillbilly",
-        "uint32": 2585681490
+        "uint32": 2585681490,
+        "Model": "u_m_o_taphillbilly"
     }, {
         "Name": "Tramp01",
-        "uint32": 1787764635
+        "uint32": 1787764635,
+        "Model": "u_m_o_tramp_01"
     }, {
         "Name": "VagosFun01",
-        "uint32": 3299219389
+        "uint32": 3299219389,
+        "Model": "mp_m_g_vagfun_01"
     }, {
         "Name": "WareMechMale01",
-        "uint32": 4154933561
+        "uint32": 4154933561,
+        "Model": "mp_m_waremech_01"
     }, {
         "Name": "WillyFist",
-        "uint32": 2423691919
+        "uint32": 2423691919,
+        "Model": "u_m_m_willyfist"
     }, {
         "Name": "WeaponExpertMale01",
-        "uint32": 921328393
+        "uint32": 921328393,
+        "Model": "mp_m_weapexp_01"
     }, {
         "Name": "WeaponWorkerMale01",
-        "uint32": 1099321454
+        "uint32": 1099321454,
+        "Model": "mp_m_weapwork_01"
     }, {
         "Name": "WeedFemale01",
-        "uint32": 2992993187
+        "uint32": 2992993187,
+        "Model": "mp_f_weed_01"
     }, {
         "Name": "WeedMale01",
-        "uint32": 2441008217
+        "uint32": 2441008217,
+        "Model": "mp_m_weed_01"
     }, {
         "Name": "Zombie01",
-        "uint32": 2890614022
+        "uint32": 2890614022,
+        "Model": "u_m_y_zombie_01"
     }, {
         "Name": "Acult01AMM",
-        "uint32": 1413662315
+        "uint32": 1413662315,
+        "Model": "a_m_m_acult_01"
     }, {
         "Name": "Acult01AMO",
-        "uint32": 1430544400
+        "uint32": 1430544400,
+        "Model": "a_m_o_acult_01"
     }, {
         "Name": "Acult01AMY",
-        "uint32": 3043264555
+        "uint32": 3043264555,
+        "Model": "a_m_y_acult_01"
     }, {
         "Name": "Acult02AMO",
-        "uint32": 1268862154
+        "uint32": 1268862154,
+        "Model": "a_m_o_acult_02"
     }, {
         "Name": "Acult02AMY",
-        "uint32": 2162532142
+        "uint32": 2162532142,
+        "Model": "a_m_y_acult_02"
     }, {
         "Name": "AfriAmer01AMM",
-        "uint32": 3513928062
+        "uint32": 3513928062,
+        "Model": "a_m_m_afriamer_01"
     }, {
         "Name": "Airhostess01SFY",
-        "uint32": 1567728751
+        "uint32": 1567728751,
+        "Model": "s_f_y_airhostess_01"
     }, {
         "Name": "AirworkerSMY",
-        "uint32": 1644266841
+        "uint32": 1644266841,
+        "Model": "s_m_y_airworker"
     }, {
         "Name": "Ammucity01SMY",
-        "uint32": 2651349821
+        "uint32": 2651349821,
+        "Model": "s_m_y_ammucity_01"
     }, {
         "Name": "AmmuCountrySMM",
-        "uint32": 233415434
+        "uint32": 233415434,
+        "Model": "s_m_m_ammucountry"
     }, {
         "Name": "ArmBoss01GMM",
-        "uint32": 4058522530
+        "uint32": 4058522530,
+        "Model": "g_m_m_armboss_01"
     }, {
         "Name": "ArmGoon01GMM",
-        "uint32": 4255728232
+        "uint32": 4255728232,
+        "Model": "g_m_m_armgoon_01"
     }, {
         "Name": "ArmGoon02GMY",
-        "uint32": 3310258058
+        "uint32": 3310258058,
+        "Model": "g_m_y_armgoon_02"
     }, {
         "Name": "ArmLieut01GMM",
-        "uint32": 3882958867
+        "uint32": 3882958867,
+        "Model": "g_m_m_armlieut_01"
     }, {
         "Name": "Armoured01SMM",
-        "uint32": 2512875213
+        "uint32": 2512875213,
+        "Model": "s_m_m_armoured_01"
     }, {
         "Name": "Armoured02SMM",
-        "uint32": 1669696074
+        "uint32": 1669696074,
+        "Model": "s_m_m_armoured_02"
     }, {
         "Name": "Armymech01SMY",
-        "uint32": 1657546978
+        "uint32": 1657546978,
+        "Model": "s_m_y_armymech_01"
     }, {
         "Name": "Autopsy01SMY",
-        "uint32": 2988916046
+        "uint32": 2988916046,
+        "Model": "s_m_y_autopsy_01"
     }, {
         "Name": "Autoshop01SMM",
-        "uint32": 68070371
+        "uint32": 68070371,
+        "Model": "s_m_m_autoshop_01"
     }, {
         "Name": "Autoshop02SMM",
-        "uint32": 4033578141
+        "uint32": 4033578141,
+        "Model": "s_m_m_autoshop_02"
     }, {
         "Name": "Azteca01GMY",
-        "uint32": 1752208920
+        "uint32": 1752208920,
+        "Model": "g_m_y_azteca_01"
     }, {
         "Name": "BallaEast01GMY",
-        "uint32": 4096714883
+        "uint32": 4096714883,
+        "Model": "g_m_y_ballaeast_01"
     }, {
         "Name": "BallaOrig01GMY",
-        "uint32": 588969535
+        "uint32": 588969535,
+        "Model": "g_m_y_ballaorig_01"
     }, {
         "Name": "Ballas01GFY",
-        "uint32": 361513884
+        "uint32": 361513884,
+        "Model": "g_f_y_ballas_01"
     }, {
         "Name": "BallaSout01GMY",
-        "uint32": 599294057
+        "uint32": 599294057,
+        "Model": "g_m_y_ballasout_01"
     }, {
         "Name": "Barman01SMY",
-        "uint32": 3852538118
+        "uint32": 3852538118,
+        "Model": "s_m_y_barman_01"
     }, {
         "Name": "Bartender01SFY",
-        "uint32": 2014052797
+        "uint32": 2014052797,
+        "Model": "s_f_y_bartender_01"
     }, {
         "Name": "Baywatch01SFY",
-        "uint32": 1250841910
+        "uint32": 1250841910,
+        "Model": "s_f_y_baywatch_01"
     }, {
         "Name": "Baywatch01SMY",
-        "uint32": 189425762
+        "uint32": 189425762,
+        "Model": "s_m_y_baywatch_01"
     }, {
         "Name": "Beach01AFM",
-        "uint32": 808859815
+        "uint32": 808859815,
+        "Model": "a_f_m_beach_01"
     }, {
         "Name": "Beach01AFY",
-        "uint32": 3349113128
+        "uint32": 3349113128,
+        "Model": "a_f_y_beach_01"
     }, {
         "Name": "Beach01AMM",
-        "uint32": 1077785853
+        "uint32": 1077785853,
+        "Model": "a_m_m_beach_01"
     }, {
         "Name": "Beach01AMO",
-        "uint32": 2217202584
+        "uint32": 2217202584,
+        "Model": "a_m_o_beach_01"
     }, {
         "Name": "Beach01AMY",
-        "uint32": 3523131524
+        "uint32": 3523131524,
+        "Model": "a_m_y_beach_01"
     }, {
         "Name": "Beach02AMM",
-        "uint32": 2021631368
+        "uint32": 2021631368,
+        "Model": "a_m_m_beach_02"
     }, {
         "Name": "Beach02AMY",
-        "uint32": 600300561
+        "uint32": 600300561,
+        "Model": "a_m_y_beach_02"
     }, {
         "Name": "Beach03AMY",
-        "uint32": 3886638041
+        "uint32": 3886638041,
+        "Model": "a_m_y_beach_03"
     }, {
         "Name": "Beachvesp01AMY",
-        "uint32": 2114544056
+        "uint32": 2114544056,
+        "Model": "a_m_y_beachvesp_01"
     }, {
         "Name": "Beachvesp02AMY",
-        "uint32": 3394697810
+        "uint32": 3394697810,
+        "Model": "a_m_y_beachvesp_02"
     }, {
         "Name": "Bevhills01AFM",
-        "uint32": 3188223741
+        "uint32": 3188223741,
+        "Model": "a_f_m_bevhills_01"
     }, {
         "Name": "Bevhills01AFY",
-        "uint32": 1146800212
+        "uint32": 1146800212,
+        "Model": "a_f_y_bevhills_01"
     }, {
         "Name": "Bevhills01AMM",
-        "uint32": 1423699487
+        "uint32": 1423699487,
+        "Model": "a_m_m_bevhills_01"
     }, {
         "Name": "Bevhills01AMY",
-        "uint32": 1982350912
+        "uint32": 1982350912,
+        "Model": "a_m_y_bevhills_01"
     }, {
         "Name": "Bevhills02AFM",
-        "uint32": 2688103263
+        "uint32": 2688103263,
+        "Model": "a_f_m_bevhills_02"
     }, {
         "Name": "Bevhills02AFY",
-        "uint32": 1546450936
+        "uint32": 1546450936,
+        "Model": "a_f_y_bevhills_02"
     }, {
         "Name": "Bevhills02AMM",
-        "uint32": 1068876755
+        "uint32": 1068876755,
+        "Model": "a_m_m_bevhills_02"
     }, {
         "Name": "Bevhills02AMY",
-        "uint32": 1720428295
+        "uint32": 1720428295,
+        "Model": "a_m_y_bevhills_02"
     }, {
         "Name": "Bevhills03AFY",
-        "uint32": 549978415
+        "uint32": 549978415,
+        "Model": "a_f_y_bevhills_03"
     }, {
         "Name": "Bevhills04AFY",
-        "uint32": 920595805
+        "uint32": 920595805,
+        "Model": "a_f_y_bevhills_04"
     }, {
         "Name": "Blackops01SMY",
-        "uint32": 3019107892
+        "uint32": 3019107892,
+        "Model": "s_m_y_blackops_01"
     }, {
         "Name": "Blackops02SMY",
-        "uint32": 2047212121
+        "uint32": 2047212121,
+        "Model": "s_m_y_blackops_02"
     }, {
         "Name": "Blackops03SMY",
-        "uint32": 1349953339
+        "uint32": 1349953339,
+        "Model": "s_m_y_blackops_03"
     }, {
         "Name": "Bodybuild01AFM",
-        "uint32": 1004114196
+        "uint32": 1004114196,
+        "Model": "a_f_m_bodybuild_01"
     }, {
         "Name": "Bouncer01SMM",
-        "uint32": 2681481517
+        "uint32": 2681481517,
+        "Model": "s_m_m_bouncer_01"
     }, {
         "Name": "Breakdance01AMY",
-        "uint32": 933205398
+        "uint32": 933205398,
+        "Model": "a_m_y_breakdance_01"
     }, {
         "Name": "Busboy01SMY",
-        "uint32": 3640249671
+        "uint32": 3640249671,
+        "Model": "s_m_y_busboy_01"
     }, {
         "Name": "Busicas01AMY",
-        "uint32": 2597531625
+        "uint32": 2597531625,
+        "Model": "a_m_y_busicas_01"
     }, {
         "Name": "Business01AFY",
-        "uint32": 664399832
+        "uint32": 664399832,
+        "Model": "a_f_y_business_01"
     }, {
         "Name": "Business01AMM",
-        "uint32": 2120901815
+        "uint32": 2120901815,
+        "Model": "a_m_m_business_01"
     }, {
         "Name": "Business01AMY",
-        "uint32": 3382649284
+        "uint32": 3382649284,
+        "Model": "a_m_y_business_01"
     }, {
         "Name": "Business02AFM",
-        "uint32": 532905404
+        "uint32": 532905404,
+        "Model": "a_f_m_business_02"
     }, {
         "Name": "Business02AFY",
-        "uint32": 826475330
+        "uint32": 826475330,
+        "Model": "a_f_y_business_02"
     }, {
         "Name": "Business02AMY",
-        "uint32": 3014915558
+        "uint32": 3014915558,
+        "Model": "a_m_y_business_02"
     }, {
         "Name": "Business03AFY",
-        "uint32": 2928082356
+        "uint32": 2928082356,
+        "Model": "a_f_y_business_03"
     }, {
         "Name": "Business03AMY",
-        "uint32": 2705543429
+        "uint32": 2705543429,
+        "Model": "a_m_y_business_03"
     }, {
         "Name": "Business04AFY",
-        "uint32": 3083210802
+        "uint32": 3083210802,
+        "Model": "a_f_y_business_04"
     }, {
         "Name": "Busker01SMO",
-        "uint32": 2912874939
+        "uint32": 2912874939,
+        "Model": "s_m_o_busker_01"
     }, {
         "Name": "CCrew01SMM",
-        "uint32": 3387290987
+        "uint32": 3387290987,
+        "Model": "s_m_m_ccrew_01"
     }, {
         "Name": "Chef01SMY",
-        "uint32": 261586155
+        "uint32": 261586155,
+        "Model": "s_m_y_chef_01"
     }, {
         "Name": "ChemSec01SMM",
-        "uint32": 788443093
+        "uint32": 788443093,
+        "Model": "s_m_m_chemsec_01"
     }, {
         "Name": "ChemWork01GMM",
-        "uint32": 4128603535
+        "uint32": 4128603535,
+        "Model": "g_m_m_chemwork_01"
     }, {
         "Name": "ChiBoss01GMM",
-        "uint32": 3118269184
+        "uint32": 3118269184,
+        "Model": "g_m_m_chiboss_01"
     }, {
         "Name": "ChiCold01GMM",
-        "uint32": 275618457
+        "uint32": 275618457,
+        "Model": "g_m_m_chicold_01"
     }, {
         "Name": "ChiGoon01GMM",
-        "uint32": 2119136831
+        "uint32": 2119136831,
+        "Model": "g_m_m_chigoon_01"
     }, {
         "Name": "ChiGoon02GMM",
-        "uint32": 4285659174
+        "uint32": 4285659174,
+        "Model": "g_m_m_chigoon_02"
     }, {
         "Name": "CiaSec01SMM",
-        "uint32": 1650288984
+        "uint32": 1650288984,
+        "Model": "s_m_m_ciasec_01"
     }, {
         "Name": "Clown01SMY",
-        "uint32": 71929310
+        "uint32": 71929310,
+        "Model": "s_m_y_clown_01"
     }, {
         "Name": "Cntrybar01SMM",
-        "uint32": 436345731
+        "uint32": 436345731,
+        "Model": "s_m_m_cntrybar_01"
     }, {
         "Name": "Construct01SMY",
-        "uint32": 3621428889
+        "uint32": 3621428889,
+        "Model": "s_m_y_construct_01"
     }, {
         "Name": "Construct02SMY",
-        "uint32": 3321821918
+        "uint32": 3321821918,
+        "Model": "s_m_y_construct_02"
     }, {
         "Name": "Cop01SFY",
-        "uint32": 368603149
+        "uint32": 368603149,
+        "Model": "s_f_y_cop_01"
     }, {
         "Name": "Cop01SMY",
-        "uint32": 1581098148
+        "uint32": 1581098148,
+        "Model": "s_m_y_cop_01"
     }, {
         "Name": "Cyclist01AMY",
-        "uint32": 4257633223
+        "uint32": 4257633223,
+        "Model": "a_m_y_cyclist_01"
     }, {
         "Name": "Dealer01SMY",
-        "uint32": 3835149295
+        "uint32": 3835149295,
+        "Model": "s_m_y_dealer_01"
     }, {
         "Name": "Devinsec01SMY",
-        "uint32": 2606068340
+        "uint32": 2606068340,
+        "Model": "s_m_y_devinsec_01"
     }, {
         "Name": "Dhill01AMY",
-        "uint32": 4282288299
+        "uint32": 4282288299,
+        "Model": "a_m_y_dhill_01"
     }, {
         "Name": "Dockwork01SMM",
-        "uint32": 349680864
+        "uint32": 349680864,
+        "Model": "s_m_m_dockwork_01"
     }, {
         "Name": "Dockwork01SMY",
-        "uint32": 2255894993
+        "uint32": 2255894993,
+        "Model": "s_m_y_dockwork_01"
     }, {
         "Name": "Doctor01SMM",
-        "uint32": 3564307372
+        "uint32": 3564307372,
+        "Model": "s_m_m_doctor_01"
     }, {
         "Name": "Doorman01SMY",
-        "uint32": 579932932
+        "uint32": 579932932,
+        "Model": "s_m_y_doorman_01"
     }, {
         "Name": "Downtown01AFM",
-        "uint32": 1699403886
+        "uint32": 1699403886,
+        "Model": "a_f_m_downtown_01"
     }, {
         "Name": "Downtown01AMY",
-        "uint32": 766375082
+        "uint32": 766375082,
+        "Model": "a_m_y_downtown_01"
     }, {
         "Name": "DwService01SMY",
-        "uint32": 1976765073
+        "uint32": 1976765073,
+        "Model": "s_m_y_dwservice_01"
     }, {
         "Name": "DwService02SMY",
-        "uint32": 4119890438
+        "uint32": 4119890438,
+        "Model": "s_m_y_dwservice_02"
     }, {
         "Name": "Eastsa01AFM",
-        "uint32": 2638072698
+        "uint32": 2638072698,
+        "Model": "a_f_m_eastsa_01"
     }, {
         "Name": "Eastsa01AFY",
-        "uint32": 4121954205
+        "uint32": 4121954205,
+        "Model": "a_f_y_eastsa_01"
     }, {
         "Name": "Eastsa01AMM",
-        "uint32": 4188468543
+        "uint32": 4188468543,
+        "Model": "a_m_m_eastsa_01"
     }, {
         "Name": "Eastsa01AMY",
-        "uint32": 2756120947
+        "uint32": 2756120947,
+        "Model": "a_m_y_eastsa_01"
     }, {
         "Name": "Eastsa02AFM",
-        "uint32": 1674107025
+        "uint32": 1674107025,
+        "Model": "a_f_m_eastsa_02"
     }, {
         "Name": "Eastsa02AFY",
-        "uint32": 70821038
+        "uint32": 70821038,
+        "Model": "a_f_y_eastsa_02"
     }, {
         "Name": "Eastsa02AMM",
-        "uint32": 131961260
+        "uint32": 131961260,
+        "Model": "a_m_m_eastsa_02"
     }, {
         "Name": "Eastsa02AMY",
-        "uint32": 377976310
+        "uint32": 377976310,
+        "Model": "a_m_y_eastsa_02"
     }, {
         "Name": "Eastsa03AFY",
-        "uint32": 1371553700
+        "uint32": 1371553700,
+        "Model": "a_f_y_eastsa_03"
     }, {
         "Name": "Epsilon01AFY",
-        "uint32": 1755064960
+        "uint32": 1755064960,
+        "Model": "a_f_y_epsilon_01"
     }, {
         "Name": "Epsilon01AMY",
-        "uint32": 2010389054
+        "uint32": 2010389054,
+        "Model": "a_m_y_epsilon_01"
     }, {
         "Name": "Epsilon02AMY",
-        "uint32": 2860711835
+        "uint32": 2860711835,
+        "Model": "a_m_y_epsilon_02"
     }, {
         "Name": "Factory01SFY",
-        "uint32": 1777626099
+        "uint32": 1777626099,
+        "Model": "s_f_y_factory_01"
     }, {
         "Name": "Factory01SMY",
-        "uint32": 1097048408
+        "uint32": 1097048408,
+        "Model": "s_m_y_factory_01"
     }, {
         "Name": "Famca01GMY",
-        "uint32": 3896218551
+        "uint32": 3896218551,
+        "Model": "g_m_y_famca_01"
     }, {
         "Name": "Famdnf01GMY",
-        "uint32": 3681718840
+        "uint32": 3681718840,
+        "Model": "g_m_y_famdnf_01"
     }, {
         "Name": "Famfor01GMY",
-        "uint32": 2217749257
+        "uint32": 2217749257,
+        "Model": "g_m_y_famfor_01"
     }, {
         "Name": "Families01GFY",
-        "uint32": 1309468115
+        "uint32": 1309468115,
+        "Model": "g_f_y_families_01"
     }, {
         "Name": "Farmer01AMM",
-        "uint32": 2488675799
+        "uint32": 2488675799,
+        "Model": "a_m_m_farmer_01"
     }, {
         "Name": "FatBla01AFM",
-        "uint32": 4206136267
+        "uint32": 4206136267,
+        "Model": "a_f_m_fatbla_01"
     }, {
         "Name": "FatCult01AFM",
-        "uint32": 3050275044
+        "uint32": 3050275044,
+        "Model": "a_f_m_fatcult_01"
     }, {
         "Name": "Fatlatin01AMM",
-        "uint32": 1641152947
+        "uint32": 1641152947,
+        "Model": "a_m_m_fatlatin_01"
     }, {
         "Name": "FatWhite01AFM",
-        "uint32": 951767867
+        "uint32": 951767867,
+        "Model": "a_f_m_fatwhite_01"
     }, {
         "Name": "FemBarberSFM",
-        "uint32": 373000027
+        "uint32": 373000027,
+        "Model": "s_f_m_fembarber"
     }, {
         "Name": "FibOffice01SMM",
-        "uint32": 3988550982
+        "uint32": 3988550982,
+        "Model": "s_m_m_fiboffice_01"
     }, {
         "Name": "FibOffice02SMM",
-        "uint32": 653289389
+        "uint32": 653289389,
+        "Model": "s_m_m_fiboffice_02"
     }, {
         "Name": "FibSec01SMM",
-        "uint32": 2072724299
+        "uint32": 2072724299,
+        "Model": "s_m_m_fibsec_01"
     }, {
         "Name": "Fireman01SMY",
-        "uint32": 3065114024
+        "uint32": 3065114024,
+        "Model": "s_m_y_fireman_01"
     }, {
         "Name": "Fitness01AFY",
-        "uint32": 1165780219
+        "uint32": 1165780219,
+        "Model": "a_f_y_fitness_01"
     }, {
         "Name": "Fitness02AFY",
-        "uint32": 331645324
+        "uint32": 331645324,
+        "Model": "a_f_y_fitness_02"
     }, {
         "Name": "Gaffer01SMM",
-        "uint32": 2841034142
+        "uint32": 2841034142,
+        "Model": "s_m_m_gaffer_01"
     }, {
         "Name": "GarbageSMY",
-        "uint32": 4000686095
+        "uint32": 4000686095,
+        "Model": "s_m_y_garbage"
     }, {
         "Name": "Gardener01SMM",
-        "uint32": 1240094341
+        "uint32": 1240094341,
+        "Model": "s_m_m_gardener_01"
     }, {
         "Name": "Gay01AMY",
-        "uint32": 3519864886
+        "uint32": 3519864886,
+        "Model": "a_m_y_gay_01"
     }, {
         "Name": "Gay02AMY",
-        "uint32": 2775713665
+        "uint32": 2775713665,
+        "Model": "a_m_y_gay_02"
     }, {
         "Name": "Genfat01AMM",
-        "uint32": 115168927
+        "uint32": 115168927,
+        "Model": "a_m_m_genfat_01"
     }, {
         "Name": "Genfat02AMM",
-        "uint32": 330231874
+        "uint32": 330231874,
+        "Model": "a_m_m_genfat_02"
     }, {
         "Name": "Genhot01AFY",
-        "uint32": 793439294
+        "uint32": 793439294,
+        "Model": "a_f_y_genhot_01"
     }, {
         "Name": "Genstreet01AFO",
-        "uint32": 1640504453
+        "uint32": 1640504453,
+        "Model": "a_f_o_genstreet_01"
     }, {
         "Name": "Genstreet01AMO",
-        "uint32": 2908022696
+        "uint32": 2908022696,
+        "Model": "a_m_o_genstreet_01"
     }, {
         "Name": "Genstreet01AMY",
-        "uint32": 2557996913
+        "uint32": 2557996913,
+        "Model": "a_m_y_genstreet_01"
     }, {
         "Name": "Genstreet02AMY",
-        "uint32": 891398354
+        "uint32": 891398354,
+        "Model": "a_m_y_genstreet_02"
     }, {
         "Name": "GentransportSMM",
-        "uint32": 411102470
+        "uint32": 411102470,
+        "Model": "s_m_m_gentransport"
     }, {
         "Name": "Golfer01AFY",
-        "uint32": 2111372120
+        "uint32": 2111372120,
+        "Model": "a_f_y_golfer_01"
     }, {
         "Name": "Golfer01AMM",
-        "uint32": 2850754114
+        "uint32": 2850754114,
+        "Model": "a_m_m_golfer_01"
     }, {
         "Name": "Golfer01AMY",
-        "uint32": 3609190705
+        "uint32": 3609190705,
+        "Model": "a_m_y_golfer_01"
     }, {
         "Name": "Grip01SMY",
-        "uint32": 815693290
+        "uint32": 815693290,
+        "Model": "s_m_y_grip_01"
     }, {
         "Name": "Hairdress01SMM",
-        "uint32": 1099825042
+        "uint32": 1099825042,
+        "Model": "s_m_m_hairdress_01"
     }, {
         "Name": "Hasjew01AMM",
-        "uint32": 1809430156
+        "uint32": 1809430156,
+        "Model": "a_m_m_hasjew_01"
     }, {
         "Name": "Hasjew01AMY",
-        "uint32": 3782053633
+        "uint32": 3782053633,
+        "Model": "a_m_y_hasjew_01"
     }, {
         "Name": "HeadTargets",
-        "uint32": 1173958009
+        "uint32": 1173958009,
+        "Model": "mp_headtargets"
     }, {
         "Name": "Highsec01SMM",
-        "uint32": 4049719826
+        "uint32": 4049719826,
+        "Model": "s_m_m_highsec_01"
     }, {
         "Name": "Highsec02SMM",
-        "uint32": 691061163
+        "uint32": 691061163,
+        "Model": "s_m_m_highsec_02"
     }, {
         "Name": "Hiker01AFY",
-        "uint32": 813893651
+        "uint32": 813893651,
+        "Model": "a_f_y_hiker_01"
     }, {
         "Name": "Hiker01AMY",
-        "uint32": 1358380044
+        "uint32": 1358380044,
+        "Model": "a_m_y_hiker_01"
     }, {
         "Name": "Hillbilly01AMM",
-        "uint32": 1822107721
+        "uint32": 1822107721,
+        "Model": "a_m_m_hillbilly_01"
     }, {
         "Name": "Hillbilly02AMM",
-        "uint32": 2064532783
+        "uint32": 2064532783,
+        "Model": "a_m_m_hillbilly_02"
     }, {
         "Name": "Hippie01AFY",
-        "uint32": 343259175
+        "uint32": 343259175,
+        "Model": "a_f_y_hippie_01"
     }, {
         "Name": "Hippy01AMY",
-        "uint32": 2097407511
+        "uint32": 2097407511,
+        "Model": "a_m_y_hippy_01"
     }, {
         "Name": "Hipster01AFY",
-        "uint32": 2185745201
+        "uint32": 2185745201,
+        "Model": "a_f_y_hipster_01"
     }, {
         "Name": "Hipster01AMY",
-        "uint32": 587703123
+        "uint32": 587703123,
+        "Model": "a_m_y_hipster_01"
     }, {
         "Name": "Hipster02AFY",
-        "uint32": 2549481101
+        "uint32": 2549481101,
+        "Model": "a_f_y_hipster_02"
     }, {
         "Name": "Hipster02AMY",
-        "uint32": 349505262
+        "uint32": 349505262,
+        "Model": "a_m_y_hipster_02"
     }, {
         "Name": "Hipster03AFY",
-        "uint32": 2780469782
+        "uint32": 2780469782,
+        "Model": "a_f_y_hipster_03"
     }, {
         "Name": "Hipster03AMY",
-        "uint32": 1312913862
+        "uint32": 1312913862,
+        "Model": "a_m_y_hipster_03"
     }, {
         "Name": "Hipster04AFY",
-        "uint32": 429425116
+        "uint32": 429425116,
+        "Model": "a_f_y_hipster_04"
     }, {
         "Name": "Hooker01SFY",
-        "uint32": 42647445
+        "uint32": 42647445,
+        "Model": "s_f_y_hooker_01"
     }, {
         "Name": "Hooker02SFY",
-        "uint32": 348382215
+        "uint32": 348382215,
+        "Model": "s_f_y_hooker_02"
     }, {
         "Name": "Hooker03SFY",
-        "uint32": 51789996
+        "uint32": 51789996,
+        "Model": "s_f_y_hooker_03"
     }, {
         "Name": "Hwaycop01SMY",
-        "uint32": 1939545845
+        "uint32": 1939545845,
+        "Model": "s_m_y_hwaycop_01"
     }, {
         "Name": "Indian01AFO",
-        "uint32": 3134700416
+        "uint32": 3134700416,
+        "Model": "a_f_o_indian_01"
     }, {
         "Name": "Indian01AFY",
-        "uint32": 153984193
+        "uint32": 153984193,
+        "Model": "a_f_y_indian_01"
     }, {
         "Name": "Indian01AMM",
-        "uint32": 3721046572
+        "uint32": 3721046572,
+        "Model": "a_m_m_indian_01"
     }, {
         "Name": "Indian01AMY",
-        "uint32": 706935758
+        "uint32": 706935758,
+        "Model": "a_m_y_indian_01"
     }, {
         "Name": "JanitorSMM",
-        "uint32": 2842417644
+        "uint32": 2842417644,
+        "Model": "s_m_m_janitor"
     }, {
         "Name": "Jetski01AMY",
-        "uint32": 767028979
+        "uint32": 767028979,
+        "Model": "a_m_y_jetski_01"
     }, {
         "Name": "Juggalo01AFY",
-        "uint32": 3675473203
+        "uint32": 3675473203,
+        "Model": "a_f_y_juggalo_01"
     }, {
         "Name": "Juggalo01AMY",
-        "uint32": 2445950508
+        "uint32": 2445950508,
+        "Model": "a_m_y_juggalo_01"
     }, {
         "Name": "KorBoss01GMM",
-        "uint32": 891945583
+        "uint32": 891945583,
+        "Model": "g_m_m_korboss_01"
     }, {
         "Name": "Korean01GMY",
-        "uint32": 611648169
+        "uint32": 611648169,
+        "Model": "g_m_y_korean_01"
     }, {
         "Name": "Korean02GMY",
-        "uint32": 2414729609
+        "uint32": 2414729609,
+        "Model": "g_m_y_korean_02"
     }, {
         "Name": "KorLieut01GMY",
-        "uint32": 2093736314
+        "uint32": 2093736314,
+        "Model": "g_m_y_korlieut_01"
     }, {
         "Name": "Ktown01AFM",
-        "uint32": 1388848350
+        "uint32": 1388848350,
+        "Model": "a_f_m_ktown_01"
     }, {
         "Name": "Ktown01AFO",
-        "uint32": 1204772502
+        "uint32": 1204772502,
+        "Model": "a_f_o_ktown_01"
     }, {
         "Name": "Ktown01AMM",
-        "uint32": 3512565361
+        "uint32": 3512565361,
+        "Model": "a_m_m_ktown_01"
     }, {
         "Name": "Ktown01AMO",
-        "uint32": 355916122
+        "uint32": 355916122,
+        "Model": "a_m_o_ktown_01"
     }, {
         "Name": "Ktown01AMY",
-        "uint32": 452351020
+        "uint32": 452351020,
+        "Model": "a_m_y_ktown_01"
     }, {
         "Name": "Ktown02AFM",
-        "uint32": 1090617681
+        "uint32": 1090617681,
+        "Model": "a_f_m_ktown_02"
     }, {
         "Name": "Ktown02AMY",
-        "uint32": 696250687
+        "uint32": 696250687,
+        "Model": "a_m_y_ktown_02"
     }, {
         "Name": "Lathandy01SMM",
-        "uint32": 2659242702
+        "uint32": 2659242702,
+        "Model": "s_m_m_lathandy_01"
     }, {
         "Name": "Latino01AMY",
-        "uint32": 321657486
+        "uint32": 321657486,
+        "Model": "a_m_y_latino_01"
     }, {
         "Name": "Lifeinvad01SMM",
-        "uint32": 3724572669
+        "uint32": 3724572669,
+        "Model": "s_m_m_lifeinvad_01"
     }, {
         "Name": "LinecookSMM",
-        "uint32": 3684436375
+        "uint32": 3684436375,
+        "Model": "s_m_m_linecook"
     }, {
         "Name": "Lost01GFY",
-        "uint32": 4250220510
+        "uint32": 4250220510,
+        "Model": "g_f_y_lost_01"
     }, {
         "Name": "Lost01GMY",
-        "uint32": 1330042375
+        "uint32": 1330042375,
+        "Model": "g_m_y_lost_01"
     }, {
         "Name": "Lost02GMY",
-        "uint32": 1032073858
+        "uint32": 1032073858,
+        "Model": "g_m_y_lost_02"
     }, {
         "Name": "Lost03GMY",
-        "uint32": 850468060
+        "uint32": 850468060,
+        "Model": "g_m_y_lost_03"
     }, {
         "Name": "Lsmetro01SMM",
-        "uint32": 1985653476
+        "uint32": 1985653476,
+        "Model": "s_m_m_lsmetro_01"
     }, {
         "Name": "Maid01SFM",
-        "uint32": 3767780806
+        "uint32": 3767780806,
+        "Model": "s_f_m_maid_01"
     }, {
         "Name": "Malibu01AMM",
-        "uint32": 803106487
+        "uint32": 803106487,
+        "Model": "a_m_m_malibu_01"
     }, {
         "Name": "Mariachi01SMM",
-        "uint32": 2124742566
+        "uint32": 2124742566,
+        "Model": "s_m_m_mariachi_01"
     }, {
         "Name": "Marine01SMM",
-        "uint32": 4074414829
+        "uint32": 4074414829,
+        "Model": "s_m_m_marine_01"
     }, {
         "Name": "Marine01SMY",
-        "uint32": 1702441027
+        "uint32": 1702441027,
+        "Model": "s_m_y_marine_01"
     }, {
         "Name": "Marine02SMM",
-        "uint32": 4028996995
+        "uint32": 4028996995,
+        "Model": "s_m_m_marine_02"
     }, {
         "Name": "Marine02SMY",
-        "uint32": 1490458366
+        "uint32": 1490458366,
+        "Model": "s_m_y_marine_02"
     }, {
         "Name": "Marine03SMY",
-        "uint32": 1925237458
+        "uint32": 1925237458,
+        "Model": "s_m_y_marine_03"
     }, {
         "Name": "Methhead01AMY",
-        "uint32": 1768677545
+        "uint32": 1768677545,
+        "Model": "a_m_y_methhead_01"
     }, {
         "Name": "MexBoss01GMM",
-        "uint32": 1466037421
+        "uint32": 1466037421,
+        "Model": "g_m_m_mexboss_01"
     }, {
         "Name": "MexBoss02GMM",
-        "uint32": 1226102803
+        "uint32": 1226102803,
+        "Model": "g_m_m_mexboss_02"
     }, {
         "Name": "MexCntry01AMM",
-        "uint32": 3716251309
+        "uint32": 3716251309,
+        "Model": "a_m_m_mexcntry_01"
     }, {
         "Name": "MexGang01GMY",
-        "uint32": 3185399110
+        "uint32": 3185399110,
+        "Model": "g_m_y_mexgang_01"
     }, {
         "Name": "MexGoon01GMY",
-        "uint32": 653210662
+        "uint32": 653210662,
+        "Model": "g_m_y_mexgoon_01"
     }, {
         "Name": "MexGoon02GMY",
-        "uint32": 832784782
+        "uint32": 832784782,
+        "Model": "g_m_y_mexgoon_02"
     }, {
         "Name": "MexGoon03GMY",
-        "uint32": 2521633500
+        "uint32": 2521633500,
+        "Model": "g_m_y_mexgoon_03"
     }, {
         "Name": "MexLabor01AMM",
-        "uint32": 2992445106
+        "uint32": 2992445106,
+        "Model": "a_m_m_mexlabor_01"
     }, {
         "Name": "MexThug01AMY",
-        "uint32": 810804565
+        "uint32": 810804565,
+        "Model": "a_m_y_mexthug_01"
     }, {
         "Name": "Migrant01SFY",
-        "uint32": 3579522037
+        "uint32": 3579522037,
+        "Model": "s_f_y_migrant_01"
     }, {
         "Name": "Migrant01SMM",
-        "uint32": 3977045190
+        "uint32": 3977045190,
+        "Model": "s_m_m_migrant_01"
     }, {
         "Name": "MimeSMY",
-        "uint32": 1021093698
+        "uint32": 1021093698,
+        "Model": "s_m_y_mime"
     }, {
         "Name": "Motox01AMY",
-        "uint32": 1694362237
+        "uint32": 1694362237,
+        "Model": "a_m_y_motox_01"
     }, {
         "Name": "Motox02AMY",
-        "uint32": 2007797722
+        "uint32": 2007797722,
+        "Model": "a_m_y_motox_02"
     }, {
         "Name": "MovAlien01",
-        "uint32": 1684083350
+        "uint32": 1684083350,
+        "Model": "s_m_m_movalien_01"
     }, {
         "Name": "MovPrem01SFY",
-        "uint32": 587253782
+        "uint32": 587253782,
+        "Model": "s_f_y_movprem_01"
     }, {
         "Name": "Movprem01SMM",
-        "uint32": 3630066984
+        "uint32": 3630066984,
+        "Model": "s_m_m_movprem_01"
     }, {
         "Name": "Movspace01SMM",
-        "uint32": 3887273010
+        "uint32": 3887273010,
+        "Model": "s_m_m_movspace_01"
     }, {
         "Name": "Musclbeac01AMY",
-        "uint32": 1264920838
+        "uint32": 1264920838,
+        "Model": "a_m_y_musclbeac_01"
     }, {
         "Name": "Musclbeac02AMY",
-        "uint32": 3374523516
+        "uint32": 3374523516,
+        "Model": "a_m_y_musclbeac_02"
     }, {
         "Name": "OgBoss01AMM",
-        "uint32": 1746653202
+        "uint32": 1746653202,
+        "Model": "a_m_m_og_boss_01"
     }, {
         "Name": "Paparazzi01AMM",
-        "uint32": 3972697109
+        "uint32": 3972697109,
+        "Model": "a_m_m_paparazzi_01"
     }, {
         "Name": "Paramedic01SMM",
-        "uint32": 3008586398
+        "uint32": 3008586398,
+        "Model": "s_m_m_paramedic_01"
     }, {
         "Name": "PestCont01SMY",
-        "uint32": 1209091352
+        "uint32": 1209091352,
+        "Model": "s_m_y_pestcont_01"
     }, {
         "Name": "Pilot01SMM",
-        "uint32": 3881519900
+        "uint32": 3881519900,
+        "Model": "s_m_m_pilot_01"
     }, {
         "Name": "Pilot01SMY",
-        "uint32": 2872052743
+        "uint32": 2872052743,
+        "Model": "s_m_y_pilot_01"
     }, {
         "Name": "Pilot02SMM",
-        "uint32": 4131252449
+        "uint32": 4131252449,
+        "Model": "s_m_m_pilot_02"
     }, {
         "Name": "PoloGoon01GMY",
-        "uint32": 1329576454
+        "uint32": 1329576454,
+        "Model": "g_m_y_pologoon_01"
     }, {
         "Name": "PoloGoon02GMY",
-        "uint32": 2733138262
+        "uint32": 2733138262,
+        "Model": "g_m_y_pologoon_02"
     }, {
         "Name": "Polynesian01AMM",
-        "uint32": 2849617566
+        "uint32": 2849617566,
+        "Model": "a_m_m_polynesian_01"
     }, {
         "Name": "Polynesian01AMY",
-        "uint32": 2206530719
+        "uint32": 2206530719,
+        "Model": "a_m_y_polynesian_01"
     }, {
         "Name": "Postal01SMM",
-        "uint32": 1650036788
+        "uint32": 1650036788,
+        "Model": "s_m_m_postal_01"
     }, {
         "Name": "Postal02SMM",
-        "uint32": 1936142927
+        "uint32": 1936142927,
+        "Model": "s_m_m_postal_02"
     }, {
         "Name": "Prisguard01SMM",
-        "uint32": 1456041926
+        "uint32": 1456041926,
+        "Model": "s_m_m_prisguard_01"
     }, {
         "Name": "PrisMuscl01SMY",
-        "uint32": 1596003233
+        "uint32": 1596003233,
+        "Model": "s_m_y_prismuscl_01"
     }, {
         "Name": "Prisoner01SMY",
-        "uint32": 2981862233
+        "uint32": 2981862233,
+        "Model": "s_m_y_prisoner_01"
     }, {
         "Name": "PrologueHostage01AFM",
-        "uint32": 379310561
+        "uint32": 379310561,
+        "Model": "a_f_m_prolhost_01"
     }, {
         "Name": "PrologueHostage01AMM",
-        "uint32": 2534589327
+        "uint32": 2534589327,
+        "Model": "a_m_m_prolhost_01"
     }, {
         "Name": "Ranger01SFY",
-        "uint32": 2680682039
+        "uint32": 2680682039,
+        "Model": "s_f_y_ranger_01"
     }, {
         "Name": "Ranger01SMY",
-        "uint32": 4017173934
+        "uint32": 4017173934,
+        "Model": "s_m_y_ranger_01"
     }, {
         "Name": "Roadcyc01AMY",
-        "uint32": 4116817094
+        "uint32": 4116817094,
+        "Model": "a_m_y_roadcyc_01"
     }, {
         "Name": "Robber01SMY",
-        "uint32": 3227390873
+        "uint32": 3227390873,
+        "Model": "s_m_y_robber_01"
     }, {
         "Name": "RsRanger01AMO",
-        "uint32": 1011059922
+        "uint32": 1011059922,
+        "Model": "u_m_y_rsranger_01"
     }, {
         "Name": "Runner01AFY",
-        "uint32": 3343476521
+        "uint32": 3343476521,
+        "Model": "a_f_y_runner_01"
     }, {
         "Name": "Runner01AMY",
-        "uint32": 623927022
+        "uint32": 623927022,
+        "Model": "a_m_y_runner_01"
     }, {
         "Name": "Runner02AMY",
-        "uint32": 2218630415
+        "uint32": 2218630415,
+        "Model": "a_m_y_runner_02"
     }, {
         "Name": "Rurmeth01AFY",
-        "uint32": 1064866854
+        "uint32": 1064866854,
+        "Model": "a_f_y_rurmeth_01"
     }, {
         "Name": "Rurmeth01AMM",
-        "uint32": 1001210244
+        "uint32": 1001210244,
+        "Model": "a_m_m_rurmeth_01"
     }, {
         "Name": "Salton01AFM",
-        "uint32": 3725461865
+        "uint32": 3725461865,
+        "Model": "a_f_m_salton_01"
     }, {
         "Name": "Salton01AFO",
-        "uint32": 3439295882
+        "uint32": 3439295882,
+        "Model": "a_f_o_salton_01"
     }, {
         "Name": "Salton01AMM",
-        "uint32": 1328415626
+        "uint32": 1328415626,
+        "Model": "a_m_m_salton_01"
     }, {
         "Name": "Salton01AMO",
-        "uint32": 539004493
+        "uint32": 539004493,
+        "Model": "a_m_o_salton_01"
     }, {
         "Name": "Salton01AMY",
-        "uint32": 3613420592
+        "uint32": 3613420592,
+        "Model": "a_m_y_salton_01"
     }, {
         "Name": "Salton02AMM",
-        "uint32": 1626646295
+        "uint32": 1626646295,
+        "Model": "a_m_m_salton_02"
     }, {
         "Name": "Salton03AMM",
-        "uint32": 2995538501
+        "uint32": 2995538501,
+        "Model": "a_m_m_salton_03"
     }, {
         "Name": "Salton04AMM",
-        "uint32": 2521108919
+        "uint32": 2521108919,
+        "Model": "a_m_m_salton_04"
     }, {
         "Name": "SalvaBoss01GMY",
-        "uint32": 2422005962
+        "uint32": 2422005962,
+        "Model": "g_m_y_salvaboss_01"
     }, {
         "Name": "SalvaGoon01GMY",
-        "uint32": 663522487
+        "uint32": 663522487,
+        "Model": "g_m_y_salvagoon_01"
     }, {
         "Name": "SalvaGoon02GMY",
-        "uint32": 846439045
+        "uint32": 846439045,
+        "Model": "g_m_y_salvagoon_02"
     }, {
         "Name": "SalvaGoon03GMY",
-        "uint32": 62440720
+        "uint32": 62440720,
+        "Model": "g_m_y_salvagoon_03"
     }, {
         "Name": "SbikeAMO",
-        "uint32": 1794381917
+        "uint32": 1794381917,
+        "Model": "u_m_y_sbike"
     }, {
         "Name": "Scdressy01AFY",
-        "uint32": 3680420864
+        "uint32": 3680420864,
+        "Model": "a_f_y_scdressy_01"
     }, {
         "Name": "Scientist01SMM",
-        "uint32": 1092080539
+        "uint32": 1092080539,
+        "Model": "s_m_m_scientist_01"
     }, {
         "Name": "Scrubs01SFY",
-        "uint32": 2874755766
+        "uint32": 2874755766,
+        "Model": "s_f_y_scrubs_01"
     }, {
         "Name": "Security01SMM",
-        "uint32": 3613962792
+        "uint32": 3613962792,
+        "Model": "s_m_m_security_01"
     }, {
         "Name": "Sheriff01SFY",
-        "uint32": 1096929346
+        "uint32": 1096929346,
+        "Model": "s_f_y_sheriff_01"
     }, {
         "Name": "Sheriff01SMY",
-        "uint32": 2974087609
+        "uint32": 2974087609,
+        "Model": "s_m_y_sheriff_01"
     }, {
         "Name": "ShopHighSFM",
-        "uint32": 2923947184
+        "uint32": 2923947184,
+        "Model": "s_f_m_shop_high"
     }, {
         "Name": "ShopLowSFY",
-        "uint32": 2842568196
+        "uint32": 2842568196,
+        "Model": "s_f_y_shop_low"
     }, {
         "Name": "ShopMaskSMY",
-        "uint32": 1846684678
+        "uint32": 1846684678,
+        "Model": "s_m_y_shop_mask"
     }, {
         "Name": "ShopMidSFY",
-        "uint32": 1055701597
+        "uint32": 1055701597,
+        "Model": "s_f_y_shop_mid"
     }, {
         "Name": "Skater01AFY",
-        "uint32": 1767892582
+        "uint32": 1767892582,
+        "Model": "a_f_y_skater_01"
     }, {
         "Name": "Skater01AMM",
-        "uint32": 3654768780
+        "uint32": 3654768780,
+        "Model": "a_m_m_skater_01"
     }, {
         "Name": "Skater01AMY",
-        "uint32": 3250873975
+        "uint32": 3250873975,
+        "Model": "a_m_y_skater_01"
     }, {
         "Name": "Skater02AMY",
-        "uint32": 2952446692
+        "uint32": 2952446692,
+        "Model": "a_m_y_skater_02"
     }, {
         "Name": "Skidrow01AFM",
-        "uint32": 2962707003
+        "uint32": 2962707003,
+        "Model": "a_f_m_skidrow_01"
     }, {
         "Name": "Skidrow01AMM",
-        "uint32": 32417469
+        "uint32": 32417469,
+        "Model": "a_m_m_skidrow_01"
     }, {
         "Name": "SlodHuman",
-        "uint32": 1057201338
+        "uint32": 1057201338,
+        "Model": "slod_human"
     }, {
         "Name": "SlodSmallQuadped",
-        "uint32": 762327283
+        "uint32": 762327283,
+        "Model": "slod_small_quadped"
     }, {
         "Name": "SlodLargeQuadped",
-        "uint32": 2238511874
+        "uint32": 2238511874,
+        "Model": "slod_large_quadped"
     }, {
         "Name": "Snowcop01SMM",
-        "uint32": 451459928
+        "uint32": 451459928,
+        "Model": "s_m_m_snowcop_01"
     }, {
         "Name": "Socenlat01AMM",
-        "uint32": 193817059
+        "uint32": 193817059,
+        "Model": "a_m_m_socenlat_01"
     }, {
         "Name": "Soucent01AFM",
-        "uint32": 1951946145
+        "uint32": 1951946145,
+        "Model": "a_f_m_soucent_01"
     }, {
         "Name": "Soucent01AFO",
-        "uint32": 1039800368
+        "uint32": 1039800368,
+        "Model": "a_f_o_soucent_01"
     }, {
         "Name": "Soucent01AFY",
-        "uint32": 744758650
+        "uint32": 744758650,
+        "Model": "a_f_y_soucent_01"
     }, {
         "Name": "Soucent01AMM",
-        "uint32": 1750583735
+        "uint32": 1750583735,
+        "Model": "a_m_m_soucent_01"
     }, {
         "Name": "Soucent01AMO",
-        "uint32": 718836251
+        "uint32": 718836251,
+        "Model": "a_m_o_soucent_01"
     }, {
         "Name": "Soucent01AMY",
-        "uint32": 3877027275
+        "uint32": 3877027275,
+        "Model": "a_m_y_soucent_01"
     }, {
         "Name": "Soucent02AFM",
-        "uint32": 4079145784
+        "uint32": 4079145784,
+        "Model": "a_f_m_soucent_02"
     }, {
         "Name": "Soucent02AFO",
-        "uint32": 2775443222
+        "uint32": 2775443222,
+        "Model": "a_f_o_soucent_02"
     }, {
         "Name": "Soucent02AFY",
-        "uint32": 1519319503
+        "uint32": 1519319503,
+        "Model": "a_f_y_soucent_02"
     }, {
         "Name": "Soucent02AMM",
-        "uint32": 2674735073
+        "uint32": 2674735073,
+        "Model": "a_m_m_soucent_02"
     }, {
         "Name": "Soucent02AMO",
-        "uint32": 1082572151
+        "uint32": 1082572151,
+        "Model": "a_m_o_soucent_02"
     }, {
         "Name": "Soucent02AMY",
-        "uint32": 2896414922
+        "uint32": 2896414922,
+        "Model": "a_m_y_soucent_02"
     }, {
         "Name": "Soucent03AFY",
-        "uint32": 2276611093
+        "uint32": 2276611093,
+        "Model": "a_f_y_soucent_03"
     }, {
         "Name": "Soucent03AMM",
-        "uint32": 2346291386
+        "uint32": 2346291386,
+        "Model": "a_m_m_soucent_03"
     }, {
         "Name": "Soucent03AMO",
-        "uint32": 238213328
+        "uint32": 238213328,
+        "Model": "a_m_o_soucent_03"
     }, {
         "Name": "Soucent03AMY",
-        "uint32": 3287349092
+        "uint32": 3287349092,
+        "Model": "a_m_y_soucent_03"
     }, {
         "Name": "Soucent04AMM",
-        "uint32": 3271294718
+        "uint32": 3271294718,
+        "Model": "a_m_m_soucent_04"
     }, {
         "Name": "Soucent04AMY",
-        "uint32": 2318861297
+        "uint32": 2318861297,
+        "Model": "a_m_y_soucent_04"
     }, {
         "Name": "Soucentmc01AFM",
-        "uint32": 3454621138
+        "uint32": 3454621138,
+        "Model": "a_f_m_soucentmc_01"
     }, {
         "Name": "Staggrm01AMO",
-        "uint32": 2442448387
+        "uint32": 2442448387,
+        "Model": "u_m_y_staggrm_01"
     }, {
         "Name": "Stbla01AMY",
-        "uint32": 3482496489
+        "uint32": 3482496489,
+        "Model": "a_m_y_stbla_01"
     }, {
         "Name": "Stbla02AMY",
-        "uint32": 2563194959
+        "uint32": 2563194959,
+        "Model": "a_m_y_stbla_02"
     }, {
         "Name": "Stlat01AMY",
-        "uint32": 2255803900
+        "uint32": 2255803900,
+        "Model": "a_m_y_stlat_01"
     }, {
         "Name": "Stlat02AMM",
-        "uint32": 3265820418
+        "uint32": 3265820418,
+        "Model": "a_m_m_stlat_02"
     }, {
         "Name": "Stripper01SFY",
-        "uint32": 1381498905
+        "uint32": 1381498905,
+        "Model": "s_f_y_stripper_01"
     }, {
         "Name": "Stripper02SFY",
-        "uint32": 1846523796
+        "uint32": 1846523796,
+        "Model": "s_f_y_stripper_02"
     }, {
         "Name": "StripperLiteSFY",
-        "uint32": 1544875514
+        "uint32": 1544875514,
+        "Model": "s_f_y_stripperlite"
     }, {
         "Name": "Strperf01SMM",
-        "uint32": 2035992488
+        "uint32": 2035992488,
+        "Model": "s_m_m_strperf_01"
     }, {
         "Name": "Strpreach01SMM",
-        "uint32": 469792763
+        "uint32": 469792763,
+        "Model": "s_m_m_strpreach_01"
     }, {
         "Name": "StrPunk01GMY",
-        "uint32": 4246489531
+        "uint32": 4246489531,
+        "Model": "g_m_y_strpunk_01"
     }, {
         "Name": "StrPunk02GMY",
-        "uint32": 228715206
+        "uint32": 228715206,
+        "Model": "g_m_y_strpunk_02"
     }, {
         "Name": "Strvend01SMM",
-        "uint32": 3465614249
+        "uint32": 3465614249,
+        "Model": "s_m_m_strvend_01"
     }, {
         "Name": "Strvend01SMY",
-        "uint32": 2457805603
+        "uint32": 2457805603,
+        "Model": "s_m_y_strvend_01"
     }, {
         "Name": "Stwhi01AMY",
-        "uint32": 605602864
+        "uint32": 605602864,
+        "Model": "a_m_y_stwhi_01"
     }, {
         "Name": "Stwhi02AMY",
-        "uint32": 919005580
+        "uint32": 919005580,
+        "Model": "a_m_y_stwhi_02"
     }, {
         "Name": "Sunbathe01AMY",
-        "uint32": 3072929548
+        "uint32": 3072929548,
+        "Model": "a_m_y_sunbathe_01"
     }, {
         "Name": "Surfer01AMY",
-        "uint32": 3938633710
+        "uint32": 3938633710,
+        "Model": "a_m_y_surfer_01"
     }, {
         "Name": "Swat01SMY",
-        "uint32": 2374966032
+        "uint32": 2374966032,
+        "Model": "s_m_y_swat_01"
     }, {
         "Name": "Sweatshop01SFM",
-        "uint32": 824925120
+        "uint32": 824925120,
+        "Model": "s_f_m_sweatshop_01"
     }, {
         "Name": "Sweatshop01SFY",
-        "uint32": 2231547570
+        "uint32": 2231547570,
+        "Model": "s_f_y_sweatshop_01"
     }, {
         "Name": "Tattoo01AMO",
-        "uint32": 2494442380
+        "uint32": 2494442380,
+        "Model": "u_m_y_tattoo_01"
     }, {
         "Name": "Tennis01AFY",
-        "uint32": 1426880966
+        "uint32": 1426880966,
+        "Model": "a_f_y_tennis_01"
     }, {
         "Name": "Tennis01AMM",
-        "uint32": 1416254276
+        "uint32": 1416254276,
+        "Model": "a_m_m_tennis_01"
     }, {
         "Name": "Topless01AFY",
-        "uint32": 2633130371
+        "uint32": 2633130371,
+        "Model": "a_f_y_topless_01"
     }, {
         "Name": "Tourist01AFM",
-        "uint32": 1347814329
+        "uint32": 1347814329,
+        "Model": "a_f_m_tourist_01"
     }, {
         "Name": "Tourist01AFY",
-        "uint32": 1446741360
+        "uint32": 1446741360,
+        "Model": "a_f_y_tourist_01"
     }, {
         "Name": "Tourist01AMM",
-        "uint32": 3365863812
+        "uint32": 3365863812,
+        "Model": "a_m_m_tourist_01"
     }, {
         "Name": "Tourist02AFY",
-        "uint32": 2435054400
+        "uint32": 2435054400,
+        "Model": "a_f_y_tourist_02"
     }, {
         "Name": "Tramp01AFM",
-        "uint32": 1224306523
+        "uint32": 1224306523,
+        "Model": "a_f_m_tramp_01"
     }, {
         "Name": "Tramp01AMM",
-        "uint32": 516505552
+        "uint32": 516505552,
+        "Model": "a_m_m_tramp_01"
     }, {
         "Name": "Tramp01AMO",
-        "uint32": 390939205
+        "uint32": 390939205,
+        "Model": "a_m_o_tramp_01"
     }, {
         "Name": "TrampBeac01AFM",
-        "uint32": 2359345766
+        "uint32": 2359345766,
+        "Model": "a_f_m_trampbeac_01"
     }, {
         "Name": "TrampBeac01AMM",
-        "uint32": 1404403376
+        "uint32": 1404403376,
+        "Model": "a_m_m_trampbeac_01"
     }, {
         "Name": "Tranvest01AMM",
-        "uint32": 3773208948
+        "uint32": 3773208948,
+        "Model": "a_m_m_tranvest_01"
     }, {
         "Name": "Tranvest02AMM",
-        "uint32": 4144940484
+        "uint32": 4144940484,
+        "Model": "a_m_m_tranvest_02"
     }, {
         "Name": "Trucker01SMM",
-        "uint32": 1498487404
+        "uint32": 1498487404,
+        "Model": "s_m_m_trucker_01"
     }, {
         "Name": "Ups01SMM",
-        "uint32": 2680389410
+        "uint32": 2680389410,
+        "Model": "s_m_m_ups_01"
     }, {
         "Name": "Ups02SMM",
-        "uint32": 3502104854
+        "uint32": 3502104854,
+        "Model": "s_m_m_ups_02"
     }, {
         "Name": "Uscg01SMY",
-        "uint32": 3389018345
+        "uint32": 3389018345,
+        "Model": "s_m_y_uscg_01"
     }, {
         "Name": "Vagos01GFY",
-        "uint32": 1520708641
+        "uint32": 1520708641,
+        "Model": "g_f_y_vagos_01"
     }, {
         "Name": "Valet01SMY",
-        "uint32": 999748158
+        "uint32": 999748158,
+        "Model": "s_m_y_valet_01"
     }, {
         "Name": "Vindouche01AMY",
-        "uint32": 3247667175
+        "uint32": 3247667175,
+        "Model": "a_m_y_vindouche_01"
     }, {
         "Name": "Vinewood01AFY",
-        "uint32": 435429221
+        "uint32": 435429221,
+        "Model": "a_f_y_vinewood_01"
     }, {
         "Name": "Vinewood01AMY",
-        "uint32": 1264851357
+        "uint32": 1264851357,
+        "Model": "a_m_y_vinewood_01"
     }, {
         "Name": "Vinewood02AFY",
-        "uint32": 3669401835
+        "uint32": 3669401835,
+        "Model": "a_f_y_vinewood_02"
     }, {
         "Name": "Vinewood02AMY",
-        "uint32": 1561705728
+        "uint32": 1561705728,
+        "Model": "a_m_y_vinewood_02"
     }, {
         "Name": "Vinewood03AFY",
-        "uint32": 933092024
+        "uint32": 933092024,
+        "Model": "a_f_y_vinewood_03"
     }, {
         "Name": "Vinewood03AMY",
-        "uint32": 534725268
+        "uint32": 534725268,
+        "Model": "a_m_y_vinewood_03"
     }, {
         "Name": "Vinewood04AFY",
-        "uint32": 4209271110
+        "uint32": 4209271110,
+        "Model": "a_f_y_vinewood_04"
     }, {
         "Name": "Vinewood04AMY",
-        "uint32": 835315305
+        "uint32": 835315305,
+        "Model": "a_m_y_vinewood_04"
     }, {
         "Name": "Waiter01SMY",
-        "uint32": 2907468364
+        "uint32": 2907468364,
+        "Model": "s_m_y_waiter_01"
     }, {
         "Name": "WinClean01SMY",
-        "uint32": 1426951581
+        "uint32": 1426951581,
+        "Model": "s_m_y_winclean_01"
     }, {
         "Name": "Xmech01SMY",
-        "uint32": 1142162924
+        "uint32": 1142162924,
+        "Model": "s_m_y_xmech_01"
     }, {
         "Name": "Xmech02SMY",
-        "uint32": 3189832196
+        "uint32": 3189832196,
+        "Model": "s_m_y_xmech_02"
     }, {
         "Name": "Xmech02SMYMP",
-        "uint32": 1762949645
+        "uint32": 1762949645,
+        "Model": "s_m_y_xmech_02_mp"
     }, {
         "Name": "Yoga01AFY",
-        "uint32": 3290105390
+        "uint32": 3290105390,
+        "Model": "a_f_y_yoga_01"
     }, {
         "Name": "Yoga01AMY",
-        "uint32": 2869588309
+        "uint32": 2869588309,
+        "Model": "a_m_y_yoga_01"
     }
 ]
