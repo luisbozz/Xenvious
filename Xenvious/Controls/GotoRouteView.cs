@@ -250,7 +250,17 @@ namespace Xenvious
             cross.SetResourceReference(Shape.StrokeProperty, "TextColor");
             var here = new Button { Content = cross, Width = 30, Height = 30, VerticalAlignment = VerticalAlignment.Top, ToolTip = T("gr_tocursor", "Move this point to the cursor") };
             here.SetResourceReference(StyleProperty, "FieldIconButton");
-            here.Click += (_, e) => { _pointBox.SelectedIndex = index; _toCursor(index); Refresh(); e.Handled = true; };
+            here.Click += (_, e) =>
+            {
+                // The page moves the selected point, so select it for the move, then give the
+                // previous selection back: moving must not open or close any step.
+                int before = _pointBox.SelectedIndex;
+                _toCursor(index);
+                if (_pointBox.SelectedIndex != before)
+                    _pointBox.SelectedIndex = before;
+                Refresh();
+                e.Handled = true;
+            };
             Grid.SetColumn(here, 2);
             grid.Children.Add(here);
 
