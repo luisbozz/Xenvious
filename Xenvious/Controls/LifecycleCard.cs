@@ -115,6 +115,16 @@ namespace Xenvious
             return body;
         }
 
+        /// <summary>Adds a section under "disappears" (the Actors page puts its respawn and action settings here).</summary>
+        public void AddSection(string key, string fallback, string brush, string icon, FrameworkElement content)
+        {
+            if (Content is Panel body)
+            {
+                body.Children.Add(Separator());
+                body.Children.Add(Section(key, fallback, new TextBlock { FontSize = 12, FontWeight = FontWeights.SemiBold }, brush, icon, content));
+            }
+        }
+
         private static Rectangle Separator()
         {
             var line = new Rectangle { Height = 1, Margin = new Thickness(0, 12, 0, 12) };
