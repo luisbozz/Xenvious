@@ -693,6 +693,12 @@
                                 </Style>
                                 <SolidColorBrush x:Key="DashPropBrush" Color="#FF6C5CE7"/>
                                 <SolidColorBrush x:Key="DashDynamicBrush" Color="#FFC08BFF"/>
+                                <!-- Blip colours of the creator: actors red, vehicles blue, weapons grey. -->
+                                <SolidColorBrush x:Key="DashActorBrush" Color="#FFE03232"/>
+                                <SolidColorBrush x:Key="DashVehicleBrush" Color="#FF2F5C73"/>
+                                <SolidColorBrush x:Key="DashWeaponBrush" Color="#FF8A8A8A"/>
+                                <SolidColorBrush x:Key="DashFixtureBrush" Color="#FFC2570C"/>
+                                <SolidColorBrush x:Key="DashZoneBrush" Color="#FF2EA37F"/>
                                 <!-- Same shapes as Advanced Prop Placement: light main action, grey secondary ones. -->
                                 <Style x:Key="DashButton" TargetType="{x:Type Button}">
                                     <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>

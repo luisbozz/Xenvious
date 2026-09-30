@@ -23,6 +23,8 @@ namespace Xenvious
             public Func<string> Read;
             public Action Open;
             public Brush Dot;
+            // Drawn instead of the dot (weapons get the pistol from the Edit menu).
+            public Geometry Icon;
             public TextBlock Value;
         }
 
@@ -179,32 +181,37 @@ namespace Xenvious
                 Open = () => { OpenEditPage(PageProps); PageInnerProps.SelectedItem = PageInnerDynamicProps; }
             });
 
-            var actors = new DashCount { Label = TranslateOr("dash_actors", "Actors"), Read = () => CountOf(GTA.Offsets.Editor.Actor.number), Open = () => OpenEditPage(PageActor) };
-            var vehicles = new DashCount { Label = TranslateOr("vehicles", "Vehicles"), Read = () => CountOf(GTA.Offsets.Editor.Vehicle.number), Open = () => OpenEditPage(PageVehicle) };
-            var weapons = new DashCount { Label = TranslateOr("weapons", "Weapons"), Read = () => CountOf(GTA.Offsets.Editor.Weapon.number), Open = () => OpenEditPage(PageWeapon) };
-            var zones = new DashCount { Label = TranslateOr("zones", "Zones"), Read = () => CountOf(GTA.Offsets.Editor.Zones.number), Open = () => OpenEditPage(PageZone) };
-            var doors = new DashCount { Label = TranslateOr("doors", "Doors"), Read = () => CountOf(GTA.Offsets.Editor.Doors.number), Open = () => OpenEditPage(PageDoors) };
+            // Actors, vehicles and weapons in the colours of their blips in the creator.
+            var actors = new DashCount { Label = TranslateOr("dash_actors", "Actors"), Dot = DashBrush("DashActorBrush"), Read = () => CountOf(GTA.Offsets.Editor.Actor.number), Open = () => OpenEditPage(PageActor) };
+            var vehicles = new DashCount { Label = TranslateOr("vehicles", "Vehicles"), Dot = DashBrush("DashVehicleBrush"), Read = () => CountOf(GTA.Offsets.Editor.Vehicle.number), Open = () => OpenEditPage(PageVehicle) };
+            var weapons = new DashCount { Label = TranslateOr("weapons", "Weapons"), Dot = DashBrush("DashWeaponBrush"), Icon = TryFindResource("EditIconWeapon") as Geometry, Read = () => CountOf(GTA.Offsets.Editor.Weapon.number), Open = () => OpenEditPage(PageWeapon) };
+            var zones = new DashCount { Label = TranslateOr("zones", "Zones"), Dot = DashBrush("DashZoneBrush"), Read = () => CountOf(GTA.Offsets.Editor.Zones.number), Open = () => OpenEditPage(PageZone) };
+            var fixtures = new DashCount { Label = TranslateOr("editnav_fixtures", "Fixtures"), Dot = DashBrush("DashFixtureBrush"), Read = () => CountOf(GTA.Offsets.Editor.DHProp.number), Open = () => BtnSectioncentity_Click(null, null) };
 
             switch (creator)
             {
-                // Actors and doors exist in every creator except the race creator.
-                case "fm_race_creator": _dashCounts.AddRange(new[] { vehicles, weapons, zones }); break;
-                case "fm_lts_creator": _dashCounts.AddRange(new[] { actors, doors, vehicles, weapons, zones }); break;
-                case "fm_capture_creator": _dashCounts.AddRange(new[] { actors, doors, vehicles, weapons, zones }); break;
-                case "fm_deathmatch_creator": _dashCounts.AddRange(new[] { actors, doors, vehicles, zones }); break;
-                case "fm_survival_creator": _dashCounts.AddRange(new[] { actors, doors, weapons, vehicles }); break;
-                default: _dashCounts.AddRange(new[] { actors, doors, vehicles, weapons, zones }); break;
+                // Actors exist in every creator except the race creator, fixtures in all of them.
+                case "fm_race_creator": _dashCounts.AddRange(new[] { fixtures, vehicles, weapons, zones }); break;
+                case "fm_lts_creator": _dashCounts.AddRange(new[] { fixtures, actors, vehicles, weapons, zones }); break;
+                case "fm_capture_creator": _dashCounts.AddRange(new[] { fixtures, actors, vehicles, weapons, zones }); break;
+                case "fm_deathmatch_creator": _dashCounts.AddRange(new[] { fixtures, actors, vehicles, zones }); break;
+                case "fm_survival_creator": _dashCounts.AddRange(new[] { fixtures, actors, weapons, vehicles }); break;
+                default: _dashCounts.AddRange(new[] { fixtures, actors, vehicles, weapons, zones }); break;
             }
 
             foreach (var count in _dashCounts)
                 DashCounts.Children.Add(CountTile(count));
         }
 
+        private Brush DashBrush(string key) => (Brush)DashTileProps.FindResource(key);
+
         private Border CountTile(DashCount count)
         {
             count.Value = new TextBlock { FontSize = 17, FontWeight = FontWeights.Bold, Text = "–" };
             var label = new StackPanel { Orientation = Orientation.Horizontal };
-            if (count.Dot != null)
+            if (count.Icon != null)
+                label.Children.Add(new Path { Data = count.Icon, Fill = count.Dot, Stretch = Stretch.Uniform, Width = 13, Height = 9, Margin = new Thickness(0, 0, 5, 0), VerticalAlignment = VerticalAlignment.Center });
+            else if (count.Dot != null)
                 label.Children.Add(new Ellipse { Width = 8, Height = 8, Fill = count.Dot, Margin = new Thickness(0, 0, 5, 0), VerticalAlignment = VerticalAlignment.Center });
             var labelText = new TextBlock { Text = count.Label, FontSize = 12, FontWeight = FontWeights.Bold };
             labelText.SetResourceReference(TextBlock.ForegroundProperty, "NavMutedBrush");
