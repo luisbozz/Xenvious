@@ -82,7 +82,7 @@ namespace Xenvious
             foreach (FrameworkElement e in BodyOf(proofs).Children.Cast<FrameworkElement>().ToList())
                 death.Children.Add(Detach(e));
 
-            var advanced = new GroupCard("actorgroup") { Title = TranslateOr("advanced", "Advanced"), Margin = new Thickness(0, 0, 0, 12) };
+            var advanced = new GroupCard("actorgroup") { Title = TranslateOr("advanced", "Advanced"), Margin = new Thickness(0, 0, 0, 12), IsExpanded = false };
             advanced.Add("ag_relations", "Relations", relations);
             advanced.Add("ag_behaviour", "Behaviour", Detach(BodyOf(behaviour)));
             advanced.Add("ag_vehicle", "Vehicle", vehicle);
@@ -110,6 +110,23 @@ namespace Xenvious
                        new Global(GTA.Offsets.Editor.Actor.locy + GTA.Offsets.Editor.Actor.NEXT * ddactorno.SelectedIndex).Get<float>()),
                 () => Btnactorgetlocgoto.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent)));
             gotoBody.Children.Insert(0, _actorRoute);
+            // Goto points in a collapsible card, closed by default: most actors never move.
+            var gotoSection = new SectionCard
+            {
+                Style = (Style)FindResource(typeof(SectionCard)),
+                Title = TranslateOr("actorgoto", "Goto Points"),
+                Icon = System.Windows.Media.Geometry.Parse("M5,19 L9,11 L14,14 L19,5"),
+                CanCollapse = true,
+                IsExpanded = false,
+                Margin = new Thickness(0, 0, 0, 12),
+            };
+            _actorRoute.Changed += n => gotoSection.Summary = n == 0 ? TranslateOr("gr_none", "none") : string.Format(TranslateOr("gr_count", "{0} points"), n);
+
+            // Combat like the mockup: style as tiles, accuracy and health as stepped sliders.
+            TextBlock LabelOf(ComboBox box) => box.Parent is Panel p && p.Children.IndexOf(box) > 0 ? p.Children[p.Children.IndexOf(box) - 1] as TextBlock : null;
+            ComboViews.Tiles(ddActorcombat, 3);
+            ComboViews.Steps(ddActoraccu, LabelOf(ddActoraccu));
+            ComboViews.Steps(ddActorhealth, LabelOf(ddActorhealth));
             foreach (var box in new[] { tbactoractvx, tbactoractvy, tbactorlocx, tbactorlocy })
                 box.TextChanged += (_, __) => { if (!box.IsKeyboardFocused) _actorRoute.Refresh(); };
             ddactorno.SelectionChanged += (_, __) => _actorRoute.Refresh();
@@ -123,18 +140,20 @@ namespace Xenvious
             Detach(ActorExtraRules);
             masonry.Children.Clear();
 
+            // Left: who. Middle: rules, then lifecycle. Right: goto points, then advanced.
             who.Children.Add(placement);
             who.Children.Add(combat);
-            who.Children.Add(advanced);
-            var route = new StackPanel();
-            route.Children.Add(gotoCard);
             var when = new StackPanel();
-            when.Children.Add(lifecycle);
             when.Children.Add(ActorExtraRules);
+            when.Children.Add(lifecycle);
+            gotoSection.Content = Detach(gotoBody);
+            var more = new StackPanel();
+            more.Children.Add(gotoSection);
+            more.Children.Add(advanced);
             masonry.MaxColumns = 3;
             masonry.Children.Add(who);
-            masonry.Children.Add(route);
             masonry.Children.Add(when);
+            masonry.Children.Add(more);
         }
     }
 }

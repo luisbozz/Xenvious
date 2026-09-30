@@ -20,6 +20,9 @@ namespace Xenvious
     {
         public const int Points = 12;
 
+        /// <summary>After each refresh: how many points are set.</summary>
+        public event Action<int> Changed;
+
         private readonly ComboBox _pointBox;
         private readonly Func<int> _actor;
         private readonly Func<int, (float X, float Y)> _read;
@@ -69,7 +72,7 @@ namespace Xenvious
         {
             if (!Live) return false;
             var p = _read(i);
-            return p.X != 0 || p.Y != 0;
+            return !float.IsNaN(p.X) && !float.IsNaN(p.Y) && (p.X != 0 || p.Y != 0);
         }
 
         /// <summary>Rereads the points (after the page loaded another actor or moved a point).</summary>
@@ -78,6 +81,7 @@ namespace Xenvious
             _list.Children.Clear();
             var set = Enumerable.Range(0, Points).Where(IsSet).ToList();
             _empty.Visibility = set.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+            Changed?.Invoke(set.Count);
             (float X, float Y)? prev = Live ? _start() : ((float, float)?)null;
             foreach (int i in set)
             {
