@@ -236,7 +236,7 @@ namespace Xenvious
 
             FrameworkElement Segment(List<ToggleButton> list, string[] labels, Action<int> pick)
             {
-                var seg = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 0, 16, 6) };
+                var seg = new StackPanel { Orientation = Orientation.Horizontal };
                 for (int i = 0; i < labels.Length; i++)
                 {
                     int n = i;
@@ -245,7 +245,7 @@ namespace Xenvious
                     list.Add(b);
                     seg.Children.Add(b);
                 }
-                return seg;
+                return NavBox(seg);
             }
 
             bar.Children.Add(Segment(_areaTabs, new[] { T("pa_area1", "Play area 1"), T("pa_area2", "Play area 2") }, n => _area = n + 1));
@@ -294,12 +294,21 @@ namespace Xenvious
         // "Also for": team 1 to 4 as nav tabs whose underline is the team colour (the tab's
         // accent brushes are overridden). Checked teams get every change; the shown team is
         // always checked.
+        // Tabs sit in the same dark box as the header navigation.
+        private FrameworkElement NavBox(FrameworkElement tabs)
+        {
+            var box = new Border { Style = (Style)FindResource("NavGroup"), Child = tabs };
+            box.Margin = new Thickness(0, 0, 12, 6);
+            return box;
+        }
+
         private FrameworkElement TeamPicker()
         {
             var panel = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 0, 16, 6) };
             var alsoLabel = new TextBlock { Text = T("pa_alsofor", "Also for"), VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(0, 0, 6, 0), FontSize = 14 };
             alsoLabel.SetResourceReference(TextBlock.ForegroundProperty, "NavMutedBrush");
             panel.Children.Add(alsoLabel);
+            var tabs = new StackPanel { Orientation = Orientation.Horizontal };
             for (int t = 0; t < PlayAreas.Teams; t++)
             {
                 int team = t;
@@ -311,8 +320,9 @@ namespace Xenvious
                 }
                 tab.Click += (_, __) => ToggleTeam(team);
                 _teamTabs.Add(tab);
-                panel.Children.Add(tab);
+                tabs.Children.Add(tab);
             }
+            panel.Children.Add(NavBox(tabs));
             _copyOnAdd.Style = (Style)FindResource("FormToggle");
             _copyOnAdd.VerticalAlignment = VerticalAlignment.Center;
             _copyOnAdd.Margin = new Thickness(10, 0, 8, 0);

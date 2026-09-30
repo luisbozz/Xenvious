@@ -21,9 +21,9 @@ namespace Xenvious
         /// Turns the heading field into "Heading · 135°" with a slider and the box beside it. The
         /// box moves into the slider row; its old label is hidden.
         /// </summary>
-        public static HeadingSlider Attach(TextBox box)
+        public static HeadingSlider Attach(TextBox box, Action refresh = null)
         {
-            var slider = new HeadingSlider { _box = box, Margin = new Thickness(0, 0, 0, 10) };
+            var slider = new HeadingSlider { _box = box, _refresh = refresh, Margin = new Thickness(0, 0, 0, 10) };
             var home = box.Parent as Panel;
             int at = home?.Children.IndexOf(box) ?? -1;
             if (home != null && at > 0 && home.Children[at - 1] is TextBlock oldLabel)
@@ -37,8 +37,17 @@ namespace Xenvious
             var target = row == box ? home : row.Parent as Panel;
             int index = row == box ? at : target?.Children.IndexOf(row) + 1 ?? -1;
             home?.Children.Remove(box);
-            if (home is StackPanel c && c.Parent is Grid && c.Children.Cast<UIElement>().All(e => e.Visibility != Visibility.Visible))
+            if (home is StackPanel c && c.Parent is Grid grid && c.Children.Cast<UIElement>().All(e => e.Visibility != Visibility.Visible))
+            {
                 c.Visibility = Visibility.Collapsed;
+                // The field that shared the row (e.g. model variation) takes the whole width.
+                var rest = grid.Children.OfType<FrameworkElement>().Where(e => e != c && e.Visibility == Visibility.Visible).ToList();
+                if (rest.Count == 1)
+                {
+                    Grid.SetColumn(rest[0], 0);
+                    Grid.SetColumnSpan(rest[0], Math.Max(1, grid.ColumnDefinitions.Count));
+                }
+            }
             slider.Build();
             if (target != null && index >= 0)
                 target.Children.Insert(Math.Min(index, target.Children.Count), slider);
@@ -46,6 +55,11 @@ namespace Xenvious
         }
 
         private readonly TextBlock _label = new TextBlock();
+        private Action _refresh;
+        // The creator shows a new heading only after a refresh (a rebuild, what Enter in the box
+        // does). Refreshing on every slider step would rebuild constantly, so it waits until the
+        // slider rests for a moment or the thumb is let go.
+        private readonly System.Windows.Threading.DispatcherTimer _settle = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromMilliseconds(400) };
 
         private void Build()
         {
@@ -64,6 +78,9 @@ namespace Xenvious
             ComboViews.Tint(_slider);
             Children.Add(_slider);
 
+            _settle.Tick += (_, __) => { _settle.Stop(); _refresh?.Invoke(); };
+            _slider.AddHandler(System.Windows.Controls.Primitives.Thumb.DragCompletedEvent,
+                new System.Windows.Controls.Primitives.DragCompletedEventHandler((_, __) => { if (_settle.IsEnabled) { _settle.Stop(); _refresh?.Invoke(); } }));
             _slider.ValueChanged += (_, __) =>
             {
                 ShowLabel(_slider.Value);
@@ -72,6 +89,8 @@ namespace Xenvious
                 string text = Math.Round(_slider.Value, 1).ToString(CultureInfo.CurrentCulture);
                 if (_box.Text != text)
                     _box.Text = text;
+                _settle.Stop();
+                _settle.Start();
             };
             _box.TextChanged += (_, __) => FromBox();
             _slider.IsEnabled = north.IsEnabled = _box.IsEnabled;

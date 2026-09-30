@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -82,7 +83,7 @@ namespace Xenvious
             foreach (FrameworkElement e in BodyOf(proofs).Children.Cast<FrameworkElement>().ToList())
                 death.Children.Add(Detach(e));
 
-            var advanced = new GroupCard("actorgroup") { Title = TranslateOr("advanced", "Advanced"), Margin = new Thickness(0, 0, 0, 12), IsExpanded = false };
+            var advanced = new GroupCard("actorgroup") { Title = TranslateOr("advanced", "Advanced"), Margin = new Thickness(0, 0, 0, 12), IsExpanded = true };
             advanced.Add("ag_relations", "Relations", relations);
             advanced.Add("ag_behaviour", "Behaviour", Detach(BodyOf(behaviour)));
             advanced.Add("ag_vehicle", "Vehicle", vehicle);
@@ -125,6 +126,18 @@ namespace Xenvious
             // Combat like the mockup: style as tiles, accuracy and health as stepped sliders.
             TextBlock LabelOf(ComboBox box) => box.Parent is Panel p && p.Children.IndexOf(box) > 0 ? p.Children[p.Children.IndexOf(box) - 1] as TextBlock : null;
             ComboViews.Tiles(ddActorcombat, 3);
+            // Combat style first and full width; idle then gets its row alone.
+            if (ddActorcombat.Parent is StackPanel styleCell && styleCell.Parent is Grid styleGrid)
+            {
+                styleGrid.Children.Remove(styleCell);
+                Grid.SetColumn(styleCell, 0);
+                combatBody.Children.Insert(0, styleCell);
+                foreach (FrameworkElement rest in styleGrid.Children)
+                {
+                    Grid.SetColumn(rest, 0);
+                    Grid.SetColumnSpan(rest, Math.Max(1, styleGrid.ColumnDefinitions.Count));
+                }
+            }
             ComboViews.Steps(ddActoraccu, LabelOf(ddActoraccu));
             ComboViews.Steps(ddActorhealth, LabelOf(ddActorhealth));
             foreach (var box in new[] { tbactoractvx, tbactoractvy, tbactorlocx, tbactorlocy })

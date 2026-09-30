@@ -11,7 +11,7 @@ namespace Xenvious
     /// </summary>
     public class GroupCard : SectionCard
     {
-        private readonly WrapPanel _tabs = new WrapPanel { Margin = new Thickness(0, 0, 0, 10) };
+        private readonly WrapPanel _tabs = new WrapPanel();
         private readonly ContentControl _host = new ContentControl();
         private readonly List<(ToggleButton Tab, FrameworkElement Content)> _groups = new List<(ToggleButton, FrameworkElement)>();
         private readonly string _configKey;
@@ -22,14 +22,17 @@ namespace Xenvious
             Style = (Style)MainWindow.Instance.FindResource(typeof(SectionCard));
             CanCollapse = true;
             var body = new StackPanel();
-            body.Children.Add(_tabs);
+            // Same dark box as the header navigation.
+            var box = new Border { Child = _tabs, HorizontalAlignment = HorizontalAlignment.Left, Margin = new Thickness(0, 0, 0, 12) };
+            box.SetResourceReference(StyleProperty, "NavGroup");
+            body.Children.Add(box);
             body.Children.Add(_host);
             Content = body;
         }
 
         public void Add(string key, string fallback, FrameworkElement content)
         {
-            var tab = new ToggleButton { Style = (Style)MainWindow.Instance.FindResource("NavTab"), Content = MainWindow.Instance.TranslateOr(key, fallback), FontSize = 13, Padding = new Thickness(9, 5, 9, 5), Margin = new Thickness(0, 0, 4, 4) };
+            var tab = new ToggleButton { Style = (Style)MainWindow.Instance.FindResource("NavTab"), Content = MainWindow.Instance.TranslateOr(key, fallback), FontSize = 13, Padding = new Thickness(9, 5, 9, 5) };
             int index = _groups.Count;
             tab.Click += (_, __) => Select(index, true);
             _groups.Add((tab, content));

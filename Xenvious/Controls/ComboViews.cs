@@ -23,8 +23,11 @@ namespace Xenvious
             for (int i = 0; i < box.Items.Count; i++)
             {
                 int index = i;
-                var tile = new ToggleButton { Content = ItemText(box.Items[i]), Margin = new Thickness(0, 0, 6, 6), MinHeight = 34, Padding = new Thickness(8, 5, 8, 5), FontSize = 13.5 };
+                // A wrapping text block: the tile grows instead of cutting the text off.
+                var text = new TextBlock { Text = ItemText(box.Items[i]), TextWrapping = TextWrapping.Wrap, TextAlignment = TextAlignment.Center, FontSize = 13, FontWeight = FontWeights.SemiBold };
+                var tile = new ToggleButton { Content = text, Margin = new Thickness(0, 0, 6, 6), MinHeight = 36, Height = double.NaN, Padding = new Thickness(6, 5, 6, 5) };
                 tile.SetResourceReference(FrameworkElement.StyleProperty, "ChoiceTile");
+                tile.MinHeight = 36;
                 tile.Click += (_, __) => { box.SelectedIndex = index; Sync(); };
                 tiles.Add(tile);
                 grid.Children.Add(tile);
@@ -71,14 +74,13 @@ namespace Xenvious
 
         /// <summary>
         /// The app's slider draws its right part in the card colour; on a card it looks like a
-        /// lone thumb. A local override gives the track the line colour and the filled part the accent.
+        /// lone thumb. A local override gives that part the darker field colour; the filled part
+        /// stays the app's grey.
         /// </summary>
         public static void Tint(Slider slider)
         {
-            if (MainWindow.Instance?.TryFindResource("LineBrush") is Brush line)
-                slider.Resources["SectionBackgroundBrush"] = line;
-            if (MainWindow.Instance?.TryFindResource("AccentBrush") is Brush accent)
-                slider.Resources["ButtonHoverBackgroundBrush"] = accent;
+            if (MainWindow.Instance?.TryFindResource("DeepBrush") is Brush deep)
+                slider.Resources["SectionBackgroundBrush"] = deep;
         }
 
         private static void Replace(ComboBox box, FrameworkElement with)
