@@ -101,16 +101,100 @@ namespace Xenvious
             var raw = BodyOf(oldRule);
             advanced.Add("ag_raw", "Raw rule data", Detach(raw));
 
-            // Goto: route above the page's point fields; the number box is replaced by the list.
+            // Goto: the route view gets the page's own fields, regrouped. Route-wide settings
+            // (loop, vehicle speed, hover/rappel) go on top; the point's fields under its step.
             var gotoBody = BodyOf(gotoCard);
             ((FrameworkElement)ddActorgoto.Parent).Visibility = Visibility.Collapsed;
-            _actorRoute = new GotoRouteView(ddActorgoto, () => ddactorno.SelectedIndex,
-                i => (new Global(GTA.Offsets.Editor.Actor.actvx + GTA.Offsets.Editor.Actor.NEXT * ddactorno.SelectedIndex + i * GTA.Offsets.Editor.Actor.actv_NEXT).Get<float>(),
-                      new Global(GTA.Offsets.Editor.Actor.actvy + GTA.Offsets.Editor.Actor.NEXT * ddactorno.SelectedIndex + i * GTA.Offsets.Editor.Actor.actv_NEXT).Get<float>()),
+            FrameworkElement CellOf(FrameworkElement box, string key = null, string fallback = null)
+            {
+                var cell = box.Parent is StackPanel c && c.Children.Count <= 2 ? (FrameworkElement)c : box;
+                if (key != null && cell is StackPanel sc && sc.Children.Count == 2 && sc.Children[0] is TextBlock label)
+                    label.Text = TranslateOr(key, fallback);
+                return Detach(cell);
+            }
+            Grid Pair(FrameworkElement a, FrameworkElement b)
+            {
+                var g = new Grid();
+                g.ColumnDefinitions.Add(new ColumnDefinition());
+                g.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(10) });
+                g.ColumnDefinitions.Add(new ColumnDefinition());
+                g.Children.Add(a);
+                if (b != null) { Grid.SetColumn(b, 2); g.Children.Add(b); }
+                return g;
+            }
+            var routeOptions = new StackPanel();
+            foreach (var flag in new FrameworkElement[] { cbactoractvloop, cbactoractvhadest, cbactoractvradest, cbactoractvrpadest })
+                routeOptions.Children.Add(Detach(RowOf(flag)));
+            var vehSpeed = CellOf(tbactoractvvehspeed, "gr_vehspeed", "Vehicle speed (whole route)");
+            var sizeCell = CellOf(tbactoractvsize, "gr_radius", "Arrival radius");
+            routeOptions.Children.Add(Pair(vehSpeed, null));
+
+            var details = new StackPanel();
+            details.Children.Add(Detach(RowOf(tbactoractvx)));
+            details.Children.Add(Pair(sizeCell, CellOf(tbactoractvspeed, "gr_speed", "Speed")));
+            details.Children.Add(Pair(CellOf(tbactoractvawt, "gr_waitms", "Wait (ms)"), CellOf(tbactoractvawlr, "gr_trigr", "Trigger radius")));
+            var trigger = Detach(RowOf(tbactoractvawlx));
+            details.Children.Add(trigger);
+            var rawGoto = new Expander { Header = TranslateOr("gr_raw", "Raw values"), IsExpanded = false, Margin = new Thickness(0, 4, 0, 0) };
+            rawGoto.SetResourceReference(StyleProperty, "CardExpander");
+            var rawPanel = new StackPanel { Margin = new Thickness(0, 8, 0, 0) };
+            rawPanel.Children.Add(Pair(CellOf(tbactoractvachf), CellOf(tbactoractvawr)));
+            rawPanel.Children.Add(Pair(CellOf(tbactoractvags), CellOf(tbactoractvbs)));
+            rawGoto.Content = rawPanel;
+            details.Children.Add(rawGoto);
+            // Whatever is left of the old card body (separators, labels) stays out of sight.
+            gotoBody.Visibility = Visibility.Collapsed;
+
+            long Point(long field, int i) => field + GTA.Offsets.Editor.Actor.NEXT * ddactorno.SelectedIndex + i * GTA.Offsets.Editor.Actor.actv_NEXT;
+            bool GotoLive() => m.IsProcOpen && ddactorno.SelectedIndex >= 0 && GTA.Offsets.Editor.Actor.actv_NEXT > 0;
+            _actorRoute = new GotoRouteView(ddActorgoto, GotoLive,
+                i => new GotoPoint
+                {
+                    X = new Global(Point(GTA.Offsets.Editor.Actor.actvx, i)).Get<float>(),
+                    Y = new Global(Point(GTA.Offsets.Editor.Actor.actvy, i)).Get<float>(),
+                    Z = new Global(Point(GTA.Offsets.Editor.Actor.actvz, i)).Get<float>(),
+                    WaitMs = new Global(Point(GTA.Offsets.Editor.Actor.awt, i)).Get<int>(),
+                    Bits = new Global(Point(GTA.Offsets.Editor.Actor.actv_bs, i)).Get<int>(),
+                },
                 () => (new Global(GTA.Offsets.Editor.Actor.locx + GTA.Offsets.Editor.Actor.NEXT * ddactorno.SelectedIndex).Get<float>(),
                        new Global(GTA.Offsets.Editor.Actor.locy + GTA.Offsets.Editor.Actor.NEXT * ddactorno.SelectedIndex).Get<float>()),
-                () => Btnactorgetlocgoto.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent)));
-            gotoBody.Children.Insert(0, _actorRoute);
+                i =>
+                {
+                    ddActorgoto.SelectedIndex = i;
+                    Btnactorgetlocgoto.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                },
+                (a, b) =>
+                {
+                    // A point is 28 slots from f_0 (the one-int bit array's size slot, left alone) on.
+                    long start = GTA.Offsets.Editor.Actor.actv_bs - 1;
+                    for (int f = 1; f < GTA.Offsets.Editor.Actor.actv_NEXT; f++)
+                    {
+                        var ga = new Global(Point(start + f, a));
+                        var gb = new Global(Point(start + f, b));
+                        int va = ga.Get<int>(), vb = gb.Get<int>();
+                        ga.SetInt(vb);
+                        gb.SetInt(va);
+                    }
+                    GetActorACTVValues();
+                },
+                (i, bit, on) =>
+                {
+                    var g = new Global(Point(GTA.Offsets.Editor.Actor.actv_bs, i));
+                    int v = g.Get<int>();
+                    g.SetInt(on ? v | (1 << bit) : v & ~(1 << bit));
+                    GetActorACTVValues();
+                },
+                routeOptions, details)
+            {
+                DeleteLast = i =>
+                {
+                    foreach (var f in new[] { GTA.Offsets.Editor.Actor.actvx, GTA.Offsets.Editor.Actor.actvy, GTA.Offsets.Editor.Actor.actvz })
+                        new Global(Point(f, i)).SetFloat(0f);
+                    GetActorACTVValues();
+                },
+            };
+            gotoBody = new StackPanel();
+            gotoBody.Children.Add(_actorRoute);
             // Goto points in a collapsible card, closed by default: most actors never move.
             var gotoSection = new SectionCard
             {
@@ -140,7 +224,7 @@ namespace Xenvious
             }
             ComboViews.Steps(ddActoraccu, LabelOf(ddActoraccu));
             ComboViews.Steps(ddActorhealth, LabelOf(ddActorhealth));
-            foreach (var box in new[] { tbactoractvx, tbactoractvy, tbactorlocx, tbactorlocy })
+            foreach (var box in new[] { tbactoractvx, tbactoractvy, tbactoractvz, tbactorlocx, tbactorlocy, tbactoractvawt, tbactoractvbs })
                 box.TextChanged += (_, __) => { if (!box.IsKeyboardFocused) _actorRoute.Refresh(); };
             ddactorno.SelectionChanged += (_, __) => _actorRoute.Refresh();
 
@@ -159,7 +243,7 @@ namespace Xenvious
             var when = new StackPanel();
             when.Children.Add(ActorExtraRules);
             when.Children.Add(lifecycle);
-            gotoSection.Content = Detach(gotoBody);
+            gotoSection.Content = gotoBody;
             var more = new StackPanel();
             more.Children.Add(gotoSection);
             more.Children.Add(advanced);
