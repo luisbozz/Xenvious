@@ -33,27 +33,6 @@ namespace Xenvious
         private void BtnRaceAVEH_Click(object sender, RoutedEventArgs e)
         {
             PageInnerRace.SelectedItem = PageInnerRaceAVEH;
-
-            avehCompactList.DataContext = GTA.Editor.Compacts;
-            avehSedanList.DataContext = GTA.Editor.Sedans;
-            avehSUVList.DataContext = GTA.Editor.SUVs;
-            avehArena_ContenderList.DataContext = GTA.Editor.Arena_Contender;
-            avehCOUPEList.DataContext = GTA.Editor.Coupes;
-            avehCyclesList.DataContext = GTA.Editor.Cycles;
-            avehIndustrialList.DataContext = GTA.Editor.Industrial;
-            avehMotorcyclesList.DataContext = GTA.Editor.Motorcycles;
-            avehMuscleList.DataContext = GTA.Editor.Muscle;
-            avehOff_RoadList.DataContext = GTA.Editor.Off_Road;
-            avehSpecialList.DataContext = GTA.Editor.Special;
-            avehSportsList.DataContext = GTA.Editor.Sports;
-            avehSports_ClassicsList.DataContext = GTA.Editor.Sports_Classics;
-            avehSuperList.DataContext = GTA.Editor.Super;
-            avehUtilityList.DataContext = GTA.Editor.Utility;
-            avehVansList.DataContext = GTA.Editor.Vans;
-            avehWeaponizedList.DataContext = GTA.Editor.Weaponized;
-            avehOpenWheelList.DataContext = GTA.Editor.Open_Wheel;
-            avehGoKartList.DataContext = GTA.Editor.Go_Kart;
-            avehTunerList.DataContext = GTA.Editor.Tuner;
         }
 
         private void ddracetype_SelectionChanged(object sender, SelectionChangedEventArgs e)

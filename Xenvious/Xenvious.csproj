@@ -182,6 +182,7 @@
     <Compile Include="Controls\BareSearchBox.cs" />
     <Compile Include="Controls\EntityPicker.cs" />
     <Compile Include="Controls\PlayAreaView.cs" />
+    <Compile Include="Controls\RaceVehiclesView.cs" />
     <Compile Include="Controls\GtaTextAssist.cs" />
     <Compile Include="Controls\RulesView.cs" />
     <Compile Include="Controls\RulesView.Flow.cs" />
@@ -231,6 +232,7 @@
     <Compile Include="Creator Classes\ExtraObjectives.cs" />
     <Compile Include="Creator Classes\GamePatches.cs" />
     <Compile Include="Creator Classes\PlayAreas.cs" />
+    <Compile Include="Creator Classes\RaceVehicles.cs" />
     <Compile Include="Creator Classes\Rules.cs" />
     <Compile Include="Creator Classes\EntityRules.cs" />
     <Compile Include="Creator Classes\RuleFlow.cs" />
@@ -454,7 +456,6 @@
     <Compile Include="Helper Classes\OffsetLoader.cs" />
     <Compile Include="MainWindow\MainWindow.OnlineEnabler.cs" />
     <Compile Include="MainWindow\MainWindow.Props.cs" />
-    <Compile Include="MainWindow\MainWindow.Race.AvailableVehicles.cs" />
     <Compile Include="MainWindow\MainWindow.Race.Checkpoints.cs" />
     <Compile Include="MainWindow\MainWindow.Race.cs" />
     <Compile Include="MainWindow\MainWindow.ScreenMessage.cs" />
@@ -506,10 +507,12 @@
     <EmbeddedResource Include="OfflineData\legacy\offsets.ini" />
     <EmbeddedResource Include="OfflineData\legacy\scrpatches.json" />
     <EmbeddedResource Include="OfflineData\legacy\scrpatchesdev.json" />
+    <EmbeddedResource Include="OfflineData\legacy\race_vehicles.json" />
     <EmbeddedResource Include="OfflineData\legacy\mprops.json" />
     <EmbeddedResource Include="OfflineData\enhanced\offsets.ini" />
     <EmbeddedResource Include="OfflineData\enhanced\scrpatches.json" />
     <EmbeddedResource Include="OfflineData\enhanced\scrpatchesdev.json" />
+    <EmbeddedResource Include="OfflineData\enhanced\race_vehicles.json" />
     <EmbeddedResource Include="OfflineData\enhanced\mprops.json" />
     <EmbeddedResource Include="OfflineData\props.json" />
     <EmbeddedResource Include="OfflineData\objective_texts.json" />

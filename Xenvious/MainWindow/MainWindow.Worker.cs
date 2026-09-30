@@ -399,40 +399,6 @@ namespace Xenvious
                                         Functions.Read.checkbinary(31, GTA.Offsets.Editor.menubs22, cbraceolohideweth);
                                         cbraceolohidecstveh.IsChecked = new Global(GTA.Offsets.Editor.rcvs).Get<int>() == 2 ? true : false;
                                     }
-                                    else if (PageInnerRace.SelectedItem == PageInnerRaceAVEH)
-                                    {
-                                        bool class1 = Functions.Read.checkbinary(1, GTA.Offsets.Editor.Race.Checkpoints.clbs, cbavehCompact);
-                                        bool class2 = Functions.Read.checkbinary(2, GTA.Offsets.Editor.Race.Checkpoints.clbs, cbavehSedan);
-                                        bool class3 = Functions.Read.checkbinary(3, GTA.Offsets.Editor.Race.Checkpoints.clbs, cbavehSUV);
-                                        bool class4 = Functions.Read.checkbinary(4, GTA.Offsets.Editor.Race.Checkpoints.clbs, cbavehCOUPE);
-                                        bool class5 = Functions.Read.checkbinary(5, GTA.Offsets.Editor.Race.Checkpoints.clbs, cbavehMuscle);
-                                        bool class6 = Functions.Read.checkbinary(6, GTA.Offsets.Editor.Race.Checkpoints.clbs, cbavehSports_Classics);
-                                        bool class7 = Functions.Read.checkbinary(7, GTA.Offsets.Editor.Race.Checkpoints.clbs, cbavehSports);
-                                        bool class8 = Functions.Read.checkbinary(8, GTA.Offsets.Editor.Race.Checkpoints.clbs, cbavehSuper);
-                                        bool class9 = Functions.Read.checkbinary(9, GTA.Offsets.Editor.Race.Checkpoints.clbs, cbavehMotorcycles);
-                                        bool class10 = Functions.Read.checkbinary(10, GTA.Offsets.Editor.Race.Checkpoints.clbs, cbavehOff_Road);
-                                        bool class11 = Functions.Read.checkbinary(11, GTA.Offsets.Editor.Race.Checkpoints.clbs, cbavehIndustrial);
-                                        bool class12 = Functions.Read.checkbinary(12, GTA.Offsets.Editor.Race.Checkpoints.clbs, cbavehUtility);
-                                        bool class13 = Functions.Read.checkbinary(13, GTA.Offsets.Editor.Race.Checkpoints.clbs, cbavehVans);
-                                        bool class14 = Functions.Read.checkbinary(14, GTA.Offsets.Editor.Race.Checkpoints.clbs, cbavehCycles);
-                                        bool class15 = Functions.Read.checkbinary(16, GTA.Offsets.Editor.Race.Checkpoints.clbs, cbavehSpecial);
-                                        bool class16 = Functions.Read.checkbinary(17, GTA.Offsets.Editor.Race.Checkpoints.clbs, cbavehWeaponized);
-                                        bool class17 = Functions.Read.checkbinary(18, GTA.Offsets.Editor.Race.Checkpoints.clbs, cbavehArena_Contender);
-                                        bool class18 = Functions.Read.checkbinary(19, GTA.Offsets.Editor.Race.Checkpoints.clbs, cbavehOpenWheel);
-                                        bool class19 = Functions.Read.checkbinary(20, GTA.Offsets.Editor.Race.Checkpoints.clbs, cbavehGoKart);
-                                        bool class20 = Functions.Read.checkbinary(21, GTA.Offsets.Editor.Race.Checkpoints.clbs, cbavehTuner);
-
-                                        int index = new Global(GTA.Offsets.Editor.Race.Checkpoints.icv).Get<int>();
-
-                                        if (ddRaceVehClass.Items.Cast<ComboBoxItem>().Where(d => (int)(d.Tag) == index).Any())
-                                        {
-                                            ddRaceVehClass.SelectedItem = ddRaceVehClass.Items.Cast<ComboBoxItem>().Where(d => (int)(d.Tag) == index).First();
-                                        }
-                                        else
-                                        {
-                                            ddRaceVehClass.SelectedItem = null;
-                                        }
-                                    }
                                 }
                                 else if (EditPages.SelectedItem == PageVehicle)
                                 {

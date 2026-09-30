@@ -67,6 +67,9 @@ namespace Xenvious
         /// <summary>Developer script patch definitions (JSON array).</summary>
         public static string ScrPatchesDev => LoadCurrent("scrpatchesdev.json");
 
+        /// <summary>The Race Creator's vehicles per class (JSON array), in the script's bit order.</summary>
+        public static string RaceVehicles => LoadCurrent("race_vehicles.json");
+
         /// <summary>Offsets for one specific build, regardless of what is detected.</summary>
         public static string OffsetsFor(GameEdition edition) =>
             LoadForEdition(edition, "offsets.ini");
