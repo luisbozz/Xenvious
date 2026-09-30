@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
@@ -156,9 +156,30 @@ namespace Xenvious
 
         public static int StartClass => new Global(Race.Checkpoints.icv).Get<int>();
 
-        public static void SetStartClass(int cls) => new Global(Race.Checkpoints.icv).SetInt(cls);
+        /// <summary>
+        /// Sets the start class the way the creator's menu does: the start vehicle becomes the
+        /// class's first allowed vehicle (the script sets ivm to 0 and skips blocked ones).
+        /// </summary>
+        public static void SetStartClass(int cls)
+        {
+            new Global(Race.Checkpoints.icv).SetInt(cls);
+            var c = Classes.FirstOrDefault(x => x.Index == cls);
+            if (c == null)
+                return;
+            var state = Read(cls);
+            var first = c.All.FirstOrDefault(state.Allowed) ?? c.All.FirstOrDefault();
+            SetStartVehicle(first?.StartIndex ?? 0);
+        }
 
         public static int StartVehicle => ivm != 0 ? new Global(ivm).Get<int>() : -1;
+
+        // ivm is the index into the class's base vehicles followed by its DLC vehicles. The
+        // creator swaps its preview vehicle when the value no longer matches it.
+        public static void SetStartVehicle(int index)
+        {
+            if (ivm != 0)
+                new Global(ivm).SetInt(index);
+        }
 
         public static int RaceType => racetype != 0 ? new Global(racetype).Get<int>() : -1;
 

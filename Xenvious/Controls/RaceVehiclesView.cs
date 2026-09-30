@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -48,6 +48,7 @@ namespace Xenvious
         private readonly TextBlock _typeNote = new TextBlock { TextWrapping = TextWrapping.Wrap, FontSize = 12.5 };
         private Border _typeNoteBox;
         private readonly ComboBox _startClass = new ComboBox { Height = 30 };
+        private readonly ComboBox _startVehicle = new ComboBox { Height = 30 };
         private readonly Image _startPicture = new Image { Width = 120, Height = 68, Stretch = Stretch.Uniform };
         private readonly TextBlock _startName = new TextBlock { FontSize = 16, FontWeight = FontWeights.Bold, TextTrimming = TextTrimming.CharacterEllipsis };
         private readonly TextBlock _statClasses = Stat(), _statVehicles = Stat();
@@ -169,6 +170,17 @@ namespace Xenvious
             _startClass.DropDownOpened += (_, __) => FillStartClasses();
             body.Children.Add(_startClass);
 
+            // Only the vehicles the class allows; the creator skips blocked ones as well.
+            body.Children.Add(new TextBlock { Style = (Style)FindResource("FieldLabel"), Text = T("rv_start", "Start vehicle") });
+            _startVehicle.Margin = new Thickness(0, 0, 0, 10);
+            _startVehicle.SelectionChanged += (_, __) =>
+            {
+                if (!_loadingStart && Live && _startVehicle.SelectedItem is ComboBoxItem item)
+                    RaceVehicles.SetStartVehicle((int)item.Tag);
+            };
+            _startVehicle.DropDownOpened += (_, __) => FillStartVehicles();
+            body.Children.Add(_startVehicle);
+
             var row = new DockPanel();
             var frame = new Border { CornerRadius = new CornerRadius(5), Margin = new Thickness(0, 0, 12, 0), Child = _startPicture };
             frame.SetResourceReference(Border.BackgroundProperty, "SeactionHeaderBackgroundBrush");
@@ -176,7 +188,7 @@ namespace Xenvious
             row.Children.Add(frame);
             var text = new StackPanel { VerticalAlignment = VerticalAlignment.Center };
             text.Children.Add(_startName);
-            text.Children.Add(Muted(T("rv_start_hint", "Pick the vehicle in game in the start menu; Xenvious shows it here.")));
+            text.Children.Add(Muted(T("rv_start_hint2", "Saved with the job at once; in game the creator may show it only once its vehicle menu is open.")));
             row.Children.Add(text);
             body.Children.Add(row);
             return Card(Title("rv_start", "Start vehicle"), body);
@@ -461,6 +473,37 @@ namespace Xenvious
             _loadingStart = false;
         }
 
+        private void FillStartVehicles()
+        {
+            _loadingStart = true;
+            _startVehicle.Items.Clear();
+            int cls = RaceVehicles.StartClass;
+            var c = RaceVehicles.Classes.FirstOrDefault(x => x.Index == cls);
+            if (Live && c != null)
+            {
+                var state = RaceVehicles.Read(cls);
+                foreach (var v in c.All.Where(state.Allowed).OrderBy(v => v.Name(Language), StringComparer.CurrentCultureIgnoreCase))
+                    _startVehicle.Items.Add(new ComboBoxItem { Tag = v.StartIndex, Content = v.Name(Language) });
+            }
+            SelectStartVehicle(RaceVehicles.StartVehicle);
+            _loadingStart = false;
+        }
+
+        private void SelectStartVehicle(int index)
+        {
+            var item = _startVehicle.Items.Cast<ComboBoxItem>().FirstOrDefault(i => (int)i.Tag == index);
+            if (item == null && _startShown.Class >= 0)
+            {
+                var v = RaceVehicles.Classes.FirstOrDefault(x => x.Index == _startShown.Class)?.All.FirstOrDefault(x => x.StartIndex == index);
+                if (v != null)
+                {
+                    item = new ComboBoxItem { Tag = index, Content = v.Name(Language) };
+                    _startVehicle.Items.Add(item);
+                }
+            }
+            _startVehicle.SelectedItem = item;
+        }
+
         private void SelectStartClass(int cls)
         {
             var item = _startClass.Items.Cast<ComboBoxItem>().FirstOrDefault(i => (int)i.Tag == cls);
@@ -483,7 +526,16 @@ namespace Xenvious
             }
             if (_startShown == (cls, index))
                 return;
+            // Another class: the list holds the old class's vehicles.
+            if (cls != _startShown.Class && !_startVehicle.IsDropDownOpen)
+                _startVehicle.Items.Clear();
             _startShown = (cls, index);
+            if (!_startVehicle.IsDropDownOpen)
+            {
+                _loadingStart = true;
+                SelectStartVehicle(index);
+                _loadingStart = false;
+            }
             var vehicle = RaceVehicles.Classes.FirstOrDefault(c => c.Index == cls)?.All.FirstOrDefault(v => v.StartIndex == index);
             _startName.Text = vehicle != null ? vehicle.Name(Language) : "–";
             _startPicture.Source = null;
