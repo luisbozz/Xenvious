@@ -47,6 +47,11 @@
             <SolidColorBrush x:Key="BadBrush" Color="#F04747" />
             <SolidColorBrush x:Key="AccentBrush" Color="#5B9BE6" />
             <SolidColorBrush x:Key="AccentSoftBrush" Color="#705B9BE6" />
+            <!-- The creator's default team colours (team 1 to 4). -->
+            <SolidColorBrush x:Key="TeamBrush1" Color="#FF2AA6B9"/>
+            <SolidColorBrush x:Key="TeamBrush2" Color="#FFFF8555"/>
+            <SolidColorBrush x:Key="TeamBrush3" Color="#FF396639"/>
+            <SolidColorBrush x:Key="TeamBrush4" Color="#FF9C6EAF"/>
             <Color x:Key="ShadowColor" R="0" B="0" G="0"/>
             <FontFamily x:Key="Nunito">/Fonts/Nunito/#Nunito</FontFamily>
             <FontFamily x:Key="Volte">/Fonts/Volte Rounded/#Volte Rounded</FontFamily>
