@@ -43,7 +43,7 @@ namespace Xenvious
                 (cbdashmaxwl, () => GTA.Offsets.Editor.menubs28, 31),
             });
 
-        private string _dashCreator = "";   // creator script the creator-specific parts were built for
+        private string _dashCreator;   // creator script the creator-specific parts were built for; null builds the default tiles on start
         private readonly List<DashCount> _dashCounts = new List<DashCount>();
 
         private static bool IsMissionCreator(string creator)
@@ -94,6 +94,11 @@ namespace Xenvious
         private static string CountOf(long numberOffset)
         {
             return numberOffset == 0 ? "–" : new Global(numberOffset).Get<int>().ToString(CultureInfo.CurrentCulture);
+        }
+
+        private static string CountOf(long numberOffset, int limit)
+        {
+            return numberOffset == 0 ? "–" : CountOf(numberOffset) + " / " + limit.ToString(CultureInfo.CurrentCulture);
         }
 
         // The tile in the status bar: the number that matters most in each creator.
@@ -182,11 +187,11 @@ namespace Xenvious
             });
 
             // Actors, vehicles and weapons in the colours of their blips in the creator.
-            var actors = new DashCount { Label = TranslateOr("dash_actors", "Actors"), Dot = DashBrush("DashActorBrush"), Read = () => CountOf(GTA.Offsets.Editor.Actor.number), Open = () => OpenEditPage(PageActor) };
-            var vehicles = new DashCount { Label = TranslateOr("vehicles", "Vehicles"), Dot = DashBrush("DashVehicleBrush"), Read = () => CountOf(GTA.Offsets.Editor.Vehicle.number), Open = () => OpenEditPage(PageVehicle) };
-            var weapons = new DashCount { Label = TranslateOr("weapons", "Weapons"), Dot = DashBrush("DashWeaponBrush"), Icon = TryFindResource("EditIconWeapon") as Geometry, Read = () => CountOf(GTA.Offsets.Editor.Weapon.number), Open = () => OpenEditPage(PageWeapon) };
-            var zones = new DashCount { Label = TranslateOr("zones", "Zones"), Dot = DashBrush("DashZoneBrush"), Read = () => CountOf(GTA.Offsets.Editor.Zones.number), Open = () => OpenEditPage(PageZone) };
-            var fixtures = new DashCount { Label = TranslateOr("editnav_fixtures", "Fixtures"), Dot = DashBrush("DashFixtureBrush"), Read = () => CountOf(GTA.Offsets.Editor.DHProp.number), Open = () => BtnSectioncentity_Click(null, null) };
+            var actors = new DashCount { Label = TranslateOr("dash_actors", "Actors"), Dot = DashBrush("DashActorBrush"), Read = () => CountOf(GTA.Offsets.Editor.Actor.number, CreatorLimits.Actors(creator)), Open = () => OpenEditPage(PageActor) };
+            var vehicles = new DashCount { Label = TranslateOr("vehicles", "Vehicles"), Dot = DashBrush("DashVehicleBrush"), Read = () => CountOf(GTA.Offsets.Editor.Vehicle.number, CreatorLimits.Vehicles), Open = () => OpenEditPage(PageVehicle) };
+            var weapons = new DashCount { Label = TranslateOr("weapons", "Weapons"), Dot = DashBrush("DashWeaponBrush"), Icon = TryFindResource("EditIconWeapon") as Geometry, Read = () => CountOf(GTA.Offsets.Editor.Weapon.number, CreatorLimits.Weapons), Open = () => OpenEditPage(PageWeapon) };
+            var zones = new DashCount { Label = TranslateOr("zones", "Zones"), Dot = DashBrush("DashZoneBrush"), Read = () => CountOf(GTA.Offsets.Editor.Zones.number, CreatorLimits.Zones), Open = () => OpenEditPage(PageZone) };
+            var fixtures = new DashCount { Label = TranslateOr("editnav_fixtures", "Fixtures"), Dot = DashBrush("DashFixtureBrush"), Read = () => CountOf(GTA.Offsets.Editor.DHProp.number, CreatorLimits.Fixtures), Open = () => BtnSectioncentity_Click(null, null) };
 
             switch (creator)
             {

@@ -255,6 +255,7 @@
     <Compile Include="Creator Classes\TeamNames.cs" />
     <Compile Include="Creator Classes\AdvancedPlacement\DimensionsProvider.cs" />
     <Compile Include="Creator Classes\AdvancedPlacement\PropPlacementService.cs" />
+    <Compile Include="Creator Classes\CreatorLimits.cs" />
     <Compile Include="Creator Classes\AdvancedPlacement\RepeatPlanner.cs" />
     <Compile Include="Creator Classes\AdvancedPlacement\CreatorTemplateService.cs" />
     <Compile Include="Creator Classes\AdvancedPlacement\ScriptFeatureMonitor.cs" />
