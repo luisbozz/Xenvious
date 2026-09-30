@@ -120,7 +120,25 @@ namespace Xenvious
             }
         }
 
-        // Outside a creator every page is listed; inside, only the ones this creator has.
+        private string CreatorNames(string letters)
+        {
+            var names = new List<string>();
+            foreach (char c in letters)
+            {
+                switch (c)
+                {
+                    case 'R': names.Add(TranslateOr("race", "Race")); break;
+                    case 'L': names.Add("LTS"); break;
+                    case 'C': names.Add(TranslateOr("jobsubtype_mission_capture", "Capture")); break;
+                    case 'D': names.Add(TranslateOr("deathmatch", "Deathmatch")); break;
+                    case 'S': names.Add(TranslateOr("survival", "Survival")); break;
+                    case 'M': names.Add(TranslateOr("mission", "Mission")); break;
+                }
+            }
+            return string.Join(", ", names);
+        }
+
+        // Outside a creator every page fits; inside, only the ones this creator has.
         private bool EditNavFits(EditNavEntry entry)
         {
             string letter = CreatorLetter(_editNavCreator ?? "");
@@ -201,7 +219,9 @@ namespace Xenvious
             RenderFavorites();
             for (int group = 0; group < groups.Length; group++)
             {
-                var entries = EditNav.Where(e => e.Group == group && (EditNavFits(e) || EditNavGreyed(e))).ToList();
+                // Pages of other creators stay listed and usable, only greyed, so the list does
+                // not change shape between creators.
+                var entries = EditNav.Where(e => e.Group == group).ToList();
                 if (entries.Count == 0)
                     continue;
                 if (!_editNavCollapsed)
@@ -212,10 +232,16 @@ namespace Xenvious
                 foreach (var entry in entries)
                 {
                     var button = NavEntryButton(entry);
-                    if (!EditNavFits(entry))
+                    if (EditNavGreyed(entry))
                     {
                         button.Opacity = 0.5;
                         button.ToolTip = TranslateOr("editnav_other_creator", "Not part of this creator's menu; the values still work.");
+                    }
+                    else if (!EditNavFits(entry))
+                    {
+                        button.Opacity = 0.5;
+                        button.ToolTip = string.Format(CultureInfo.CurrentCulture,
+                            TranslateOr("editnav_for_creator", "Settings for another creator: {0}."), CreatorNames(entry.Creators));
                     }
                     EditNavList.Children.Add(WithStar(button, FavoriteId(entry, null)));
                     if (!_editNavCollapsed && _editNavOpen.Contains(entry) && entry.Subs.Count > 0)
