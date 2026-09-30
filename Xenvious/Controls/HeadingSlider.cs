@@ -66,16 +66,13 @@ namespace Xenvious
             _label.SetResourceReference(StyleProperty, "FieldLabel");
             DockPanel.SetDock(_label, Dock.Top);
             Children.Add(_label);
-            _box.Width = 70;
+            // Same as the zone sliders: plain app slider, the box beside it with its unit.
+            _box.Width = 76;
+            _box.Tag = "°";
             _box.Margin = new Thickness(10, 0, 0, 0);
             DockPanel.SetDock(_box, Dock.Right);
             Children.Add(_box);
-            var north = new Button { Content = "N", Padding = new Thickness(7, 2, 7, 2), Height = 30, Margin = new Thickness(0, 0, 10, 0), ToolTip = MainWindow.Instance?.TranslateOr("hs_north", "Face north (0°)") ?? "0°" };
-            north.SetResourceReference(StyleProperty, "FormButton");
-            north.Click += (_, __) => _slider.Value = 0;
-            DockPanel.SetDock(north, Dock.Left);
-            Children.Add(north);
-            ComboViews.Tint(_slider);
+            _slider.VerticalAlignment = VerticalAlignment.Center;
             Children.Add(_slider);
 
             _settle.Tick += (_, __) => { _settle.Stop(); _refresh?.Invoke(); };
@@ -93,8 +90,8 @@ namespace Xenvious
                 _settle.Start();
             };
             _box.TextChanged += (_, __) => FromBox();
-            _slider.IsEnabled = north.IsEnabled = _box.IsEnabled;
-            _box.IsEnabledChanged += (_, __) => _slider.IsEnabled = north.IsEnabled = _box.IsEnabled;
+            _slider.IsEnabled = _box.IsEnabled;
+            _box.IsEnabledChanged += (_, __) => _slider.IsEnabled = _box.IsEnabled;
             FromBox();
             ShowLabel(_slider.Value);
         }

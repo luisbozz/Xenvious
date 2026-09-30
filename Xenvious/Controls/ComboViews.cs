@@ -53,7 +53,6 @@ namespace Xenvious
             string title = label?.Text ?? "";
             var slider = new Slider { Minimum = 0, Maximum = System.Math.Max(0, box.Items.Count - 1), IsSnapToTickEnabled = true, TickFrequency = 1, SmallChange = 1, LargeChange = 1,
                 Margin = new Thickness(0, 4, 0, 12) };
-            Tint(slider);
             bool sync = false;
             void Show()
             {
@@ -70,17 +69,6 @@ namespace Xenvious
             Show();
             Replace(box, slider);
             return slider;
-        }
-
-        /// <summary>
-        /// The app's slider draws its right part in the card colour; on a card it looks like a
-        /// lone thumb. A local override gives that part the darker field colour; the filled part
-        /// stays the app's grey.
-        /// </summary>
-        public static void Tint(Slider slider)
-        {
-            if (MainWindow.Instance?.TryFindResource("DeepBrush") is Brush deep)
-                slider.Resources["SectionBackgroundBrush"] = deep;
         }
 
         private static void Replace(ComboBox box, FrameworkElement with)
