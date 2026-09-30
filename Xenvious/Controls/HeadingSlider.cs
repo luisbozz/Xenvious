@@ -29,18 +29,19 @@ namespace Xenvious
             if (home != null && at > 0 && home.Children[at - 1] is TextBlock oldLabel)
                 oldLabel.Visibility = Visibility.Collapsed;
 
-            // Where the slider goes: past the grid cells the box sits in.
+            // Where the slider goes: after the row the box sits in (past its grid cells). Taken
+            // before the box moves into the slider, or the slider would end up inside itself.
             FrameworkElement row = box;
             while (row.Parent is Grid || row.Parent is StackPanel cell && cell.Children.Count <= 2 && cell.Parent is Grid)
                 row = (FrameworkElement)row.Parent;
+            var target = row == box ? home : row.Parent as Panel;
+            int index = row == box ? at : target?.Children.IndexOf(row) + 1 ?? -1;
             home?.Children.Remove(box);
             if (home is StackPanel c && c.Parent is Grid && c.Children.Cast<UIElement>().All(e => e.Visibility != Visibility.Visible))
                 c.Visibility = Visibility.Collapsed;
             slider.Build();
-            if (row.Parent is Panel panel)
-                panel.Children.Insert(panel.Children.IndexOf(row) + 1, slider);
-            else if (home != null)
-                home.Children.Insert(Math.Max(0, at), slider);
+            if (target != null && index >= 0)
+                target.Children.Insert(Math.Min(index, target.Children.Count), slider);
             return slider;
         }
 

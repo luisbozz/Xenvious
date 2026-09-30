@@ -369,7 +369,8 @@ namespace Xenvious
             InitAreaEditors();
             try { InitLifecycleCards(); }
             catch (Exception ex) { Log.Error("lifecycle cards: " + ex); }
-            InitCatalogPages();
+            try { InitCatalogPages(); }
+            catch (Exception ex) { Log.Error("catalog pages: " + ex); }
             // A layout error must not stop the start; the page then keeps (part of) its old layout.
             try { InitActorLayout(); }
             catch (Exception ex) { Log.Error("actor layout: " + ex); }
