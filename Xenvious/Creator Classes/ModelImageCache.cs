@@ -82,10 +82,22 @@ namespace Xenvious
                 case "actor":
                     return $"https://docs.fivem.net/peds/{name.ToLowerInvariant()}.webp";
                 case "weapon":
-                    return $"https://docs.fivem.net/weapons/{name.ToUpperInvariant()}.png";
+                    return $"https://docs.fivem.net/weapons/{WeaponPictureName(name)}.png";
                 default:
                     return null;
             }
+        }
+
+        // Most creator weapons are pickups (PICKUP_WEAPON_PISTOL, PICKUP_VEHICLE_WEAPON_SMG);
+        // the pictures are named after the weapon (WEAPON_PISTOL). Ammo, money and other
+        // pickups have no picture.
+        private static string WeaponPictureName(string name)
+        {
+            string upper = name.ToUpperInvariant();
+            foreach (string prefix in new[] { "PICKUP_VEHICLE_WEAPON_", "PICKUP_WEAPON_" })
+                if (upper.StartsWith(prefix, StringComparison.Ordinal))
+                    return "WEAPON_" + upper.Substring(prefix.Length);
+            return upper;
         }
 
         /// <summary>The thumbnail, or null when there is none (no source, offline, unknown model).</summary>
