@@ -12162,8 +12162,8 @@
                         <ScrollViewer x:Name="DialogDetailsScroll" MaxHeight="320" Margin="0,12,0,0" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">
                             <TextBlock x:Name="DialogDetails" FontSize="13" Foreground="{DynamicResource TextColor}" TextWrapping="Wrap" Margin="0,0,8,0"/>
                         </ScrollViewer>
-                        <!-- Preview for the job image dialog; Ctrl+V pastes an image into it. -->
-                        <Border x:Name="DialogImageBox" Visibility="Collapsed" CornerRadius="4" Background="{DynamicResource TextBoxBackground}" Width="480" Height="270" Margin="0,14,0,0">
+                        <!-- Preview for the job image dialog; Ctrl+V pastes an image into it, or drop one on it. -->
+                        <Border x:Name="DialogImageBox" Visibility="Collapsed" AllowDrop="True" DragOver="DialogImageBox_DragOver" Drop="DialogImageBox_Drop" CornerRadius="4" Background="{DynamicResource TextBoxBackground}" Width="480" Height="270" Margin="0,14,0,0">
                             <Grid>
                                 <TextBlock x:Name="DialogImageHint" FontSize="15" FontWeight="Bold" Foreground="{DynamicResource MutedTextBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Ctrl + V"/>
                                 <Image x:Name="DialogImage" Stretch="Uniform"/>

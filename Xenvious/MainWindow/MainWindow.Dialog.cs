@@ -34,6 +34,7 @@ namespace Xenvious
             DialogConfirm.IsEnabled = true;
             _dialogAltAction = null;
             _dialogPaste = null;
+            _dialogDrop = null;
             SetDialogDetails(details);
 
             DialogTitle.Text = title ?? "";
@@ -74,6 +75,19 @@ namespace Xenvious
         // (choosing a file for the job image), and whose dialog takes Ctrl+V.
         private System.Action _dialogAltAction;
         private System.Action _dialogPaste;
+        private System.Action<IDataObject> _dialogDrop;
+
+        private void DialogImageBox_DragOver(object sender, DragEventArgs e)
+        {
+            e.Effects = _dialogDrop != null ? DragDropEffects.Copy : DragDropEffects.None;
+            e.Handled = true;
+        }
+
+        private void DialogImageBox_Drop(object sender, DragEventArgs e)
+        {
+            _dialogDrop?.Invoke(e.Data);
+            e.Handled = true;
+        }
 
         private void DialogAlt_Click(object sender, RoutedEventArgs e)
         {

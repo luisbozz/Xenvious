@@ -135,7 +135,7 @@ namespace Xenvious
             }
         }
 
-        // Change Image: a dialog that takes an image from the clipboard (Ctrl+V) or a file,
+        // Change Image: a dialog that takes an image from the clipboard (Ctrl+V), a drop or a file,
         // shows it and writes it into the creator only once confirmed.
         private async void BtnJobImage_Click(object sender, RoutedEventArgs e)
         {
@@ -154,14 +154,15 @@ namespace Xenvious
             }
 
             var closed = ChooseAsync(TranslateOr("jobimg_title", "Change job image"),
-                TranslateOr("jobimg_text", "Paste an image with Ctrl+V or choose a file."),
+                TranslateOr("jobimg_text", "Paste an image with Ctrl+V, drop one here or choose a file."),
                 TranslateOr("jobimg_use", "Use image"), TranslateOr("jobimg_file", "Choose from file"),
                 TranslateOr("dialog_cancel", "Cancel"));
             DialogImage.Source = null;
             DialogImageHint.Visibility = Visibility.Visible;
             DialogImageBox.Visibility = Visibility.Visible;
             DialogConfirm.IsEnabled = false;
-            _dialogPaste = () => Show(ClipboardImage());
+            _dialogPaste = () => Show(ImageFrom(Clipboard.GetDataObject()));
+            _dialogDrop = data => Show(ImageFrom(data));
             _dialogAltAction = () => Show(FileImage());
 
             if (await closed != DialogChoice.Confirm || picked == null)
@@ -169,25 +170,25 @@ namespace Xenvious
             WriteJobImage(picked);
         }
 
-        private static BitmapSource ClipboardImage()
+        /// <summary>The image in a pasted or dropped data object: a PNG, a file or a bitmap.</summary>
+        private static BitmapSource ImageFrom(IDataObject data)
         {
+            if (data == null)
+                return null;
             try
             {
-                // Browsers and most tools also put a PNG on the clipboard; it keeps the colours
-                // that the plain bitmap format sometimes loses.
-                if (Clipboard.GetData("PNG") is MemoryStream png)
+                // Browsers and most tools also offer a PNG; it keeps the colours that the plain
+                // bitmap format sometimes loses.
+                if (data.GetDataPresent("PNG") && data.GetData("PNG") is MemoryStream png)
                     return LoadImage(png.ToArray());
-                if (Clipboard.ContainsFileDropList())
-                {
-                    foreach (string file in Clipboard.GetFileDropList())
-                        return LoadImage(File.ReadAllBytes(file));
-                }
-                if (Clipboard.ContainsImage())
-                    return Clipboard.GetImage();
+                if (data.GetDataPresent(DataFormats.FileDrop) && data.GetData(DataFormats.FileDrop) is string[] files && files.Length > 0)
+                    return LoadImage(File.ReadAllBytes(files[0]));
+                if (data.GetDataPresent(DataFormats.Bitmap))
+                    return data.GetData(DataFormats.Bitmap) as BitmapSource;
             }
             catch (Exception ex)
             {
-                Log.Debug("job image: clipboard: " + ex.Message, source: "image");
+                Log.Debug("job image: paste or drop: " + ex.Message, source: "image");
             }
             return null;
         }
