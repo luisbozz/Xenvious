@@ -699,6 +699,11 @@
                                 <SolidColorBrush x:Key="DashWeaponBrush" Color="#FF8A8A8A"/>
                                 <SolidColorBrush x:Key="DashFixtureBrush" Color="#FFC2570C"/>
                                 <SolidColorBrush x:Key="DashZoneBrush" Color="#FF2EA37F"/>
+                                <!-- The creator's default team colours (team 1 to 4). -->
+                                <SolidColorBrush x:Key="TeamBrush1" Color="#FF2AA6B9"/>
+                                <SolidColorBrush x:Key="TeamBrush2" Color="#FFFF8555"/>
+                                <SolidColorBrush x:Key="TeamBrush3" Color="#FF396639"/>
+                                <SolidColorBrush x:Key="TeamBrush4" Color="#FF9C6EAF"/>
                                 <!-- Same shapes as Advanced Prop Placement: light main action, grey secondary ones. -->
                                 <Style x:Key="DashButton" TargetType="{x:Type Button}">
                                     <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
