@@ -188,6 +188,7 @@
     <Compile Include="Controls\RulesView.Flow.cs" />
     <Compile Include="Controls\EntityRulesCard.cs" />
     <Compile Include="Controls\SectionCard.cs" />
+    <Compile Include="Controls\HeadingSlider.cs" />
     <Compile Include="Controls\LifecycleCard.cs" />
     <Compile Include="Controls\RuleStrip.cs" />
     <Compile Include="Controls\MenuBitsView.cs" />
@@ -468,6 +469,7 @@
     <Compile Include="MainWindow\MainWindow.VehicleLayout.cs" />
     <Compile Include="MainWindow\MainWindow.Weapons.cs" />
     <Compile Include="MainWindow\MainWindow.Worker.cs" />
+    <Compile Include="MainWindow\MainWindow.CatalogPages.cs" />
     <Compile Include="MainWindow\MainWindow.Lifecycle.cs" />
     <Compile Include="MainWindow\MainWindow.Zones.cs" />
     <Compile Include="MainWindow\MainWindow.Dialog.cs" />

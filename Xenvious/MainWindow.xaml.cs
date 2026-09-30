@@ -368,6 +368,7 @@ namespace Xenvious
             InitExtraRules();
             InitAreaEditors();
             InitLifecycleCards();
+            InitCatalogPages();
             InitEntityPicker();
         }
 

@@ -15,6 +15,9 @@
                 <Border DockPanel.Dock="Top" Background="{DynamicResource SeactionHeaderBackgroundBrush}" CornerRadius="8,8,0,0" Padding="16,10">
                     <DockPanel>
                         <Button DockPanel.Dock="Right" Style="{StaticResource NavButton}" Padding="8,4" Click="Close_Click" Content="✕"/>
+                        <CheckBox x:Name="OnPageToggle" DockPanel.Dock="Right" Style="{DynamicResource ChipToggle}" Margin="0,0,12,0" VerticalAlignment="Center" Click="OnPageToggle_Click"
+                                  Content="{Binding Translation[catalog_onpage], FallbackValue='Recent and favourites on the page'}"
+                                  ToolTip="{Binding Translation[catalog_onpage_tip], FallbackValue='Shows your recent and favourite models as chips under the model card on every page.'}"/>
                         <TextBlock x:Name="TitleText" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource TextColor}" VerticalAlignment="Center"/>
                     </DockPanel>
                 </Border>

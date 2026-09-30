@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -16,6 +16,35 @@ namespace Xenvious
     {
         private const string Section = "MODELCATALOG";
         private const int RecentMax = 12;
+
+        private static bool? _showOnPage;
+
+        /// <summary>Raised when "recent and favourites on the page" is switched.</summary>
+        public static event EventHandler ShowOnPageChanged;
+
+        /// <summary>
+        /// Whether the model cards on the pages show the recent and favourite chips. Off by
+        /// default: position and heading go under the model card instead; the catalog has the switch.
+        /// </summary>
+        public static bool ShowOnPage
+        {
+            get
+            {
+                if (_showOnPage == null)
+                {
+                    try { _showOnPage = new ini_reader(Functions.getRoamingConfigFilePath()).ReadString(Section, "onpage") == "1"; }
+                    catch { _showOnPage = false; }
+                }
+                return _showOnPage.Value;
+            }
+            set
+            {
+                _showOnPage = value;
+                try { new ini_reader(Functions.getRoamingConfigFilePath()).Write(Section, "onpage", value ? "1" : "0"); }
+                catch (Exception ex) { Log.Warn("catalog: setting not saved: " + ex.Message); }
+                ShowOnPageChanged?.Invoke(null, EventArgs.Empty);
+            }
+        }
 
         private static readonly Dictionary<string, HashSet<uint>> Favorites = new Dictionary<string, HashSet<uint>>();
         private static readonly Dictionary<string, List<uint>> Recent = new Dictionary<string, List<uint>>();
