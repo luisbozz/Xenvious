@@ -156,15 +156,13 @@ namespace Xenvious
             details.Children.Add(Note("gr_trigger_hint", "Optional. Position 0,0,0 = no trigger area."));
             details.Children.Add(Detach(RowOf(tbactoractvawlx)));
             details.Children.Add(Pair(CellOf(tbactoractvawlr, "gr_trigr", "Trigger radius"), null));
-            // Raw fields behind a plain text toggle, not a big expander.
-            var rawPanel = new StackPanel { Visibility = Visibility.Collapsed, Margin = new Thickness(0, 6, 0, 0) };
+            var rawGoto = new Expander { Header = TranslateOr("gr_raw", "Raw values"), IsExpanded = false, Margin = new Thickness(0, 4, 0, 0) };
+            rawGoto.SetResourceReference(StyleProperty, "CardExpander");
+            var rawPanel = new StackPanel { Margin = new Thickness(0, 8, 0, 0) };
             rawPanel.Children.Add(Pair(CellOf(tbactoractvachf), CellOf(tbactoractvawr)));
             rawPanel.Children.Add(Pair(CellOf(tbactoractvags), CellOf(tbactoractvbs)));
-            var rawToggle = new CheckBox { Content = TranslateOr("gr_raw", "Raw values"), HorizontalAlignment = HorizontalAlignment.Left, Margin = new Thickness(0, 4, 0, 0) };
-            rawToggle.SetResourceReference(StyleProperty, "ChipToggle");
-            rawToggle.Click += (_, __) => rawPanel.Visibility = rawToggle.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
-            details.Children.Add(rawToggle);
-            details.Children.Add(rawPanel);
+            rawGoto.Content = rawPanel;
+            details.Children.Add(rawGoto);
             // Whatever is left of the old card body (separators, labels) stays out of sight.
             gotoBody.Visibility = Visibility.Collapsed;
 
