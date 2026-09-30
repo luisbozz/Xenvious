@@ -984,6 +984,15 @@ namespace Xenvious
             GTA.Offsets.Editor.txt_NEXT = ini.ReadInteger("OFFSETS", "OFFSET_txt_NEXT");
             GTA.Offsets.Editor.NEXT_txt = ini.ReadInteger("OFFSETS", "OFFSET_NEXT_txt");
             GTA.Offsets.Editor.tstrt = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_tstrt"), 1);
+            // Per-rule arrays sit behind two size slots (team array, rule array); the three team
+            // bitsets and the two per-team globals behind one.
+            GTA.Offsets.Editor.RulePreset.Clear();
+            foreach (string key in RulePresets.RuleArrayKeys)
+                GTA.Offsets.Editor.RulePreset[key] = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_rp_" + key), 2);
+            foreach (string key in RulePresets.TeamKeys)
+                GTA.Offsets.Editor.RulePreset[key] = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_rp_" + key), 1);
+            GTA.Offsets.Editor.RulePreset["f2389_NEXT"] = ini.ReadInteger("OFFSETS", "OFFSET_rp_f2389_NEXT");
+            GTA.Offsets.Editor.RulePreset["f2389_sub_NEXT"] = ini.ReadInteger("OFFSETS", "OFFSET_rp_f2389_sub_NEXT");
             GTA.Offsets.Editor.next_settings = ini.ReadInteger("OFFSETS", "OFFSET_next_settings");
             GTA.Offsets.Editor.team_NEXT_settings = ini.ReadInteger("OFFSETS", "OFFSET_team_NEXT_settings");
             GTA.Offsets.Editor.team_NEXT = ini.ReadInteger("OFFSETS", "OFFSET_team_NEXT");

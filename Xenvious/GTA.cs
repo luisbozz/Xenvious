@@ -1744,6 +1744,9 @@ namespace Xenvious
                 public static long txt_NEXT = 0;
                 public static long NEXT_txt = 0;
                 public static long tstrt = 0;
+                // Rule presets (OFFSET_rp_*): field number -> offset; "teambits1/2", "f2389" and
+                // their strides by name. Filled by OffsetLoader, used by RulePresets.
+                public static Dictionary<string, long> RulePreset = new Dictionary<string, long>();
                 public static long next_settings = 0;
                 public static long team_NEXT_settings = 0;
                 public static long team_NEXT = 0;
