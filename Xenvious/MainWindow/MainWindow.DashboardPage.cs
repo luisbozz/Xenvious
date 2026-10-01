@@ -844,12 +844,15 @@ namespace Xenvious
         // deathmatch tests end another way.
         private static readonly string[] TestControllers = { "fm_mission_controller", "public_mission_controller", "fm_survival_controller" };
         private bool _testRunning;
+        // The creator script that runs, also during a test (when IsInCreator is false).
+        private string _runningCreatorScript;
 
         private void UpdateTestButton(bool globals)
         {
             // Fix Black Screen restarts the running creator's state machine; without one it
             // would write to the last creator's stale locals.
-            BtnTryFixBlackScreen.IsEnabled = globals && GTA.CreatorScripts.Any(GTA.IsScriptRunning);
+            _runningCreatorScript = globals ? GTA.CreatorScripts.FirstOrDefault(GTA.IsScriptRunning) : null;
+            BtnTryFixBlackScreen.IsEnabled = _runningCreatorScript != null;
             bool running = globals && GTA.Offsets.Editor.endtest != 0 && TestControllers.Any(GTA.IsScriptRunning);
             if (running == _testRunning)
                 return;

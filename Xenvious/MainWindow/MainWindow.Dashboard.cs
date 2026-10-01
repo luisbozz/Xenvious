@@ -60,14 +60,14 @@ namespace Xenvious
                 // The creator hub ("Load Creation", "Create a Race", ...) runs as the script
                 // "creator"; from there the player picks a creator in the game itself.
                 bool creatorMenu = globals && !inCreator && GTA.IsScriptRunning("creator");
+                // Before the game state: it needs the test and creator script it finds.
+                UpdateTestButton(globals);
                 UpdateGameState(game, globals, inCreator, creatorMenu);
                 if (inCreator)
                     VisibilityGroups.Apply();
 
                 AdvanceLaunch(game, inCreator);
                 UpdateLaunchButton(inCreator);
-                // Not inCreator: while a test runs the creator thread does not count as running.
-                UpdateTestButton(globals);
                 UpdateStatusStrip(game, inCreator, creatorMenu, creator);
                 UpdateEditNav(inCreator ? creator : "");
                 OfferLaunchInStoryMode(globals, inCreator, creatorMenu);
@@ -117,6 +117,10 @@ namespace Xenvious
                         case GameState.Creator:
                             DashStatusCreator.Text = CreatorDisplayName(creator);
                             DashStatusCreatorDot.Fill = DotOk;
+                            break;
+                        case GameState.Testing:
+                            DashStatusCreator.Text = string.Format(CultureInfo.CurrentCulture, TranslateOr("dash_state_testing", "Test läuft · {0}"), CreatorDisplayName(_runningCreatorScript ?? ""));
+                            DashStatusCreatorDot.Fill = DotWarn;
                             break;
                         case GameState.CreatorMenu:
                             DashStatusCreator.Text = TranslateOr("dash_creator_menu", "Creator-Menü");
@@ -196,7 +200,7 @@ namespace Xenvious
         private bool _storyModeChecked;
 
         /// <summary>Where the game is, as far as Xenvious can tell from the running scripts.</summary>
-        public enum GameState { NoGame, Loading, MainMenu, StoryMode, Online, CreatorMenu, Creator }
+        public enum GameState { NoGame, Loading, MainMenu, StoryMode, Online, CreatorMenu, Creator, Testing }
 
         public GameState CurrentGameState { get; private set; } = GameState.NoGame;
 
@@ -209,6 +213,10 @@ namespace Xenvious
             GameState state = !game ? GameState.NoGame
                 : !globals || GTA.IsScriptRunning("maintransition") ? GameState.Loading
                 : inCreator ? GameState.Creator
+                // In a test the creator does not count as open (IsInCreator); LTS, Capture,
+                // Mission and Survival tests run a mission controller (TestControllers). Race and
+                // deathmatch tests have none and still show as the creator menu.
+                : _testRunning ? GameState.Testing
                 : creatorMenu ? GameState.CreatorMenu
                 : GTA.IsScriptRunning("freemode") ? GameState.Online
                 // startup_positioning places the player while the loading screen is still up.
