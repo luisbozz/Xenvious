@@ -1542,6 +1542,8 @@ namespace Xenvious
                 public static long todhr = 0;
                 public static long todmn = 0;
                 public static long testcomplete = 0;
+                // The creators set it to end a running test (their "Exit test" prompt); the controller then fades out and quits.
+                public static long endtest = 0;
                 public static long dec = 0;
                 public static long nm = 0;
                 public static long sztag = 0;

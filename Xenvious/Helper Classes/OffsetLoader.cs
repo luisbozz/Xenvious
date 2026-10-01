@@ -769,6 +769,7 @@ namespace Xenvious
             GTA.Offsets.Editor.todhr = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_todhr"), 0);
             GTA.Offsets.Editor.todmn = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_todmn"), 0);
             GTA.Offsets.Editor.testcomplete = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_testcomplete"), 1);
+            GTA.Offsets.Editor.endtest = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_endtest"), 0);
             GTA.Offsets.Editor.dec = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_dec"), 1);
             GTA.Offsets.Editor.nm = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_nm"), 0);
             GTA.Offsets.Editor.sztag = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_sztag"), 1);
