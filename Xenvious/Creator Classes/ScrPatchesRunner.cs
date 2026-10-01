@@ -68,6 +68,9 @@ namespace Xenvious
                     ScrPatchesRunner.ApplyPatches(GTA.Editor.ScrPatches);
                     // Same reason: a creator script that was just loaded gets the kept prop changes.
                     ModdedPropMemory.Tick();
+                    // Same thread: "nrl fix" leaves nrl as it is, which must never be below 1 at save.
+                    try { Rules.KeepNrl(); }
+                    catch (Exception ex) { Log.Debug("KeepNrl: " + ex.Message, source: "ScrPatchesRunner"); }
                 }
                 tick++;
                 Thread.Sleep(50);

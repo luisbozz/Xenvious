@@ -98,6 +98,27 @@ namespace Xenvious
 
         public static void SetNrl(int team, int count) => new Global(GTA.Offsets.Editor.nrl + Team(team)).SetInt(count);
 
+        /// <summary>
+        /// LTS and Capture save and load the play areas (and the rest of a rule's data) only for
+        /// rules below nrl (fm_lts_creator's JSON load: while i &lt; f_60). The creator sets nrl to 1
+        /// at test and save; with the "nrl fix" patch it no longer does, so a job saved with nrl -1
+        /// or 0 comes back without its play zone and, outside of it, its start points. Keeps every
+        /// team's nrl at 1 or at the rules in use.
+        /// </summary>
+        public static void KeepNrl()
+        {
+            if (!Ready || PublicCreator)
+                return;
+            string creator = GTA.CurrentCreatorName();
+            if (creator != "fm_lts_creator" && creator != "fm_capture_creator")
+                return;
+            for (int t = 0; t < Teams(); t++)
+            {
+                if (Nrl(t) < 1)
+                    SetNrl(t, Math.Max(1, UsedCount(t)));
+            }
+        }
+
         /// <summary>1 + the highest rule anything points at (entities, player rules), 0 when nothing does.</summary>
         public static int UsedCount(int team)
         {
