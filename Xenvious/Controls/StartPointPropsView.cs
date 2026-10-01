@@ -57,7 +57,7 @@ namespace Xenvious
             int until = StartPoints.Get(GTA.Offsets.Editor.player_vfre, Team, Index);
             int veh = StartPoints.Get(GTA.Offsets.Editor.player_veh, Team, Index);
             int rules = Rules.Ready ? Rules.Count(Team) : 0;
-            string key = bits + "|" + from + "|" + until + "|" + veh + "|" + rules + "|" + Team + "|" + Index;
+            string key = Rules.PublicCreator + "|" + bits + "|" + from + "|" + until + "|" + veh + "|" + rules + "|" + Team + "|" + Index;
             if (!force && key == _shown)
                 return;
             _shown = key;
@@ -67,8 +67,11 @@ namespace Xenvious
             _body.Children.Clear();
             _body.Children.Add(Toggle(T("sp_isstart", "Treat as a start point"), T("sp_isstart_h", "Players can be put here when the mission starts."), bits, StartPoints.BitStart, true));
             _body.Children.Add(Toggle(T("sp_isrespawn", "Treat as a respawn point"), T("sp_isrespawn_h", "Players can respawn here after dying. By default they respawn near where they died."), bits, StartPoints.BitRespawn, true));
-            _body.Children.Add(Toggle(string.Format(CultureInfo.CurrentCulture, T("sp_cp", "Checkpoint {0}"), 1), T("sp_cp_h", "Used as a start point when restarting from this checkpoint."), bits, StartPoints.BitCheckpoint1, true));
-            _body.Children.Add(Toggle(string.Format(CultureInfo.CurrentCulture, T("sp_cp", "Checkpoint {0}"), 2), T("sp_cp_h", "Used as a start point when restarting from this checkpoint."), bits, StartPoints.BitCheckpoint2, true));
+            // Mission checkpoints (restart after a failed attempt) only exist in the Mission Creator.
+            bool pmc = Rules.PublicCreator;
+            string cpHint = pmc ? T("sp_cp_h", "Used as a start point when restarting from this checkpoint.") : T("sp_cp_mission", "Only in the Mission Creator.");
+            _body.Children.Add(Toggle(string.Format(CultureInfo.CurrentCulture, T("sp_cp", "Checkpoint {0}"), 1), cpHint, bits, StartPoints.BitCheckpoint1, pmc));
+            _body.Children.Add(Toggle(string.Format(CultureInfo.CurrentCulture, T("sp_cp", "Checkpoint {0}"), 2), cpHint, bits, StartPoints.BitCheckpoint2, pmc));
 
             _body.Children.Add(Label(T("sp_active", "Usable")));
             var range = new Grid { Margin = new Thickness(0, 0, 0, 4) };

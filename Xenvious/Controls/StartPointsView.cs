@@ -168,7 +168,7 @@ namespace Xenvious
                 (StartPoints.BitRespawn, T("sp_tag_respawn", "Respawn")),
                 (StartPoints.BitCheckpoint1, T("sp_tag_cp1", "CP 1")),
                 (StartPoints.BitCheckpoint2, T("sp_tag_cp2", "CP 2")),
-            }.Where(b => (bits & (1 << b.Item1)) != 0).Select(b => b.Item2).ToList();
+            }.Where(b => (bits & (1 << b.Item1)) != 0 && (Rules.PublicCreator || (b.Item1 != StartPoints.BitCheckpoint1 && b.Item1 != StartPoints.BitCheckpoint2))).Select(b => b.Item2).ToList();
             string where = string.Format(CultureInfo.InvariantCulture, "{0:0.0}, {1:0.0}, {2:0.0}", x, y, z);
             text.Children.Add(Faint((roles.Count > 0 ? string.Join(" · ", roles) + "   " : T("sp_tag_none", "unused") + "   ") + where, 11.5));
             Grid.SetColumn(text, 1);

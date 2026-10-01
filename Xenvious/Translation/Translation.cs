@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -481,6 +481,7 @@ namespace Xenvious.Translation
             { "sp_map_hint", "Startpunkte aller Teams von oben, Norden oben. Klick auf einen Pfeil wählt den Punkt." },
             { "sp_map_empty", "Noch keine Startpunkte." },
             { "sp_map_cursor", "Creator-Cursor" },
+            { "sp_cp_mission", "Nur im Mission Creator." },
             { "pr_objtext", "Zieltext anzeigen" },
             { "pr_objtext_h", "Zeigt im Test den Text jeder Regel (Rules-Seite)." },
             { "dash_endtest", "Test beenden" },
@@ -3150,6 +3151,7 @@ namespace Xenvious.Translation
             { "sp_map_hint", "Every team's start points from above, north up. Click an arrow to pick that point." },
             { "sp_map_empty", "No start points yet." },
             { "sp_map_cursor", "Creator cursor" },
+            { "sp_cp_mission", "Only in the Mission Creator." },
             { "pr_objtext", "Show objective text" },
             { "pr_objtext_h", "Shows each rule's text during the test (Rules page)." },
             { "dash_endtest", "End test" },
@@ -5819,6 +5821,7 @@ namespace Xenvious.Translation
             { "sp_map_hint", "Точки старта всех команд сверху, север вверху. Нажмите на стрелку, чтобы выбрать точку." },
             { "sp_map_empty", "Точек старта пока нет." },
             { "sp_map_cursor", "Курсор редактора" },
+            { "sp_cp_mission", "Только в Mission Creator." },
             { "pr_objtext", "Показывать текст цели" },
             { "pr_objtext_h", "Показывает текст каждого правила во время теста (страница Rules)." },
             { "dash_endtest", "Завершить тест" },
@@ -8488,6 +8491,7 @@ namespace Xenvious.Translation
             { "sp_map_hint", "Punkty startowe wszystkich drużyn z góry, północ u góry. Kliknij strzałkę, aby wybrać punkt." },
             { "sp_map_empty", "Brak punktów startowych." },
             { "sp_map_cursor", "Kursor kreatora" },
+            { "sp_cp_mission", "Tylko w Mission Creator." },
             { "pr_objtext", "Pokaż tekst celu" },
             { "pr_objtext_h", "Pokazuje tekst każdej reguły podczas testu (strona Rules)." },
             { "dash_endtest", "Zakończ test" },
@@ -11157,6 +11161,7 @@ namespace Xenvious.Translation
             { "sp_map_hint", "Points de départ de toutes les équipes vus de dessus, nord en haut. Cliquez sur une flèche pour choisir le point." },
             { "sp_map_empty", "Aucun point de départ pour l'instant." },
             { "sp_map_cursor", "Curseur du créateur" },
+            { "sp_cp_mission", "Uniquement dans le Mission Creator." },
             { "pr_objtext", "Afficher le texte d’objectif" },
             { "pr_objtext_h", "Affiche le texte de chaque règle pendant le test (page Rules)." },
             { "dash_endtest", "Terminer le test" },
@@ -13826,6 +13831,7 @@ namespace Xenvious.Translation
             { "sp_map_hint", "从上方查看所有队伍的起点，北方朝上。点击箭头选择该点。" },
             { "sp_map_empty", "还没有起点。" },
             { "sp_map_cursor", "创建器光标" },
+            { "sp_cp_mission", "仅限任务创建器。" },
             { "pr_objtext", "显示目标文本" },
             { "pr_objtext_h", "测试时显示每条规则的文本（Rules 页面）。" },
             { "dash_endtest", "结束测试" },
