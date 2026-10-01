@@ -430,7 +430,7 @@ namespace Xenvious
             rows.Add(GamePatchRowFor(GamePatches.NoBudget, TranslateOr("np_nobudget", "Ignore creator budget"), TranslateOr("patches_budget_desc", "The budget bar stays empty."),
                 TranslateOr("patches_budget_warn", "Too many entities can make the job fail to save or load."), "creator_budget", GTA.Offsets.Editor.AOB_creator_budget));
             rows.Add(GamePatchRowFor(GamePatches.TestMode, TranslateOr("np_testmode", "Test Mode"), TranslateOr("patches_testmode_desc", "Enables test mode features."),
-                TranslateOr("patches_testmode_warn", "Test mode feature is currently not available in enhanced."), "testmode", GTA.Offsets.Editor.AOB_testmode));
+                TranslateOr("patches_testmode_warn", "Enable Test mode in Creator with BE disabled"), "testmode", GTA.Offsets.Editor.AOB_testmode));
             return rows;
         }
 
