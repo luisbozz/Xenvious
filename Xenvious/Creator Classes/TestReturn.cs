@@ -27,14 +27,12 @@ namespace Xenvious
         // above the ground when leaving the player.
         private const float CamHeight = 40f;
 
-        private enum Phase { Idle, InTest, WaitTakeOver, WaitAngle, WaitSwitch }
+        private enum Phase { Idle, InTest, WaitTakeOver, WaitSwitch }
 
         private static Phase _phase = Phase.Idle;
         private static long[] _creator;
         private static long[] _controller;
         private static bool _fromCamera;
-        private static readonly float[] _angle = new float[12];
-        private static bool _haveAngle;
         private static XenVector3 _last;
         private static bool _haveLast;
         private static DateTime _since;
@@ -61,11 +59,7 @@ namespace Xenvious
                     // The mode before the test, as long as no Test entry is under way.
                     int v = Value();
                     if ((v & (1 << BitTestEntry)) == 0 && (v & (1 << BitTestStart)) == 0)
-                    {
                         _fromCamera = (v & (1 << BitOnFoot)) == 0;
-                        if (_fromCamera)
-                            _haveAngle = ReadAngle(_angle);
-                    }
                     if (scan)
                     {
                         _controller = GTA.getLocalScriptAddy("fm_mission_controller");
@@ -108,8 +102,7 @@ namespace Xenvious
                         if (_fromCamera)
                         {
                             Log.Debug("LTS test end: back to the camera", source: "TestReturn");
-                            _phase = _haveAngle ? Phase.WaitAngle : Phase.Idle;
-                            _since = DateTime.Now;
+                            _phase = Phase.Idle;
                         }
                         else
                         {
@@ -120,16 +113,6 @@ namespace Xenvious
                     else if (DateTime.Now - _since > TimeSpan.FromSeconds(20))
                     {
                         Log.Debug("LTS test end: creator did not take over", source: "TestReturn");
-                        _phase = Phase.Idle;
-                    }
-                    break;
-
-                case Phase.WaitAngle:
-                    // The camera is rebuilt looking straight down; once it stands, turn it back
-                    // to the angle it had before the test.
-                    if (DateTime.Now - _since > TimeSpan.FromMilliseconds(1500))
-                    {
-                        WriteAngle(_angle);
                         _phase = Phase.Idle;
                     }
                     break;
@@ -218,60 +201,6 @@ namespace Xenvious
                 MainWindow.m.memory((at + 8).ToString("X")).SetFloat(_last.Y);
                 MainWindow.m.memory((at + 16).ToString("X")).SetFloat(_last.Z + CamHeight);
             }
-        }
-
-        // The creator's fly camera (creator_camptr, position at OFFSET_creator_cam_loc): the three
-        // rows of its rotation matrix sit in the 0x30 bytes before the position, 16 bytes apart.
-        // Only taken when they really are a rotation (unit length, at right angles), so a
-        // different layout on another build writes nothing.
-        private static long CamBase()
-        {
-            if (GTA.Offsets.Editor.creator_camptr == 0 || GTA.Offsets.Editor.OFFSET_creator_cam_loc == 0)
-                return 0;
-            try
-            {
-                long pos = MainWindow.m.memory(GTA.Offsets.Editor.creator_camptr, GTA.Offsets.Editor.OFFSET_creator_cam_loc).GetAddress();
-                return pos == 0 ? 0 : pos - 0x30;
-            }
-            catch
-            {
-                return 0;
-            }
-        }
-
-        private static bool ReadAngle(float[] into)
-        {
-            long at = CamBase();
-            if (at == 0)
-                return false;
-            for (int row = 0; row < 3; row++)
-                for (int i = 0; i < 4; i++)
-                    into[row * 4 + i] = MainWindow.m.memory((at + row * 16 + i * 4).ToString("X")).Get<float>();
-            return IsRotation(into);
-        }
-
-        private static void WriteAngle(float[] rows)
-        {
-            long at = CamBase();
-            var now = new float[12];
-            if (at == 0 || !ReadAngle(now))
-            {
-                Log.Debug("LTS test end: camera angle not found", source: "TestReturn");
-                return;
-            }
-            for (int row = 0; row < 3; row++)
-                for (int i = 0; i < 3; i++)
-                    MainWindow.m.memory((at + row * 16 + i * 4).ToString("X")).SetFloat(rows[row * 4 + i]);
-            Log.Debug("LTS test end: camera angle restored", source: "TestReturn");
-        }
-
-        private static bool IsRotation(float[] m)
-        {
-            double Dot(int a, int b) => m[a * 4] * m[b * 4] + m[a * 4 + 1] * m[b * 4 + 1] + m[a * 4 + 2] * m[b * 4 + 2];
-            for (int r = 0; r < 3; r++)
-                if (Math.Abs(Dot(r, r) - 1) > 0.02)
-                    return false;
-            return Math.Abs(Dot(0, 1)) < 0.02 && Math.Abs(Dot(0, 2)) < 0.02 && Math.Abs(Dot(1, 2)) < 0.02;
         }
 
         private static bool IsZero(long at)
