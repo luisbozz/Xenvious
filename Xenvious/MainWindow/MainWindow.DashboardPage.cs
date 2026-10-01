@@ -880,14 +880,20 @@ namespace Xenvious
                     {
                         case "fm_survival_creator":
                             new Global(GTA.Offsets.Editor.current_team_test).SetInt(index);
+                            // Like the creator's own Test entry: bit 18 first, then bit 25 (see public_mission_creator).
+                            Functions.Write.writebinarytoaddy(19, m.memory(GTA.Offsets.Editor.localptr[0], new long[] { GTA.Offsets.Editor.localptr[1], GTA.Offsets.Editor.OFFSET_script_local_start, GTA.Offsets.Editor.OFFSET_current_creator_test_survival * 8 }).GetAddress());
                             Functions.Write.writebinarytoaddy(26, m.memory(GTA.Offsets.Editor.localptr[0], new long[] { GTA.Offsets.Editor.localptr[1], GTA.Offsets.Editor.OFFSET_script_local_start, GTA.Offsets.Editor.OFFSET_current_creator_test_survival * 8 }).GetAddress());
                             break;
                         case "fm_capture_creator":
                             new Global(GTA.Offsets.Editor.current_team_test).SetInt(index);
+                            // Like the creator's own Test entry: bit 18 first, then bit 25 (see public_mission_creator).
+                            Functions.Write.writebinarytoaddy(19, m.memory(GTA.Offsets.Editor.localptr[0], new long[] { GTA.Offsets.Editor.localptr[1], GTA.Offsets.Editor.OFFSET_script_local_start, GTA.Offsets.Editor.OFFSET_current_creator_test_capture * 8 }).GetAddress());
                             Functions.Write.writebinarytoaddy(26, m.memory(GTA.Offsets.Editor.localptr[0], new long[] { GTA.Offsets.Editor.localptr[1], GTA.Offsets.Editor.OFFSET_script_local_start, GTA.Offsets.Editor.OFFSET_current_creator_test_capture * 8 }).GetAddress());
                             break;
                         case "fm_lts_creator":
                             new Global(GTA.Offsets.Editor.current_team_test).SetInt(index);
+                            // Like the creator's own Test entry: bit 18 first, then bit 25 (see public_mission_creator).
+                            Functions.Write.writebinarytoaddy(19, m.memory(GTA.Offsets.Editor.localptr[0], new long[] { GTA.Offsets.Editor.localptr[1], GTA.Offsets.Editor.OFFSET_script_local_start, GTA.Offsets.Editor.OFFSET_current_creator_test_lts * 8 }).GetAddress());
                             Functions.Write.writebinarytoaddy(26, m.memory(GTA.Offsets.Editor.localptr[0], new long[] { GTA.Offsets.Editor.localptr[1], GTA.Offsets.Editor.OFFSET_script_local_start, GTA.Offsets.Editor.OFFSET_current_creator_test_lts * 8 }).GetAddress());
                             break;
                         case "public_mission_creator":
