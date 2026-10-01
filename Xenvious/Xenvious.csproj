@@ -193,6 +193,7 @@
     <Compile Include="Controls\GroupCard.cs" />
     <Compile Include="Controls\PlayerRulesView.cs" />
     <Compile Include="Controls\StartPointsView.cs" />
+    <Compile Include="Controls\InventoryView.cs" />
     <Compile Include="Controls\StartPointPropsView.cs" />
     <Compile Include="Controls\LifecycleCard.cs" />
     <Compile Include="Controls\ZoneLifecycleCard.cs" />

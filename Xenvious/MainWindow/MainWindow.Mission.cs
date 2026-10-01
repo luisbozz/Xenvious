@@ -25,6 +25,16 @@ namespace Xenvious
                 InventoryRifle.WeaponList = Weapons.Rifle;
                 InventorySniper.WeaponList = Weapons.Sniper;
                 InventoryExplosive.WeaponList = Weapons.Explosive;
+                // The category lists stay (start weapon and ammo read their weapon lists) but are
+                // hidden; InventoryView shows and edits the same bits.
+                if (InventoryPistols.Parent is WrapPanel lists && lists.Parent is Grid grid)
+                {
+                    lists.Visibility = Visibility.Collapsed;
+                    var view = new InventoryView(ddinvteam) { VerticalAlignment = VerticalAlignment.Top };
+                    Grid.SetColumn(view, Grid.GetColumn(lists));
+                    Grid.SetRow(view, Grid.GetRow(lists));
+                    grid.Children.Add(view);
+                }
                 Inventory_Initialized = true;
             }
             PageInnerMission.SelectedItem = PageInnerMissionInventory;
