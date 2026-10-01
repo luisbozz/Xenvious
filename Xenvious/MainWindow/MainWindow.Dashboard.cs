@@ -95,56 +95,49 @@ namespace Xenvious
             }
 
             int seconds = (int)(DateTime.UtcNow - _launchStarted).TotalSeconds;
+            string creatorLabel = TranslateOr("dash_creator_label", "Creator");
+            string modeLabel = TranslateOr("dash_mode_label", "Modus");
             switch (_launchPhase)
             {
                 case LaunchPhase.Requested:
                 case LaunchPhase.ScriptLoaded:
-                    DashStatusCreator.Text = string.Format(CultureInfo.CurrentCulture, "{0} · {1} s",
+                    ShowStatus(TranslateOr("dash_launch_label", "Creator-Start"), string.Format(CultureInfo.CurrentCulture, "{0} · {1} s",
                         _launchPhase == LaunchPhase.Requested
                             ? TranslateOr("launch_step1", "Start angefordert")
                             : TranslateOr("launch_step2", "Creator-Script wird geladen"),
-                        seconds);
-                    DashStatusCreatorDot.Fill = DotWarn;
+                        seconds), DotWarn);
                     break;
                 case LaunchPhase.Failed:
-                    DashStatusCreator.Text = TranslateOr("launch_failed_short", "Creator-Start fehlgeschlagen");
-                    DashStatusCreatorDot.Fill = DotBad;
+                    ShowStatus(TranslateOr("dash_launch_label", "Creator-Start"), TranslateOr("launch_failed_short2", "Fehlgeschlagen"), DotBad);
                     break;
                 default:
-                    // Where the game is right now, from UpdateGameState.
+                    // Where the game is right now, from UpdateGameState: the creator tiles only say
+                    // "Creator" while one is open, otherwise the tile names the game mode.
                     switch (CurrentGameState)
                     {
                         case GameState.Creator:
-                            DashStatusCreator.Text = CreatorDisplayName(creator);
-                            DashStatusCreatorDot.Fill = DotOk;
+                            ShowStatus(creatorLabel, CreatorKindName(creator), DotOk);
                             break;
                         case GameState.Testing:
-                            DashStatusCreator.Text = string.Format(CultureInfo.CurrentCulture, TranslateOr("dash_state_testing", "Test läuft · {0}"), CreatorDisplayName(_runningCreatorScript ?? ""));
-                            DashStatusCreatorDot.Fill = DotWarn;
+                            ShowStatus(TranslateOr("dash_test_label", "Test läuft"), CreatorKindName(_runningCreatorScript ?? ""), DotWarn);
                             break;
                         case GameState.CreatorMenu:
-                            DashStatusCreator.Text = TranslateOr("dash_creator_menu", "Creator-Menü");
-                            DashStatusCreatorDot.Fill = DotWarn;
+                            ShowStatus(creatorLabel, TranslateOr("dash_creator_menu2", "Auswahlmenü"), DotWarn);
                             break;
                         case GameState.Loading:
-                            DashStatusCreator.Text = TranslateOr("dash_state_loading", "Lädt …");
-                            DashStatusCreatorDot.Fill = DotWarn;
+                            ShowStatus(modeLabel, TranslateOr("dash_state_loading", "Lädt …"), DotWarn);
                             break;
                         case GameState.MainMenu:
-                            DashStatusCreator.Text = TranslateOr("dash_state_mainmenu", "Hauptmenü");
-                            DashStatusCreatorDot.Fill = DotOff;
+                            ShowStatus(modeLabel, TranslateOr("dash_state_mainmenu", "Hauptmenü"), DotOff);
                             break;
                         case GameState.StoryMode:
-                            DashStatusCreator.Text = TranslateOr("dash_state_story", "Story Mode");
-                            DashStatusCreatorDot.Fill = DotOff;
+                            ShowStatus(modeLabel, TranslateOr("dash_state_story", "Story Mode"), DotOff);
                             break;
                         case GameState.Online:
-                            DashStatusCreator.Text = TranslateOr("dash_state_online", "GTA Online");
-                            DashStatusCreatorDot.Fill = DotOff;
+                            ShowStatus(modeLabel, TranslateOr("dash_state_online", "GTA Online"), DotOff);
                             break;
                         default:
-                            DashStatusCreator.Text = TranslateOr("dash_creator_none", "Kein Creator");
-                            DashStatusCreatorDot.Fill = DotOff;
+                            ShowStatus(modeLabel, "–", DotOff);
                             break;
                     }
                     break;
@@ -181,6 +174,28 @@ namespace Xenvious
             DashStatusScriptDot.Fill = script ? DotOk : DotOff;
 
             UpdateDashboardForCreator(inCreator ? creator : null);
+        }
+
+        private void ShowStatus(string label, string value, Brush dot)
+        {
+            DashStatusCreatorLabel.Text = label;
+            DashStatusCreator.Text = value;
+            DashStatusCreatorDot.Fill = dot;
+        }
+
+        // What the tile shows under "Creator" / "Test": the job type without the word "Creator".
+        private static string CreatorKindName(string script)
+        {
+            switch (script)
+            {
+                case "fm_race_creator": return "Race";
+                case "fm_lts_creator": return "Last Team Standing";
+                case "fm_capture_creator": return "Capture";
+                case "fm_deathmatch_creator": return "Deathmatch";
+                case "fm_survival_creator": return "Survival";
+                case "public_mission_creator": return "Mission";
+                default: return "–";
+            }
         }
 
         private static string CreatorDisplayName(string script)

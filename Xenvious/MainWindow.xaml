@@ -805,7 +805,8 @@
                                             <StackPanel Orientation="Horizontal">
                                                 <Ellipse x:Name="DashStatusCreatorDot" Style="{StaticResource DashDot}"/>
                                                 <StackPanel VerticalAlignment="Center">
-                                                    <TextBlock Style="{StaticResource DashTileLabel}" Text="{Binding Translation[dash_creator_label], FallbackValue=Creator}"/>
+                                                    <!-- Label and value follow the situation (UpdateStatusStrip): creator, test, start, or the game mode. -->
+                                                    <TextBlock x:Name="DashStatusCreatorLabel" Style="{StaticResource DashTileLabel}" Text="{Binding Translation[dash_creator_label], FallbackValue=Creator}"/>
                                                     <TextBlock x:Name="DashStatusCreator" Style="{StaticResource DashTileValue}"/>
                                                 </StackPanel>
                                             </StackPanel>
