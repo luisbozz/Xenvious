@@ -66,7 +66,8 @@ namespace Xenvious
 
                 AdvanceLaunch(game, inCreator);
                 UpdateLaunchButton(inCreator);
-                UpdateTestButton(inCreator);
+                // Not inCreator: while a test runs the creator thread does not count as running.
+                UpdateTestButton(globals);
                 UpdateStatusStrip(game, inCreator, creatorMenu, creator);
                 UpdateEditNav(inCreator ? creator : "");
                 OfferLaunchInStoryMode(globals, inCreator, creatorMenu);

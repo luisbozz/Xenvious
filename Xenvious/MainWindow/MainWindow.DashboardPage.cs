@@ -845,9 +845,9 @@ namespace Xenvious
         private static readonly string[] TestControllers = { "fm_mission_controller", "public_mission_controller", "fm_survival_controller" };
         private bool _testRunning;
 
-        private void UpdateTestButton(bool inCreator)
+        private void UpdateTestButton(bool globals)
         {
-            bool running = inCreator && GTA.Offsets.Editor.endtest != 0 && TestControllers.Any(GTA.IsScriptRunning);
+            bool running = globals && GTA.Offsets.Editor.endtest != 0 && TestControllers.Any(GTA.IsScriptRunning);
             if (running == _testRunning)
                 return;
             _testRunning = running;
