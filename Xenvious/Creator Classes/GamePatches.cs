@@ -17,17 +17,24 @@ namespace Xenvious
         public string Name { get; }
         private readonly Func<string> _pattern;
         private readonly Func<long, long> _resolve;
-        private readonly byte[] _patch;
+        private readonly Func<byte[]> _patchFor;
+        private byte[] _patch;
         private long _address;
         private byte[] _original;
 
         /// <param name="resolve">Turns the pattern match into the patch address, e.g. hit => GamePatches.Rip(hit + 3) - 5.</param>
         public GamePatch(string name, Func<string> pattern, Func<long, long> resolve, byte[] patch)
+            : this(name, pattern, resolve, () => patch)
+        {
+        }
+
+        /// <param name="patch">Asked at every resolve, for patches whose bytes differ per edition.</param>
+        public GamePatch(string name, Func<string> pattern, Func<long, long> resolve, Func<byte[]> patch)
         {
             Name = name;
             _pattern = pattern;
             _resolve = resolve;
-            _patch = patch;
+            _patchFor = patch;
         }
 
         public bool Available => _address != 0 && _original != null;
@@ -36,6 +43,7 @@ namespace Xenvious
         {
             _address = 0;
             _original = null;
+            _patch = _patchFor();
             string pattern = _pattern();
             if (string.IsNullOrWhiteSpace(pattern))
             {
@@ -88,12 +96,17 @@ namespace Xenvious
             hit => Rip(Rip(hit + 17) + 1),
             new byte[] { 0xC3 });
 
-        // Creator camera: 11 bytes from 5 before the match are the collision handling; NOPs let
-        // the camera pass through walls and the ground.
+        // Creator camera: 5 bytes before the match is the call to the collision test, the match
+        // ORs its result into the camera's collision flag. Legacy: NOPs over both (11 bytes) let
+        // the camera pass through walls and the ground. Enhanced: the je after them takes its
+        // flags from that OR and otherwise zeroes the camera's speed (rsi+0x37c) every frame, so
+        // only the call is replaced, by xor eax, eax ("no hit"), and the OR stays.
         public static readonly GamePatch CameraNoCollision = new GamePatch("AOB_creator_cam_nocollision",
             () => GTA.Offsets.Editor.AOB_creator_cam_nocollision,
             hit => hit - 5,
-            Enumerable.Repeat((byte)0x90, 11).ToArray());
+            () => GameVariant.Current == GameEdition.Enhanced
+                ? new byte[] { 0x31, 0xC0, 0x90, 0x90, 0x90 }
+                : Enumerable.Repeat((byte)0x90, 11).ToArray());
 
         // The function that returns how much of the creator budget is used: xorps xmm0, xmm0; ret
         // makes it return 0.0, so the budget bar never fills.
