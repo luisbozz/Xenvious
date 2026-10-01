@@ -847,6 +847,9 @@ namespace Xenvious
 
         private void UpdateTestButton(bool globals)
         {
+            // Fix Black Screen restarts the running creator's state machine; without one it
+            // would write to the last creator's stale locals.
+            BtnTryFixBlackScreen.IsEnabled = globals && GTA.CreatorScripts.Any(GTA.IsScriptRunning);
             bool running = globals && GTA.Offsets.Editor.endtest != 0 && TestControllers.Any(GTA.IsScriptRunning);
             if (running == _testRunning)
                 return;
@@ -941,6 +944,8 @@ namespace Xenvious
 
         private void BtnTryFixBlackScreen_Click(object sender, RoutedEventArgs e)
         {
+            if (!m.IsProcOpen || !GTA.CreatorScripts.Any(GTA.IsScriptRunning))
+                return;
             string addy = (getCreatorScriptLocalWorkerBase() + GTA.Offsets.Editor.OFFSET_current_creator_worker_offset_refresh * 8).ToString("X");
             m.memory(addy).SetInt(0);
             m.memory(addy).SetInt(7);

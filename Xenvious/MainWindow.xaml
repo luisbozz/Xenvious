@@ -880,9 +880,14 @@
                                                 <Button x:Name="BtnPublishMain" Style="{StaticResource DashButton}" Click="BtnPublishMain_Click" Content="{Binding Translation[publish], FallbackValue=Publish}"/>
                                                 <Rectangle Height="1" Fill="{DynamicResource LineBrush}" Margin="0,2,8,8"/>
                                                 <Button x:Name="BtnSkipTest" Style="{StaticResource DashButton}" Click="BtnSkipTest_Click" Content="{Binding Translation[skiptest], FallbackValue='Skip Testing'}"/>
-                                                <Button x:Name="BtnTryFixBlackScreen" Style="{StaticResource DashButton}" Click="BtnTryFixBlackScreen_Click" Content="{Binding Translation[dash_fixblack], FallbackValue='Fix Black Screen'}"/>
+                                                <Rectangle Height="1" Fill="{DynamicResource LineBrush}" Margin="0,2,8,8"/>
+                                                <!-- Stuck: first reload the creator (only while one runs), else leave for story mode. -->
+                                                <TextBlock Text="{Binding Translation[dash_stuck], FallbackValue='Game stuck?'}" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource NavMutedBrush}" Margin="0,0,8,6"/>
+                                                <Button x:Name="BtnTryFixBlackScreen" Style="{StaticResource DashButton}" Click="BtnTryFixBlackScreen_Click" Content="{Binding Translation[dash_fixblack], FallbackValue='Fix Black Screen'}"
+                                                        ToolTipService.ShowOnDisabled="True" ToolTip="{Binding Translation[dash_fixblack_tip], FallbackValue='The creator runs but the screen stays black: reloads the creator. Only while a creator runs.'}"/>
                                                 <Button x:Name="BtnStoryMode" Style="{StaticResource DashButton}" Click="BtnStoryMode_Click" Content="{Binding Translation[dash_storymode], FallbackValue='Back to Story Mode'}"
                                                         ToolTip="{Binding Translation[dash_storymode_tip], FallbackValue='When the creator or a test is stuck: ends both and goes back to story mode.'}"/>
+                                                <TextBlock Text="{Binding Translation[dash_stuck_hint], FallbackValue='Try Fix Black Screen first. If it does not help or no creator runs any more: back to story mode.'}" FontSize="11" TextWrapping="Wrap" Foreground="{DynamicResource FaintTextBrush}" Margin="0,0,8,8"/>
                                                 <Rectangle Height="1" Fill="{DynamicResource LineBrush}" Margin="0,2,8,8"/>
                                                 <Button x:Name="BtnDashBackupMap" Style="{StaticResource DashButton}" Click="BtnDashBackupMap_Click" Content="{Binding Translation[dash_backupmap], FallbackValue='Backup Map'}"/>
                                                 <Button x:Name="BtnDashReloadMap" Style="{StaticResource DashButton}" Click="BtnDashReloadMap_Click" Content="{Binding Translation[dash_reloadmap], FallbackValue='Reload Map'}"/>
