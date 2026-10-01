@@ -15,7 +15,14 @@ namespace Xenvious
     /// rebuilt from the camera struct (OFFSET_current_creator_cam_lts, Local_1757) at f_18 or
     /// f_15 when one is set, else at f_2 looking straight down. The creator does not remember
     /// that the test came from the camera, so Xenvious notes bit 30 before the test and clears
-    /// it again as soon as fm_mission_controller has ended.
+    /// it again once the test has ended.
+    ///
+    /// Start and end come from the creator itself, not from Xenvious' own thread scan, which can
+    /// miss the controller for a moment while it starts (clearing bit 30 then left the creator
+    /// with the player in the air and no cursor): iLocal_42341 (running) is 1 from the controller
+    /// start until the creator is back, iLocal_42342 (ended) turns 1 when the creator sees no
+    /// fm_mission_controller thread any more. Between that and its test end (state 7) it waits
+    /// for the network session to end, which leaves time to clear bit 30.
     /// </summary>
     public static class TestReturn
     {
@@ -31,7 +38,6 @@ namespace Xenvious
 
         private static Phase _phase = Phase.Idle;
         private static long[] _creator;
-        private static long[] _controller;
         private static bool _fromCamera;
         private static XenVector3 _last;
         private static bool _haveLast;
@@ -41,7 +47,8 @@ namespace Xenvious
         /// <summary>Called every 50 ms from the patch thread.</summary>
         public static void Tick()
         {
-            if (MainWindow.m == null || !MainWindow.m.IsProcOpen || GTA.Offsets.Editor.OFFSET_current_creator_test_lts == 0)
+            if (MainWindow.m == null || !MainWindow.m.IsProcOpen || GTA.Offsets.Editor.OFFSET_current_creator_test_lts == 0
+                || GTA.Offsets.Editor.OFFSET_current_creator_test_running_lts == 0 || GTA.Offsets.Editor.OFFSET_current_creator_test_ended_lts == 0)
             {
                 _phase = Phase.Idle;
                 return;
@@ -60,15 +67,11 @@ namespace Xenvious
                     int v = Value();
                     if ((v & (1 << BitTestEntry)) == 0 && (v & (1 << BitTestStart)) == 0)
                         _fromCamera = (v & (1 << BitOnFoot)) == 0;
-                    if (scan)
+                    if (Read(GTA.Offsets.Editor.OFFSET_current_creator_test_running_lts) == 1)
                     {
-                        _controller = GTA.getLocalScriptAddy("fm_mission_controller");
-                        if (_controller != null)
-                        {
-                            _haveLast = false;
-                            _phase = Phase.InTest;
-                            Log.Debug("LTS test started from the " + (_fromCamera ? "camera" : "player"), source: "TestReturn");
-                        }
+                        _haveLast = false;
+                        _phase = Phase.InTest;
+                        Log.Debug("LTS test started from the " + (_fromCamera ? "camera" : "player"), source: "TestReturn");
                     }
                     break;
 
@@ -81,16 +84,19 @@ namespace Xenvious
                         if (_fromCamera)
                             PlaceCamera();
                     }
-                    // Every tick: bit 30 has to be cleared before the creator's test end runs. The
-                    // controller can move to another thread slot while it starts, so an empty slot
-                    // only counts once the whole list has no controller either.
-                    if (!Alive(_controller, "fm_mission_controller")
-                        && (_controller = GTA.getLocalScriptAddy("fm_mission_controller")) == null)
+                    // Every tick: bit 30 has to be cleared before the creator's test end runs.
+                    if (Read(GTA.Offsets.Editor.OFFSET_current_creator_test_ended_lts) == 1)
                     {
                         _phase = Phase.WaitTakeOver;
                         _since = DateTime.Now;
                         Log.Debug("LTS test ended", source: "TestReturn");
                         goto case Phase.WaitTakeOver;
+                    }
+                    // Back without an end (the creator's restart paths reset both).
+                    if (Read(GTA.Offsets.Editor.OFFSET_current_creator_test_running_lts) != 1)
+                    {
+                        Log.Debug("LTS test left without an end", source: "TestReturn");
+                        _phase = Phase.Idle;
                     }
                     break;
 
@@ -136,23 +142,6 @@ namespace Xenvious
             }
         }
 
-        // One thread slot instead of the whole list: still live and still the same script.
-        private static bool Alive(long[] slot, string script)
-        {
-            if (slot == null || !GTA.IsLiveThread(slot[0], slot[1]))
-                return false;
-            try
-            {
-                if (GTA.Offsets.Editor.OFFSET_script_hash != 0)
-                    return MainWindow.m.memory(slot[0], new long[] { slot[1], GTA.Offsets.Editor.OFFSET_script_hash }).Get<uint>() == MainWindow.Joaat(script);
-                return MainWindow.m.memory(slot[0], new long[] { slot[1], GTA.Offsets.Editor.OFFSET_script_name }).GetString().ToLower() == script;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
         private static long Local(long index)
         {
             if (_creator == null || index == 0)
@@ -167,9 +156,11 @@ namespace Xenvious
             }
         }
 
-        private static int Value()
+        private static int Value() => Read(GTA.Offsets.Editor.OFFSET_current_creator_test_lts);
+
+        private static int Read(long index)
         {
-            long addr = Local(GTA.Offsets.Editor.OFFSET_current_creator_test_lts);
+            long addr = Local(index);
             return addr == 0 ? 0 : MainWindow.m.memory(addr.ToString("X")).Get<int>();
         }
 

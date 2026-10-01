@@ -1552,6 +1552,10 @@ namespace Xenvious
                 public static long OFFSET_current_creator_test_lts = 0x0;
                 // fm_lts_creator's camera struct: f_2 is where the fly camera is rebuilt after a test.
                 public static long OFFSET_current_creator_cam_lts = 0x0;
+                // fm_lts_creator: 1 from the test start until the creator is back; and 1 once the
+                // creator has seen the mission controller end (it then waits for the session to end).
+                public static long OFFSET_current_creator_test_running_lts = 0x0;
+                public static long OFFSET_current_creator_test_ended_lts = 0x0;
                 // The creator hub script ("creator"): its menu stage, 6 = quit (sky swoop up, start the transition, clean up).
                 public static long OFFSET_creator_hub_stage = 0x0;
                 // g_bBringUpMPHud (TRIGGER_TRANSITION_MENU_ACTIVE): selector starts maintransition when it is set.
