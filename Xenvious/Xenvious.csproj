@@ -475,6 +475,7 @@
     <Compile Include="MainWindow\MainWindow.Race.cs" />
     <Compile Include="MainWindow\MainWindow.ScreenMessage.cs" />
     <Compile Include="MainWindow\MainWindow.Settings.cs" />
+    <Compile Include="MainWindow\MainWindow.StoryMode.cs" />
     <Compile Include="MainWindow\MainWindow.Survival.cs" />
     <Compile Include="MainWindow\MainWindow.Teleport.cs" />
     <Compile Include="MainWindow\MainWindow.Vehicles.cs" />

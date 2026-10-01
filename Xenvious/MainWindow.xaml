@@ -881,6 +881,8 @@
                                                 <Rectangle Height="1" Fill="{DynamicResource LineBrush}" Margin="0,2,8,8"/>
                                                 <Button x:Name="BtnSkipTest" Style="{StaticResource DashButton}" Click="BtnSkipTest_Click" Content="{Binding Translation[skiptest], FallbackValue='Skip Testing'}"/>
                                                 <Button x:Name="BtnTryFixBlackScreen" Style="{StaticResource DashButton}" Click="BtnTryFixBlackScreen_Click" Content="{Binding Translation[dash_fixblack], FallbackValue='Fix Black Screen'}"/>
+                                                <Button x:Name="BtnStoryMode" Style="{StaticResource DashButton}" Click="BtnStoryMode_Click" Content="{Binding Translation[dash_storymode], FallbackValue='Back to Story Mode'}"
+                                                        ToolTip="{Binding Translation[dash_storymode_tip], FallbackValue='When the creator or a test is stuck: ends both and goes back to story mode.'}"/>
                                                 <Rectangle Height="1" Fill="{DynamicResource LineBrush}" Margin="0,2,8,8"/>
                                                 <Button x:Name="BtnDashBackupMap" Style="{StaticResource DashButton}" Click="BtnDashBackupMap_Click" Content="{Binding Translation[dash_backupmap], FallbackValue='Backup Map'}"/>
                                                 <Button x:Name="BtnDashReloadMap" Style="{StaticResource DashButton}" Click="BtnDashReloadMap_Click" Content="{Binding Translation[dash_reloadmap], FallbackValue='Reload Map'}"/>
