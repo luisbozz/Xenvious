@@ -15,6 +15,16 @@
 
     <Window.Resources>
         <ResourceDictionary>
+            <!-- Dialog buttons: the container Border around each button takes the hover colour
+                 (DialogButton_MouseEnter), so the whole button changes, not an inset part of it. -->
+            <ControlTemplate x:Key="DialogButtonTemplate" TargetType="Button">
+                <Border x:Name="b" Background="Transparent" CornerRadius="5">
+                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                </Border>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsPressed" Value="True"><Setter TargetName="b" Property="Background" Value="#33000000"/></Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
             <local:ColorToShadowColorConverter x:Key="ColorConverter"/>
             <local:IsCheckedConverter x:Key="IsCheckedConverter"/>
             <local:FreezeValueConverter x:Key="FreezeValueConverter"/>
@@ -12160,27 +12170,15 @@
                         </Border>
                         <ProgressBar x:Name="DialogProgress" Height="6" Margin="0,18,0,0" Minimum="0" Maximum="1" Visibility="Collapsed" Foreground="{DynamicResource HighlightBrush}" Background="#33FFFFFF" BorderThickness="0"/>
                         <StackPanel x:Name="DialogButtons" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,22,0,0">
-                            <Border x:Name="DialogCancelContainer" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Height="34" MinWidth="110" Margin="0,0,10,0">
-                                <Button x:Name="DialogCancel" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" FontSize="14" Foreground="{DynamicResource TextColor}" Padding="14,0" Click="DialogCancel_Click"/>
+                            <Border x:Name="DialogCancelContainer" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Height="34" MinWidth="110" Margin="0,0,10,0" MouseEnter="DialogButton_MouseEnter" MouseLeave="DialogButton_MouseLeave">
+                                <Button x:Name="DialogCancel" Template="{StaticResource DialogButtonTemplate}" Cursor="Hand" FontFamily="{DynamicResource Volte}" FontWeight="Bold" FontSize="14" Foreground="{DynamicResource TextColor}" Padding="14,0" Click="DialogCancel_Click"/>
                             </Border>
-                            <Border x:Name="DialogAltContainer" Visibility="Collapsed" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Height="34" MinWidth="110" Margin="0,0,10,0">
-                                <Button x:Name="DialogAlt" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" FontSize="14" Foreground="{DynamicResource TextColor}" Padding="14,0" Click="DialogAlt_Click"/>
+                            <Border x:Name="DialogAltContainer" Visibility="Collapsed" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Height="34" MinWidth="110" Margin="0,0,10,0" MouseEnter="DialogButton_MouseEnter" MouseLeave="DialogButton_MouseLeave">
+                                <Button x:Name="DialogAlt" Template="{StaticResource DialogButtonTemplate}" Cursor="Hand" FontFamily="{DynamicResource Volte}" FontWeight="Bold" FontSize="14" Foreground="{DynamicResource TextColor}" Padding="14,0" Click="DialogAlt_Click"/>
                             </Border>
-                            <Border x:Name="DialogConfirmContainer" CornerRadius="5" Background="{DynamicResource HighlightBrush}" Height="34" MinWidth="130" MouseEnter="DialogConfirmContainer_MouseEnter" MouseLeave="DialogConfirmContainer_MouseLeave">
+                            <Border x:Name="DialogConfirmContainer" CornerRadius="5" Background="{DynamicResource HighlightBrush}" Height="34" MinWidth="130" MouseEnter="DialogButton_MouseEnter" MouseLeave="DialogButton_MouseLeave">
                                 <Border.Effect><DropShadowEffect BlurRadius="6" ShadowDepth="2" Opacity="0.5" Color="{DynamicResource ShadowColor}"/></Border.Effect>
-                                <Button x:Name="DialogConfirm" Cursor="Hand" FontSize="14" FontWeight="Bold" Padding="16,0" Click="DialogConfirm_Click">
-                                    <Button.Template>
-                                        <ControlTemplate TargetType="Button">
-                                            <Border x:Name="b" Background="Transparent" CornerRadius="5">
-                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
-                                            </Border>
-                                            <ControlTemplate.Triggers>
-                                                <!-- Hover colours the whole container (DialogConfirmContainer_MouseEnter), not just this inner border. -->
-                                                <Trigger Property="IsPressed" Value="True"><Setter TargetName="b" Property="Background" Value="#33000000"/></Trigger>
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </Button.Template>
-                                </Button>
+                                <Button x:Name="DialogConfirm" Template="{StaticResource DialogButtonTemplate}" Cursor="Hand" FontSize="14" FontWeight="Bold" Padding="16,0" Click="DialogConfirm_Click"/>
                             </Border>
                         </StackPanel>
                     </StackPanel>

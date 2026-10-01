@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows;
 using System.Windows.Input;
@@ -56,17 +57,34 @@ namespace Xenvious
 
         private Brush _dialogConfirmBrush;
 
-        // The whole confirm button takes a darker shade of its colour while hovered.
-        private void DialogConfirmContainer_MouseEnter(object sender, MouseEventArgs e)
+        // Hover colours the whole button: the confirm button a darker shade of its colour, cancel
+        // and the alternative the theme's button hover colour.
+        private void DialogButton_MouseEnter(object sender, MouseEventArgs e)
         {
-            if (_dialogConfirmBrush is SolidColorBrush b)
-                DialogConfirmContainer.Background = new SolidColorBrush(Color.FromRgb((byte)(b.Color.R * 0.85), (byte)(b.Color.G * 0.85), (byte)(b.Color.B * 0.85)));
+            var box = (Border)sender;
+            if (box == DialogConfirmContainer)
+            {
+                if (_dialogConfirmBrush is SolidColorBrush b)
+                    box.Background = new SolidColorBrush(Color.FromRgb((byte)(b.Color.R * 0.85), (byte)(b.Color.G * 0.85), (byte)(b.Color.B * 0.85)));
+            }
+            else
+            {
+                box.SetResourceReference(Border.BackgroundProperty, "ButtonHoverBackgroundBrush");
+            }
         }
 
-        private void DialogConfirmContainer_MouseLeave(object sender, MouseEventArgs e)
+        private void DialogButton_MouseLeave(object sender, MouseEventArgs e)
         {
-            if (_dialogConfirmBrush != null)
-                DialogConfirmContainer.Background = _dialogConfirmBrush;
+            var box = (Border)sender;
+            if (box == DialogConfirmContainer)
+            {
+                if (_dialogConfirmBrush != null)
+                    box.Background = _dialogConfirmBrush;
+            }
+            else
+            {
+                box.SetResourceReference(Border.BackgroundProperty, "SectionBackgroundBrush");
+            }
         }
 
         public enum DialogChoice { Cancel, Confirm, Alternative }
