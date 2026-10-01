@@ -10757,8 +10757,12 @@
                                                         Background="{DynamicResource SectionBackgroundBrush}" Padding="8">
                                                     <StackPanel>
                                                         <ScrollViewer x:Name="scrollMapMover" Width="420" Height="578"
-                                                                      HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                                                                      HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled"
                                                                       PreviewMouseWheel="MapMoverMap_Wheel">
+                                                            <!-- The corner between both scroll bars is drawn in the system control colour (white). -->
+                                                            <ScrollViewer.Resources>
+                                                                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent"/>
+                                                            </ScrollViewer.Resources>
                                                             <Grid x:Name="gridMapMoverCanvas" Width="420" Height="578"
                                                                   MouseLeftButtonDown="MapMoverMap_Click" MouseMove="MapMoverMap_Move" Cursor="Cross">
                                                                 <Grid.LayoutTransform>

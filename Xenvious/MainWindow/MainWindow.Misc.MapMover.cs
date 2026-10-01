@@ -336,6 +336,11 @@ namespace Xenvious
             Point onMap = e.GetPosition(gridMapMoverCanvas);
             Point inView = e.GetPosition(scrollMapMover);
             mapMoverZoom.ScaleX = mapMoverZoom.ScaleY = z;
+            // Scroll bars only while zoomed in: with Auto, bars that appeared while zoomed took
+            // their space from the view, so at 1x the map no longer fit and they stayed.
+            var bars = z > 1.001 ? ScrollBarVisibility.Auto : ScrollBarVisibility.Disabled;
+            scrollMapMover.HorizontalScrollBarVisibility = bars;
+            scrollMapMover.VerticalScrollBarVisibility = bars;
             scrollMapMover.UpdateLayout();
             scrollMapMover.ScrollToHorizontalOffset(onMap.X * z - inView.X);
             scrollMapMover.ScrollToVerticalOffset(onMap.Y * z - inView.Y);
