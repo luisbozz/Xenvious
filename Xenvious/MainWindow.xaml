@@ -10692,8 +10692,18 @@
                                             <DropShadowEffect BlurRadius="10" ShadowDepth="0" Color="{DynamicResource ShadowColor}"/>                                        </Border.Effect>
                                         <Grid>
                                             <!--Bottom-->
-                                            <!-- Pages in three groups; PageInnerMod_SelectionChanged marks the open one. -->
+                                            <!-- Pages in three groups; PageInnerMod_SelectionChanged marks the open one. Creator Tools opens first. -->
                                             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="8,0,8,5">
+                                                <TextBlock Style="{StaticResource SideNavGroup}" Text="{Binding Translation[misc_grp_creator], FallbackValue='Creator'}"/>
+                                                <Button x:Name="BtnModTools" Style="{StaticResource SideNavButton}" Click="BtnModTools_Click" Tag="active">
+                                                    <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[misc_creatortools], FallbackValue='Creator Tools'}"/>
+                                                </Button>
+                                                <Button x:Name="BtnModScrPatches" Style="{StaticResource SideNavButton}" Click="BtnModScrPatches_Click">
+                                                    <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[misc_scrpatches], FallbackValue='Patches'}"/>
+                                                </Button>
+                                                <Button x:Name="BtnModMS" Style="{StaticResource SideNavButton}" Click="BtnMS_Click">
+                                                    <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[misc_menupresets], FallbackValue='Menu Presets'}"/>
+                                                </Button>
                                                 <TextBlock Style="{StaticResource SideNavGroup}" Text="{Binding Translation[misc_grp_jobs], FallbackValue='Jobs'}"/>
                                                 <Button x:Name="BtnModMapBackup" Style="{StaticResource SideNavButton}" Click="BtnModMapBackup_Click">
                                                     <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[map_backup], FallbackValue='Job Backup'}"/>
@@ -10703,16 +10713,6 @@
                                                 </Button>
                                                 <Button x:Name="BtnModMapMover" Style="{StaticResource SideNavButton}" Click="BtnModMapMover_Click">
                                                     <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[misc_jobmove], FallbackValue='Move Job'}"/>
-                                                </Button>
-                                                <TextBlock Style="{StaticResource SideNavGroup}" Text="{Binding Translation[misc_grp_creator], FallbackValue='Creator'}"/>
-                                                <Button x:Name="BtnModMS" Style="{StaticResource SideNavButton}" Click="BtnMS_Click">
-                                                    <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[misc_menupresets], FallbackValue='Menu Presets'}"/>
-                                                </Button>
-                                                <Button x:Name="BtnModScrPatches" Style="{StaticResource SideNavButton}" Click="BtnModScrPatches_Click">
-                                                    <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[misc_scrpatches], FallbackValue='Script Patches'}"/>
-                                                </Button>
-                                                <Button x:Name="BtnModTools" Style="{StaticResource SideNavButton}" Click="BtnModTools_Click">
-                                                    <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[misc_creatortools], FallbackValue='Creator Tools'}"/>
                                                 </Button>
                                                 <TextBlock Style="{StaticResource SideNavGroup}" Text="{Binding Translation[misc_grp_dev], FallbackValue='Development'}"/>
                                                 <Button x:Name="BtnModLogs" Style="{StaticResource SideNavButton}" Click="BtnModLogs_Click">
@@ -11009,7 +11009,7 @@
 
 
                                         <!-- Creator tools that are rarely needed; they used to sit on the dashboard. -->
-                                        <TabItem x:Name="PageInnerModTools" Header="Creator Tools">
+                                        <TabItem x:Name="PageInnerModTools" Header="Creator Tools" IsSelected="True">
                                             <StackPanel Width="320" HorizontalAlignment="Left" Margin="10">
                                                 <Grid Style="{StaticResource FormRow}">
                                                     <Grid.ColumnDefinitions>
