@@ -840,9 +840,12 @@ namespace Xenvious
         }
 
         // The controllers the creators test with: LTS and Capture start fm_mission_controller, the
-        // Mission Creator public_mission_controller, Survival fm_survival_controller. Race and
-        // deathmatch tests end another way.
-        private static readonly string[] TestControllers = { "fm_mission_controller", "public_mission_controller", "fm_survival_controller" };
+        // Mission Creator public_mission_controller, Survival fm_survival_controller, Race
+        // FM_Race_Controler (stunt and some races fm_Bj_race_controler), Deathmatch
+        // FM_Deathmatch_Controler (Rockstar's spelling). All their creators clear the end-test
+        // global before the start, so the controllers read it.
+        private static readonly string[] TestControllers = { "fm_mission_controller", "public_mission_controller", "fm_survival_controller",
+            "fm_race_controler", "fm_bj_race_controler", "fm_deathmatch_controler" };
         private bool _testRunning;
         // The creator script that runs, also during a test (when IsInCreator is false).
         private string _runningCreatorScript;

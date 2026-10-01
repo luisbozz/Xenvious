@@ -228,9 +228,8 @@ namespace Xenvious
             GameState state = !game ? GameState.NoGame
                 : !globals || GTA.IsScriptRunning("maintransition") ? GameState.Loading
                 : inCreator ? GameState.Creator
-                // In a test the creator does not count as open (IsInCreator); LTS, Capture,
-                // Mission and Survival tests run a mission controller (TestControllers). Race and
-                // deathmatch tests have none and still show as the creator menu.
+                // In a test the creator does not count as open (IsInCreator); every creator test
+                // runs a controller script (TestControllers).
                 : _testRunning ? GameState.Testing
                 : creatorMenu ? GameState.CreatorMenu
                 : GTA.IsScriptRunning("freemode") ? GameState.Online

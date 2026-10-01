@@ -16,6 +16,7 @@ namespace Xenvious
             "fm_lts_creator", "fm_capture_creator", "fm_deathmatch_creator", "fm_race_creator",
             "fm_survival_creator", "public_mission_creator",
             "fm_mission_controller", "public_mission_controller", "fm_survival_controller",
+            "fm_race_controler", "fm_bj_race_controler", "fm_deathmatch_controler",
         };
 
         private const int HubStageQuit = 6;
