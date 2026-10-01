@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -79,10 +79,50 @@ namespace Xenvious
         public static int Count(int team)
         {
             // The Mission Creator's rule list is live; nrl only follows it at the next test.
-            int n = PublicCreator && GTA.Offsets.Editor.rulelist_count != 0
-                ? new Global(GTA.Offsets.Editor.rulelist_count + team * GTA.Offsets.Editor.rulelist_NEXT).Get<int>()
-                : new Global(GTA.Offsets.Editor.nrl + Team(team)).Get<int>();
-            return n < 0 ? 0 : n > MaxRules ? MaxRules : n;
+            if (PublicCreator && GTA.Offsets.Editor.rulelist_count != 0)
+            {
+                int listed = new Global(GTA.Offsets.Editor.rulelist_count + team * GTA.Offsets.Editor.rulelist_NEXT).Get<int>();
+                return listed < 0 ? 0 : listed > MaxRules ? MaxRules : listed;
+            }
+            // LTS and Capture: the creator sets nrl to 1 at test and save; with the "nrl fix" patch
+            // it keeps whatever it had, often -1 or 0 in a new job while the forced kill rule
+            // already sits on rule 1. Then the rules in use count.
+            int n = Nrl(team);
+            if (n < 1)
+                n = UsedCount(team);
+            return n > MaxRules ? MaxRules : n;
+        }
+
+        /// <summary>The team's stored rule count (nrl) as it is, -1 or 0 included.</summary>
+        public static int Nrl(int team) => new Global(GTA.Offsets.Editor.nrl + Team(team)).Get<int>();
+
+        public static void SetNrl(int team, int count) => new Global(GTA.Offsets.Editor.nrl + Team(team)).SetInt(count);
+
+        /// <summary>1 + the highest rule anything points at (entities, player rules), 0 when nothing does.</summary>
+        public static int UsedCount(int team)
+        {
+            int top = -1;
+            foreach (var s in Sources())
+            {
+                if (s.Number == 0 || s.Pri == 0)
+                    continue;
+                int n = new Global(s.Number).Get<int>();
+                for (int i = 0; i < n && i < 1000; i++)
+                {
+                    int pri = new Global(s.Pri + team + i * s.Next).Get<int>();
+                    if (pri >= 0 && pri < MaxRules && pri > top) top = pri;
+                }
+            }
+            if (GTA.Offsets.Editor.Kill.number != 0 && GTA.Offsets.Editor.Kill.pri != 0)
+            {
+                int n = new Global(GTA.Offsets.Editor.Kill.number + team).Get<int>();
+                for (int i = 0; i < n && i < MaxRules; i++)
+                {
+                    int pri = new Global(GTA.Offsets.Editor.Kill.pri + team + i * GTA.Offsets.Editor.Kill.NEXT).Get<int>();
+                    if (pri >= 0 && pri < MaxRules && pri > top) top = pri;
+                }
+            }
+            return top + 1;
         }
 
         private static long TextAddr(int team, int rule) => GTA.Offsets.Editor.txt0 + Team(team) + rule * GTA.Offsets.Editor.txt_NEXT;
