@@ -173,28 +173,13 @@ namespace Xenvious
 
         private void BtnmissionddblipAdd_Click(object sender, RoutedEventArgs e)
         {
-            int blipnum = new Global(GTA.Offsets.Editor.ddblip.number).Get<int>();
-            if (blipnum < 56 && blipnum > -1)
-            {
-                int new_index = blipnum + 1;
-
-                new Global(GTA.Offsets.Editor.ddblip.number).SetInt(new_index);
-                ddmissionddblipno.SelectedIndex = new_index - 1;
-            }
+            // New blips need a team and a rule or they never show in a test (see DummyBlipsView).
+            _dummyBlips?.AddAtCursor();
         }
 
         private void BtnmissionddblipDelete_Click(object sender, RoutedEventArgs e)
         {
-            int index = ddmissionddblipno.SelectedIndex;
-            int num = new Global(GTA.Offsets.Editor.ddblip.number).Get<int>();
-
-            if (index > -1)
-            {
-                if (num > 0)
-                {
-                    new Global(GTA.Offsets.Editor.ddblip.number).SetInt(num - 1);
-                }
-            }
+            _dummyBlips?.DeleteSelected();
         }
 
         private void cbmissionddblipeft1_Checked(object sender, RoutedEventArgs e)

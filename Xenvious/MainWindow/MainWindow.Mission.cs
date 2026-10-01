@@ -266,18 +266,26 @@ namespace Xenvious
 
         private void BtnMissionBlips_Click(object sender, RoutedEventArgs e)
         {
-            // The overview with map and list leads the page; the editing cards follow it.
+            // Map, list and editor replace the old field cards; those stay behind a button for raw edits.
             if (_dummyBlips == null)
             {
                 FrameworkElement at = tbmissionddblipposox;
-                while (at != null && !(at.Parent is MasonryPanel))
+                while (at != null && !(at is MasonryPanel))
                     at = at.Parent as FrameworkElement;
-                if (at?.Parent is MasonryPanel masonry)
+                if (at is MasonryPanel masonry && masonry.Parent is ScrollViewer scroll)
                 {
                     _dummyBlips = new DummyBlipsView(ddmissionddblipno, creatorRefresh);
-                    var column = new StackPanel();
-                    column.Children.Add(_dummyBlips);
-                    masonry.Children.Insert(0, column);
+                    scroll.Content = null;
+                    masonry.Visibility = Visibility.Collapsed;
+                    var fields = new Button { Content = TranslateOr("bl_old_fields", "Show all fields"), Height = 30, Padding = new Thickness(12, 0, 12, 0), HorizontalAlignment = HorizontalAlignment.Left, Margin = new Thickness(0, 0, 0, 12) };
+                    fields.SetResourceReference(StyleProperty, "FormButton");
+                    fields.Click += (_, __) =>
+                    {
+                        bool show = masonry.Visibility != Visibility.Visible;
+                        masonry.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
+                        fields.Content = show ? TranslateOr("bl_old_fields_hide", "Hide all fields") : TranslateOr("bl_old_fields", "Show all fields");
+                    };
+                    scroll.Content = new StackPanel { Children = { _dummyBlips, fields, masonry } };
                 }
             }
             PageInnerMission.SelectedItem = PageInnerMissionBlips;

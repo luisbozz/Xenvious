@@ -577,6 +577,32 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\blips\radar_elevator.png" />
+    <Resource Include="Images\blips\radar_laptop.png" />
+    <Resource Include="Images\blips\radar_level.png" />
+    <Resource Include="Images\blips\radar_numbered_1.png" />
+    <Resource Include="Images\blips\radar_numbered_10.png" />
+    <Resource Include="Images\blips\radar_numbered_2.png" />
+    <Resource Include="Images\blips\radar_numbered_3.png" />
+    <Resource Include="Images\blips\radar_numbered_4.png" />
+    <Resource Include="Images\blips\radar_numbered_5.png" />
+    <Resource Include="Images\blips\radar_numbered_6.png" />
+    <Resource Include="Images\blips\radar_numbered_7.png" />
+    <Resource Include="Images\blips\radar_numbered_8.png" />
+    <Resource Include="Images\blips\radar_numbered_9.png" />
+    <Resource Include="Images\blips\radar_production_crack.png" />
+    <Resource Include="Images\blips\radar_production_meth.png" />
+    <Resource Include="Images\blips\radar_production_weed.png" />
+    <Resource Include="Images\blips\radar_stairs.png" />
+    <Resource Include="Images\blips\radar_target_a.png" />
+    <Resource Include="Images\blips\radar_target_b.png" />
+    <Resource Include="Images\blips\radar_target_c.png" />
+    <Resource Include="Images\blips\radar_target_d.png" />
+    <Resource Include="Images\blips\radar_target_e.png" />
+    <Resource Include="Images\blips\radar_target_f.png" />
+    <Resource Include="Images\blips\radar_target_g.png" />
+    <Resource Include="Images\blips\radar_target_h.png" />
+    <Resource Include="Images\blips\radar_testosterone.png" />
     <Resource Include="Images\gtatext\gta_blank.png" />
     <Resource Include="Images\gtatext\gta_created.png" />
     <Resource Include="Images\gtatext\gta_lock.png" />

@@ -2,170 +2,399 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
 namespace Xenvious
 {
     /// <summary>
-    /// The free (dummy) blips (Global_4980736.f_218705[i /*122*/], count f_222366) as in the mockup
-    /// https://claude.ai/artifact/VifG8TGRs71syLT1EsWBmP, tab "Blips": a top view with every blip
-    /// in its colour, a list (name, colour, rule, team), "+ at cursor" and colour swatches for the
-    /// picked blip. A click picks the blip in the page's own index box, which the editing cards
-    /// below follow.
+    /// The free (dummy) blips of a Mission or LTS job (Global_4980736.f_218705[i /*122*/], count f_222366):
+    /// map and list on the left, the picked blip's editor on the right.
+    ///
+    /// The mission controller (FM_Mission_Controller_HUD.sch) shows a dummy blip only when the player's
+    /// team bit is set (bits 0-3) and the rule fits: iRule -2 (every rule), iRule n (that rule of the team
+    /// in iTeam) or the window sTeamBlip[0] start..end (end -1 = to the end). The creator adds blips with
+    /// iRule -1, iTeam -1 and no team bit, so they never show; new blips here start with team 1 and every
+    /// rule. Type 3 or 5 with iEntityToUse hangs the blip on that vehicle or ped.
     /// </summary>
-    public class DummyBlipsView : SectionCard
+    public class DummyBlipsView : Grid
     {
         public const int Max = 56;
 
-        private readonly ComboBox _indexBox;
-        private readonly Action _rebuild;
-        private readonly Canvas _map = new Canvas { Height = 190, ClipToBounds = true, Background = Brushes.Transparent };
-        private readonly StackPanel _rows = new StackPanel();
-        private readonly WrapPanel _swatches = new WrapPanel { Margin = new Thickness(0, 2, 0, 8) };
-        private readonly Button _add = new Button { Height = 30, Padding = new Thickness(12, 0, 12, 0), Margin = new Thickness(0, 4, 0, 0), HorizontalAlignment = HorizontalAlignment.Left };
-        private readonly DispatcherTimer _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
-        private List<(int Index, float X, float Y, int Colour, string Name, int Rule, int Team)> _blips = new List<(int, float, float, int, string, int, int)>();
-        private string _shown;
+        // Team bits 0-3, then the ciDUMMY_BLIP_* bits the editor offers.
+        private const int BitHideInVehicle = 5, BitGps = 6, BitHideWhenLinked = 9, BitShowWhenLinked = 10, BitHideInInterior = 11, BitNoHeight = 14;
 
-        private static string T(string key, string fallback) => MainWindow.Instance?.TranslateOr(key, fallback) ?? fallback;
+        // ciFMMC_DROP_OFF_TYPE: cylinder and area sit on vPos, vehicle and ped follow iEntityToUse.
+        private const int TypeCylinder = 0, TypeArea = 1, TypeVehicle = 3, TypePed = 5;
 
-        // GTA blip colours (SET_BLIP_COLOUR ids), approximated from the radar; unknown ids show grey.
-        private static readonly Dictionary<int, Color> Colours = new Dictionary<int, Color>
+        private enum When { Always, One, Range, Never }
+
+        private sealed class Blip
         {
-            [0] = C(0xFE, 0xFE, 0xFE), [1] = C(0xE0, 0x32, 0x32), [2] = C(0x71, 0xCB, 0x71), [3] = C(0x5D, 0xB6, 0xE5),
-            [4] = C(0xFE, 0xFE, 0xFE), [5] = C(0xEE, 0xC6, 0x4E), [6] = C(0xC2, 0x50, 0x50), [7] = C(0x9C, 0x6E, 0xAF),
-            [8] = C(0xFE, 0x7A, 0xC3), [9] = C(0xF5, 0x9D, 0x79), [10] = C(0xB1, 0x8F, 0x83), [11] = C(0x8D, 0xCE, 0xA7),
-            [12] = C(0x70, 0xA8, 0xAE), [13] = C(0xD3, 0xD1, 0xE7), [14] = C(0x8F, 0x7E, 0x98), [15] = C(0x6A, 0xC4, 0xBF),
-            [16] = C(0xD5, 0xC3, 0x98), [17] = C(0xEA, 0x8E, 0x50), [18] = C(0x97, 0xCA, 0xE9), [19] = C(0xB2, 0x62, 0x87),
-            [20] = C(0x8F, 0x8D, 0x79), [21] = C(0xA6, 0x75, 0x5E), [22] = C(0xAF, 0xA8, 0xA8), [23] = C(0xE8, 0x8E, 0x9B),
-            [24] = C(0xBB, 0xD6, 0x5B), [25] = C(0x0C, 0x7B, 0x56), [26] = C(0x7B, 0xC4, 0xFF), [27] = C(0xAB, 0x3C, 0xE6),
-            [28] = C(0xCE, 0xA9, 0x0D), [29] = C(0x47, 0x63, 0xAD), [30] = C(0x2A, 0xA6, 0xB9), [31] = C(0xBA, 0x9D, 0x7D),
-            [38] = C(0x2C, 0x6D, 0xB8), [40] = C(0x50, 0x50, 0x50), [46] = C(0xEC, 0xF0, 0x29), [47] = C(0xFF, 0x9A, 0x18),
-            [48] = C(0xF6, 0x44, 0xA5), [49] = C(0xE0, 0x3A, 0x3A), [52] = C(0x6A, 0xC4, 0xBF), [57] = C(0x00, 0x9F, 0xFF),
-            [59] = C(0xE6, 0x15, 0x15), [69] = C(0x67, 0xB2, 0x4B), [83] = C(0x9C, 0x6E, 0xAF), [84] = C(0x3E, 0x99, 0xEA),
+            public int Index;
+            public float X, Y, Z;
+            public int Rule, Team, Type, Size, Entity, Colour, Sprite, Bits, From, To, LinkType, LinkIndex;
+            public float ShowRange, HideRange;
+            public string Name;
+
+            public bool Follows => Type == TypeVehicle || Type == TypePed;
+            public bool ForTeam(int t) => (Bits & (1 << t)) != 0;
+            public bool AnyTeam => (Bits & 0xF) != 0;
+
+            public When When
+            {
+                get
+                {
+                    if (Rule == -2 || From == -2) return When.Always;
+                    if (From >= 0) return When.Range;
+                    if (Rule >= 0) return When.One;
+                    return When.Never;
+                }
+            }
+
+            // IS_DUMMY_BLIP_WITHIN_SPECIFIED_RULES with the counting team on the given rule.
+            public bool InRule(int rule)
+            {
+                if (From == -2 || Rule == -2) return true;
+                if (From >= 0 && From <= rule && (To == -1 || To >= rule)) return true;
+                return Rule >= 0 && Rule == rule;
+            }
+
+            public string Key => string.Join(",", X, Y, Z, Rule, Team, Type, Size, Entity, Colour, Sprite, Bits, From, To, LinkType, LinkIndex, ShowRange, HideRange, Name);
+        }
+
+        // GET_DUMMY_BLIP_SPRITE_FROM_SELECTION: 0 keeps the game's default sprite.
+        private static readonly (int Id, string File, string Key, string Fallback)[] Sprites =
+        {
+            (0, "level", "bl_spr_default", "Default"), (1, "production_weed", "bl_spr_weed", "Weed"), (2, "production_crack", "bl_spr_crack", "Crack"),
+            (3, "production_meth", "bl_spr_meth", "Meth"), (4, "laptop", "bl_spr_laptop", "Laptop"),
+            (5, "target_a", "", "A"), (6, "target_b", "", "B"), (7, "target_c", "", "C"), (8, "target_d", "", "D"),
+            (9, "target_e", "", "E"), (10, "target_f", "", "F"), (11, "target_g", "", "G"), (12, "target_h", "", "H"),
+            (13, "numbered_1", "", "1"), (14, "numbered_2", "", "2"), (15, "numbered_3", "", "3"), (16, "numbered_4", "", "4"), (17, "numbered_5", "", "5"),
+            (18, "numbered_6", "", "6"), (19, "numbered_7", "", "7"), (20, "numbered_8", "", "8"), (21, "numbered_9", "", "9"), (22, "numbered_10", "", "10"),
+            (23, "elevator", "bl_spr_elevator", "Elevator"), (24, "stairs", "bl_spr_stairs", "Stairs"), (25, "testosterone", "bl_spr_testosterone", "Testosterone"),
         };
 
-        // Swatches offered for the picked blip.
-        private static readonly int[] Offered = { 0, 1, 2, 3, 5, 7, 8, 17, 15, 25, 27, 29, 40, 47, 46, 69 };
+        // FMMC_BLIP_COLOUR_* as GET_BLIP_COLOUR_FROM_CREATOR maps them, in the radar's colours.
+        private static readonly (int Id, string Key, string Fallback, Color Colour)[] Colours =
+        {
+            (0, "bl_clr_default", "Default", C(0xFE, 0xFE, 0xFE)), (1, "bl_clr_red", "Red", C(0xE0, 0x32, 0x32)),
+            (2, "bl_clr_darkblue", "Dark blue", C(0x2C, 0x6D, 0xB8)), (3, "bl_clr_lightblue", "Light blue", C(0x5D, 0xB6, 0xE5)),
+            (4, "bl_clr_green", "Green", C(0x71, 0xCB, 0x71)), (5, "bl_clr_yellow", "Yellow", C(0xEE, 0xC6, 0x4E)),
+            (6, "bl_clr_white", "White", C(0xFE, 0xFE, 0xFE)), (7, "bl_clr_black", "Black", C(0x30, 0x30, 0x30)),
+            (8, "bl_clr_purple", "Purple", C(0x9C, 0x6E, 0xAF)), (9, "bl_clr_orange", "Orange", C(0xEA, 0x8E, 0x50)),
+            (10, "bl_clr_blue", "Blue", C(0x5D, 0xB6, 0xE5)),
+        };
 
+        private static readonly (string Key, string Fallback)[] SizeNames =
+        {
+            ("bl_size_ped", "Ped"), ("bl_size_object", "Object"), ("bl_size_vehicle", "Vehicle"), ("bl_size_pickup", "Pickup"), ("bl_size_location", "Location"),
+        };
+
+        private readonly ComboBox _indexBox;
+        private readonly Action _rebuild;
+        private readonly SectionCard _mapCard = new SectionCard(), _listCard = new SectionCard(), _editCard = new SectionCard();
+        private readonly Canvas _map = new Canvas { Height = 320, ClipToBounds = true, Background = Brushes.Transparent, Cursor = Cursors.Cross };
+        private readonly ComboBox _previewTeam = new ComboBox { Height = 28, MinWidth = 90, Margin = new Thickness(6, 0, 6, 0) };
+        private readonly ComboBox _previewRule = new ComboBox { Height = 28, MinWidth = 160, MaxWidth = 280 };
+        private readonly TextBlock _previewCount = new TextBlock { VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(8, 0, 0, 0), FontSize = 12.5 };
+        private readonly StackPanel _rows = new StackPanel();
+        private readonly StackPanel _editor = new StackPanel();
+        private readonly Button _add = new Button { Height = 28, Padding = new Thickness(10, 0, 10, 0) };
+        private readonly DispatcherTimer _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+        private List<Blip> _blips = new List<Blip>();
+        private string _shown;
+        private bool _rangeStart = true;
+        private bool _previewSync;
+        private double _cx, _cy, _scale;
+
+        private static string T(string key, string fallback) => MainWindow.Instance?.TranslateOr(key, fallback) ?? fallback;
         private static Color C(byte r, byte g, byte b) => Color.FromRgb(r, g, b);
-        public static Color ColourOf(int id) => Colours.TryGetValue(id, out var c) ? c : C(0x99, 0x99, 0x99);
 
         public DummyBlipsView(ComboBox indexBox, Action rebuild)
         {
             _indexBox = indexBox;
             _rebuild = rebuild;
-            Style = (Style)MainWindow.Instance.FindResource(typeof(SectionCard));
-            Icon = Geometry.Parse("M12,2 C8,2 5,5 5,9 C5,14 12,22 12,22 C12,22 19,14 19,9 C19,5 16,2 12,2 M12,6.5 A2.5,2.5 0 1 0 12,11.5 A2.5,2.5 0 1 0 12,6.5");
-            Title = T("db_title", "Free blips");
-            Margin = new Thickness(0, 0, 0, 12);
-            var body = new StackPanel();
-            var frame = new Border { CornerRadius = new CornerRadius(6), BorderThickness = new Thickness(1), Child = _map, Margin = new Thickness(0, 0, 0, 10),
-                ToolTip = T("db_map_hint", "Every free blip from above in its colour, north up. Click a dot to pick that blip.") };
+            Margin = new Thickness(0, 12, 0, 12);
+            ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star), MinWidth = 320 });
+            ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(12) });
+            ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(460) });
+
+            var left = new StackPanel();
+            Card(_mapCard, T("bl_map", "Map"), "M3,6 L9,3 L15,6 L21,3 V18 L15,21 L9,18 L3,21 Z M9,3 V18 M15,6 V21");
+            var previewBar = new DockPanel { Margin = new Thickness(0, 0, 0, 8), LastChildFill = false };
+            previewBar.Children.Add(Faint(T("bl_preview", "In the test:"), 12.5).Also(t => { t.VerticalAlignment = VerticalAlignment.Center; t.Margin = new Thickness(0); }));
+            previewBar.Children.Add(_previewTeam);
+            previewBar.Children.Add(_previewRule);
+            previewBar.Children.Add(_previewCount);
+            _previewCount.SetResourceReference(TextBlock.ForegroundProperty, "MutedTextBrush");
+            var frame = new Border { CornerRadius = new CornerRadius(6), BorderThickness = new Thickness(1), Child = _map, ClipToBounds = true,
+                ToolTip = T("bl_map_hint", "Every free blip from above, north up. Faded blips are hidden for the team and rule above. Click a blip to pick it, click the map to move a blip on a fixed spot there.") };
             frame.SetResourceReference(Border.BackgroundProperty, "DeepBrush");
             frame.SetResourceReference(Border.BorderBrushProperty, "LineBrush");
-            body.Children.Add(frame);
-            body.Children.Add(_rows);
-            var colourLabel = new TextBlock { Text = T("db_colour", "Colour of the picked blip"), Margin = new Thickness(0, 8, 0, 4) };
-            colourLabel.SetResourceReference(StyleProperty, "FieldLabel");
-            body.Children.Add(colourLabel);
-            body.Children.Add(_swatches);
-            _add.Content = T("db_add", "+ Blip at cursor");
-            _add.ToolTip = T("db_add_hint", "Adds a blip at the creator's cursor and rebuilds so the creator shows it.");
+            _mapCard.Content = new StackPanel { Children = { previewBar, frame } };
+            left.Children.Add(_mapCard);
+
+            Card(_listCard, T("bl_all", "All blips"), "M4,6 H20 M4,12 H20 M4,18 H20");
+            _add.Content = T("bl_add", "+ New blip at cursor");
+            _add.ToolTip = T("bl_add_hint", "Adds a blip at the creator's cursor, visible for team 1 on every rule.");
             _add.SetResourceReference(StyleProperty, "FormButtonPrimary");
             _add.Click += (_, __) => AddAtCursor();
-            body.Children.Add(_add);
-            Content = body;
+            _listCard.HeaderRight = _add;
+            _listCard.Content = _rows;
+            left.Children.Add(_listCard);
+            Children.Add(left);
+
+            Card(_editCard, T("bl_blip", "Blip"), "M12,2 C8,2 5,5 5,9 C5,14 12,22 12,22 C12,22 19,14 19,9 C19,5 16,2 12,2 M12,6.5 A2.5,2.5 0 1 0 12,11.5 A2.5,2.5 0 1 0 12,6.5");
+            _editCard.Content = _editor;
+            _editCard.VerticalAlignment = VerticalAlignment.Top;
+            SetColumn(_editCard, 2);
+            Children.Add(_editCard);
+
             _map.SizeChanged += (_, __) => DrawMap();
+            _map.MouseLeftButtonUp += MapClick;
             SatelliteTiles.TileLoaded += () => Dispatcher.BeginInvoke(new Action(() => { if (IsVisible) DrawMap(); }), DispatcherPriority.Background);
             IsVisibleChanged += (_, __) => { if (IsVisible) { Refresh(true); _timer.Start(); } else _timer.Stop(); };
             _timer.Tick += (_, __) => { if (!IsKeyboardFocusWithin) Refresh(false); };
-            _indexBox.SelectionChanged += (_, __) => Refresh(true);
+            _indexBox.SelectionChanged += (_, __) => { _rangeStart = true; Refresh(true); };
+            _previewTeam.SelectionChanged += (_, __) => { if (!_previewSync) { FillPreviewRules(); DrawMap(); } };
+            _previewRule.SelectionChanged += (_, __) => { if (!_previewSync) DrawMap(); };
+        }
+
+        private static void Card(SectionCard card, string title, string icon)
+        {
+            card.Style = (Style)MainWindow.Instance.FindResource(typeof(SectionCard));
+            card.Title = title;
+            card.Icon = Geometry.Parse(icon);
+            card.Margin = new Thickness(0, 0, 0, 12);
         }
 
         private static bool Live => MainWindow.m != null && MainWindow.m.IsProcOpen && GTA.Offsets.Editor.ddblip.number != 0 && GTA.Offsets.Editor.ddblip.NEXT != 0 && GTA.Offsets.Editor.ddblip.pos != 0;
         private static long At(long field, int i) => field + i * GTA.Offsets.Editor.ddblip.NEXT;
+        private static int Int(long field, int i, int fallback) => field == 0 ? fallback : new Global(At(field, i)).Get<int>();
+        private static float Float(long field, int i) => field == 0 ? 0 : new Global(At(field, i)).Get<float>();
+
+        private static void SetInt(long field, int i, int value)
+        {
+            if (field != 0 && Live)
+                new Global(At(field, i)).SetInt(value);
+        }
+
+        private static void SetFloat(long field, int i, float value)
+        {
+            if (field != 0 && Live)
+                new Global(At(field, i)).SetFloat(value);
+        }
+
+        private static Blip Read(int i)
+        {
+            var o = GTA.Offsets.Editor.ddblip.pos;
+            return new Blip
+            {
+                Index = i,
+                X = new Global(At(o, i)).Get<float>(),
+                Y = new Global(At(o, i) + 1).Get<float>(),
+                Z = new Global(At(o, i) + 2).Get<float>(),
+                Rule = Int(GTA.Offsets.Editor.ddblip.rule, i, -1),
+                Team = Int(GTA.Offsets.Editor.ddblip.team, i, -1),
+                Type = Int(GTA.Offsets.Editor.ddblip.type, i, 0),
+                Size = Int(GTA.Offsets.Editor.ddblip.size, i, 4),
+                Entity = Int(GTA.Offsets.Editor.ddblip.veh, i, -1),
+                Colour = Int(GTA.Offsets.Editor.ddblip.clr, i, 0),
+                Sprite = Int(GTA.Offsets.Editor.ddblip.spri, i, 0),
+                Bits = Int(GTA.Offsets.Editor.ddblip.bits, i, 0),
+                From = Int(GTA.Offsets.Editor.ddblip.frul, i, -1),
+                To = Int(GTA.Offsets.Editor.ddblip.trul, i, -1),
+                LinkType = Int(GTA.Offsets.Editor.ddblip.entt, i, -1),
+                LinkIndex = Int(GTA.Offsets.Editor.ddblip.enti, i, -1),
+                ShowRange = Float(GTA.Offsets.Editor.ddblip.sbr, i),
+                HideRange = Float(GTA.Offsets.Editor.ddblip.hbr, i),
+                Name = GTA.Offsets.Editor.ddblip.dbnm == 0 ? "" : new Global(At(GTA.Offsets.Editor.ddblip.dbnm, i)).GetString(),
+            };
+        }
+
+        private int Selected => _indexBox.SelectedIndex >= 0 && _indexBox.SelectedIndex < _blips.Count ? _indexBox.SelectedIndex : -1;
 
         private void Refresh(bool force)
         {
             if (!Live)
             {
-                _rows.Children.Clear();
-                _map.Children.Clear();
-                _swatches.Children.Clear();
                 _shown = null;
-                _add.Visibility = Visibility.Collapsed;
+                _blips.Clear();
+                _rows.Children.Clear();
+                _editor.Children.Clear();
+                _map.Children.Clear();
+                _add.IsEnabled = false;
                 _rows.Children.Add(Faint(T("db_nocreator", "Open a job in the creator to see its blips."), 13));
                 return;
             }
             int n = Math.Max(0, Math.Min(new Global(GTA.Offsets.Editor.ddblip.number).Get<int>(), Max));
-            var blips = Enumerable.Range(0, n).Select(i => (
-                Index: i,
-                X: new Global(At(GTA.Offsets.Editor.ddblip.pos, i)).Get<float>(),
-                Y: new Global(At(GTA.Offsets.Editor.ddblip.pos, i) + 1).Get<float>(),
-                Colour: GTA.Offsets.Editor.ddblip.clr == 0 ? 0 : new Global(At(GTA.Offsets.Editor.ddblip.clr, i)).Get<int>(),
-                Name: GTA.Offsets.Editor.ddblip.dbnm == 0 ? "" : new Global(At(GTA.Offsets.Editor.ddblip.dbnm, i)).GetString(),
-                Rule: GTA.Offsets.Editor.ddblip.rule == 0 ? -1 : new Global(At(GTA.Offsets.Editor.ddblip.rule, i)).Get<int>(),
-                Team: GTA.Offsets.Editor.ddblip.team == 0 ? -1 : new Global(At(GTA.Offsets.Editor.ddblip.team, i)).Get<int>())).ToList();
-            string key = string.Join(";", blips) + "|" + _indexBox.SelectedIndex;
+            var blips = Enumerable.Range(0, n).Select(Read).ToList();
+            string key = string.Join(";", blips.Select(b => b.Key)) + "|" + _indexBox.SelectedIndex + "|" + Rules.Teams();
             if (!force && key == _shown)
                 return;
             _shown = key;
             _blips = blips;
-            Summary = string.Format(CultureInfo.CurrentCulture, "{0} / {1}", n, Max);
-            _add.Visibility = Visibility.Visible;
+            _listCard.Summary = string.Format(CultureInfo.CurrentCulture, "{0} / {1}", n, Max);
             _add.IsEnabled = n < Max;
-
-            _rows.Children.Clear();
-            if (n == 0)
-                _rows.Children.Add(Faint(T("db_none", "No free blip yet."), 13));
-            foreach (var b in blips)
-                _rows.Children.Add(Row(b.Index, b.Colour, b.Name, b.Rule, b.Team, b.X, b.Y, b.Index == _indexBox.SelectedIndex));
-            Swatches();
+            FillPreviewTeams();
+            BuildList();
+            BuildEditor();
             DrawMap();
         }
 
-        private FrameworkElement Row(int index, int colour, string name, int rule, int team, float x, float y, bool selected)
+        // ---------- texts ----------
+
+        private static string BlipName(Blip b)
+            => string.IsNullOrWhiteSpace(b.Name) ? string.Format(CultureInfo.CurrentCulture, T("db_blip_n", "Blip {0}"), b.Index + 1) : (b.Index + 1) + " · " + b.Name;
+
+        private static string RuleText(int team, int rule)
         {
-            var button = new ToggleButton { IsChecked = selected, HorizontalContentAlignment = HorizontalAlignment.Stretch, Padding = new Thickness(0), Margin = new Thickness(0, 0, 0, 6), Cursor = System.Windows.Input.Cursors.Hand };
-            button.SetResourceReference(StyleProperty, "ChoiceTile");
-            var grid = new Grid { Margin = new Thickness(10, 6, 10, 6) };
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(26) });
-            grid.ColumnDefinitions.Add(new ColumnDefinition());
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
-            var dot = new Ellipse { Width = 14, Height = 14, Fill = new SolidColorBrush(ColourOf(colour)), Stroke = Brushes.Black, StrokeThickness = 0.8, VerticalAlignment = VerticalAlignment.Center };
-            grid.Children.Add(dot);
-            var text = new StackPanel { VerticalAlignment = VerticalAlignment.Center };
-            var title = new TextBlock { FontSize = 13.5, FontWeight = FontWeights.SemiBold, TextTrimming = TextTrimming.CharacterEllipsis,
-                Text = string.IsNullOrWhiteSpace(name) ? string.Format(CultureInfo.CurrentCulture, T("db_blip_n", "Blip {0}"), index + 1) : (index + 1) + " · " + name };
-            title.SetResourceReference(TextBlock.ForegroundProperty, "TextColor");
-            text.Children.Add(title);
-            text.Children.Add(Faint(string.Format(CultureInfo.InvariantCulture, "{0:0.0}, {1:0.0}", x, y), 11.5));
-            Grid.SetColumn(text, 1);
-            grid.Children.Add(text);
-            var chips = new StackPanel { Orientation = Orientation.Horizontal, VerticalAlignment = VerticalAlignment.Center };
-            if (rule >= 0)
-                chips.Children.Add(Chip(T("rl_rule_n", "Rule {0}").Replace("{0}", (rule + 1).ToString(CultureInfo.CurrentCulture))));
-            if (team >= 0 && team < 4)
-                chips.Children.Add(Chip(T("dash_team", "Team") + " " + (team + 1)));
-            Grid.SetColumn(chips, 2);
-            grid.Children.Add(chips);
-            button.Content = grid;
-            button.Click += (_, __) => Pick(index);
-            return button;
+            string text = Rules.Ready ? Regex.Replace(Rules.Text(team, rule) ?? "", "~[^~]*~", "").Trim() : "";
+            string number = T("rl_rule_n", "Rule {0}").Replace("{0}", (rule + 1).ToString(CultureInfo.CurrentCulture));
+            return text.Length == 0 ? number : number + ": " + text;
         }
 
-        private static FrameworkElement Chip(string text)
+        private static string RuleNumber(int rule) => T("rl_rule_n", "Rule {0}").Replace("{0}", (rule + 1).ToString(CultureInfo.CurrentCulture));
+
+        private static string TeamsText(Blip b)
         {
-            var b = new Border { CornerRadius = new CornerRadius(9), BorderThickness = new Thickness(1), Padding = new Thickness(7, 1, 7, 2), Margin = new Thickness(6, 0, 0, 0) };
-            b.SetResourceReference(Border.BorderBrushProperty, "LineBrush");
-            var t = new TextBlock { Text = text, FontSize = 11.5, FontWeight = FontWeights.SemiBold };
-            t.SetResourceReference(TextBlock.ForegroundProperty, "MutedTextBrush");
+            var teams = Enumerable.Range(0, 4).Where(b.ForTeam).Select(t => (t + 1).ToString(CultureInfo.CurrentCulture)).ToList();
+            return teams.Count == 0 ? T("bl_noteam", "no team") : T("dash_team", "Team") + " " + string.Join(", ", teams);
+        }
+
+        private static string WhenText(Blip b)
+        {
+            string team = b.Team >= 0 && b.Team < 4 ? " (" + T("dash_team", "Team") + " " + (b.Team + 1) + ")" : "";
+            switch (b.When)
+            {
+                case When.Always: return T("bl_when_always", "Every rule");
+                case When.One: return RuleNumber(b.Rule) + team;
+                case When.Range: return RuleNumber(b.From) + " – " + (b.To == -1 ? T("bl_to_end", "end") : RuleNumber(b.To)) + team;
+                default: return T("bl_when_never", "Off");
+            }
+        }
+
+        private static string WhereText(Blip b)
+        {
+            if (b.Type == TypeVehicle)
+                return T("bl_follows", "follows") + " " + (b.Entity >= 0 ? EntityPicker.Label(EntityPicker.Vehicle, b.Entity) : "?");
+            if (b.Type == TypePed)
+                return T("bl_follows", "follows") + " " + (b.Entity >= 0 ? EntityPicker.Label(EntityPicker.Actor, b.Entity) : "?");
+            return T("bl_fixed", "fixed spot");
+        }
+
+        // Why the blip will not show in a test, or null when it will.
+        private static string Problem(Blip b)
+        {
+            if (!b.AnyTeam)
+                return T("bl_p_noteam", "No team is ticked. The blip never shows.");
+            if (b.When == When.Never)
+                return T("bl_p_never", "\"When\" is off. The blip never shows.");
+            if ((b.When == When.One || b.When == When.Range) && (b.Team < 0 || b.Team > 3))
+                return T("bl_p_ruleteam", "No team counts the rules. Pick the team whose rule decides.");
+            return null;
+        }
+
+        // ---------- sprites ----------
+
+        private static readonly Dictionary<string, BitmapSource> SpriteBase = new Dictionary<string, BitmapSource>();
+        private static readonly Dictionary<(int, int), BitmapSource> SpriteCache = new Dictionary<(int, int), BitmapSource>();
+
+        /// <summary>
+        /// The radar sprite in the blip colour. The pictures are white with a black outline; the game tints
+        /// the white part, so every pixel is multiplied with the colour.
+        /// </summary>
+        private static BitmapSource Sprite(int sprite, int colour)
+        {
+            if (SpriteCache.TryGetValue((sprite, colour), out var done))
+                return done;
+            var s = Sprites.FirstOrDefault(x => x.Id == sprite);
+            string file = s.File ?? "level";
+            if (!SpriteBase.TryGetValue(file, out var source))
+            {
+                try
+                {
+                    var bmp = new BitmapImage(new Uri("pack://application:,,,/Images/blips/radar_" + file + ".png", UriKind.Absolute));
+                    source = new FormatConvertedBitmap(bmp, PixelFormats.Bgra32, null, 0);
+                    source.Freeze();
+                }
+                catch (Exception)
+                {
+                    source = null;
+                }
+                SpriteBase[file] = source;
+            }
+            if (source == null)
+                return null;
+            var c = Colours.FirstOrDefault(x => x.Id == colour).Colour;
+            if (c.A == 0)
+                c = Colours[0].Colour;
+            int w = source.PixelWidth, h = source.PixelHeight, stride = w * 4;
+            var px = new byte[stride * h];
+            source.CopyPixels(px, stride, 0);
+            for (int k = 0; k < px.Length; k += 4)
+            {
+                double l = (px[k] + px[k + 1] + px[k + 2]) / 765.0;
+                px[k] = (byte)(c.B * l);
+                px[k + 1] = (byte)(c.G * l);
+                px[k + 2] = (byte)(c.R * l);
+            }
+            var tinted = BitmapSource.Create(w, h, source.DpiX, source.DpiY, PixelFormats.Bgra32, null, px, stride);
+            tinted.Freeze();
+            SpriteCache[(sprite, colour)] = tinted;
+            return tinted;
+        }
+
+        private static FrameworkElement SpriteImage(int sprite, int colour, double size)
+            => new Image { Source = Sprite(sprite, colour), Width = size, Height = size, Stretch = Stretch.Uniform, VerticalAlignment = VerticalAlignment.Center };
+
+        // ---------- list ----------
+
+        private void BuildList()
+        {
+            _rows.Children.Clear();
+            if (_blips.Count == 0)
+                _rows.Children.Add(Faint(T("db_none", "No free blip yet."), 13));
+            foreach (var b in _blips)
+            {
+                var button = new ToggleButton { IsChecked = b.Index == Selected, HorizontalContentAlignment = HorizontalAlignment.Stretch, Padding = new Thickness(0), Margin = new Thickness(0, 0, 0, 6), Cursor = Cursors.Hand };
+                button.SetResourceReference(StyleProperty, "ChoiceTile");
+                var grid = new Grid { Margin = new Thickness(10, 6, 10, 6) };
+                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(32) });
+                grid.ColumnDefinitions.Add(new ColumnDefinition());
+                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+                grid.Children.Add(SpriteImage(b.Sprite, b.Colour, 22).Also(i => i.HorizontalAlignment = HorizontalAlignment.Left));
+                var text = new StackPanel { VerticalAlignment = VerticalAlignment.Center };
+                var title = new TextBlock { FontSize = 13.5, FontWeight = FontWeights.SemiBold, TextTrimming = TextTrimming.CharacterEllipsis, Text = BlipName(b) };
+                title.SetResourceReference(TextBlock.ForegroundProperty, "TextColor");
+                text.Children.Add(title);
+                text.Children.Add(Faint(TeamsText(b) + " · " + WhenText(b) + " · " + WhereText(b), 11.5).Also(t => { t.TextWrapping = TextWrapping.NoWrap; t.TextTrimming = TextTrimming.CharacterEllipsis; t.Margin = new Thickness(0, 1, 0, 0); }));
+                Grid.SetColumn(text, 1);
+                grid.Children.Add(text);
+                bool ok = Problem(b) == null;
+                var pill = Pill(ok ? T("bl_active", "active") : T("bl_hidden", "never shown"), ok);
+                Grid.SetColumn(pill, 2);
+                grid.Children.Add(pill);
+                button.Content = grid;
+                int index = b.Index;
+                button.Click += (_, __) => Pick(index);
+                _rows.Children.Add(button);
+            }
+        }
+
+        private static FrameworkElement Pill(string text, bool ok)
+        {
+            var b = new Border { CornerRadius = new CornerRadius(9), BorderThickness = new Thickness(1), Padding = new Thickness(8, 1, 8, 2), Margin = new Thickness(8, 0, 0, 0), VerticalAlignment = VerticalAlignment.Center };
+            b.BorderBrush = ok ? MainWindow.ThemeBrush("OkBrush") ?? Brushes.SeaGreen : MainWindow.ThemeBrush("WarnBrush") ?? Brushes.Goldenrod;
+            var t = new TextBlock { Text = text, FontSize = 11.5, FontWeight = FontWeights.SemiBold, Foreground = b.BorderBrush };
             b.Child = t;
             return b;
         }
@@ -174,52 +403,425 @@ namespace Xenvious
         {
             if (index >= 0 && index < _indexBox.Items.Count)
                 _indexBox.SelectedIndex = index;
+            _rangeStart = true;
             Refresh(true);
         }
 
-        private void Swatches()
+        // ---------- editor ----------
+
+        private void BuildEditor()
         {
-            _swatches.Children.Clear();
-            int index = _indexBox.SelectedIndex;
-            bool live = Live && GTA.Offsets.Editor.ddblip.clr != 0 && index >= 0 && index < _blips.Count;
-            int current = live ? _blips[index].Colour : -1;
-            foreach (int id in Offered)
+            _editor.Children.Clear();
+            int i = Selected;
+            if (i < 0)
             {
-                var swatch = new Border { Width = 24, Height = 24, CornerRadius = new CornerRadius(5), Margin = new Thickness(0, 0, 6, 6), Background = new SolidColorBrush(ColourOf(id)),
-                    BorderThickness = new Thickness(2), Cursor = live ? System.Windows.Input.Cursors.Hand : null, ToolTip = id.ToString(CultureInfo.InvariantCulture), Opacity = live ? 1 : 0.4 };
-                if (id == current)
+                _editCard.Title = T("bl_blip", "Blip");
+                _editCard.HeaderRight = null;
+                _editor.Children.Add(Faint(_blips.Count == 0 ? T("bl_add_first", "Add a blip with \"+ New blip at cursor\".") : T("bl_pick", "Pick a blip in the list or on the map."), 13));
+                return;
+            }
+            var b = _blips[i];
+            _editCard.Title = BlipName(b);
+            _editCard.HeaderRight = SpriteImage(b.Sprite, b.Colour, 24);
+
+            string problem = Problem(b);
+            _editor.Children.Add(Notice(problem ?? string.Format(CultureInfo.CurrentCulture, T("bl_ok", "Shows in the test for {0}: {1}."), TeamsText(b), WhenText(b)), problem == null));
+
+            // Name
+            _editor.Children.Add(Label(T("bl_name", "Name")));
+            var name = new TextBox { Text = b.Name, Height = 30, VerticalContentAlignment = VerticalAlignment.Center, MaxLength = 23 };
+            void SaveName()
+            {
+                if (name.Text == b.Name || GTA.Offsets.Editor.ddblip.dbnm == 0 || !Live) return;
+                new Global(At(GTA.Offsets.Editor.ddblip.dbnm, i)).SetString(name.Text);
+                Refresh(true);
+            }
+            name.LostKeyboardFocus += (_, __) => SaveName();
+            name.KeyDown += (_, e) => { if (e.Key == Key.Enter) SaveName(); };
+            _editor.Children.Add(name);
+
+            // Where
+            _editor.Children.Add(Label(T("bl_where", "Where")));
+            int anchor = b.Type == TypeVehicle ? 1 : b.Type == TypePed ? 2 : b.Type == TypeCylinder || b.Type == TypeArea ? 0 : -1;
+            _editor.Children.Add(Tiles(new[] { T("bl_fixed_spot", "Fixed spot"), T("bl_follow_veh", "Follows vehicle"), T("bl_follow_ped", "Follows actor") }, anchor, a =>
+            {
+                if (a == anchor) return;
+                SetInt(GTA.Offsets.Editor.ddblip.type, i, a == 1 ? TypeVehicle : a == 2 ? TypePed : TypeCylinder);
+                SetInt(GTA.Offsets.Editor.ddblip.veh, i, a == 0 ? -1 : Math.Max(0, b.Entity));
+                SetInt(GTA.Offsets.Editor.ddblip.size, i, a == 1 ? 2 : a == 2 ? 0 : 4);
+                Refresh(true);
+            }));
+            if (anchor < 0)
+                _editor.Children.Add(Faint(string.Format(CultureInfo.CurrentCulture, T("bl_other_type", "Set in the creator as type {0}; pick one above to change it."), b.Type), 12));
+            if (b.Follows)
+            {
+                int type = b.Type == TypeVehicle ? EntityPicker.Vehicle : EntityPicker.Actor;
+                var list = new ComboBox { Height = 30, Margin = new Thickness(0, 6, 0, 0) };
+                int count = Math.Max(0, EntityPicker.Count(type));
+                for (int e = 0; e < count; e++)
+                    list.Items.Add(new ComboBoxItem { Content = EntityPicker.Label(type, e), Tag = e });
+                if (b.Entity < 0 || b.Entity >= count)
+                    list.Items.Add(new ComboBoxItem { Content = b.Entity < 0 ? "—" : "#" + (b.Entity + 1) + " (" + T("ep_missing", "not in the job") + ")", Tag = b.Entity });
+                list.SelectedItem = list.Items.OfType<ComboBoxItem>().FirstOrDefault(x => (int)x.Tag == b.Entity);
+                list.SelectionChanged += (_, __) =>
+                {
+                    if (list.SelectedItem is ComboBoxItem item && (int)item.Tag != b.Entity)
+                    {
+                        SetInt(GTA.Offsets.Editor.ddblip.veh, i, (int)item.Tag);
+                        Refresh(true);
+                    }
+                };
+                _editor.Children.Add(list);
+                _editor.Children.Add(Faint(b.Type == TypeVehicle
+                    ? T("bl_follow_veh_hint", "The blip hangs on the vehicle and moves with it. When it is wrecked, the blip stays at the spot below.")
+                    : T("bl_follow_ped_hint", "The blip hangs on the actor and moves with it. When the actor is dead, the blip stays at the spot below."), 12));
+            }
+            _editor.Children.Add(PositionRow(b));
+
+            // Sprite
+            var spriteName = Sprites.FirstOrDefault(s => s.Id == b.Sprite);
+            _editor.Children.Add(Label(T("bl_sprite", "Symbol") + "  ·  " + SpriteLabel(spriteName.Id)));
+            var sprites = new WrapPanel { Margin = new Thickness(0, 0, -6, 0) };
+            foreach (var s in Sprites)
+            {
+                var tile = new ToggleButton { Width = 42, Height = 42, Padding = new Thickness(0), Margin = new Thickness(0, 0, 6, 6), IsChecked = s.Id == b.Sprite, ToolTip = SpriteLabel(s.Id), Cursor = Cursors.Hand,
+                    Content = SpriteImage(s.Id, b.Colour, 26) };
+                tile.SetResourceReference(StyleProperty, "ChoiceTile");
+                int id = s.Id;
+                tile.Click += (_, __) => { SetInt(GTA.Offsets.Editor.ddblip.spri, i, id); Refresh(true); };
+                sprites.Children.Add(tile);
+            }
+            _editor.Children.Add(sprites);
+
+            // Colour
+            var colourName = Colours.FirstOrDefault(c => c.Id == b.Colour);
+            _editor.Children.Add(Label(T("bl_colour", "Colour") + (colourName.Key != null ? "  ·  " + T(colourName.Key, colourName.Fallback) : "")));
+            var swatches = new WrapPanel();
+            foreach (var c in Colours)
+            {
+                var swatch = new Border { Width = 26, Height = 26, CornerRadius = new CornerRadius(5), Margin = new Thickness(0, 0, 6, 6), Background = new SolidColorBrush(c.Colour),
+                    BorderThickness = new Thickness(2), Cursor = Cursors.Hand, ToolTip = T(c.Key, c.Fallback) };
+                if (c.Id == b.Colour)
                     swatch.SetResourceReference(Border.BorderBrushProperty, "TextColor");
                 else
-                    swatch.BorderBrush = Brushes.Transparent;
-                int colour = id;
-                swatch.MouseLeftButtonUp += (_, __) =>
-                {
-                    if (!live) return;
-                    new Global(At(GTA.Offsets.Editor.ddblip.clr, index)).SetInt(colour);
-                    MainWindow.Instance?.GetBlips(true);
-                    Refresh(true);
-                };
-                _swatches.Children.Add(swatch);
+                    swatch.BorderBrush = new SolidColorBrush(Color.FromArgb(0x50, 0, 0, 0));
+                if (c.Id == 0)
+                    swatch.Child = new TextBlock { Text = "A", FontSize = 11, FontWeight = FontWeights.Bold, Foreground = Brushes.DimGray, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center };
+                int id = c.Id;
+                swatch.MouseLeftButtonUp += (_, __) => { SetInt(GTA.Offsets.Editor.ddblip.clr, i, id); Refresh(true); };
+                swatches.Children.Add(swatch);
             }
+            _editor.Children.Add(swatches);
+
+            // Size
+            _editor.Children.Add(Label(T("bl_size", "Size")));
+            _editor.Children.Add(Tiles(SizeNames.Select(s => T(s.Key, s.Fallback)).ToArray(), b.Size, s => { SetInt(GTA.Offsets.Editor.ddblip.size, i, s); Refresh(true); }));
+
+            // Teams
+            _editor.Children.Add(Label(T("bl_who", "Who sees it")));
+            _editor.Children.Add(TeamToggles(b));
+
+            // When
+            _editor.Children.Add(Label(T("bl_when", "When") + "  ·  " + WhenText(b)));
+            var when = b.When;
+            _editor.Children.Add(Tiles(new[] { T("bl_when_always", "Every rule"), T("bl_when_one", "One rule"), T("bl_when_range", "From – to"), T("bl_when_never", "Off") }, (int)when, w => SetWhen(b, (When)w)));
+            if (when == When.One || when == When.Range)
+                _editor.Children.Add(RulePanel(b));
+
+            // Behaviour
+            _editor.Children.Add(Label(T("bl_behaviour", "Behaviour")));
+            _editor.Children.Add(BitCheck(b, BitGps, T("bl_gps", "GPS route to the blip")));
+            _editor.Children.Add(BitCheck(b, BitHideInVehicle, T("bl_hide_vehicle", "Hide while in a vehicle")));
+            _editor.Children.Add(BitCheck(b, BitHideInInterior, T("bl_hide_interior", "Hide inside buildings")));
+            _editor.Children.Add(BitCheck(b, BitNoHeight, T("bl_no_height", "No height arrow")));
+
+            // More
+            var more = new StackPanel { Margin = new Thickness(0, 4, 0, 0) };
+            more.Children.Add(Label(T("bl_show_range", "Only visible within (m, 0 = always)")));
+            more.Children.Add(FloatBox(b.ShowRange, v => SetFloat(GTA.Offsets.Editor.ddblip.sbr, i, v)));
+            more.Children.Add(Label(T("bl_hide_range", "Hide when closer than (m, 0 = never)")));
+            more.Children.Add(FloatBox(b.HideRange, v => SetFloat(GTA.Offsets.Editor.ddblip.hbr, i, v)));
+            more.Children.Add(Label(T("bl_link", "Tie to an entity")));
+            more.Children.Add(LinkPanel(b));
+            var expander = new Expander { Header = T("bl_more", "More: range and tie to an entity"), Content = more, Margin = new Thickness(0, 12, 0, 0), IsExpanded = b.ShowRange != 0 || b.HideRange != 0 || b.LinkIndex >= 0 };
+            expander.SetResourceReference(Control.ForegroundProperty, "TextColor");
+            _editor.Children.Add(expander);
+
+            // Raw values
+            var raw = new TextBlock { FontFamily = new FontFamily("Consolas"), FontSize = 11.5, TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 10, 0, 0),
+                Text = string.Format(CultureInfo.InvariantCulture, "rule {0}  team {1}  type {2}  veh {3}  size {4}  clr {5}  spri {6}  bits {7}  frul {8}  trul {9}  entt {10}  enti {11}",
+                    b.Rule, b.Team, b.Type, b.Entity, b.Size, b.Colour, b.Sprite, b.Bits, b.From, b.To, b.LinkType, b.LinkIndex) };
+            raw.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
+            _editor.Children.Add(raw);
         }
 
-        private void AddAtCursor()
+        private static string SpriteLabel(int id)
+        {
+            var s = Sprites.FirstOrDefault(x => x.Id == id);
+            if (id >= 5 && id <= 12) return T("bl_spr_target", "Target") + " " + s.Fallback;
+            if (id >= 13 && id <= 22) return T("bl_spr_number", "Number") + " " + s.Fallback;
+            return s.Key == null ? id.ToString(CultureInfo.InvariantCulture) : T(s.Key, s.Fallback);
+        }
+
+        private FrameworkElement PositionRow(Blip b)
+        {
+            int i = b.Index;
+            var row = new Grid { Margin = new Thickness(0, 6, 0, 0) };
+            for (int k = 0; k < 3; k++)
+            {
+                row.ColumnDefinitions.Add(new ColumnDefinition());
+                row.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(6) });
+            }
+            row.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+            float[] values = { b.X, b.Y, b.Z };
+            for (int k = 0; k < 3; k++)
+            {
+                int axis = k;
+                var box = new TextBox { Text = values[k].ToString("0.0", CultureInfo.InvariantCulture), Height = 30, VerticalContentAlignment = VerticalAlignment.Center, ToolTip = "XYZ"[k].ToString() };
+                void Save()
+                {
+                    if (!float.TryParse(box.Text.Replace(',', '.'), NumberStyles.Float, CultureInfo.InvariantCulture, out float v) || v == values[axis] || !Live) return;
+                    new Global(At(GTA.Offsets.Editor.ddblip.pos, i) + axis).SetFloat(v);
+                    Refresh(true);
+                }
+                box.LostKeyboardFocus += (_, __) => Save();
+                box.KeyDown += (_, e) => { if (e.Key == Key.Enter) Save(); };
+                Grid.SetColumn(box, k * 2);
+                row.Children.Add(box);
+            }
+            var here = new Button { Content = T("bl_cursor", "Cursor"), Height = 30, Padding = new Thickness(10, 0, 10, 0), ToolTip = T("bl_cursor_hint", "Puts the blip where the creator's cursor is.") };
+            here.SetResourceReference(StyleProperty, "FormButton");
+            here.Click += (_, __) =>
+            {
+                if (!TryCursor(out float x, out float y, out float z)) return;
+                long o = At(GTA.Offsets.Editor.ddblip.pos, i);
+                new Global(o).SetFloat(x);
+                new Global(o + 1).SetFloat(y);
+                new Global(o + 2).SetFloat(z);
+                _rebuild?.Invoke();
+                Refresh(true);
+            };
+            Grid.SetColumn(here, 6);
+            row.Children.Add(here);
+            return row;
+        }
+
+        private FrameworkElement TeamToggles(Blip b)
+        {
+            int teams = Math.Max(Rules.Teams(), Enumerable.Range(0, 4).Where(b.ForTeam).Select(t => t + 1).DefaultIfEmpty(1).Max());
+            var tabs = new StackPanel { Orientation = Orientation.Horizontal };
+            for (int t = 0; t < teams; t++)
+            {
+                int team = t;
+                var tab = new ToggleButton { Content = (b.ForTeam(t) ? "✓ " : "") + T("dash_team", "Team") + " " + (t + 1), IsChecked = b.ForTeam(t) };
+                tab.SetResourceReference(StyleProperty, "NavTab");
+                if (MainWindow.ThemeBrush("TeamBrush" + (t + 1)) is SolidColorBrush colour)
+                {
+                    tab.Resources["AccentBrush"] = colour;
+                    tab.Resources["AccentSoftBrush"] = new SolidColorBrush(Color.FromArgb(0x70, colour.Color.R, colour.Color.G, colour.Color.B));
+                }
+                tab.Click += (_, __) =>
+                {
+                    int bits = b.Bits ^ (1 << team);
+                    SetInt(GTA.Offsets.Editor.ddblip.bits, b.Index, bits);
+                    // The controller reads the rule of iTeam; -1 would index its rule array out of range.
+                    if ((bits & (1 << team)) != 0 && (b.Team < 0 || b.Team > 3))
+                        SetInt(GTA.Offsets.Editor.ddblip.team, b.Index, team);
+                    Refresh(true);
+                };
+                tabs.Children.Add(tab);
+            }
+            var box = new Border { Child = tabs, HorizontalAlignment = HorizontalAlignment.Left };
+            box.SetResourceReference(StyleProperty, "NavGroup");
+            return box;
+        }
+
+        private static int FirstTeam(Blip b)
+        {
+            int t = Enumerable.Range(0, 4).FirstOrDefault(b.ForTeam);
+            return b.Team >= 0 && b.Team < 4 ? b.Team : t;
+        }
+
+        private void SetWhen(Blip b, When when)
+        {
+            int i = b.Index;
+            int rule = -1, from = -1, to = -1;
+            switch (when)
+            {
+                case When.Always: rule = -2; break;
+                case When.One: rule = b.When == When.One ? b.Rule : Math.Max(0, b.From); break;
+                case When.Range: from = b.When == When.Range ? b.From : Math.Max(0, b.Rule); to = b.When == When.Range ? b.To : -1; break;
+            }
+            SetInt(GTA.Offsets.Editor.ddblip.rule, i, rule);
+            SetInt(GTA.Offsets.Editor.ddblip.frul, i, from);
+            SetInt(GTA.Offsets.Editor.ddblip.trul, i, to);
+            SetInt(GTA.Offsets.Editor.ddblip.team, i, FirstTeam(b));
+            _rangeStart = true;
+            Refresh(true);
+        }
+
+        // Which team's rule counts, then that team's rules; a click picks the rule, or start and end of the window.
+        private FrameworkElement RulePanel(Blip b)
+        {
+            int i = b.Index;
+            var panel = new StackPanel { Margin = new Thickness(0, 4, 0, 0) };
+            var teamRow = new DockPanel { Margin = new Thickness(0, 0, 0, 6) };
+            teamRow.Children.Add(Faint(T("bl_rules_of", "Rules count of"), 12.5).Also(t => { t.VerticalAlignment = VerticalAlignment.Center; t.Margin = new Thickness(0, 0, 8, 0); }));
+            var teamBox = new ComboBox { Height = 28, Width = 110, HorizontalAlignment = HorizontalAlignment.Left };
+            for (int t = 0; t < Math.Max(1, Rules.Teams()); t++)
+                teamBox.Items.Add(T("dash_team", "Team") + " " + (t + 1));
+            int team = b.Team >= 0 && b.Team < teamBox.Items.Count ? b.Team : 0;
+            teamBox.SelectedIndex = team;
+            teamBox.SelectionChanged += (_, __) => { if (teamBox.SelectedIndex >= 0 && teamBox.SelectedIndex != b.Team) { SetInt(GTA.Offsets.Editor.ddblip.team, i, teamBox.SelectedIndex); Refresh(true); } };
+            teamRow.Children.Add(teamBox);
+            panel.Children.Add(teamRow);
+
+            int count = Rules.Ready ? Rules.Count(team) : 0;
+            if (b.When == When.Range)
+            {
+                var end = new CheckBox { Content = T("bl_to_end_check", "Until the end"), IsChecked = b.To == -1, Margin = new Thickness(0, 0, 0, 6) };
+                end.SetResourceReference(Control.ForegroundProperty, "TextColor");
+                end.Click += (_, __) => { SetInt(GTA.Offsets.Editor.ddblip.trul, i, end.IsChecked == true ? -1 : Math.Max(b.From, Math.Min(count - 1, b.From))); Refresh(true); };
+                panel.Children.Add(end);
+            }
+            if (count == 0)
+                panel.Children.Add(Faint(T("bl_norules", "This team has no rules yet."), 12));
+            for (int r = 0; r < count; r++)
+            {
+                int rule = r;
+                bool on = b.When == When.One ? b.Rule == r : r >= b.From && (b.To == -1 || r <= b.To);
+                var row = new ToggleButton { IsChecked = on, HorizontalContentAlignment = HorizontalAlignment.Stretch, Padding = new Thickness(10, 5, 10, 5), Margin = new Thickness(0, 0, 0, 4), Cursor = Cursors.Hand,
+                    Content = new TextBlock { Text = RuleText(team, r), TextTrimming = TextTrimming.CharacterEllipsis, FontSize = 12.5 } };
+                row.SetResourceReference(StyleProperty, "ChoiceTile");
+                row.Click += (_, __) =>
+                {
+                    if (b.When == When.One)
+                        SetInt(GTA.Offsets.Editor.ddblip.rule, i, rule);
+                    else if (_rangeStart)
+                    {
+                        SetInt(GTA.Offsets.Editor.ddblip.frul, i, rule);
+                        if (b.To != -1) SetInt(GTA.Offsets.Editor.ddblip.trul, i, rule);
+                        _rangeStart = b.To == -1;
+                    }
+                    else
+                    {
+                        SetInt(GTA.Offsets.Editor.ddblip.frul, i, Math.Min(b.From, rule));
+                        SetInt(GTA.Offsets.Editor.ddblip.trul, i, Math.Max(b.From, rule));
+                        _rangeStart = true;
+                    }
+                    Refresh(true);
+                };
+                panel.Children.Add(row);
+            }
+            if (b.When == When.Range && count > 0)
+                panel.Children.Add(Faint(b.To == -1 ? T("bl_range_hint_end", "Click the rule the blip starts on.") : T("bl_range_hint", "First click: start rule, second click: end rule."), 12));
+            return panel;
+        }
+
+        private FrameworkElement BitCheck(Blip b, int bit, string text)
+        {
+            var box = new CheckBox { Content = text, IsChecked = (b.Bits & (1 << bit)) != 0, Margin = new Thickness(0, 2, 0, 4) };
+            box.SetResourceReference(Control.ForegroundProperty, "TextColor");
+            box.Click += (_, __) =>
+            {
+                int bits = box.IsChecked == true ? b.Bits | (1 << bit) : b.Bits & ~(1 << bit);
+                SetInt(GTA.Offsets.Editor.ddblip.bits, b.Index, bits);
+                Refresh(true);
+            };
+            return box;
+        }
+
+        private FrameworkElement FloatBox(float value, Action<float> write)
+        {
+            var box = new TextBox { Text = value.ToString("0.##", CultureInfo.InvariantCulture), Height = 30, Width = 120, HorizontalAlignment = HorizontalAlignment.Left, VerticalContentAlignment = VerticalAlignment.Center };
+            void Save()
+            {
+                if (!float.TryParse(box.Text.Replace(',', '.'), NumberStyles.Float, CultureInfo.InvariantCulture, out float v) || v == value || v < 0) return;
+                write(v);
+                Refresh(true);
+            }
+            box.LostKeyboardFocus += (_, __) => Save();
+            box.KeyDown += (_, e) => { if (e.Key == Key.Enter) Save(); };
+            return box;
+        }
+
+        // Entity link (iEntityType / iEntityIndex) with bit 9 (hide while it exists) or 10 (hide while it does not).
+        private FrameworkElement LinkPanel(Blip b)
+        {
+            int i = b.Index;
+            var panel = new StackPanel();
+            var picker = new EntityPicker();
+            int type = b.LinkType == EntityPicker.Actor || b.LinkType == EntityPicker.Vehicle || b.LinkType == EntityPicker.Object ? b.LinkType : EntityPicker.None;
+            picker.Set(type, type == EntityPicker.None ? -1 : b.LinkIndex);
+            picker.Changed += (t, id) =>
+            {
+                if (t != EntityPicker.None && t != EntityPicker.Actor && t != EntityPicker.Vehicle && t != EntityPicker.Object)
+                    return;
+                SetInt(GTA.Offsets.Editor.ddblip.entt, i, t == EntityPicker.None ? -1 : t);
+                SetInt(GTA.Offsets.Editor.ddblip.enti, i, t == EntityPicker.None ? -1 : Math.Max(0, id));
+                int bits = b.Bits & ~(1 << BitHideWhenLinked) & ~(1 << BitShowWhenLinked);
+                if (t != EntityPicker.None)
+                    bits |= 1 << ((b.Bits & (1 << BitHideWhenLinked)) != 0 ? BitHideWhenLinked : BitShowWhenLinked);
+                SetInt(GTA.Offsets.Editor.ddblip.bits, i, bits);
+                Refresh(true);
+            };
+            panel.Children.Add(picker);
+            if (type != EntityPicker.None)
+            {
+                int mode = (b.Bits & (1 << BitHideWhenLinked)) != 0 ? 1 : 0;
+                panel.Children.Add(Tiles(new[] { T("bl_link_show", "Only while it exists"), T("bl_link_hide", "Hide while it exists") }, mode, m =>
+                {
+                    int bits = b.Bits & ~(1 << BitHideWhenLinked) & ~(1 << BitShowWhenLinked);
+                    bits |= 1 << (m == 1 ? BitHideWhenLinked : BitShowWhenLinked);
+                    SetInt(GTA.Offsets.Editor.ddblip.bits, i, bits);
+                    Refresh(true);
+                }));
+            }
+            return panel;
+        }
+
+        // ---------- add and delete ----------
+
+        private static bool TryCursor(out float x, out float y, out float z)
+        {
+            x = y = z = 0;
+            if (!Live) return false;
+            var at = Functions.Read.getlocation();
+            return at != null && at.Count >= 3
+                && float.TryParse(at[0], NumberStyles.Float, CultureInfo.CurrentCulture, out x)
+                && float.TryParse(at[1], NumberStyles.Float, CultureInfo.CurrentCulture, out y)
+                && float.TryParse(at[2], NumberStyles.Float, CultureInfo.CurrentCulture, out z)
+                && !(x == 0 && y == 0 && z == 0);
+        }
+
+        /// <summary>A new blip at the cursor that shows for team 1 on every rule.</summary>
+        public void AddAtCursor()
         {
             if (!Live)
                 return;
             int n = new Global(GTA.Offsets.Editor.ddblip.number).Get<int>();
-            if (n < 0 || n >= Max)
+            if (n < 0 || n >= Max || !TryCursor(out float x, out float y, out float z))
                 return;
-            var at = Functions.Read.getlocation();
-            if (at == null || at.Count < 3
-                || !float.TryParse(at[0], NumberStyles.Float, CultureInfo.CurrentCulture, out float x)
-                || !float.TryParse(at[1], NumberStyles.Float, CultureInfo.CurrentCulture, out float y)
-                || !float.TryParse(at[2], NumberStyles.Float, CultureInfo.CurrentCulture, out float z)
-                || (x == 0 && y == 0 && z == 0))
-                return;
-            new Global(At(GTA.Offsets.Editor.ddblip.pos, n)).SetFloat(x);
-            new Global(At(GTA.Offsets.Editor.ddblip.pos, n) + 1).SetFloat(y);
-            new Global(At(GTA.Offsets.Editor.ddblip.pos, n) + 2).SetFloat(z);
+            long o = At(GTA.Offsets.Editor.ddblip.pos, n);
+            new Global(o).SetFloat(x);
+            new Global(o + 1).SetFloat(y);
+            new Global(o + 2).SetFloat(z);
+            SetInt(GTA.Offsets.Editor.ddblip.type, n, TypeCylinder);
+            SetInt(GTA.Offsets.Editor.ddblip.size, n, 4);
+            SetInt(GTA.Offsets.Editor.ddblip.veh, n, -1);
+            SetInt(GTA.Offsets.Editor.ddblip.rule, n, -2);
+            SetInt(GTA.Offsets.Editor.ddblip.team, n, 0);
+            SetInt(GTA.Offsets.Editor.ddblip.frul, n, -1);
+            SetInt(GTA.Offsets.Editor.ddblip.trul, n, -1);
+            SetInt(GTA.Offsets.Editor.ddblip.bits, n, 1);
+            SetInt(GTA.Offsets.Editor.ddblip.entt, n, -1);
+            SetInt(GTA.Offsets.Editor.ddblip.enti, n, -1);
+            SetInt(GTA.Offsets.Editor.ddblip.clr, n, 0);
+            SetInt(GTA.Offsets.Editor.ddblip.spri, n, 0);
+            SetFloat(GTA.Offsets.Editor.ddblip.sbr, n, 0);
+            SetFloat(GTA.Offsets.Editor.ddblip.hbr, n, 0);
+            if (GTA.Offsets.Editor.ddblip.dbnm != 0)
+                new Global(At(GTA.Offsets.Editor.ddblip.dbnm, n)).SetString("");
             new Global(GTA.Offsets.Editor.ddblip.number).SetInt(n + 1);
             _rebuild?.Invoke();
             // The index box only grows with the next worker pass.
@@ -227,35 +829,172 @@ namespace Xenvious
             Refresh(true);
         }
 
-        // North up, one scale for both axes, at least 100 m across; the Pleb Masters map under it.
+        /// <summary>Removes the picked blip and moves the ones after it up, as the creator does.</summary>
+        public void DeleteSelected()
+        {
+            int i = Selected;
+            if (!Live || i < 0)
+                return;
+            int n = Math.Min(new Global(GTA.Offsets.Editor.ddblip.number).Get<int>(), Max);
+            int next = (int)GTA.Offsets.Editor.ddblip.NEXT;
+            long start = GTA.Offsets.Editor.ddblip.pos;
+            for (int j = i; j < n - 1; j++)
+                for (int k = 0; k < next; k++)
+                    new Global(start + j * next + k).SetInt(new Global(start + (j + 1) * next + k).Get<int>());
+            new Global(GTA.Offsets.Editor.ddblip.number).SetInt(n - 1);
+            _rebuild?.Invoke();
+            if (_indexBox.SelectedIndex >= n - 1)
+                _indexBox.SelectedIndex = n - 2;
+            Refresh(true);
+        }
+
+        // ---------- map ----------
+
+        private void FillPreviewTeams()
+        {
+            int teams = Math.Max(1, Rules.Teams());
+            if (_previewTeam.Items.Count == teams)
+            {
+                FillPreviewRules();
+                return;
+            }
+            _previewSync = true;
+            int keep = Math.Max(0, Math.Min(_previewTeam.SelectedIndex, teams - 1));
+            _previewTeam.Items.Clear();
+            for (int t = 0; t < teams; t++)
+                _previewTeam.Items.Add(T("dash_team", "Team") + " " + (t + 1));
+            _previewTeam.SelectedIndex = keep;
+            _previewSync = false;
+            FillPreviewRules();
+        }
+
+        private void FillPreviewRules()
+        {
+            int team = Math.Max(0, _previewTeam.SelectedIndex);
+            int count = Rules.Ready ? Math.Max(1, Rules.Count(team)) : 1;
+            var items = Enumerable.Range(0, count).Select(r => RuleText(team, r)).ToList();
+            if (_previewRule.Items.Count == items.Count && _previewRule.Items.Cast<string>().SequenceEqual(items))
+                return;
+            _previewSync = true;
+            int keep = Math.Max(0, Math.Min(_previewRule.SelectedIndex, count - 1));
+            _previewRule.Items.Clear();
+            foreach (var s in items)
+                _previewRule.Items.Add(s);
+            _previewRule.SelectedIndex = keep;
+            _previewSync = false;
+        }
+
+        // Where the blip shows: on its vehicle or actor when it follows one, else on its own spot.
+        private static (float X, float Y) MapPos(Blip b)
+        {
+            if (b.Follows && b.Entity >= 0 && b.Entity < EntityPicker.Count(b.Type == TypeVehicle ? EntityPicker.Vehicle : EntityPicker.Actor))
+            {
+                if (b.Type == TypeVehicle && GTA.Offsets.Editor.Vehicle.loc != 0 && GTA.Offsets.Editor.Vehicle.NEXT != 0)
+                {
+                    long o = GTA.Offsets.Editor.Vehicle.loc + b.Entity * GTA.Offsets.Editor.Vehicle.NEXT;
+                    return (new Global(o).Get<float>(), new Global(o + 1).Get<float>());
+                }
+                if (b.Type == TypePed && GTA.Offsets.Editor.Actor.locx != 0 && GTA.Offsets.Editor.Actor.NEXT != 0)
+                    return (new Global(GTA.Offsets.Editor.Actor.locx + b.Entity * GTA.Offsets.Editor.Actor.NEXT).Get<float>(),
+                            new Global(GTA.Offsets.Editor.Actor.locy + b.Entity * GTA.Offsets.Editor.Actor.NEXT).Get<float>());
+            }
+            return (b.X, b.Y);
+        }
+
+        // North up, one scale for both axes, at least 150 m across; the Pleb Masters map under it.
         private void DrawMap()
         {
             _map.Children.Clear();
             double w = _map.ActualWidth, h = _map.ActualHeight;
             if (w < 20 || h < 20 || _blips.Count == 0)
-                return;
-            const double pad = 20;
-            double minX = _blips.Min(b => b.X), maxX = _blips.Max(b => b.X), minY = _blips.Min(b => b.Y), maxY = _blips.Max(b => b.Y);
-            double scale = Math.Min((w - 2 * pad) / Math.Max(100, maxX - minX), (h - 2 * pad) / Math.Max(100, maxY - minY));
-            double cx = (minX + maxX) / 2, cy = (minY + maxY) / 2;
-            SatelliteTiles.Draw(_map, w, h, cx, cy, scale);
-            foreach (var b in _blips.OrderBy(b => b.Index == _indexBox.SelectedIndex))
             {
-                bool picked = b.Index == _indexBox.SelectedIndex;
-                double size = picked ? 16 : 12;
-                var dot = new Ellipse { Width = size, Height = size, Fill = new SolidColorBrush(ColourOf(b.Colour)), Stroke = picked ? Brushes.White : Brushes.Black, StrokeThickness = picked ? 2 : 1,
-                    Cursor = System.Windows.Input.Cursors.Hand, ToolTip = string.IsNullOrWhiteSpace(b.Name) ? string.Format(CultureInfo.CurrentCulture, T("db_blip_n", "Blip {0}"), b.Index + 1) : b.Name };
-                Canvas.SetLeft(dot, w / 2 + (b.X - cx) * scale - size / 2);
-                Canvas.SetTop(dot, h / 2 - (b.Y - cy) * scale - size / 2);
-                int index = b.Index;
-                dot.MouseLeftButtonUp += (_, __) => Pick(index);
-                _map.Children.Add(dot);
+                _previewCount.Text = "";
+                return;
             }
+            var spots = _blips.Select(b => (Blip: b, Pos: MapPos(b))).ToList();
+            const double pad = 30;
+            double minX = spots.Min(s => s.Pos.X), maxX = spots.Max(s => s.Pos.X), minY = spots.Min(s => s.Pos.Y), maxY = spots.Max(s => s.Pos.Y);
+            _scale = Math.Min((w - 2 * pad) / Math.Max(150, maxX - minX), (h - 2 * pad) / Math.Max(150, maxY - minY));
+            _cx = (minX + maxX) / 2;
+            _cy = (minY + maxY) / 2;
+            SatelliteTiles.Draw(_map, w, h, _cx, _cy, _scale);
+
+            int team = Math.Max(0, _previewTeam.SelectedIndex), rule = Math.Max(0, _previewRule.SelectedIndex);
+            int shown = 0;
+            foreach (var s in spots.OrderBy(s => s.Blip.Index == Selected))
+            {
+                var b = s.Blip;
+                // Preview: every team on the picked rule number.
+                bool visible = b.ForTeam(team) && b.InRule(rule);
+                if (visible) shown++;
+                bool picked = b.Index == Selected;
+                double size = picked ? 26 : 20;
+                var pin = new Grid { Width = size + 10, Height = size + 10, Cursor = Cursors.Hand, Opacity = visible ? 1 : 0.3, Background = Brushes.Transparent, ToolTip = BlipName(b) + "\n" + WhenText(b) + " · " + WhereText(b) };
+                if (picked)
+                    pin.Children.Add(new Ellipse { Stroke = Brushes.White, StrokeThickness = 2, Fill = new SolidColorBrush(Color.FromArgb(0x50, 0, 0, 0)) });
+                pin.Children.Add(SpriteImage(b.Sprite, b.Colour, size).Also(img => { img.HorizontalAlignment = HorizontalAlignment.Center; img.Effect = new System.Windows.Media.Effects.DropShadowEffect { BlurRadius = 4, ShadowDepth = 1, Opacity = 0.8 }; }));
+                Canvas.SetLeft(pin, w / 2 + (s.Pos.X - _cx) * _scale - (size + 10) / 2);
+                Canvas.SetTop(pin, h / 2 - (s.Pos.Y - _cy) * _scale - (size + 10) / 2);
+                int index = b.Index;
+                pin.MouseLeftButtonUp += (_, e) => { e.Handled = true; Pick(index); };
+                _map.Children.Add(pin);
+            }
+            _previewCount.Text = string.Format(CultureInfo.CurrentCulture, T("bl_preview_count", "{0} of {1} visible"), shown, _blips.Count);
+        }
+
+        // A click on the map moves the picked blip there when it sits on a fixed spot (Z stays).
+        private void MapClick(object sender, MouseButtonEventArgs e)
+        {
+            int i = Selected;
+            if (i < 0 || _blips[i].Follows || _scale <= 0 || !Live)
+                return;
+            var p = e.GetPosition(_map);
+            float x = (float)(_cx + (p.X - _map.ActualWidth / 2) / _scale);
+            float y = (float)(_cy - (p.Y - _map.ActualHeight / 2) / _scale);
+            long o = At(GTA.Offsets.Editor.ddblip.pos, i);
+            new Global(o).SetFloat(x);
+            new Global(o + 1).SetFloat(y);
+            Refresh(true);
+        }
+
+        // ---------- small parts ----------
+
+        private static FrameworkElement Tiles(string[] labels, int selected, Action<int> pick)
+        {
+            var grid = new UniformGrid { Columns = labels.Length, Rows = 1, Margin = new Thickness(0, 0, -6, 0) };
+            for (int k = 0; k < labels.Length; k++)
+            {
+                int index = k;
+                var tile = new ToggleButton { IsChecked = k == selected, Margin = new Thickness(0, 0, 6, 6), Padding = new Thickness(4, 6, 4, 6), Cursor = Cursors.Hand,
+                    Content = new TextBlock { Text = labels[k], FontSize = 12.5, FontWeight = FontWeights.SemiBold, TextWrapping = TextWrapping.Wrap, TextAlignment = TextAlignment.Center } };
+                tile.SetResourceReference(StyleProperty, "ChoiceTile");
+                tile.Click += (_, __) => pick(index);
+                grid.Children.Add(tile);
+            }
+            return grid;
+        }
+
+        private static TextBlock Label(string text)
+        {
+            var t = new TextBlock { Text = text, Margin = new Thickness(0, 12, 0, 5) };
+            t.SetResourceReference(StyleProperty, "FieldLabel");
+            return t;
+        }
+
+        private static FrameworkElement Notice(string text, bool ok)
+        {
+            var border = new Border { CornerRadius = new CornerRadius(6), BorderThickness = new Thickness(3, 0, 0, 0), Padding = new Thickness(10, 7, 10, 7) };
+            border.BorderBrush = ok ? MainWindow.ThemeBrush("OkBrush") ?? Brushes.SeaGreen : MainWindow.ThemeBrush("WarnBrush") ?? Brushes.Goldenrod;
+            border.SetResourceReference(Border.BackgroundProperty, "DeepBrush");
+            var t = new TextBlock { Text = text, FontSize = 12.5, TextWrapping = TextWrapping.Wrap };
+            t.SetResourceReference(TextBlock.ForegroundProperty, "TextColor");
+            border.Child = t;
+            return border;
         }
 
         private static TextBlock Faint(string text, double size)
         {
-            var t = new TextBlock { Text = text, FontSize = size, TextWrapping = TextWrapping.Wrap };
+            var t = new TextBlock { Text = text, FontSize = size, TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 4, 0, 0) };
             t.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
             return t;
         }
