@@ -49,7 +49,10 @@ namespace Xenvious
             frame.SetResourceReference(Border.BackgroundProperty, "DeepBrush");
             frame.SetResourceReference(Border.BorderBrushProperty, "LineBrush");
             _list.Children.Add(frame);
+            _list.Children.Add(SatelliteToggle());
             _map.SizeChanged += (_, __) => DrawMap();
+            // Tiles arrive on a background thread; redraw once per batch.
+            SatelliteTiles.TileLoaded += () => Dispatcher.BeginInvoke(new Action(() => { if (IsVisible) DrawMap(); }), DispatcherPriority.Background);
             _list.Children.Add(_rows);
             _list.Children.Add(_add);
             BuildAdd();
@@ -266,6 +269,58 @@ namespace Xenvious
             return (x, y);
         }
 
+        private static bool UseSatellite
+        {
+            get => new ini_reader(Functions.getRoamingConfigFilePath()).ReadInteger("Settings", "spsatellite", 1) == 1;
+            set => new ini_reader(Functions.getRoamingConfigFilePath()).Write("Settings", "spsatellite", value ? 1 : 0);
+        }
+
+        private FrameworkElement SatelliteToggle()
+        {
+            var row = new DockPanel { Margin = new Thickness(0, -4, 0, 10) };
+            var box = new CheckBox { Style = (Style)MainWindow.Instance.FindResource("FormToggle"), IsChecked = UseSatellite, VerticalAlignment = VerticalAlignment.Center };
+            box.Click += (_, __) => { UseSatellite = box.IsChecked == true; DrawMap(); };
+            DockPanel.SetDock(box, Dock.Right);
+            row.Children.Add(box);
+            row.Children.Add(Faint(T("sp_satellite", "Satellite map (Pleb Masters, loaded from the internet)"), 11.5).Also(t => t.VerticalAlignment = VerticalAlignment.Center));
+            return row;
+        }
+
+        // Satellite tiles under the drawing, darkened so the arrows stand out. Tiles that are not
+        // loaded yet (or cannot be: offline, outside the map) leave the plain background.
+        private void DrawSatellite(double w, double h, double cx, double cy, double scale)
+        {
+            int z = SatelliteTiles.MaxZoom;
+            // Coarser tiles when the view is wide: no more than about one tile pixel per screen pixel.
+            while (z > 0 && SatelliteTiles.MetresPerPixel(z) * scale < 0.5)
+                z--;
+            var tl = SatelliteTiles.ToPixel(cx - w / 2 / scale, cy + h / 2 / scale, z);
+            var br = SatelliteTiles.ToPixel(cx + w / 2 / scale, cy - h / 2 / scale, z);
+            double size = SatelliteTiles.TileSize * SatelliteTiles.MetresPerPixel(z) * scale;
+            bool any = false;
+            for (int ty = (int)Math.Floor(tl.Y / SatelliteTiles.TileSize); ty <= (int)Math.Floor(br.Y / SatelliteTiles.TileSize); ty++)
+                for (int tx = (int)Math.Floor(tl.X / SatelliteTiles.TileSize); tx <= (int)Math.Floor(br.X / SatelliteTiles.TileSize); tx++)
+                {
+                    var tile = SatelliteTiles.Get(z, tx, ty);
+                    if (tile == null)
+                        continue;
+                    var corner = SatelliteTiles.ToWorld(tx * SatelliteTiles.TileSize, ty * SatelliteTiles.TileSize, z);
+                    var image = new Image { Source = tile, Width = size + 0.5, Height = size + 0.5, Stretch = Stretch.Fill, IsHitTestVisible = false };
+                    RenderOptions.SetBitmapScalingMode(image, BitmapScalingMode.HighQuality);
+                    Canvas.SetLeft(image, w / 2 + (corner.X - cx) * scale);
+                    Canvas.SetTop(image, h / 2 - (corner.Y - cy) * scale);
+                    _map.Children.Add(image);
+                    any = true;
+                }
+            if (!any)
+                return;
+            _map.Children.Add(new Rectangle { Width = w, Height = h, Fill = new SolidColorBrush(Color.FromArgb(0x40, 0, 0, 0)), IsHitTestVisible = false });
+            var credit = new TextBlock { Text = "© Pleb Masters Forge", FontSize = 9.5, Foreground = Brushes.White, Opacity = 0.8, IsHitTestVisible = false };
+            Canvas.SetLeft(credit, 6);
+            Canvas.SetBottom(credit, 4);
+            _map.Children.Add(credit);
+        }
+
         // North up, one scale for both axes, at least 40 m across so a single point does not fill it.
         private void DrawMap()
         {
@@ -293,9 +348,10 @@ namespace Xenvious
             double scale = Math.Min((w - 2 * pad) / Math.Max(40, maxX - minX), (h - 2 * pad) / Math.Max(40, maxY - minY));
             double cx = (minX + maxX) / 2, cy = (minY + maxY) / 2;
             Point ToMap(double x, double y) => new Point(w / 2 + (x - cx) * scale, h / 2 - (y - cy) * scale);
+            if (UseSatellite)
+                DrawSatellite(w, h, cx, cy, scale);
 
-            var north = new TextBlock { Text = "N ↑", FontSize = 11, FontWeight = FontWeights.SemiBold };
-            north.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
+            var north = new TextBlock { Text = "N ↑", FontSize = 11, FontWeight = FontWeights.SemiBold, Foreground = Brushes.White, Opacity = 0.85 };
             Canvas.SetRight(north, 8);
             Canvas.SetTop(north, 6);
             _map.Children.Add(north);
@@ -303,8 +359,7 @@ namespace Xenvious
             if (_cursor.HasValue)
             {
                 var c = ToMap(_cursor.Value.X, _cursor.Value.Y);
-                var cross = new Path { Data = Geometry.Parse("M-7,0 L7,0 M0,-7 L0,7"), StrokeThickness = 1.5, RenderTransform = new TranslateTransform(c.X, c.Y), ToolTip = T("sp_map_cursor", "Creator cursor") };
-                cross.SetResourceReference(Shape.StrokeProperty, "MutedTextBrush");
+                var cross = new Path { Data = Geometry.Parse("M-7,0 L7,0 M0,-7 L0,7"), StrokeThickness = 1.5, Stroke = Brushes.White, RenderTransform = new TranslateTransform(c.X, c.Y), ToolTip = T("sp_map_cursor", "Creator cursor") };
                 _map.Children.Add(cross);
             }
 
@@ -323,21 +378,22 @@ namespace Xenvious
                 {
                     Data = Geometry.Parse("M0,-9 L6.5,7 L0,3.5 L-6.5,7 Z"),
                     Fill = MainWindow.ThemeBrush("TeamBrush" + (p.Team + 1)),
-                    Opacity = own ? 1 : 0.45,
-                    StrokeThickness = picked ? 1.6 : 0,
+                    Opacity = own ? 1 : 0.6,
                     RenderTransform = transform,
                     Cursor = System.Windows.Input.Cursors.Hand,
                     ToolTip = T("dash_team", "Team") + " " + (p.Team + 1) + " · " + (p.Index + 1),
                 };
-                if (picked)
-                    arrow.SetResourceReference(Shape.StrokeProperty, "TextColor");
+                // Outlined so the arrows stay visible on the satellite map; white for the picked one.
+                arrow.Stroke = picked ? Brushes.White : Brushes.Black;
+                arrow.StrokeThickness = picked ? 1.6 : 0.8;
                 int team = p.Team, index = p.Index;
                 arrow.MouseLeftButtonUp += (_, __) => Pick(team, index);
                 _map.Children.Add(arrow);
                 if (own)
                 {
                     var num = new TextBlock { Text = (p.Index + 1).ToString(CultureInfo.CurrentCulture), FontSize = 10.5, FontWeight = FontWeights.Bold, IsHitTestVisible = false };
-                    num.SetResourceReference(TextBlock.ForegroundProperty, picked ? "TextColor" : "MutedTextBrush");
+                    num.Foreground = picked ? Brushes.White : new SolidColorBrush(Color.FromRgb(0xDD, 0xDD, 0xDD));
+                    num.Effect = new System.Windows.Media.Effects.DropShadowEffect { BlurRadius = 3, ShadowDepth = 0, Opacity = 1, Color = Colors.Black };
                     Canvas.SetLeft(num, at.X + 9);
                     Canvas.SetTop(num, at.Y - 16);
                     _map.Children.Add(num);
