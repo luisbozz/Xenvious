@@ -50,6 +50,9 @@ namespace Xenvious
                 // races with a patch pass.
                 PreciseTemplates.Tick();
                 bool templatesChanged = PreciseTemplates.Active != templatesWereActive;
+                // LTS test end: on foot where the test ended (needs the 50 ms to catch the creator's take over).
+                try { TestReturn.Tick(); }
+                catch (Exception ex) { Log.Debug("TestReturn: " + ex.Message, source: "TestReturn"); }
                 templatesWereActive = PreciseTemplates.Active;
                 if (templatesChanged && !PreciseTemplates.Active)
                 {
