@@ -1,0 +1,155 @@
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Threading;
+
+namespace Xenvious
+{
+    /// <summary>
+    /// Player Settings (mockup https://claude.ai/artifact/VifG8TGRs71syLT1EsWBmP, tab "Player Settings"):
+    /// a team's start points (Global_4980736.f_201288[team][i /*71*/], count f_197021[team]) as a
+    /// list with heading and vehicle; a click picks the point in the page's own index box, which
+    /// the editing cards below follow.
+    /// </summary>
+    public class StartPointsView : SectionCard
+    {
+        private readonly ComboBox _teamBox;
+        private readonly ComboBox _indexBox;
+        private readonly ComboBox _vehicleBox;
+        private readonly StackPanel _list = new StackPanel();
+        private readonly DispatcherTimer _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+        private string _shown;
+
+        private static string T(string key, string fallback) => MainWindow.Instance?.TranslateOr(key, fallback) ?? fallback;
+
+        public StartPointsView(ComboBox teamBox, ComboBox indexBox, ComboBox vehicleBox)
+        {
+            _teamBox = teamBox;
+            _indexBox = indexBox;
+            _vehicleBox = vehicleBox;
+            Style = (Style)MainWindow.Instance.FindResource(typeof(SectionCard));
+            Icon = Geometry.Parse("M12,2 C8,2 5,5 5,9 C5,14 12,22 12,22 C12,22 19,14 19,9 C19,5 16,2 12,2 M12,6.5 A2.5,2.5 0 1 0 12,11.5 A2.5,2.5 0 1 0 12,6.5");
+            Content = _list;
+            Margin = new Thickness(0, 0, 0, 12);
+            IsVisibleChanged += (_, __) => { if (IsVisible) { Refresh(true); _timer.Start(); } else _timer.Stop(); };
+            _timer.Tick += (_, __) => Refresh(false);
+            _teamBox.SelectionChanged += (_, __) => Refresh(true);
+            _indexBox.SelectionChanged += (_, __) => Refresh(true);
+        }
+
+        private static bool Live => MainWindow.m != null && MainWindow.m.IsProcOpen && GTA.Offsets.Editor.player_number != 0
+            && GTA.Offsets.Editor.player_loc != 0 && GTA.Offsets.Editor.next_settings != 0 && GTA.Offsets.Editor.team_NEXT_settings != 0;
+
+        private static long At(long field, int team, int i) => field + team * GTA.Offsets.Editor.team_NEXT_settings + i * GTA.Offsets.Editor.next_settings;
+
+        public static int Seat(int team, int i) => GTA.Offsets.Editor.player_seat == 0 ? -3 : new Global(At(GTA.Offsets.Editor.player_seat, team, i)).Get<int>();
+
+        /// <summary>The creator's seats (func_4682 bones): -1 driver, 0 front passenger, then the rear rows.</summary>
+        public static string SeatName(int seat)
+        {
+            switch (seat)
+            {
+                case -1: return T("sp_seat_driver", "Driver");
+                case 0: return T("sp_seat_front", "Front passenger");
+                case 1: return T("sp_seat_rl", "Rear left");
+                case 2: return T("sp_seat_rr", "Rear right");
+                default: return seat < -1 ? T("sp_seat_any", "Any free seat") : string.Format(CultureInfo.CurrentCulture, T("sp_seat_n", "Seat {0}"), seat + 2);
+            }
+        }
+
+        private void Refresh(bool force)
+        {
+            if (!Live)
+            {
+                _list.Children.Clear();
+                _shown = null;
+                Title = T("sp_points", "Start points");
+                _list.Children.Add(Faint(T("sp_nocreator", "Open a mission in the creator to see its start points."), 13));
+                return;
+            }
+            int team = Math.Max(0, _teamBox.SelectedIndex);
+            int n = Math.Max(0, Math.Min(new Global(GTA.Offsets.Editor.player_number + team).Get<int>(), 60));
+            var rows = Enumerable.Range(0, n).Select(i => (
+                Index: i,
+                X: new Global(At(GTA.Offsets.Editor.player_loc, team, i)).Get<float>(),
+                Y: new Global(At(GTA.Offsets.Editor.player_loc, team, i) + 1).Get<float>(),
+                Z: new Global(At(GTA.Offsets.Editor.player_loc, team, i) + 2).Get<float>(),
+                Head: new Global(At(GTA.Offsets.Editor.player_head, team, i)).Get<float>(),
+                Veh: new Global(At(GTA.Offsets.Editor.player_veh, team, i)).Get<int>(),
+                Seat: Seat(team, i))).ToList();
+            string key = string.Join(";", rows) + "|" + team + "|" + _indexBox.SelectedIndex;
+            if (!force && key == _shown)
+                return;
+            _shown = key;
+
+            Title = string.Format(CultureInfo.CurrentCulture, T("sp_points_team", "Start points · team {0}"), team + 1);
+            Summary = string.Format(CultureInfo.CurrentCulture, T("sp_points_sum", "{0} points"), n);
+            _list.Children.Clear();
+            if (n == 0)
+                _list.Children.Add(Faint(T("sp_none", "This team has no start point yet: place one in the creator."), 13));
+            foreach (var r in rows)
+                _list.Children.Add(Row(r.Index, r.X, r.Y, r.Z, r.Head, r.Veh, r.Seat, r.Index == _indexBox.SelectedIndex));
+        }
+
+        private FrameworkElement Row(int index, float x, float y, float z, float head, int veh, int seat, bool selected)
+        {
+            var button = new System.Windows.Controls.Primitives.ToggleButton { IsChecked = selected, HorizontalContentAlignment = HorizontalAlignment.Stretch, Padding = new Thickness(0), Margin = new Thickness(0, 0, 0, 6), Cursor = System.Windows.Input.Cursors.Hand };
+            button.SetResourceReference(StyleProperty, "ChoiceTile");
+            var grid = new Grid { Margin = new Thickness(10, 7, 10, 7) };
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(38) });
+            grid.ColumnDefinitions.Add(new ColumnDefinition());
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+
+            var dot = new Border { Width = 28, Height = 28, CornerRadius = new CornerRadius(14), BorderThickness = new Thickness(2), HorizontalAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Center };
+            dot.SetResourceReference(Border.BorderBrushProperty, selected ? "AccentBrush" : "LineBrush");
+            var num = new TextBlock { Text = (index + 1).ToString(CultureInfo.CurrentCulture), FontWeight = FontWeights.Bold, FontSize = 12, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center };
+            num.SetResourceReference(TextBlock.ForegroundProperty, selected ? "AccentBrush" : "MutedTextBrush");
+            dot.Child = num;
+            grid.Children.Add(dot);
+
+            var text = new StackPanel { VerticalAlignment = VerticalAlignment.Center };
+            var title = new TextBlock { FontSize = 13.5, FontWeight = FontWeights.SemiBold, TextTrimming = TextTrimming.CharacterEllipsis };
+            title.SetResourceReference(TextBlock.ForegroundProperty, "TextColor");
+            title.Text = veh > -1
+                ? VehicleName(veh) + " · " + SeatName(seat)
+                : T("sp_onfoot", "On foot");
+            text.Children.Add(title);
+            text.Children.Add(Faint(string.Format(CultureInfo.InvariantCulture, "{0:0.0}, {1:0.0}, {2:0.0}", x, y, z), 11.5));
+            Grid.SetColumn(text, 1);
+            grid.Children.Add(text);
+
+            var heading = new TextBlock { Text = ((int)Math.Round(((head % 360) + 360) % 360)).ToString(CultureInfo.InvariantCulture) + "°", FontWeight = FontWeights.SemiBold, VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(8, 0, 0, 0) };
+            heading.SetResourceReference(TextBlock.ForegroundProperty, "MutedTextBrush");
+            Grid.SetColumn(heading, 2);
+            grid.Children.Add(heading);
+
+            button.Content = grid;
+            button.Click += (_, __) => { _indexBox.SelectedIndex = index; Refresh(true); };
+            return button;
+        }
+
+        // The vehicle box lists "none" first, then the placed vehicles by index.
+        private string VehicleName(int veh)
+        {
+            if (veh + 1 < _vehicleBox.Items.Count)
+            {
+                object item = _vehicleBox.Items[veh + 1];
+                string name = item is ComboBoxItem c ? c.Content?.ToString() : item?.ToString();
+                if (!string.IsNullOrWhiteSpace(name))
+                    return name;
+            }
+            return string.Format(CultureInfo.CurrentCulture, T("sp_vehicle_n", "Vehicle {0}"), veh + 1);
+        }
+
+        private static TextBlock Faint(string text, double size)
+        {
+            var t = new TextBlock { Text = text, FontSize = size, TextWrapping = TextWrapping.Wrap };
+            t.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
+            return t;
+        }
+    }
+}

@@ -376,6 +376,8 @@ namespace Xenvious
             catch (Exception ex) { Log.Error("kill layout: " + ex); }
             try { InitActorLayout(); }
             catch (Exception ex) { Log.Error("actor layout: " + ex); }
+            try { InitPlayerLayout(); }
+            catch (Exception ex) { Log.Error("player layout: " + ex); }
             InitEntityPicker();
         }
 
