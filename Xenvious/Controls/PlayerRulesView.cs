@@ -147,7 +147,7 @@ namespace Xenvious
             _team = Math.Max(0, Math.Min(_teamBox.SelectedIndex, Rules.Teams() - 1));
             int n = Math.Max(0, Math.Min(Number(_team), Rules.MaxRules));
             var rows = Enumerable.Range(0, n).Select(i => (Index: i, Logic: Get(GTA.Offsets.Editor.Kill.rule, _team, i), Pri: Get(GTA.Offsets.Editor.Kill.pri, _team, i), Lim: Get(GTA.Offsets.Editor.Kill.lim, _team, i))).ToList();
-            string key = string.Join(";", rows) + "|" + _team + "|" + _open + "|" + Rules.Nrl(_team) + "|" + Rules.Count(_team) + "|" + string.Join(",", ForcePatches());
+            string key = string.Join(";", rows) + "|" + _team + "|" + _open + "|" + Rules.Nrl(_team) + "|" + Rules.Count(_team) + "|" + string.Join(",", ForcePatches()) + "|" + (GTA.Offsets.Editor.menubs14 != 0 && ObjectiveTextOn);
             if (!force && key == _shown)
                 return;
             _shown = key;
@@ -567,12 +567,42 @@ namespace Xenvious
             }
             row.Children.Add(text2);
             _status.Children.Add(row);
+            if (GTA.Offsets.Editor.menubs14 != 0)
+                _status.Children.Add(TextToggle());
             _status.Children.Add(Faint(T("pr_force_hint", "Without these patches the LTS creator turns rule 1 back into \"kill players\" and the rule count back to 1."), 12)
                 .Also(t => t.Margin = new Thickness(0, 8, 0, 8)));
             var link = new Button { Content = T("pr_patches", "Open Script Patches"), Height = 30, Padding = new Thickness(12, 0, 12, 0), HorizontalAlignment = HorizontalAlignment.Left };
             link.SetResourceReference(StyleProperty, "FormButton");
             link.Click += (_, __) => _openPatches?.Invoke();
             _status.Children.Add(link);
+        }
+
+        // Bit 19 of menubs14 (Global_4718592.f_25): without it the LTS test showed no objective
+        // text, with it the rule's text shows (found in game, Legacy LTS). The Mission Creator
+        // has the same bit as a menu entry (FMMC_SBTIB).
+        private const int ObjectiveTextBit = 19;
+
+        private static bool ObjectiveTextOn => (new Global(GTA.Offsets.Editor.menubs14).Get<int>() & (1 << ObjectiveTextBit)) != 0;
+
+        private FrameworkElement TextToggle()
+        {
+            var row = new DockPanel { Margin = new Thickness(0, 10, 0, 0) };
+            var box = new CheckBox { Style = (Style)MainWindow.Instance.FindResource("FormToggle"), IsChecked = ObjectiveTextOn, VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(10, 0, 0, 0) };
+            box.Click += (_, __) =>
+            {
+                if (!Live) return;
+                var g = new Global(GTA.Offsets.Editor.menubs14);
+                int v = g.Get<int>();
+                g.SetInt(box.IsChecked == true ? v | (1 << ObjectiveTextBit) : v & ~(1 << ObjectiveTextBit));
+                Refresh(true);
+            };
+            DockPanel.SetDock(box, Dock.Right);
+            row.Children.Add(box);
+            var text = new StackPanel { VerticalAlignment = VerticalAlignment.Center };
+            text.Children.Add(new TextBlock { Text = T("pr_objtext", "Show objective text"), FontSize = 13, TextWrapping = TextWrapping.Wrap }.Also(t => t.SetResourceReference(TextBlock.ForegroundProperty, "TextColor")));
+            text.Children.Add(Faint(T("pr_objtext_h", "Shows each rule's text during the test (Rules page)."), 11.5));
+            row.Children.Add(text);
+            return row;
         }
 
         private static FrameworkElement StatusRow(string text, bool ok, string state)
