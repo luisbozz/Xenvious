@@ -839,8 +839,33 @@ namespace Xenvious
             m.memory((getCreatorScriptLocalWorkerBase() + GTA.Offsets.Editor.OFFSET_current_creator_worker_offset_refresh * 8).ToString("X")).SetInt(91);
         }
 
+        // The controllers the creators test with: LTS and Capture start fm_mission_controller, the
+        // Mission Creator public_mission_controller, Survival fm_survival_controller. Race and
+        // deathmatch tests end another way.
+        private static readonly string[] TestControllers = { "fm_mission_controller", "public_mission_controller", "fm_survival_controller" };
+        private bool _testRunning;
+
+        private void UpdateTestButton(bool inCreator)
+        {
+            bool running = inCreator && GTA.Offsets.Editor.endtest != 0 && TestControllers.Any(GTA.IsScriptRunning);
+            if (running == _testRunning)
+                return;
+            _testRunning = running;
+            if (running)
+                BtnTestMain.Content = TranslateOr("dash_endtest", "End test");
+            else
+                BtnTestMain.SetBinding(Button.ContentProperty, new Binding("Translation[test]") { FallbackValue = "Test" });
+        }
+
         private void BtnTestMain_Click(object sender, RoutedEventArgs e)
         {
+            if (m.IsProcOpen && _testRunning)
+            {
+                // What the creator's own "Exit test" prompt does: the controller sees the flag,
+                // fades out and quits, and the creator takes over again.
+                new Global(GTA.Offsets.Editor.endtest).SetInt(1);
+                return;
+            }
             if (m.IsProcOpen)
             {
                 bool needscan = curcreatorscanneeded();
