@@ -199,19 +199,19 @@ namespace Xenvious
 
         private void cbmissionddblipeft1_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(1, GTA.Offsets.Editor.ddblip.bits, cbmissionddblipeft1);
+            Functions.Write.writebinary(1, GTA.Offsets.Editor.ddblip.bits + GTA.Offsets.Editor.ddblip.NEXT * ddmissionddblipno.SelectedIndex, cbmissionddblipeft1);
         }
         private void cbmissionddblipeft2_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(2, GTA.Offsets.Editor.ddblip.bits, cbmissionddblipeft2);
+            Functions.Write.writebinary(2, GTA.Offsets.Editor.ddblip.bits + GTA.Offsets.Editor.ddblip.NEXT * ddmissionddblipno.SelectedIndex, cbmissionddblipeft2);
         }
         private void cbmissionddblipeft3_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(3, GTA.Offsets.Editor.ddblip.bits, cbmissionddblipeft3);
+            Functions.Write.writebinary(3, GTA.Offsets.Editor.ddblip.bits + GTA.Offsets.Editor.ddblip.NEXT * ddmissionddblipno.SelectedIndex, cbmissionddblipeft3);
         }
         private void cbmissionddblipeft4_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(4, GTA.Offsets.Editor.ddblip.bits, cbmissionddblipeft4);
+            Functions.Write.writebinary(4, GTA.Offsets.Editor.ddblip.bits + GTA.Offsets.Editor.ddblip.NEXT * ddmissionddblipno.SelectedIndex, cbmissionddblipeft4);
         }
 
         private void tbmissionddbliptype_TextChanged(object sender, TextChangedEventArgs e)
@@ -234,7 +234,7 @@ namespace Xenvious
 
         private void cbmissionddbliperoute_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(7, GTA.Offsets.Editor.ddblip.bits, cbmissionddbliperoute);
+            Functions.Write.writebinary(7, GTA.Offsets.Editor.ddblip.bits + GTA.Offsets.Editor.ddblip.NEXT * ddmissionddblipno.SelectedIndex, cbmissionddbliperoute);
         }
 
         private void tbmissionddblipbindindex_TextChanged(object sender, TextChangedEventArgs e)
