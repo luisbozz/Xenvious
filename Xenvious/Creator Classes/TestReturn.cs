@@ -8,13 +8,14 @@ namespace Xenvious
     /// that point when the test was started from the camera, the player standing there when it
     /// was started on foot.
     ///
-    /// fm_lts_creator 1.73, test end (Local_8883.f_565 case 7): bit 30 of the test local
-    /// (OFFSET_current_creator_test_lts, Local_1709) keeps the mode the test was started from.
-    /// The creator then clears bits 18 and 25 (set by its Test entry) and sets bit 27 for the
-    /// mode switch. Without bit 30 the camera is rebuilt
-    /// from the camera struct (OFFSET_current_creator_cam_lts, Local_1757): at f_18 or f_15 when
-    /// one is set, else at f_2 looking straight down. On foot the switch (func_4701) clears
-    /// bit 27 once the player has control, without moving the player.
+    /// fm_lts_creator 1.73: its Test entry sets bits 18 and 25 of the test local
+    /// (OFFSET_current_creator_test_lts, Local_1709), and the test start switches to the player,
+    /// which sets bit 30. At the test end (Local_8883.f_565 case 7) the creator clears bits 18
+    /// and 25, and bit 30 decides: set, the player is unfrozen on foot; clear, the fly camera is
+    /// rebuilt from the camera struct (OFFSET_current_creator_cam_lts, Local_1757) at f_18 or
+    /// f_15 when one is set, else at f_2 looking straight down. The creator does not remember
+    /// that the test came from the camera, so Xenvious notes bit 30 before the test and clears
+    /// it again as soon as fm_mission_controller has ended.
     /// </summary>
     public static class TestReturn
     {
@@ -30,6 +31,8 @@ namespace Xenvious
 
         private static Phase _phase = Phase.Idle;
         private static long[] _creator;
+        private static long[] _controller;
+        private static bool _fromCamera;
         private static XenVector3 _last;
         private static bool _haveLast;
         private static DateTime _since;
@@ -49,14 +52,22 @@ namespace Xenvious
             switch (_phase)
             {
                 case Phase.Idle:
-                    if (scan && GTA.IsScriptRunning("fm_mission_controller"))
-                    {
+                    if (scan)
                         _creator = GTA.getLocalScriptAddy("fm_lts_creator");
-                        if (_creator != null)
+                    if (_creator == null)
+                        break;
+                    // The mode before the test, as long as no Test entry is under way.
+                    int v = Value();
+                    if ((v & (1 << BitTestEntry)) == 0 && (v & (1 << BitTestStart)) == 0)
+                        _fromCamera = (v & (1 << BitOnFoot)) == 0;
+                    if (scan)
+                    {
+                        _controller = GTA.getLocalScriptAddy("fm_mission_controller");
+                        if (_controller != null)
                         {
                             _haveLast = false;
                             _phase = Phase.InTest;
-                            Log.Debug("LTS test started", source: "TestReturn");
+                            Log.Debug("LTS test started from the " + (_fromCamera ? "camera" : "player"), source: "TestReturn");
                         }
                     }
                     break;
@@ -67,31 +78,33 @@ namespace Xenvious
                     {
                         _last = pos;
                         _haveLast = true;
-                        // Written all along: the camera is rebuilt in the frame after the test end.
-                        PlaceCamera();
+                        if (_fromCamera)
+                            PlaceCamera();
                     }
-                    if (scan && !GTA.IsScriptRunning("fm_mission_controller"))
+                    // Every tick: bit 30 has to be cleared before the creator's test end runs.
+                    if (!Alive(_controller, "fm_mission_controller"))
                     {
                         _phase = Phase.WaitTakeOver;
                         _since = DateTime.Now;
                         Log.Debug("LTS test ended", source: "TestReturn");
+                        goto case Phase.WaitTakeOver;
                     }
                     break;
 
                 case Phase.WaitTakeOver:
-                    // The creator's test end clears bits 18 and 25 and sets bit 27; the mode
-                    // switch clears bit 27 again within a frame or two, too fast to see here.
+                    if (_fromCamera)
+                        SetBit(BitOnFoot, false);
                     if (!Bit(BitTestEntry) && !Bit(BitTestStart))
                     {
-                        if (Bit(BitOnFoot))
+                        if (_fromCamera)
                         {
-                            _phase = Phase.WaitSwitch;
-                            _since = DateTime.Now;
+                            Log.Debug("LTS test end: back to the camera", source: "TestReturn");
+                            _phase = Phase.Idle;
                         }
                         else
                         {
-                            Log.Debug("LTS test end: camera", source: "TestReturn");
-                            _phase = Phase.Idle;
+                            _phase = Phase.WaitSwitch;
+                            _since = DateTime.Now;
                         }
                     }
                     else if (DateTime.Now - _since > TimeSpan.FromSeconds(20))
@@ -120,6 +133,23 @@ namespace Xenvious
             }
         }
 
+        // One thread slot instead of the whole list: still live and still the same script.
+        private static bool Alive(long[] slot, string script)
+        {
+            if (slot == null || !GTA.IsLiveThread(slot[0], slot[1]))
+                return false;
+            try
+            {
+                if (GTA.Offsets.Editor.OFFSET_script_hash != 0)
+                    return MainWindow.m.memory(slot[0], new long[] { slot[1], GTA.Offsets.Editor.OFFSET_script_hash }).Get<uint>() == MainWindow.Joaat(script);
+                return MainWindow.m.memory(slot[0], new long[] { slot[1], GTA.Offsets.Editor.OFFSET_script_name }).GetString().ToLower() == script;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         private static long Local(long index)
         {
             if (_creator == null || index == 0)
@@ -134,10 +164,23 @@ namespace Xenvious
             }
         }
 
-        private static bool Bit(int bit)
+        private static int Value()
         {
             long addr = Local(GTA.Offsets.Editor.OFFSET_current_creator_test_lts);
-            return addr != 0 && (MainWindow.m.memory(addr.ToString("X")).Get<int>() & (1 << bit)) != 0;
+            return addr == 0 ? 0 : MainWindow.m.memory(addr.ToString("X")).Get<int>();
+        }
+
+        private static bool Bit(int bit) => (Value() & (1 << bit)) != 0;
+
+        private static void SetBit(int bit, bool on)
+        {
+            long addr = Local(GTA.Offsets.Editor.OFFSET_current_creator_test_lts);
+            if (addr == 0)
+                return;
+            int v = MainWindow.m.memory(addr.ToString("X")).Get<int>();
+            int n = on ? v | (1 << bit) : v & ~(1 << bit);
+            if (n != v)
+                MainWindow.m.memory(addr.ToString("X")).SetInt(n);
         }
 
         // The camera struct's start points: f_2 always, f_15 / f_18 only when the creator set them.
