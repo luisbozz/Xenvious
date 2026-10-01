@@ -1721,6 +1721,7 @@ namespace Xenvious
                 public static long player_head = 0;
                 public static long player_bit = 0;
                 public static long player_veh = 0;
+                public static long player_seat = 0;
                 public static long player_tars = 0;
                 public static long player_vfrs = 0;
                 public static long player_vfre = 0;

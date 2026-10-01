@@ -958,6 +958,7 @@ namespace Xenvious
             GTA.Offsets.Editor.player_head = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_player_head"), 2);
             GTA.Offsets.Editor.player_bit = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_player_bit"), 2);
             GTA.Offsets.Editor.player_veh = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_player_veh"), 2);
+            GTA.Offsets.Editor.player_seat = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_player_seat"), 2);
             GTA.Offsets.Editor.player_tars = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_player_tars"), 2);
             GTA.Offsets.Editor.player_vfrs = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_player_vfrs"), 2);
             GTA.Offsets.Editor.player_vfre = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_player_vfre"), 2);
