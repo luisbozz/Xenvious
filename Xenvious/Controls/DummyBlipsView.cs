@@ -32,7 +32,7 @@ namespace Xenvious
         private const int BitHideInVehicle = 5, BitGps = 6, BitHideWhenLinked = 9, BitShowWhenLinked = 10, BitHideInInterior = 11, BitNoHeight = 14;
 
         // ciFMMC_DROP_OFF_TYPE: cylinder and area sit on vPos, vehicle and ped follow iEntityToUse.
-        private const int TypeCylinder = 0, TypeArea = 1, TypeVehicle = 3, TypePed = 5;
+        private const int TypeCylinder = 0, TypeArea = 1, TypeProperty = 2, TypeVehicle = 3, TypeGarage = 4, TypePed = 5;
 
         private enum When { Always, One, Range, Never }
 
@@ -100,7 +100,8 @@ namespace Xenvious
 
         private readonly ComboBox _indexBox;
         private readonly Action _rebuild;
-        private readonly SectionCard _mapCard = new SectionCard(), _listCard = new SectionCard(), _editCard = new SectionCard();
+        private readonly SectionCard _mapCard = new SectionCard(), _listCard = new SectionCard(), _editCard = new SectionCard(), _linkCard = new SectionCard();
+        private readonly StackPanel _link = new StackPanel();
         private readonly Canvas _map = new Canvas { Height = 320, ClipToBounds = true, Background = Brushes.Transparent, Cursor = Cursors.Cross };
         private readonly ComboBox _previewTeam = new ComboBox { Height = 28, MinWidth = 90, Margin = new Thickness(6, 0, 6, 0) };
         private readonly ComboBox _previewRule = new ComboBox { Height = 28, MinWidth = 160, MaxWidth = 280 };
@@ -125,7 +126,7 @@ namespace Xenvious
             Margin = new Thickness(0, 12, 0, 12);
             ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star), MinWidth = 320 });
             ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(12) });
-            ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(460) });
+            ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(540) });
 
             var left = new StackPanel();
             Card(_mapCard, T("bl_map", "Map"), "M3,6 L9,3 L15,6 L21,3 V18 L15,21 L9,18 L3,21 Z M9,3 V18 M15,6 V21");
@@ -154,9 +155,12 @@ namespace Xenvious
 
             Card(_editCard, T("bl_blip", "Blip"), "M12,2 C8,2 5,5 5,9 C5,14 12,22 12,22 C12,22 19,14 19,9 C19,5 16,2 12,2 M12,6.5 A2.5,2.5 0 1 0 12,11.5 A2.5,2.5 0 1 0 12,6.5");
             _editCard.Content = _editor;
-            _editCard.VerticalAlignment = VerticalAlignment.Top;
-            SetColumn(_editCard, 2);
-            Children.Add(_editCard);
+            Card(_linkCard, T("bl_link", "Tie to an entity"), "M10,14 L14,10 M8.5,11.5 L6,14 A3.2,3.2 0 0 0 10,18 L12.5,15.5 M11.5,8.5 L14,6 A3.2,3.2 0 0 1 18,10 L15.5,12.5");
+            _linkCard.CanCollapse = true;
+            _linkCard.Content = _link;
+            var right = new StackPanel { VerticalAlignment = VerticalAlignment.Top, Children = { _linkCard, _editCard } };
+            SetColumn(right, 2);
+            Children.Add(right);
 
             _map.SizeChanged += (_, __) => DrawMap();
             _map.MouseLeftButtonUp += MapClick;
@@ -433,11 +437,16 @@ namespace Xenvious
             {
                 _editCard.Title = T("bl_blip", "Blip");
                 _editCard.HeaderRight = null;
+                _linkCard.Visibility = Visibility.Collapsed;
                 _editor.Children.Add(Faint(_blips.Count == 0 ? T("bl_add_first", "Add a blip with \"+ New blip at cursor\".") : T("bl_pick", "Pick a blip in the list or on the map."), 13));
                 return;
             }
             var b = _blips[i];
             _editCard.Title = BlipName(b);
+            _linkCard.Visibility = Visibility.Visible;
+            _link.Children.Clear();
+            _link.Children.Add(LinkPanel(b));
+            _linkCard.Summary = b.LinkType >= 1 && b.LinkType <= 3 && b.LinkIndex >= 0 ? EntityPicker.Label(b.LinkType, b.LinkIndex) : T("bl_link_none", "none");
             _editCard.HeaderRight = SpriteImage(b.Sprite, b.Colour, 24);
 
             string problem = Problem(b);
@@ -459,14 +468,20 @@ namespace Xenvious
 
             // Where
             _editor.Children.Add(Label(T("bl_where", "Where")));
-            int anchor = b.Type == TypeVehicle ? 1 : b.Type == TypePed ? 2 : b.Type == TypeCylinder || b.Type == TypeArea ? 0 : -1;
-            _editor.Children.Add(Tiles(new[] { T("bl_fixed_spot", "Fixed spot"), T("bl_follow_veh", "Follows vehicle"), T("bl_follow_ped", "Follows actor") }, anchor, a =>
+            // GET_DUMMY_BLIP_LOCATION: own spot, the vehicle or ped in iEntityToUse, or the heist leader's
+            // apartment entrance or garage; every other type falls through to the vehicle branch.
+            int[] anchorTypes = { TypeCylinder, TypeVehicle, TypePed, TypeProperty, TypeGarage };
+            int anchor = b.Type == TypeArea ? 0 : Array.IndexOf(anchorTypes, b.Type);
+            _editor.Children.Add(Tiles(new[] { T("bl_fixed_spot", "Fixed spot"), T("bl_follow_veh", "Follows vehicle"), T("bl_follow_ped", "Follows actor"),
+                T("bl_apartment", "Leader's apartment door"), T("bl_garage", "Leader's garage") }, anchor, a =>
             {
                 if (a == anchor) return;
-                SetInt(GTA.Offsets.Editor.ddblip.type, i, a == 1 ? TypeVehicle : a == 2 ? TypePed : TypeCylinder);
-                SetInt(GTA.Offsets.Editor.ddblip.veh, i, a == 0 ? -1 : Math.Max(0, b.Entity));
+                SetInt(GTA.Offsets.Editor.ddblip.type, i, anchorTypes[a]);
+                SetInt(GTA.Offsets.Editor.ddblip.veh, i, a == 1 || a == 2 ? Math.Max(0, b.Entity) : -1);
                 Refresh(true);
-            }));
+            }, 3));
+            if (b.Type == TypeProperty || b.Type == TypeGarage)
+                _editor.Children.Add(Faint(T("bl_leader_hint", "Heists only: the blip sits at the entrance of the lobby leader's apartment or garage, not at the spot below."), 12));
             if (anchor < 0)
                 _editor.Children.Add(Faint(string.Format(CultureInfo.CurrentCulture, T("bl_other_type", "Set in the creator as type {0}; pick one above to change it."), b.Type), 12));
             if (b.Follows)
@@ -497,17 +512,22 @@ namespace Xenvious
             // Sprite
             var spriteName = Sprites.FirstOrDefault(s => s.Id == b.Sprite);
             _editor.Children.Add(Label(T("bl_sprite", "Symbol") + "  ·  " + SpriteLabel(spriteName.Id)));
-            var sprites = new WrapPanel { Margin = new Thickness(0, 0, -6, 0) };
+            var sprites = new StackPanel();
+            WrapPanel row = null;
             foreach (var s in Sprites)
             {
                 if (SpriteGroups.TryGetValue(s.Id, out var group))
-                    sprites.Children.Add(Faint(T(group.Key, group.Fallback), 11.5).Also(t => { t.Width = 400; t.Margin = new Thickness(0, s.Id == 0 ? 0 : 4, 0, 4); }));
+                {
+                    sprites.Children.Add(Faint(T(group.Key, group.Fallback), 12).Also(t => t.Margin = new Thickness(0, s.Id == 0 ? 0 : 4, 0, 4)));
+                    row = new WrapPanel { Margin = new Thickness(0, 0, -6, 0) };
+                    sprites.Children.Add(row);
+                }
                 var tile = new ToggleButton { Width = 42, Height = 42, Padding = new Thickness(0), Margin = new Thickness(0, 0, 6, 6), IsChecked = s.Id == b.Sprite, ToolTip = SpriteLabel(s.Id), Cursor = Cursors.Hand,
                     Content = SpriteImage(s.Id, b.Colour, 26) };
                 tile.SetResourceReference(StyleProperty, "ChoiceTile");
                 int id = s.Id;
                 tile.Click += (_, __) => { SetInt(GTA.Offsets.Editor.ddblip.spri, i, id); Refresh(true); };
-                sprites.Children.Add(tile);
+                row.Children.Add(tile);
             }
             _editor.Children.Add(sprites);
 
@@ -535,11 +555,19 @@ namespace Xenvious
             // GET_BLIP_SIZE_FROM_CREATOR: ped, object and pickup are BLIP_SIZE_* 0.7, vehicle and location 1.0.
             _editor.Children.Add(Label(T("bl_size", "Size")));
             bool small = b.Size == 0 || b.Size == 1 || b.Size == 3;
-            _editor.Children.Add(Tiles(new[] { T("bl_size_small", "Small (70 %)"), T("bl_size_normal", "Normal (100 %)") }, small ? 0 : 1, s =>
+            var sizes = new UniformGrid { Columns = 2, Rows = 1, Margin = new Thickness(0, 0, -6, 0) };
+            foreach (var (big, key, fallback) in new[] { (false, "bl_size_small", "Small"), (true, "bl_size_normal", "Normal") })
             {
-                SetInt(GTA.Offsets.Editor.ddblip.size, i, s == 0 ? 0 : 4);
-                Refresh(true);
-            }));
+                var content = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Center };
+                content.Children.Add(new Grid { Width = 30, Height = 30, Children = { SpriteImage(b.Sprite, b.Colour, big ? 28 : 20).Also(x => x.HorizontalAlignment = HorizontalAlignment.Center) } });
+                content.Children.Add(new TextBlock { Text = T(key, fallback), FontSize = 12.5, FontWeight = FontWeights.SemiBold, VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(8, 0, 0, 0) });
+                var tile = new ToggleButton { IsChecked = big != small, Margin = new Thickness(0, 0, 6, 6), Padding = new Thickness(4, 6, 4, 6), Cursor = Cursors.Hand, Content = content };
+                tile.SetResourceReference(StyleProperty, "ChoiceTile");
+                tile.Click += (_, __) => { SetInt(GTA.Offsets.Editor.ddblip.size, i, big ? 4 : 0); Refresh(true); };
+                sizes.Children.Add(tile);
+            }
+            _editor.Children.Add(sizes);
+            _editor.Children.Add(Faint(T("bl_size_hint", "The creator's sizes Ped, Object and Pickup draw the symbol at 70 %, Vehicle and Location at 100 %. The game has no other blip sizes here."), 12));
 
             // Teams
             _editor.Children.Add(Label(T("bl_who", "Who sees it")));
@@ -561,13 +589,11 @@ namespace Xenvious
 
             // More
             var more = new StackPanel { Margin = new Thickness(0, 4, 0, 0) };
-            more.Children.Add(Label(T("bl_show_range", "Only visible within (m, 0 = always)")));
+            more.Children.Add(SubLabel(T("bl_show_range", "Only visible within (m, 0 = always)")));
             more.Children.Add(FloatBox(b.ShowRange, v => SetFloat(GTA.Offsets.Editor.ddblip.sbr, i, v)));
-            more.Children.Add(Label(T("bl_hide_range", "Hide when closer than (m, 0 = never)")));
+            more.Children.Add(SubLabel(T("bl_hide_range", "Hide when closer than (m, 0 = never)")));
             more.Children.Add(FloatBox(b.HideRange, v => SetFloat(GTA.Offsets.Editor.ddblip.hbr, i, v)));
-            more.Children.Add(Label(T("bl_link", "Tie to an entity")));
-            more.Children.Add(LinkPanel(b));
-            var expander = new Expander { Header = T("bl_more", "More: range and tie to an entity"), Content = more, Margin = new Thickness(0, 12, 0, 0), IsExpanded = b.ShowRange != 0 || b.HideRange != 0 || b.LinkIndex >= 0 };
+            var expander = new Expander { Header = T("bl_more_range", "More: visible range"), Content = more, Margin = new Thickness(0, 12, 0, 0), IsExpanded = b.ShowRange != 0 || b.HideRange != 0 };
             expander.SetResourceReference(Control.ForegroundProperty, "TextColor");
             _editor.Children.Add(expander);
 
@@ -782,37 +808,52 @@ namespace Xenvious
         }
 
         // Entity link (iEntityType / iEntityIndex) with bit 9 (hide while it exists) or 10 (hide while it does not).
+        // The controller only checks peds (alive), vehicles (driveable) and objects (exist); other types never exist.
         private FrameworkElement LinkPanel(Blip b)
         {
             int i = b.Index;
             var panel = new StackPanel();
-            var picker = new EntityPicker();
-            int type = b.LinkType == EntityPicker.Actor || b.LinkType == EntityPicker.Vehicle || b.LinkType == EntityPicker.Object ? b.LinkType : EntityPicker.None;
-            picker.Set(type, type == EntityPicker.None ? -1 : b.LinkIndex);
-            picker.Changed += (t, id) =>
+            panel.Children.Add(Faint(T("bl_link_hint", "Shows or hides the blip by whether an actor is alive, a vehicle drivable or an object there. The blip keeps its own place; to move it along with an entity use \"Follows\" below."), 12).Also(t => t.Margin = new Thickness(0, 0, 0, 8)));
+            int[] types = { EntityPicker.None, EntityPicker.Actor, EntityPicker.Vehicle, EntityPicker.Object };
+            int type = b.LinkIndex >= 0 ? Array.IndexOf(types, b.LinkType) : 0;
+            if (type < 0) type = 0;
+            panel.Children.Add(Tiles(new[] { T("bl_link_none_tile", "None"), T("ep_actor", "Actor"), T("ep_vehicle", "Vehicle"), T("ep_object", "Object") }, type, t =>
             {
-                if (t != EntityPicker.None && t != EntityPicker.Actor && t != EntityPicker.Vehicle && t != EntityPicker.Object)
-                    return;
-                SetInt(GTA.Offsets.Editor.ddblip.entt, i, t == EntityPicker.None ? -1 : t);
-                SetInt(GTA.Offsets.Editor.ddblip.enti, i, t == EntityPicker.None ? -1 : Math.Max(0, id));
+                SetInt(GTA.Offsets.Editor.ddblip.entt, i, t == 0 ? -1 : types[t]);
+                SetInt(GTA.Offsets.Editor.ddblip.enti, i, t == 0 ? -1 : (types[t] == b.LinkType ? Math.Max(0, b.LinkIndex) : 0));
                 int bits = b.Bits & ~(1 << BitHideWhenLinked) & ~(1 << BitShowWhenLinked);
-                if (t != EntityPicker.None)
+                if (t != 0)
                     bits |= 1 << ((b.Bits & (1 << BitHideWhenLinked)) != 0 ? BitHideWhenLinked : BitShowWhenLinked);
                 SetInt(GTA.Offsets.Editor.ddblip.bits, i, bits);
                 Refresh(true);
-            };
-            panel.Children.Add(picker);
-            if (type != EntityPicker.None)
+            }));
+            if (type == 0)
+                return panel;
+            int entityType = types[type];
+            var list = new ComboBox { Height = 30, Margin = new Thickness(0, 0, 0, 6) };
+            int count = Math.Max(0, EntityPicker.Count(entityType));
+            for (int e = 0; e < count; e++)
+                list.Items.Add(new ComboBoxItem { Content = EntityPicker.Label(entityType, e), Tag = e });
+            if (b.LinkIndex >= count)
+                list.Items.Add(new ComboBoxItem { Content = "#" + (b.LinkIndex + 1) + " (" + T("ep_missing", "not in the job") + ")", Tag = b.LinkIndex });
+            list.SelectedItem = list.Items.OfType<ComboBoxItem>().FirstOrDefault(x => (int)x.Tag == b.LinkIndex);
+            list.SelectionChanged += (_, __) =>
             {
-                int mode = (b.Bits & (1 << BitHideWhenLinked)) != 0 ? 1 : 0;
-                panel.Children.Add(Tiles(new[] { T("bl_link_show", "Only while it exists"), T("bl_link_hide", "Hide while it exists") }, mode, m =>
+                if (list.SelectedItem is ComboBoxItem item && (int)item.Tag != b.LinkIndex)
                 {
-                    int bits = b.Bits & ~(1 << BitHideWhenLinked) & ~(1 << BitShowWhenLinked);
-                    bits |= 1 << (m == 1 ? BitHideWhenLinked : BitShowWhenLinked);
-                    SetInt(GTA.Offsets.Editor.ddblip.bits, i, bits);
+                    SetInt(GTA.Offsets.Editor.ddblip.enti, i, (int)item.Tag);
                     Refresh(true);
-                }));
-            }
+                }
+            };
+            panel.Children.Add(list);
+            int mode = (b.Bits & (1 << BitHideWhenLinked)) != 0 ? 1 : 0;
+            panel.Children.Add(Tiles(new[] { T("bl_link_show", "Only while it exists"), T("bl_link_hide", "Hide while it exists") }, mode, m =>
+            {
+                int bits = b.Bits & ~(1 << BitHideWhenLinked) & ~(1 << BitShowWhenLinked);
+                bits |= 1 << (m == 1 ? BitHideWhenLinked : BitShowWhenLinked);
+                SetInt(GTA.Offsets.Editor.ddblip.bits, i, bits);
+                Refresh(true);
+            }));
             return panel;
         }
 
@@ -995,9 +1036,9 @@ namespace Xenvious
 
         // ---------- small parts ----------
 
-        private static FrameworkElement Tiles(string[] labels, int selected, Action<int> pick)
+        private static FrameworkElement Tiles(string[] labels, int selected, Action<int> pick, int columns = 0)
         {
-            var grid = new UniformGrid { Columns = labels.Length, Rows = 1, Margin = new Thickness(0, 0, -6, 0) };
+            var grid = new UniformGrid { Columns = columns > 0 ? columns : labels.Length, Margin = new Thickness(0, 0, -6, 0) };
             for (int k = 0; k < labels.Length; k++)
             {
                 int index = k;
@@ -1012,7 +1053,14 @@ namespace Xenvious
 
         private static TextBlock Label(string text)
         {
-            var t = new TextBlock { Text = text, Margin = new Thickness(0, 12, 0, 5) };
+            var t = new TextBlock { Text = text, FontSize = 15, FontWeight = FontWeights.Bold, Margin = new Thickness(0, 18, 0, 7) };
+            t.SetResourceReference(TextBlock.ForegroundProperty, "TextColor");
+            return t;
+        }
+
+        private static TextBlock SubLabel(string text)
+        {
+            var t = new TextBlock { Text = text, Margin = new Thickness(0, 10, 0, 5) };
             t.SetResourceReference(StyleProperty, "FieldLabel");
             return t;
         }
