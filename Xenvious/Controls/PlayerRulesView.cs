@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -22,6 +22,17 @@ namespace Xenvious
     /// to 1" and "nrl fix" switch both off; the side card shows their state and links to the Script
     /// Patches page. A new player rule gets the Mission Creator's defaults (func_1371): limit 5 for
     /// the kill types, 0 for the others, -1 for the cutscene.
+    ///
+    /// How the Mission Controller reads a player rule (public_mission_controller, the player rule
+    /// switch and its load loop):
+    /// - kill (6, 7-10): the limit is a menu step (0-10, 11 = 15, 12 = 20, 13 = no count); the rule
+    ///   passes at that many kills, or when the enemy team(s) are out. 0 and 13 only pass then.
+    /// - go to team (27-30): passes when a player gets to a player of that team; no limit.
+    /// - loot (33) and points (34): the limit is the raw amount. Loot reads two bits of f_46: bit 0
+    ///   counts percent of all loot, bit 1 multiplies the limit by the team's players.
+    /// - cutscene (16): the limit is the index of one of the creator's five scripted cutscenes.
+    /// - hold (36): never passes by itself, only through a time limit or another rule's limit.
+    /// - f_15 / f_41: the rule to jump to on pass / on fail; ignored unless it is after this rule.
     /// </summary>
     public class PlayerRulesView : Grid
     {
@@ -43,11 +54,15 @@ namespace Xenvious
         {
             (6, 18, "pr_g_all", "Kill everyone", "M5,5 L19,19 M19,5 L5,19"),
             (7, 19, "pr_g_teamkill", "Kill a team", "M4,20 L14,10 M10,4 L20,14 M14,4 L20,10 M4,14 L10,20"),
-            (34, 54, "pr_g_points", "Points", "M4,12 A8,8 0 1 0 20,12 A8,8 0 1 0 4,12 M9,12 A3,3 0 1 0 15,12 A3,3 0 1 0 9,12"),
-            (36, 56, "pr_g_hold", "Hold out", "M7,3 L17,3 M7,21 L17,21 M8,3 C8,9 16,9 16,12 C16,15 8,15 8,21 M16,3 C16,9 8,9 8,12 C8,15 16,15 16,21"),
             (27, 42, "pr_g_goteam", "Go to team", "M4,12 L18,12 M12,6 L18,12 L12,18"),
+            (34, 54, "pr_g_points", "Points", "M4,12 A8,8 0 1 0 20,12 A8,8 0 1 0 4,12 M9,12 A3,3 0 1 0 15,12 A3,3 0 1 0 9,12"),
+            (33, 53, "pr_g_loot", "Loot", "M6,9 L18,9 L20,21 L4,21 Z M9,9 C9,4 15,4 15,9"),
+            (36, 56, "pr_g_hold", "Hold out", "M7,3 L17,3 M7,21 L17,21 M8,3 C8,9 16,9 16,12 C16,15 8,15 8,21 M16,3 C16,9 8,9 8,12 C8,15 16,15 16,21"),
             (16, 34, "pr_g_cutscene", "Cutscene", "M7,5 L19,12 L7,19 Z"),
         };
+
+        // Kill limits are the creator's menu steps; the controller turns them into kills (func_666).
+        private static readonly int[] KillSteps = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20 };
 
         private static string T(string key, string fallback) => MainWindow.Instance?.TranslateOr(key, fallback) ?? fallback;
 
@@ -207,9 +222,10 @@ namespace Xenvious
             var title = new TextBlock { FontSize = 14, FontWeight = FontWeights.Bold, TextWrapping = TextWrapping.Wrap };
             title.SetResourceReference(TextBlock.ForegroundProperty, "TextColor");
             title.Inlines.Add(new System.Windows.Documents.Run(LogicName(r.Logic)));
-            if (r.Lim > 0)
+            string limitText = LimitText(r.Logic, r.Lim);
+            if (limitText != null)
             {
-                var lim = new System.Windows.Documents.Run("  · " + string.Format(CultureInfo.CurrentCulture, T("pr_limit_n", "limit {0}"), r.Lim)) { FontSize = 12, FontWeight = FontWeights.SemiBold };
+                var lim = new System.Windows.Documents.Run("  · " + limitText) { FontSize = 12, FontWeight = FontWeights.SemiBold };
                 lim.SetResourceReference(System.Windows.Documents.TextElement.ForegroundProperty, "FaintTextBrush");
                 title.Inlines.Add(lim);
             }
@@ -239,25 +255,69 @@ namespace Xenvious
         {
             switch (GoalOf(logic))
             {
-                case 6: return T("pr_h_all", "Kill players of the other teams; the limit is how many (0 = all).");
-                case 7: return T("pr_h_team", "Kill players of one team.");
-                case 34: return T("pr_h_points", "Reach the limit in points.");
-                case 36: return T("pr_h_hold", "Hold out; the time limit comes from the rule (Rules page).");
-                case 27: return T("pr_h_goteam", "Go to a player of one team.");
-                case 16: return T("pr_h_cutscene", "Plays a cutscene.");
-                default: return "";
+                case 6: return T("pr_h2_all", "Passes at the kill count, or once no player of the other teams is left.");
+                case 7: return T("pr_h2_team", "Passes at the kill count, or once no player of that team is left.");
+                case 27: return T("pr_h2_goteam", "Passes when a player of the team gets to a player of the chosen team.");
+                case 34: return T("pr_h2_points", "Passes when the team's score reaches the limit.");
+                case 33: return T("pr_h2_loot", "Passes when the team has grabbed this much loot.");
+                case 36: return T("pr_h2_hold", "Never passes by itself: a time limit or another rule's limit ends it (Rules page).");
+                case 16: return T("pr_h2_cutscene", "Plays one of the creator's scripted cutscenes, then passes.");
+                default: return T("pr_h2_other", "Not one of the goals above; edit it in the raw values below.");
             }
         }
 
-        // The open step: goal tiles with icons, the team for team goals, the limit.
+        /// <summary>The limit as the game reads it, null when the goal has none.</summary>
+        private static string LimitText(int logic, int lim)
+        {
+            switch (GoalOf(logic))
+            {
+                case 6:
+                case 7:
+                    return lim <= 0 || lim >= KillSteps.Length ? T("pr_kills_all", "until all are out")
+                        : string.Format(CultureInfo.CurrentCulture, T("pr_kills_n", "{0} kills"), KillSteps[lim]);
+                case 33:
+                case 34:
+                    return string.Format(CultureInfo.CurrentCulture, T("pr_limit_n", "limit {0}"), lim);
+                case 16:
+                    return lim < 0 ? T("pr_cut_none", "no cutscene") : string.Format(CultureInfo.CurrentCulture, T("pr_cut_n", "Cutscene {0}"), lim + 1);
+                default:
+                    return null;
+            }
+        }
+
+        private static bool CutscenesKnown => GTA.Offsets.Editor.Kill.cutscene != 0 && GTA.Offsets.Editor.Kill.cutscene_NEXT != 0;
+
+        // The creator's five scripted cutscene slots that are in use (a name is set).
+        private static List<int> Cutscenes()
+        {
+            var list = new List<int>();
+            if (!CutscenesKnown)
+                return list;
+            for (int i = 0; i < 5; i++)
+            {
+                byte[] name = new Global(GTA.Offsets.Editor.Kill.cutscene + i * GTA.Offsets.Editor.Kill.cutscene_NEXT).GetBytes(1);
+                if (name != null && name.Length > 0 && name[0] != 0)
+                    list.Add(i);
+            }
+            return list;
+        }
+
+        // The open step: goal tiles with icons, the team for team goals, then what the goal needs.
         private FrameworkElement Editor((int Index, int Logic, int Pri, int Lim) r)
         {
             var panel = new StackPanel { Margin = new Thickness(0, 8, 0, 0) };
-            var tiles = new UniformGrid { Columns = 3, Margin = new Thickness(0, 0, -6, 2) };
+            var tiles = new UniformGrid { Columns = 4, Margin = new Thickness(0, 0, -6, 2) };
             int goal = GoalOf(r.Logic);
             foreach (var g in Goals)
             {
-                var tile = new ToggleButton { IsChecked = g.Logic == goal, Margin = new Thickness(0, 0, 6, 6) };
+                // Only the Mission Creator places scripted cutscenes.
+                bool usable = g.Logic != 16 || Rules.PublicCreator;
+                var tile = new ToggleButton { IsChecked = g.Logic == goal, Margin = new Thickness(0, 0, 6, 6), IsEnabled = usable };
+                if (!usable)
+                {
+                    ToolTipService.SetShowOnDisabled(tile, true);
+                    tile.ToolTip = T("pr_cut_mission", "Only the Mission Creator has scripted cutscenes.");
+                }
                 var icon = new Path { Data = Geometry.Parse(g.Icon), StrokeThickness = 1.6, Width = 22, Height = 22, Stretch = Stretch.Uniform, HorizontalAlignment = HorizontalAlignment.Center,
                     StrokeLineJoin = PenLineJoin.Round, StrokeStartLineCap = PenLineCap.Round, StrokeEndLineCap = PenLineCap.Round };
                 icon.SetBinding(Shape.StrokeProperty, new System.Windows.Data.Binding("Foreground") { Source = tile });
@@ -285,28 +345,121 @@ namespace Xenvious
             if (goal == 7 || goal == 27)
                 panel.Children.Add(TeamTabs(r.Logic - goal, t => { Set(GTA.Offsets.Editor.Kill.rule, _team, r.Index, goal + t); Refresh(true); }));
 
-            if (goal != 16)
+            switch (goal)
             {
-                var label = new TextBlock { Text = T("pr_limit_full", "Limit (0 = no limit)"), Margin = new Thickness(0, 6, 0, 0) };
-                label.SetResourceReference(StyleProperty, "FieldLabel");
-                panel.Children.Add(label);
-                var row = new DockPanel();
-                var box = new TextBox { Width = 76, Height = 30, Margin = new Thickness(10, 0, 0, 0), Text = r.Lim.ToString(CultureInfo.InvariantCulture) };
+                case 6:
+                case 7:
+                    int step = r.Lim <= 0 || r.Lim >= KillSteps.Length ? 0 : r.Lim;
+                    panel.Children.Add(Label(T("pr_kills", "Kills needed")));
+                    panel.Children.Add(SliderRow(0, KillSteps.Length - 1, step, v => LimitText(goal, v), false,
+                        v => Set(GTA.Offsets.Editor.Kill.lim, _team, r.Index, v)));
+                    break;
+                case 34:
+                    panel.Children.Add(Label(T("pr_points", "Score needed")));
+                    panel.Children.Add(SliderRow(0, Math.Max(500, r.Lim), Math.Max(0, r.Lim), v => v.ToString(CultureInfo.InvariantCulture), true,
+                        v => Set(GTA.Offsets.Editor.Kill.lim, _team, r.Index, v)));
+                    break;
+                case 33:
+                    int bits = Get(GTA.Offsets.Editor.Kill.prbs, _team, r.Index);
+                    bool percent = (bits & 1) != 0;
+                    panel.Children.Add(Label(percent ? T("pr_loot_pct", "Loot needed (percent of all loot)") : T("pr_loot", "Loot needed")));
+                    panel.Children.Add(SliderRow(0, percent ? 100 : Math.Max(1000, r.Lim), Math.Max(0, r.Lim), v => v.ToString(CultureInfo.InvariantCulture) + (percent ? " %" : ""), true,
+                        v => Set(GTA.Offsets.Editor.Kill.lim, _team, r.Index, v)));
+                    panel.Children.Add(BitBox(T("pr_loot_pctbox", "Count in percent of all loot"), r.Index, 0));
+                    panel.Children.Add(BitBox(T("pr_loot_per", "Multiply by the team's players"), r.Index, 1));
+                    break;
+                case 16:
+                    panel.Children.Add(Label(T("pr_cut", "Cutscene")));
+                    var cuts = new ComboBox { Height = 30, MinWidth = 180, HorizontalAlignment = HorizontalAlignment.Left };
+                    cuts.Items.Add(new ComboBoxItem { Content = T("pr_cut_none", "no cutscene"), Tag = -1 });
+                    var used = Cutscenes();
+                    if (r.Lim >= 0 && !used.Contains(r.Lim))
+                        used.Add(r.Lim);
+                    foreach (int c in used.OrderBy(c => c))
+                        cuts.Items.Add(new ComboBoxItem { Content = string.Format(CultureInfo.CurrentCulture, T("pr_cut_n", "Cutscene {0}"), c + 1), Tag = c });
+                    cuts.SelectedItem = cuts.Items.Cast<ComboBoxItem>().FirstOrDefault(i => (int)i.Tag == r.Lim) ?? cuts.Items[0];
+                    cuts.SelectionChanged += (_, __) => { if (cuts.SelectedItem is ComboBoxItem i) { Set(GTA.Offsets.Editor.Kill.lim, _team, r.Index, (int)i.Tag); Refresh(true); } };
+                    panel.Children.Add(cuts);
+                    if (Cutscenes().Count == 0)
+                        panel.Children.Add(Faint(T("pr_cut_empty", "The mission has no scripted cutscene yet; place one in the creator first."), 12).Also(t => t.Margin = new Thickness(0, 4, 0, 0)));
+                    break;
+            }
+
+            panel.Children.Add(Label(T("pr_jump", "Afterwards")));
+            var jumps = new WrapPanel();
+            jumps.Children.Add(JumpBox(T("pr_jump_pass", "On pass"), GTA.Offsets.Editor.Kill.jtop, r));
+            jumps.Children.Add(JumpBox(T("pr_jump_fail", "On fail"), GTA.Offsets.Editor.Kill.jtof, r));
+            panel.Children.Add(jumps);
+            return panel;
+        }
+
+        private static TextBlock Label(string text)
+        {
+            var label = new TextBlock { Text = text, Margin = new Thickness(0, 8, 0, 0) };
+            label.SetResourceReference(StyleProperty, "FieldLabel");
+            return label;
+        }
+
+        // A slider with its value beside it, like the zone sliders; editable keeps a text box there.
+        private static FrameworkElement SliderRow(int min, int max, int value, Func<int, string> format, bool editable, Action<int> write)
+        {
+            var row = new DockPanel();
+            var slider = new Slider { Minimum = min, Maximum = max, Value = Math.Max(min, Math.Min(max, value)), IsSnapToTickEnabled = true, TickFrequency = 1, VerticalAlignment = VerticalAlignment.Center };
+            FrameworkElement side;
+            bool sync = false;
+            if (editable)
+            {
+                var box = new TextBox { Width = 86, Height = 30, Text = value.ToString(CultureInfo.InvariantCulture) };
                 box.SetResourceReference(StyleProperty, "Watermark");
-                var slider = new Slider { Minimum = 0, Maximum = Math.Max(50, r.Lim), Value = Math.Max(0, r.Lim), IsSnapToTickEnabled = true, TickFrequency = 1, VerticalAlignment = VerticalAlignment.Center };
-                bool sync = false;
                 slider.ValueChanged += (_, __) => { if (sync) return; sync = true; box.Text = ((int)slider.Value).ToString(CultureInfo.InvariantCulture); sync = false; };
                 box.TextChanged += (_, __) =>
                 {
-                    if (!int.TryParse(box.Text, NumberStyles.Integer, CultureInfo.InvariantCulture, out int v)) return;
-                    Set(GTA.Offsets.Editor.Kill.lim, _team, r.Index, v);
-                    if (!sync) { sync = true; slider.Maximum = Math.Max(slider.Maximum, v); slider.Value = Math.Max(0, v); sync = false; }
+                    if (!int.TryParse(box.Text, NumberStyles.Integer, CultureInfo.InvariantCulture, out int v) || v < min) return;
+                    write(v);
+                    if (!sync) { sync = true; slider.Maximum = Math.Max(slider.Maximum, v); slider.Value = v; sync = false; }
                 };
-                DockPanel.SetDock(box, Dock.Right);
-                row.Children.Add(box);
-                row.Children.Add(slider);
-                panel.Children.Add(row);
+                side = box;
             }
+            else
+            {
+                var text = new TextBlock { Text = format(value), FontWeight = FontWeights.SemiBold, VerticalAlignment = VerticalAlignment.Center, TextAlignment = TextAlignment.Right, MinWidth = 110 };
+                text.SetResourceReference(TextBlock.ForegroundProperty, "TextColor");
+                slider.ValueChanged += (_, __) => { int v = (int)slider.Value; text.Text = format(v); write(v); };
+                side = text;
+            }
+            side.Margin = new Thickness(10, 0, 0, 0);
+            DockPanel.SetDock(side, Dock.Right);
+            row.Children.Add(side);
+            row.Children.Add(slider);
+            return row;
+        }
+
+        private CheckBox BitBox(string text, int index, int bit)
+        {
+            var box = new CheckBox { Content = text, IsChecked = (Get(GTA.Offsets.Editor.Kill.prbs, _team, index) & (1 << bit)) != 0, Margin = new Thickness(0, 6, 0, 0) };
+            box.Click += (_, __) =>
+            {
+                int v = Get(GTA.Offsets.Editor.Kill.prbs, _team, index);
+                Set(GTA.Offsets.Editor.Kill.prbs, _team, index, box.IsChecked == true ? v | (1 << bit) : v & ~(1 << bit));
+                Refresh(true);
+            };
+            return box;
+        }
+
+        // The rule to jump to; the controller ignores targets that are not after this rule.
+        private FrameworkElement JumpBox(string caption, long field, (int Index, int Logic, int Pri, int Lim) r)
+        {
+            var panel = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 0, 14, 6) };
+            panel.Children.Add(Faint(caption, 13).Also(t => { t.VerticalAlignment = VerticalAlignment.Center; t.Margin = new Thickness(0, 0, 8, 0); }));
+            var box = new ComboBox { Height = 30, MinWidth = 140, IsEnabled = field != 0 };
+            box.Items.Add(new ComboBoxItem { Content = T("pr_jump_next", "next rule"), Tag = 0 });
+            int current = Get(field, _team, r.Index);
+            int count = Rules.Count(_team);
+            for (int rule = r.Pri + 1; rule < Math.Max(count, current + 1); rule++)
+                box.Items.Add(new ComboBoxItem { Content = T("rl_rule_n", "Rule {0}").Replace("{0}", (rule + 1).ToString(CultureInfo.CurrentCulture)), Tag = rule });
+            box.SelectedItem = box.Items.Cast<ComboBoxItem>().FirstOrDefault(i => (int)i.Tag == current) ?? box.Items[0];
+            box.SelectionChanged += (_, __) => { if (box.SelectedItem is ComboBoxItem i) Set(field, _team, r.Index, (int)i.Tag); };
+            panel.Children.Add(box);
             return panel;
         }
 
