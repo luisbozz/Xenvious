@@ -1554,6 +1554,8 @@ namespace Xenvious
                 public static long OFFSET_current_creator_cam_lts = 0x0;
                 // The creator hub script ("creator"): its menu stage, 6 = quit (sky swoop up, start the transition, clean up).
                 public static long OFFSET_creator_hub_stage = 0x0;
+                // g_bBringUpMPHud (TRIGGER_TRANSITION_MENU_ACTIVE): selector starts maintransition when it is set.
+                public static long OFFSET_transition_menu_trigger = 0x0;
                 public static long OFFSET_current_creator_test_mission = 0x0;
                 public static long OFFSET_current_creator_refresh_lts = 0x0;
                 public static long OFFSET_current_creator_refresh_mission = 0x0;

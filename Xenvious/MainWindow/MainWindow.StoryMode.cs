@@ -25,8 +25,9 @@ namespace Xenvious
         /// (creator.c func_13(-1)): the joining game mode becomes story mode (-1) and the hub's
         /// menu stage becomes quit, which swoops the sky camera up, starts the transition and
         /// ends the hub. A creator or test still running is ended first: the test through its
-        /// end global, the creator through the flag every creator checks each frame. No
-        /// question in the game about unsaved changes.
+        /// end global, the creator through the flag every creator checks each frame. Without a
+        /// hub, the transition is requested directly. No question in the game about unsaved
+        /// changes.
         /// </summary>
         private async void BtnStoryMode_Click(object sender, RoutedEventArgs e)
         {
@@ -80,6 +81,17 @@ namespace Xenvious
                     {
                         Log.Warn("story mode: no hub stage offset for this edition", source: "dashboard");
                     }
+                }
+                else if (GTA.Offsets.Editor.OFFSET_transition_menu_trigger != 0)
+                {
+                    // No hub either (everything but the persistent scripts has died): do what the
+                    // hub's quit stage does itself, TRIGGER_TRANSITION_MENU_ACTIVE(TRUE). selector then
+                    // starts maintransition, which, in the creator game mode, quits the creator and
+                    // goes to the joining game mode set above.
+                    new Global(GTA.Offsets.Editor.OFFSET_transition_menu_trigger).SetInt(1);
+                    Log.Info("story mode: no hub, transition requested", source: "dashboard");
+                    done = await WaitGoneAsync(() => GTA.IsScriptRunning("maintransition"));
+                    Log.Info($"story mode: {(done ? "transition started" : "no transition")}", source: "dashboard");
                 }
                 else
                 {
