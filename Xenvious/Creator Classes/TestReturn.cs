@@ -4,21 +4,24 @@ using Xenvious.Logging;
 namespace Xenvious
 {
     /// <summary>
-    /// After an LTS creator test the player stays on foot where the test ended, also when the
-    /// test was started from the camera.
+    /// After an LTS creator test the creator goes on where the test ended: the fly camera above
+    /// that point when the test was started from the camera, the player standing there when it
+    /// was started on foot.
     ///
     /// fm_lts_creator 1.73, test end (Local_8883.f_565 case 7): bit 30 of the test local
-    /// (OFFSET_current_creator_test_lts, Local_1709) decides on foot or camera. With bit 30 the
-    /// creator unfreezes the player and fades in, then sets bit 27, and the mode switch
-    /// (func_4701) clears bit 27 once the player has control, without moving the player.
-    /// Without bit 30 it freezes the player and builds the fly camera. So bit 30 is held while
-    /// fm_mission_controller runs and until the creator has taken over; then the player goes to
-    /// the last position seen in the test.
+    /// (OFFSET_current_creator_test_lts, Local_1709) keeps the mode the test was started from.
+    /// The creator then sets bit 27 for the mode switch. Without bit 30 the camera is rebuilt
+    /// from the camera struct (OFFSET_current_creator_cam_lts, Local_1757): at f_18 or f_15 when
+    /// one is set, else at f_2 looking straight down. On foot the switch (func_4701) clears
+    /// bit 27 once the player has control, without moving the player.
     /// </summary>
     public static class TestReturn
     {
         private const int BitOnFoot = 30;
         private const int BitSwitch = 27;
+        // Height of the camera above the last position; the creator's own camera starts 40 m
+        // above the ground when leaving the player.
+        private const float CamHeight = 40f;
 
         private enum Phase { Idle, InTest, WaitTakeOver, WaitSwitch }
 
@@ -56,12 +59,13 @@ namespace Xenvious
                     break;
 
                 case Phase.InTest:
-                    HoldOnFoot();
                     var pos = GTA.GetLocation();
                     if (pos.X != 0 || pos.Y != 0 || pos.Z != 0)
                     {
                         _last = pos;
                         _haveLast = true;
+                        // Written all along: the camera is rebuilt in the frame after the test end.
+                        PlaceCamera();
                     }
                     if (scan && !GTA.IsScriptRunning("fm_mission_controller"))
                     {
@@ -72,12 +76,18 @@ namespace Xenvious
                     break;
 
                 case Phase.WaitTakeOver:
-                    HoldOnFoot();
-                    // The creator's test end sets bit 27 for the mode switch.
                     if (Bit(BitSwitch))
                     {
-                        _phase = Phase.WaitSwitch;
-                        _since = DateTime.Now;
+                        if (Bit(BitOnFoot))
+                        {
+                            _phase = Phase.WaitSwitch;
+                            _since = DateTime.Now;
+                        }
+                        else
+                        {
+                            Log.Debug("LTS test end: camera", source: "TestReturn");
+                            _phase = Phase.Idle;
+                        }
                     }
                     else if (DateTime.Now - _since > TimeSpan.FromSeconds(20))
                     {
@@ -87,7 +97,6 @@ namespace Xenvious
                     break;
 
                 case Phase.WaitSwitch:
-                    HoldOnFoot();
                     if (!Bit(BitSwitch))
                     {
                         if (_haveLast)
@@ -105,13 +114,13 @@ namespace Xenvious
             }
         }
 
-        private static long Address()
+        private static long Local(long index)
         {
-            if (_creator == null)
+            if (_creator == null || index == 0)
                 return 0;
             try
             {
-                return MainWindow.m.memory(_creator[0], new long[] { _creator[1], GTA.Offsets.Editor.OFFSET_script_local_start, GTA.Offsets.Editor.OFFSET_current_creator_test_lts * 8 }).GetAddress();
+                return MainWindow.m.memory(_creator[0], new long[] { _creator[1], GTA.Offsets.Editor.OFFSET_script_local_start, index * 8 }).GetAddress();
             }
             catch
             {
@@ -121,18 +130,33 @@ namespace Xenvious
 
         private static bool Bit(int bit)
         {
-            long addr = Address();
+            long addr = Local(GTA.Offsets.Editor.OFFSET_current_creator_test_lts);
             return addr != 0 && (MainWindow.m.memory(addr.ToString("X")).Get<int>() & (1 << bit)) != 0;
         }
 
-        private static void HoldOnFoot()
+        // The camera struct's start points: f_2 always, f_15 / f_18 only when the creator set them.
+        private static void PlaceCamera()
         {
-            long addr = Address();
-            if (addr == 0)
+            long cam = Local(GTA.Offsets.Editor.OFFSET_current_creator_cam_lts);
+            if (cam == 0)
                 return;
-            int v = MainWindow.m.memory(addr.ToString("X")).Get<int>();
-            if ((v & (1 << BitOnFoot)) == 0)
-                MainWindow.m.memory(addr.ToString("X")).SetInt(v | (1 << BitOnFoot));
+            foreach (int field in new[] { 2, 15, 18 })
+            {
+                long at = cam + field * 8;
+                if (field != 2 && IsZero(at))
+                    continue;
+                MainWindow.m.memory(at.ToString("X")).SetFloat(_last.X);
+                MainWindow.m.memory((at + 8).ToString("X")).SetFloat(_last.Y);
+                MainWindow.m.memory((at + 16).ToString("X")).SetFloat(_last.Z + CamHeight);
+            }
+        }
+
+        private static bool IsZero(long at)
+        {
+            for (int i = 0; i < 3; i++)
+                if (MainWindow.m.memory((at + i * 8).ToString("X")).Get<float>() != 0f)
+                    return false;
+            return true;
         }
     }
 }

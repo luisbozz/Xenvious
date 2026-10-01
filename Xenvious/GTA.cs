@@ -1530,6 +1530,8 @@ namespace Xenvious
                 public static long OFFSET_current_creator_test_dm = 0x0;
                 public static long OFFSET_current_creator_test_capture = 0x0;
                 public static long OFFSET_current_creator_test_lts = 0x0;
+                // fm_lts_creator's camera struct: f_2 is where the fly camera is rebuilt after a test.
+                public static long OFFSET_current_creator_cam_lts = 0x0;
                 public static long OFFSET_current_creator_test_mission = 0x0;
                 public static long OFFSET_current_creator_refresh_lts = 0x0;
                 public static long OFFSET_current_creator_refresh_mission = 0x0;
