@@ -1199,6 +1199,9 @@ namespace Xenvious
             GTA.Offsets.Editor.Kill.mcp = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_kill_mcp"), 1);
             GTA.Offsets.Editor.Kill.number = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_kill_number"), 1);
             GTA.Offsets.Editor.Kill.NEXT = ini.ReadInteger("OFFSETS", "OFFSET_kill_NEXT");
+            GTA.Offsets.Editor.Kill.cutscene = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_kill_cutscene"), 1);
+            GTA.Offsets.Editor.Kill.cutscene_number = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_kill_cutscene_number"));
+            GTA.Offsets.Editor.Kill.cutscene_NEXT = ini.ReadInteger("OFFSETS", "OFFSET_kill_cutscene_NEXT");
 
             GTA.Offsets.Editor.otzone.otvo = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_otzone_otvo"), 2);
             GTA.Offsets.Editor.otzone.otvt = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_otzone_otvt"), 2);

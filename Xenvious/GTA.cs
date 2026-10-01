@@ -1327,6 +1327,9 @@ namespace Xenvious
                     public static long mcp = 0;
                     public static long number = 0;
                     public static long NEXT = 0;
+                    public static long cutscene = 0;
+                    public static long cutscene_number = 0;
+                    public static long cutscene_NEXT = 0;
                 }
 
                 public class otzone
