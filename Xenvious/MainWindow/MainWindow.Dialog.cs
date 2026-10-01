@@ -57,19 +57,22 @@ namespace Xenvious
 
         private Brush _dialogConfirmBrush;
 
-        // Hover colours the whole button: the confirm button a darker shade of its colour, cancel
-        // and the alternative the theme's button hover colour.
-        private void DialogButton_MouseEnter(object sender, MouseEventArgs e)
+        // Hover and press colour the whole button: the confirm button a darker shade of its colour
+        // (darker still while pressed), cancel and the alternative the theme's button colours.
+        private void DialogButton_MouseEnter(object sender, MouseEventArgs e) => ShadeDialogButton((Border)sender, 0.85, "ButtonHoverBackgroundBrush");
+
+        private void DialogButton_MouseDown(object sender, MouseButtonEventArgs e) => ShadeDialogButton((Border)sender, 0.7, "ButtonClickBackgroundBrush");
+
+        private void ShadeDialogButton(Border box, double shade, string themeBrush)
         {
-            var box = (Border)sender;
             if (box == DialogConfirmContainer)
             {
                 if (_dialogConfirmBrush is SolidColorBrush b)
-                    box.Background = new SolidColorBrush(Color.FromRgb((byte)(b.Color.R * 0.85), (byte)(b.Color.G * 0.85), (byte)(b.Color.B * 0.85)));
+                    box.Background = new SolidColorBrush(Color.FromRgb((byte)(b.Color.R * shade), (byte)(b.Color.G * shade), (byte)(b.Color.B * shade)));
             }
             else
             {
-                box.SetResourceReference(Border.BackgroundProperty, "ButtonHoverBackgroundBrush");
+                box.SetResourceReference(Border.BackgroundProperty, themeBrush);
             }
         }
 
