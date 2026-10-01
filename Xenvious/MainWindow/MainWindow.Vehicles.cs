@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
@@ -114,22 +113,8 @@ namespace Xenvious
 
         private void tbvehhead_TextChanged(object sender, TextChangedEventArgs e)
         {
-            new Global((GTA.Offsets.Editor.Vehicle.head + GTA.Offsets.Editor.Vehicle.NEXT * ddvehno.SelectedIndex)).SetFloat(tbvehhead.Text);
-            // Placing a vehicle stores its rotation (f_406), and when the creator builds the vehicle
-            // a set rotation wins over the heading (fm_lts_creator func_1019 / func_1139: unset is
-            // 0,0,0 or 999,999,999). So the heading also goes into the rotation's Z.
-            if (GTA.Offsets.Editor.Vehicle.vrot == 0 || !float.TryParse(tbvehhead.Text, NumberStyles.Float, CultureInfo.CurrentCulture, out float heading))
-                return;
-            long rot = GTA.Offsets.Editor.Vehicle.vrot + GTA.Offsets.Editor.Vehicle.NEXT * ddvehno.SelectedIndex;
-            float x = new Global(rot).Get<float>(), y = new Global(rot + 1).Get<float>(), z = new Global(rot + 2).Get<float>();
-            bool unset = (x == 0 && y == 0 && z == 0) || (x == 999 && y == 999 && z == 999);
-            if (!unset)
-            {
-                heading %= 360;
-                if (heading > 180) heading -= 360;
-                if (heading < -180) heading += 360;
-                new Global(rot + 2).SetFloat(heading);
-            }
+            WriteHeading(GTA.Offsets.Editor.Vehicle.head + GTA.Offsets.Editor.Vehicle.NEXT * ddvehno.SelectedIndex,
+                GTA.Offsets.Editor.Vehicle.vrot + GTA.Offsets.Editor.Vehicle.NEXT * ddvehno.SelectedIndex, tbvehhead.Text);
         }
 
         private void Btnvehgetloc_Click(object sender, RoutedEventArgs e)

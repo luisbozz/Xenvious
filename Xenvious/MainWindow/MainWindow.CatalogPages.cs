@@ -1,15 +1,16 @@
-﻿using System.Windows;
+﻿using System.Globalization;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Xenvious
 {
-    // Part of MainWindow: catalog pages layout (position card under the model card, heading slider).
+    // Part of MainWindow: catalog pages layout (position card under the model card, heading slider, heading = rotation Z).
     public partial class MainWindow
     {
         private void InitCatalogPages()
         {
-            PositionUnderModel(PropModelCard, tbpropslocx, tbpropsrotz);
-            PositionUnderModel(DPropModelCard, tbdpropslocx, tbdpropsrotz);
+            PositionUnderModel(PropModelCard, tbpropslocx, tbpropshead);
+            PositionUnderModel(DPropModelCard, tbdpropslocx, tbdpropshead);
             PositionUnderModel(VehModelCard, tbvehlocx, tbvehhead);
             PositionUnderModel(WeapModelCard, tbweaplocx, tbweapheading);
             PositionUnderModel(ActorModelCard, tbactorlocx, tbactorhead);
@@ -35,6 +36,29 @@ namespace Xenvious
                 to.Children.Insert(at, card);
             }
             HeadingSlider.Attach(heading, creatorRefresh);
+        }
+
+        /// <summary>
+        /// Props, dynamic props and vehicles keep a heading and a rotation. When the creator builds
+        /// them, a set rotation (not 0,0,0 or 999,999,999) wins over the heading (fm_lts_creator
+        /// func_1161 for props, func_1019 for vehicles), so a new heading also goes into the
+        /// rotation's Z, and a new rotation Z into the heading.
+        /// </summary>
+        public static void WriteHeading(long head, long rot, string text, bool toHeading = true, bool toRotation = true)
+        {
+            if (!m.IsProcOpen || !float.TryParse(text, NumberStyles.Float, CultureInfo.CurrentCulture, out float value))
+                return;
+            if (toHeading && head != 0)
+                new Global(head).SetFloat(value);
+            if (!toRotation || rot == 0)
+                return;
+            float x = new Global(rot).Get<float>(), y = new Global(rot + 1).Get<float>(), z = new Global(rot + 2).Get<float>();
+            if ((x == 0 && y == 0 && z == 0) || (x == 999 && y == 999 && z == 999))
+                return;
+            value %= 360;
+            if (value > 180) value -= 360;
+            if (value < -180) value += 360;
+            new Global(rot + 2).SetFloat(value);
         }
     }
 }
