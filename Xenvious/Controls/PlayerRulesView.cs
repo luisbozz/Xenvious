@@ -23,8 +23,10 @@ namespace Xenvious
     /// Patches page. A new player rule gets the Mission Creator's defaults (func_1371): limit 5 for
     /// the kill types, 0 for the others, -1 for the cutscene.
     ///
-    /// How the Mission Controller reads a player rule (public_mission_controller, the player rule
-    /// switch and its load loop):
+    /// How the controller reads a player rule (the player rule switch and its load loop). The LTS
+    /// and Capture creators test with fm_mission_controller, which only knows 4, 6-10, 14, 16,
+    /// 18-22 and 27-30; loot, points and hold are only read by public_mission_controller (the
+    /// Mission Creator's test) and fm_mission_controller_2020:
     /// - kill (6, 7-10): the limit is a menu step (0-10, 11 = 15, 12 = 20, 13 = no count); the rule
     ///   passes at that many kills, or when the enemy team(s) are out. 0 and 13 only pass then.
     /// - go to team (27-30): passes when a player gets to a player of that team; no limit.
@@ -316,13 +318,16 @@ namespace Xenvious
             int goal = GoalOf(r.Logic);
             foreach (var g in Goals)
             {
-                // Only the Mission Creator places scripted cutscenes.
-                bool usable = g.Logic != 16 || Rules.PublicCreator;
+                // Only the Mission Creator places scripted cutscenes, and only its controller reads
+                // loot, points and hold.
+                bool missionOnly = g.Logic == 16 || g.Logic == 33 || g.Logic == 34 || g.Logic == 36;
+                bool usable = !missionOnly || Rules.PublicCreator;
                 var tile = new ToggleButton { IsChecked = g.Logic == goal, Margin = new Thickness(0, 0, 6, 6), IsEnabled = usable };
                 if (!usable)
                 {
                     ToolTipService.SetShowOnDisabled(tile, true);
-                    tile.ToolTip = T("pr_cut_mission", "Only the Mission Creator has scripted cutscenes.");
+                    tile.ToolTip = g.Logic == 16 ? T("pr_cut_mission", "Only the Mission Creator has scripted cutscenes.")
+                        : T("pr_mission_only", "Only missions from the Mission Creator check this goal; LTS and Capture ignore it.");
                 }
                 var icon = new Path { Data = Geometry.Parse(g.Icon), StrokeThickness = 1.6, Width = 22, Height = 22, Stretch = Stretch.Uniform, HorizontalAlignment = HorizontalAlignment.Center,
                     StrokeLineJoin = PenLineJoin.Round, StrokeStartLineCap = PenLineCap.Round, StrokeEndLineCap = PenLineCap.Round };
