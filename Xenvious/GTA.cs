@@ -1722,6 +1722,13 @@ namespace Xenvious
                 public static long player_bit = 0;
                 public static long player_veh = 0;
                 public static long player_seat = 0;
+                public static long player_team = 0;
+                public static long player_vehid = 0;
+                public static long player_ttm = 0;
+                public static long player_tspr = 0;
+                public static long player_lcet = 0;
+                public static long player_lcid = 0;
+                public static long player_pvhead = 0;
                 public static long player_tars = 0;
                 public static long player_vfrs = 0;
                 public static long player_vfre = 0;
