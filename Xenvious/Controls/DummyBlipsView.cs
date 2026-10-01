@@ -102,6 +102,8 @@ namespace Xenvious
         private readonly Action _rebuild;
         private readonly SectionCard _mapCard = new SectionCard(), _listCard = new SectionCard(), _editCard = new SectionCard(), _linkCard = new SectionCard(), _lookCard = new SectionCard(), _visCard = new SectionCard();
         private readonly StackPanel _link = new StackPanel(), _look = new StackPanel(), _vis = new StackPanel();
+        private readonly BlipLifecycleCard _lifecycle = new BlipLifecycleCard();
+        private int _lifecycleBlip = -1;
         private readonly Canvas _map = new Canvas { Height = 320, ClipToBounds = true, Background = Brushes.Transparent, Cursor = Cursors.Cross };
         private readonly ComboBox _previewTeam = new ComboBox { Height = 28, MinWidth = 90, Margin = new Thickness(6, 0, 6, 0) };
         private readonly ComboBox _previewRule = new ComboBox { Height = 28, MinWidth = 160, MaxWidth = 280 };
@@ -112,7 +114,6 @@ namespace Xenvious
         private readonly DispatcherTimer _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
         private List<Blip> _blips = new List<Blip>();
         private string _shown;
-        private bool _rangeStart = true;
         private bool _previewSync;
         private double _cx, _cy, _scale;
 
@@ -162,7 +163,17 @@ namespace Xenvious
             _lookCard.Content = _look;
             Card(_visCard, T("bl_visibility", "Visibility"), "M2,12 C5,6 19,6 22,12 C19,18 5,18 2,12 Z M12,9 A3,3 0 1 0 12,15 A3,3 0 1 0 12,9");
             _visCard.Content = _vis;
-            var right = new StackPanel { VerticalAlignment = VerticalAlignment.Top, Children = { _editCard, _linkCard, _lookCard, _visCard } };
+            _lifecycle.Write = (team, rule, from, to) =>
+            {
+                int i = _lifecycleBlip;
+                if (i < 0 || !Live) return;
+                SetInt(GTA.Offsets.Editor.ddblip.team, i, team);
+                SetInt(GTA.Offsets.Editor.ddblip.rule, i, rule);
+                SetInt(GTA.Offsets.Editor.ddblip.frul, i, from);
+                SetInt(GTA.Offsets.Editor.ddblip.trul, i, to);
+                Refresh(true);
+            };
+            var right = new StackPanel { VerticalAlignment = VerticalAlignment.Top, Children = { _editCard, _linkCard, _lookCard, _visCard, _lifecycle } };
             SetColumn(right, 2);
             Children.Add(right);
 
@@ -171,7 +182,7 @@ namespace Xenvious
             SatelliteTiles.TileLoaded += () => Dispatcher.BeginInvoke(new Action(() => { if (IsVisible) DrawMap(); }), DispatcherPriority.Background);
             IsVisibleChanged += (_, __) => { if (IsVisible) { Refresh(true); _timer.Start(); } else _timer.Stop(); };
             _timer.Tick += (_, __) => { if (!IsKeyboardFocusWithin) Refresh(false); };
-            _indexBox.SelectionChanged += (_, __) => { _rangeStart = true; Refresh(true); };
+            _indexBox.SelectionChanged += (_, __) => Refresh(true);
             _previewTeam.SelectionChanged += (_, __) => { if (!_previewSync) { FillPreviewRules(); DrawMap(); } };
             _previewRule.SelectionChanged += (_, __) => { if (!_previewSync) DrawMap(); };
         }
@@ -427,7 +438,6 @@ namespace Xenvious
         {
             if (index >= 0 && index < _indexBox.Items.Count)
                 _indexBox.SelectedIndex = index;
-            _rangeStart = true;
             Refresh(true);
         }
 
@@ -441,13 +451,15 @@ namespace Xenvious
             {
                 _editCard.Title = T("bl_blip", "Blip");
                 _editCard.HeaderRight = null;
-                _linkCard.Visibility = _lookCard.Visibility = _visCard.Visibility = Visibility.Collapsed;
+                _linkCard.Visibility = _lookCard.Visibility = _visCard.Visibility = _lifecycle.Visibility = Visibility.Collapsed;
                 _editor.Children.Add(Faint(_blips.Count == 0 ? T("bl_add_first", "Add a blip with \"+ New blip at cursor\".") : T("bl_pick", "Pick a blip in the list or on the map."), 13));
                 return;
             }
             var b = _blips[i];
             _editCard.Title = BlipName(b);
-            _linkCard.Visibility = _lookCard.Visibility = _visCard.Visibility = Visibility.Visible;
+            _linkCard.Visibility = _lookCard.Visibility = _visCard.Visibility = _lifecycle.Visibility = Visibility.Visible;
+            _lifecycleBlip = i;
+            _lifecycle.Show(b.Team, b.Rule, b.From, b.To);
             _look.Children.Clear();
             _vis.Children.Clear();
             _link.Children.Clear();
@@ -579,13 +591,6 @@ namespace Xenvious
             _vis.Children.Add(Label(T("bl_who", "Who sees it")));
             _vis.Children.Add(TeamToggles(b));
 
-            // When
-            _vis.Children.Add(Label(T("bl_when", "When") + "  ·  " + WhenText(b)));
-            var when = b.When;
-            _vis.Children.Add(Tiles(new[] { T("bl_when_always", "Every rule"), T("bl_when_one", "One rule"), T("bl_when_range", "From – to"), T("bl_when_never", "Off") }, (int)when, w => SetWhen(b, (When)w)));
-            if (when == When.One || when == When.Range)
-                _vis.Children.Add(RulePanel(b));
-
             // Behaviour
             _vis.Children.Add(Label(T("bl_behaviour", "Behaviour")));
             _vis.Children.Add(BitCheck(b, BitGps, T("bl_gps", "GPS route to the blip")));
@@ -694,87 +699,6 @@ namespace Xenvious
             var box = new Border { Child = tabs, HorizontalAlignment = HorizontalAlignment.Left };
             box.SetResourceReference(StyleProperty, "NavGroup");
             return box;
-        }
-
-        private static int FirstTeam(Blip b)
-        {
-            int t = Enumerable.Range(0, 4).FirstOrDefault(b.ForTeam);
-            return b.Team >= 0 && b.Team < 4 ? b.Team : t;
-        }
-
-        private void SetWhen(Blip b, When when)
-        {
-            int i = b.Index;
-            int rule = -1, from = -1, to = -1;
-            switch (when)
-            {
-                case When.Always: rule = -2; break;
-                case When.One: rule = b.When == When.One ? b.Rule : Math.Max(0, b.From); break;
-                case When.Range: from = b.When == When.Range ? b.From : Math.Max(0, b.Rule); to = b.When == When.Range ? b.To : -1; break;
-            }
-            SetInt(GTA.Offsets.Editor.ddblip.rule, i, rule);
-            SetInt(GTA.Offsets.Editor.ddblip.frul, i, from);
-            SetInt(GTA.Offsets.Editor.ddblip.trul, i, to);
-            SetInt(GTA.Offsets.Editor.ddblip.team, i, FirstTeam(b));
-            _rangeStart = true;
-            Refresh(true);
-        }
-
-        // Which team's rule counts, then that team's rules; a click picks the rule, or start and end of the window.
-        private FrameworkElement RulePanel(Blip b)
-        {
-            int i = b.Index;
-            var panel = new StackPanel { Margin = new Thickness(0, 4, 0, 0) };
-            var teamRow = new DockPanel { Margin = new Thickness(0, 0, 0, 6) };
-            teamRow.Children.Add(Faint(T("bl_rules_of", "Rules count of"), 12.5).Also(t => { t.VerticalAlignment = VerticalAlignment.Center; t.Margin = new Thickness(0, 0, 8, 0); }));
-            var teamBox = new ComboBox { Height = 28, Width = 110, HorizontalAlignment = HorizontalAlignment.Left };
-            for (int t = 0; t < Math.Max(1, Rules.Teams()); t++)
-                teamBox.Items.Add(T("dash_team", "Team") + " " + (t + 1));
-            int team = b.Team >= 0 && b.Team < teamBox.Items.Count ? b.Team : 0;
-            teamBox.SelectedIndex = team;
-            teamBox.SelectionChanged += (_, __) => { if (teamBox.SelectedIndex >= 0 && teamBox.SelectedIndex != b.Team) { SetInt(GTA.Offsets.Editor.ddblip.team, i, teamBox.SelectedIndex); Refresh(true); } };
-            teamRow.Children.Add(teamBox);
-            panel.Children.Add(teamRow);
-
-            int count = Rules.Ready ? Rules.Count(team) : 0;
-            if (b.When == When.Range)
-            {
-                var end = new CheckBox { IsChecked = b.To == -1 };
-                end.Click += (_, __) => { SetInt(GTA.Offsets.Editor.ddblip.trul, i, end.IsChecked == true ? -1 : Math.Max(b.From, Math.Min(count - 1, b.From))); Refresh(true); };
-                panel.Children.Add(SwitchRow(T("bl_to_end_check", "Until the end"), end));
-            }
-            if (count == 0)
-                panel.Children.Add(Faint(T("bl_norules", "This team has no rules yet."), 12));
-            for (int r = 0; r < count; r++)
-            {
-                int rule = r;
-                bool on = b.When == When.One ? b.Rule == r : r >= b.From && (b.To == -1 || r <= b.To);
-                var row = new ToggleButton { IsChecked = on, HorizontalContentAlignment = HorizontalAlignment.Stretch, Padding = new Thickness(10, 5, 10, 5), Margin = new Thickness(0, 0, 0, 4), Cursor = Cursors.Hand,
-                    Content = new TextBlock { Text = RuleText(team, r), TextTrimming = TextTrimming.CharacterEllipsis, FontSize = 12.5 } };
-                row.SetResourceReference(StyleProperty, "ChoiceTile");
-                row.Click += (_, __) =>
-                {
-                    if (b.When == When.One)
-                        SetInt(GTA.Offsets.Editor.ddblip.rule, i, rule);
-                    else if (_rangeStart)
-                    {
-                        SetInt(GTA.Offsets.Editor.ddblip.frul, i, rule);
-                        if (b.To != -1) SetInt(GTA.Offsets.Editor.ddblip.trul, i, rule);
-                        _rangeStart = b.To == -1;
-                    }
-                    else
-                    {
-                        SetInt(GTA.Offsets.Editor.ddblip.frul, i, Math.Min(b.From, rule));
-                        SetInt(GTA.Offsets.Editor.ddblip.trul, i, Math.Max(b.From, rule));
-                        _rangeStart = true;
-                    }
-                    Refresh(true);
-                };
-                panel.Children.Add(row);
-            }
-            if (b.When == When.Range && count > 0)
-                panel.Children.Add(Faint(b.To == -1 ? T("bl_range_hint_end", "Click the rule the blip starts on.") : T("bl_range_hint", "First click: start rule, second click: end rule."), 12));
-            return panel;
         }
 
         private FrameworkElement BitCheck(Blip b, int bit, string text)

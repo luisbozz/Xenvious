@@ -179,6 +179,7 @@
     <Compile Include="Controls\MasonryPanel.cs" />
     <Compile Include="Controls\SearchableCombo.cs" />
     <Compile Include="Controls\AreaEditor.cs" />
+    <Compile Include="Controls\BlipLifecycleCard.cs" />
     <Compile Include="Controls\BareSearchBox.cs" />
     <Compile Include="Controls\EntityPicker.cs" />
     <Compile Include="Controls\PlayAreaView.cs" />
