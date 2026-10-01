@@ -473,6 +473,26 @@ namespace Xenvious
         /// <summary>True when a live thread of the script runs.</summary>
         public static bool IsScriptRunning(string scriptname) => getLocalScriptAddy(scriptname) != null;
 
+        /// <summary>Script hashes of all live threads, for the log when the game is stuck.</summary>
+        public static List<uint> LiveScriptHashes()
+        {
+            var hashes = new List<uint>();
+            if (GTA.Offsets.Editor.OFFSET_script_hash == 0)
+                return hashes;
+            long localaddy = getLocalPointer().ToInt64();
+            for (int d = 0; d < 0x800; d += 0x8)
+            {
+                try
+                {
+                    uint hash = MainWindow.m.memory(localaddy, new long[] { d, GTA.Offsets.Editor.OFFSET_script_hash }).Get<uint>();
+                    if (hash != 0 && IsLiveThread(localaddy, d))
+                        hashes.Add(hash);
+                }
+                catch { }
+            }
+            return hashes;
+        }
+
         public static long[] getLocalScriptAddy(string scriptname)
         {
             long localaddy = getLocalPointer().ToInt64();
@@ -1532,6 +1552,8 @@ namespace Xenvious
                 public static long OFFSET_current_creator_test_lts = 0x0;
                 // fm_lts_creator's camera struct: f_2 is where the fly camera is rebuilt after a test.
                 public static long OFFSET_current_creator_cam_lts = 0x0;
+                // The creator hub script ("creator"): its menu stage, 6 = quit (sky swoop up, start the transition, clean up).
+                public static long OFFSET_creator_hub_stage = 0x0;
                 public static long OFFSET_current_creator_test_mission = 0x0;
                 public static long OFFSET_current_creator_refresh_lts = 0x0;
                 public static long OFFSET_current_creator_refresh_mission = 0x0;
