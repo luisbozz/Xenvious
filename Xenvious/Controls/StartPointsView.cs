@@ -21,19 +21,27 @@ namespace Xenvious
         private readonly ComboBox _indexBox;
         private readonly ComboBox _vehicleBox;
         private readonly StackPanel _list = new StackPanel();
+        private readonly StackPanel _rows = new StackPanel();
+        private readonly WrapPanel _add = new WrapPanel { Margin = new Thickness(0, 4, 0, 0) };
+        private readonly ComboBox _addKind = new ComboBox { Height = 30, MinWidth = 150, Margin = new Thickness(0, 0, 6, 6) };
+        private readonly Action _rebuild;
         private readonly DispatcherTimer _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
         private string _shown;
 
         private static string T(string key, string fallback) => MainWindow.Instance?.TranslateOr(key, fallback) ?? fallback;
 
-        public StartPointsView(ComboBox teamBox, ComboBox indexBox, ComboBox vehicleBox)
+        public StartPointsView(ComboBox teamBox, ComboBox indexBox, ComboBox vehicleBox, Action rebuild)
         {
+            _rebuild = rebuild;
             _teamBox = teamBox;
             _indexBox = indexBox;
             _vehicleBox = vehicleBox;
             Style = (Style)MainWindow.Instance.FindResource(typeof(SectionCard));
             Icon = Geometry.Parse("M12,2 C8,2 5,5 5,9 C5,14 12,22 12,22 C12,22 19,14 19,9 C19,5 16,2 12,2 M12,6.5 A2.5,2.5 0 1 0 12,11.5 A2.5,2.5 0 1 0 12,6.5");
             Content = _list;
+            _list.Children.Add(_rows);
+            _list.Children.Add(_add);
+            BuildAdd();
             Margin = new Thickness(0, 0, 0, 12);
             IsVisibleChanged += (_, __) => { if (IsVisible) { Refresh(true); _timer.Start(); } else _timer.Stop(); };
             _timer.Tick += (_, __) => Refresh(false);
@@ -65,10 +73,11 @@ namespace Xenvious
         {
             if (!Live)
             {
-                _list.Children.Clear();
+                _rows.Children.Clear();
                 _shown = null;
                 Title = T("sp_points", "Start points");
-                _list.Children.Add(Faint(T("sp_nocreator", "Open a mission in the creator to see its start points."), 13));
+                _add.Visibility = Visibility.Collapsed;
+                _rows.Children.Add(Faint(T("sp_nocreator", "Open a mission in the creator to see its start points."), 13));
                 return;
             }
             int team = Math.Max(0, _teamBox.SelectedIndex);
@@ -80,22 +89,25 @@ namespace Xenvious
                 Z: new Global(At(GTA.Offsets.Editor.player_loc, team, i) + 2).Get<float>(),
                 Head: new Global(At(GTA.Offsets.Editor.player_head, team, i)).Get<float>(),
                 Veh: new Global(At(GTA.Offsets.Editor.player_veh, team, i)).Get<int>(),
-                Seat: Seat(team, i))).ToList();
+                Seat: Seat(team, i),
+                Bits: StartPoints.Bits(team, i))).ToList();
             string key = string.Join(";", rows) + "|" + team + "|" + _indexBox.SelectedIndex;
             if (!force && key == _shown)
                 return;
             _shown = key;
+            _add.Visibility = Visibility.Visible;
+            _add.IsEnabled = StartPoints.Ready && n < StartPoints.Max;
 
             Title = string.Format(CultureInfo.CurrentCulture, T("sp_points_team", "Start points · team {0}"), team + 1);
             Summary = string.Format(CultureInfo.CurrentCulture, T("sp_points_sum", "{0} points"), n);
-            _list.Children.Clear();
+            _rows.Children.Clear();
             if (n == 0)
-                _list.Children.Add(Faint(T("sp_none", "This team has no start point yet: place one in the creator."), 13));
+                _rows.Children.Add(Faint(T("sp_none", "This team has no start point yet: place one in the creator."), 13));
             foreach (var r in rows)
-                _list.Children.Add(Row(r.Index, r.X, r.Y, r.Z, r.Head, r.Veh, r.Seat, r.Index == _indexBox.SelectedIndex));
+                _rows.Children.Add(Row(r.Index, r.X, r.Y, r.Z, r.Head, r.Veh, r.Seat, r.Bits, r.Index == _indexBox.SelectedIndex));
         }
 
-        private FrameworkElement Row(int index, float x, float y, float z, float head, int veh, int seat, bool selected)
+        private FrameworkElement Row(int index, float x, float y, float z, float head, int veh, int seat, int bits, bool selected)
         {
             var button = new System.Windows.Controls.Primitives.ToggleButton { IsChecked = selected, HorizontalContentAlignment = HorizontalAlignment.Stretch, Padding = new Thickness(0), Margin = new Thickness(0, 0, 0, 6), Cursor = System.Windows.Input.Cursors.Hand };
             button.SetResourceReference(StyleProperty, "ChoiceTile");
@@ -118,7 +130,15 @@ namespace Xenvious
                 ? VehicleName(veh) + " · " + SeatName(seat)
                 : T("sp_onfoot", "On foot");
             text.Children.Add(title);
-            text.Children.Add(Faint(string.Format(CultureInfo.InvariantCulture, "{0:0.0}, {1:0.0}, {2:0.0}", x, y, z), 11.5));
+            var roles = new[]
+            {
+                (StartPoints.BitStart, T("sp_tag_start", "Start")),
+                (StartPoints.BitRespawn, T("sp_tag_respawn", "Respawn")),
+                (StartPoints.BitCheckpoint1, T("sp_tag_cp1", "CP 1")),
+                (StartPoints.BitCheckpoint2, T("sp_tag_cp2", "CP 2")),
+            }.Where(b => (bits & (1 << b.Item1)) != 0).Select(b => b.Item2).ToList();
+            string where = string.Format(CultureInfo.InvariantCulture, "{0:0.0}, {1:0.0}, {2:0.0}", x, y, z);
+            text.Children.Add(Faint((roles.Count > 0 ? string.Join(" · ", roles) + "   " : T("sp_tag_none", "unused") + "   ") + where, 11.5));
             Grid.SetColumn(text, 1);
             grid.Children.Add(text);
 
@@ -130,6 +150,44 @@ namespace Xenvious
             button.Content = grid;
             button.Click += (_, __) => { _indexBox.SelectedIndex = index; Refresh(true); };
             return button;
+        }
+
+        // "+ At cursor" with what the new point is for (the creator's two switches).
+        private void BuildAdd()
+        {
+            _addKind.Items.Add(new ComboBoxItem { Content = T("sp_kind_both", "Start and respawn point"), Tag = 3 });
+            _addKind.Items.Add(new ComboBoxItem { Content = T("sp_kind_start", "Start point"), Tag = 1 });
+            _addKind.Items.Add(new ComboBoxItem { Content = T("sp_kind_respawn", "Respawn point"), Tag = 2 });
+            _addKind.SelectedIndex = 0;
+            var button = new Button { Content = T("sp_add_cursor", "+ At cursor"), Height = 30, Padding = new Thickness(12, 0, 12, 0), Margin = new Thickness(0, 0, 6, 6),
+                ToolTip = T("sp_add_hint", "Adds a point at the creator's cursor and rebuilds so the creator shows it.") };
+            button.SetResourceReference(StyleProperty, "FormButtonPrimary");
+            button.Click += (_, __) => AddAtCursor();
+            _add.Children.Add(button);
+            _add.Children.Add(Faint(T("sp_as", "as"), 13).Also(t => { t.VerticalAlignment = VerticalAlignment.Center; t.Margin = new Thickness(0, 0, 6, 6); }));
+            _add.Children.Add(_addKind);
+        }
+
+        private void AddAtCursor()
+        {
+            if (MainWindow.m == null || !MainWindow.m.IsProcOpen || !StartPoints.Ready)
+                return;
+            int kind = _addKind.SelectedItem is ComboBoxItem k ? (int)k.Tag : 3;
+            var at = Functions.Read.getlocation();
+            if (at == null || at.Count < 3
+                || !float.TryParse(at[0], NumberStyles.Float, CultureInfo.CurrentCulture, out float x)
+                || !float.TryParse(at[1], NumberStyles.Float, CultureInfo.CurrentCulture, out float y)
+                || !float.TryParse(at[2], NumberStyles.Float, CultureInfo.CurrentCulture, out float z)
+                || (x == 0 && y == 0 && z == 0))
+                return;
+            int team = Math.Max(0, _teamBox.SelectedIndex);
+            int index = StartPoints.Add(team, x, y, z, 0f, (kind & 1) != 0, (kind & 2) != 0);
+            if (index < 0)
+                return;
+            MainWindow.Instance?.refreshPLYRCount();
+            _indexBox.SelectedIndex = index;
+            _rebuild?.Invoke();
+            Refresh(true);
         }
 
         // The vehicle box lists "none" first, then the placed vehicles by index.

@@ -42,8 +42,10 @@ namespace Xenvious
             if (locCard?.Parent is Panel locColumn && locColumn.Parent is Panel masonry)
             {
                 var list = new StackPanel();
-                list.Children.Add(new StartPointsView(ddplyrteam, ddplyrno, ddplyrveh));
+                list.Children.Add(new StartPointsView(ddplyrteam, ddplyrno, ddplyrveh, creatorRefresh));
                 masonry.Children.Insert(0, list);
+                // The creator's spawn point switches go under the placement card.
+                locColumn.Children.Insert(locColumn.Children.IndexOf(locCard) + 1, new StartPointPropsView(ddplyrteam, ddplyrno));
             }
 
             // The point count belongs to the raw values: the list shows it already.
