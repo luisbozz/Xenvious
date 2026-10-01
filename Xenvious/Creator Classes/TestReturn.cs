@@ -87,8 +87,11 @@ namespace Xenvious
                         if (_fromCamera)
                             PlaceCamera();
                     }
-                    // Every tick: bit 30 has to be cleared before the creator's test end runs.
-                    if (!Alive(_controller, "fm_mission_controller"))
+                    // Every tick: bit 30 has to be cleared before the creator's test end runs. The
+                    // controller can move to another thread slot while it starts, so an empty slot
+                    // only counts once the whole list has no controller either.
+                    if (!Alive(_controller, "fm_mission_controller")
+                        && (_controller = GTA.getLocalScriptAddy("fm_mission_controller")) == null)
                     {
                         _phase = Phase.WaitTakeOver;
                         _since = DateTime.Now;
