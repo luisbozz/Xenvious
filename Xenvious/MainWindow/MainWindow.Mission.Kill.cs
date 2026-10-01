@@ -123,7 +123,7 @@ namespace Xenvious
                         new Global(GTA.Offsets.Editor.Kill.lim + e + d * GTA.Offsets.Editor.Kill.NEXT).SetInt(kill.values[d].lim[e]);
                         new Global(GTA.Offsets.Editor.Kill.jtop + e + d * GTA.Offsets.Editor.Kill.NEXT).SetInt(kill.values[d].jtop[e]);
                         new Global(GTA.Offsets.Editor.Kill.jtof + e + d * GTA.Offsets.Editor.Kill.NEXT).SetInt(kill.values[d].jtof[e]);
-                        new Global(GTA.Offsets.Editor.Kill.prbs + d * GTA.Offsets.Editor.Kill.NEXT).SetInt(kill.values[d].prbs[e]);
+                        new Global(GTA.Offsets.Editor.Kill.prbs + e + d * GTA.Offsets.Editor.Kill.NEXT).SetInt(kill.values[d].prbs[e]);
                     }
 
                     new Global(GTA.Offsets.Editor.Kill.mcf + d * GTA.Offsets.Editor.Kill.NEXT).SetInt(kill.values[d].mcf);
@@ -151,7 +151,13 @@ namespace Xenvious
 
         private void Btnkillload_Click(object sender, RoutedEventArgs e)
         {
-            if (m.IsProcOpen)
+            LoadKillFromGame();
+        }
+
+        /// <summary>Copies the job's player rules into the page's own values (kill).</summary>
+        public void LoadKillFromGame()
+        {
+            if (m.IsProcOpen && GTA.Offsets.Editor.Kill.NEXT != 0)
             {
                 for (int i = 0; i < 4; i++)
                 {
@@ -166,7 +172,7 @@ namespace Xenvious
                         kill.values[d].lim[g] = new Global(GTA.Offsets.Editor.Kill.lim + g + d * GTA.Offsets.Editor.Kill.NEXT).Get<int>();
                         kill.values[d].jtop[g] = new Global(GTA.Offsets.Editor.Kill.jtop + g + d * GTA.Offsets.Editor.Kill.NEXT).Get<int>();
                         kill.values[d].jtof[g] = new Global(GTA.Offsets.Editor.Kill.jtof + g + d * GTA.Offsets.Editor.Kill.NEXT).Get<int>();
-                        kill.values[d].prbs[g] = new Global(GTA.Offsets.Editor.Kill.prbs + d * GTA.Offsets.Editor.Kill.NEXT).Get<int>();
+                        kill.values[d].prbs[g] = new Global(GTA.Offsets.Editor.Kill.prbs + g + d * GTA.Offsets.Editor.Kill.NEXT).Get<int>();
                     }
 
                     kill.values[d].mcf = new Global(GTA.Offsets.Editor.Kill.mcf + d * GTA.Offsets.Editor.Kill.NEXT).Get<int>();

@@ -85,9 +85,32 @@ namespace Xenvious
 
         private static long At(long field, int team, int i) => field + team + i * GTA.Offsets.Editor.Kill.NEXT;
         private static int Get(long field, int team, int i) => field == 0 ? 0 : new Global(At(field, team, i)).Get<int>();
-        private static void Set(long field, int team, int i, int value) { if (field != 0) new Global(At(field, team, i)).SetInt(value); }
         private static int Number(int team) => new Global(GTA.Offsets.Editor.Kill.number + team).Get<int>();
-        private static void SetNumber(int team, int n) => new Global(GTA.Offsets.Editor.Kill.number + team).SetInt(n);
+
+        // The old Kill page keeps its own copy of the player rules (MainWindow.kill): its raw
+        // values show that copy, "Freeze values" writes it into the game all the time and "Save to
+        // config file" keeps it. Every write here goes into the copy too, so freeze cannot undo it.
+        private static void Set(long field, int team, int i, int value)
+        {
+            if (field == 0)
+                return;
+            new Global(At(field, team, i)).SetInt(value);
+            var values = MainWindow.kill?.values;
+            if (values == null || i < 0 || i >= values.Length || team < 0 || team > 3)
+                return;
+            int[] slot = field == GTA.Offsets.Editor.Kill.rule ? values[i].rule : field == GTA.Offsets.Editor.Kill.pri ? values[i].prio
+                : field == GTA.Offsets.Editor.Kill.lim ? values[i].lim : field == GTA.Offsets.Editor.Kill.jtop ? values[i].jtop
+                : field == GTA.Offsets.Editor.Kill.jtof ? values[i].jtof : field == GTA.Offsets.Editor.Kill.prbs ? values[i].prbs : null;
+            if (slot != null)
+                slot[team] = value;
+        }
+
+        private static void SetNumber(int team, int n)
+        {
+            new Global(GTA.Offsets.Editor.Kill.number + team).SetInt(n);
+            if (MainWindow.kill?.number != null && team >= 0 && team < MainWindow.kill.number.Length)
+                MainWindow.kill.number[team] = n;
+        }
 
         private static string LogicName(int logic) => logic >= 0 && logic < Rules.LogicNames.Length ? T("rl_logic_" + logic, Rules.LogicNames[logic]) : logic.ToString(CultureInfo.InvariantCulture);
 
@@ -136,6 +159,9 @@ namespace Xenvious
                 _shown = null;
                 return;
             }
+            // Without freeze the old page's copy follows the game, so its raw values show the job.
+            if (MainWindow.Instance?.cbmissionkillfreeze.IsChecked != true)
+                MainWindow.Instance?.LoadKillFromGame();
             _team = Math.Max(0, Math.Min(_teamBox.SelectedIndex, Rules.Teams() - 1));
             int n = Math.Max(0, Math.Min(Number(_team), Rules.MaxRules));
             var rows = Enumerable.Range(0, n).Select(i => (Index: i, Logic: Get(GTA.Offsets.Editor.Kill.rule, _team, i), Pri: Get(GTA.Offsets.Editor.Kill.pri, _team, i), Lim: Get(GTA.Offsets.Editor.Kill.lim, _team, i))).ToList();
