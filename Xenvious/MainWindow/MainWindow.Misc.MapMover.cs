@@ -332,7 +332,13 @@ namespace Xenvious
         {
             double z = mapMoverZoom.ScaleX * (e.Delta > 0 ? 1.2 : 1 / 1.2);
             z = Math.Max(1.0, Math.Min(6.0, z));
+            // Zoom towards the cursor: the map point under it stays under it.
+            Point onMap = e.GetPosition(gridMapMoverCanvas);
+            Point inView = e.GetPosition(scrollMapMover);
             mapMoverZoom.ScaleX = mapMoverZoom.ScaleY = z;
+            scrollMapMover.UpdateLayout();
+            scrollMapMover.ScrollToHorizontalOffset(onMap.X * z - inView.X);
+            scrollMapMover.ScrollToVerticalOffset(onMap.Y * z - inView.Y);
             RefreshMapMover(false);
             e.Handled = true;       // sonst scrollt der ScrollViewer mit
         }
