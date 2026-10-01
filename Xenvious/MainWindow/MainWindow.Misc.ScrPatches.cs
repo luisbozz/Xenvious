@@ -365,8 +365,11 @@ namespace Xenvious
                 bool enabled = readOnly || patches.All(p => p.enabled);
                 // Triggered patches (precise templates) are only in the script while their feature runs.
                 bool waitsForTrigger = !applied && patches.All(p => !string.IsNullOrEmpty(p.trigger));
-                string brush = !enabled ? null : applied ? "OkBrush" : script == creator && !waitsForTrigger ? "WarnBrush" : "FaintTextBrush";
-                string tip = !enabled ? TranslateOr("patches_st_off", "Off")
+                // Found written by an earlier session without its original bytes: only a GTA restart takes it out.
+                bool stuck = patches.Any(ScrPatchesRunner.IsStuck);
+                string brush = !enabled ? (stuck ? "WarnBrush" : null) : applied ? "OkBrush" : script == creator && !waitsForTrigger ? "WarnBrush" : "FaintTextBrush";
+                string tip = !enabled && stuck ? TranslateOr("patches_st_stuckoff", "Off, but still in the script from an earlier Xenvious session: restart GTA to take it out.")
+                    : !enabled ? TranslateOr("patches_st_off", "Off")
                     : applied ? TranslateOr("patches_st_applied", "Applied")
                     : waitsForTrigger ? TranslateOr("patches_st_trigger", "Only written while the feature is in use (templates category).")
                     : script == creator ? TranslateOr("patches_st_notfound", "On, but not found in the script: the pattern may need updating after a game update.")
