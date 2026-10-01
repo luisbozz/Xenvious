@@ -262,8 +262,24 @@ namespace Xenvious
             }
         }
 
+        private DummyBlipsView _dummyBlips;
+
         private void BtnMissionBlips_Click(object sender, RoutedEventArgs e)
         {
+            // The overview with map and list leads the page; the editing cards follow it.
+            if (_dummyBlips == null)
+            {
+                FrameworkElement at = tbmissionddblipposox;
+                while (at != null && !(at.Parent is MasonryPanel))
+                    at = at.Parent as FrameworkElement;
+                if (at?.Parent is MasonryPanel masonry)
+                {
+                    _dummyBlips = new DummyBlipsView(ddmissionddblipno, creatorRefresh);
+                    var column = new StackPanel();
+                    column.Children.Add(_dummyBlips);
+                    masonry.Children.Insert(0, column);
+                }
+            }
             PageInnerMission.SelectedItem = PageInnerMissionBlips;
             if (m.IsProcOpen && ddmissionddblipno.SelectedIndex == -1)
             {
