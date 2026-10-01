@@ -41,7 +41,8 @@ namespace Xenvious
             DialogText.Text = message ?? "";
             DialogText.Visibility = string.IsNullOrEmpty(message) ? Visibility.Collapsed : Visibility.Visible;
             DialogConfirm.Content = confirmText;
-            DialogConfirmContainer.Background = ThemeBrush(danger ? "BadBrush" : "HighlightBrush");
+            _dialogConfirmBrush = ThemeBrush(danger ? "BadBrush" : "HighlightBrush");
+            DialogConfirmContainer.Background = _dialogConfirmBrush;
             DialogConfirm.Foreground = danger ? Brushes.White : ThemeBrush("HighlightForeground");
             DialogCancel.Content = cancelText ?? "";
             DialogCancelContainer.Visibility = cancelText == null ? Visibility.Collapsed : Visibility.Visible;
@@ -51,6 +52,21 @@ namespace Xenvious
             DialogOverlay.Focus();
             Keyboard.Focus(DialogOverlay);
             return _dialogResult.Task;
+        }
+
+        private Brush _dialogConfirmBrush;
+
+        // The whole confirm button takes a darker shade of its colour while hovered.
+        private void DialogConfirmContainer_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (_dialogConfirmBrush is SolidColorBrush b)
+                DialogConfirmContainer.Background = new SolidColorBrush(Color.FromRgb((byte)(b.Color.R * 0.85), (byte)(b.Color.G * 0.85), (byte)(b.Color.B * 0.85)));
+        }
+
+        private void DialogConfirmContainer_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (_dialogConfirmBrush != null)
+                DialogConfirmContainer.Background = _dialogConfirmBrush;
         }
 
         public enum DialogChoice { Cancel, Confirm, Alternative }
