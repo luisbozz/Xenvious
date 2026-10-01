@@ -10,7 +10,8 @@ namespace Xenvious
     ///
     /// fm_lts_creator 1.73, test end (Local_8883.f_565 case 7): bit 30 of the test local
     /// (OFFSET_current_creator_test_lts, Local_1709) keeps the mode the test was started from.
-    /// The creator then sets bit 27 for the mode switch. Without bit 30 the camera is rebuilt
+    /// The creator then clears bits 18 and 25 (set by its Test entry) and sets bit 27 for the
+    /// mode switch. Without bit 30 the camera is rebuilt
     /// from the camera struct (OFFSET_current_creator_cam_lts, Local_1757): at f_18 or f_15 when
     /// one is set, else at f_2 looking straight down. On foot the switch (func_4701) clears
     /// bit 27 once the player has control, without moving the player.
@@ -19,6 +20,8 @@ namespace Xenvious
     {
         private const int BitOnFoot = 30;
         private const int BitSwitch = 27;
+        private const int BitTestEntry = 18;
+        private const int BitTestStart = 25;
         // Height of the camera above the last position; the creator's own camera starts 40 m
         // above the ground when leaving the player.
         private const float CamHeight = 40f;
@@ -76,7 +79,9 @@ namespace Xenvious
                     break;
 
                 case Phase.WaitTakeOver:
-                    if (Bit(BitSwitch))
+                    // The creator's test end clears bits 18 and 25 and sets bit 27; the mode
+                    // switch clears bit 27 again within a frame or two, too fast to see here.
+                    if (!Bit(BitTestEntry) && !Bit(BitTestStart))
                     {
                         if (Bit(BitOnFoot))
                         {
@@ -97,7 +102,8 @@ namespace Xenvious
                     break;
 
                 case Phase.WaitSwitch:
-                    if (!Bit(BitSwitch))
+                    // Half a second for the creator to fade in and hand over control.
+                    if (!Bit(BitSwitch) && DateTime.Now - _since > TimeSpan.FromMilliseconds(500))
                     {
                         if (_haveLast)
                         {
