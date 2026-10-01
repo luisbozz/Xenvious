@@ -690,14 +690,12 @@ namespace Xenvious
 
         private void tbkilljtof_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (IsValidInt(tbkilljtof.Text))
-                kill.values[ddkillno.SelectedIndex].jtof[ddkillteamno.SelectedIndex] = Convert.ToInt32(tbkilljtof.Text);
+            SetKillField(GTA.Offsets.Editor.Kill.jtof, tbkilljtof);
         }
 
         private void tbkilljtop_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (IsValidInt(tbkilljtop.Text))
-                kill.values[ddkillno.SelectedIndex].jtop[ddkillteamno.SelectedIndex] = Convert.ToInt32(tbkilljtop.Text);
+            SetKillField(GTA.Offsets.Editor.Kill.jtop, tbkilljtop);
         }
 
         public void GetVehSpecialValues(bool ignore_focus = false)

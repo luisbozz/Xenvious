@@ -252,7 +252,6 @@
     <Compile Include="Creator Classes\LocalFreezer.cs" />
     <Compile Include="Creator Classes\GlobalFreezer.cs" />
     <Compile Include="Creator Classes\JobTime.cs" />
-    <Compile Include="Creator Classes\Kill.cs" />
     <Compile Include="Creator Classes\ScrPatchesRunner.cs" />
     <Compile Include="Creator Classes\CreatorMap.cs" />
     <Compile Include="Creator Classes\PreciseTemplates.cs" />

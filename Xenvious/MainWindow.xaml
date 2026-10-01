@@ -6763,24 +6763,6 @@
                                                                                         <TextBox x:Name="tbkillmcf" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbkillmcf_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
                                                                                         <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[mcp], FallbackValue=mcp}"/>
                                                                                         <TextBox x:Name="tbkillmcp" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbkillmcp_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                        <Rectangle Height="1" Fill="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="0,4,0,12"/>
-                                                                                        <Grid Style="{StaticResource FormRow}">
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="46"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[missiontpmarkonmap], FallbackValue=Freeze Values}"/>
-                                                                                            <CheckBox x:Name="cbmissionkillfreeze" Checked="cbmissionkillfreeze_Checked" Unchecked="cbmissionkillfreeze_Checked" IsEnabled="True" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                        </Grid>
-                                                                                        <Grid Style="{StaticResource FormRow}">
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="46"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[missionkills2c], FallbackValue=Save to Config File}"/>
-                                                                                            <CheckBox x:Name="cbmissionkills2c" IsEnabled="True" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                        </Grid>
-                                                                                        <Button x:Name="Btnkillload" Content="{Binding Translation[killload], FallbackValue=Load values from Job}" ToolTip="{Binding Translation[killloadinfo], FallbackValue=Loads the kill values from Job and ignores the saved kill values.}" Click="Btnkillload_Click" Style="{StaticResource FormButton}" Height="32" Padding="12,0" Margin="0,0,0,10"/>
                                                                                         </StackPanel>
                                                                                     </DockPanel>
                                                                                 </Border>

@@ -212,22 +212,6 @@ namespace Xenvious
 
             try
             {
-                if (ini.ReadBoolean("Settings", "killload"))
-                {
-                    var tempkillfromconfig = JsonConvert.DeserializeObject<Kill>(ConfigText.Decode(ini.ReadString("Settings", "killvalues")));
-                    if (tempkillfromconfig != null)
-                    {
-                        kill = tempkillfromconfig;
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Log.Error("Error loading killload", e, "init");
-            }
-
-            try
-            {
                 var temp_current_creator_ptr = ini.ReadString("Settings", "lastpresets").Split(',');
                 if (temp_current_creator_ptr[0].Length == 7)
                 {
@@ -535,20 +519,6 @@ namespace Xenvious
                 ini.Write("Settings", "lefreeze", ConfigText.Encode(lejson));
 
                 SaveMenuPresets(ini);
-
-                if (cbmissionkills2c.IsChecked ?? true)
-                {
-                    var killjsonstring = JsonConvert.SerializeObject(kill);
-
-                    string storedkilljson = ConfigText.Encode(killjsonstring);
-
-                    ini.Write("Settings", "killload", true);
-                    ini.Write("Settings", "killvalues", storedkilljson);
-                }
-                else
-                {
-                    ini.Write("Settings", "killload", false);
-                }
 
                 //if (GTA.Editor.mpropsaddys != null)
                 //    ini.Write("Settings", "lastmprops", String.Join(",", GTA.Editor.mpropsaddys));

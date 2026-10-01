@@ -30,7 +30,6 @@ using Xenvious.Translation;
 using Xenvious.ViewModels;
 using static Xenvious.GTA;
 using static Xenvious.GTA.Offsets.Editor;
-using static Xenvious.Kill;
 
 namespace Xenvious
 {
@@ -52,26 +51,6 @@ namespace Xenvious
         // Die Local-Basis-Funktionen sind statisch, die Thread-Suche braucht aber den
         // Zwischenspeicher der Instanz.
         public static MainWindow Instance;
-        public static Kill kill = new Kill(new int[] { 1, 1, 1, 1 }, new Kill.Values[]
-        {
-            new Kill.Values(new int[] { 6,6,6,6 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, -1,-1),
-            new Kill.Values(new int[] { 0,0,0,0 }, new int[] { 99999,99999,99999,99999 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, -1,-1),
-            new Kill.Values(new int[] { 0,0,0,0 }, new int[] { 99999,99999,99999,99999 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, -1,-1),
-            new Kill.Values(new int[] { 0,0,0,0 }, new int[] { 99999,99999,99999,99999 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, -1,-1),
-            new Kill.Values(new int[] { 0,0,0,0 }, new int[] { 99999,99999,99999,99999 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, -1,-1),
-            new Kill.Values(new int[] { 0,0,0,0 }, new int[] { 99999,99999,99999,99999 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, -1,-1),
-            new Kill.Values(new int[] { 0,0,0,0 }, new int[] { 99999,99999,99999,99999 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, -1,-1),
-            new Kill.Values(new int[] { 0,0,0,0 }, new int[] { 99999,99999,99999,99999 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, -1,-1),
-            new Kill.Values(new int[] { 0,0,0,0 }, new int[] { 99999,99999,99999,99999 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, -1,-1),
-            new Kill.Values(new int[] { 0,0,0,0 }, new int[] { 99999,99999,99999,99999 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, -1,-1),
-            new Kill.Values(new int[] { 0,0,0,0 }, new int[] { 99999,99999,99999,99999 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, -1,-1),
-            new Kill.Values(new int[] { 0,0,0,0 }, new int[] { 99999,99999,99999,99999 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, -1,-1),
-            new Kill.Values(new int[] { 0,0,0,0 }, new int[] { 99999,99999,99999,99999 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, -1,-1),
-            new Kill.Values(new int[] { 0,0,0,0 }, new int[] { 99999,99999,99999,99999 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, -1,-1),
-            new Kill.Values(new int[] { 0,0,0,0 }, new int[] { 99999,99999,99999,99999 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, -1,-1),
-            new Kill.Values(new int[] { 0,0,0,0 }, new int[] { 99999,99999,99999,99999 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, -1,-1),
-            new Kill.Values(new int[] { 0,0,0,0 }, new int[] { 99999,99999,99999,99999 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, -1,-1)
-        });
         public static List<int> plylfreeze;
         public static nrcidcopy nrcidcopy;
 
