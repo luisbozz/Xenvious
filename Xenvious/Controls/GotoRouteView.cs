@@ -152,6 +152,7 @@ namespace Xenvious
             }
 
             _map.SizeChanged += (_, __) => Draw();
+            SatelliteTiles.TileLoaded += () => Dispatcher.BeginInvoke(new Action(() => { if (IsVisible) Draw(); }), System.Windows.Threading.DispatcherPriority.Background);
             _pointBox.SelectionChanged += (_, __) => Refresh();
         }
 
@@ -296,6 +297,7 @@ namespace Xenvious
             double scale = Math.Min((w - 40) / Math.Max(maxX - minX, 10), (h - 40) / Math.Max(maxY - minY, 10));
             double cx = (minX + maxX) / 2, cy = (minY + maxY) / 2;
             Point P(float x, float y) => new Point(w / 2 + (x - cx) * scale, h / 2 - (y - cy) * scale);
+            SatelliteTiles.Draw(_map, w, h, cx, cy, scale);
 
             var line = new Polyline { StrokeThickness = 2.5, StrokeDashArray = new DoubleCollection { 3, 2.5 } };
             line.SetResourceReference(Shape.StrokeProperty, "AccentBrush");

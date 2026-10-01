@@ -181,6 +181,7 @@ namespace Xenvious
             Children.Add(_status);
 
             _top.SizeChanged += (_, __) => Draw();
+            SatelliteTiles.TileLoaded += () => Dispatcher.BeginInvoke(new Action(() => { if (IsVisible) Draw(); }), System.Windows.Threading.DispatcherPriority.Background);
             _side.SizeChanged += (_, __) => Draw();
             Refresh();
         }
@@ -466,6 +467,7 @@ namespace Xenvious
             }
             double scale = Math.Min(w, h) * 0.75 / Math.Max(extent, 1);
             Point P(double x, double y) => new Point(w / 2 + (x - cx) * scale, h / 2 - (y - cy) * scale);
+            SatelliteTiles.Draw(_top, w, h, cx, cy, scale);
 
             if (_shape == AreaShape.Sphere || _shape == AreaShape.Cylinder)
             {

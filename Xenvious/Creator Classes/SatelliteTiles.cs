@@ -3,6 +3,8 @@ using System.Collections.Concurrent;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Xenvious.Logging;
@@ -38,6 +40,62 @@ namespace Xenvious
             client.DefaultRequestHeaders.UserAgent.ParseAdd("Xenvious");
             client.DefaultRequestHeaders.Referrer = new Uri("https://forge.plebmasters.de/");
             return client;
+        }
+
+        /// <summary>The map under Xenvious' top views; off in config.ini ("realmap" = 0) leaves them plain.</summary>
+        public static bool Enabled
+        {
+            get => new ini_reader(Functions.getRoamingConfigFilePath()).ReadInteger("Settings", "realmap", 1) == 1;
+            set => new ini_reader(Functions.getRoamingConfigFilePath()).Write("Settings", "realmap", value ? 1 : 0);
+        }
+
+        /// <summary>
+        /// Adds the map under a top view drawn north up as screen = (w/2 + (x - cx) * scale,
+        /// h/2 - (y - cy) * scale), scale in pixels per metre: the loaded tiles, a dark wash so
+        /// the drawing on top stays readable, and the credit. Call it right after clearing the
+        /// canvas so everything drawn later lies on top. Tiles still loading are requested and
+        /// raise <see cref="TileLoaded"/>; returns false when none is there (plain background).
+        /// </summary>
+        public static bool Draw(Canvas canvas, double w, double h, double cx, double cy, double scale, double wash = 0x40 / 255.0)
+        {
+            if (!Enabled || w <= 0 || h <= 0 || scale <= 0 || double.IsNaN(cx) || double.IsNaN(cy))
+                return false;
+            int z = MaxZoom;
+            // Coarser tiles for a wide view: no more than about two tile pixels per screen pixel.
+            while (z > 0 && MetresPerPixel(z) * scale < 0.5)
+                z--;
+            var tl = ToPixel(cx - w / 2 / scale, cy + h / 2 / scale, z);
+            var br = ToPixel(cx + w / 2 / scale, cy - h / 2 / scale, z);
+            int x0 = (int)Math.Floor(tl.X / TileSize), x1 = (int)Math.Floor(br.X / TileSize);
+            int y0 = (int)Math.Floor(tl.Y / TileSize), y1 = (int)Math.Floor(br.Y / TileSize);
+            // A view far too wide for the zoom levels would ask for hundreds of tiles.
+            if ((x1 - x0 + 1) * (y1 - y0 + 1) > 64)
+                return false;
+            double size = TileSize * MetresPerPixel(z) * scale;
+            bool any = false;
+            for (int ty = y0; ty <= y1; ty++)
+                for (int tx = x0; tx <= x1; tx++)
+                {
+                    var tile = Get(z, tx, ty);
+                    if (tile == null)
+                        continue;
+                    var corner = ToWorld(tx * TileSize, ty * TileSize, z);
+                    var image = new Image { Source = tile, Width = size + 0.5, Height = size + 0.5, Stretch = Stretch.Fill, IsHitTestVisible = false };
+                    RenderOptions.SetBitmapScalingMode(image, BitmapScalingMode.HighQuality);
+                    Canvas.SetLeft(image, w / 2 + (corner.X - cx) * scale);
+                    Canvas.SetTop(image, h / 2 - (corner.Y - cy) * scale);
+                    canvas.Children.Add(image);
+                    any = true;
+                }
+            if (!any)
+                return false;
+            if (wash > 0)
+                canvas.Children.Add(new System.Windows.Shapes.Rectangle { Width = w, Height = h, Fill = new SolidColorBrush(Color.FromArgb((byte)(wash * 255), 0, 0, 0)), IsHitTestVisible = false });
+            var credit = new TextBlock { Text = "© Pleb Masters Forge", FontSize = 9.5, Foreground = Brushes.White, Opacity = 0.8, IsHitTestVisible = false };
+            Canvas.SetLeft(credit, 6);
+            Canvas.SetBottom(credit, 4);
+            canvas.Children.Add(credit);
+            return true;
         }
 
         /// <summary>Tile pixel (at zoom z) of a world position.</summary>

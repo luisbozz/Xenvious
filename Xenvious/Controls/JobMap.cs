@@ -48,6 +48,7 @@ namespace Xenvious
 
         private readonly Canvas _surface = new Canvas { ClipToBounds = true };
         private readonly Image _image = new Image { Source = MapImage, Stretch = Stretch.Fill, Width = SurfaceWidth, Height = SurfaceHeight };
+        private readonly Canvas _tiles = new Canvas { IsHitTestVisible = false };
         private readonly Canvas _dots = new Canvas();
         private List<Marker> _markers = new List<Marker>();
 
@@ -57,7 +58,9 @@ namespace Xenvious
             CornerRadius = new CornerRadius(8);
             RenderOptions.SetBitmapScalingMode(_image, BitmapScalingMode.HighQuality);
             _surface.Children.Add(_image);
+            _surface.Children.Add(_tiles);
             _surface.Children.Add(_dots);
+            SatelliteTiles.TileLoaded += () => Dispatcher.BeginInvoke(new Action(() => { if (IsVisible) Redraw(); }), System.Windows.Threading.DispatcherPriority.Background);
             Child = _surface;
             SizeChanged += (_, __) =>
             {
@@ -76,6 +79,7 @@ namespace Xenvious
         private void Redraw()
         {
             _dots.Children.Clear();
+            _tiles.Children.Clear();
             double width = ActualWidth, height = ActualHeight;
             if (width <= 0 || height <= 0)
                 return;
@@ -95,6 +99,7 @@ namespace Xenvious
             double scale = ApplyView(cx - span / 2, cy - span / 2, span, span, width, height);
             double offsetX = (width - span * scale) / 2 - (cx - span / 2) * scale;
             double offsetY = (height - span * scale) / 2 - (cy - span / 2) * scale;
+            DrawTiles(width, height, cx, cy, scale);
 
             for (int i = 0; i < points.Count; i++)
             {
@@ -104,6 +109,18 @@ namespace Xenvious
                 Canvas.SetTop(dot, points[i].Y * scale + offsetY - marker.Size / 2);
                 _dots.Children.Add(dot);
             }
+        }
+
+        // The Pleb Masters map over the built-in image where its tiles are loaded. The surface is
+        // linear in the world (MainWindow.WorldToMap), so its centre and scale give the world view.
+        private void DrawTiles(double width, double height, double surfaceX, double surfaceY, double scale)
+        {
+            Point origin = MainWindow.WorldToMap(0, 0), step = MainWindow.WorldToMap(1000, -1000);
+            double kx = (step.X - origin.X) / 1000, ky = (step.Y - origin.Y) / 1000;
+            if (kx <= 0 || ky <= 0)
+                return;
+            double worldX = (surfaceX - origin.X) / kx, worldY = -(surfaceY - origin.Y) / ky;
+            SatelliteTiles.Draw(_tiles, width, height, worldX, worldY, scale * kx, 0);
         }
 
         // Scales and moves the map so the given part of the surface fills the view, centred;
