@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Shapes;
 using System.Windows.Threading;
 
 namespace Xenvious
@@ -12,8 +13,9 @@ namespace Xenvious
     /// <summary>
     /// Player Settings (mockup https://claude.ai/artifact/VifG8TGRs71syLT1EsWBmP, tab "Player Settings"):
     /// a team's start points (Global_4980736.f_201288[team][i /*71*/], count f_197021[team]) as a
-    /// list with heading and vehicle; a click picks the point in the page's own index box, which
-    /// the editing cards below follow.
+    /// list with heading and vehicle, above it a top-down map with every team's points as arrows
+    /// in the team colours; a click picks the point in the page's own index box, which the
+    /// editing cards below follow.
     /// </summary>
     public class StartPointsView : SectionCard
     {
@@ -22,6 +24,9 @@ namespace Xenvious
         private readonly ComboBox _vehicleBox;
         private readonly StackPanel _list = new StackPanel();
         private readonly StackPanel _rows = new StackPanel();
+        private readonly Canvas _map = new Canvas { Height = 210, ClipToBounds = true, Background = Brushes.Transparent };
+        private List<(int Team, int Index, float X, float Y, float Head)> _points = new List<(int, int, float, float, float)>();
+        private (float X, float Y)? _cursor;
         private readonly WrapPanel _add = new WrapPanel { Margin = new Thickness(0, 4, 0, 0) };
         private readonly ComboBox _addKind = new ComboBox { Height = 30, MinWidth = 150, Margin = new Thickness(0, 0, 6, 6) };
         private readonly Action _rebuild;
@@ -39,6 +44,12 @@ namespace Xenvious
             Style = (Style)MainWindow.Instance.FindResource(typeof(SectionCard));
             Icon = Geometry.Parse("M12,2 C8,2 5,5 5,9 C5,14 12,22 12,22 C12,22 19,14 19,9 C19,5 16,2 12,2 M12,6.5 A2.5,2.5 0 1 0 12,11.5 A2.5,2.5 0 1 0 12,6.5");
             Content = _list;
+            var frame = new Border { CornerRadius = new CornerRadius(6), BorderThickness = new Thickness(1), Child = _map, Margin = new Thickness(0, 0, 0, 10),
+                ToolTip = T("sp_map_hint", "Every team's start points from above, north up. Click an arrow to pick that point.") };
+            frame.SetResourceReference(Border.BackgroundProperty, "DeepBrush");
+            frame.SetResourceReference(Border.BorderBrushProperty, "LineBrush");
+            _list.Children.Add(frame);
+            _map.SizeChanged += (_, __) => DrawMap();
             _list.Children.Add(_rows);
             _list.Children.Add(_add);
             BuildAdd();
@@ -77,6 +88,9 @@ namespace Xenvious
                 _shown = null;
                 Title = T("sp_points", "Start points");
                 _add.Visibility = Visibility.Collapsed;
+                HeaderRight = null;
+                _points.Clear();
+                _map.Children.Clear();
                 _rows.Children.Add(Faint(T("sp_nocreator", "Open a mission in the creator to see its start points."), 13));
                 return;
             }
@@ -91,10 +105,28 @@ namespace Xenvious
                 Veh: new Global(At(GTA.Offsets.Editor.player_veh, team, i)).Get<int>(),
                 Seat: Seat(team, i),
                 Bits: StartPoints.Bits(team, i))).ToList();
-            string key = string.Join(";", rows) + "|" + team + "|" + _indexBox.SelectedIndex;
+            var points = new List<(int Team, int Index, float X, float Y, float Head)>();
+            int teams = Rules.Teams();
+            for (int t = 0; t < teams; t++)
+            {
+                if (t == team)
+                {
+                    points.AddRange(rows.Select(r => (t, r.Index, r.X, r.Y, r.Head)));
+                    continue;
+                }
+                int count = Math.Max(0, Math.Min(new Global(GTA.Offsets.Editor.player_number + t).Get<int>(), 60));
+                for (int i = 0; i < count; i++)
+                    points.Add((t, i, new Global(At(GTA.Offsets.Editor.player_loc, t, i)).Get<float>(), new Global(At(GTA.Offsets.Editor.player_loc, t, i) + 1).Get<float>(),
+                        new Global(At(GTA.Offsets.Editor.player_head, t, i)).Get<float>()));
+            }
+            _cursor = Cursor();
+            string key = string.Join(";", rows) + "|" + string.Join(";", points) + "|" + _cursor + "|" + team + "|" + teams + "|" + _indexBox.SelectedIndex + "|" + Rules.PublicCreator;
             if (!force && key == _shown)
                 return;
             _shown = key;
+            _points = points;
+            HeaderRight = TeamTabs(team, teams);
+            DrawMap();
             _add.Visibility = Visibility.Visible;
             _add.IsEnabled = StartPoints.Ready && n < StartPoints.Max;
 
@@ -188,6 +220,129 @@ namespace Xenvious
             _indexBox.SelectedIndex = index;
             _rebuild?.Invoke();
             Refresh(true);
+        }
+
+        // Teams as nav tabs in their colours (team selector style); a click shows that team.
+        private FrameworkElement TeamTabs(int selected, int teams)
+        {
+            if (teams < 2)
+                return null;
+            var tabs = new StackPanel { Orientation = Orientation.Horizontal };
+            for (int t = 0; t < teams; t++)
+            {
+                int team = t;
+                var tab = new System.Windows.Controls.Primitives.ToggleButton { Content = (t + 1).ToString(CultureInfo.CurrentCulture), IsChecked = t == selected, ToolTip = T("dash_team", "Team") + " " + (t + 1) };
+                tab.SetResourceReference(StyleProperty, "NavTab");
+                if (MainWindow.ThemeBrush("TeamBrush" + (t + 1)) is SolidColorBrush colour)
+                {
+                    tab.Resources["AccentBrush"] = colour;
+                    tab.Resources["AccentSoftBrush"] = new SolidColorBrush(Color.FromArgb(0x70, colour.Color.R, colour.Color.G, colour.Color.B));
+                }
+                tab.Click += (_, __) => Pick(team, -1);
+                tabs.Children.Add(tab);
+            }
+            var box = new Border { Child = tabs };
+            box.SetResourceReference(StyleProperty, "NavGroup");
+            return box;
+        }
+
+        private void Pick(int team, int index)
+        {
+            if (_teamBox.SelectedIndex != team && team < _teamBox.Items.Count)
+                _teamBox.SelectedIndex = team;
+            if (index >= 0 && index < _indexBox.Items.Count)
+                _indexBox.SelectedIndex = index;
+            Refresh(true);
+        }
+
+        private static (float X, float Y)? Cursor()
+        {
+            var at = Functions.Read.getlocation();
+            if (at == null || at.Count < 2
+                || !float.TryParse(at[0], NumberStyles.Float, CultureInfo.CurrentCulture, out float x)
+                || !float.TryParse(at[1], NumberStyles.Float, CultureInfo.CurrentCulture, out float y)
+                || (x == 0 && y == 0))
+                return null;
+            return (x, y);
+        }
+
+        // North up, one scale for both axes, at least 40 m across so a single point does not fill it.
+        private void DrawMap()
+        {
+            _map.Children.Clear();
+            double w = _map.ActualWidth, h = _map.ActualHeight;
+            if (w < 20 || h < 20)
+                return;
+            var xs = _points.Select(p => p.X).ToList();
+            var ys = _points.Select(p => p.Y).ToList();
+            if (_cursor.HasValue)
+            {
+                xs.Add(_cursor.Value.X);
+                ys.Add(_cursor.Value.Y);
+            }
+            if (xs.Count == 0)
+            {
+                var empty = Faint(T("sp_map_empty", "No start points yet."), 12);
+                Canvas.SetLeft(empty, 12);
+                Canvas.SetTop(empty, 10);
+                _map.Children.Add(empty);
+                return;
+            }
+            const double pad = 22;
+            double minX = xs.Min(), maxX = xs.Max(), minY = ys.Min(), maxY = ys.Max();
+            double scale = Math.Min((w - 2 * pad) / Math.Max(40, maxX - minX), (h - 2 * pad) / Math.Max(40, maxY - minY));
+            double cx = (minX + maxX) / 2, cy = (minY + maxY) / 2;
+            Point ToMap(double x, double y) => new Point(w / 2 + (x - cx) * scale, h / 2 - (y - cy) * scale);
+
+            var north = new TextBlock { Text = "N ↑", FontSize = 11, FontWeight = FontWeights.SemiBold };
+            north.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
+            Canvas.SetRight(north, 8);
+            Canvas.SetTop(north, 6);
+            _map.Children.Add(north);
+
+            if (_cursor.HasValue)
+            {
+                var c = ToMap(_cursor.Value.X, _cursor.Value.Y);
+                var cross = new Path { Data = Geometry.Parse("M-7,0 L7,0 M0,-7 L0,7"), StrokeThickness = 1.5, RenderTransform = new TranslateTransform(c.X, c.Y), ToolTip = T("sp_map_cursor", "Creator cursor") };
+                cross.SetResourceReference(Shape.StrokeProperty, "MutedTextBrush");
+                _map.Children.Add(cross);
+            }
+
+            int shown = Math.Max(0, _teamBox.SelectedIndex);
+            // The shown team last, so its arrows lie on top.
+            foreach (var p in _points.OrderBy(p => p.Team == shown).ThenBy(p => p.Team == shown && p.Index == _indexBox.SelectedIndex))
+            {
+                bool own = p.Team == shown, picked = own && p.Index == _indexBox.SelectedIndex;
+                var at = ToMap(p.X, p.Y);
+                var transform = new TransformGroup();
+                transform.Children.Add(new ScaleTransform(picked ? 1.35 : 1, picked ? 1.35 : 1));
+                // GTA headings turn counter-clockwise from north, WPF rotations clockwise.
+                transform.Children.Add(new RotateTransform(-p.Head));
+                transform.Children.Add(new TranslateTransform(at.X, at.Y));
+                var arrow = new Path
+                {
+                    Data = Geometry.Parse("M0,-9 L6.5,7 L0,3.5 L-6.5,7 Z"),
+                    Fill = MainWindow.ThemeBrush("TeamBrush" + (p.Team + 1)),
+                    Opacity = own ? 1 : 0.45,
+                    StrokeThickness = picked ? 1.6 : 0,
+                    RenderTransform = transform,
+                    Cursor = System.Windows.Input.Cursors.Hand,
+                    ToolTip = T("dash_team", "Team") + " " + (p.Team + 1) + " · " + (p.Index + 1),
+                };
+                if (picked)
+                    arrow.SetResourceReference(Shape.StrokeProperty, "TextColor");
+                int team = p.Team, index = p.Index;
+                arrow.MouseLeftButtonUp += (_, __) => Pick(team, index);
+                _map.Children.Add(arrow);
+                if (own)
+                {
+                    var num = new TextBlock { Text = (p.Index + 1).ToString(CultureInfo.CurrentCulture), FontSize = 10.5, FontWeight = FontWeights.Bold, IsHitTestVisible = false };
+                    num.SetResourceReference(TextBlock.ForegroundProperty, picked ? "TextColor" : "MutedTextBrush");
+                    Canvas.SetLeft(num, at.X + 9);
+                    Canvas.SetTop(num, at.Y - 16);
+                    _map.Children.Add(num);
+                }
+            }
         }
 
         // The vehicle box lists "none" first, then the placed vehicles by index.
