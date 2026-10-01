@@ -191,6 +191,7 @@
     <Compile Include="Controls\HeadingSlider.cs" />
     <Compile Include="Controls\GotoRouteView.cs" />
     <Compile Include="Controls\GroupCard.cs" />
+    <Compile Include="Controls\PlayerRulesView.cs" />
     <Compile Include="Controls\LifecycleCard.cs" />
     <Compile Include="Controls\ZoneLifecycleCard.cs" />
     <Compile Include="Controls\ComboViews.cs" />
@@ -426,6 +427,7 @@
     <Compile Include="MainWindow\MainWindow.LoadedData.cs" />
     <Compile Include="MainWindow\MainWindow.Actors.cs" />
     <Compile Include="MainWindow\MainWindow.ActorLayout.cs" />
+    <Compile Include="MainWindow\MainWindow.KillLayout.cs" />
     <Compile Include="MainWindow\MainWindow.Capture.cs" />
     <Compile Include="MainWindow\MainWindow.Converter.cs" />
     <Compile Include="MainWindow\MainWindow.CreatorLocals.cs" />
