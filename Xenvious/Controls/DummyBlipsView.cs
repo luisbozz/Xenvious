@@ -83,6 +83,11 @@ namespace Xenvious
         };
 
         // FMMC_BLIP_COLOUR_* as GET_BLIP_COLOUR_FROM_CREATOR maps them, in the radar's colours.
+        private static readonly Dictionary<int, (string Key, string Fallback)> SpriteGroups = new Dictionary<int, (string, string)>
+        {
+            [0] = ("bl_grp_general", "General"), [5] = ("bl_grp_targets", "Targets"), [13] = ("bl_grp_numbers", "Numbers"), [23] = ("bl_grp_places", "Places"),
+        };
+
         private static readonly (int Id, string Key, string Fallback, Color Colour)[] Colours =
         {
             (0, "bl_clr_default", "Default", C(0xFE, 0xFE, 0xFE)), (1, "bl_clr_red", "Red", C(0xE0, 0x32, 0x32)),
@@ -91,11 +96,6 @@ namespace Xenvious
             (6, "bl_clr_white", "White", C(0xFE, 0xFE, 0xFE)), (7, "bl_clr_black", "Black", C(0x30, 0x30, 0x30)),
             (8, "bl_clr_purple", "Purple", C(0x9C, 0x6E, 0xAF)), (9, "bl_clr_orange", "Orange", C(0xEA, 0x8E, 0x50)),
             (10, "bl_clr_blue", "Blue", C(0x5D, 0xB6, 0xE5)),
-        };
-
-        private static readonly (string Key, string Fallback)[] SizeNames =
-        {
-            ("bl_size_ped", "Ped"), ("bl_size_object", "Object"), ("bl_size_vehicle", "Vehicle"), ("bl_size_pickup", "Pickup"), ("bl_size_location", "Location"),
         };
 
         private readonly ComboBox _indexBox;
@@ -353,8 +353,24 @@ namespace Xenvious
             return tinted;
         }
 
+        // The pictures of the numbered sprites are bare circles and the elevator's is a flat square,
+        // so the number and the arrows are drawn on top.
         private static FrameworkElement SpriteImage(int sprite, int colour, double size)
-            => new Image { Source = Sprite(sprite, colour), Width = size, Height = size, Stretch = Stretch.Uniform, VerticalAlignment = VerticalAlignment.Center };
+        {
+            bool numbered = sprite >= 13 && sprite <= 22, elevator = sprite == 23;
+            var image = new Image { Source = Sprite(numbered || elevator ? 0 : sprite, colour), Width = size, Height = size, Stretch = Stretch.Uniform };
+            if (!numbered && !elevator)
+                return image.Also(i => i.VerticalAlignment = VerticalAlignment.Center);
+            var grid = new Grid { Width = size, Height = size, VerticalAlignment = VerticalAlignment.Center };
+            grid.Children.Add(image);
+            if (numbered)
+                grid.Children.Add(new TextBlock { Text = (sprite - 12).ToString(CultureInfo.InvariantCulture), FontWeight = FontWeights.Black, FontSize = size * (sprite == 22 ? 0.4 : 0.5),
+                    Foreground = Brushes.Black, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(0, 0, 0, size * 0.04) });
+            else
+                grid.Children.Add(new Path { Data = Geometry.Parse("M5,4.2 L7.6,7.4 H2.4 Z M5,15.8 L7.6,12.6 H2.4 Z"), Fill = Brushes.Black, Width = size * 0.42, Height = size * 0.6, Stretch = Stretch.Uniform,
+                    HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center });
+            return grid;
+        }
 
         // ---------- list ----------
 
@@ -430,6 +446,7 @@ namespace Xenvious
             // Name
             _editor.Children.Add(Label(T("bl_name", "Name")));
             var name = new TextBox { Text = b.Name, Height = 30, VerticalContentAlignment = VerticalAlignment.Center, MaxLength = 23 };
+            name.SetResourceReference(StyleProperty, "Watermark");
             void SaveName()
             {
                 if (name.Text == b.Name || GTA.Offsets.Editor.ddblip.dbnm == 0 || !Live) return;
@@ -448,7 +465,6 @@ namespace Xenvious
                 if (a == anchor) return;
                 SetInt(GTA.Offsets.Editor.ddblip.type, i, a == 1 ? TypeVehicle : a == 2 ? TypePed : TypeCylinder);
                 SetInt(GTA.Offsets.Editor.ddblip.veh, i, a == 0 ? -1 : Math.Max(0, b.Entity));
-                SetInt(GTA.Offsets.Editor.ddblip.size, i, a == 1 ? 2 : a == 2 ? 0 : 4);
                 Refresh(true);
             }));
             if (anchor < 0)
@@ -484,6 +500,8 @@ namespace Xenvious
             var sprites = new WrapPanel { Margin = new Thickness(0, 0, -6, 0) };
             foreach (var s in Sprites)
             {
+                if (SpriteGroups.TryGetValue(s.Id, out var group))
+                    sprites.Children.Add(Faint(T(group.Key, group.Fallback), 11.5).Also(t => { t.Width = 400; t.Margin = new Thickness(0, s.Id == 0 ? 0 : 4, 0, 4); }));
                 var tile = new ToggleButton { Width = 42, Height = 42, Padding = new Thickness(0), Margin = new Thickness(0, 0, 6, 6), IsChecked = s.Id == b.Sprite, ToolTip = SpriteLabel(s.Id), Cursor = Cursors.Hand,
                     Content = SpriteImage(s.Id, b.Colour, 26) };
                 tile.SetResourceReference(StyleProperty, "ChoiceTile");
@@ -514,8 +532,14 @@ namespace Xenvious
             _editor.Children.Add(swatches);
 
             // Size
+            // GET_BLIP_SIZE_FROM_CREATOR: ped, object and pickup are BLIP_SIZE_* 0.7, vehicle and location 1.0.
             _editor.Children.Add(Label(T("bl_size", "Size")));
-            _editor.Children.Add(Tiles(SizeNames.Select(s => T(s.Key, s.Fallback)).ToArray(), b.Size, s => { SetInt(GTA.Offsets.Editor.ddblip.size, i, s); Refresh(true); }));
+            bool small = b.Size == 0 || b.Size == 1 || b.Size == 3;
+            _editor.Children.Add(Tiles(new[] { T("bl_size_small", "Small (70 %)"), T("bl_size_normal", "Normal (100 %)") }, small ? 0 : 1, s =>
+            {
+                SetInt(GTA.Offsets.Editor.ddblip.size, i, s == 0 ? 0 : 4);
+                Refresh(true);
+            }));
 
             // Teams
             _editor.Children.Add(Label(T("bl_who", "Who sees it")));
@@ -577,7 +601,8 @@ namespace Xenvious
             for (int k = 0; k < 3; k++)
             {
                 int axis = k;
-                var box = new TextBox { Text = values[k].ToString("0.0", CultureInfo.InvariantCulture), Height = 30, VerticalContentAlignment = VerticalAlignment.Center, ToolTip = "XYZ"[k].ToString() };
+                var box = new TextBox { Text = values[k].ToString("0.0", CultureInfo.InvariantCulture), Height = 30, VerticalContentAlignment = VerticalAlignment.Center, ToolTip = "XYZ"[k].ToString(), Tag = "XYZ"[k].ToString() };
+                box.SetResourceReference(StyleProperty, "Watermark");
                 void Save()
                 {
                     if (!float.TryParse(box.Text.Replace(',', '.'), NumberStyles.Float, CultureInfo.InvariantCulture, out float v) || v == values[axis] || !Live) return;
@@ -679,10 +704,9 @@ namespace Xenvious
             int count = Rules.Ready ? Rules.Count(team) : 0;
             if (b.When == When.Range)
             {
-                var end = new CheckBox { Content = T("bl_to_end_check", "Until the end"), IsChecked = b.To == -1, Margin = new Thickness(0, 0, 0, 6) };
-                end.SetResourceReference(Control.ForegroundProperty, "TextColor");
+                var end = new CheckBox { IsChecked = b.To == -1 };
                 end.Click += (_, __) => { SetInt(GTA.Offsets.Editor.ddblip.trul, i, end.IsChecked == true ? -1 : Math.Max(b.From, Math.Min(count - 1, b.From))); Refresh(true); };
-                panel.Children.Add(end);
+                panel.Children.Add(SwitchRow(T("bl_to_end_check", "Until the end"), end));
             }
             if (count == 0)
                 panel.Children.Add(Faint(T("bl_norules", "This team has no rules yet."), 12));
@@ -720,20 +744,32 @@ namespace Xenvious
 
         private FrameworkElement BitCheck(Blip b, int bit, string text)
         {
-            var box = new CheckBox { Content = text, IsChecked = (b.Bits & (1 << bit)) != 0, Margin = new Thickness(0, 2, 0, 4) };
-            box.SetResourceReference(Control.ForegroundProperty, "TextColor");
+            var box = new CheckBox { IsChecked = (b.Bits & (1 << bit)) != 0 };
             box.Click += (_, __) =>
             {
                 int bits = box.IsChecked == true ? b.Bits | (1 << bit) : b.Bits & ~(1 << bit);
                 SetInt(GTA.Offsets.Editor.ddblip.bits, b.Index, bits);
                 Refresh(true);
             };
-            return box;
+            return SwitchRow(text, box);
+        }
+
+        private static FrameworkElement SwitchRow(string text, CheckBox box)
+        {
+            box.SetResourceReference(StyleProperty, "FormToggle");
+            DockPanel.SetDock(box, Dock.Right);
+            var row = new DockPanel { Margin = new Thickness(0, 2, 0, 6) };
+            row.Children.Add(box);
+            var t = new TextBlock { Text = text, FontSize = 13, VerticalAlignment = VerticalAlignment.Center, TextWrapping = TextWrapping.Wrap };
+            t.SetResourceReference(TextBlock.ForegroundProperty, "TextColor");
+            row.Children.Add(t);
+            return row;
         }
 
         private FrameworkElement FloatBox(float value, Action<float> write)
         {
             var box = new TextBox { Text = value.ToString("0.##", CultureInfo.InvariantCulture), Height = 30, Width = 120, HorizontalAlignment = HorizontalAlignment.Left, VerticalContentAlignment = VerticalAlignment.Center };
+            box.SetResourceReference(StyleProperty, "Watermark");
             void Save()
             {
                 if (!float.TryParse(box.Text.Replace(',', '.'), NumberStyles.Float, CultureInfo.InvariantCulture, out float v) || v == value || v < 0) return;
