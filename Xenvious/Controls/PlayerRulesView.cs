@@ -368,6 +368,17 @@ namespace Xenvious
                     panel.Children.Add(BitBox(T("pr_loot_pctbox", "Count in percent of all loot"), r.Index, 0));
                     panel.Children.Add(BitBox(T("pr_loot_per", "Multiply by the team's players"), r.Index, 1));
                     break;
+                case 36:
+                    // Hold only ends through the rule's time limit (or another rule's limit).
+                    int tmt = Rules.GetField(GTA.Offsets.Editor.tmt, _team, r.Pri);
+                    int at = Math.Max(0, Array.FindIndex(Rules.TimeLimits, t => t.Selection == tmt));
+                    panel.Children.Add(Label(T("pr_hold_time", "Time limit of rule {0}").Replace("{0}", (r.Pri + 1).ToString(CultureInfo.CurrentCulture))));
+                    panel.Children.Add(SliderRow(0, Rules.TimeLimits.Length - 1, at,
+                        v => v == 0 ? T("rl_time_off", "No limit") : RulesView.TimeLabel(Rules.TimeLimits[v].Seconds), false,
+                        v => Rules.SetField(GTA.Offsets.Editor.tmt, _team, r.Pri, Rules.TimeLimits[v].Selection)));
+                    if (tmt == 0)
+                        panel.Children.Add(Faint(T("pr_hold_none", "Without a time limit the team stays on this rule."), 12).Also(t => { t.Margin = new Thickness(0, 4, 0, 0); t.SetResourceReference(TextBlock.ForegroundProperty, "WarnBrush"); }));
+                    break;
                 case 16:
                     panel.Children.Add(Label(T("pr_cut", "Cutscene")));
                     var cuts = new ComboBox { Height = 30, MinWidth = 180, HorizontalAlignment = HorizontalAlignment.Left };
@@ -434,16 +445,23 @@ namespace Xenvious
             return row;
         }
 
-        private CheckBox BitBox(string text, int index, int bit)
+        // A switch with its text beside it, like the Rules page's rows.
+        private FrameworkElement BitBox(string text, int index, int bit)
         {
-            var box = new CheckBox { Content = text, IsChecked = (Get(GTA.Offsets.Editor.Kill.prbs, _team, index) & (1 << bit)) != 0, Margin = new Thickness(0, 6, 0, 0) };
+            var row = new DockPanel { Margin = new Thickness(0, 8, 0, 0) };
+            var box = new CheckBox { Style = (Style)MainWindow.Instance.FindResource("FormToggle"), IsChecked = (Get(GTA.Offsets.Editor.Kill.prbs, _team, index) & (1 << bit)) != 0, VerticalAlignment = VerticalAlignment.Center };
             box.Click += (_, __) =>
             {
                 int v = Get(GTA.Offsets.Editor.Kill.prbs, _team, index);
                 Set(GTA.Offsets.Editor.Kill.prbs, _team, index, box.IsChecked == true ? v | (1 << bit) : v & ~(1 << bit));
                 Refresh(true);
             };
-            return box;
+            DockPanel.SetDock(box, Dock.Right);
+            row.Children.Add(box);
+            var label = new TextBlock { Text = text, FontSize = 13, TextWrapping = TextWrapping.Wrap, VerticalAlignment = VerticalAlignment.Center };
+            label.SetResourceReference(TextBlock.ForegroundProperty, "TextColor");
+            row.Children.Add(label);
+            return row;
         }
 
         // The rule to jump to; the controller ignores targets that are not after this rule.
