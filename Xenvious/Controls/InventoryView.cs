@@ -118,6 +118,11 @@ namespace Xenvious
 
             _loading = true;
             _rows.Children.Clear();
+            // No bit set: the team has no inventory of its own, the controllers then leave the
+            // players their own weapons (DOES_TEAM_HAVE_AN_FMMC_GIVEN_INVENTORY), and a test in the
+            // creator gives its test weapons. Nothing of that is in the job.
+            if (!state.Any(b => b))
+                _rows.Children.Add(Notice(T("inv_default", "No inventory of its own: players keep their own weapons (in a creator test: the creator's test weapons). Switch on a weapon or a preset to give the team a fixed inventory.")));
             foreach (var cat in Categories)
             {
                 var weapons = cat.List().Where(w => filter.Length == 0 || w.Name.IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
@@ -271,6 +276,17 @@ namespace Xenvious
             var box = new Border { Child = tabs };
             box.SetResourceReference(StyleProperty, "NavGroup");
             return box;
+        }
+
+        private static FrameworkElement Notice(string text)
+        {
+            var border = new Border { CornerRadius = new CornerRadius(6), BorderThickness = new Thickness(3, 0, 0, 0), Padding = new Thickness(10, 7, 10, 7), Margin = new Thickness(0, 0, 0, 8) };
+            border.SetResourceReference(Border.BorderBrushProperty, "AccentBrush");
+            border.SetResourceReference(Border.BackgroundProperty, "DeepBrush");
+            var t = new TextBlock { Text = text, FontSize = 12.5, TextWrapping = TextWrapping.Wrap };
+            t.SetResourceReference(TextBlock.ForegroundProperty, "TextColor");
+            border.Child = t;
+            return border;
         }
 
         private static TextBlock Faint(string text, double size)
