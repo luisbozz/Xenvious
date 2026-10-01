@@ -17,7 +17,8 @@
         <ResourceDictionary>
             <!-- Dialog buttons: the container Border around each button takes the hover colour
                  (DialogButton_MouseEnter) and press colour (DialogButton_MouseDown), so the whole button
-                 changes, not an inset part of it. -->
+                 changes, not an inset part of it. The buttons stretch over the whole container, so all
+                 of it is clickable, not only the text. -->
             <ControlTemplate x:Key="DialogButtonTemplate" TargetType="Button">
                 <Border x:Name="b" Background="Transparent" CornerRadius="5">
                     <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
@@ -12170,14 +12171,14 @@
                         <ProgressBar x:Name="DialogProgress" Height="6" Margin="0,18,0,0" Minimum="0" Maximum="1" Visibility="Collapsed" Foreground="{DynamicResource HighlightBrush}" Background="#33FFFFFF" BorderThickness="0"/>
                         <StackPanel x:Name="DialogButtons" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,22,0,0">
                             <Border x:Name="DialogCancelContainer" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Height="34" MinWidth="110" Margin="0,0,10,0" MouseEnter="DialogButton_MouseEnter" MouseLeave="DialogButton_MouseLeave" PreviewMouseLeftButtonDown="DialogButton_MouseDown" PreviewMouseLeftButtonUp="DialogButton_MouseEnter">
-                                <Button x:Name="DialogCancel" Template="{StaticResource DialogButtonTemplate}" Cursor="Hand" FontFamily="{DynamicResource Volte}" FontWeight="Bold" FontSize="14" Foreground="{DynamicResource TextColor}" Padding="14,0" Click="DialogCancel_Click"/>
+                                <Button x:Name="DialogCancel" Template="{StaticResource DialogButtonTemplate}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Cursor="Hand" FontFamily="{DynamicResource Volte}" FontWeight="Bold" FontSize="14" Foreground="{DynamicResource TextColor}" Padding="14,0" Click="DialogCancel_Click"/>
                             </Border>
                             <Border x:Name="DialogAltContainer" Visibility="Collapsed" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Height="34" MinWidth="110" Margin="0,0,10,0" MouseEnter="DialogButton_MouseEnter" MouseLeave="DialogButton_MouseLeave" PreviewMouseLeftButtonDown="DialogButton_MouseDown" PreviewMouseLeftButtonUp="DialogButton_MouseEnter">
-                                <Button x:Name="DialogAlt" Template="{StaticResource DialogButtonTemplate}" Cursor="Hand" FontFamily="{DynamicResource Volte}" FontWeight="Bold" FontSize="14" Foreground="{DynamicResource TextColor}" Padding="14,0" Click="DialogAlt_Click"/>
+                                <Button x:Name="DialogAlt" Template="{StaticResource DialogButtonTemplate}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Cursor="Hand" FontFamily="{DynamicResource Volte}" FontWeight="Bold" FontSize="14" Foreground="{DynamicResource TextColor}" Padding="14,0" Click="DialogAlt_Click"/>
                             </Border>
                             <Border x:Name="DialogConfirmContainer" CornerRadius="5" Background="{DynamicResource HighlightBrush}" Height="34" MinWidth="130" MouseEnter="DialogButton_MouseEnter" MouseLeave="DialogButton_MouseLeave" PreviewMouseLeftButtonDown="DialogButton_MouseDown" PreviewMouseLeftButtonUp="DialogButton_MouseEnter">
                                 <Border.Effect><DropShadowEffect BlurRadius="6" ShadowDepth="2" Opacity="0.5" Color="{DynamicResource ShadowColor}"/></Border.Effect>
-                                <Button x:Name="DialogConfirm" Template="{StaticResource DialogButtonTemplate}" Cursor="Hand" FontSize="14" FontWeight="Bold" Padding="16,0" Click="DialogConfirm_Click"/>
+                                <Button x:Name="DialogConfirm" Template="{StaticResource DialogButtonTemplate}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Cursor="Hand" FontSize="14" FontWeight="Bold" Padding="16,0" Click="DialogConfirm_Click"/>
                             </Border>
                         </StackPanel>
                     </StackPanel>
