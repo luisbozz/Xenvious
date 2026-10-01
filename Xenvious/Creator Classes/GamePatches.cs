@@ -93,7 +93,9 @@ namespace Xenvious
 
         public static readonly GamePatch TestMode = new GamePatch("AOB_testmode",
             () => GTA.Offsets.Editor.AOB_testmode,
-            hit => Rip(Rip(hit + 17) + 1),
+            hit => GameVariant.Current == GameEdition.Legacy
+                ? Rip(Rip(hit + 17) + 1)
+                : hit,
             new byte[] { 0xC3 });
 
         // Creator camera: 5 bytes before the match is the call to the collision test, the match
