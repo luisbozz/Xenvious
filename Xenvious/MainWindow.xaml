@@ -1559,7 +1559,7 @@
                                                                 <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,12" Tag="EntryBar">
                                                                     <DockPanel>
                                                                         <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-                                                                            <Button x:Name="BtnPropsToDynamic" Content="{Binding Translation[props_to_dynamic], FallbackValue='→ Dynamic'}" Click="BtnPropsToDynamic_Click" ToolTip="{Binding Translation[props_to_dynamic_tip], FallbackValue='Verschiebt den gewählten Prop in die andere Liste.'}" Style="{StaticResource FormButton}" Height="32" Padding="14,0" Margin="0,0,10,0"/>
+                                                                            <Button x:Name="BtnPropsToDynamic" Content="{Binding Translation[props_to_dynamic], FallbackValue='Move to dynamic'}" Click="BtnPropsToDynamic_Click" ToolTip="{Binding Translation[props_to_dynamic_tip], FallbackValue='Verschiebt den gewählten Prop in die andere Liste.'}" Style="{StaticResource BarButton}"/>
                                                                             <!-- ‹ number › : steps through the entries without opening the list. -->
                                                                             <Border Background="{DynamicResource ComboBoxBackground}" BorderBrush="{DynamicResource ComboBoxBorder}" BorderThickness="1" CornerRadius="4" Height="32" Margin="0,0,10,0">
                                                                                 <StackPanel Orientation="Horizontal">
@@ -2168,7 +2168,7 @@
                                                                 <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,12" Tag="EntryBar">
                                                                     <DockPanel>
                                                                         <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-                                                                            <Button x:Name="BtnDPropsToStatic" Content="{Binding Translation[props_to_static], FallbackValue='→ Static'}" Click="BtnDPropsToStatic_Click" ToolTip="{Binding Translation[props_to_static_tip], FallbackValue='Verschiebt den gewählten Prop in die andere Liste.'}" Style="{StaticResource FormButton}" Height="32" Padding="14,0" Margin="0,0,10,0"/>
+                                                                            <Button x:Name="BtnDPropsToStatic" Content="{Binding Translation[props_to_static], FallbackValue='Move to static'}" Click="BtnDPropsToStatic_Click" ToolTip="{Binding Translation[props_to_static_tip], FallbackValue='Verschiebt den gewählten Prop in die andere Liste.'}" Style="{StaticResource BarButton}"/>
                                                                             <!-- ‹ number › : steps through the entries without opening the list. -->
                                                                             <Border Background="{DynamicResource ComboBoxBackground}" BorderBrush="{DynamicResource ComboBoxBorder}" BorderThickness="1" CornerRadius="4" Height="32" Margin="0,0,10,0">
                                                                                 <StackPanel Orientation="Horizontal">
@@ -7895,7 +7895,7 @@
                                                     <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,12" Tag="EntryBar">
                                                         <DockPanel>
                                                             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-                                                                <Button x:Name="BtnActorDuplicate" Content="{Binding Translation[duplicate], FallbackValue=Duplicate}" Click="BtnActorDuplicate_Click" Style="{StaticResource FormButton}" Height="32" Padding="14,0" Margin="0,0,10,0"/>
+                                                                <Button x:Name="BtnActorDuplicate" Content="{Binding Translation[duplicate], FallbackValue=Duplicate}" Click="BtnActorDuplicate_Click" Style="{StaticResource BarButton}"/>
                                                                 <!-- ‹ number › : steps through the entries without opening the list. -->
                                                                 <Border Background="{DynamicResource ComboBoxBackground}" BorderBrush="{DynamicResource ComboBoxBorder}" BorderThickness="1" CornerRadius="4" Height="32" Margin="0,0,10,0">
                                                                     <StackPanel Orientation="Horizontal">

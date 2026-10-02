@@ -184,6 +184,30 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <!-- A text button in an entry bar: framed like the ‹ number › box next to it, since the bar has the grey of FormButton. -->
+    <Style x:Key="BarButton" TargetType="{x:Type Button}" BasedOn="{StaticResource FormButton}">
+        <Setter Property="Height" Value="32"/>
+        <Setter Property="Padding" Value="12,0"/>
+        <Setter Property="Margin" Value="0,0,10,0"/>
+        <Setter Property="Background" Value="{DynamicResource ComboBoxBackground}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="b" CornerRadius="4" Background="{TemplateBinding Background}" BorderBrush="{DynamicResource ComboBoxBorder}" BorderThickness="1" Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="b" Property="Background" Value="{DynamicResource ButtonHoverBackgroundBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="b" Property="Opacity" Value="0.4"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <!-- The main action of a page (Add): light, so it stands out from the grey buttons. -->
     <!-- Dark theme values; MainWindow.Settings.cs sets them per theme. -->
     <SolidColorBrush x:Key="PrimaryButtonBackground" Color="#FFE3E5E8"/>
