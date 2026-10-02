@@ -73,13 +73,14 @@ namespace Xenvious
                 else if (!(e is System.Windows.Shapes.Rectangle))
                     relations.Children.Add(e);
             }
+            // The icon size shares a row with the cash; it goes to the map icon group with "blip off".
+            var mapIcon = new StackPanel();
+            var iconSize = Detach((FrameworkElement)tbactorblipsize.Parent);
+            iconSize.Margin = new Thickness(0, 0, 0, 4);
+            mapIcon.Children.Add(iconSize);
+            mapIcon.Children.Add(Detach(RowOf(cbactorblipoff)));
             var death = new StackPanel();
-            foreach (var field in new FrameworkElement[] { tbactorpcash, tbactorblipsize })
-            {
-                var row = RowOf(field);
-                if (row.Parent != death)
-                    death.Children.Add(Detach(row));
-            }
+            death.Children.Add(Detach(RowOf(tbactorpcash)));
             foreach (FrameworkElement e in BodyOf(proofs).Children.Cast<FrameworkElement>().ToList())
                 death.Children.Add(Detach(e));
 
@@ -88,6 +89,7 @@ namespace Xenvious
             advanced.Add("ag_behaviour", "Behaviour", Detach(BodyOf(behaviour)));
             advanced.Add("ag_vehicle", "Vehicle", vehicle);
             advanced.Add("ag_death", "Proofs & death", death);
+            advanced.Add("ag_mapicon", "Map icon", mapIcon);
 
             // When: lifecycle with respawn and "action on", then the rules card.
             var lifecycle = new LifecycleCard();

@@ -175,6 +175,7 @@ namespace Xenvious
             cb_veh_sirens_audio.IsEnabled = index < 0 ? false : true;
             cb_veh_nottargetable.IsEnabled = index < 0 ? false : true;
             cb_veh_box.IsEnabled = index < 0 ? false : true;
+            cb_veh_blipoff.IsEnabled = index < 0 ? false : true;
             cb_veh_explodeinwater.IsEnabled = index < 0 ? false : true;
             cb_veh_lockteam1.IsEnabled = index < 0 ? false : true;
             cb_veh_lockteam2.IsEnabled = index < 0 ? false : true;
@@ -338,6 +339,7 @@ namespace Xenvious
                 Functions.Read.checkbinary(14, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_sirens);
                 Functions.Read.checkbinary(18, GTA.Offsets.Editor.Vehicle.vbs6 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_mark);
                 Functions.Read.checkbinary(10, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_box);
+                Functions.Read.checkbinary(16, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_blipoff);
                 Functions.Read.checkbinary(7, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_lights);
                 Functions.Read.checkbinary(8, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_locveh);
                 Functions.Read.checkbinary(14, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_locvehforp);
@@ -525,6 +527,12 @@ namespace Xenvious
         private void cb_veh_box_Checked(object sender, RoutedEventArgs e)
         {
             Functions.Write.writebinary(10, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_box);
+        }
+
+        // "Blip off" of the creator's vehicle blip menu: bit 15 of the vehicle bitset (FMMC_BLIPOFF).
+        private void cb_veh_blipoff_Checked(object sender, RoutedEventArgs e)
+        {
+            Functions.Write.writebinary(16, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_blipoff);
         }
 
         private void cb_veh_door_open_lf_Checked(object sender, RoutedEventArgs e)

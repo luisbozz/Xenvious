@@ -75,6 +75,7 @@ namespace Xenvious
             ddActorteam.IsEnabled = index < 0 ? false : true;
             ddActorrel.IsEnabled = index < 0 ? false : true;
             cbactorantifall.IsEnabled = index < 0 ? false : true;
+            cbactorblipoff.IsEnabled = index < 0 ? false : true;
             cbactorddb.IsEnabled = index < 0 ? false : true;
             cbactordiw.IsEnabled = index < 0 ? false : true;
             cbactords.IsEnabled = index < 0 ? false : true;
@@ -227,6 +228,7 @@ namespace Xenvious
                 Functions.Read.checkbinary(2, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorfmdc);
                 Functions.Read.checkbinary(3, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorroav);
                 Functions.Read.checkbinary(28, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorantifall);
+                Functions.Read.checkbinary(8, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorblipoff);
                 Functions.Read.checkbinary(13, GTA.Offsets.Editor.Actor.pbs5 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorcantleaveveh);
                 Functions.Read.checkbinary(14, GTA.Offsets.Editor.Actor.pbs14 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorcanttarget);
                 Functions.Read.checkbinary(32, GTA.Offsets.Editor.Actor.pbs8 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactordiswd);
@@ -564,6 +566,12 @@ namespace Xenvious
 
                 SelectActiveTextBox();
             }
+        }
+
+        // "Blip off" of the creator's actor blip menu: bit 7 of the actor bitset (FMMC_BLIPOFF).
+        private void cbactorblipoff_Checked(object sender, RoutedEventArgs e)
+        {
+            Functions.Write.writebinary(8, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorblipoff);
         }
 
         private void cbactorantifall_Checked(object sender, RoutedEventArgs e)

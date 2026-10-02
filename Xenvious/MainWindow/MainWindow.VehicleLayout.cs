@@ -103,7 +103,7 @@ namespace Xenvious
 
         private CheckBox[][] VehFlags() => new[]
         {
-            new[] { cb_veh_neon, cb_veh_remove_windows, cb_veh_lights, cb_veh_sirens, cb_veh_sirens_audio, cb_veh_box },
+            new[] { cb_veh_neon, cb_veh_remove_windows, cb_veh_lights, cb_veh_sirens, cb_veh_sirens_audio, cb_veh_box, cb_veh_blipoff },
             new[] { cb_veh_godmode, cb_veh_bptires, cb_veh_engine, cb_veh_explodeinwater, cb_veh_nottargetable, cb_veh_mark },
             new[] { cb_veh_lockteam1, cb_veh_lockteam2, cb_veh_lockteam3, cb_veh_lockteam4, cb_veh_locveh, cb_veh_locvehforp, cb_veh_freeze },
             new[] { cb_veh_door_open_fl, cb_veh_door_close_fl, cb_veh_door_open_fr, cb_veh_door_close_fr, cb_veh_door_open_rl, cb_veh_door_close_rl,

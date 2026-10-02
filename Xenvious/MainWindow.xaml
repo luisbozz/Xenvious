@@ -2959,6 +2959,7 @@
                                                                             <CheckBox x:Name="cb_veh_sirens" Checked="cb_veh_sirens_Checked" Unchecked="cb_veh_sirens_Checked" IsEnabled="False" Style="{StaticResource ChipToggle}" Content="{Binding Translation[vehsirens], FallbackValue=Vehicle Sirens}"/>
                                                                             <CheckBox x:Name="cb_veh_sirens_audio" Checked="cb_veh_sirens_audio_Checked" Unchecked="cb_veh_sirens_audio_Checked" IsEnabled="False" Style="{StaticResource ChipToggle}" Content="{Binding Translation[vehsirensaudio], FallbackValue=Vehicle Sirens Audio}"/>
                                                                             <CheckBox x:Name="cb_veh_box" Checked="cb_veh_box_Checked" Unchecked="cb_veh_box_Checked" IsEnabled="False" Style="{StaticResource ChipToggle}" Content="{Binding Translation[vehbox], FallbackValue=Spawn Boxes}"/>
+                                                                            <CheckBox x:Name="cb_veh_blipoff" Checked="cb_veh_blipoff_Checked" Unchecked="cb_veh_blipoff_Checked" IsEnabled="False" Style="{StaticResource ChipToggle}" Content="{Binding Translation[blip_off], FallbackValue=Hide map icon}"/>
                                                                         </WrapPanel>
                                                                     </StackPanel>
                                                                 </local:SectionCard>
@@ -8015,6 +8016,14 @@
                                                                             <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[actorsize], FallbackValue=Icon Size}"/>
                                                                             <TextBox x:Name="tbactorblipsize" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbactorblipsize_TextChanged" KeyDown="FormatTextForFloat" Height="30" Margin="0,0,0,10"/>
                                                                             </StackPanel>
+                                                                        </Grid>
+                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="46"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[blip_off], FallbackValue=Hide map icon}" IsEnabled="{Binding ElementName=cbactorblipoff, Path=IsEnabled}"/>
+                                                                            <CheckBox x:Name="cbactorblipoff" Checked="cbactorblipoff_Checked" Unchecked="cbactorblipoff_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
                                                                         </Grid>
                                                                         </StackPanel>
                                                                     </DockPanel>
