@@ -238,6 +238,16 @@ namespace Xenvious
             var found = ScrProgramScanner.ScanScrProgramForPattern(scrProgramPtr, string.Join(" ", signature));
             if (found == null || found.Count == 0)
                 return;
+            // A patch of only zero bytes with nothing of its pattern around them looks like every
+            // other run of NOPs (our own NOP patches leave plenty); claiming those would let
+            // switching it off write into code that is not its own.
+            bool onlyZeros = bytes.All(b => b == "00")
+                && Enumerable.Range(0, signature.Length).All(i => (i >= o && i < o + bytes.Length) || signature[i].StartsWith("?"));
+            if (onlyZeros && found.Count > 1)
+            {
+                Log.Trace($"'{patch.patch_name}' in {patch.script_name}: its zero bytes match {found.Count} places, none taken as written", source: "ScrPatchesRunner");
+                return;
+            }
 
             LoadJournal();
             var perAddress = new Dictionary<ulong, byte[]>();

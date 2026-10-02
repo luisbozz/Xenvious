@@ -3,8 +3,8 @@
         "patch_name": "fix race turbo mode",
         "script_name": "fm_race_creator",
         "pattern": "29 ? ? ? ? 71 43 ? ? 5D ? ? ?",
-        "offset": 0,
-        "bytes_to_patch": "00 00 00 00 00 00 00 00 00 00 00 00 00",
+        "offset": 9,
+        "bytes_to_patch": "2B 2B 2B 00",
         "dev": false
     },
     {
