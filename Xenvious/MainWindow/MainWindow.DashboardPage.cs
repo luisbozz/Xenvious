@@ -26,7 +26,6 @@ namespace Xenvious
     // Part of MainWindow: DashboardPage page.
     public partial class MainWindow
     {
-        public Thread force_publishThread;
 
         private void cb_dev_Checked(object sender, RoutedEventArgs e)
         {
@@ -680,29 +679,6 @@ namespace Xenvious
             }
         }
 
-        private void cb_3dcam_Checked(object sender, RoutedEventArgs e)
-        {
-            if (m.IsProcOpen)
-            {
-                bool ischecked = cb_3dcam.IsChecked ?? true;
-                if (isepic)
-                {
-                    m.memory(GTA.Offsets.Editor.camptr + GTA.Offsets.Editor.cam_mode).SetInt(ischecked ? 18 : -1);
-                    m.memory(GTA.Offsets.Editor.camptr + GTA.Offsets.Editor.cam_zoom).SetFloat(ischecked ? 25F : 1);
-                }
-                else if (issteam)
-                {
-                    m.memory(GTA.Offsets.Editor.camptr + GTA.Offsets.Editor.cam_mode).SetInt(ischecked ? 18 : -1);
-                    m.memory(GTA.Offsets.Editor.camptr + GTA.Offsets.Editor.cam_zoom).SetFloat(ischecked ? 25F : 1);
-                }
-                else
-                {
-                    m.memory(GTA.Offsets.Editor.camptr + GTA.Offsets.Editor.cam_mode).SetInt(ischecked ? 18 : -1);
-                    m.memory(GTA.Offsets.Editor.camptr + GTA.Offsets.Editor.cam_zoom).SetFloat(ischecked ? 25F : 1);
-                }
-            }
-        }
-
         private void JobImage_MouseUp(object sender, MouseButtonEventArgs e)
         {
             System.Windows.Controls.Image img = new System.Windows.Controls.Image();
@@ -744,41 +720,6 @@ namespace Xenvious
             if (m.IsProcOpen)
             {
                 new Global(GTA.Offsets.Editor.hide_creator_menu).SetInt(cbhidecreatormenu.IsChecked == true ? 1 : 0);
-            }
-        }
-
-
-
-        private void cbforce_publish_Checked(object sender, RoutedEventArgs e)
-        {
-            bool needscan = curcreatorscanneeded();
-            if (needscan)
-                GTA.Offsets.Editor.localptr = GTA.getCurrentCreatorAddy();
-
-            bool ischecked = cbforce_publish.IsChecked ?? true;
-            freeze = ischecked;
-            if (freeze)
-            {
-                long addy = getCurrentCreatorBase();
-
-                force_publishThread = new Thread(new ParameterizedThreadStart(force_publish));
-                force_publishThread.Priority = ThreadPriority.Highest;
-                force_publishThread.IsBackground = true;
-                force_publishThread.Start(addy);
-            }
-            else
-            {
-                force_publishThread.Abort();
-            }
-        }
-
-        public static void force_publish(object addy)
-        {
-            long addr = (long)addy + GTA.Offsets.Editor.OFFSET_current_creator_pre_publish * 8;
-            while (true)
-            {
-                m.memory(addr.ToString("X")).SetInt(255);
-                //Functions.Write.writebinarytoaddy(4, addr);
             }
         }
 

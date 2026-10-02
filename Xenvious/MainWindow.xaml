@@ -10910,23 +10910,7 @@
                                         <!-- Creator tools that are rarely needed; they used to sit on the dashboard. -->
                                         <TabItem x:Name="PageInnerModTools" Header="Creator Tools" IsSelected="True">
                                             <StackPanel Width="320" HorizontalAlignment="Left" Margin="10">
-                                                <Grid Style="{StaticResource FormRow}">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[3dcam], FallbackValue='3D Cam'}"/>
-                                                    <CheckBox x:Name="cb_3dcam" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cb_3dcam_Checked" Unchecked="cb_3dcam_Checked"/>
-                                                </Grid>
-                                                <Grid Style="{StaticResource FormRow}">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[forcepublish], FallbackValue='Force Publish'}"/>
-                                                    <CheckBox x:Name="cbforce_publish" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbforce_publish_Checked" Unchecked="cbforce_publish_Checked"/>
-                                                </Grid>
-                                                <local:VisibilityCard x:Name="toolsVisibility" Margin="0,12,0,0"/>
+                                                <local:VisibilityCard x:Name="toolsVisibility"/>
                                             </StackPanel>
                                         </TabItem>
 
@@ -11241,7 +11225,7 @@
                                                 <Button x:Name="Btnnrcidprep" Style="{DynamicResource CustomButton}" Content="Perpare Job" local:CornerRadiusSetter.CornerRadius="5" Click="Btnnrcidprep_Click" />
                                             </Border>
 
-                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="Now you can publish your job. You might need to force Publish or use the Save/Publish function under Dashboard." TextWrapping="Wrap" />
+                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="Now you can publish your job. If publishing does not start, use the Save/Publish function under Dashboard." TextWrapping="Wrap" />
 
 
                                         </StackPanel>
