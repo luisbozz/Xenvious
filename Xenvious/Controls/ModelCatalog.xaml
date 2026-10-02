@@ -15,6 +15,9 @@
                 <Border DockPanel.Dock="Top" Background="{DynamicResource SeactionHeaderBackgroundBrush}" CornerRadius="8,8,0,0" Padding="16,10">
                     <DockPanel>
                         <Button DockPanel.Dock="Right" Style="{StaticResource NavButton}" Padding="8,4" Click="Close_Click" Content="✕"/>
+                        <CheckBox x:Name="OnPageToggle" DockPanel.Dock="Right" Style="{DynamicResource ChipToggle}" Margin="0,0,12,0" VerticalAlignment="Center" Click="OnPageToggle_Click"
+                                  Content="{Binding Translation[catalog_onpage], FallbackValue='Recent and favourites on the page'}"
+                                  ToolTip="{Binding Translation[catalog_onpage_tip], FallbackValue='Shows your recent and favourite models as chips under the model card on every page.'}"/>
                         <TextBlock x:Name="TitleText" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource TextColor}" VerticalAlignment="Center"/>
                     </DockPanel>
                 </Border>
@@ -85,7 +88,7 @@
                                                 <Border x:Name="b" CornerRadius="4" Padding="6,4" Background="Transparent">
                                                     <DockPanel>
                                                         <Border Width="52" Height="40" CornerRadius="3" Background="{DynamicResource DeepBrush}" Margin="0,0,10,0" ClipToBounds="True">
-                                                            <Image Source="{Binding Thumb}" Stretch="UniformToFill"/>
+                                                            <Image Source="{Binding Thumb}" Stretch="Uniform"/>
                                                         </Border>
                                                         <!-- Star: add to or remove from the favourites. -->
                                                         <ToggleButton DockPanel.Dock="Right" IsChecked="{Binding IsFavorite, Mode=TwoWay}" Width="26" Height="26" Cursor="Hand" Focusable="False"

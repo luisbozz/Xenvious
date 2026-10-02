@@ -26,12 +26,17 @@ namespace Xenvious
     // Part of MainWindow: DashboardPage page.
     public partial class MainWindow
     {
-        public Thread force_publishThread;
 
         private void cb_dev_Checked(object sender, RoutedEventArgs e)
         {
             if (m.IsProcOpen)
                 m.memory(GTA.Offsets.Editor.dev).SetInt(cb_dev.IsChecked == true ? GTA.DevPatched : GTA.DevOriginal);
+        }
+
+        // Only a click is remembered: the worker also sets the box from the game's state.
+        private void cb_dev_Click(object sender, RoutedEventArgs e)
+        {
+            RememberGamePatch("devptr", cb_dev.IsChecked == true);
         }
 
         public void IntegerPasteHandler(object sender, DataObjectPastingEventArgs e)
@@ -680,29 +685,6 @@ namespace Xenvious
             }
         }
 
-        private void cb_3dcam_Checked(object sender, RoutedEventArgs e)
-        {
-            if (m.IsProcOpen)
-            {
-                bool ischecked = cb_3dcam.IsChecked ?? true;
-                if (isepic)
-                {
-                    m.memory(GTA.Offsets.Editor.camptr + GTA.Offsets.Editor.cam_mode).SetInt(ischecked ? 18 : -1);
-                    m.memory(GTA.Offsets.Editor.camptr + GTA.Offsets.Editor.cam_zoom).SetFloat(ischecked ? 25F : 1);
-                }
-                else if (issteam)
-                {
-                    m.memory(GTA.Offsets.Editor.camptr + GTA.Offsets.Editor.cam_mode).SetInt(ischecked ? 18 : -1);
-                    m.memory(GTA.Offsets.Editor.camptr + GTA.Offsets.Editor.cam_zoom).SetFloat(ischecked ? 25F : 1);
-                }
-                else
-                {
-                    m.memory(GTA.Offsets.Editor.camptr + GTA.Offsets.Editor.cam_mode).SetInt(ischecked ? 18 : -1);
-                    m.memory(GTA.Offsets.Editor.camptr + GTA.Offsets.Editor.cam_zoom).SetFloat(ischecked ? 25F : 1);
-                }
-            }
-        }
-
         private void JobImage_MouseUp(object sender, MouseButtonEventArgs e)
         {
             System.Windows.Controls.Image img = new System.Windows.Controls.Image();
@@ -744,41 +726,6 @@ namespace Xenvious
             if (m.IsProcOpen)
             {
                 new Global(GTA.Offsets.Editor.hide_creator_menu).SetInt(cbhidecreatormenu.IsChecked == true ? 1 : 0);
-            }
-        }
-
-
-
-        private void cbforce_publish_Checked(object sender, RoutedEventArgs e)
-        {
-            bool needscan = curcreatorscanneeded();
-            if (needscan)
-                GTA.Offsets.Editor.localptr = GTA.getCurrentCreatorAddy();
-
-            bool ischecked = cbforce_publish.IsChecked ?? true;
-            freeze = ischecked;
-            if (freeze)
-            {
-                long addy = getCurrentCreatorBase();
-
-                force_publishThread = new Thread(new ParameterizedThreadStart(force_publish));
-                force_publishThread.Priority = ThreadPriority.Highest;
-                force_publishThread.IsBackground = true;
-                force_publishThread.Start(addy);
-            }
-            else
-            {
-                force_publishThread.Abort();
-            }
-        }
-
-        public static void force_publish(object addy)
-        {
-            long addr = (long)addy + GTA.Offsets.Editor.OFFSET_current_creator_pre_publish * 8;
-            while (true)
-            {
-                m.memory(addr.ToString("X")).SetInt(255);
-                //Functions.Write.writebinarytoaddy(4, addr);
             }
         }
 
@@ -839,8 +786,77 @@ namespace Xenvious
             m.memory((getCreatorScriptLocalWorkerBase() + GTA.Offsets.Editor.OFFSET_current_creator_worker_offset_refresh * 8).ToString("X")).SetInt(91);
         }
 
+        // The controllers the creators test with: LTS and Capture start fm_mission_controller, the
+        // Mission Creator public_mission_controller, Survival fm_survival_controller, Race
+        // FM_Race_Controler (stunt and some races fm_Bj_race_controler), Deathmatch
+        // FM_Deathmatch_Controler (Rockstar's spelling). All their creators clear the end-test
+        // global before the start, so the controllers read it.
+        private static readonly string[] TestControllers = { "fm_mission_controller", "public_mission_controller", "fm_survival_controller",
+            "fm_race_controler", "fm_bj_race_controler", "fm_deathmatch_controler" };
+        private bool _testRunning;
+        // The creator script that runs, also during a test (when IsInCreator is false).
+        private string _runningCreatorScript;
+
+        private void UpdateTestButton(bool globals)
+        {
+            // Fix Black Screen restarts the running creator's state machine; without one it
+            // would write to the last creator's stale locals.
+            _runningCreatorScript = globals ? GTA.CreatorScripts.FirstOrDefault(GTA.IsScriptRunning) : null;
+            BtnTryFixBlackScreen.IsEnabled = _runningCreatorScript != null;
+            bool running = globals && ((GTA.Offsets.Editor.endtest != 0 && TestControllers.Any(GTA.IsScriptRunning)) || RaceTestRunning());
+            if (running == _testRunning)
+                return;
+            _testRunning = running;
+            if (running)
+                BtnTestMain.Content = TranslateOr("dash_endtest", "End test");
+            else
+                BtnTestMain.SetBinding(Button.ContentProperty, new Binding("Translation[test]") { FallbackValue = "Test" });
+        }
+
+        // The race creator tests inside its own script, without a controller: bit 18 of its test
+        // local is the running test (SET_BIT when the test starts, fm_race_creator).
+        private bool RaceTestRunning()
+        {
+            if (_runningCreatorScript != "fm_race_creator" || GTA.Offsets.Editor.OFFSET_current_creator_test_race == 0)
+                return false;
+            if (curcreatorscanneeded())
+                GTA.Offsets.Editor.localptr = GTA.getCurrentCreatorAddy();
+            var ptr = GTA.Offsets.Editor.localptr;
+            if (ptr == null || GTA.ReadScriptName(ptr[0], ptr[1]) != "fm_race_creator")
+                return false;
+            long address = m.memory(ptr[0], new long[] { ptr[1], GTA.Offsets.Editor.OFFSET_script_local_start, GTA.Offsets.Editor.OFFSET_current_creator_test_race * 8 }).GetAddress();
+            return (m.memory(address.ToString("X")).Get<int>() & (1 << 18)) != 0;
+        }
+
+        // What the race creator's own end-test prompt does: state 9 shows the prompt and shuts the
+        // test's controls down, accepting it sets 10, which ends the test and returns to the creator.
+        private async void EndRaceTest()
+        {
+            if (GTA.Offsets.Editor.OFFSET_current_creator_worker_offset_test_state == 0)
+                return;
+            long state = getCreatorScriptLocalWorkerBase() + GTA.Offsets.Editor.OFFSET_current_creator_worker_offset_test_state * 8;
+            if (state == GTA.Offsets.Editor.OFFSET_current_creator_worker_offset_test_state * 8)
+                return;
+            m.memory(state.ToString("X")).SetInt(9);
+            await System.Threading.Tasks.Task.Delay(300);
+            if (m.IsProcOpen && RaceTestRunning() && m.memory(state.ToString("X")).Get<int>() == 9)
+                m.memory(state.ToString("X")).SetInt(10);
+        }
+
         private void BtnTestMain_Click(object sender, RoutedEventArgs e)
         {
+            if (m.IsProcOpen && _testRunning)
+            {
+                if (RaceTestRunning())
+                {
+                    EndRaceTest();
+                    return;
+                }
+                // What the creator's own "Exit test" prompt does: the controller sees the flag,
+                // fades out and quits, and the creator takes over again.
+                new Global(GTA.Offsets.Editor.endtest).SetInt(1);
+                return;
+            }
             if (m.IsProcOpen)
             {
                 bool needscan = curcreatorscanneeded();
@@ -855,14 +871,20 @@ namespace Xenvious
                     {
                         case "fm_survival_creator":
                             new Global(GTA.Offsets.Editor.current_team_test).SetInt(index);
+                            // Like the creator's own Test entry: bit 18 first, then bit 25 (see public_mission_creator).
+                            Functions.Write.writebinarytoaddy(19, m.memory(GTA.Offsets.Editor.localptr[0], new long[] { GTA.Offsets.Editor.localptr[1], GTA.Offsets.Editor.OFFSET_script_local_start, GTA.Offsets.Editor.OFFSET_current_creator_test_survival * 8 }).GetAddress());
                             Functions.Write.writebinarytoaddy(26, m.memory(GTA.Offsets.Editor.localptr[0], new long[] { GTA.Offsets.Editor.localptr[1], GTA.Offsets.Editor.OFFSET_script_local_start, GTA.Offsets.Editor.OFFSET_current_creator_test_survival * 8 }).GetAddress());
                             break;
                         case "fm_capture_creator":
                             new Global(GTA.Offsets.Editor.current_team_test).SetInt(index);
+                            // Like the creator's own Test entry: bit 18 first, then bit 25 (see public_mission_creator).
+                            Functions.Write.writebinarytoaddy(19, m.memory(GTA.Offsets.Editor.localptr[0], new long[] { GTA.Offsets.Editor.localptr[1], GTA.Offsets.Editor.OFFSET_script_local_start, GTA.Offsets.Editor.OFFSET_current_creator_test_capture * 8 }).GetAddress());
                             Functions.Write.writebinarytoaddy(26, m.memory(GTA.Offsets.Editor.localptr[0], new long[] { GTA.Offsets.Editor.localptr[1], GTA.Offsets.Editor.OFFSET_script_local_start, GTA.Offsets.Editor.OFFSET_current_creator_test_capture * 8 }).GetAddress());
                             break;
                         case "fm_lts_creator":
                             new Global(GTA.Offsets.Editor.current_team_test).SetInt(index);
+                            // Like the creator's own Test entry: bit 18 first, then bit 25 (see public_mission_creator).
+                            Functions.Write.writebinarytoaddy(19, m.memory(GTA.Offsets.Editor.localptr[0], new long[] { GTA.Offsets.Editor.localptr[1], GTA.Offsets.Editor.OFFSET_script_local_start, GTA.Offsets.Editor.OFFSET_current_creator_test_lts * 8 }).GetAddress());
                             Functions.Write.writebinarytoaddy(26, m.memory(GTA.Offsets.Editor.localptr[0], new long[] { GTA.Offsets.Editor.localptr[1], GTA.Offsets.Editor.OFFSET_script_local_start, GTA.Offsets.Editor.OFFSET_current_creator_test_lts * 8 }).GetAddress());
                             break;
                         case "public_mission_creator":
@@ -910,6 +932,8 @@ namespace Xenvious
 
         private void BtnTryFixBlackScreen_Click(object sender, RoutedEventArgs e)
         {
+            if (!m.IsProcOpen || !GTA.CreatorScripts.Any(GTA.IsScriptRunning))
+                return;
             string addy = (getCreatorScriptLocalWorkerBase() + GTA.Offsets.Editor.OFFSET_current_creator_worker_offset_refresh * 8).ToString("X");
             m.memory(addy).SetInt(0);
             m.memory(addy).SetInt(7);

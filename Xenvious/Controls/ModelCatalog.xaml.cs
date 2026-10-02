@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
@@ -93,7 +93,10 @@ namespace Xenvious
         public ModelCatalog()
         {
             InitializeComponent();
+            OnPageToggle.IsChecked = ModelCatalogStore.ShowOnPage;
         }
+
+        private void OnPageToggle_Click(object sender, RoutedEventArgs e) => ModelCatalogStore.ShowOnPage = OnPageToggle.IsChecked == true;
 
         public void Show(string title, IEnumerable<CatalogItem> items, uint currentHash, Action<CatalogItem> onPick)
         {

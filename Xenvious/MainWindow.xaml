@@ -15,6 +15,15 @@
 
     <Window.Resources>
         <ResourceDictionary>
+            <!-- Dialog buttons: the container Border around each button takes the hover colour
+                 (DialogButton_MouseEnter) and press colour (DialogButton_MouseDown), so the whole button
+                 changes, not an inset part of it. The buttons stretch over the whole container, so all
+                 of it is clickable, not only the text. -->
+            <ControlTemplate x:Key="DialogButtonTemplate" TargetType="Button">
+                <Border x:Name="b" Background="Transparent" CornerRadius="5">
+                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                </Border>
+            </ControlTemplate>
             <local:ColorToShadowColorConverter x:Key="ColorConverter"/>
             <local:IsCheckedConverter x:Key="IsCheckedConverter"/>
             <local:FreezeValueConverter x:Key="FreezeValueConverter"/>
@@ -216,6 +225,34 @@
                                 </Trigger>
                                 <Trigger Property="IsEnabled" Value="False">
                                     <Setter Property="Opacity" Value="0.5"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <!-- A sliding switch: green track with a white knob when on, grey when off. -->
+            <Style x:Key="SwitchToggle" TargetType="{x:Type CheckBox}">
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type CheckBox}">
+                            <Border x:Name="track" Width="42" Height="24" CornerRadius="12" Background="{DynamicResource SelectedTileBrush}">
+                                <Ellipse x:Name="knob" Width="20" Height="20" Margin="2,0" Fill="White" HorizontalAlignment="Left">
+                                    <Ellipse.Effect>
+                                        <DropShadowEffect BlurRadius="4" ShadowDepth="1" Opacity="0.35"/>
+                                    </Ellipse.Effect>
+                                </Ellipse>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Setter TargetName="track" Property="Background" Value="{DynamicResource OkBrush}"/>
+                                    <Setter TargetName="knob" Property="HorizontalAlignment" Value="Right"/>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Opacity" Value="0.45"/>
                                 </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
@@ -608,7 +645,9 @@
                                 </Style>
                                 <Style x:Key="DashTile" TargetType="{x:Type Border}">
                                     <Setter Property="Background" Value="{DynamicResource SeactionHeaderBackgroundBrush}"/>
-                                    <Setter Property="CornerRadius" Value="5"/>
+                                    <Setter Property="BorderBrush" Value="{DynamicResource LineBrush}"/>
+                                    <Setter Property="BorderThickness" Value="1"/>
+                                    <Setter Property="CornerRadius" Value="8"/>
                                     <Setter Property="Padding" Value="12,6"/>
                                     <Setter Property="MinHeight" Value="50"/>
                                     <Setter Property="Margin" Value="0,0,10,8"/>
@@ -693,6 +732,12 @@
                                 </Style>
                                 <SolidColorBrush x:Key="DashPropBrush" Color="#FF6C5CE7"/>
                                 <SolidColorBrush x:Key="DashDynamicBrush" Color="#FFC08BFF"/>
+                                <!-- Blip colours of the creator: actors red, vehicles blue, weapons grey. -->
+                                <SolidColorBrush x:Key="DashActorBrush" Color="#FFE03232"/>
+                                <SolidColorBrush x:Key="DashVehicleBrush" Color="#FF2F5C73"/>
+                                <SolidColorBrush x:Key="DashWeaponBrush" Color="#FF8A8A8A"/>
+                                <SolidColorBrush x:Key="DashFixtureBrush" Color="#FFC2570C"/>
+                                <SolidColorBrush x:Key="DashZoneBrush" Color="#FF2EA37F"/>
                                 <!-- Same shapes as Advanced Prop Placement: light main action, grey secondary ones. -->
                                 <Style x:Key="DashButton" TargetType="{x:Type Button}">
                                     <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
@@ -791,9 +836,17 @@
                                             <StackPanel Orientation="Horizontal">
                                                 <Ellipse x:Name="DashStatusCreatorDot" Style="{StaticResource DashDot}"/>
                                                 <StackPanel VerticalAlignment="Center">
-                                                    <TextBlock Style="{StaticResource DashTileLabel}" Text="{Binding Translation[dash_creator_label], FallbackValue=Creator}"/>
+                                                    <!-- Label and value follow the situation (UpdateStatusStrip): creator, test, start, or the game mode. -->
+                                                    <TextBlock x:Name="DashStatusCreatorLabel" Style="{StaticResource DashTileLabel}" Text="{Binding Translation[dash_creator_label], FallbackValue=Creator}"/>
                                                     <TextBlock x:Name="DashStatusCreator" Style="{StaticResource DashTileValue}"/>
                                                 </StackPanel>
+                                            </StackPanel>
+                                        </Border>
+                                        <!-- Game patch "test mode"; the same switch as on the Patches page, remembered. -->
+                                        <Border x:Name="DashTileTest" Style="{StaticResource DashTile}" ToolTip="{Binding Translation[patches_testmode_desc], FallbackValue='Enables test mode features.'}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Style="{StaticResource DashTileLabel}" VerticalAlignment="Center" Margin="0,0,12,0" Text="{Binding Translation[dash_test], FallbackValue='Testmode'}"/>
+                                                <CheckBox x:Name="DashTestSwitch" Style="{StaticResource SwitchToggle}" Click="DashTestSwitch_Click"/>
                                             </StackPanel>
                                         </Border>
                                         <!-- Props and dynamic props in their in-game colours. -->
@@ -874,7 +927,14 @@
                                                 <Button x:Name="BtnPublishMain" Style="{StaticResource DashButton}" Click="BtnPublishMain_Click" Content="{Binding Translation[publish], FallbackValue=Publish}"/>
                                                 <Rectangle Height="1" Fill="{DynamicResource LineBrush}" Margin="0,2,8,8"/>
                                                 <Button x:Name="BtnSkipTest" Style="{StaticResource DashButton}" Click="BtnSkipTest_Click" Content="{Binding Translation[skiptest], FallbackValue='Skip Testing'}"/>
-                                                <Button x:Name="BtnTryFixBlackScreen" Style="{StaticResource DashButton}" Click="BtnTryFixBlackScreen_Click" Content="{Binding Translation[dash_fixblack], FallbackValue='Fix Black Screen'}"/>
+                                                <Rectangle Height="1" Fill="{DynamicResource LineBrush}" Margin="0,2,8,8"/>
+                                                <!-- Stuck: first reload the creator (only while one runs), else leave for story mode. -->
+                                                <TextBlock Text="{Binding Translation[dash_stuck], FallbackValue='Game stuck?'}" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource NavMutedBrush}" Margin="0,0,8,6"/>
+                                                <Button x:Name="BtnTryFixBlackScreen" Style="{StaticResource DashButton}" Click="BtnTryFixBlackScreen_Click" Content="{Binding Translation[dash_fixblack], FallbackValue='Fix Black Screen'}"
+                                                        ToolTipService.ShowOnDisabled="True" ToolTip="{Binding Translation[dash_fixblack_tip], FallbackValue='The creator runs but the screen stays black: reloads the creator. Only while a creator runs.'}"/>
+                                                <Button x:Name="BtnStoryMode" Style="{StaticResource DashButton}" Click="BtnStoryMode_Click" Content="{Binding Translation[dash_storymode], FallbackValue='Back to Story Mode'}"
+                                                        ToolTip="{Binding Translation[dash_storymode_tip], FallbackValue='When the creator or a test is stuck: ends both and goes back to story mode.'}"/>
+                                                <TextBlock Text="{Binding Translation[dash_stuck_hint], FallbackValue='Try Fix Black Screen first. If it does not help or no creator runs any more: back to story mode.'}" FontSize="11" TextWrapping="Wrap" Foreground="{DynamicResource FaintTextBrush}" Margin="0,0,8,8"/>
                                                 <Rectangle Height="1" Fill="{DynamicResource LineBrush}" Margin="0,2,8,8"/>
                                                 <Button x:Name="BtnDashBackupMap" Style="{StaticResource DashButton}" Click="BtnDashBackupMap_Click" Content="{Binding Translation[dash_backupmap], FallbackValue='Backup Map'}"/>
                                                 <Button x:Name="BtnDashReloadMap" Style="{StaticResource DashButton}" Click="BtnDashReloadMap_Click" Content="{Binding Translation[dash_reloadmap], FallbackValue='Reload Map'}"/>
@@ -886,7 +946,7 @@
                                                         <ColumnDefinition Width="Auto"/>
                                                     </Grid.ColumnDefinitions>
                                                     <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[developermode], FallbackValue='Developer Mode'}"/>
-                                                    <CheckBox x:Name="cb_dev" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cb_dev_Checked" Unchecked="cb_dev_Checked"/>
+                                                    <CheckBox x:Name="cb_dev" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cb_dev_Checked" Unchecked="cb_dev_Checked" Click="cb_dev_Click"/>
                                                 </Grid>
                                                 <Grid Style="{StaticResource FormRow}" Margin="0,0,8,0">
                                                     <Grid.ColumnDefinitions>
@@ -1008,6 +1068,15 @@
                                                                                 <Button x:Name="BtnJobView" Focusable="False" FontSize="14" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" Click="JobImage_MouseLeftButtonDown" Content="{Binding Translation[view], FallbackValue=display}"/>
                                                                             </Border>
                                                                             <Border CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="10 3" Height="28" Width="170">
+                                                                                <Border.Resources>
+                                                                                    <Style TargetType="Border">
+                                                                                        <Style.Triggers>
+                                                                                            <DataTrigger Binding="{Binding ElementName=JobImage, Path=Source}" Value="{StaticResource emptyblank}">
+                                                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                                                            </DataTrigger>
+                                                                                        </Style.Triggers>
+                                                                                    </Style>
+                                                                                </Border.Resources>
                                                                                 <Button x:Name="BtnJobImageSave" Focusable="False" FontSize="14" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" Click="BtnJobImageSave_Click" Content="{Binding Translation[saveimage], FallbackValue=Save Image}"/>
                                                                             </Border>
                                                                             <Border CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="10 3" Height="28" Width="170">
@@ -1527,7 +1596,7 @@
                                                                 <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,12" Tag="EntryBar">
                                                                     <DockPanel>
                                                                         <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-                                                                            <Button x:Name="BtnPropsToDynamic" Content="{Binding Translation[props_to_dynamic], FallbackValue='→ Dynamic'}" Click="BtnPropsToDynamic_Click" ToolTip="{Binding Translation[props_to_dynamic_tip], FallbackValue='Verschiebt den gewählten Prop in die andere Liste.'}" Style="{StaticResource FormButton}" Height="32" Padding="14,0" Margin="0,0,10,0"/>
+                                                                            <Button x:Name="BtnPropsToDynamic" Content="{Binding Translation[props_to_dynamic], FallbackValue='Move to dynamic'}" Click="BtnPropsToDynamic_Click" ToolTip="{Binding Translation[props_to_dynamic_tip], FallbackValue='Verschiebt den gewählten Prop in die andere Liste.'}" Style="{StaticResource BarButton}"/>
                                                                             <!-- ‹ number › : steps through the entries without opening the list. -->
                                                                             <Border Background="{DynamicResource ComboBoxBackground}" BorderBrush="{DynamicResource ComboBoxBorder}" BorderThickness="1" CornerRadius="4" Height="32" Margin="0,0,10,0">
                                                                                 <StackPanel Orientation="Horizontal">
@@ -2136,7 +2205,7 @@
                                                                 <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,12" Tag="EntryBar">
                                                                     <DockPanel>
                                                                         <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-                                                                            <Button x:Name="BtnDPropsToStatic" Content="{Binding Translation[props_to_static], FallbackValue='→ Static'}" Click="BtnDPropsToStatic_Click" ToolTip="{Binding Translation[props_to_static_tip], FallbackValue='Verschiebt den gewählten Prop in die andere Liste.'}" Style="{StaticResource FormButton}" Height="32" Padding="14,0" Margin="0,0,10,0"/>
+                                                                            <Button x:Name="BtnDPropsToStatic" Content="{Binding Translation[props_to_static], FallbackValue='Move to static'}" Click="BtnDPropsToStatic_Click" ToolTip="{Binding Translation[props_to_static_tip], FallbackValue='Verschiebt den gewählten Prop in die andere Liste.'}" Style="{StaticResource BarButton}"/>
                                                                             <!-- ‹ number › : steps through the entries without opening the list. -->
                                                                             <Border Background="{DynamicResource ComboBoxBackground}" BorderBrush="{DynamicResource ComboBoxBorder}" BorderThickness="1" CornerRadius="4" Height="32" Margin="0,0,10,0">
                                                                                 <StackPanel Orientation="Horizontal">
@@ -2500,6 +2569,7 @@
                                                     <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,12" Tag="EntryBar">
                                                         <DockPanel>
                                                             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                                                                <Button x:Name="BtnVehBlip" Style="{StaticResource BarButton}" Click="BtnVehBlip_Click" Content="+ Blip"/>
                                                                 <!-- ‹ number › : steps through the entries without opening the list. -->
                                                                 <Border Background="{DynamicResource ComboBoxBackground}" BorderBrush="{DynamicResource ComboBoxBorder}" BorderThickness="1" CornerRadius="4" Height="32" Margin="0,0,10,0">
                                                                     <StackPanel Orientation="Horizontal">
@@ -2927,6 +2997,7 @@
                                                                             <CheckBox x:Name="cb_veh_sirens" Checked="cb_veh_sirens_Checked" Unchecked="cb_veh_sirens_Checked" IsEnabled="False" Style="{StaticResource ChipToggle}" Content="{Binding Translation[vehsirens], FallbackValue=Vehicle Sirens}"/>
                                                                             <CheckBox x:Name="cb_veh_sirens_audio" Checked="cb_veh_sirens_audio_Checked" Unchecked="cb_veh_sirens_audio_Checked" IsEnabled="False" Style="{StaticResource ChipToggle}" Content="{Binding Translation[vehsirensaudio], FallbackValue=Vehicle Sirens Audio}"/>
                                                                             <CheckBox x:Name="cb_veh_box" Checked="cb_veh_box_Checked" Unchecked="cb_veh_box_Checked" IsEnabled="False" Style="{StaticResource ChipToggle}" Content="{Binding Translation[vehbox], FallbackValue=Spawn Boxes}"/>
+                                                                            <CheckBox x:Name="cb_veh_blipoff" Checked="cb_veh_blipoff_Checked" Unchecked="cb_veh_blipoff_Checked" IsEnabled="False" Style="{StaticResource ChipToggle}" Content="{Binding Translation[blip_off], FallbackValue=Hide map icon}"/>
                                                                         </WrapPanel>
                                                                     </StackPanel>
                                                                 </local:SectionCard>
@@ -3695,6 +3766,8 @@
 
                                                                 <Button x:Name="BtnRaceAVEH" Style="{DynamicResource CustomButton}"  Height="45" Content="{Binding Translation[aveh], FallbackValue=Available Vehicles}" Click="BtnRaceAVEH_Click" FontSize="20" Background="{DynamicResource ButtonHoverBackgroundBrush}"/>
 
+                                                                <Button x:Name="BtnRaceTune" Style="{DynamicResource CustomButton}"  Height="45" Content="{Binding Translation[tv_page], FallbackValue=Test Vehicle}" Click="BtnRaceTune_Click" FontSize="20" Background="{DynamicResource ButtonHoverBackgroundBrush}"/>
+
                                                                 <Button x:Name="BtnRaceArena" Style="{DynamicResource CustomButton}" Height="45" Content="{Binding Translation[arena], FallbackValue=Arena}" Click="BtnRaceArena_Click" FontSize="20" Background="{DynamicResource ButtonHoverBackgroundBrush}" Visibility="Collapsed"/>
 
                                                             </StackPanel>
@@ -4217,392 +4290,13 @@
                                                         </TabItem>
                                                         
                                                         <TabItem x:Name="PageInnerRaceAVEH" Header="AVEH">
+                                                            <!-- Available vehicles, built in code: Controls/RaceVehiclesView.cs. -->
+                                                            <local:RaceVehiclesView x:Name="raceVehiclesView" Margin="10,0"/>
+                                                        </TabItem>
 
-                                                            <!-- Card layout (docs/handoff/auto_page.py): one card per old column, headings as sub titles. -->
-                                                            <DockPanel Margin="10,0">
-
-                                                                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                                                    <local:MasonryPanel Margin="0,12,0,12">
-                                                                        <StackPanel>
-                                                                            <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
-                                                                                <Expander Style="{StaticResource CardExpander}" IsExpanded="True" Header="{Binding Translation[advanced], FallbackValue=Advanced}">
-                                                                                    <StackPanel Margin="14,12,14,4">
-                                                                                    <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[vc_header], FallbackValue=vehicle class}"/>
-                                                                                    <ComboBox x:Name="ddRaceVehClass" FontFamily="{DynamicResource Volte}" SelectionChanged="ddRaceVehClass_SelectionChanged" DropDownOpened="ddRaceVehClass_DropDownOpened" Height="30" Margin="0,0,0,10"/>
-                                                                                    </StackPanel>
-                                                                                </Expander>
-                                                                            </Border>
-                                                                            <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
-                                                                                <DockPanel>
-                                                                                    <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
-                                                                                        <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[vc_coupe], FallbackValue=Coupe}"/>
-                                                                                    </Border>
-                                                                                    <StackPanel Margin="14,12,14,4">
-                                                                                    <Grid Style="{StaticResource FormRow}">
-                                                                                        <Grid.ColumnDefinitions>
-                                                                                            <ColumnDefinition Width="*"/>
-                                                                                            <ColumnDefinition Width="46"/>
-                                                                                        </Grid.ColumnDefinitions>
-                                                                                        <TextBlock Style="{StaticResource FormLabel}" Text="cbavehCOUPE"/>
-                                                                                        <CheckBox x:Name="cbavehCOUPE" Background="{DynamicResource SectionBackgroundBrush}" Checked="cbavehCOUPE_Checked" Unchecked="cbavehCOUPE_Checked" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                    </Grid>
-                                                                                    <ListView x:Name="avehCOUPEList" SelectionMode="Multiple" Margin="0 5 0 0" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource TextColor}" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding .}" DisplayMemberPath="Name" SelectionChanged="avehCOUPEList_SelectionChanged"/>
-                                                                                    </StackPanel>
-                                                                                </DockPanel>
-                                                                            </Border>
-                                                                            <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
-                                                                                <DockPanel>
-                                                                                    <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
-                                                                                        <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[vc_super], FallbackValue=Super}"/>
-                                                                                    </Border>
-                                                                                    <StackPanel Margin="14,12,14,4">
-                                                                                    <Grid Style="{StaticResource FormRow}">
-                                                                                        <Grid.ColumnDefinitions>
-                                                                                            <ColumnDefinition Width="*"/>
-                                                                                            <ColumnDefinition Width="46"/>
-                                                                                        </Grid.ColumnDefinitions>
-                                                                                        <TextBlock Style="{StaticResource FormLabel}" Text="cbavehSuper"/>
-                                                                                        <CheckBox x:Name="cbavehSuper" Background="{DynamicResource SectionBackgroundBrush}" Checked="cbavehSuper_Checked" Unchecked="cbavehSuper_Checked" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                    </Grid>
-                                                                                    <ListView x:Name="avehSuperList" SelectionMode="Multiple" Margin="0 5 0 0" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource TextColor}" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding .}" DisplayMemberPath="Name" SelectionChanged="avehSuperList_SelectionChanged"/>
-                                                                                    </StackPanel>
-                                                                                </DockPanel>
-                                                                            </Border>
-                                                                            <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
-                                                                                <DockPanel>
-                                                                                    <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
-                                                                                        <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[vc_utility], FallbackValue=Utility}"/>
-                                                                                    </Border>
-                                                                                    <StackPanel Margin="14,12,14,4">
-                                                                                    <Grid Style="{StaticResource FormRow}">
-                                                                                        <Grid.ColumnDefinitions>
-                                                                                            <ColumnDefinition Width="*"/>
-                                                                                            <ColumnDefinition Width="46"/>
-                                                                                        </Grid.ColumnDefinitions>
-                                                                                        <TextBlock Style="{StaticResource FormLabel}" Text="cbavehUtility"/>
-                                                                                        <CheckBox x:Name="cbavehUtility" Background="{DynamicResource SectionBackgroundBrush}" Checked="cbavehUtility_Checked" Unchecked="cbavehUtility_Checked" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                    </Grid>
-                                                                                    <ListView x:Name="avehUtilityList" SelectionMode="Multiple" Margin="0 5 0 0" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource TextColor}" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding .}" DisplayMemberPath="Name" SelectionChanged="avehUtilityList_SelectionChanged"/>
-                                                                                    </StackPanel>
-                                                                                </DockPanel>
-                                                                            </Border>
-                                                                            <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
-                                                                                <DockPanel>
-                                                                                    <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
-                                                                                        <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[vc_weaponized], FallbackValue=Weaponized}"/>
-                                                                                    </Border>
-                                                                                    <StackPanel Margin="14,12,14,4">
-                                                                                    <Grid Style="{StaticResource FormRow}">
-                                                                                        <Grid.ColumnDefinitions>
-                                                                                            <ColumnDefinition Width="*"/>
-                                                                                            <ColumnDefinition Width="46"/>
-                                                                                        </Grid.ColumnDefinitions>
-                                                                                        <TextBlock Style="{StaticResource FormLabel}" Text="cbavehWeaponized"/>
-                                                                                        <CheckBox x:Name="cbavehWeaponized" Background="{DynamicResource SectionBackgroundBrush}" Checked="cbavehWeaponized_Checked" Unchecked="cbavehWeaponized_Checked" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                    </Grid>
-                                                                                    <ListView x:Name="avehWeaponizedList" SelectionMode="Multiple" Margin="0 5 0 0" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource TextColor}" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding .}" DisplayMemberPath="Name" SelectionChanged="avehWeaponizedList_SelectionChanged"/>
-                                                                                    </StackPanel>
-                                                                                </DockPanel>
-                                                                            </Border>
-                                                                            <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
-                                                                                <DockPanel>
-                                                                                    <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
-                                                                                        <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[vc_tuner], FallbackValue=Tuner}"/>
-                                                                                    </Border>
-                                                                                    <StackPanel Margin="14,12,14,4">
-                                                                                    <Grid Style="{StaticResource FormRow}">
-                                                                                        <Grid.ColumnDefinitions>
-                                                                                            <ColumnDefinition Width="*"/>
-                                                                                            <ColumnDefinition Width="46"/>
-                                                                                        </Grid.ColumnDefinitions>
-                                                                                        <TextBlock Style="{StaticResource FormLabel}" Text="cbavehTuner"/>
-                                                                                        <CheckBox x:Name="cbavehTuner" Background="{DynamicResource SectionBackgroundBrush}" Checked="cbavehTuner_Checked" Unchecked="cbavehTuner_Checked" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                    </Grid>
-                                                                                    <ListView x:Name="avehTunerList" SelectionMode="Multiple" Margin="0 5 0 0" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource TextColor}" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding .}" DisplayMemberPath="Name" SelectionChanged="avehTunerList_SelectionChanged"/>
-                                                                                    </StackPanel>
-                                                                                </DockPanel>
-                                                                            </Border>
-                                                                        </StackPanel>
-                                                                        <StackPanel>
-                                                                            <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
-                                                                                <DockPanel>
-                                                                                    <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
-                                                                                        <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[vc_compacts], FallbackValue=Compacts}"/>
-                                                                                    </Border>
-                                                                                    <StackPanel Margin="14,12,14,4">
-                                                                                    <Grid Style="{StaticResource FormRow}">
-                                                                                        <Grid.ColumnDefinitions>
-                                                                                            <ColumnDefinition Width="*"/>
-                                                                                            <ColumnDefinition Width="46"/>
-                                                                                        </Grid.ColumnDefinitions>
-                                                                                        <TextBlock Style="{StaticResource FormLabel}" Text="cbavehCompact"/>
-                                                                                        <CheckBox x:Name="cbavehCompact" Background="{DynamicResource SectionBackgroundBrush}" Checked="cbavehCompact_Checked" Unchecked="cbavehCompact_Checked" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                    </Grid>
-                                                                                    <ListView x:Name="avehCompactList" SelectionMode="Multiple" Margin="0 5 0 0" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource TextColor}" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding .}" DisplayMemberPath="Name" SelectionChanged="avehCompactList_SelectionChanged"/>
-                                                                                    </StackPanel>
-                                                                                </DockPanel>
-                                                                            </Border>
-                                                                            <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
-                                                                                <DockPanel>
-                                                                                    <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
-                                                                                        <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[vc_muscle], FallbackValue=Muscle}"/>
-                                                                                    </Border>
-                                                                                    <StackPanel Margin="14,12,14,4">
-                                                                                    <Grid Style="{StaticResource FormRow}">
-                                                                                        <Grid.ColumnDefinitions>
-                                                                                            <ColumnDefinition Width="*"/>
-                                                                                            <ColumnDefinition Width="46"/>
-                                                                                        </Grid.ColumnDefinitions>
-                                                                                        <TextBlock Style="{StaticResource FormLabel}" Text="cbavehMuscle"/>
-                                                                                        <CheckBox x:Name="cbavehMuscle" Background="{DynamicResource SectionBackgroundBrush}" Checked="cbavehMuscle_Checked" Unchecked="cbavehMuscle_Checked" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                    </Grid>
-                                                                                    <ListView x:Name="avehMuscleList" SelectionMode="Multiple" Margin="0 5 0 0" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource TextColor}" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding .}" DisplayMemberPath="Name" SelectionChanged="avehMuscleList_SelectionChanged"/>
-                                                                                    </StackPanel>
-                                                                                </DockPanel>
-                                                                            </Border>
-                                                                            <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
-                                                                                <DockPanel>
-                                                                                    <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
-                                                                                        <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[vc_motorcycle], FallbackValue=Motorcycle}"/>
-                                                                                    </Border>
-                                                                                    <StackPanel Margin="14,12,14,4">
-                                                                                    <Grid Style="{StaticResource FormRow}">
-                                                                                        <Grid.ColumnDefinitions>
-                                                                                            <ColumnDefinition Width="*"/>
-                                                                                            <ColumnDefinition Width="46"/>
-                                                                                        </Grid.ColumnDefinitions>
-                                                                                        <TextBlock Style="{StaticResource FormLabel}" Text="cbavehMotorcycles"/>
-                                                                                        <CheckBox x:Name="cbavehMotorcycles" Background="{DynamicResource SectionBackgroundBrush}" Checked="cbavehMotorcycles_Checked" Unchecked="cbavehMotorcycles_Checked" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                    </Grid>
-                                                                                    <ListView x:Name="avehMotorcyclesList" SelectionMode="Multiple" Margin="0 5 0 0" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource TextColor}" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding .}" DisplayMemberPath="Name" SelectionChanged="avehMotorcyclesList_SelectionChanged"/>
-                                                                                    </StackPanel>
-                                                                                </DockPanel>
-                                                                            </Border>
-                                                                            <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
-                                                                                <DockPanel>
-                                                                                    <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
-                                                                                        <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[vc_van], FallbackValue=Vans}"/>
-                                                                                    </Border>
-                                                                                    <StackPanel Margin="14,12,14,4">
-                                                                                    <Grid Style="{StaticResource FormRow}">
-                                                                                        <Grid.ColumnDefinitions>
-                                                                                            <ColumnDefinition Width="*"/>
-                                                                                            <ColumnDefinition Width="46"/>
-                                                                                        </Grid.ColumnDefinitions>
-                                                                                        <TextBlock Style="{StaticResource FormLabel}" Text="cbavehVans"/>
-                                                                                        <CheckBox x:Name="cbavehVans" Background="{DynamicResource SectionBackgroundBrush}" Checked="cbavehVans_Checked" Unchecked="cbavehVans_Checked" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                    </Grid>
-                                                                                    <ListView x:Name="avehVansList" SelectionMode="Multiple" Margin="0 5 0 0" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource TextColor}" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding .}" DisplayMemberPath="Name" SelectionChanged="avehVansList_SelectionChanged"/>
-                                                                                    </StackPanel>
-                                                                                </DockPanel>
-                                                                            </Border>
-                                                                            <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
-                                                                                <DockPanel>
-                                                                                    <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
-                                                                                        <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[vc_arena_contender], FallbackValue=Arena Contender}"/>
-                                                                                    </Border>
-                                                                                    <StackPanel Margin="14,12,14,4">
-                                                                                    <Grid Style="{StaticResource FormRow}">
-                                                                                        <Grid.ColumnDefinitions>
-                                                                                            <ColumnDefinition Width="*"/>
-                                                                                            <ColumnDefinition Width="46"/>
-                                                                                        </Grid.ColumnDefinitions>
-                                                                                        <TextBlock Style="{StaticResource FormLabel}" Text="cbavehArena_Contender"/>
-                                                                                        <CheckBox x:Name="cbavehArena_Contender" Background="{DynamicResource SectionBackgroundBrush}" Checked="cbavehArena_Contender_Checked" Unchecked="cbavehArena_Contender_Checked" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                    </Grid>
-                                                                                    <ListView x:Name="avehArena_ContenderList" SelectionMode="Multiple" Margin="0 5 0 0" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource TextColor}" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding .}" DisplayMemberPath="Name" SelectionChanged="avehArena_ContenderList_SelectionChanged"/>
-                                                                                    </StackPanel>
-                                                                                </DockPanel>
-                                                                            </Border>
-                                                                        </StackPanel>
-                                                                        <StackPanel>
-                                                                            <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
-                                                                                <DockPanel>
-                                                                                    <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
-                                                                                        <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[vc_sedan], FallbackValue=Sedan}"/>
-                                                                                    </Border>
-                                                                                    <StackPanel Margin="14,12,14,4">
-                                                                                    <Grid Style="{StaticResource FormRow}">
-                                                                                        <Grid.ColumnDefinitions>
-                                                                                            <ColumnDefinition Width="*"/>
-                                                                                            <ColumnDefinition Width="46"/>
-                                                                                        </Grid.ColumnDefinitions>
-                                                                                        <TextBlock Style="{StaticResource FormLabel}" Text="cbavehSedan"/>
-                                                                                        <CheckBox x:Name="cbavehSedan" Background="{DynamicResource SectionBackgroundBrush}" Checked="cbavehSedan_Checked" Unchecked="cbavehSedan_Checked" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                    </Grid>
-                                                                                    <ListView x:Name="avehSedanList" SelectionMode="Multiple" Margin="0 5 0 0" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource TextColor}" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding .}" DisplayMemberPath="Name" SelectionChanged="avehSedanList_SelectionChanged"/>
-                                                                                    </StackPanel>
-                                                                                </DockPanel>
-                                                                            </Border>
-                                                                            <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
-                                                                                <DockPanel>
-                                                                                    <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
-                                                                                        <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[vc_sports_classic], FallbackValue=Sports Classics}"/>
-                                                                                    </Border>
-                                                                                    <StackPanel Margin="14,12,14,4">
-                                                                                    <Grid Style="{StaticResource FormRow}">
-                                                                                        <Grid.ColumnDefinitions>
-                                                                                            <ColumnDefinition Width="*"/>
-                                                                                            <ColumnDefinition Width="46"/>
-                                                                                        </Grid.ColumnDefinitions>
-                                                                                        <TextBlock Style="{StaticResource FormLabel}" Text="cbavehSports_Classics"/>
-                                                                                        <CheckBox x:Name="cbavehSports_Classics" Background="{DynamicResource SectionBackgroundBrush}" Checked="cbavehSports_Classics_Checked" Unchecked="cbavehSports_Classics_Checked" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                    </Grid>
-                                                                                    <ListView x:Name="avehSports_ClassicsList" SelectionMode="Multiple" Margin="0 5 0 0" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource TextColor}" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding .}" DisplayMemberPath="Name" SelectionChanged="avehSports_ClassicsList_SelectionChanged"/>
-                                                                                    </StackPanel>
-                                                                                </DockPanel>
-                                                                            </Border>
-                                                                            <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
-                                                                                <DockPanel>
-                                                                                    <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
-                                                                                        <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[vc_off_road], FallbackValue=Off Road}"/>
-                                                                                    </Border>
-                                                                                    <StackPanel Margin="14,12,14,4">
-                                                                                    <Grid Style="{StaticResource FormRow}">
-                                                                                        <Grid.ColumnDefinitions>
-                                                                                            <ColumnDefinition Width="*"/>
-                                                                                            <ColumnDefinition Width="46"/>
-                                                                                        </Grid.ColumnDefinitions>
-                                                                                        <TextBlock Style="{StaticResource FormLabel}" Text="cbavehOff_Road"/>
-                                                                                        <CheckBox x:Name="cbavehOff_Road" Background="{DynamicResource SectionBackgroundBrush}" Checked="cbavehOff_Road_Checked" Unchecked="cbavehOff_Road_Checked" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                    </Grid>
-                                                                                    <ListView x:Name="avehOff_RoadList" SelectionMode="Multiple" Margin="0 5 0 0" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource TextColor}" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding .}" DisplayMemberPath="Name" SelectionChanged="avehOff_RoadList_SelectionChanged"/>
-                                                                                    </StackPanel>
-                                                                                </DockPanel>
-                                                                            </Border>
-                                                                            <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
-                                                                                <DockPanel>
-                                                                                    <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
-                                                                                        <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[vc_cycle], FallbackValue=Cycle}"/>
-                                                                                    </Border>
-                                                                                    <StackPanel Margin="14,12,14,4">
-                                                                                    <Grid Style="{StaticResource FormRow}">
-                                                                                        <Grid.ColumnDefinitions>
-                                                                                            <ColumnDefinition Width="*"/>
-                                                                                            <ColumnDefinition Width="46"/>
-                                                                                        </Grid.ColumnDefinitions>
-                                                                                        <TextBlock Style="{StaticResource FormLabel}" Text="cbavehCycles"/>
-                                                                                        <CheckBox x:Name="cbavehCycles" Background="{DynamicResource SectionBackgroundBrush}" Checked="cbavehCycles_Checked" Unchecked="cbavehCycles_Checked" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                    </Grid>
-                                                                                    <ListView x:Name="avehCyclesList" SelectionMode="Multiple" Margin="0 5 0 0" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource TextColor}" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding .}" DisplayMemberPath="Name" SelectionChanged="avehCyclesList_SelectionChanged"/>
-                                                                                    </StackPanel>
-                                                                                </DockPanel>
-                                                                            </Border>
-                                                                            <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
-                                                                                <DockPanel>
-                                                                                    <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
-                                                                                        <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[vc_open_wheel], FallbackValue=Open Wheel}"/>
-                                                                                    </Border>
-                                                                                    <StackPanel Margin="14,12,14,4">
-                                                                                    <Grid Style="{StaticResource FormRow}">
-                                                                                        <Grid.ColumnDefinitions>
-                                                                                            <ColumnDefinition Width="*"/>
-                                                                                            <ColumnDefinition Width="46"/>
-                                                                                        </Grid.ColumnDefinitions>
-                                                                                        <TextBlock Style="{StaticResource FormLabel}" Text="cbavehOpenWheel"/>
-                                                                                        <CheckBox x:Name="cbavehOpenWheel" Background="{DynamicResource SectionBackgroundBrush}" Checked="cbavehOpenWheel_Checked" Unchecked="cbavehOpenWheel_Checked" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                    </Grid>
-                                                                                    <ListView x:Name="avehOpenWheelList" SelectionMode="Multiple" Margin="0 5 0 0" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource TextColor}" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding .}" DisplayMemberPath="Name" SelectionChanged="avehOpenWheelList_SelectionChanged"/>
-                                                                                    </StackPanel>
-                                                                                </DockPanel>
-                                                                            </Border>
-                                                                        </StackPanel>
-                                                                        <StackPanel>
-                                                                            <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
-                                                                                <DockPanel>
-                                                                                    <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
-                                                                                        <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[vc_suv], FallbackValue=SUV}"/>
-                                                                                    </Border>
-                                                                                    <StackPanel Margin="14,12,14,4">
-                                                                                    <Grid Style="{StaticResource FormRow}">
-                                                                                        <Grid.ColumnDefinitions>
-                                                                                            <ColumnDefinition Width="*"/>
-                                                                                            <ColumnDefinition Width="46"/>
-                                                                                        </Grid.ColumnDefinitions>
-                                                                                        <TextBlock Style="{StaticResource FormLabel}" Text="cbavehSUV"/>
-                                                                                        <CheckBox x:Name="cbavehSUV" Background="{DynamicResource SectionBackgroundBrush}" Checked="cbavehSUV_Checked" Unchecked="cbavehSUV_Checked" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                    </Grid>
-                                                                                    <ListView x:Name="avehSUVList" SelectionMode="Multiple" Margin="0 5 0 0" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource TextColor}" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding .}" DisplayMemberPath="Name" SelectionChanged="avehSUVList_SelectionChanged"/>
-                                                                                    </StackPanel>
-                                                                                </DockPanel>
-                                                                            </Border>
-                                                                            <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
-                                                                                <DockPanel>
-                                                                                    <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
-                                                                                        <TextBlock Style="{StaticResource DashCardTitle}" Text="vc_sport"/>
-                                                                                    </Border>
-                                                                                    <StackPanel Margin="14,12,14,4">
-                                                                                    <Grid Style="{StaticResource FormRow}">
-                                                                                        <Grid.ColumnDefinitions>
-                                                                                            <ColumnDefinition Width="*"/>
-                                                                                            <ColumnDefinition Width="46"/>
-                                                                                        </Grid.ColumnDefinitions>
-                                                                                        <TextBlock Style="{StaticResource FormLabel}" Text="cbavehSports"/>
-                                                                                        <CheckBox x:Name="cbavehSports" Background="{DynamicResource SectionBackgroundBrush}" Checked="cbavehSports_Checked" Unchecked="cbavehSports_Checked" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                    </Grid>
-                                                                                    <ListView x:Name="avehSportsList" SelectionMode="Multiple" Margin="0 5 0 0" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource TextColor}" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding .}" DisplayMemberPath="Name" SelectionChanged="avehSportsList_SelectionChanged"/>
-                                                                                    </StackPanel>
-                                                                                </DockPanel>
-                                                                            </Border>
-                                                                            <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
-                                                                                <DockPanel>
-                                                                                    <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
-                                                                                        <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[vc_industrial], FallbackValue=Industrial}"/>
-                                                                                    </Border>
-                                                                                    <StackPanel Margin="14,12,14,4">
-                                                                                    <Grid Style="{StaticResource FormRow}">
-                                                                                        <Grid.ColumnDefinitions>
-                                                                                            <ColumnDefinition Width="*"/>
-                                                                                            <ColumnDefinition Width="46"/>
-                                                                                        </Grid.ColumnDefinitions>
-                                                                                        <TextBlock Style="{StaticResource FormLabel}" Text="cbavehIndustrial"/>
-                                                                                        <CheckBox x:Name="cbavehIndustrial" Background="{DynamicResource SectionBackgroundBrush}" Checked="cbavehIndustrial_Checked" Unchecked="cbavehIndustrial_Checked" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                    </Grid>
-                                                                                    <ListView x:Name="avehIndustrialList" SelectionMode="Multiple" Margin="0 5 0 0" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource TextColor}" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding .}" DisplayMemberPath="Name" SelectionChanged="avehIndustrialList_SelectionChanged"/>
-                                                                                    </StackPanel>
-                                                                                </DockPanel>
-                                                                            </Border>
-                                                                            <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
-                                                                                <DockPanel>
-                                                                                    <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
-                                                                                        <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[vc_special], FallbackValue=Special}"/>
-                                                                                    </Border>
-                                                                                    <StackPanel Margin="14,12,14,4">
-                                                                                    <Grid Style="{StaticResource FormRow}">
-                                                                                        <Grid.ColumnDefinitions>
-                                                                                            <ColumnDefinition Width="*"/>
-                                                                                            <ColumnDefinition Width="46"/>
-                                                                                        </Grid.ColumnDefinitions>
-                                                                                        <TextBlock Style="{StaticResource FormLabel}" Text="cbavehSpecial"/>
-                                                                                        <CheckBox x:Name="cbavehSpecial" Background="{DynamicResource SectionBackgroundBrush}" Checked="cbavehSpecial_Checked" Unchecked="cbavehSpecial_Checked" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                    </Grid>
-                                                                                    <ListView x:Name="avehSpecialList" SelectionMode="Multiple" Margin="0 5 0 0" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource TextColor}" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding .}" DisplayMemberPath="Name" SelectionChanged="avehSpecialList_SelectionChanged"/>
-                                                                                    </StackPanel>
-                                                                                </DockPanel>
-                                                                            </Border>
-                                                                            <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
-                                                                                <DockPanel>
-                                                                                    <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
-                                                                                        <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[vc_go_kart], FallbackValue=Go Kart}"/>
-                                                                                    </Border>
-                                                                                    <StackPanel Margin="14,12,14,4">
-                                                                                    <Grid Style="{StaticResource FormRow}">
-                                                                                        <Grid.ColumnDefinitions>
-                                                                                            <ColumnDefinition Width="*"/>
-                                                                                            <ColumnDefinition Width="46"/>
-                                                                                        </Grid.ColumnDefinitions>
-                                                                                        <TextBlock Style="{StaticResource FormLabel}" Text="cbavehGoKart"/>
-                                                                                        <CheckBox x:Name="cbavehGoKart" Background="{DynamicResource SectionBackgroundBrush}" Checked="cbavehGoKart_Checked" Unchecked="cbavehGoKart_Checked" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                    </Grid>
-                                                                                    <ListView x:Name="avehGoKartList" SelectionMode="Multiple" Margin="0 5 0 0" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource TextColor}" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding .}" DisplayMemberPath="Name" SelectionChanged="avehGoKartList_SelectionChanged"/>
-                                                                                    </StackPanel>
-                                                                                </DockPanel>
-                                                                            </Border>
-                                                                        </StackPanel>
-                                                                    </local:MasonryPanel>
-                                                                </ScrollViewer>
-                                                            </DockPanel>
-
+                                                        <TabItem x:Name="PageInnerRaceTune" Header="Tune">
+                                                            <!-- Test vehicle tuning, built in code: Controls/TestVehicleTuneView.cs. -->
+                                                            <local:TestVehicleTuneView Margin="10,0"/>
                                                         </TabItem>
 
                                                         <TabItem x:Name="PageInnerRaceArena" Header="Arena"/>
@@ -7132,24 +6826,6 @@
                                                                                         <TextBox x:Name="tbkillmcf" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbkillmcf_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
                                                                                         <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[mcp], FallbackValue=mcp}"/>
                                                                                         <TextBox x:Name="tbkillmcp" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbkillmcp_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                        <Rectangle Height="1" Fill="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="0,4,0,12"/>
-                                                                                        <Grid Style="{StaticResource FormRow}">
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="46"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[missiontpmarkonmap], FallbackValue=Freeze Values}"/>
-                                                                                            <CheckBox x:Name="cbmissionkillfreeze" Checked="cbmissionkillfreeze_Checked" Unchecked="cbmissionkillfreeze_Checked" IsEnabled="True" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                        </Grid>
-                                                                                        <Grid Style="{StaticResource FormRow}">
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="46"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[missionkills2c], FallbackValue=Save to Config File}"/>
-                                                                                            <CheckBox x:Name="cbmissionkills2c" IsEnabled="True" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                        </Grid>
-                                                                                        <Button x:Name="Btnkillload" Content="{Binding Translation[killload], FallbackValue=Load values from Job}" ToolTip="{Binding Translation[killloadinfo], FallbackValue=Loads the kill values from Job and ignores the saved kill values.}" Click="Btnkillload_Click" Style="{StaticResource FormButton}" Height="32" Padding="12,0" Margin="0,0,0,10"/>
                                                                                         </StackPanel>
                                                                                     </DockPanel>
                                                                                 </Border>
@@ -7528,7 +7204,7 @@
                                                                                 <Border Background="{DynamicResource ComboBoxBackground}" BorderBrush="{DynamicResource ComboBoxBorder}" BorderThickness="1" CornerRadius="4" Height="32" Margin="0,0,16,0">
                                                                                     <StackPanel Orientation="Horizontal">
                                                                                         <Button Style="{StaticResource EntryStepButton}" Content="‹" Tag="{Binding ElementName=ddmissionddblipno}" CommandParameter="-1" Click="EntryStep_Click" ToolTip="{Binding Translation[entry_prev], FallbackValue=Previous}"/>
-                                                                                        <ComboBox x:Name="ddmissionddblipno" FontFamily="{DynamicResource Volte}" SelectionChanged="ddmissionddblipno_SelectionChanged" Width="84" Height="30" BorderThickness="0">
+                                                                                        <ComboBox x:Name="ddmissionddblipno" FontFamily="{DynamicResource Volte}" Width="84" Height="30" BorderThickness="0">
                                                                                         </ComboBox>
                                                                                         <Button Style="{StaticResource EntryStepButton}" Content="›" Tag="{Binding ElementName=ddmissionddblipno}" CommandParameter="1" Click="EntryStep_Click" ToolTip="{Binding Translation[entry_next], FallbackValue=Next}"/>
                                                                                     </StackPanel>
@@ -7549,142 +7225,7 @@
                                                                             </TextBlock>
                                                                         </DockPanel>
                                                                     </Border>
-                                                                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                                                        <local:MasonryPanel Margin="0,12,0,12">
-                                                                            <StackPanel>
-                                                                                <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
-                                                                                    <DockPanel>
-                                                                                        <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
-                                                                                            <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[general], FallbackValue=General}"/>
-                                                                                        </Border>
-                                                                                        <StackPanel Margin="14,12,14,4">
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[loc], FallbackValue=Location}"/>
-                                                                                        <Grid Margin="0,0,0,10">
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="6"/>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="6"/>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="6"/>
-                                                                                                <ColumnDefinition Width="30"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <StackPanel Grid.Column="0">
-                                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="X"/>
-                                                                                                <TextBox x:Name="tbmissionddblipposox" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissionddblipposox_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
-                                                                                            </StackPanel>
-                                                                                            <StackPanel Grid.Column="2">
-                                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="Y"/>
-                                                                                                <TextBox x:Name="tbmissionddblipposoy" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissionddblipposoy_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
-                                                                                            </StackPanel>
-                                                                                            <StackPanel Grid.Column="4">
-                                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="Z"/>
-                                                                                                <TextBox x:Name="tbmissionddblipposoz" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissionddblipposoz_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
-                                                                                            </StackPanel>
-                                                                                            <Border Grid.Column="6" Width="30" Height="30" VerticalAlignment="Bottom">
-                                                                                                <Button x:Name="Btmissionddblipposgetloc" Style="{StaticResource FieldIconButton}" Click="Btmissionddblipposgetloc_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Translation[getcursorloc], FallbackValue=Get Cursor Location}" IsEnabled="False" >
-                                                                                                    <Path Data="M8,1.5 L8,4.5 M8,11.5 L8,14.5 M1.5,8 L4.5,8 M11.5,8 L14.5,8 M8,5 A3,3 0 1 1 7.99,5" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.6" Width="16" Height="16" />
-                                                                                                </Button>
-                                                                                            </Border>
-                                                                                        </Grid>
-                                                                                        <Rectangle Height="1" Fill="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="0,4,0,12"/>
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[size], FallbackValue=Size}"/>
-                                                                                        <TextBox x:Name="tbmissionddblipsize" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissionddblipsize_TextChanged" KeyDown="FormatTextForInteger" Height="30" Margin="0,0,0,10"/>
-                                                                                        </StackPanel>
-                                                                                    </DockPanel>
-                                                                                </Border>
-                                                                            </StackPanel>
-                                                                            <StackPanel>
-                                                                                <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
-                                                                                    <DockPanel>
-                                                                                        <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
-                                                                                            <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[options], FallbackValue=Options}"/>
-                                                                                        </Border>
-                                                                                        <StackPanel Margin="14,12,14,4">
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[name], FallbackValue=Name}"/>
-                                                                                        <TextBox x:Name="tbmissionddblipname" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissionddblipname_TextChanged" Height="30" Margin="0,0,0,10"/>
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[color], FallbackValue=Color}"/>
-                                                                                        <TextBox x:Name="tbmissionddblipclr" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissionddblipclr_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[entt], FallbackValue=Entity Type}"/>
-                                                                                        <TextBox x:Name="tbmissionddblipentt" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissionddblipentt_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[enti], FallbackValue=Entity ID}"/>
-                                                                                        <TextBox x:Name="tbmissionddblipenti" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissionddblipenti_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                        <Grid Style="{StaticResource FormRow}">
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="46"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[missionddblipeft1], FallbackValue=Enable for Team 1}"/>
-                                                                                            <CheckBox x:Name="cbmissionddblipeft1" Checked="cbmissionddblipeft1_Checked" Unchecked="cbmissionddblipeft1_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                        </Grid>
-                                                                                        <Grid Style="{StaticResource FormRow}">
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="46"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[missionddblipeft2], FallbackValue=Enable for Team 2}"/>
-                                                                                            <CheckBox x:Name="cbmissionddblipeft2" Checked="cbmissionddblipeft2_Checked" Unchecked="cbmissionddblipeft2_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                        </Grid>
-                                                                                        <Grid Style="{StaticResource FormRow}">
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="46"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[missionddblipeft3], FallbackValue=Enable for Team 3}"/>
-                                                                                            <CheckBox x:Name="cbmissionddblipeft3" Checked="cbmissionddblipeft3_Checked" Unchecked="cbmissionddblipeft3_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                        </Grid>
-                                                                                        <Grid Style="{StaticResource FormRow}">
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="46"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[missionddblipeft4], FallbackValue=Enable for Team 4}"/>
-                                                                                            <CheckBox x:Name="cbmissionddblipeft4" Checked="cbmissionddblipeft4_Checked" Unchecked="cbmissionddblipeft4_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                        </Grid>
-                                                                                        <Grid Style="{StaticResource FormRow}">
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="46"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[missionddbliperoute], FallbackValue=Enable Route}"/>
-                                                                                            <CheckBox x:Name="cbmissionddbliperoute" Checked="cbmissionddbliperoute_Checked" Unchecked="cbmissionddbliperoute_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                        </Grid>
-                                                                                        </StackPanel>
-                                                                                    </DockPanel>
-                                                                                </Border>
-                                                                            </StackPanel>
-                                                                            <StackPanel>
-                                                                                <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
-                                                                                    <Expander Style="{StaticResource CardExpander}" IsExpanded="True" Header="{Binding Translation[advanced], FallbackValue=Advanced}">
-                                                                                        <StackPanel Margin="14,12,14,4">
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[rule], FallbackValue=Rule}"/>
-                                                                                        <TextBox x:Name="tbmissionddbliprule" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissionddbliprule_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[team], FallbackValue=Team}"/>
-                                                                                        <TextBox x:Name="tbmissionddblipteam" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissionddblipteam_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[bits], FallbackValue=bits}"/>
-                                                                                        <TextBox x:Name="tbmissionddblipbits" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissionddblipbits_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[type], FallbackValue=Type}"/>
-                                                                                        <TextBox x:Name="tbmissionddbliptype" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissionddbliptype_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[veh], FallbackValue=veh}"/>
-                                                                                        <TextBox x:Name="tbmissionddblipveh" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissionddblipveh_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[sprite], FallbackValue=sprite}"/>
-                                                                                        <TextBox x:Name="tbmissionddblipsprite" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissionddblipsprite_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                        <TextBlock Style="{StaticResource CardSub}" Text="{Binding Translation[ddblipbind], FallbackValue=Binding}"/>
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[ddblipbindto], FallbackValue=Bind to}"/>
-                                                                                        <ComboBox x:Name="ddmissionddbliptype" FontFamily="{DynamicResource Volte}" SelectionChanged="ddmissionddbliptype_SelectionChanged" IsEnabled="False"  Height="30" Margin="0,0,0,10">
-                                                                                            <ComboBoxItem Content="{Binding Translation[ddblipbind1], FallbackValue=Blip Location}" ToolTip="{Binding Translation[ddblipbind1info], FallbackValue='The Location set for the Blip'}"/>
-                                                                                            <ComboBoxItem Content="{Binding Translation[ddblipbind2], FallbackValue=Ped}" ToolTip="{Binding Translation[ddblipbind2info], FallbackValue='Bind to a placed Actor'}"/>
-                                                                                            <ComboBoxItem Content="{Binding Translation[ddblipbind3], FallbackValue=Vehicle}" ToolTip="{Binding Translation[ddblipbind3info], FallbackValue='Bind to a placed Vehicle'}"/>
-                                                                                            <ComboBoxItem Content="{Binding Translation[ddblipbind4], FallbackValue=Apartment}" ToolTip="{Binding Translation[ddblipbind4info], FallbackValue='currently unknown on how to be used'}"/>
-                                                                                            <ComboBoxItem Content="{Binding Translation[ddblipbind5], FallbackValue=Leader Garage}" ToolTip="{Binding Translation[ddblipbind5info], FallbackValue='currently unknown on how to be used'}"/>
-                                                                                        </ComboBox>
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[index], FallbackValue=Index}"/>
-                                                                                        <TextBox x:Name="tbmissionddblipbindindex" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissionddblipbindindex_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                        </StackPanel>
-                                                                                    </Expander>
-                                                                                </Border>
-                                                                            </StackPanel>
-                                                                        </local:MasonryPanel>
+                                                                    <ScrollViewer x:Name="scrollMissionBlips" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                                                                     </ScrollViewer>
                                                                 </DockPanel>
 
@@ -8258,7 +7799,8 @@
                                                     <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,12" Tag="EntryBar">
                                                         <DockPanel>
                                                             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-                                                                <Button x:Name="BtnActorDuplicate" Content="{Binding Translation[duplicate], FallbackValue=Duplicate}" Click="BtnActorDuplicate_Click" Style="{StaticResource FormButton}" Height="32" Padding="14,0" Margin="0,0,10,0"/>
+                                                                <Button x:Name="BtnActorBlip" Style="{StaticResource BarButton}" Click="BtnActorBlip_Click" Content="+ Blip"/>
+                                                                <Button x:Name="BtnActorDuplicate" Content="{Binding Translation[duplicate], FallbackValue=Duplicate}" Click="BtnActorDuplicate_Click" Style="{StaticResource BarButton}"/>
                                                                 <!-- ‹ number › : steps through the entries without opening the list. -->
                                                                 <Border Background="{DynamicResource ComboBoxBackground}" BorderBrush="{DynamicResource ComboBoxBorder}" BorderThickness="1" CornerRadius="4" Height="32" Margin="0,0,10,0">
                                                                     <StackPanel Orientation="Horizontal">
@@ -8378,6 +7920,14 @@
                                                                             <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[actorsize], FallbackValue=Icon Size}"/>
                                                                             <TextBox x:Name="tbactorblipsize" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbactorblipsize_TextChanged" KeyDown="FormatTextForFloat" Height="30" Margin="0,0,0,10"/>
                                                                             </StackPanel>
+                                                                        </Grid>
+                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="46"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[blip_off], FallbackValue=Hide map icon}" IsEnabled="{Binding ElementName=cbactorblipoff, Path=IsEnabled}"/>
+                                                                            <CheckBox x:Name="cbactorblipoff" Checked="cbactorblipoff_Checked" Unchecked="cbactorblipoff_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
                                                                         </Grid>
                                                                         </StackPanel>
                                                                     </DockPanel>
@@ -11077,8 +10627,18 @@
                                             <DropShadowEffect BlurRadius="10" ShadowDepth="0" Color="{DynamicResource ShadowColor}"/>                                        </Border.Effect>
                                         <Grid>
                                             <!--Bottom-->
-                                            <!-- Pages in three groups; PageInnerMod_SelectionChanged marks the open one. -->
+                                            <!-- Pages in three groups; PageInnerMod_SelectionChanged marks the open one. Creator Tools opens first. -->
                                             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="8,0,8,5">
+                                                <TextBlock Style="{StaticResource SideNavGroup}" Text="{Binding Translation[misc_grp_creator], FallbackValue='Creator'}"/>
+                                                <Button x:Name="BtnModTools" Style="{StaticResource SideNavButton}" Click="BtnModTools_Click" Tag="active">
+                                                    <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[misc_creatortools], FallbackValue='Creator Tools'}"/>
+                                                </Button>
+                                                <Button x:Name="BtnModScrPatches" Style="{StaticResource SideNavButton}" Click="BtnModScrPatches_Click">
+                                                    <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[misc_scrpatches], FallbackValue='Patches'}"/>
+                                                </Button>
+                                                <Button x:Name="BtnModMS" Style="{StaticResource SideNavButton}" Click="BtnMS_Click">
+                                                    <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[misc_menupresets], FallbackValue='Menu Presets'}"/>
+                                                </Button>
                                                 <TextBlock Style="{StaticResource SideNavGroup}" Text="{Binding Translation[misc_grp_jobs], FallbackValue='Jobs'}"/>
                                                 <Button x:Name="BtnModMapBackup" Style="{StaticResource SideNavButton}" Click="BtnModMapBackup_Click">
                                                     <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[map_backup], FallbackValue='Job Backup'}"/>
@@ -11088,16 +10648,6 @@
                                                 </Button>
                                                 <Button x:Name="BtnModMapMover" Style="{StaticResource SideNavButton}" Click="BtnModMapMover_Click">
                                                     <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[misc_jobmove], FallbackValue='Move Job'}"/>
-                                                </Button>
-                                                <TextBlock Style="{StaticResource SideNavGroup}" Text="{Binding Translation[misc_grp_creator], FallbackValue='Creator'}"/>
-                                                <Button x:Name="BtnModMS" Style="{StaticResource SideNavButton}" Click="BtnMS_Click">
-                                                    <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[misc_menupresets], FallbackValue='Menu Presets'}"/>
-                                                </Button>
-                                                <Button x:Name="BtnModScrPatches" Style="{StaticResource SideNavButton}" Click="BtnModScrPatches_Click">
-                                                    <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[misc_scrpatches], FallbackValue='Script Patches'}"/>
-                                                </Button>
-                                                <Button x:Name="BtnModTools" Style="{StaticResource SideNavButton}" Click="BtnModTools_Click">
-                                                    <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[misc_creatortools], FallbackValue='Creator Tools'}"/>
                                                 </Button>
                                                 <TextBlock Style="{StaticResource SideNavGroup}" Text="{Binding Translation[misc_grp_dev], FallbackValue='Development'}"/>
                                                 <Button x:Name="BtnModLogs" Style="{StaticResource SideNavButton}" Click="BtnModLogs_Click">
@@ -11122,13 +10672,17 @@
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
 
-                                                <!-- Karte. Klick setzt das Ziel, Mausrad zoomt. -->
+                                                <!-- Karte. Klick setzt das Ziel, Mausrad zoomt zum Cursor. Ohne Zoom passt die ganze Karte (420x578) ohne Scrollen hinein. -->
                                                 <Border Grid.Column="0" CornerRadius="10" Margin="0,0,15,0" VerticalAlignment="Top"
                                                         Background="{DynamicResource SectionBackgroundBrush}" Padding="8">
                                                     <StackPanel>
-                                                        <ScrollViewer x:Name="scrollMapMover" Width="420" Height="560"
-                                                                      HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                                                        <ScrollViewer x:Name="scrollMapMover" Width="420" Height="578"
+                                                                      HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled"
                                                                       PreviewMouseWheel="MapMoverMap_Wheel">
+                                                            <!-- The corner between both scroll bars is drawn in the system control colour (white). -->
+                                                            <ScrollViewer.Resources>
+                                                                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent"/>
+                                                            </ScrollViewer.Resources>
                                                             <Grid x:Name="gridMapMoverCanvas" Width="420" Height="578"
                                                                   MouseLeftButtonDown="MapMoverMap_Click" MouseMove="MapMoverMap_Move" Cursor="Cross">
                                                                 <Grid.LayoutTransform>
@@ -11253,6 +10807,14 @@
                                                                         FontSize="16" Width="150" Height="42" IsEnabled="False"
                                                                         Background="{DynamicResource SectionBackgroundBrush}"
                                                                         local:CornerRadiusSetter.CornerRadius="6" Click="BtnMapMoverUndo_Click"/>
+                                                                <!-- Step for Ctrl+Shift and +/- in any position box (not the map mover itself). -->
+                                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="16,0,0,0"
+                                                                            ToolTip="Schrittweite fuer Strg+Umschalt und +/- in einem Positionsfeld.">
+                                                                    <TextBlock FontSize="13" Opacity="0.75" VerticalAlignment="Center" Margin="0,0,8,0" Text="Increment Size"/>
+                                                                    <TextBox x:Name="tbsettingsincrementsize" Style="{StaticResource Watermark}" Width="70" Height="32" IsEnabled="True"
+                                                                             VerticalContentAlignment="Center" TextAlignment="Center"
+                                                                             TextChanged="tbsettingsincrementsize_TextChanged" KeyDown="FormatTextForFloat"/>
+                                                                </StackPanel>
                                                             </StackPanel>
                                                             <TextBlock x:Name="tbmapmoverstatus" FontSize="14" Margin="0,10,0,0" TextWrapping="Wrap" Opacity="0.85" Text=""/>
                                                         </StackPanel>
@@ -11265,17 +10827,6 @@
                                                             <TextBlock FontSize="13" Opacity="0.75" TextWrapping="Wrap" LineHeight="19" Text="Der Map Mover verschiebt einen ganzen Job an eine andere Stelle. Start ist immer die Mitte dessen, was gerade geladen und angehakt ist -- das rechnet Xenvious selbst aus. Du legst nur das Ziel fest: auf die Karte klicken, oder in GTA mit der Creator-Kamera hinfliegen und die Position uebernehmen."/>
                                                             <TextBlock FontSize="13" Opacity="0.75" TextWrapping="Wrap" LineHeight="19" Margin="0,8,0,0" Text="Z bleibt bei 0, solange du nichts eintraegst. Ein Kartenklick kennt keine Hoehe; die Kamera-Position schon, dann steht der Hoehenunterschied im Z-Feld. GTAs Gelaende ist nicht flach -- pruefe nach dem Verschieben, ob nichts im Hang steckt, und korrigiere Z von Hand."/>
                                                             <TextBlock FontSize="13" Opacity="0.75" TextWrapping="Wrap" LineHeight="19" Margin="0,8,0,0" Text="Geschrieben wird direkt in den laufenden Job. Rueckgaengig macht genau den letzten Versatz wieder weg -- teste es erst an einem Job, den du nicht brauchst."/>
-                                                            <TextBlock FontSize="13" Opacity="0.75" TextWrapping="Wrap" LineHeight="19" Margin="0,8,0,0" Text="Increment Size ist etwas anderes: die Schrittweite fuer Strg+Umschalt und +/- in einem Positionsfeld."/>
-                                                            <Grid Margin="0,10,0,0" Width="220" HorizontalAlignment="Left">
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                    <ColumnDefinition Width="90"/>
-                                                                </Grid.ColumnDefinitions>
-                                                                <TextBlock Grid.Column="0" FontSize="15" VerticalAlignment="Center" Text="Increment Size"/>
-                                                                <TextBox x:Name="tbsettingsincrementsize" Grid.Column="1" Height="32" IsEnabled="True"
-                                                                         VerticalContentAlignment="Center" TextAlignment="Center"
-                                                                         TextChanged="tbsettingsincrementsize_TextChanged" KeyDown="FormatTextForFloat"/>
-                                                            </Grid>
                                                         </StackPanel>
                                                     </Border>
 
@@ -11394,25 +10945,9 @@
 
 
                                         <!-- Creator tools that are rarely needed; they used to sit on the dashboard. -->
-                                        <TabItem x:Name="PageInnerModTools" Header="Creator Tools">
+                                        <TabItem x:Name="PageInnerModTools" Header="Creator Tools" IsSelected="True">
                                             <StackPanel Width="320" HorizontalAlignment="Left" Margin="10">
-                                                <Grid Style="{StaticResource FormRow}">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[3dcam], FallbackValue='3D Cam'}"/>
-                                                    <CheckBox x:Name="cb_3dcam" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cb_3dcam_Checked" Unchecked="cb_3dcam_Checked"/>
-                                                </Grid>
-                                                <Grid Style="{StaticResource FormRow}">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[forcepublish], FallbackValue='Force Publish'}"/>
-                                                    <CheckBox x:Name="cbforce_publish" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbforce_publish_Checked" Unchecked="cbforce_publish_Checked"/>
-                                                </Grid>
-                                                <local:VisibilityCard x:Name="toolsVisibility" Margin="0,12,0,0"/>
+                                                <local:VisibilityCard x:Name="toolsVisibility"/>
                                             </StackPanel>
                                         </TabItem>
 
@@ -11529,7 +11064,7 @@
                                             <!-- Game and script patches on one page; cards are built in MainWindow.Misc.ScrPatches.cs. -->
                                             <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                                                 <StackPanel x:Name="patchesPage" Margin="20,12" MaxWidth="1080">
-                                                    <Border Style="{StaticResource DashCard}" Padding="14,8" Margin="0,0,0,16">
+                                                    <Border Style="{StaticResource DashCard}" Padding="14,8" Margin="0,0,0,16" CornerRadius="8" BorderThickness="1" BorderBrush="{DynamicResource LineBrush}">
                                                         <DockPanel>
                                                             <Button DockPanel.Dock="Right" Style="{StaticResource FormButton}" Margin="14,0,0,0" Padding="12,0" Click="BtnPatchesApply_Click"
                                                                     Content="{Binding Translation[patches_reload], FallbackValue='Reload'}"/>
@@ -11538,14 +11073,19 @@
                 <TextBlock x:Name="patchesMeta" VerticalAlignment="Center" FontSize="13" Foreground="{DynamicResource MutedTextBrush}"/>
                                                         </DockPanel>
                                                     </Border>
+                                                    <TextBlock Margin="0,0,0,8" FontSize="15" FontWeight="Bold" Foreground="{DynamicResource TextColor}">
+                                                        <Run Text="{Binding Translation[patches_cf_title], FallbackValue='Custom Funcs', Mode=OneWay}"/><Run Text="  "/><Run FontSize="12" FontWeight="Normal" Foreground="{DynamicResource FaintTextBrush}" Text="{Binding Translation[patches_cf_sub], FallbackValue='own functions in the creator script', Mode=OneWay}"/>
+                                                    </TextBlock>
+                                                    <!-- Built in MainWindow.Misc.ScrPatches.cs: main switch, creators, features, their script patches. -->
+                                                    <Border x:Name="patchesCustomFuncs" Style="{StaticResource DashCard}" Margin="0,0,0,20" Padding="16,14" CornerRadius="8" BorderThickness="1" BorderBrush="{DynamicResource LineBrush}"/>
                                                     <DockPanel Margin="0,0,0,8">
                                                         <TextBlock DockPanel.Dock="Right" VerticalAlignment="Bottom" FontSize="12" Foreground="{DynamicResource FaintTextBrush}"
-                                                                   Text="{Binding Translation[patches_game_hint], FallbackValue='Found when Xenvious connects; stay until switched off or GTA restarts'}"/>
+                                                                   Text="{Binding Translation[patches_remembered], FallbackValue='remembered'}"/>
                                                         <TextBlock FontSize="15" FontWeight="Bold" Foreground="{DynamicResource TextColor}">
                                                             <Run Text="{Binding Translation[patches_game], FallbackValue=Game, Mode=OneWay}"/><Run Text="  "/><Run x:Name="patchesExe" FontSize="12" FontWeight="Normal" FontFamily="Consolas" Foreground="{DynamicResource FaintTextBrush}"/>
                                                         </TextBlock>
                                                     </DockPanel>
-                                                    <UniformGrid x:Name="patchesGame" Columns="3" Margin="0,0,-10,12"/>
+                                                    <UniformGrid x:Name="patchesGame" Columns="4" Margin="0,0,-8,16"/>
                                                     <DockPanel Margin="0,4,0,8">
                                                         <WrapPanel x:Name="scrPatchesFilter" DockPanel.Dock="Right" VerticalAlignment="Bottom"/>
                                                         <TextBlock FontSize="15" FontWeight="Bold" Foreground="{DynamicResource TextColor}" VerticalAlignment="Center">
@@ -11553,14 +11093,6 @@
                                                         </TextBlock>
                                                     </DockPanel>
                                                     <StackPanel x:Name="patchesScripts"/>
-                                                    <Border x:Name="patchesDev" Style="{StaticResource DashCard}" Margin="0,4,0,0">
-                                                        <Expander Style="{StaticResource CardExpander}" IsExpanded="False">
-                                                            <Expander.Header>
-                                                                <TextBlock x:Name="patchesDevHeader" FontWeight="Bold" Foreground="{DynamicResource MutedTextBrush}"/>
-                                                            </Expander.Header>
-                                                            <UniformGrid x:Name="patchesDevList" Columns="2" Margin="14,12,4,4"/>
-                                                        </Expander>
-                                                    </Border>
                                                 </StackPanel>
                                             </ScrollViewer>
                                         </TabItem>
@@ -11727,7 +11259,7 @@
                                                 <Button x:Name="Btnnrcidprep" Style="{DynamicResource CustomButton}" Content="Perpare Job" local:CornerRadiusSetter.CornerRadius="5" Click="Btnnrcidprep_Click" />
                                             </Border>
 
-                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="Now you can publish your job. You might need to force Publish or use the Save/Publish function under Dashboard." TextWrapping="Wrap" />
+                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="Now you can publish your job. If publishing does not start, use the Save/Publish function under Dashboard." TextWrapping="Wrap" />
 
 
                                         </StackPanel>
@@ -12531,28 +12063,24 @@
                         <ScrollViewer x:Name="DialogDetailsScroll" MaxHeight="320" Margin="0,12,0,0" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">
                             <TextBlock x:Name="DialogDetails" FontSize="13" Foreground="{DynamicResource TextColor}" TextWrapping="Wrap" Margin="0,0,8,0"/>
                         </ScrollViewer>
+                        <!-- Preview for the job image dialog; Ctrl+V pastes an image into it, or drop one on it. -->
+                        <Border x:Name="DialogImageBox" Visibility="Collapsed" AllowDrop="True" DragOver="DialogImageBox_DragOver" Drop="DialogImageBox_Drop" CornerRadius="4" Background="{DynamicResource TextBoxBackground}" Width="480" Height="270" Margin="0,14,0,0">
+                            <Grid>
+                                <TextBlock x:Name="DialogImageHint" FontSize="15" FontWeight="Bold" Foreground="{DynamicResource MutedTextBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Ctrl + V"/>
+                                <Image x:Name="DialogImage" Stretch="Uniform"/>
+                            </Grid>
+                        </Border>
                         <ProgressBar x:Name="DialogProgress" Height="6" Margin="0,18,0,0" Minimum="0" Maximum="1" Visibility="Collapsed" Foreground="{DynamicResource HighlightBrush}" Background="#33FFFFFF" BorderThickness="0"/>
                         <StackPanel x:Name="DialogButtons" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,22,0,0">
-                            <Border x:Name="DialogCancelContainer" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Height="34" MinWidth="110" Margin="0,0,10,0">
-                                <Button x:Name="DialogCancel" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" FontSize="14" Foreground="{DynamicResource TextColor}" Padding="14,0" Click="DialogCancel_Click"/>
+                            <Border x:Name="DialogCancelContainer" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Height="34" MinWidth="110" Margin="0,0,10,0" MouseEnter="DialogButton_MouseEnter" MouseLeave="DialogButton_MouseLeave" PreviewMouseLeftButtonDown="DialogButton_MouseDown" PreviewMouseLeftButtonUp="DialogButton_MouseEnter">
+                                <Button x:Name="DialogCancel" Template="{StaticResource DialogButtonTemplate}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Cursor="Hand" FontFamily="{DynamicResource Volte}" FontWeight="Bold" FontSize="14" Foreground="{DynamicResource TextColor}" Padding="14,0" Click="DialogCancel_Click"/>
                             </Border>
-                            <Border x:Name="DialogAltContainer" Visibility="Collapsed" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Height="34" MinWidth="110" Margin="0,0,10,0">
-                                <Button x:Name="DialogAlt" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" FontSize="14" Foreground="{DynamicResource TextColor}" Padding="14,0" Click="DialogAlt_Click"/>
+                            <Border x:Name="DialogAltContainer" Visibility="Collapsed" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Height="34" MinWidth="110" Margin="0,0,10,0" MouseEnter="DialogButton_MouseEnter" MouseLeave="DialogButton_MouseLeave" PreviewMouseLeftButtonDown="DialogButton_MouseDown" PreviewMouseLeftButtonUp="DialogButton_MouseEnter">
+                                <Button x:Name="DialogAlt" Template="{StaticResource DialogButtonTemplate}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Cursor="Hand" FontFamily="{DynamicResource Volte}" FontWeight="Bold" FontSize="14" Foreground="{DynamicResource TextColor}" Padding="14,0" Click="DialogAlt_Click"/>
                             </Border>
-                            <Border x:Name="DialogConfirmContainer" CornerRadius="5" Background="{DynamicResource HighlightBrush}" Height="34" MinWidth="130">
+                            <Border x:Name="DialogConfirmContainer" CornerRadius="5" Background="{DynamicResource HighlightBrush}" Height="34" MinWidth="130" MouseEnter="DialogButton_MouseEnter" MouseLeave="DialogButton_MouseLeave" PreviewMouseLeftButtonDown="DialogButton_MouseDown" PreviewMouseLeftButtonUp="DialogButton_MouseEnter">
                                 <Border.Effect><DropShadowEffect BlurRadius="6" ShadowDepth="2" Opacity="0.5" Color="{DynamicResource ShadowColor}"/></Border.Effect>
-                                <Button x:Name="DialogConfirm" Cursor="Hand" FontSize="14" FontWeight="Bold" Padding="16,0" Click="DialogConfirm_Click">
-                                    <Button.Template>
-                                        <ControlTemplate TargetType="Button">
-                                            <Border x:Name="b" Background="Transparent" CornerRadius="5">
-                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
-                                            </Border>
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="b" Property="Background" Value="#22FFFFFF"/></Trigger>
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </Button.Template>
-                                </Button>
+                                <Button x:Name="DialogConfirm" Template="{StaticResource DialogButtonTemplate}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Cursor="Hand" FontSize="14" FontWeight="Bold" Padding="16,0" Click="DialogConfirm_Click"/>
                             </Border>
                         </StackPanel>
                     </StackPanel>

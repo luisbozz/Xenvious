@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows;
 using System.Windows.Input;
@@ -30,13 +31,19 @@ namespace Xenvious
             DialogAltContainer.Visibility = Visibility.Collapsed;
             DialogButtons.Visibility = Visibility.Visible;
             DialogProgress.Visibility = Visibility.Collapsed;
+            DialogImageBox.Visibility = Visibility.Collapsed;
+            DialogConfirm.IsEnabled = true;
+            _dialogAltAction = null;
+            _dialogPaste = null;
+            _dialogDrop = null;
             SetDialogDetails(details);
 
             DialogTitle.Text = title ?? "";
             DialogText.Text = message ?? "";
             DialogText.Visibility = string.IsNullOrEmpty(message) ? Visibility.Collapsed : Visibility.Visible;
             DialogConfirm.Content = confirmText;
-            DialogConfirmContainer.Background = ThemeBrush(danger ? "BadBrush" : "HighlightBrush");
+            _dialogConfirmBrush = ThemeBrush(danger ? "BadBrush" : "HighlightBrush");
+            DialogConfirmContainer.Background = _dialogConfirmBrush;
             DialogConfirm.Foreground = danger ? Brushes.White : ThemeBrush("HighlightForeground");
             DialogCancel.Content = cancelText ?? "";
             DialogCancelContainer.Visibility = cancelText == null ? Visibility.Collapsed : Visibility.Visible;
@@ -46,6 +53,41 @@ namespace Xenvious
             DialogOverlay.Focus();
             Keyboard.Focus(DialogOverlay);
             return _dialogResult.Task;
+        }
+
+        private Brush _dialogConfirmBrush;
+
+        // Hover and press colour the whole button: the confirm button a darker shade of its colour
+        // (darker still while pressed), cancel and the alternative the theme's button colours.
+        private void DialogButton_MouseEnter(object sender, MouseEventArgs e) => ShadeDialogButton((Border)sender, 0.85, "ButtonHoverBackgroundBrush");
+
+        private void DialogButton_MouseDown(object sender, MouseButtonEventArgs e) => ShadeDialogButton((Border)sender, 0.7, "ButtonClickBackgroundBrush");
+
+        private void ShadeDialogButton(Border box, double shade, string themeBrush)
+        {
+            if (box == DialogConfirmContainer)
+            {
+                if (_dialogConfirmBrush is SolidColorBrush b)
+                    box.Background = new SolidColorBrush(Color.FromRgb((byte)(b.Color.R * shade), (byte)(b.Color.G * shade), (byte)(b.Color.B * shade)));
+            }
+            else
+            {
+                box.SetResourceReference(Border.BackgroundProperty, themeBrush);
+            }
+        }
+
+        private void DialogButton_MouseLeave(object sender, MouseEventArgs e)
+        {
+            var box = (Border)sender;
+            if (box == DialogConfirmContainer)
+            {
+                if (_dialogConfirmBrush != null)
+                    box.Background = _dialogConfirmBrush;
+            }
+            else
+            {
+                box.SetResourceReference(Border.BackgroundProperty, "SectionBackgroundBrush");
+            }
         }
 
         public enum DialogChoice { Cancel, Confirm, Alternative }
@@ -66,8 +108,31 @@ namespace Xenvious
             return _dialogAlternative ? DialogChoice.Alternative : confirmed ? DialogChoice.Confirm : DialogChoice.Cancel;
         }
 
+        // Set by a caller whose third button acts inside the open dialog instead of closing it
+        // (choosing a file for the job image), and whose dialog takes Ctrl+V.
+        private System.Action _dialogAltAction;
+        private System.Action _dialogPaste;
+        private System.Action<IDataObject> _dialogDrop;
+
+        private void DialogImageBox_DragOver(object sender, DragEventArgs e)
+        {
+            e.Effects = _dialogDrop != null ? DragDropEffects.Copy : DragDropEffects.None;
+            e.Handled = true;
+        }
+
+        private void DialogImageBox_Drop(object sender, DragEventArgs e)
+        {
+            _dialogDrop?.Invoke(e.Data);
+            e.Handled = true;
+        }
+
         private void DialogAlt_Click(object sender, RoutedEventArgs e)
         {
+            if (_dialogAltAction != null)
+            {
+                _dialogAltAction();
+                return;
+            }
             _dialogAlternative = true;
             CloseDialog(false);
         }
@@ -146,7 +211,12 @@ namespace Xenvious
                 CloseDialog(false);
                 e.Handled = true;
             }
-            else if (e.Key == Key.Enter)
+            else if (e.Key == Key.V && Keyboard.Modifiers == ModifierKeys.Control && _dialogPaste != null)
+            {
+                _dialogPaste();
+                e.Handled = true;
+            }
+            else if (e.Key == Key.Enter && DialogConfirm.IsEnabled)
             {
                 CloseDialog(true);
                 e.Handled = true;

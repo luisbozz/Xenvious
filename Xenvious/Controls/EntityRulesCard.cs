@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -23,6 +23,7 @@ namespace Xenvious
         private int _type;
         private int _team;
         private int _adding = -1;
+        private bool _creating;
         private string _shownKey;
         private string _error;
         private bool _built;
@@ -72,7 +73,7 @@ namespace Xenvious
         {
             _entries = entries;
             _type = entityType;
-            entries.SelectionChanged += (_, __) => { _adding = -1; _error = null; Refresh(); };
+            entries.SelectionChanged += (_, __) => { _adding = -1; _creating = false; _error = null; Refresh(); };
         }
 
         /// <summary>Shows a team (the page's team selection calls this).</summary>
@@ -177,13 +178,36 @@ namespace Xenvious
                 : string.Format(CultureInfo.CurrentCulture, T("er_sum", "Own rule R{0} {1}"), MainRule + 1, MainName)
                   + (Extras.Count > 0 ? " · " + string.Format(CultureInfo.CurrentCulture, T("er_sum_extra", "{0} extra"), Extras.Count) : "");
 
-            var add = new Button { Style = (Style)FindResource("FormButton"), Height = 28, Padding = new Thickness(10, 0, 10, 0), IsEnabled = false,
-                Content = "+ " + string.Format(CultureInfo.CurrentCulture, T("er_newrule", "New rule at the end (rule {0})"), rules.Count + 1),
-                ToolTip = T("er_newrule_later", "Comes next: a new rule needs the creator's presets, their offsets are not in Xenvious yet.") };
-            ToolTipService.SetShowOnDisabled(add, true);
+            // New rule at the end with this entity in it, filled with the creator's defaults (RulePresets).
             var foot = new WrapPanel { Margin = new Thickness(0, 10, 0, 0) };
-            foot.Children.Add(add);
-            foot.Children.Add(Faint(T("er_newrule_hint", "Mission Creator only"), 12).Also(t => { t.VerticalAlignment = VerticalAlignment.Center; t.Margin = new Thickness(10, 0, 0, 0); }));
+            bool canAdd = ready && Index >= 0 && RulePresets.Ready && rules.Count < Rules.MaxRules;
+            if (_creating)
+            {
+                var types = ExtraObjectives.RuleTypesFor(_type);
+                int picked = types.Length > 0 ? types[0].Value : -1;
+                foot.Children.Add(Faint(string.Format(CultureInfo.CurrentCulture, T("er_newrule_as", "Rule {0} with this entity:"), rules.Count + 1), 13)
+                    .Also(t => { t.VerticalAlignment = VerticalAlignment.Center; t.Margin = new Thickness(0, 0, 8, 0); }));
+                foot.Children.Add(TypeCombo(picked, value => picked = value));
+                foot.Children.Add(SmallButton(T("er_create", "Create"), () =>
+                {
+                    _creating = false;
+                    Apply(EntityRules.AddToNewRule(_type, Index, _team, picked));
+                }));
+                foot.Children.Add(Remove(() => { _creating = false; Redraw(true); }));
+            }
+            else
+            {
+                var add = new Button { Style = (Style)FindResource("FormButton"), Height = 28, Padding = new Thickness(10, 0, 10, 0), IsEnabled = canAdd,
+                    Content = "+ " + string.Format(CultureInfo.CurrentCulture, T("er_newrule", "New rule at the end (rule {0})"), rules.Count + 1),
+                    ToolTip = canAdd ? T("er_newrule_tip", "Adds a rule after the last one, with the creator's default settings, and puts this entity in it.")
+                        : rules.Count >= Rules.MaxRules ? T("er_err_full", "The team already has 17 rules.") : T("er_err_presets", "Open a job in the Mission, LTS or Capture Creator.") };
+                ToolTipService.SetShowOnDisabled(add, true);
+                add.Click += (_, __) => { _creating = true; Redraw(true); };
+                foot.Children.Add(add);
+                if (!list)
+                    foot.Children.Add(Faint(T("er_newrule_nrl", "LTS / Capture: needs the \"nrl fix\" patch, or the creator sets the rule count back to 1."), 12)
+                        .Also(t => { t.VerticalAlignment = VerticalAlignment.Center; t.TextWrapping = TextWrapping.Wrap; t.Margin = new Thickness(10, 0, 0, 0); }));
+            }
             _footer.Children.Add(foot);
             _footer.Children.Add(Faint(list
                 ? T("er_hint_list", "Mission Creator: the rule decides the type. The first rule an entity is in is its own rule, later ones become extra objectives, like in the creator's rules menu.")

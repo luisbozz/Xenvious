@@ -17,6 +17,7 @@ namespace Xenvious
         private void BtnSectionVeh_Click(object sender, RoutedEventArgs e)
         {
             EditPages.SelectedItem = PageVehicle;
+            UpdateBlipButtons();
         }
 
         private void BtnSectionWeap_Click(object sender, RoutedEventArgs e)
@@ -46,6 +47,7 @@ namespace Xenvious
         private void BtnSectionActor_Click(object sender, RoutedEventArgs e)
         {
             EditPages.SelectedItem = PageActor;
+            UpdateBlipButtons();
         }
 
         private void EditPages_SelectionChanged(object sender, SelectionChangedEventArgs e)

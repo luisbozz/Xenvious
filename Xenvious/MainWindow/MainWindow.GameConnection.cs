@@ -17,6 +17,8 @@ namespace Xenvious
     {
         int pid = 0;
 
+        private int _noModuleWarned, _openFailedLogged;
+
         private async void Timercheckgta_Tick(object sender, EventArgs e)
         {
             // A user can close Legacy and start Enhanced without restarting the
@@ -40,16 +42,32 @@ namespace Xenvious
                     {
                         m.OpenProcess(GameVariant.ProcessName);
                     }
-                    catch (Exception) { }
+                    catch (Exception ex)
+                    {
+                        // Usually access denied: GTA runs with more rights than Xenvious, or is protected.
+                        if (_openFailedLogged != p[0].Id)
+                            Log.Warn("Cannot open GTA: " + ex.Message, source: "timercheckgta");
+                        _openFailedLogged = p[0].Id;
+                    }
                 }
                 if (pid != p[0].Id)
                 {
+                    // Without the main module (GTA still starting, or it runs with rights Xenvious
+                    // does not have) nothing can be scanned; try again on the next tick.
+                    var mainmodule = m.getMainModule();
+                    if (mainmodule == null)
+                    {
+                        if (_noModuleWarned != p[0].Id)
+                            Log.Warn("Cannot read the GTA main module yet; if this stays, start Xenvious as administrator.", source: "timercheckgta");
+                        _noModuleWarned = p[0].Id;
+                        return;
+                    }
                     if (pid == 0)
                     {
                         Log.Info("First Init", source: "timercheckgta");
                     }
                     OnlineEnable.isInjected();
-                    var mainmodule = m.getMainModule();
+                    ScriptSpace.Reset();
                     // With every pattern cached for this game build there is nothing to scan,
                     // so skip reading the whole module; the getters answer from the cache.
                     bool fromCache = GTA.AllPatternsCached();
@@ -78,6 +96,7 @@ namespace Xenvious
                         //() => GTA.Offsets.Editor.img_addy = m.memory((m.memory(GTA.getIMGPointer(buff).ToInt64()).GetAddress() + 0x18)).Get<long>(),
                         () => GTA.Offsets.Editor.cursor_addy = (m.memory(GTA.getCursorPointer(buff).ToInt64()).GetAddress() + 0x20),
                         () => GTA.Offsets.Editor.scrProgram_addy = GTA.getscrProgramPointer(buff).ToInt64(),
+                        () => ScriptSpace.PackfileTable = GTA.getPackfileTable(buff),
                         () => GTA.Offsets.Editor.nextcp = GTA.getNEXTCPPointer(buff).ToInt64(),
                         () => GTA.Offsets.Editor.localptr = GTA.getCurrentCreatorAddy()
                         };
@@ -106,6 +125,7 @@ namespace Xenvious
                     }
 
                     Log.Info($"Connected to GTA V {GameVariant.DisplayName(GameVariant.Current)} {GTA.GameVersion()}", source: "timercheckgta");
+                    RestoreGamePatches();
 
                     GTA.Offsets.Editor.preset_version = IntPtr.Subtract((IntPtr)GTA.Offsets.Editor.GlobalPTRversion, 304).ToInt64();
                     GTA.Offsets.Editor.version = GTA.Offsets.Editor.GlobalPTRversion + 0x90;

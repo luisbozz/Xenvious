@@ -135,53 +135,125 @@ namespace Xenvious
             }
         }
 
-        private void BtnJobImage_Click(object sender, RoutedEventArgs e)
+        // Change Image: a dialog that takes an image from the clipboard (Ctrl+V), a drop or a file,
+        // shows it and writes it into the creator only once confirmed.
+        private async void BtnJobImage_Click(object sender, RoutedEventArgs e)
         {
-            if (m.IsProcOpen)
+            if (!m.IsProcOpen || !IsInCreator())
+                return;
+
+            BitmapSource picked = null;
+            void Show(BitmapSource image)
             {
-                if (IsInCreator())
-                {
-                    Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
-                    ofd.Title = "Select any Image file";
-                    ofd.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png, *.gif) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png; *.gif";
-                    ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
-                    ofd.Multiselect = false;
-
-                    // Launch OpenFileDialog by calling ShowDialog method
-                    Nullable<bool> result = ofd.ShowDialog();
-                    // Get the selected file name and display in a TextBox.
-                    // Load content of file in a TextBlock
-
-                    if (result == true)
-                    {
-                        List<byte> temp = ImageSourceToBytes(new JpegBitmapEncoder(), new BitmapImage(new Uri(ofd.FileName))).ToList();
-
-                        long addy = JobImageAddress();
-                        if (addy == 0)
-                            return;
-
-                        byte[] temparray = temp.ToArray();
-
-                        m.memory((addy - 0x4).ToString("X")).SetInt(temparray.Count());
-
-                        m.memory(addy.ToString("X")).SetBytes(temparray);
-                        lastJobImage = temparray;
-
-                        try
-                        {
-                            JobImageControl().Source = new BitmapImage(new Uri(ofd.FileName));
-                        }
-                        catch (Exception)
-                        {
-
-                        }
-                    }
-                }
-                else
-                {
-                    //await state("Please enter a job first before replacing the Image!");
-                }
+                if (image == null)
+                    return;
+                picked = image;
+                DialogImage.Source = image;
+                DialogImageHint.Visibility = Visibility.Collapsed;
+                DialogConfirm.IsEnabled = true;
             }
+
+            var closed = ChooseAsync(TranslateOr("jobimg_title", "Change job image"),
+                TranslateOr("jobimg_text", "Paste an image with Ctrl+V, drop one here or choose a file."),
+                TranslateOr("jobimg_use", "Use image"), TranslateOr("jobimg_file", "Choose from file"),
+                TranslateOr("dialog_cancel", "Cancel"));
+            DialogImage.Source = null;
+            DialogImageHint.Visibility = Visibility.Visible;
+            DialogImageBox.Visibility = Visibility.Visible;
+            DialogConfirm.IsEnabled = false;
+            _dialogPaste = () => Show(ImageFrom(Clipboard.GetDataObject()));
+            _dialogDrop = data => Show(ImageFrom(data));
+            _dialogAltAction = () => Show(FileImage());
+
+            if (await closed != DialogChoice.Confirm || picked == null)
+                return;
+            WriteJobImage(picked);
+        }
+
+        /// <summary>The image in a pasted or dropped data object: a PNG, a file or a bitmap.</summary>
+        private static BitmapSource ImageFrom(IDataObject data)
+        {
+            if (data == null)
+                return null;
+            try
+            {
+                // Browsers and most tools also offer a PNG; it keeps the colours that the plain
+                // bitmap format sometimes loses.
+                if (data.GetDataPresent("PNG") && data.GetData("PNG") is MemoryStream png)
+                    return LoadImage(png.ToArray());
+                if (data.GetDataPresent(DataFormats.FileDrop) && data.GetData(DataFormats.FileDrop) is string[] files && files.Length > 0)
+                    return LoadImage(File.ReadAllBytes(files[0]));
+                if (data.GetDataPresent(DataFormats.Bitmap))
+                    return data.GetData(DataFormats.Bitmap) as BitmapSource;
+            }
+            catch (Exception ex)
+            {
+                Log.Debug("job image: paste or drop: " + ex.Message, source: "image");
+            }
+            return null;
+        }
+
+        private static BitmapSource FileImage()
+        {
+            var ofd = new OpenFileDialog
+            {
+                Title = "Select any Image file",
+                Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png, *.gif) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png; *.gif",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures),
+                Multiselect = false
+            };
+            if (ofd.ShowDialog() != true)
+                return null;
+            try
+            {
+                return LoadImage(File.ReadAllBytes(ofd.FileName));
+            }
+            catch (Exception ex)
+            {
+                Log.Debug("job image: file: " + ex.Message, source: "image");
+                return null;
+            }
+        }
+
+        private static BitmapSource LoadImage(byte[] data)
+        {
+            var image = new BitmapImage();
+            image.BeginInit();
+            image.CacheOption = BitmapCacheOption.OnLoad;
+            image.StreamSource = new MemoryStream(data);
+            image.EndInit();
+            image.Freeze();
+            return image;
+        }
+
+        private void WriteJobImage(BitmapSource image)
+        {
+            long addy = JobImageAddress();
+            if (addy == 0)
+                return;
+
+            // Never larger than the photo the game holds: the buffer behind it has a fixed size.
+            var current = lastJobImage != null ? byteArrayToImage(lastJobImage) : null;
+            if (current != null && (image.PixelWidth > current.PixelWidth || image.PixelHeight > current.PixelHeight))
+            {
+                double scale = Math.Min((double)current.PixelWidth / image.PixelWidth, (double)current.PixelHeight / image.PixelHeight);
+                image = new TransformedBitmap(image, new ScaleTransform(scale, scale));
+            }
+            // The JPEG encoder takes no alpha channel.
+            if (image.Format != PixelFormats.Bgr24)
+                image = new FormatConvertedBitmap(image, PixelFormats.Bgr24, null, 0);
+
+            byte[] data = ImageSourceToBytes(new JpegBitmapEncoder { QualityLevel = 90 }, image);
+            if (data == null || data.Length > MaxJobImageSize)
+            {
+                displayScreenMessage("the image is too big");
+                return;
+            }
+
+            m.memory((addy - 0x4).ToString("X")).SetInt(data.Length);
+            m.memory(addy.ToString("X")).SetBytes(data);
+            lastJobImage = data;
+            JobImageControl().Source = byteArrayToImage(data);
         }
 
         [DebuggerHidden]

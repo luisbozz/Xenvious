@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace Xenvious
@@ -185,6 +185,40 @@ namespace Xenvious
             if (error != null)
                 SetInRule(team, rule, index, was);
             return error;
+        }
+
+        /// <summary>A new rule list entry: its selection, no entities in it (func_1369 writes the selection).</summary>
+        public static void InitListEntry(int team, int rule, int selection)
+        {
+            new Global(EntryAddr(team, rule)).SetInt(selection);
+            for (int w = 0; w < 3; w++)
+                new Global(EntryAddr(team, rule) + 3 + w).SetInt(0);
+        }
+
+        /// <summary>
+        /// A new rule at the end with this entity in it. Mission Creator: through the rule list like
+        /// joining any rule. LTS and Capture: the entity's own rule when it has none, else an extra
+        /// objective. Returns an error key or null.
+        /// </summary>
+        public static string AddToNewRule(int eoType, int index, int team, int selection)
+        {
+            if (index < 0)
+                return "er_err_list";
+            if (ClassOf(selection) != eoType)
+                return "er_err_class";
+            int rule = RulePresets.AddRule(team, selection, out string error);
+            if (rule < 0)
+                return error;
+            if (UsesRuleList)
+                return SetMember(eoType, index, team, rule, true);
+            int own = OwnPriority(eoType, index, team);
+            if (own < 0 || own >= Rules.PriorityNone)
+            {
+                new Global(PriOffset(eoType) + team + Next(eoType) * index).SetInt(rule);
+                new Global(TypeOffset(eoType) + team + Next(eoType) * index).SetInt(LogicOf(selection));
+                return null;
+            }
+            return ExtraObjectives.Add(eoType, index, team, rule, selection);
         }
 
         /// <summary>

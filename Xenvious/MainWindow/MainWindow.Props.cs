@@ -495,12 +495,15 @@ namespace Xenvious
         {
             if (m.IsProcOpen)
                 new Global((GTA.Offsets.Editor.Props.vrot + 2 + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex)).SetFloat(tbpropsrotz.Text);
+            // Typed rotation Z is the heading too.
+            if (tbpropsrotz.IsKeyboardFocusWithin)
+                WriteHeading(GTA.Offsets.Editor.Props.head + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex, 0, tbpropsrotz.Text);
         }
 
         private void tbpropshead_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (m.IsProcOpen)
-                new Global((GTA.Offsets.Editor.Props.head + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex)).SetFloat(tbpropshead.Text);
+            WriteHeading(GTA.Offsets.Editor.Props.head + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex,
+                GTA.Offsets.Editor.Props.vrot + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex, tbpropshead.Text);
         }
 
         private void tbpropsrender_TextChanged(object sender, TextChangedEventArgs e)

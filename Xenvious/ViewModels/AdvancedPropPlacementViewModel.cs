@@ -393,10 +393,6 @@ namespace Xenvious.ViewModels
                     FeatureStatusText = _t("adv_state_noresponse", "Antworten nicht");
                     FeatureHintText = _t("adv_hint_noresponse", "Eingeschaltet, aber die eingeschleuste Funktion läuft nicht. Creator neu betreten oder GTA neu starten.");
                     break;
-                case ScriptFeatureState.Unsupported:
-                    FeatureStatusText = _t("adv_state_unsupported", "In diesem Creator nicht verfügbar");
-                    FeatureHintText = _t("adv_hint_unsupported", "Deathmatch- und Survival-Creator bekommen keine eingeschleusten Funktionen. Race, LTS oder Capture nutzen.");
-                    break;
                 case ScriptFeatureState.NoCreator:
                     FeatureStatusText = _t("adv_state_nocreator", "Kein Creator geöffnet");
                     FeatureHintText = FeatureStatusText;

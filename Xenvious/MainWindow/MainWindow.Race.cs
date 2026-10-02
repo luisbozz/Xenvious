@@ -25,6 +25,11 @@ namespace Xenvious
             PageInnerRace.SelectedItem = PageInnerRaceCP;
         }
 
+        private void BtnRaceTune_Click(object sender, RoutedEventArgs e)
+        {
+            PageInnerRace.SelectedItem = PageInnerRaceTune;
+        }
+
         private void BtnRaceArena_Click(object sender, RoutedEventArgs e)
         {
             PageInnerRace.SelectedItem = PageInnerRaceArena;
@@ -33,27 +38,6 @@ namespace Xenvious
         private void BtnRaceAVEH_Click(object sender, RoutedEventArgs e)
         {
             PageInnerRace.SelectedItem = PageInnerRaceAVEH;
-
-            avehCompactList.DataContext = GTA.Editor.Compacts;
-            avehSedanList.DataContext = GTA.Editor.Sedans;
-            avehSUVList.DataContext = GTA.Editor.SUVs;
-            avehArena_ContenderList.DataContext = GTA.Editor.Arena_Contender;
-            avehCOUPEList.DataContext = GTA.Editor.Coupes;
-            avehCyclesList.DataContext = GTA.Editor.Cycles;
-            avehIndustrialList.DataContext = GTA.Editor.Industrial;
-            avehMotorcyclesList.DataContext = GTA.Editor.Motorcycles;
-            avehMuscleList.DataContext = GTA.Editor.Muscle;
-            avehOff_RoadList.DataContext = GTA.Editor.Off_Road;
-            avehSpecialList.DataContext = GTA.Editor.Special;
-            avehSportsList.DataContext = GTA.Editor.Sports;
-            avehSports_ClassicsList.DataContext = GTA.Editor.Sports_Classics;
-            avehSuperList.DataContext = GTA.Editor.Super;
-            avehUtilityList.DataContext = GTA.Editor.Utility;
-            avehVansList.DataContext = GTA.Editor.Vans;
-            avehWeaponizedList.DataContext = GTA.Editor.Weaponized;
-            avehOpenWheelList.DataContext = GTA.Editor.Open_Wheel;
-            avehGoKartList.DataContext = GTA.Editor.Go_Kart;
-            avehTunerList.DataContext = GTA.Editor.Tuner;
         }
 
         private void ddracetype_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -281,6 +265,7 @@ namespace Xenvious
             BtnRaceGeneral.Background = (SolidColorBrush)Resources["SeactionHeaderBackgroundBrush"];
             BtnRaceCheckpoints.Background = (SolidColorBrush)Resources["SeactionHeaderBackgroundBrush"];
             BtnRaceAVEH.Background = (SolidColorBrush)Resources["SeactionHeaderBackgroundBrush"];
+            BtnRaceTune.Background = (SolidColorBrush)Resources["SeactionHeaderBackgroundBrush"];
 
             if (PageInnerRace.SelectedItem == PageInnerRaceGeneral)
             {
@@ -293,6 +278,10 @@ namespace Xenvious
             else if (PageInnerRace.SelectedItem == PageInnerRaceAVEH)
             {
                 BtnRaceAVEH.Background = (SolidColorBrush)Resources["ButtonHoverBackgroundBrush"];
+            }
+            else if (PageInnerRace.SelectedItem == PageInnerRaceTune)
+            {
+                BtnRaceTune.Background = (SolidColorBrush)Resources["ButtonHoverBackgroundBrush"];
             }
         }
 

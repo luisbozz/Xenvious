@@ -24,7 +24,7 @@ namespace Xenvious
             public string Key;
             public string Fallback;
             public string Icon;
-            public int Group;               // 0 place, 1 job rules, 2 more options
+            public int Group;               // 0 place, 1 job type, 2 more options
             public string Creators;
             public TabItem Page;
             public Action Open;
@@ -89,7 +89,7 @@ namespace Xenvious
                 Page("jobsubtype_mission_capture", "Capture", "EditIconCapture", 1, "C", PageCapture, () => BtnSectionObj_Click(null, null),
                     Sub(BtnCaptureGeneral), Sub(BtnCaptureObjects), Sub(BtnCaptureDelivery)),
                 Page("race", "Race", "EditIconRace", 1, "R", PageRace, () => BtnSectionRace_Click(null, null),
-                    Sub(BtnRaceGeneral), Sub(BtnRaceCheckpoints), Sub(BtnRaceAVEH), Sub(BtnRaceArena)),
+                    Sub(BtnRaceGeneral), Sub(BtnRaceCheckpoints), Sub(BtnRaceAVEH), Sub(BtnRaceTune, "EditIconVehicle"), Sub(BtnRaceArena)),
                 Page("deathmatch", "Deathmatch", "EditIconDeathmatch", 1, "D", PageDeathmatch, () => BtnSectionDeathmatch_Click(null, null)),
                 Page("survival", "Survival", "EditIconSurvival", 1, "S", PageSurvival, () => BtnSectionSurvival_Click(null, null)),
 
@@ -120,7 +120,25 @@ namespace Xenvious
             }
         }
 
-        // Outside a creator every page is listed; inside, only the ones this creator has.
+        private string CreatorNames(string letters)
+        {
+            var names = new List<string>();
+            foreach (char c in letters)
+            {
+                switch (c)
+                {
+                    case 'R': names.Add(TranslateOr("race", "Race")); break;
+                    case 'L': names.Add("LTS"); break;
+                    case 'C': names.Add(TranslateOr("jobsubtype_mission_capture", "Capture")); break;
+                    case 'D': names.Add(TranslateOr("deathmatch", "Deathmatch")); break;
+                    case 'S': names.Add(TranslateOr("survival", "Survival")); break;
+                    case 'M': names.Add(TranslateOr("mission", "Mission")); break;
+                }
+            }
+            return string.Join(", ", names);
+        }
+
+        // Outside a creator every page fits; inside, only the ones this creator has.
         private bool EditNavFits(EditNavEntry entry)
         {
             string letter = CreatorLetter(_editNavCreator ?? "");
@@ -147,9 +165,29 @@ namespace Xenvious
                 return;
             }
             _editNavCreator = creator;
+            OpenOwnJobType(creator);
             HideInnerSwitchers();
             RenderEditNav();
             UpdateEditScriptStatus();
+        }
+
+        // The job type page of the open creator shows its sub-pages from the start; the one
+        // opened for the previous creator folds away again. Capture has its own page besides
+        // Mission, so the page made for fewer creators wins.
+        private EditNavEntry _editNavOwnType;
+
+        private void OpenOwnJobType(string creator)
+        {
+            string letter = CreatorLetter(creator ?? "");
+            var own = letter.Length == 0 ? null : EditNav
+                .Where(e => e.Group == 1 && e.Creators.Contains(letter))
+                .OrderBy(e => e.Creators.Length)
+                .FirstOrDefault();
+            if (_editNavOwnType != null && _editNavOwnType != own && _editNavOwnType != _editNavEntry)
+                _editNavOpen.Remove(_editNavOwnType);
+            if (own != null)
+                _editNavOpen.Add(own);
+            _editNavOwnType = own;
         }
 
         // The pages still carry their own list of sub-page buttons on the left; the side
@@ -195,13 +233,15 @@ namespace Xenvious
             string[] groups =
             {
                 TranslateOr("editnav_grp_place", "Place"),
-                TranslateOr("editnav_grp_rules", "Job rules"),
+                TranslateOr("editnav_grp_rules", "Job type"),
                 TranslateOr("editnav_grp_more", "More options"),
             };
             RenderFavorites();
             for (int group = 0; group < groups.Length; group++)
             {
-                var entries = EditNav.Where(e => e.Group == group && (EditNavFits(e) || EditNavGreyed(e))).ToList();
+                // Pages of other creators stay listed and usable, only greyed, so the list does
+                // not change shape between creators.
+                var entries = EditNav.Where(e => e.Group == group).ToList();
                 if (entries.Count == 0)
                     continue;
                 if (!_editNavCollapsed)
@@ -212,10 +252,16 @@ namespace Xenvious
                 foreach (var entry in entries)
                 {
                     var button = NavEntryButton(entry);
-                    if (!EditNavFits(entry))
+                    if (EditNavGreyed(entry))
                     {
                         button.Opacity = 0.5;
                         button.ToolTip = TranslateOr("editnav_other_creator", "Not part of this creator's menu; the values still work.");
+                    }
+                    else if (!EditNavFits(entry))
+                    {
+                        button.Opacity = 0.5;
+                        button.ToolTip = string.Format(CultureInfo.CurrentCulture,
+                            TranslateOr("editnav_for_creator", "Settings for another creator: {0}."), CreatorNames(entry.Creators));
                     }
                     EditNavList.Children.Add(WithStar(button, FavoriteId(entry, null)));
                     if (!_editNavCollapsed && _editNavOpen.Contains(entry) && entry.Subs.Count > 0)
@@ -406,6 +452,24 @@ namespace Xenvious
             }
             UpdateEditHeader();
             RenderEditNav();
+        }
+
+        /// <summary>
+        /// Opens <paramref name="page"/> as the menu would: its entry, or the sub page that has
+        /// this page or <paramref name="subButton"/>. Falls back to selecting the page.
+        /// </summary>
+        private void OpenEditNavPage(TabItem page, Button subButton = null)
+        {
+            foreach (var entry in EditNav)
+            {
+                var sub = entry.Subs.FirstOrDefault(s => subButton != null ? s.Button == subButton : s.Page == page && s.Open != null);
+                if (sub != null || (subButton == null && entry.Page == page && entry.Group < 2))
+                {
+                    OpenEditNav(entry, sub, false);
+                    return;
+                }
+            }
+            EditPages.SelectedItem = page;
         }
 
         private bool _openingFromNav;

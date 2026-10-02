@@ -80,20 +80,33 @@ namespace Xenvious
         public static bool GetWanted(int area, int team, int rule) => Bit(WantedBits(area), team, rule);
         public static void SetWanted(int area, int team, int rule, bool on) => SetBit(WantedBits(area), team, rule, on);
 
-        /// <summary>The (team, rule) pairs a change goes to.</summary>
-        public static IEnumerable<(int Team, int Rule)> Targets(int team, int rule, bool allRules, bool allTeams)
+        /// <summary>
+        /// Copies one area of a rule from one team to another: the whole bounds struct (shape,
+        /// position, look, follow target), what the area does (rule bits) and the return timer.
+        /// Used when a team is added to the play area page's selection.
+        /// </summary>
+        public static void CopyTeam(int area, int from, int to, int rule)
         {
-            for (int t = 0; t < Teams; t++)
+            long stride = GTA.Offsets.Editor.PlayArea.NEXT;
+            for (int f = 0; f < stride; f++)
+                new Global(Field(area, to, rule, f)).SetInt(GetInt(area, from, rule, f));
+            if (RuleBitsReady)
             {
-                if (!allTeams && t != team)
-                    continue;
-                for (int r = 0; r < Rules; r++)
-                {
-                    if (!allRules && r != rule)
-                        continue;
-                    yield return (t, r);
-                }
+                SetBit(PlayBits(area), to, rule, Bit(PlayBits(area), from, rule));
+                SetBit(LeaveBits(area), to, rule, Bit(LeaveBits(area), from, rule));
+                SetBit(SpawnBits(area), to, rule, Bit(SpawnBits(area), from, rule));
+                SetBit(WantedBits(area), to, rule, Bit(WantedBits(area), from, rule));
             }
+            new Global(Timer(area, to)).SetInt(new Global(Timer(area, from)).Get<int>());
+        }
+
+        /// <summary>The (team, rule) pairs a change goes to.</summary>
+        public static IEnumerable<(int Team, int Rule)> Targets(IEnumerable<int> teams, int rule, bool allRules)
+        {
+            foreach (int t in teams)
+                for (int r = 0; r < Rules; r++)
+                    if (allRules || r == rule)
+                        yield return (t, r);
         }
     }
 }

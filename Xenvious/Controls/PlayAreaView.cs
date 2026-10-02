@@ -17,14 +17,21 @@ namespace Xenvious
     /// </summary>
     public class PlayAreaView : DockPanel
     {
-        private int _area = 1, _team, _rule;
-        private bool _allRules, _allTeams;
+        private int _area = 1, _rule;
+        private bool _allRules;
+        // The team shown and edited (dropdown), and the teams every change goes to (team tabs);
+        // the shown team is always one of them.
+        private int _team;
+        private readonly SortedSet<int> _teams = new SortedSet<int> { 0 };
+        private readonly ComboBox _teamBox = new ComboBox { Height = 30, Width = 110, VerticalAlignment = VerticalAlignment.Center };
+        private readonly CheckBox _copyOnAdd = new CheckBox();
         private bool _loading;
         private bool _built;
 
         private readonly DispatcherTimer _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(2) };
         private readonly List<Action> _loaders = new List<Action>();
-        private readonly List<ToggleButton> _areaTabs = new List<ToggleButton>(), _teamTabs = new List<ToggleButton>(), _scopeTabs = new List<ToggleButton>();
+        private readonly List<ToggleButton> _areaTabs = new List<ToggleButton>(), _scopeTabs = new List<ToggleButton>();
+        private readonly List<ToggleButton> _teamTabs = new List<ToggleButton>();
         private readonly TextBlock _ruleText = new TextBlock { FontWeight = FontWeights.Bold, FontSize = 15, MinWidth = 28, TextAlignment = TextAlignment.Center, VerticalAlignment = VerticalAlignment.Center };
         private FrameworkElement _explain;
         private Border _explain1, _explain2;
@@ -65,7 +72,7 @@ namespace Xenvious
 
         // ----- writing: to this rule, all rules or all teams -----
 
-        private IEnumerable<(int Team, int Rule)> Targets => PlayAreas.Targets(_team, _rule, _allRules, _allTeams);
+        private IEnumerable<(int Team, int Rule)> Targets => PlayAreas.Targets(_teams, _rule, _allRules);
 
         private void WriteInt(int field, int value)
         {
@@ -229,7 +236,7 @@ namespace Xenvious
 
             FrameworkElement Segment(List<ToggleButton> list, string[] labels, Action<int> pick)
             {
-                var seg = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 0, 16, 6) };
+                var seg = new StackPanel { Orientation = Orientation.Horizontal };
                 for (int i = 0; i < labels.Length; i++)
                 {
                     int n = i;
@@ -238,7 +245,7 @@ namespace Xenvious
                     list.Add(b);
                     seg.Children.Add(b);
                 }
-                return seg;
+                return NavBox(seg);
             }
 
             bar.Children.Add(Segment(_areaTabs, new[] { T("pa_area1", "Play area 1"), T("pa_area2", "Play area 2") }, n => _area = n + 1));
@@ -251,7 +258,21 @@ namespace Xenvious
                 new ini_reader(Functions.getRoamingConfigFilePath()).Write("Settings", "pahelp", show ? 1 : 0);
             };
             bar.Children.Add(help);
-            bar.Children.Add(Segment(_teamTabs, Enumerable.Range(1, PlayAreas.Teams).Select(i => T("actorteam", "Team") + " " + i).ToArray(), n => _team = n));
+
+            for (int t = 0; t < PlayAreas.Teams; t++)
+                _teamBox.Items.Add(T("actorteam", "Team") + " " + (t + 1));
+            _teamBox.SelectedIndex = 0;
+            _teamBox.Margin = new Thickness(0, 0, 16, 6);
+            _teamBox.SelectionChanged += (_, __) =>
+            {
+                if (_teamBox.SelectedIndex < 0 || _teamBox.SelectedIndex == _team) return;
+                _teams.Remove(_team);
+                _team = _teamBox.SelectedIndex;
+                _teams.Add(_team);
+                SelectTabs();
+                Load();
+            };
+            bar.Children.Add(_teamBox);
 
             var step = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 0, 16, 6) };
             var ruleLabel = new TextBlock { Text = T("pa_rule", "Rule"), VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(0, 0, 8, 0), FontSize = 14 };
@@ -265,19 +286,84 @@ namespace Xenvious
                 else step.Children.Add(b);
             }
             bar.Children.Add(step);
-            bar.Children.Add(Segment(_scopeTabs, new[] { T("pa_scope_rule", "This rule only"), T("pa_scope_rules", "All rules"), T("pa_scope_teams", "All teams") }, n =>
-            {
-                _allRules = n >= 1;
-                _allTeams = n == 2;
-            }));
+            bar.Children.Add(TeamPicker());
+            bar.Children.Add(Segment(_scopeTabs, new[] { T("pa_scope_rule", "This rule only"), T("pa_scope_rules", "All rules") }, n => _allRules = n == 1));
             return bar;
+        }
+
+        // "Also for": team 1 to 4 as nav tabs whose underline is the team colour (the tab's
+        // accent brushes are overridden). Checked teams get every change; the shown team is
+        // always checked.
+        // Tabs sit in the same dark box as the header navigation.
+        private FrameworkElement NavBox(FrameworkElement tabs)
+        {
+            var box = new Border { Style = (Style)FindResource("NavGroup"), Child = tabs };
+            box.Margin = new Thickness(0, 0, 12, 6);
+            return box;
+        }
+
+        private FrameworkElement TeamPicker()
+        {
+            var panel = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 0, 16, 6) };
+            var alsoLabel = new TextBlock { Text = T("pa_alsofor", "Also for"), VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(0, 0, 6, 0), FontSize = 14 };
+            alsoLabel.SetResourceReference(TextBlock.ForegroundProperty, "NavMutedBrush");
+            panel.Children.Add(alsoLabel);
+            var tabs = new StackPanel { Orientation = Orientation.Horizontal };
+            for (int t = 0; t < PlayAreas.Teams; t++)
+            {
+                int team = t;
+                var tab = new ToggleButton { Style = (Style)FindResource("NavTab"), Content = T("actorteam", "Team") + " " + (t + 1) };
+                if (FindResource("TeamBrush" + (t + 1)) is SolidColorBrush colour)
+                {
+                    tab.Resources["AccentBrush"] = colour;
+                    tab.Resources["AccentSoftBrush"] = new SolidColorBrush(Color.FromArgb(0x70, colour.Color.R, colour.Color.G, colour.Color.B));
+                }
+                tab.Click += (_, __) => ToggleTeam(team);
+                _teamTabs.Add(tab);
+                tabs.Children.Add(tab);
+            }
+            panel.Children.Add(NavBox(tabs));
+            _copyOnAdd.Style = (Style)FindResource("FormToggle");
+            _copyOnAdd.VerticalAlignment = VerticalAlignment.Center;
+            _copyOnAdd.Margin = new Thickness(10, 0, 8, 0);
+            _copyOnAdd.IsChecked = new ini_reader(Functions.getRoamingConfigFilePath()).ReadInteger("Settings", "pacopyteam", 1) == 1;
+            _copyOnAdd.Click += (_, __) => new ini_reader(Functions.getRoamingConfigFilePath()).Write("Settings", "pacopyteam", _copyOnAdd.IsChecked == true ? 1 : 0);
+            panel.Children.Add(_copyOnAdd);
+            var label = new TextBlock { Text = T("pa_copyteam", "Copy values to added teams"), VerticalAlignment = VerticalAlignment.Center, FontSize = 13,
+                ToolTip = T("pa_copyteam_tip", "When you add a team, it gets this area's values of the shown team first, then every change goes to all chosen teams.") };
+            label.SetResourceReference(TextBlock.ForegroundProperty, "NavMutedBrush");
+            panel.Children.Add(label);
+            return panel;
+        }
+
+        private void ToggleTeam(int team)
+        {
+            if (team == _team)
+            {
+                // The shown team always gets the changes.
+            }
+            else if (_teams.Contains(team))
+                _teams.Remove(team);
+            else
+            {
+                int shown = _team;
+                _teams.Add(team);
+                if (_copyOnAdd.IsChecked == true && Live)
+                    foreach (int r in Enumerable.Range(0, PlayAreas.Rules).Where(r => _allRules || r == _rule))
+                        PlayAreas.CopyTeam(_area, shown, team, r);
+            }
+            SelectTabs();
+            Load();
         }
 
         private void SelectTabs()
         {
             for (int i = 0; i < _areaTabs.Count; i++) _areaTabs[i].IsChecked = i == _area - 1;
-            for (int i = 0; i < _teamTabs.Count; i++) _teamTabs[i].IsChecked = i == _team;
-            int scope = _allTeams ? 2 : _allRules ? 1 : 0;
+            for (int i = 0; i < _teamTabs.Count; i++)
+                _teamTabs[i].IsChecked = _teams.Contains(i);
+            if (_teamBox.SelectedIndex != _team)
+                _teamBox.SelectedIndex = _team;
+            int scope = _allRules ? 1 : 0;
             for (int i = 0; i < _scopeTabs.Count; i++) _scopeTabs[i].IsChecked = i == scope;
             _ruleText.Text = (_rule + 1).ToString(CultureInfo.CurrentCulture);
             if (_explain1 != null)
@@ -358,7 +444,7 @@ namespace Xenvious
             {
                 if (_loading || !Live || !double.TryParse(timer.Text.Replace(',', '.'), NumberStyles.Float, CultureInfo.InvariantCulture, out double sec)) return;
                 for (int t = 0; t < PlayAreas.Teams; t++)
-                    if (_allTeams || t == _team)
+                    if (_teams.Contains(t))
                         new Global(PlayAreas.Timer(_area, t)).SetInt((int)Math.Round(sec * 1000));
             };
             _loaders.Add(() => { if (!timer.IsKeyboardFocused) timer.Text = (new Global(PlayAreas.Timer(_area, _team)).Get<int>() / 1000.0).ToString("0.#", CultureInfo.InvariantCulture); });

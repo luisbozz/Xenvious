@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -912,7 +912,7 @@ namespace Xenvious
         /// <summary>The rule type as the creator names it for this kind of entity (a vehicle is destroyed, not killed).</summary>
         private static string TypeName(Rules.Link link) => Rules.TypeName(link);
 
-        private static string TimeLabel(int sec)
+        internal static string TimeLabel(int sec)
             => sec >= 60 ? TimeSpan.FromSeconds(sec).ToString(@"m\:ss", CultureInfo.InvariantCulture) + " min" : sec.ToString(CultureInfo.CurrentCulture) + " s";
 
         private static string TimeText(int selection) => TimeLabel(Rules.TimeLimits.FirstOrDefault(t => t.Selection == selection).Seconds);

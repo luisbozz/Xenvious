@@ -30,7 +30,6 @@ using Xenvious.Translation;
 using Xenvious.ViewModels;
 using static Xenvious.GTA;
 using static Xenvious.GTA.Offsets.Editor;
-using static Xenvious.Kill;
 
 namespace Xenvious
 {
@@ -52,26 +51,6 @@ namespace Xenvious
         // Die Local-Basis-Funktionen sind statisch, die Thread-Suche braucht aber den
         // Zwischenspeicher der Instanz.
         public static MainWindow Instance;
-        public static Kill kill = new Kill(new int[] { 1, 1, 1, 1 }, new Kill.Values[]
-        {
-            new Kill.Values(new int[] { 6,6,6,6 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, -1,-1),
-            new Kill.Values(new int[] { 0,0,0,0 }, new int[] { 99999,99999,99999,99999 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, -1,-1),
-            new Kill.Values(new int[] { 0,0,0,0 }, new int[] { 99999,99999,99999,99999 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, -1,-1),
-            new Kill.Values(new int[] { 0,0,0,0 }, new int[] { 99999,99999,99999,99999 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, -1,-1),
-            new Kill.Values(new int[] { 0,0,0,0 }, new int[] { 99999,99999,99999,99999 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, -1,-1),
-            new Kill.Values(new int[] { 0,0,0,0 }, new int[] { 99999,99999,99999,99999 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, -1,-1),
-            new Kill.Values(new int[] { 0,0,0,0 }, new int[] { 99999,99999,99999,99999 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, -1,-1),
-            new Kill.Values(new int[] { 0,0,0,0 }, new int[] { 99999,99999,99999,99999 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, -1,-1),
-            new Kill.Values(new int[] { 0,0,0,0 }, new int[] { 99999,99999,99999,99999 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, -1,-1),
-            new Kill.Values(new int[] { 0,0,0,0 }, new int[] { 99999,99999,99999,99999 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, -1,-1),
-            new Kill.Values(new int[] { 0,0,0,0 }, new int[] { 99999,99999,99999,99999 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, -1,-1),
-            new Kill.Values(new int[] { 0,0,0,0 }, new int[] { 99999,99999,99999,99999 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, -1,-1),
-            new Kill.Values(new int[] { 0,0,0,0 }, new int[] { 99999,99999,99999,99999 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, -1,-1),
-            new Kill.Values(new int[] { 0,0,0,0 }, new int[] { 99999,99999,99999,99999 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, -1,-1),
-            new Kill.Values(new int[] { 0,0,0,0 }, new int[] { 99999,99999,99999,99999 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, -1,-1),
-            new Kill.Values(new int[] { 0,0,0,0 }, new int[] { 99999,99999,99999,99999 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, -1,-1),
-            new Kill.Values(new int[] { 0,0,0,0 }, new int[] { 99999,99999,99999,99999 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, new int[] { 0,0,0,0 }, -1,-1)
-        });
         public static List<int> plylfreeze;
         public static nrcidcopy nrcidcopy;
 
@@ -146,21 +125,20 @@ namespace Xenvious
                 {
                     try
                     {
-                        return new Global(GTA.Offsets.Editor.custom_dimension_model).SetInt(id);
+                        return ScriptVars.Set(ScriptVars.DimensionModel, id);
                     }
                     catch
                     {
                         return false;
                     }
                 },
-                () => new Global(GTA.Offsets.Editor.custom_dimension_min).GetVector3(),
-                () => new Global(GTA.Offsets.Editor.custom_dimension_max).GetVector3());
+                () => ScriptVars.GetVector3(ScriptVars.DimensionMin),
+                () => ScriptVars.GetVector3(ScriptVars.DimensionMax));
 
             var propPlacementService = new PropPlacementService();
             var scriptFeatures = new ScriptFeatureMonitor(
                 () => m.IsProcOpen,
                 () => IsCreatorRunning(),
-                () => GTA.CurrentCreatorName(),
                 () => cbsettingsexpscrfeat.IsChecked == true);
 
             AdvancedPropPlacementVm = new AdvancedPropPlacementViewModel(
@@ -367,6 +345,17 @@ namespace Xenvious
             InitModelCards();
             InitExtraRules();
             InitAreaEditors();
+            try { InitLifecycleCards(); }
+            catch (Exception ex) { Log.Error("lifecycle cards: " + ex); }
+            try { InitCatalogPages(); }
+            catch (Exception ex) { Log.Error("catalog pages: " + ex); }
+            // A layout error must not stop the start; the page then keeps (part of) its old layout.
+            try { InitKillLayout(); }
+            catch (Exception ex) { Log.Error("kill layout: " + ex); }
+            try { InitActorLayout(); }
+            catch (Exception ex) { Log.Error("actor layout: " + ex); }
+            try { InitPlayerLayout(); }
+            catch (Exception ex) { Log.Error("player layout: " + ex); }
             InitEntityPicker();
         }
 

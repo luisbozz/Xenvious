@@ -21,9 +21,9 @@ namespace Xenvious
         private List<CatalogItem> PropCatalog => _propCatalog?.Count > 0 ? _propCatalog : (_propCatalog = GTA.Editor.PropList
             .Select(p => new CatalogItem(p.Name, p.Native, p.UInt, p.Category, "prop")).ToList());
 
-        // actors.json has display names only; the model name and the category come from the
-        // creator's own ped lists (ActorCategories). Models the creator offers that are missing
-        // from actors.json are added under their model name. No picture source for peds yet.
+        // actors.json has display and model names; the category comes from the creator's own
+        // ped lists (ActorCategories). Models the creator offers that are missing from
+        // actors.json are added under their model name.
         private List<CatalogItem> ActorCatalog => _actorCatalog?.Count > 0 ? _actorCatalog : (_actorCatalog = BuildActorCatalog());
 
         private List<CatalogItem> BuildActorCatalog()
@@ -33,7 +33,7 @@ namespace Xenvious
                 : TranslateOr("actorcat_other", "Other");
 
             var items = GTA.Editor.ActorList
-                .Select(a => new CatalogItem(a.Name, ActorCategories.ByHash.TryGetValue(a.UInt32, out var e) ? e.Model : null, a.UInt32, CategoryName(a.UInt32), "actor"))
+                .Select(a => new CatalogItem(a.Name, a.Model ?? (ActorCategories.ByHash.TryGetValue(a.UInt32, out var e) ? e.Model : null), a.UInt32, CategoryName(a.UInt32), "actor"))
                 .ToList();
             if (items.Count == 0)
                 return items;
@@ -44,11 +44,11 @@ namespace Xenvious
             return items;
         }
 
-        // vehicles.json has model names only; there is no picture source for vehicles yet.
+        // vehicles.json has model names only.
         private List<CatalogItem> VehicleCatalog => _vehicleCatalog?.Count > 0 ? _vehicleCatalog : (_vehicleCatalog = GTA.Editor.VehList
             .Select(v => new CatalogItem(v.Native, v.Native, v.Uint32, v.Category, "vehicle")).ToList());
 
-        // weapons.json has weapon names only, no pictures either.
+        // weapons.json has weapon names only.
         private List<CatalogItem> WeaponCatalog => _weaponCatalog?.Count > 0 ? _weaponCatalog : (_weaponCatalog = GTA.Editor.WeaponList
             .Select(w => new CatalogItem(w.Native, w.Native, w.UInt32, w.Category, "weapon")).ToList());
 

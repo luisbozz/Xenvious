@@ -83,13 +83,15 @@
                                     <Border CornerRadius="4" Background="{DynamicResource DeepBrush}" ClipToBounds="True">
                                         <Grid>
                                             <!-- Shown until the picture has loaded, or when the model has none. -->
-                                            <Rectangle RadiusX="4" RadiusY="4" Margin="6" Stroke="{DynamicResource LineBrush}" StrokeThickness="1.5" StrokeDashArray="4 3"/>
-                                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                <Path Data="M5,17 L19,17 M3,13 L5,7 L19,7 L21,13 L21,17 L3,17 Z M5.7,17 A1.8,1.8 0 1 1 9.3,17 A1.8,1.8 0 1 1 5.7,17 M14.7,17 A1.8,1.8 0 1 1 18.3,17 A1.8,1.8 0 1 1 14.7,17"
-                                                      Stroke="{DynamicResource FaintTextBrush}" StrokeThickness="1.6" StrokeLineJoin="Round" Stretch="Uniform" Width="26" Height="20" HorizontalAlignment="Center"/>
-                                                <TextBlock FontSize="11" FontWeight="Bold" Foreground="{DynamicResource FaintTextBrush}" Margin="0,6,0,0" HorizontalAlignment="Center"
-                                                           Text="{Binding Translation[catalog_nopreview], FallbackValue=Preview}"/>
-                                            </StackPanel>
+                                            <Grid x:Name="placeholder" Visibility="Collapsed">
+                                                <Rectangle RadiusX="4" RadiusY="4" Margin="6" Stroke="{DynamicResource LineBrush}" StrokeThickness="1.5" StrokeDashArray="4 3"/>
+                                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                    <Path Data="M5,17 L19,17 M3,13 L5,7 L19,7 L21,13 L21,17 L3,17 Z M5.7,17 A1.8,1.8 0 1 1 9.3,17 A1.8,1.8 0 1 1 5.7,17 M14.7,17 A1.8,1.8 0 1 1 18.3,17 A1.8,1.8 0 1 1 14.7,17"
+                                                          Stroke="{DynamicResource FaintTextBrush}" StrokeThickness="1.6" StrokeLineJoin="Round" Stretch="Uniform" Width="26" Height="20" HorizontalAlignment="Center"/>
+                                                    <TextBlock FontSize="11" FontWeight="Bold" Foreground="{DynamicResource FaintTextBrush}" Margin="0,6,0,0" HorizontalAlignment="Center"
+                                                               Text="{Binding Translation[catalog_nopreview], FallbackValue=Preview}"/>
+                                                </StackPanel>
+                                            </Grid>
                                             <ContentPresenter/>
                                         </Grid>
                                     </Border>
@@ -99,13 +101,16 @@
                                     </Border>
                                 </Grid>
                                 <ControlTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding Content.Source, RelativeSource={RelativeSource Self}}" Value="{x:Null}">
+                                        <Setter TargetName="placeholder" Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
                                     <Trigger Property="IsMouseOver" Value="True">
                                         <Setter TargetName="overlay" Property="Opacity" Value="1"/>
                                     </Trigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
                         </Button.Template>
-                        <Image x:Name="Thumb" Stretch="UniformToFill"/>
+                        <Image x:Name="Thumb" Stretch="Uniform"/>
                     </Button>
                     <StackPanel VerticalAlignment="Top">
                         <TextBlock x:Name="NameText" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource TextColor}" TextWrapping="Wrap" MaxHeight="44" TextTrimming="CharacterEllipsis"/>

@@ -332,7 +332,18 @@ namespace Xenvious
         {
             double z = mapMoverZoom.ScaleX * (e.Delta > 0 ? 1.2 : 1 / 1.2);
             z = Math.Max(1.0, Math.Min(6.0, z));
+            // Zoom towards the cursor: the map point under it stays under it.
+            Point onMap = e.GetPosition(gridMapMoverCanvas);
+            Point inView = e.GetPosition(scrollMapMover);
             mapMoverZoom.ScaleX = mapMoverZoom.ScaleY = z;
+            // Scroll bars only while zoomed in: with Auto, bars that appeared while zoomed took
+            // their space from the view, so at 1x the map no longer fit and they stayed.
+            var bars = z > 1.001 ? ScrollBarVisibility.Auto : ScrollBarVisibility.Disabled;
+            scrollMapMover.HorizontalScrollBarVisibility = bars;
+            scrollMapMover.VerticalScrollBarVisibility = bars;
+            scrollMapMover.UpdateLayout();
+            scrollMapMover.ScrollToHorizontalOffset(onMap.X * z - inView.X);
+            scrollMapMover.ScrollToVerticalOffset(onMap.Y * z - inView.Y);
             RefreshMapMover(false);
             e.Handled = true;       // sonst scrollt der ScrollViewer mit
         }

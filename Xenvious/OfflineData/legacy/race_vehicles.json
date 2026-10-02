@@ -1,0 +1,8133 @@
+[
+ {
+  "class": 0,
+  "base": [
+   {
+    "hash": 3950024287,
+    "model": "blista",
+    "names": {
+     "ger": "Blista",
+     "eng": "Blista",
+     "ru": "Blista",
+     "pl": "Blista",
+     "fr": "Blista",
+     "zh_cn": "旅行家"
+    }
+   },
+   {
+    "hash": 3164157193,
+    "model": "dilettante",
+    "names": {
+     "ger": "Dilettante",
+     "eng": "Dilettante",
+     "ru": "Dilettante",
+     "pl": "Dilettante",
+     "fr": "Dilettante",
+     "zh_cn": "半吊子"
+    }
+   },
+   {
+    "hash": 3117103977,
+    "model": "issi2",
+    "names": {
+     "ger": "Issi",
+     "eng": "Issi",
+     "ru": "Issi",
+     "pl": "Issi",
+     "fr": "Issi",
+     "zh_cn": "天威"
+    }
+   },
+   {
+    "hash": 2844316578,
+    "model": "prairie",
+    "names": {
+     "ger": "Prairie",
+     "eng": "Prairie",
+     "ru": "Prairie",
+     "pl": "Prairie",
+     "fr": "Prairie",
+     "zh_cn": "原野行者"
+    }
+   }
+  ],
+  "dlc": [
+   {
+    "hash": 841808271,
+    "model": "rhapsody",
+    "names": {
+     "ger": "Rhapsody",
+     "eng": "Rhapsody",
+     "ru": "Rhapsody",
+     "pl": "Rhapsody",
+     "fr": "Rhapsody",
+     "zh_cn": "狂想曲"
+    }
+   },
+   {
+    "hash": 3863274624,
+    "model": "panto",
+    "names": {
+     "ger": "Panto",
+     "eng": "Panto",
+     "ru": "Panto",
+     "pl": "Panto",
+     "fr": "Panto",
+     "zh_cn": "哑剧"
+    }
+   },
+   {
+    "hash": 1549126457,
+    "model": "brioso",
+    "names": {
+     "ger": "Brioso R/A",
+     "eng": "Brioso R/A",
+     "ru": "BRIOSO R/A",
+     "pl": "Brioso R/A",
+     "fr": "Brioso R/A",
+     "zh_cn": "精力霸µR/A"
+    }
+   },
+   {
+    "hash": 931280609,
+    "model": "issi3",
+    "names": {
+     "ger": "Issi Classic",
+     "eng": "Issi Classic",
+     "ru": "Issi Classic",
+     "pl": "Issi Classic",
+     "fr": "Issi classique",
+     "zh_cn": "天威经典版"
+    }
+   },
+   {
+    "hash": 409049982,
+    "model": "kanjo",
+    "names": {
+     "ger": "Blista Kanjo",
+     "eng": "Blista Kanjo",
+     "ru": "Blista Kanjo",
+     "pl": "Blista Kanjo",
+     "fr": "Blista Kanjo",
+     "zh_cn": "旅行家羽黑"
+    }
+   },
+   {
+    "hash": 1118611807,
+    "model": "asbo",
+    "names": {
+     "ger": "Asbo",
+     "eng": "Asbo",
+     "ru": "Asbo",
+     "pl": "Asbo",
+     "fr": "Asbo",
+     "zh_cn": "反社会"
+    }
+   },
+   {
+    "hash": 2196012677,
+    "model": "club",
+    "names": {
+     "ger": "Club",
+     "eng": "Club",
+     "ru": "Club",
+     "pl": "Club",
+     "fr": "Club",
+     "zh_cn": "俱乐部"
+    }
+   },
+   {
+    "hash": 1429622905,
+    "model": "brioso2",
+    "names": {
+     "ger": "Brioso 300",
+     "eng": "Brioso 300",
+     "ru": "Brioso 300",
+     "pl": "Brioso 300",
+     "fr": "Brioso 300",
+     "zh_cn": "精力霸µ300"
+    }
+   },
+   {
+    "hash": 1644055914,
+    "model": "weevil",
+    "names": {
+     "ger": "Weevil",
+     "eng": "Weevil",
+     "ru": "Weevil",
+     "pl": "Weevil",
+     "fr": "Weevil",
+     "zh_cn": "象鼻虫"
+    }
+   },
+   {
+    "hash": 3950024287,
+    "model": "blista",
+    "names": {
+     "ger": "Blista",
+     "eng": "Blista",
+     "ru": "Blista",
+     "pl": "Blista",
+     "fr": "Blista",
+     "zh_cn": "旅行家"
+    }
+   },
+   {
+    "hash": 3950024287,
+    "model": "blista",
+    "names": {
+     "ger": "Blista",
+     "eng": "Blista",
+     "ru": "Blista",
+     "pl": "Blista",
+     "fr": "Blista",
+     "zh_cn": "旅行家"
+    }
+   }
+  ]
+ },
+ {
+  "class": 1,
+  "base": [
+   {
+    "hash": 2485144969,
+    "model": "asea",
+    "names": {
+     "ger": "Asea",
+     "eng": "Asea",
+     "ru": "Asea",
+     "pl": "Asea",
+     "fr": "Asea",
+     "zh_cn": "海致"
+    }
+   },
+   {
+    "hash": 2391954683,
+    "model": "asterope",
+    "names": {
+     "ger": "Asterope",
+     "eng": "Asterope",
+     "ru": "Asterope",
+     "pl": "Asterope",
+     "fr": "Asterope",
+     "zh_cn": "爱硕普"
+    }
+   },
+   {
+    "hash": 1909141499,
+    "model": "fugitive",
+    "names": {
+     "ger": "Fugitive",
+     "eng": "Fugitive",
+     "ru": "Fugitive",
+     "pl": "Fugitive",
+     "fr": "Fugitive",
+     "zh_cn": "流星"
+    }
+   },
+   {
+    "hash": 2411098011,
+    "model": "premier",
+    "names": {
+     "ger": "Premier",
+     "eng": "Premier",
+     "ru": "Premier",
+     "pl": "Premier",
+     "fr": "Premier",
+     "zh_cn": "统领"
+    }
+   },
+   {
+    "hash": 3144368207,
+    "model": "primo",
+    "names": {
+     "ger": "Primo",
+     "eng": "Primo",
+     "ru": "Primo",
+     "pl": "Primo",
+     "fr": "Primo",
+     "zh_cn": "初代"
+    }
+   },
+   {
+    "hash": 3039514899,
+    "model": "schafter2",
+    "names": {
+     "ger": "Schafter",
+     "eng": "Schafter",
+     "ru": "Schafter",
+     "pl": "Schafter",
+     "fr": "Schafter",
+     "zh_cn": "莎夫特"
+    }
+   },
+   {
+    "hash": 2817386317,
+    "model": "stanier",
+    "names": {
+     "ger": "Stanier",
+     "eng": "Stanier",
+     "ru": "Stanier",
+     "pl": "Stanier",
+     "fr": "Stanier",
+     "zh_cn": "史塔尼亚"
+    }
+   },
+   {
+    "hash": 1123216662,
+    "model": "superd",
+    "names": {
+     "ger": "Super Diamond",
+     "eng": "Super Diamond",
+     "ru": "Super Diamond",
+     "pl": "Super Diamond",
+     "fr": "Super Diamond",
+     "zh_cn": "金钻耀星"
+    }
+   },
+   {
+    "hash": 2400073108,
+    "model": "surge",
+    "names": {
+     "ger": "Surge",
+     "eng": "Surge",
+     "ru": "Surge",
+     "pl": "Surge",
+     "fr": "Surge",
+     "zh_cn": "奔腾"
+    }
+   },
+   {
+    "hash": 3286105550,
+    "model": "tailgater",
+    "names": {
+     "ger": "Tailgater",
+     "eng": "Tailgater",
+     "ru": "Tailgater",
+     "pl": "Tailgater",
+     "fr": "Tailgater",
+     "zh_cn": "密探"
+    }
+   },
+   {
+    "hash": 1777363799,
+    "model": "washington",
+    "names": {
+     "ger": "Washington",
+     "eng": "Washington",
+     "ru": "Washington",
+     "pl": "Washington",
+     "fr": "Washington",
+     "zh_cn": "华盛顿"
+    }
+   }
+  ],
+  "dlc": [
+   {
+    "hash": 75131841,
+    "model": "glendale",
+    "names": {
+     "ger": "Glendale",
+     "eng": "Glendale",
+     "ru": "Glendale",
+     "pl": "Glendale",
+     "fr": "Glendale",
+     "zh_cn": "格伦戴尔"
+    }
+   },
+   {
+    "hash": 1373123368,
+    "model": "warrener",
+    "names": {
+     "ger": "Warrener",
+     "eng": "Warrener",
+     "ru": "Warrener",
+     "pl": "Warrener",
+     "fr": "Warrener",
+     "zh_cn": "守护星"
+    }
+   },
+   {
+    "hash": 2254540506,
+    "model": "primo2",
+    "names": {
+     "ger": "Primo (Tuningversion)",
+     "eng": "Primo Custom",
+     "ru": "Primo заказной",
+     "pl": "Primo - niest.",
+     "fr": "Primo custom",
+     "zh_cn": "初代改装版"
+    }
+   },
+   {
+    "hash": 2809443750,
+    "model": "schafter3",
+    "names": {
+     "ger": "Schafter V12",
+     "eng": "Schafter V12",
+     "ru": "Schafter V12",
+     "pl": "Schafter V12",
+     "fr": "Schafter V12",
+     "zh_cn": "莎夫特µV12"
+    }
+   },
+   {
+    "hash": 3406724313,
+    "model": "schafter5",
+    "names": {
+     "ger": "Schafter V12 (gepanzert)",
+     "eng": "Schafter V12 (Armored)",
+     "ru": "Schafter V12 (броня)",
+     "pl": "Schafter V12 (opancerzony)",
+     "fr": "Schafter V12 (blindée)",
+     "zh_cn": "莎夫特µV12（装甲版）"
+    }
+   },
+   {
+    "hash": 1489967196,
+    "model": "schafter4",
+    "names": {
+     "ger": "Schafter LWB",
+     "eng": "Schafter LWB",
+     "ru": "Schafter LWB",
+     "pl": "Schafter LWB",
+     "fr": "Schafter LWB",
+     "zh_cn": "长轴莎夫特"
+    }
+   },
+   {
+    "hash": 1922255844,
+    "model": "schafter6",
+    "names": {
+     "ger": "Schafter LWB (gepanzert)",
+     "eng": "Schafter LWB (Armored)",
+     "ru": "Schafter LWB (броня)",
+     "pl": "Schafter LWB (opancerzony)",
+     "fr": "Schafter LWB (blindée)",
+     "zh_cn": "长轴莎夫特（装甲版）"
+    }
+   },
+   {
+    "hash": 906642318,
+    "model": "cog55",
+    "names": {
+     "ger": "Cognoscenti 55",
+     "eng": "Cognoscenti 55",
+     "ru": "Cognoscenti 55",
+     "pl": "Cognoscenti 55",
+     "fr": "Cognoscenti 55",
+     "zh_cn": "至尊慧眼µ55"
+    }
+   },
+   {
+    "hash": 704435172,
+    "model": "cog552",
+    "names": {
+     "ger": "Cognoscenti 55 (gepanzert)",
+     "eng": "Cognoscenti 55 (Armored)",
+     "ru": "Cognoscenti 55 (броня)",
+     "pl": "Cognoscenti 55 (opanc.)",
+     "fr": "Cognoscenti 55 (blindée)",
+     "zh_cn": "至尊慧眼µ55（装甲版）"
+    }
+   },
+   {
+    "hash": 2264796000,
+    "model": "cognoscenti",
+    "names": {
+     "ger": "Cognoscenti",
+     "eng": "Cognoscenti",
+     "ru": "Cognoscenti",
+     "pl": "Cognoscenti",
+     "fr": "Cognoscenti",
+     "zh_cn": "至尊慧眼"
+    }
+   },
+   {
+    "hash": 3690124666,
+    "model": "cognoscenti2",
+    "names": {
+     "ger": "Cognoscenti (gepanzert)",
+     "eng": "Cognoscenti (Armored)",
+     "ru": "Cognoscenti (броня)",
+     "pl": "Cognoscenti (opancerzony)",
+     "fr": "Cognoscenti (blindée)",
+     "zh_cn": "至尊慧眼（装甲版）"
+    }
+   },
+   {
+    "hash": 321186144,
+    "model": "stafford",
+    "names": {
+     "ger": "Stafford",
+     "eng": "Stafford",
+     "ru": "Stafford",
+     "pl": "Stafford",
+     "fr": "Stafford",
+     "zh_cn": "斯塔福德"
+    }
+   },
+   {
+    "hash": 3381377750,
+    "model": "glendale2",
+    "names": {
+     "ger": "Glendale Custom",
+     "eng": "Glendale Custom",
+     "ru": "Glendale заказной",
+     "pl": "Glendale - niest.",
+     "fr": "Glendale custom",
+     "zh_cn": "格伦戴尔改装版"
+    }
+   },
+   {
+    "hash": 579912970,
+    "model": "warrener2",
+    "names": {
+     "ger": "Warrener HKR",
+     "eng": "Warrener HKR",
+     "ru": "Warrener HKR",
+     "pl": "Warrener HKR",
+     "fr": "Warrener HKR",
+     "zh_cn": "守护星µHKR"
+    }
+   },
+   {
+    "hash": 3050505892,
+    "model": "tailgater2",
+    "names": {
+     "ger": "Tailgater S",
+     "eng": "Tailgater S",
+     "ru": "Tailgater S",
+     "pl": "Tailgater S",
+     "fr": "Tailgater S",
+     "zh_cn": "密探µS"
+    }
+   },
+   {
+    "hash": 1532171089,
+    "model": "deity",
+    "names": {
+     "ger": "Deity",
+     "eng": "Deity",
+     "ru": "Deity",
+     "pl": "Deity",
+     "fr": "Deity",
+     "zh_cn": "神灵"
+    }
+   },
+   {
+    "hash": 2767531027,
+    "model": "cinquemila",
+    "names": {
+     "ger": "Cinquemila",
+     "eng": "Cinquemila",
+     "ru": "Cinquemila",
+     "pl": "Cinquemila",
+     "fr": "Cinquemila",
+     "zh_cn": "五千"
+    }
+   },
+   {
+    "hash": 2439462158,
+    "model": "rhinehart",
+    "names": {
+     "ger": "Rhinehart",
+     "eng": "Rhinehart",
+     "ru": "Rhinehart",
+     "pl": "Rhinehart",
+     "fr": "Rhinehart",
+     "zh_cn": "莱茵哈特"
+    }
+   },
+   {
+    "hash": 3553846961,
+    "model": "asterope2",
+    "names": {
+     "ger": "Asterope GZ",
+     "eng": "Asterope GZ",
+     "ru": "Asterope GZ",
+     "pl": "Asterope GZ",
+     "fr": "Asterope GZ",
+     "zh_cn": "爱硕普µGZ"
+    }
+   },
+   {
+    "hash": 3054795149,
+    "model": "vorschlaghammer",
+    "names": {
+     "ger": "Vorschlaghammer",
+     "eng": "Vorschlaghammer",
+     "ru": "Vorschlaghammer",
+     "pl": "Vorschlaghammer",
+     "fr": "Vorschlaghammer",
+     "zh_cn": "虎头飞锤"
+    }
+   },
+   {
+    "hash": 1992041063,
+    "model": "chavosv6",
+    "names": {
+     "ger": "Chavos V6",
+     "eng": "Chavos V6",
+     "ru": "Chavos V6",
+     "pl": "Chavos V6",
+     "fr": "Chavos V6",
+     "zh_cn": "查沃斯µV6"
+    }
+   },
+   {
+    "hash": 1580292663,
+    "model": "hardy",
+    "names": {
+     "ger": "Hardy",
+     "eng": "Hardy",
+     "ru": "Hardy",
+     "pl": "Hardy",
+     "fr": "Hardy",
+     "zh_cn": "哈帝"
+    }
+   },
+   {
+    "hash": 3193860278,
+    "model": "minimus",
+    "names": {
+     "ger": "Minimus",
+     "eng": "Minimus",
+     "ru": "Minimus",
+     "pl": "Minimus",
+     "fr": "Minimus",
+     "zh_cn": "迷你姆斯"
+    }
+   },
+   {
+    "hash": 3936328504,
+    "model": "sentinel6",
+    "names": {
+     "ger": "Sentinel XS4",
+     "eng": "Sentinel XS4",
+     "ru": "Sentinel XS4",
+     "pl": "Sentinel XS4",
+     "fr": "Sentinel XS4",
+     "zh_cn": "卫士µXS4"
+    }
+   },
+   {
+    "hash": 3005245074,
+    "model": "ingot",
+    "names": {
+     "ger": "Ingot",
+     "eng": "Ingot",
+     "ru": "Ingot",
+     "pl": "Ingot",
+     "fr": "Ingot",
+     "zh_cn": "英卡特"
+    }
+   },
+   {
+    "hash": 886934177,
+    "model": "intruder",
+    "names": {
+     "ger": "Intruder",
+     "eng": "Intruder",
+     "ru": "Intruder",
+     "pl": "Intruder",
+     "fr": "Intruder",
+     "zh_cn": "入侵者"
+    }
+   },
+   {
+    "hash": 1723137093,
+    "model": "stratum",
+    "names": {
+     "ger": "Stratum",
+     "eng": "Stratum",
+     "ru": "Stratum",
+     "pl": "Stratum",
+     "fr": "Stratum",
+     "zh_cn": "地层先锋"
+    }
+   },
+   {
+    "hash": 679458690,
+    "model": "merula",
+    "names": {
+     "ger": "Merula",
+     "eng": "Merula",
+     "ru": "Merula",
+     "pl": "Merula",
+     "fr": "Merula",
+     "zh_cn": "梅鲁拉"
+    }
+   }
+  ]
+ },
+ {
+  "class": 2,
+  "base": [
+   {
+    "hash": 3486135912,
+    "model": "baller",
+    "names": {
+     "ger": "Baller",
+     "eng": "Baller",
+     "ru": "Baller",
+     "pl": "Baller",
+     "fr": "Baller",
+     "zh_cn": "行者"
+    }
+   },
+   {
+    "hash": 142944341,
+    "model": "baller2",
+    "names": {
+     "ger": "Baller",
+     "eng": "Baller",
+     "ru": "Baller",
+     "pl": "Baller",
+     "fr": "Baller",
+     "zh_cn": "行者"
+    }
+   },
+   {
+    "hash": 850565707,
+    "model": "bjxl",
+    "names": {
+     "ger": "BeeJay XL",
+     "eng": "BeeJay XL",
+     "ru": "BeeJay XL",
+     "pl": "BeeJay XL",
+     "fr": "BeeJay XL",
+     "zh_cn": "碧杰µXL"
+    }
+   },
+   {
+    "hash": 3505073125,
+    "model": "cavalcade2",
+    "names": {
+     "ger": "Cavalcade",
+     "eng": "Cavalcade",
+     "ru": "Cavalcade",
+     "pl": "Cavalcade",
+     "fr": "Cavalcade",
+     "zh_cn": "骑兵"
+    }
+   },
+   {
+    "hash": 321739290,
+    "model": "crusader",
+    "names": {
+     "ger": "Crusader",
+     "eng": "Crusader",
+     "ru": "Crusader",
+     "pl": "Crusader",
+     "fr": "Crusader",
+     "zh_cn": "傲世铁骑"
+    }
+   },
+   {
+    "hash": 1177543287,
+    "model": "dubsta",
+    "names": {
+     "ger": "Dubsta",
+     "eng": "Dubsta",
+     "ru": "Dubsta",
+     "pl": "Dubsta",
+     "fr": "Dubsta",
+     "zh_cn": "迪布达"
+    }
+   },
+   {
+    "hash": 2519238556,
+    "model": "granger",
+    "names": {
+     "ger": "Granger",
+     "eng": "Granger",
+     "ru": "Granger",
+     "pl": "Granger",
+     "fr": "Granger",
+     "zh_cn": "屌王"
+    }
+   },
+   {
+    "hash": 2751205197,
+    "model": "gresley",
+    "names": {
+     "ger": "Gresley",
+     "eng": "Gresley",
+     "ru": "Gresley",
+     "pl": "Gresley",
+     "fr": "Gresley",
+     "zh_cn": "情欲猎手"
+    }
+   },
+   {
+    "hash": 1269098716,
+    "model": "landstalker",
+    "names": {
+     "ger": "Landstalker",
+     "eng": "Landstalker",
+     "ru": "Landstalker",
+     "pl": "Landstalker",
+     "fr": "Landstalker",
+     "zh_cn": "追捕者"
+    }
+   },
+   {
+    "hash": 914654722,
+    "model": "mesa",
+    "names": {
+     "ger": "Mesa",
+     "eng": "Mesa",
+     "ru": "Mesa",
+     "pl": "Mesa",
+     "fr": "Mesa",
+     "zh_cn": "炎魔"
+    }
+   },
+   {
+    "hash": 741586030,
+    "model": "pranger",
+    "names": {
+     "ger": "Park-Ranger",
+     "eng": "Park Ranger",
+     "ru": "Park Ranger",
+     "pl": "Park Ranger",
+     "fr": "Park Ranger",
+     "zh_cn": "国家公园警用车"
+    }
+   },
+   {
+    "hash": 2643899483,
+    "model": "radi",
+    "names": {
+     "ger": "Radius",
+     "eng": "Radius",
+     "ru": "Radius",
+     "pl": "Radius",
+     "fr": "Radius",
+     "zh_cn": "辐光"
+    }
+   },
+   {
+    "hash": 1221512915,
+    "model": "seminole",
+    "names": {
+     "ger": "Seminole",
+     "eng": "Seminole",
+     "ru": "Seminole",
+     "pl": "Seminole",
+     "fr": "Seminole",
+     "zh_cn": "陆上专家"
+    }
+   },
+   {
+    "hash": 1337041428,
+    "model": "serrano",
+    "names": {
+     "ger": "Serrano",
+     "eng": "Serrano",
+     "ru": "Serrano",
+     "pl": "Serrano",
+     "fr": "Serrano",
+     "zh_cn": "瑟雷诺"
+    }
+   },
+   {
+    "hash": 3057713523,
+    "model": "dubsta3",
+    "names": {
+     "ger": "Dubsta 6x6",
+     "eng": "Dubsta 6x6",
+     "ru": "Dubsta 6x6",
+     "pl": "Dubsta 6x6",
+     "fr": "Dubsta 6x6",
+     "zh_cn": "迪布达µ6x6"
+    }
+   }
+  ],
+  "dlc": [
+   {
+    "hash": 486987393,
+    "model": "huntley",
+    "names": {
+     "ger": "Huntley S",
+     "eng": "Huntley S",
+     "ru": "Huntley S",
+     "pl": "Huntley S",
+     "fr": "Huntley S",
+     "zh_cn": "亨特利µS"
+    }
+   },
+   {
+    "hash": 1878062887,
+    "model": "baller3",
+    "names": {
+     "ger": "Baller LE",
+     "eng": "Baller LE",
+     "ru": "Baller LE",
+     "pl": "Baller LE",
+     "fr": "Baller LE",
+     "zh_cn": "行者µLE"
+    }
+   },
+   {
+    "hash": 634118882,
+    "model": "baller4",
+    "names": {
+     "ger": "Baller LE LWB",
+     "eng": "Baller LE LWB",
+     "ru": "Baller LE LWB",
+     "pl": "Baller LE LWB",
+     "fr": "Baller LE LWB",
+     "zh_cn": "长轴行者µLE"
+    }
+   },
+   {
+    "hash": 470404958,
+    "model": "baller5",
+    "names": {
+     "ger": "Baller LE (gepanzert)",
+     "eng": "Baller LE (Armored)",
+     "ru": "Baller LE (броня)",
+     "pl": "Baller LE (opancerzony)",
+     "fr": "Baller LE (blindée)",
+     "zh_cn": "行者µLE（装甲版）"
+    }
+   },
+   {
+    "hash": 666166960,
+    "model": "baller6",
+    "names": {
+     "ger": "Baller LE LWB (gepanzert)",
+     "eng": "Baller LE LWB (Armored)",
+     "ru": "Baller LE LWB (броня)",
+     "pl": "Baller LE LWB (opancerzony)",
+     "fr": "Baller LE LWB (blindée)",
+     "zh_cn": "长轴行者µLE（装甲版）"
+    }
+   },
+   {
+    "hash": 1203490606,
+    "model": "xls",
+    "names": {
+     "ger": "XLS",
+     "eng": "XLS",
+     "ru": "XLS",
+     "pl": "XLS",
+     "fr": "XLS",
+     "zh_cn": "XLS"
+    }
+   },
+   {
+    "hash": 3862958888,
+    "model": "xls2",
+    "names": {
+     "ger": "XLS (gepanzert)",
+     "eng": "XLS (Armored)",
+     "ru": "XLS (бронированный)",
+     "pl": "XLS (opanc.)",
+     "fr": "XLS (blindée)",
+     "zh_cn": "XLS(装甲版)"
+    }
+   },
+   {
+    "hash": 683047626,
+    "model": "contender",
+    "names": {
+     "ger": "Contender",
+     "eng": "Contender",
+     "ru": "Contender",
+     "pl": "Contender",
+     "fr": "Contender",
+     "zh_cn": "争夺者"
+    }
+   },
+   {
+    "hash": 3874056184,
+    "model": "patriot2",
+    "names": {
+     "ger": "Patriot-Limousine",
+     "eng": "Patriot Stretch",
+     "ru": "Patriot Stretch",
+     "pl": "Patriot Stretch",
+     "fr": "Patriot Stretch",
+     "zh_cn": "爱国者加长型"
+    }
+   },
+   {
+    "hash": 3157435195,
+    "model": "fq2",
+    "names": {
+     "ger": "FQ 2",
+     "eng": "FQ 2",
+     "ru": "FQ 2",
+     "pl": "FQ 2",
+     "fr": "FQ 2",
+     "zh_cn": "FQµ2"
+    }
+   },
+   {
+    "hash": 884422927,
+    "model": "habanero",
+    "names": {
+     "ger": "Habanero",
+     "eng": "Habanero",
+     "ru": "Habanero",
+     "pl": "Habanero",
+     "fr": "Habanero",
+     "zh_cn": "哈拔尼禄"
+    }
+   },
+   {
+    "hash": 3126015148,
+    "model": "toros",
+    "names": {
+     "ger": "Toros",
+     "eng": "Toros",
+     "ru": "Toros",
+     "pl": "Toros",
+     "fr": "Toros",
+     "zh_cn": "奔牛"
+    }
+   },
+   {
+    "hash": 2465530446,
+    "model": "novak",
+    "names": {
+     "ger": "Novak",
+     "eng": "Novak",
+     "ru": "Novak",
+     "pl": "Novak",
+     "fr": "Novak",
+     "zh_cn": "诺瓦克"
+    }
+   },
+   {
+    "hash": 83136452,
+    "model": "rebla",
+    "names": {
+     "ger": "Rebla GTS",
+     "eng": "Rebla GTS",
+     "ru": "Rebla GTS",
+     "pl": "Rebla GTS",
+     "fr": "Rebla GTS",
+     "zh_cn": "瑞巴 GTS"
+    }
+   },
+   {
+    "hash": 3456868130,
+    "model": "landstalker2",
+    "names": {
+     "ger": "Landstalker XL",
+     "eng": "Landstalker XL",
+     "ru": "Landstalker XL",
+     "pl": "Landstalker XL",
+     "fr": "Landstalker XL",
+     "zh_cn": "追捕者µXL"
+    }
+   },
+   {
+    "hash": 2484160806,
+    "model": "seminole2",
+    "names": {
+     "ger": "Seminole Frontier",
+     "eng": "Seminole Frontier",
+     "ru": "Seminole Frontier",
+     "pl": "Seminole Frontier",
+     "fr": "Seminole Frontier",
+     "zh_cn": "陆上专家边境"
+    }
+   },
+   {
+    "hash": 4192631813,
+    "model": "squaddie",
+    "names": {
+     "ger": "Squaddie",
+     "eng": "Squaddie",
+     "ru": "Squaddie",
+     "pl": "Squaddie",
+     "fr": "Squaddie",
+     "zh_cn": "列兵"
+    }
+   },
+   {
+    "hash": 4033620423,
+    "model": "granger2",
+    "names": {
+     "ger": "Granger 3600LX",
+     "eng": "Granger 3600LX",
+     "ru": "Granger 3600LX",
+     "pl": "Granger 3600LX",
+     "fr": "Granger 3600LX",
+     "zh_cn": "屌王µ3600LX"
+    }
+   },
+   {
+    "hash": 629969764,
+    "model": "astron",
+    "names": {
+     "ger": "Astron",
+     "eng": "Astron",
+     "ru": "Astron",
+     "pl": "Astron",
+     "fr": "Astron",
+     "zh_cn": "宇航"
+    }
+   },
+   {
+    "hash": 359875117,
+    "model": "baller7",
+    "names": {
+     "ger": "Baller ST",
+     "eng": "Baller ST",
+     "ru": "Baller ST",
+     "pl": "Baller ST",
+     "fr": "Baller ST",
+     "zh_cn": "行者µST"
+    }
+   },
+   {
+    "hash": 461465043,
+    "model": "jubilee",
+    "names": {
+     "ger": "Jubilee",
+     "eng": "Jubilee",
+     "ru": "Jubilee",
+     "pl": "Jubilee",
+     "fr": "Jubilee",
+     "zh_cn": "吉伯力"
+    }
+   },
+   {
+    "hash": 662793086,
+    "model": "iwagen",
+    "names": {
+     "ger": "I-Wagen",
+     "eng": "I-Wagen",
+     "ru": "I-Wagen",
+     "pl": "I-Wagen",
+     "fr": "I-Wagen",
+     "zh_cn": "爱瓦根"
+    }
+   },
+   {
+    "hash": 1550581940,
+    "model": "issi8",
+    "names": {
+     "ger": "Issi Rally",
+     "eng": "Issi Rally",
+     "ru": "Issi Rally",
+     "pl": "Issi Rally",
+     "fr": "Issi rallye",
+     "zh_cn": "天威拉力"
+    }
+   },
+   {
+    "hash": 4256087847,
+    "model": "aleutian",
+    "names": {
+     "ger": "Aleutian",
+     "eng": "Aleutian",
+     "ru": "Aleutian",
+     "pl": "Aleutian",
+     "fr": "Aleutian",
+     "zh_cn": "阿留申"
+    }
+   },
+   {
+    "hash": 3265236814,
+    "model": "cavalcade3",
+    "names": {
+     "ger": "Cavalcade XL",
+     "eng": "Cavalcade XL",
+     "ru": "Cavalcade XL",
+     "pl": "Cavalcade XL",
+     "fr": "Cavalcade XL",
+     "zh_cn": "骑兵µXL"
+    }
+   },
+   {
+    "hash": 3431608412,
+    "model": "baller8",
+    "names": {
+     "ger": "Baller ST-D",
+     "eng": "Baller ST-D",
+     "ru": "Baller ST-D",
+     "pl": "Baller ST-D",
+     "fr": "Baller ST-D",
+     "zh_cn": "行者µST-D"
+    }
+   },
+   {
+    "hash": 3526923154,
+    "model": "dorado",
+    "names": {
+     "ger": "Dorado",
+     "eng": "Dorado",
+     "ru": "Dorado",
+     "pl": "Dorado",
+     "fr": "Dorado",
+     "zh_cn": "剑鱼"
+    }
+   },
+   {
+    "hash": 2922168362,
+    "model": "vivanite",
+    "names": {
+     "ger": "Vivanite",
+     "eng": "Vivanite",
+     "ru": "Vivanite",
+     "pl": "Vivanite",
+     "fr": "Vivanite",
+     "zh_cn": "维瓦尼特"
+    }
+   },
+   {
+    "hash": 1307736079,
+    "model": "castigator",
+    "names": {
+     "ger": "Castigator",
+     "eng": "Castigator",
+     "ru": "Castigator",
+     "pl": "Castigator",
+     "fr": "Castigator",
+     "zh_cn": "惩戒者"
+    }
+   },
+   {
+    "hash": 1966698497,
+    "model": "woodlander",
+    "names": {
+     "ger": "Woodlander",
+     "eng": "Woodlander",
+     "ru": "Woodlander",
+     "pl": "Woodlander",
+     "fr": "Woodlander",
+     "zh_cn": "林地人"
+    }
+   },
+   {
+    "hash": 554408685,
+    "model": "everon3",
+    "names": {
+     "ger": "Everon RS",
+     "eng": "Everon RS",
+     "ru": "Everon RS",
+     "pl": "Everon RS",
+     "fr": "Everon RS",
+     "zh_cn": "埃弗伦 RS"
+    }
+   },
+   {
+    "hash": 2006918058,
+    "model": "cavalcade",
+    "names": {
+     "ger": "Cavalcade",
+     "eng": "Cavalcade",
+     "ru": "Cavalcade",
+     "pl": "Cavalcade",
+     "fr": "Cavalcade",
+     "zh_cn": "骑兵"
+    }
+   },
+   {
+    "hash": 3900892662,
+    "model": "dubsta2",
+    "names": {
+     "ger": "Dubsta",
+     "eng": "Dubsta",
+     "ru": "Dubsta",
+     "pl": "Dubsta",
+     "fr": "Dubsta",
+     "zh_cn": "迪布达"
+    }
+   },
+   {
+    "hash": 2136773105,
+    "model": "rocoto",
+    "names": {
+     "ger": "Rocoto",
+     "eng": "Rocoto",
+     "ru": "Rocoto",
+     "pl": "Rocoto",
+     "fr": "Rocoto",
+     "zh_cn": "小辣椒"
+    }
+   },
+   {
+    "hash": 2362851406,
+    "model": "warden",
+    "names": {
+     "ger": "Warden",
+     "eng": "Warden",
+     "ru": "Warden",
+     "pl": "Warden",
+     "fr": "Warden",
+     "zh_cn": "华登"
+    }
+   },
+   {
+    "hash": 2875836634,
+    "model": "estride",
+    "names": {
+     "ger": "E-Stride",
+     "eng": "E-Stride",
+     "ru": "E-Stride",
+     "pl": "E-Stride",
+     "fr": "E-Stride",
+     "zh_cn": "E-迈进"
+    }
+   }
+  ]
+ },
+ {
+  "class": 3,
+  "base": [
+   {
+    "hash": 330661258,
+    "model": "cogcabrio",
+    "names": {
+     "ger": "Cognoscenti Cabrio",
+     "eng": "Cognoscenti Cabrio",
+     "ru": "Cognoscenti Cabrio",
+     "pl": "Cognoscenti Cabrio",
+     "fr": "Cognoscenti Cabrio",
+     "zh_cn": "至尊慧眼敞篷版"
+    }
+   },
+   {
+    "hash": 4289813342,
+    "model": "exemplar",
+    "names": {
+     "ger": "Exemplar",
+     "eng": "Exemplar",
+     "ru": "Exemplar",
+     "pl": "Exemplar",
+     "fr": "Exemplar",
+     "zh_cn": "典范"
+    }
+   },
+   {
+    "hash": 3703357000,
+    "model": "f620",
+    "names": {
+     "ger": "F620",
+     "eng": "F620",
+     "ru": "F620",
+     "pl": "F620",
+     "fr": "F620",
+     "zh_cn": "F620"
+    }
+   },
+   {
+    "hash": 4205676014,
+    "model": "felon2",
+    "names": {
+     "ger": "Felon GT",
+     "eng": "Felon GT",
+     "ru": "Felon GT",
+     "pl": "Felon GT",
+     "fr": "Felon GT",
+     "zh_cn": "恶龙µGT"
+    }
+   },
+   {
+    "hash": 3670438162,
+    "model": "jackal",
+    "names": {
+     "ger": "Jackal",
+     "eng": "Jackal",
+     "ru": "Jackal",
+     "pl": "Jackal",
+     "fr": "Jackal",
+     "zh_cn": "胡狼"
+    }
+   },
+   {
+    "hash": 3783366066,
+    "model": "oracle2",
+    "names": {
+     "ger": "Oracle",
+     "eng": "Oracle",
+     "ru": "Oracle",
+     "pl": "Oracle",
+     "fr": "Oracle",
+     "zh_cn": "先知"
+    }
+   },
+   {
+    "hash": 873639469,
+    "model": "sentinel2",
+    "names": {
+     "ger": "Sentinel",
+     "eng": "Sentinel",
+     "ru": "Sentinel",
+     "pl": "Sentinel",
+     "fr": "Sentinel",
+     "zh_cn": "卫士"
+    }
+   }
+  ],
+  "dlc": [
+   {
+    "hash": 1581459400,
+    "model": "windsor",
+    "names": {
+     "ger": "Windsor",
+     "eng": "Windsor",
+     "ru": "Windsor",
+     "pl": "Windsor",
+     "fr": "Windsor",
+     "zh_cn": "温莎"
+    }
+   },
+   {
+    "hash": 2364918497,
+    "model": "windsor2",
+    "names": {
+     "ger": "Windsor Cabrio",
+     "eng": "Windsor Drop",
+     "ru": "Windsor кабриолет",
+     "pl": "Windsor Drop",
+     "fr": "Windsor Drop",
+     "zh_cn": "温莎敞篷版"
+    }
+   },
+   {
+    "hash": 1416471345,
+    "model": "previon",
+    "names": {
+     "ger": "Previon",
+     "eng": "Previon",
+     "ru": "Previon",
+     "pl": "Previon",
+     "fr": "Previon",
+     "zh_cn": "普莱温"
+    }
+   },
+   {
+    "hash": 4230891418,
+    "model": "kanjosj",
+    "names": {
+     "ger": "Kanjo SJ",
+     "eng": "Kanjo SJ",
+     "ru": "Kanjo SJ",
+     "pl": "Kanjo SJ",
+     "fr": "Kanjo SJ",
+     "zh_cn": "羽黑µSJ"
+    }
+   },
+   {
+    "hash": 4000288633,
+    "model": "postlude",
+    "names": {
+     "ger": "Postlude",
+     "eng": "Postlude",
+     "ru": "Postlude",
+     "pl": "Postlude",
+     "fr": "Postlude",
+     "zh_cn": "后奏"
+    }
+   },
+   {
+    "hash": 3829141989,
+    "model": "fr36",
+    "names": {
+     "ger": "FR36",
+     "eng": "FR36",
+     "ru": "FR36",
+     "pl": "FR36",
+     "fr": "FR36",
+     "zh_cn": "FR36"
+    }
+   },
+   {
+    "hash": 3295372994,
+    "model": "eurosx32",
+    "names": {
+     "ger": "Euros X32",
+     "eng": "Euros X32",
+     "ru": "Euros X32",
+     "pl": "Euros X32",
+     "fr": "Euros X32",
+     "zh_cn": "欧洲µX32"
+    }
+   },
+   {
+    "hash": 3903372712,
+    "model": "felon",
+    "names": {
+     "ger": "Felon",
+     "eng": "Felon",
+     "ru": "Felon",
+     "pl": "Felon",
+     "fr": "Felon",
+     "zh_cn": "恶龙"
+    }
+   },
+   {
+    "hash": 1348744438,
+    "model": "oracle",
+    "names": {
+     "ger": "Oracle XS",
+     "eng": "Oracle XS",
+     "ru": "Oracle XS",
+     "pl": "Oracle XS",
+     "fr": "Oracle XS",
+     "zh_cn": "先知µXS"
+    }
+   },
+   {
+    "hash": 1349725314,
+    "model": "sentinel",
+    "names": {
+     "ger": "Sentinel XS",
+     "eng": "Sentinel XS",
+     "ru": "Sentinel XS",
+     "pl": "Sentinel XS",
+     "fr": "Sentinel XS",
+     "zh_cn": "卫士µXS"
+    }
+   },
+   {
+    "hash": 3172678083,
+    "model": "zion",
+    "names": {
+     "ger": "Zion",
+     "eng": "Zion",
+     "ru": "Zion",
+     "pl": "Zion",
+     "fr": "Zion",
+     "zh_cn": "天堂"
+    }
+   },
+   {
+    "hash": 3101863448,
+    "model": "zion2",
+    "names": {
+     "ger": "Zion Cabrio",
+     "eng": "Zion Cabrio",
+     "ru": "Zion Cabrio",
+     "pl": "Zion Cabrio",
+     "fr": "Zion Cabrio",
+     "zh_cn": "天堂敞篷版"
+    }
+   }
+  ]
+ },
+ {
+  "class": 4,
+  "base": [
+   {
+    "hash": 3612755468,
+    "model": "buccaneer",
+    "names": {
+     "ger": "Buccaneer",
+     "eng": "Buccaneer",
+     "ru": "Buccaneer",
+     "pl": "Buccaneer",
+     "fr": "Buccaneer",
+     "zh_cn": "风流海盗"
+    }
+   },
+   {
+    "hash": 80636076,
+    "model": "dominator",
+    "names": {
+     "ger": "Dominator",
+     "eng": "Dominator",
+     "ru": "Dominator",
+     "pl": "Dominator",
+     "fr": "Dominator",
+     "zh_cn": "公路霸者"
+    }
+   },
+   {
+    "hash": 2494797253,
+    "model": "gauntlet",
+    "names": {
+     "ger": "Gauntlet",
+     "eng": "Gauntlet",
+     "ru": "Gauntlet",
+     "pl": "Gauntlet",
+     "fr": "Gauntlet",
+     "zh_cn": "铁腕"
+    }
+   },
+   {
+    "hash": 2199527893,
+    "model": "phoenix",
+    "names": {
+     "ger": "Phoenix",
+     "eng": "Phoenix",
+     "ru": "Phoenix",
+     "pl": "Phoenix",
+     "fr": "Phoenix",
+     "zh_cn": "不死鸟"
+    }
+   },
+   {
+    "hash": 1507916787,
+    "model": "picador",
+    "names": {
+     "ger": "Picador",
+     "eng": "Picador",
+     "ru": "Picador",
+     "pl": "Picador",
+     "fr": "Picador",
+     "zh_cn": "斗牛士"
+    }
+   },
+   {
+    "hash": 4067225593,
+    "model": "ruiner",
+    "names": {
+     "ger": "Ruiner",
+     "eng": "Ruiner",
+     "ru": "Ruiner",
+     "pl": "Ruiner",
+     "fr": "Ruiner",
+     "zh_cn": "灭世暴徒"
+    }
+   },
+   {
+    "hash": 2609945748,
+    "model": "sabregt",
+    "names": {
+     "ger": "Sabre Turbo",
+     "eng": "Sabre Turbo",
+     "ru": "Sabre Turbo",
+     "pl": "Sabre Turbo",
+     "fr": "Sabre Turbo",
+     "zh_cn": "军刀涡轮"
+    }
+   },
+   {
+    "hash": 3469130167,
+    "model": "vigero",
+    "names": {
+     "ger": "Vigero",
+     "eng": "Vigero",
+     "ru": "Vigero",
+     "pl": "Vigero",
+     "fr": "Vigero",
+     "zh_cn": "活力够"
+    }
+   },
+   {
+    "hash": 37348240,
+    "model": "hotknife",
+    "names": {
+     "ger": "Hotknife",
+     "eng": "Hotknife",
+     "ru": "Hotknife",
+     "pl": "Hotknife",
+     "fr": "Hotknife",
+     "zh_cn": "热情使徒"
+    }
+   }
+  ],
+  "dlc": [
+   {
+    "hash": 3089165662,
+    "model": "blade",
+    "names": {
+     "ger": "Blade",
+     "eng": "Blade",
+     "ru": "Blade",
+     "pl": "Blade",
+     "fr": "Blade",
+     "zh_cn": "刀锋"
+    }
+   },
+   {
+    "hash": 3705788919,
+    "model": "ratloader2",
+    "names": {
+     "ger": "Rat-Truck",
+     "eng": "Rat-Truck",
+     "ru": "Rat-Truck",
+     "pl": "Rat-Truck",
+     "fr": "Rat-Truck",
+     "zh_cn": "老爷货车"
+    }
+   },
+   {
+    "hash": 729783779,
+    "model": "slamvan",
+    "names": {
+     "ger": "Slamvan",
+     "eng": "Slamvan",
+     "ru": "Slamvan",
+     "pl": "Slamvan",
+     "fr": "Slamvan",
+     "zh_cn": "大满贯皮卡"
+    }
+   },
+   {
+    "hash": 723973206,
+    "model": "dukes",
+    "names": {
+     "ger": "Dukes",
+     "eng": "Dukes",
+     "ru": "Dukes",
+     "pl": "Dukes",
+     "fr": "Dukes",
+     "zh_cn": "公爵"
+    }
+   },
+   {
+    "hash": 1923400478,
+    "model": "stalion",
+    "names": {
+     "ger": "Stallion",
+     "eng": "Stallion",
+     "ru": "Stallion",
+     "pl": "Stallion",
+     "fr": "Stallion",
+     "zh_cn": "种马"
+    }
+   },
+   {
+    "hash": 3796912450,
+    "model": "virgo",
+    "names": {
+     "ger": "Virgo",
+     "eng": "Virgo",
+     "ru": "Virgo",
+     "pl": "Virgo",
+     "fr": "Virgo",
+     "zh_cn": "室女座"
+    }
+   },
+   {
+    "hash": 784565758,
+    "model": "coquette3",
+    "names": {
+     "ger": "Coquette BlackFin",
+     "eng": "Coquette BlackFin",
+     "ru": "Coquette BlackFin",
+     "pl": "Coquette BlackFin",
+     "fr": "Coquette BlackFin",
+     "zh_cn": "艳妇黑鳍"
+    }
+   },
+   {
+    "hash": 349605904,
+    "model": "chino",
+    "names": {
+     "ger": "Chino",
+     "eng": "Chino",
+     "ru": "Chino",
+     "pl": "Chino",
+     "fr": "Chino",
+     "zh_cn": "奇诺"
+    }
+   },
+   {
+    "hash": 2175389151,
+    "model": "faction",
+    "names": {
+     "ger": "Faction",
+     "eng": "Faction",
+     "ru": "Faction",
+     "pl": "Faction",
+     "fr": "Faction",
+     "zh_cn": "宗派"
+    }
+   },
+   {
+    "hash": 2504420315,
+    "model": "faction2",
+    "names": {
+     "ger": "Faction (Tuningversion 1)",
+     "eng": "Faction Custom 1",
+     "ru": "Faction заказной 1",
+     "pl": "Faction - niest. 1",
+     "fr": "Faction custom 1",
+     "zh_cn": "宗派改装版"
+    }
+   },
+   {
+    "hash": 1896491931,
+    "model": "moonbeam2",
+    "names": {
+     "ger": "Moonbeam (Tuningversion)",
+     "eng": "Moonbeam Custom",
+     "ru": "Moonbeam заказной",
+     "pl": "Moonbeam - niest.",
+     "fr": "Moonbeam custom",
+     "zh_cn": "月光改装版"
+    }
+   },
+   {
+    "hash": 2933279331,
+    "model": "chino2",
+    "names": {
+     "ger": "Chino (Tuningversion)",
+     "eng": "Chino Custom",
+     "ru": "Chino заказной",
+     "pl": "Chino - niest.",
+     "fr": "Chino custom",
+     "zh_cn": "奇诺改装版"
+    }
+   },
+   {
+    "hash": 2006667053,
+    "model": "voodoo",
+    "names": {
+     "ger": "Voodoo Custom",
+     "eng": "Voodoo Custom",
+     "ru": "Voodoo заказной",
+     "pl": "Voodoo - niest.",
+     "fr": "Voodoo custom",
+     "zh_cn": "巫毒改装版"
+    }
+   },
+   {
+    "hash": 3281516360,
+    "model": "buccaneer2",
+    "names": {
+     "ger": "Buccaneer Custom",
+     "eng": "Buccaneer Custom",
+     "ru": "Buccaneer заказной",
+     "pl": "Buccaneer - niest.",
+     "fr": "Buccaneer custom",
+     "zh_cn": "风流海盗改装版"
+    }
+   },
+   {
+    "hash": 2351681756,
+    "model": "nightshade",
+    "names": {
+     "ger": "Nightshade",
+     "eng": "Nightshade",
+     "ru": "Nightshade",
+     "pl": "Nightshade",
+     "fr": "Nightshade",
+     "zh_cn": "暗夜魅影"
+    }
+   },
+   {
+    "hash": 2255212070,
+    "model": "faction3",
+    "names": {
+     "ger": "Faction Custom Donk",
+     "eng": "Faction Custom Donk",
+     "ru": "Faction Donk заказной",
+     "pl": "Faction - donk",
+     "fr": "Faction custom donk",
+     "zh_cn": "宗派改装巨轮版"
+    }
+   },
+   {
+    "hash": 1119641113,
+    "model": "slamvan3",
+    "names": {
+     "ger": "Slamvan Custom",
+     "eng": "Slamvan Custom",
+     "ru": "Slamvan заказной",
+     "pl": "Slamvan - niest.",
+     "fr": "Slamvan custom",
+     "zh_cn": "大满贯皮卡改装版"
+    }
+   },
+   {
+    "hash": 3395457658,
+    "model": "virgo2",
+    "names": {
+     "ger": "Virgo Classic Custom",
+     "eng": "Virgo Classic Custom",
+     "ru": "Virgo Classic заказной",
+     "pl": "Virgo Classic - niest.",
+     "fr": "Virgo classique custom",
+     "zh_cn": "经典室女座改装版"
+    }
+   },
+   {
+    "hash": 3395457658,
+    "model": "virgo2",
+    "names": {
+     "ger": "Virgo Classic Custom",
+     "eng": "Virgo Classic Custom",
+     "ru": "Virgo Classic заказной",
+     "pl": "Virgo Classic - niest.",
+     "fr": "Virgo classique custom",
+     "zh_cn": "经典室女座改装版"
+    }
+   },
+   {
+    "hash": 223258115,
+    "model": "sabregt2",
+    "names": {
+     "ger": "Sabre Turbo Custom",
+     "eng": "Sabre Turbo Custom",
+     "ru": "Sabre Turbo заказной",
+     "pl": "Sabre Turbo - niest.",
+     "fr": "Sabre Turbo custom",
+     "zh_cn": "军刀涡轮改装版"
+    }
+   },
+   {
+    "hash": 3379262425,
+    "model": "dominator2",
+    "names": {
+     "ger": "Pißwasser Dominator",
+     "eng": "Pisswasser Dominator",
+     "ru": "Pisswasser Dominator",
+     "pl": "Dominator Pisswasser",
+     "fr": "Dominator Pisswasser",
+     "zh_cn": "尿汤啤公路霸者"
+    }
+   },
+   {
+    "hash": 349315417,
+    "model": "gauntlet2",
+    "names": {
+     "ger": "Redwood Gauntlet",
+     "eng": "Redwood Gauntlet",
+     "ru": "Redwood Gauntlet",
+     "pl": "Gauntlet Redwood",
+     "fr": "Gauntlet Redwood",
+     "zh_cn": "红木烟业铁腕"
+    }
+   },
+   {
+    "hash": 3893323758,
+    "model": "stalion2",
+    "names": {
+     "ger": "Burger Shot Stallion",
+     "eng": "Burger Shot Stallion",
+     "ru": "Burger Shot Stallion",
+     "pl": "Stallion Burger Shot",
+     "fr": "Stallion Burger Shot",
+     "zh_cn": "吃得饱汉堡种马"
+    }
+   },
+   {
+    "hash": 3968823444,
+    "model": "dukes2",
+    "names": {
+     "ger": "Duke O'Death",
+     "eng": "Duke O'Death",
+     "ru": "Duke O'Death",
+     "pl": "Duke O'Death",
+     "fr": "Duke O'Death",
+     "zh_cn": "死亡公爵"
+    }
+   },
+   {
+    "hash": 1871995513,
+    "model": "yosemite",
+    "names": {
+     "ger": "Yosemite",
+     "eng": "Yosemite",
+     "ru": "Yosemite",
+     "pl": "Yosemite",
+     "fr": "Yosemite",
+     "zh_cn": "约塞米蒂"
+    }
+   },
+   {
+    "hash": 600450546,
+    "model": "hustler",
+    "names": {
+     "ger": "Hustler",
+     "eng": "Hustler",
+     "ru": "Hustler",
+     "pl": "Hustler",
+     "fr": "Hustler",
+     "zh_cn": "赫斯勒"
+    }
+   },
+   {
+    "hash": 600450546,
+    "model": "hustler",
+    "names": {
+     "ger": "Hustler",
+     "eng": "Hustler",
+     "ru": "Hustler",
+     "pl": "Hustler",
+     "fr": "Hustler",
+     "zh_cn": "赫斯勒"
+    }
+   },
+   {
+    "hash": 3027423925,
+    "model": "ellie",
+    "names": {
+     "ger": "Ellie",
+     "eng": "Ellie",
+     "ru": "Ellie",
+     "pl": "Ellie",
+     "fr": "Ellie",
+     "zh_cn": "爱利"
+    }
+   },
+   {
+    "hash": 3308022675,
+    "model": "dominator3",
+    "names": {
+     "ger": "Dominator GTX",
+     "eng": "Dominator GTX",
+     "ru": "Dominator GTX",
+     "pl": "Dominator GTX",
+     "fr": "Dominator GTX",
+     "zh_cn": "公路霸者µGTX"
+    }
+   },
+   {
+    "hash": 4245851645,
+    "model": "vamos",
+    "names": {
+     "ger": "Vamos",
+     "eng": "Vamos",
+     "ru": "Vamos",
+     "pl": "Vamos",
+     "fr": "Vamos",
+     "zh_cn": "瓦魔狮"
+    }
+   },
+   {
+    "hash": 2198276962,
+    "model": "impaler",
+    "names": {
+     "ger": "Impaler",
+     "eng": "Impaler",
+     "ru": "Impaler",
+     "pl": "Impaler",
+     "fr": "Impaler",
+     "zh_cn": "刺刑官"
+    }
+   },
+   {
+    "hash": 1279262537,
+    "model": "deviant",
+    "names": {
+     "ger": "Deviant",
+     "eng": "Deviant",
+     "ru": "Deviant",
+     "pl": "Deviant",
+     "fr": "Deviant",
+     "zh_cn": "异类"
+    }
+   },
+   {
+    "hash": 1456744817,
+    "model": "tulip",
+    "names": {
+     "ger": "Tulip",
+     "eng": "Tulip",
+     "ru": "Tulip",
+     "pl": "Tulip",
+     "fr": "Tulip",
+     "zh_cn": "郁金"
+    }
+   },
+   {
+    "hash": 2728360112,
+    "model": "clique",
+    "names": {
+     "ger": "Clique",
+     "eng": "Clique",
+     "ru": "Clique",
+     "pl": "Clique",
+     "fr": "Clique",
+     "zh_cn": "克里克"
+    }
+   },
+   {
+    "hash": 722226637,
+    "model": "gauntlet3",
+    "names": {
+     "ger": "Gauntlet Classic",
+     "eng": "Gauntlet Classic",
+     "ru": "Gauntlet Classic",
+     "pl": "Gauntlet Classic",
+     "fr": "Gauntlet classique",
+     "zh_cn": "铁腕经典版"
+    }
+   },
+   {
+    "hash": 1934384720,
+    "model": "gauntlet4",
+    "names": {
+     "ger": "Gauntlet Hellfire",
+     "eng": "Gauntlet Hellfire",
+     "ru": "Gauntlet Hellfire",
+     "pl": "Gauntlet Hellfire",
+     "fr": "Gauntlet Hellfire",
+     "zh_cn": "铁腕地狱火"
+    }
+   },
+   {
+    "hash": 2490551588,
+    "model": "peyote2",
+    "names": {
+     "ger": "Peyote Gasser",
+     "eng": "Peyote Gasser",
+     "ru": "Peyote Gasser",
+     "pl": "Peyote Gasser",
+     "fr": "Peyote Gasser",
+     "zh_cn": "佩优特古董赛车"
+    }
+   },
+   {
+    "hash": 1693751655,
+    "model": "yosemite2",
+    "names": {
+     "ger": "Drift Yosemite",
+     "eng": "Drift Yosemite",
+     "ru": "Drift Yosemite",
+     "pl": "Yosemite Drift",
+     "fr": "Yosemite drift",
+     "zh_cn": "漂移约塞米蒂"
+    }
+   },
+   {
+    "hash": 2134119907,
+    "model": "dukes3",
+    "names": {
+     "ger": "Beater Dukes",
+     "eng": "Beater Dukes",
+     "ru": "Beater Dukes",
+     "pl": "Dukes - gruchot",
+     "fr": "Beater Dukes",
+     "zh_cn": "比特公爵"
+    }
+   },
+   {
+    "hash": 2172320429,
+    "model": "gauntlet5",
+    "names": {
+     "ger": "Gauntlet Classic Custom",
+     "eng": "Gauntlet Classic Custom",
+     "ru": "Gauntlet Classic заказной",
+     "pl": "Gauntlet Classic - niest.",
+     "fr": "Gauntlet classique custom",
+     "zh_cn": "铁腕经典改装版"
+    }
+   },
+   {
+    "hash": 1717532765,
+    "model": "manana2",
+    "names": {
+     "ger": "Manana Custom",
+     "eng": "Manana Custom",
+     "ru": "Manana заказной",
+     "pl": "Manana - niest.",
+     "fr": "Manana custom",
+     "zh_cn": "明日之星改装版"
+    }
+   },
+   {
+    "hash": 426742808,
+    "model": "dominator7",
+    "names": {
+     "ger": "Dominator ASP",
+     "eng": "Dominator ASP",
+     "ru": "Dominator ASP",
+     "pl": "Dominator ASP",
+     "fr": "Dominator ASP",
+     "zh_cn": "公路霸者µASP"
+    }
+   },
+   {
+    "hash": 736672010,
+    "model": "dominator8",
+    "names": {
+     "ger": "Dominator GTT",
+     "eng": "Dominator GTT",
+     "ru": "Dominator GTT",
+     "pl": "Dominator GTT",
+     "fr": "Dominator GTT",
+     "zh_cn": "公路霸者µGTT"
+    }
+   },
+   {
+    "hash": 3675036420,
+    "model": "buffalo4",
+    "names": {
+     "ger": "Buffalo STX",
+     "eng": "Buffalo STX",
+     "ru": "Buffalo STX",
+     "pl": "Buffalo STX",
+     "fr": "Buffalo STX",
+     "zh_cn": "猛牛µSTX"
+    }
+   },
+   {
+    "hash": 3300595976,
+    "model": "weevil2",
+    "names": {
+     "ger": "Weevil Custom",
+     "eng": "Weevil Custom",
+     "ru": "Weevil заказной",
+     "pl": "Weevil - niest.",
+     "fr": "Weevil custom",
+     "zh_cn": "象鼻虫改装版"
+    }
+   },
+   {
+    "hash": 2536587772,
+    "model": "vigero2",
+    "names": {
+     "ger": "Vigero ZX",
+     "eng": "Vigero ZX",
+     "ru": "Vigero ZX",
+     "pl": "Vigero ZX",
+     "fr": "Vigero ZX",
+     "zh_cn": "活力够µZX"
+    }
+   },
+   {
+    "hash": 1706945532,
+    "model": "ruiner4",
+    "names": {
+     "ger": "Ruiner ZZ-8",
+     "eng": "Ruiner ZZ-8",
+     "ru": "Ruiner ZZ-8",
+     "pl": "Ruiner ZZ-8",
+     "fr": "Ruiner ZZ-8",
+     "zh_cn": "灭世暴徒µZZ-8"
+    }
+   },
+   {
+    "hash": 40817712,
+    "model": "greenwood",
+    "names": {
+     "ger": "Greenwood",
+     "eng": "Greenwood",
+     "ru": "Greenwood",
+     "pl": "Greenwood",
+     "fr": "Greenwood",
+     "zh_cn": "格林伍德"
+    }
+   },
+   {
+    "hash": 3045179290,
+    "model": "eudora",
+    "names": {
+     "ger": "Eudora",
+     "eng": "Eudora",
+     "ru": "Eudora",
+     "pl": "Eudora",
+     "fr": "Eudora",
+     "zh_cn": "尤朵拉"
+    }
+   },
+   {
+    "hash": 268758436,
+    "model": "tulip2",
+    "names": {
+     "ger": "Tulip M-100",
+     "eng": "Tulip M-100",
+     "ru": "Tulip M-100",
+     "pl": "Tulip M-100",
+     "fr": "Tulip M-100",
+     "zh_cn": "郁金µM-100"
+    }
+   },
+   {
+    "hash": 3833117047,
+    "model": "tahoma",
+    "names": {
+     "ger": "Tahoma Coupé",
+     "eng": "Tahoma Coupe",
+     "ru": "Tahoma Coupe",
+     "pl": "Tahoma Coupe",
+     "fr": "Tahoma coupé",
+     "zh_cn": "塔霍马轿跑车"
+    }
+   },
+   {
+    "hash": 2361724968,
+    "model": "broadway",
+    "names": {
+     "ger": "Broadway",
+     "eng": "Broadway",
+     "ru": "Broadway",
+     "pl": "Broadway",
+     "fr": "Broadway",
+     "zh_cn": "百老汇"
+    }
+   },
+   {
+    "hash": 3640468689,
+    "model": "brigham",
+    "names": {
+     "ger": "Brigham",
+     "eng": "Brigham",
+     "ru": "Brigham",
+     "pl": "Brigham",
+     "fr": "Brigham",
+     "zh_cn": "布里格姆"
+    }
+   },
+   {
+    "hash": 3315674721,
+    "model": "clique2",
+    "names": {
+     "ger": "Clique Wagon",
+     "eng": "Clique Wagon",
+     "ru": "Clique универсал",
+     "pl": "Clique Kombi",
+     "fr": "Clique break",
+     "zh_cn": "克里克旅行车"
+    }
+   },
+   {
+    "hash": 165968051,
+    "model": "buffalo5",
+    "names": {
+     "ger": "Buffalo EVX",
+     "eng": "Buffalo EVX",
+     "ru": "Buffalo EVX",
+     "pl": "Buffalo EVX",
+     "fr": "Buffalo EVX",
+     "zh_cn": "猛牛µEVX"
+    }
+   },
+   {
+    "hash": 3853757601,
+    "model": "dominator9",
+    "names": {
+     "ger": "Dominator GT",
+     "eng": "Dominator GT",
+     "ru": "Dominator GT",
+     "pl": "Dominator GT",
+     "fr": "Dominator GT",
+     "zh_cn": "公路霸者µGT"
+    }
+   },
+   {
+    "hash": 4116524922,
+    "model": "impaler6",
+    "names": {
+     "ger": "Impaler LX",
+     "eng": "Impaler LX",
+     "ru": "Impaler LX",
+     "pl": "Impaler LX",
+     "fr": "Impaler LX",
+     "zh_cn": "刺刑官µLX"
+    }
+   },
+   {
+    "hash": 372621319,
+    "model": "vigero3",
+    "names": {
+     "ger": "Vigero ZX Cabrio",
+     "eng": "Vigero ZX Convertible",
+     "ru": "Vigero ZX кабриолет",
+     "pl": "Vigero ZX Kabriolet",
+     "fr": "Vigero ZX décapotable",
+     "zh_cn": "活力够µZXµ敞篷版"
+    }
+   },
+   {
+    "hash": 1579902654,
+    "model": "dominator10",
+    "names": {
+     "ger": "Dominator FX",
+     "eng": "Dominator FX",
+     "ru": "Dominator FX",
+     "pl": "Dominator FX",
+     "fr": "Dominator FX",
+     "zh_cn": "公路霸者µFX"
+    }
+   },
+   {
+    "hash": 3816328113,
+    "model": "impaler5",
+    "names": {
+     "ger": "Impaler SZ",
+     "eng": "Impaler SZ",
+     "ru": "Impaler SZ",
+     "pl": "Impaler SZ",
+     "fr": "Impaler SZ",
+     "zh_cn": "刺刑官µSZ"
+    }
+   },
+   {
+    "hash": 2786546796,
+    "model": "tampa4",
+    "names": {
+     "ger": "Tampa GT",
+     "eng": "Tampa GT",
+     "ru": "Tampa GT",
+     "pl": "Tampa GT",
+     "fr": "Tampa GT",
+     "zh_cn": "坦帕 GT"
+    }
+   }
+  ]
+ },
+ {
+  "class": 5,
+  "base": [
+   {
+    "hash": 1051415893,
+    "model": "jb700",
+    "names": {
+     "ger": "JB 700",
+     "eng": "JB 700",
+     "ru": "JB 700",
+     "pl": "JB 700",
+     "fr": "JB 700",
+     "zh_cn": "JBµ700"
+    }
+   },
+   {
+    "hash": 3861591579,
+    "model": "monroe",
+    "names": {
+     "ger": "Monroe",
+     "eng": "Monroe",
+     "ru": "Monroe",
+     "pl": "Monroe",
+     "fr": "Monroe",
+     "zh_cn": "门罗"
+    }
+   },
+   {
+    "hash": 1545842587,
+    "model": "stinger",
+    "names": {
+     "ger": "Stinger",
+     "eng": "Stinger",
+     "ru": "Stinger",
+     "pl": "Stinger",
+     "fr": "Stinger",
+     "zh_cn": "史汀格"
+    }
+   },
+   {
+    "hash": 758895617,
+    "model": "ztype",
+    "names": {
+     "ger": "Z-Type",
+     "eng": "Z-Type",
+     "ru": "Z-Type",
+     "pl": "Z-Type",
+     "fr": "Z-Type",
+     "zh_cn": "Zµ型"
+    }
+   }
+  ],
+  "dlc": [
+   {
+    "hash": 117401876,
+    "model": "btype",
+    "names": {
+     "ger": "Roosevelt",
+     "eng": "Roosevelt",
+     "ru": "Roosevelt",
+     "pl": "Roosevelt",
+     "fr": "Roosevelt",
+     "zh_cn": "罗斯福"
+    }
+   },
+   {
+    "hash": 1078682497,
+    "model": "pigalle",
+    "names": {
+     "ger": "Pigalle",
+     "eng": "Pigalle",
+     "ru": "Pigalle",
+     "pl": "Pigalle",
+     "fr": "Pigalle",
+     "zh_cn": "皮卡乐"
+    }
+   },
+   {
+    "hash": 1011753235,
+    "model": "coquette2",
+    "names": {
+     "ger": "Coquette Classic",
+     "eng": "Coquette Classic",
+     "ru": "Coquette Classic",
+     "pl": "Coquette Classic",
+     "fr": "Coquette classique",
+     "zh_cn": "艳妇经典版"
+    }
+   },
+   {
+    "hash": 941800958,
+    "model": "casco",
+    "names": {
+     "ger": "Casco",
+     "eng": "Casco",
+     "ru": "Casco",
+     "pl": "Casco",
+     "fr": "Casco",
+     "zh_cn": "卡斯科"
+    }
+   },
+   {
+    "hash": 2728226064,
+    "model": "feltzer3",
+    "names": {
+     "ger": "Stirling GT",
+     "eng": "Feltzer Classic",
+     "ru": "Stirling GT",
+     "pl": "Stirling GT",
+     "fr": "Stirling GT",
+     "zh_cn": "斯特林µGT"
+    }
+   },
+   {
+    "hash": 2634021974,
+    "model": "mamba",
+    "names": {
+     "ger": "Mamba",
+     "eng": "Mamba",
+     "ru": "Mamba",
+     "pl": "Mamba",
+     "fr": "Mamba",
+     "zh_cn": "曼巴"
+    }
+   },
+   {
+    "hash": 2497353967,
+    "model": "tornado5",
+    "names": {
+     "ger": "Tornado Custom",
+     "eng": "Tornado Custom",
+     "ru": "Tornado заказной",
+     "pl": "Tornado - niest.",
+     "fr": "Tornado custom",
+     "zh_cn": "龙卷风改装版"
+    }
+   },
+   {
+    "hash": 2736567667,
+    "model": "tornado6",
+    "names": {
+     "ger": "Tornado Rat Rod",
+     "eng": "Tornado Rat Rod",
+     "ru": "Tornado Rat Rod",
+     "pl": "Tornado Rat Rod",
+     "fr": "Tornado rat rod",
+     "zh_cn": "龙卷风破烂老爷车"
+    }
+   },
+   {
+    "hash": 2889029532,
+    "model": "infernus2",
+    "names": {
+     "ger": "Infernus Classic",
+     "eng": "Infernus Classic",
+     "ru": "Infernus Classic",
+     "pl": "Infernus Classic",
+     "fr": "Infernus classique",
+     "zh_cn": "炼狱魔经典版"
+    }
+   },
+   {
+    "hash": 3312836369,
+    "model": "turismo2",
+    "names": {
+     "ger": "Turismo Classic",
+     "eng": "Turismo Classic",
+     "ru": "Turismo Classic",
+     "pl": "Turismo Classic",
+     "fr": "Turismo classique",
+     "zh_cn": "远途经典版"
+    }
+   },
+   {
+    "hash": 223240013,
+    "model": "cheetah2",
+    "names": {
+     "ger": "Cheetah Classic",
+     "eng": "Cheetah Classic",
+     "ru": "Cheetah Classic",
+     "pl": "Cheetah Classic",
+     "fr": "Cheetah classique",
+     "zh_cn": "猎豹经典版"
+    }
+   },
+   {
+    "hash": 1504306544,
+    "model": "torero",
+    "names": {
+     "ger": "Torero",
+     "eng": "Torero",
+     "ru": "Torero",
+     "pl": "Torero",
+     "fr": "Torero",
+     "zh_cn": "斗牛"
+    }
+   },
+   {
+    "hash": 1841130506,
+    "model": "retinue",
+    "names": {
+     "ger": "Retinue",
+     "eng": "Retinue",
+     "ru": "Retinue",
+     "pl": "Retinue",
+     "fr": "Retinue",
+     "zh_cn": "随行者"
+    }
+   },
+   {
+    "hash": 2049897956,
+    "model": "rapidgt3",
+    "names": {
+     "ger": "Rapid GT Classic",
+     "eng": "Rapid GT Classic",
+     "ru": "Rapid GT Classic",
+     "pl": "Rapid GT Classic",
+     "fr": "Rapid GT classique",
+     "zh_cn": "疾速µGTµ经典版"
+    }
+   },
+   {
+    "hash": 903794909,
+    "model": "savestra",
+    "names": {
+     "ger": "Savestra",
+     "eng": "Savestra",
+     "ru": "Savestra",
+     "pl": "Savestra",
+     "fr": "Savestra",
+     "zh_cn": "萨维斯特拉"
+    }
+   },
+   {
+    "hash": 3903371924,
+    "model": "viseris",
+    "names": {
+     "ger": "Viseris",
+     "eng": "Viseris",
+     "ru": "Viseris",
+     "pl": "Viseris",
+     "fr": "Viseris",
+     "zh_cn": "维瑟瑞斯"
+    }
+   },
+   {
+    "hash": 2215179066,
+    "model": "gt500",
+    "names": {
+     "ger": "GT500",
+     "eng": "GT500",
+     "ru": "GT500",
+     "pl": "GT500",
+     "fr": "GT500",
+     "zh_cn": "GT500"
+    }
+   },
+   {
+    "hash": 838982985,
+    "model": "z190",
+    "names": {
+     "ger": "190z",
+     "eng": "190z",
+     "ru": "190z",
+     "pl": "190z",
+     "fr": "190z",
+     "zh_cn": "190z"
+    }
+   },
+   {
+    "hash": 1617472902,
+    "model": "fagaloa",
+    "names": {
+     "ger": "Fagaloa",
+     "eng": "Fagaloa",
+     "ru": "Fagaloa",
+     "pl": "Fagaloa",
+     "fr": "Fagaloa",
+     "zh_cn": "法加洛亚"
+    }
+   },
+   {
+    "hash": 3306466016,
+    "model": "cheburek",
+    "names": {
+     "ger": "Cheburek",
+     "eng": "Cheburek",
+     "ru": "Cheburek",
+     "pl": "Cheburek",
+     "fr": "Cheburek",
+     "zh_cn": "切布列克"
+    }
+   },
+   {
+    "hash": 1046206681,
+    "model": "michelli",
+    "names": {
+     "ger": "Michelli GT",
+     "eng": "Michelli GT",
+     "ru": "Michelli GT",
+     "pl": "Michelli GT",
+     "fr": "Michelli GT",
+     "zh_cn": "米其利µGT"
+    }
+   },
+   {
+    "hash": 4080061290,
+    "model": "jester3",
+    "names": {
+     "ger": "Jester Classic",
+     "eng": "Jester Classic",
+     "ru": "Jester Classic",
+     "pl": "Jester Classic",
+     "fr": "Jester classique",
+     "zh_cn": "弄臣经典版"
+    }
+   },
+   {
+    "hash": 500482303,
+    "model": "swinger",
+    "names": {
+     "ger": "Swinger",
+     "eng": "Swinger",
+     "ru": "Swinger",
+     "pl": "Swinger",
+     "fr": "Swinger",
+     "zh_cn": "放荡者"
+    }
+   },
+   {
+    "hash": 1862507111,
+    "model": "zion3",
+    "names": {
+     "ger": "Zion Classic",
+     "eng": "Zion Classic",
+     "ru": "Zion Classic",
+     "pl": "Zion Classic",
+     "fr": "Zion classique",
+     "zh_cn": "天堂经典版"
+    }
+   },
+   {
+    "hash": 310284501,
+    "model": "dynasty",
+    "names": {
+     "ger": "Dynasty",
+     "eng": "Dynasty",
+     "ru": "Dynasty",
+     "pl": "Dynasty",
+     "fr": "Dynasty",
+     "zh_cn": "王朝"
+    }
+   },
+   {
+    "hash": 3412338231,
+    "model": "nebula",
+    "names": {
+     "ger": "Nebula Turbo",
+     "eng": "Nebula Turbo",
+     "ru": "Nebula Turbo",
+     "pl": "Nebula Turbo",
+     "fr": "Nebula turbo",
+     "zh_cn": "星云涡轮"
+    }
+   },
+   {
+    "hash": 2031587082,
+    "model": "retinue2",
+    "names": {
+     "ger": "Retinue Mk II",
+     "eng": "Retinue Mk II",
+     "ru": "Retinue Mk II",
+     "pl": "Retinue II",
+     "fr": "Retinue Mk II",
+     "zh_cn": "随行者 Mk 2"
+    }
+   },
+   {
+    "hash": 3463132580,
+    "model": "btype2",
+    "names": {
+     "ger": "Fränken Stange",
+     "eng": "Fränken Stange",
+     "ru": "Fränken Stange",
+     "pl": "Fränken Stange",
+     "fr": "Fränken Stange",
+     "zh_cn": "科学怪人"
+    }
+   },
+   {
+    "hash": 1107404867,
+    "model": "peyote3",
+    "names": {
+     "ger": "Peyote Custom",
+     "eng": "Peyote Custom",
+     "ru": "Peyote заказной",
+     "pl": "Peyote - niest.",
+     "fr": "Peyote custom",
+     "zh_cn": "佩优特改装版"
+    }
+   },
+   {
+    "hash": 159274291,
+    "model": "ardent",
+    "names": {
+     "ger": "Ardent",
+     "eng": "Ardent",
+     "ru": "Ardent",
+     "pl": "Ardent",
+     "fr": "Ardent",
+     "zh_cn": "炽焰"
+    }
+   },
+   {
+    "hash": 394110044,
+    "model": "jb7002",
+    "names": {
+     "ger": "JB 700W",
+     "eng": "JB 700W",
+     "ru": "JB 700W",
+     "pl": "JB 700W",
+     "fr": "JB 700W",
+     "zh_cn": "JBµ700W"
+    }
+   },
+   {
+    "hash": 2336538363,
+    "model": "coquette5",
+    "names": {
+     "ger": "Coquette D1",
+     "eng": "Coquette D1",
+     "ru": "Coquette D1",
+     "pl": "Coquette D1",
+     "fr": "Coquette D1",
+     "zh_cn": "艳妇µD1"
+    }
+   },
+   {
+    "hash": 1534326199,
+    "model": "uranus",
+    "names": {
+     "ger": "Uranus LozSpeed",
+     "eng": "Uranus LozSpeed",
+     "ru": "Uranus LozSpeed",
+     "pl": "Uranus LozSpeed",
+     "fr": "Uranus LozSpeed",
+     "zh_cn": "天王星爱快"
+    }
+   },
+   {
+    "hash": 471399650,
+    "model": "cheetah3",
+    "names": {
+     "ger": "LSCM Cheetah Classic",
+     "eng": "LSCM Cheetah Classic",
+     "ru": "Cheetah Classic автоклуба ЛС",
+     "pl": "LSCM Cheetah Classic",
+     "fr": "LSCM Cheetah classique",
+     "zh_cn": "洛圣都车友会猎豹经典版"
+    }
+   },
+   {
+    "hash": 1380582820,
+    "model": "gt750",
+    "names": {
+     "ger": "GT750",
+     "eng": "GT750",
+     "ru": "GT750",
+     "pl": "GT750",
+     "fr": "GT750",
+     "zh_cn": "GT750"
+    }
+   },
+   {
+    "hash": 893780296,
+    "model": "itali2",
+    "names": {
+     "ger": "Itali Classic",
+     "eng": "Itali Classic",
+     "ru": "Itali Classic",
+     "pl": "Itali Classic",
+     "fr": "Itali Classique",
+     "zh_cn": "义塔力经典版"
+    }
+   },
+   {
+    "hash": 3692679425,
+    "model": "btype3",
+    "names": {
+     "ger": "Roosevelt Valor",
+     "eng": "Roosevelt Valor",
+     "ru": "Roosevelt Valor",
+     "pl": "Roosevelt Valor",
+     "fr": "Roosevelt Valor",
+     "zh_cn": "罗斯福勇气"
+    }
+   },
+   {
+    "hash": 1596736441,
+    "model": "astrale",
+    "names": {
+     "ger": "Astrale",
+     "eng": "Astrale",
+     "ru": "Astrale",
+     "pl": "Astrale",
+     "fr": "Astrale",
+     "zh_cn": "星界"
+    }
+   }
+  ]
+ },
+ {
+  "class": 6,
+  "base": [
+   {
+    "hash": 2833484545,
+    "model": "ninef2",
+    "names": {
+     "ger": "9F Cabrio",
+     "eng": "9F Cabrio",
+     "ru": "9F Cabrio",
+     "pl": "9F Cabrio",
+     "fr": "9F Cabrio",
+     "zh_cn": "9Fµ敞篷版"
+    }
+   },
+   {
+    "hash": 3253274834,
+    "model": "banshee",
+    "names": {
+     "ger": "Banshee",
+     "eng": "Banshee",
+     "ru": "Banshee",
+     "pl": "Banshee",
+     "fr": "Banshee",
+     "zh_cn": "女妖"
+    }
+   },
+   {
+    "hash": 2072687711,
+    "model": "carbonizzare",
+    "names": {
+     "ger": "Carbonizzare",
+     "eng": "Carbonizzare",
+     "ru": "Carbonizzare",
+     "pl": "Carbonizzare",
+     "fr": "Carbonizzare",
+     "zh_cn": "汗血宝马"
+    }
+   },
+   {
+    "hash": 3249425686,
+    "model": "comet2",
+    "names": {
+     "ger": "Comet",
+     "eng": "Comet",
+     "ru": "Comet",
+     "pl": "Comet",
+     "fr": "Comet",
+     "zh_cn": "陆上彗星"
+    }
+   },
+   {
+    "hash": 108773431,
+    "model": "coquette",
+    "names": {
+     "ger": "Coquette",
+     "eng": "Coquette",
+     "ru": "Coquette",
+     "pl": "Coquette",
+     "fr": "Coquette",
+     "zh_cn": "艳妇"
+    }
+   },
+   {
+    "hash": 2299640309,
+    "model": "feltzer2",
+    "names": {
+     "ger": "Feltzer",
+     "eng": "Feltzer",
+     "ru": "Feltzer",
+     "pl": "Feltzer",
+     "fr": "Feltzer",
+     "zh_cn": "飞特者"
+    }
+   },
+   {
+    "hash": 499169875,
+    "model": "fusilade",
+    "names": {
+     "ger": "Fusilade",
+     "eng": "Fusilade",
+     "ru": "Fusilade",
+     "pl": "Fusilade",
+     "fr": "Fusilade",
+     "zh_cn": "眩光"
+    }
+   },
+   {
+    "hash": 2016857647,
+    "model": "futo",
+    "names": {
+     "ger": "Futo",
+     "eng": "Futo",
+     "ru": "Futo",
+     "pl": "Futo",
+     "fr": "Futo",
+     "zh_cn": "福多"
+    }
+   },
+   {
+    "hash": 1737773231,
+    "model": "rapidgt2",
+    "names": {
+     "ger": "Rapid GT",
+     "eng": "Rapid GT",
+     "ru": "Rapid GT",
+     "pl": "Rapid GT",
+     "fr": "Rapid GT",
+     "zh_cn": "疾速µGT"
+    }
+   },
+   {
+    "hash": 970598228,
+    "model": "sultan",
+    "names": {
+     "ger": "Sultan",
+     "eng": "Sultan",
+     "ru": "Sultan",
+     "pl": "Sultan",
+     "fr": "Sultan",
+     "zh_cn": "王者"
+    }
+   },
+   {
+    "hash": 544021352,
+    "model": "khamelion",
+    "names": {
+     "ger": "Khamelion",
+     "eng": "Khamelion",
+     "ru": "Khamelion",
+     "pl": "Khamelion",
+     "fr": "Khamelion",
+     "zh_cn": "变色龙"
+    }
+   }
+  ],
+  "dlc": [
+   {
+    "hash": 767087018,
+    "model": "alpha",
+    "names": {
+     "ger": "Alpha",
+     "eng": "Alpha",
+     "ru": "Alpha",
+     "pl": "Alpha",
+     "fr": "Alpha",
+     "zh_cn": "阿尔法"
+    }
+   },
+   {
+    "hash": 2997294755,
+    "model": "jester",
+    "names": {
+     "ger": "Jester",
+     "eng": "Jester",
+     "ru": "Jester",
+     "pl": "Jester",
+     "fr": "Jester",
+     "zh_cn": "弄臣"
+    }
+   },
+   {
+    "hash": 4152024626,
+    "model": "massacro",
+    "names": {
+     "ger": "Massacro",
+     "eng": "Massacro",
+     "ru": "Massacro",
+     "pl": "Massacro",
+     "fr": "Massacro",
+     "zh_cn": "马萨克罗"
+    }
+   },
+   {
+    "hash": 3205927392,
+    "model": "furoregt",
+    "names": {
+     "ger": "Furore GT",
+     "eng": "Furore GT",
+     "ru": "Furore GT",
+     "pl": "Furore GT",
+     "fr": "Furore GT",
+     "zh_cn": "沸洛雷µGT"
+    }
+   },
+   {
+    "hash": 3188613414,
+    "model": "jester2",
+    "names": {
+     "ger": "Jester (Rennen)",
+     "eng": "Jester (Racecar)",
+     "ru": "Jester (гоночный)",
+     "pl": "Jester wyś.",
+     "fr": "Jester (course)",
+     "zh_cn": "弄臣（赛车）"
+    }
+   },
+   {
+    "hash": 3663206819,
+    "model": "massacro2",
+    "names": {
+     "ger": "Massacro (Rennen)",
+     "eng": "Massacro (Racecar)",
+     "ru": "Massacro (гоночный)",
+     "pl": "Massacro wyś.",
+     "fr": "Massacro (course)",
+     "zh_cn": "马萨克罗（赛车）"
+    }
+   },
+   {
+    "hash": 1039032026,
+    "model": "blista2",
+    "names": {
+     "ger": "Blista Compact",
+     "eng": "Blista Compact",
+     "ru": "Blista Compact",
+     "pl": "Blista Compact",
+     "fr": "Blista Compact",
+     "zh_cn": "小旅行家"
+    }
+   },
+   {
+    "hash": 2922118804,
+    "model": "kuruma",
+    "names": {
+     "ger": "Kuruma",
+     "eng": "Kuruma",
+     "ru": "Kuruma",
+     "pl": "Kuruma",
+     "fr": "Kuruma",
+     "zh_cn": "骷髅马"
+    }
+   },
+   {
+    "hash": 410882957,
+    "model": "kuruma2",
+    "names": {
+     "ger": "Kuruma (gepanzert)",
+     "eng": "Kuruma (Armored)",
+     "ru": "Kuruma (бронированный)",
+     "pl": "Kuruma (opancerzony)",
+     "fr": "Kuruma (blindée)",
+     "zh_cn": "骷髅马（装甲版）"
+    }
+   },
+   {
+    "hash": 1102544804,
+    "model": "verlierer2",
+    "names": {
+     "ger": "Verlierer",
+     "eng": "Verlierer",
+     "ru": "Verlierer",
+     "pl": "Verlierer",
+     "fr": "Verlierer",
+     "zh_cn": "迷失者"
+    }
+   },
+   {
+    "hash": 1274868363,
+    "model": "bestiagts",
+    "names": {
+     "ger": "Bestia GTS",
+     "eng": "Bestia GTS",
+     "ru": "Bestia GTS",
+     "pl": "Bestia GTS",
+     "fr": "Bestia GTS",
+     "zh_cn": "野兽µGTS"
+    }
+   },
+   {
+    "hash": 2537130571,
+    "model": "seven70",
+    "names": {
+     "ger": "Seven-70",
+     "eng": "Seven-70",
+     "ru": "Seven-70",
+     "pl": "Seven-70",
+     "fr": "Seven-70",
+     "zh_cn": "柒-70"
+    }
+   },
+   {
+    "hash": 3517794615,
+    "model": "omnis",
+    "names": {
+     "ger": "Omnis",
+     "eng": "Omnis",
+     "ru": "Omnis",
+     "pl": "Omnis",
+     "fr": "Omnis",
+     "zh_cn": "奥姆尼斯"
+    }
+   },
+   {
+    "hash": 1887331236,
+    "model": "tropos",
+    "names": {
+     "ger": "Tropos-Rallye",
+     "eng": "Tropos Rallye",
+     "ru": "Tropos Rallye",
+     "pl": "Tropos Rallye",
+     "fr": "Tropos rallye",
+     "zh_cn": "逐波雷厉"
+    }
+   },
+   {
+    "hash": 482197771,
+    "model": "lynx",
+    "names": {
+     "ger": "Lynx",
+     "eng": "Lynx",
+     "ru": "Lynx",
+     "pl": "Lynx",
+     "fr": "Lynx",
+     "zh_cn": "山猫"
+    }
+   },
+   {
+    "hash": 3223586949,
+    "model": "tampa2",
+    "names": {
+     "ger": "Drift Tampa",
+     "eng": "Drift Tampa",
+     "ru": "Drift Tampa",
+     "pl": "Tampa Drift",
+     "fr": "Tampa drift",
+     "zh_cn": "漂移坦帕"
+    }
+   },
+   {
+    "hash": 237764926,
+    "model": "buffalo3",
+    "names": {
+     "ger": "Sprunk Buffalo",
+     "eng": "Sprunk Buffalo",
+     "ru": "Sprunk Buffalo",
+     "pl": "Buffalo Sprunk",
+     "fr": "Buffalo Sprunk",
+     "zh_cn": "霜碧猛牛"
+    }
+   },
+   {
+    "hash": 3620039993,
+    "model": "raptor",
+    "names": {
+     "ger": "Raptor",
+     "eng": "Raptor",
+     "ru": "Raptor",
+     "pl": "Raptor",
+     "fr": "Raptor",
+     "zh_cn": "迅猛龙"
+    }
+   },
+   {
+    "hash": 3728579874,
+    "model": "elegy2",
+    "names": {
+     "ger": "Elegy RH8",
+     "eng": "Elegy RH8",
+     "ru": "Elegy RH8",
+     "pl": "Elegy RH8",
+     "fr": "Elegy RH8",
+     "zh_cn": "挽歌µRH8"
+    }
+   },
+   {
+    "hash": 196747873,
+    "model": "elegy",
+    "names": {
+     "ger": "Elegy Retro Custom",
+     "eng": "Elegy Retro Custom",
+     "ru": "Elegy Retro заказной",
+     "pl": "Retro Elegy (niest.)",
+     "fr": "Elegy rétro custom",
+     "zh_cn": "挽歌怀旧改装版"
+    }
+   },
+   {
+    "hash": 2272483501,
+    "model": "comet3",
+    "names": {
+     "ger": "Comet Retro Custom",
+     "eng": "Comet Retro Custom",
+     "ru": "Comet Retro заказной",
+     "pl": "Retro Comet (niest.)",
+     "fr": "Comet rétro custom",
+     "zh_cn": "陆上彗星怀旧改装版"
+    }
+   },
+   {
+    "hash": 1886268224,
+    "model": "specter",
+    "names": {
+     "ger": "Specter",
+     "eng": "Specter",
+     "ru": "Specter",
+     "pl": "Specter",
+     "fr": "Specter",
+     "zh_cn": "幽鬼"
+    }
+   },
+   {
+    "hash": 1074745671,
+    "model": "specter2",
+    "names": {
+     "ger": "Specter Custom",
+     "eng": "Specter Custom",
+     "ru": "Specter заказной",
+     "pl": "Specter - niest.",
+     "fr": "Specter custom",
+     "zh_cn": "幽鬼改装版"
+    }
+   },
+   {
+    "hash": 719660200,
+    "model": "ruston",
+    "names": {
+     "ger": "Ruston",
+     "eng": "Ruston",
+     "ru": "Ruston",
+     "pl": "Ruston",
+     "fr": "Ruston",
+     "zh_cn": "拉斯顿"
+    }
+   },
+   {
+    "hash": 2765724541,
+    "model": "raiden",
+    "names": {
+     "ger": "Raiden",
+     "eng": "Raiden",
+     "ru": "Raiden",
+     "pl": "Raiden",
+     "fr": "Raiden",
+     "zh_cn": "雷电"
+    }
+   },
+   {
+    "hash": 867799010,
+    "model": "pariah",
+    "names": {
+     "ger": "Pariah",
+     "eng": "Pariah",
+     "ru": "Pariah",
+     "pl": "Pariah",
+     "fr": "Pariah",
+     "zh_cn": "放逐者"
+    }
+   },
+   {
+    "hash": 1561920505,
+    "model": "comet4",
+    "names": {
+     "ger": "Comet Safari",
+     "eng": "Comet Safari",
+     "ru": "Comet Safari",
+     "pl": "Comet Safari",
+     "fr": "Comet Safari",
+     "zh_cn": "彗星狩猎者"
+    }
+   },
+   {
+    "hash": 1104234922,
+    "model": "sentinel3",
+    "names": {
+     "ger": "Sentinel",
+     "eng": "Sentinel",
+     "ru": "Sentinel",
+     "pl": "Sentinel",
+     "fr": "Sentinel",
+     "zh_cn": "卫士经典版"
+    }
+   },
+   {
+    "hash": 1741861769,
+    "model": "streiter",
+    "names": {
+     "ger": "Streiter",
+     "eng": "Streiter",
+     "ru": "Streiter",
+     "pl": "Streiter",
+     "fr": "Streiter",
+     "zh_cn": "斯垂特"
+    }
+   },
+   {
+    "hash": 3884762073,
+    "model": "revolter",
+    "names": {
+     "ger": "Revolter",
+     "eng": "Revolter",
+     "ru": "Revolter",
+     "pl": "Revolter",
+     "fr": "Revolter",
+     "zh_cn": "反叛者"
+    }
+   },
+   {
+    "hash": 2445973230,
+    "model": "neon",
+    "names": {
+     "ger": "Neon",
+     "eng": "Neon",
+     "ru": "Neon",
+     "pl": "Neon",
+     "fr": "Neon",
+     "zh_cn": "霓虹"
+    }
+   },
+   {
+    "hash": 661493923,
+    "model": "comet5",
+    "names": {
+     "ger": "Comet SR",
+     "eng": "Comet SR",
+     "ru": "Comet SR",
+     "pl": "Comet SR",
+     "fr": "Comet SR",
+     "zh_cn": "陆上彗星µSR"
+    }
+   },
+   {
+    "hash": 1115909093,
+    "model": "hotring",
+    "names": {
+     "ger": "Hotring Sabre",
+     "eng": "Hotring Sabre",
+     "ru": "Hotring Sabre",
+     "pl": "Hotring Sabre",
+     "fr": "Hotring Sabre",
+     "zh_cn": "燃轨军刀"
+    }
+   },
+   {
+    "hash": 1909189272,
+    "model": "gb200",
+    "names": {
+     "ger": "GB200",
+     "eng": "GB200",
+     "ru": "GB200",
+     "pl": "GB200",
+     "fr": "GB200",
+     "zh_cn": "GB200"
+    }
+   },
+   {
+    "hash": 3035832600,
+    "model": "flashgt",
+    "names": {
+     "ger": "Flash GT",
+     "eng": "Flash GT",
+     "ru": "Flash GT",
+     "pl": "Flash GT",
+     "fr": "Flash GT",
+     "zh_cn": "闪电µGT"
+    }
+   },
+   {
+    "hash": 3787471536,
+    "model": "schlagen",
+    "names": {
+     "ger": "Schlagen GT",
+     "eng": "Schlagen GT",
+     "ru": "Schlagen GT",
+     "pl": "Schlagen GT",
+     "fr": "Schlagen GT",
+     "zh_cn": "撞击µGT"
+    }
+   },
+   {
+    "hash": 3963499524,
+    "model": "italigto",
+    "names": {
+     "ger": "Itali GTO",
+     "eng": "Itali GTO",
+     "ru": "Itali GTO",
+     "pl": "Itali GTO",
+     "fr": "Itali GTO",
+     "zh_cn": "义塔力µGTO"
+    }
+   },
+   {
+    "hash": 686471183,
+    "model": "drafter",
+    "names": {
+     "ger": "8F Drafter",
+     "eng": "8F Drafter",
+     "ru": "8F Drafter",
+     "pl": "8F Drafter",
+     "fr": "8F Drafter",
+     "zh_cn": "8Fµ尾随者"
+    }
+   },
+   {
+    "hash": 1854776567,
+    "model": "issi7",
+    "names": {
+     "ger": "Issi Sport",
+     "eng": "Issi Sport",
+     "ru": "Issi Sport",
+     "pl": "Issi Sport",
+     "fr": "Issi sport",
+     "zh_cn": "天威跑车版"
+    }
+   },
+   {
+    "hash": 2674840994,
+    "model": "neo",
+    "names": {
+     "ger": "Neo",
+     "eng": "Neo",
+     "ru": "Neo",
+     "pl": "Neo",
+     "fr": "Neo",
+     "zh_cn": "尼欧"
+    }
+   },
+   {
+    "hash": 3353694737,
+    "model": "locust",
+    "names": {
+     "ger": "Locust",
+     "eng": "Locust",
+     "ru": "Locust",
+     "pl": "Locust",
+     "fr": "Locust",
+     "zh_cn": "蝗虫"
+    }
+   },
+   {
+    "hash": 4086055493,
+    "model": "jugular",
+    "names": {
+     "ger": "Jugular",
+     "eng": "Jugular",
+     "ru": "Jugular",
+     "pl": "Jugular",
+     "fr": "Jugular",
+     "zh_cn": "扼喉"
+    }
+   },
+   {
+    "hash": 3847255899,
+    "model": "paragon",
+    "names": {
+     "ger": "Paragon R",
+     "eng": "Paragon R",
+     "ru": "Paragon R",
+     "pl": "Paragon R",
+     "fr": "Paragon R",
+     "zh_cn": "帕拉贡µR"
+    }
+   },
+   {
+    "hash": 3548084598,
+    "model": "schwarzer",
+    "names": {
+     "ger": "Schwartzer",
+     "eng": "Schwartzer",
+     "ru": "Schwartzer",
+     "pl": "Schwartzer",
+     "fr": "Schwartzer",
+     "zh_cn": "施瓦兹"
+    }
+   },
+   {
+    "hash": 3162245632,
+    "model": "imorgon",
+    "names": {
+     "ger": "Imorgon",
+     "eng": "Imorgon",
+     "ru": "Imorgon",
+     "pl": "Imorgon",
+     "fr": "Imorgon",
+     "zh_cn": "明日"
+    }
+   },
+   {
+    "hash": 987469656,
+    "model": "sugoi",
+    "names": {
+     "ger": "Sugoi",
+     "eng": "Sugoi",
+     "ru": "Sugoi",
+     "pl": "Sugoi",
+     "fr": "Sugoi",
+     "zh_cn": "斯国一"
+    }
+   },
+   {
+    "hash": 1456336509,
+    "model": "vstr",
+    "names": {
+     "ger": "V-STR",
+     "eng": "V-STR",
+     "ru": "V-STR",
+     "pl": "V-STR",
+     "fr": "V-STR",
+     "zh_cn": "V-STR"
+    }
+   },
+   {
+    "hash": 3460613305,
+    "model": "komoda",
+    "names": {
+     "ger": "Komoda",
+     "eng": "Komoda",
+     "ru": "Komoda",
+     "pl": "Komoda",
+     "fr": "Komoda",
+     "zh_cn": "科莫达"
+    }
+   },
+   {
+    "hash": 872704284,
+    "model": "sultan2",
+    "names": {
+     "ger": "Sultan Classic",
+     "eng": "Sultan Classic",
+     "ru": "Sultan Classic",
+     "pl": "Sultan Classic",
+     "fr": "Sultan classique",
+     "zh_cn": "王者经典版"
+    }
+   },
+   {
+    "hash": 3663644634,
+    "model": "penumbra2",
+    "names": {
+     "ger": "Penumbra FF",
+     "eng": "Penumbra FF",
+     "ru": "Penumbra FF",
+     "pl": "Penumbra FF",
+     "fr": "Penumbra FF",
+     "zh_cn": "半影使者µFF"
+    }
+   },
+   {
+    "hash": 2566281822,
+    "model": "coquette4",
+    "names": {
+     "ger": "Coquette D10",
+     "eng": "Coquette D10",
+     "ru": "Coquette D10",
+     "pl": "Coquette D10",
+     "fr": "Coquette D10",
+     "zh_cn": "艳妇µD10"
+    }
+   },
+   {
+    "hash": 3145241962,
+    "model": "italirsx",
+    "names": {
+     "ger": "Itali RSX",
+     "eng": "Itali RSX",
+     "ru": "Itali RSX",
+     "pl": "Itali RSX",
+     "fr": "Itali RSX",
+     "zh_cn": "义塔力µRSX"
+    }
+   },
+   {
+    "hash": 3101054893,
+    "model": "calico",
+    "names": {
+     "ger": "Calico GTF",
+     "eng": "Calico GTF",
+     "ru": "Calico GTF",
+     "pl": "Calico GTF",
+     "fr": "Calico GTF",
+     "zh_cn": "卡利科µGTF"
+    }
+   },
+   {
+    "hash": 2712905841,
+    "model": "jester4",
+    "names": {
+     "ger": "Jester RR",
+     "eng": "Jester RR",
+     "ru": "Jester RR",
+     "pl": "Jester RR",
+     "fr": "Jester RR",
+     "zh_cn": "弄臣µRR"
+    }
+   },
+   {
+    "hash": 2436313176,
+    "model": "zr350",
+    "names": {
+     "ger": "ZR350",
+     "eng": "ZR350",
+     "ru": "ZR350",
+     "pl": "ZR350",
+     "fr": "ZR350",
+     "zh_cn": "ZR350"
+    }
+   },
+   {
+    "hash": 1377217886,
+    "model": "remus",
+    "names": {
+     "ger": "Remus",
+     "eng": "Remus",
+     "ru": "Remus",
+     "pl": "Remus",
+     "fr": "Remus",
+     "zh_cn": "雷姆斯"
+    }
+   },
+   {
+    "hash": 2754593701,
+    "model": "vectre",
+    "names": {
+     "ger": "Vectre",
+     "eng": "Vectre",
+     "ru": "Vectre",
+     "pl": "Vectre",
+     "fr": "Vectre",
+     "zh_cn": "韦柯特"
+    }
+   },
+   {
+    "hash": 1755697647,
+    "model": "cypher",
+    "names": {
+     "ger": "Cypher",
+     "eng": "Cypher",
+     "ru": "Cypher",
+     "pl": "Cypher",
+     "fr": "Cypher",
+     "zh_cn": "塞弗"
+    }
+   },
+   {
+    "hash": 2568944644,
+    "model": "comet6",
+    "names": {
+     "ger": "Comet S2",
+     "eng": "Comet S2",
+     "ru": "Comet S2",
+     "pl": "Comet S2",
+     "fr": "Comet S2",
+     "zh_cn": "陆上彗星µS2"
+    }
+   },
+   {
+    "hash": 3842363289,
+    "model": "rt3000",
+    "names": {
+     "ger": "RT3000",
+     "eng": "RT3000",
+     "ru": "RT3000",
+     "pl": "RT3000",
+     "fr": "RT3000",
+     "zh_cn": "RT3000"
+    }
+   },
+   {
+    "hash": 4003946083,
+    "model": "sultan3",
+    "names": {
+     "ger": "Sultan RS Classic",
+     "eng": "Sultan RS Classic",
+     "ru": "Sultan RS Classic",
+     "pl": "Sultan RS Classic",
+     "fr": "Sultan RS classique",
+     "zh_cn": "王者µRSµ经典版"
+    }
+   },
+   {
+    "hash": 2787736776,
+    "model": "futo2",
+    "names": {
+     "ger": "Futo GTX",
+     "eng": "Futo GTX",
+     "ru": "Futo GTX",
+     "pl": "Futo GTX",
+     "fr": "Futo GTX",
+     "zh_cn": "福多µGTX"
+    }
+   },
+   {
+    "hash": 2038480341,
+    "model": "euros",
+    "names": {
+     "ger": "Euros",
+     "eng": "Euros",
+     "ru": "Euros",
+     "pl": "Euros",
+     "fr": "Euros",
+     "zh_cn": "欧洲"
+    }
+   },
+   {
+    "hash": 1304459735,
+    "model": "growler",
+    "names": {
+     "ger": "Growler",
+     "eng": "Growler",
+     "ru": "Growler",
+     "pl": "Growler",
+     "fr": "Growler",
+     "zh_cn": "嚎叫者"
+    }
+   },
+   {
+    "hash": 1141395928,
+    "model": "comet7",
+    "names": {
+     "ger": "Comet S2 Cabrio",
+     "eng": "Comet S2 Cabrio",
+     "ru": "Comet S2 Cabrio",
+     "pl": "Comet S2 Cabrio",
+     "fr": "Comet S2 Cabrio",
+     "zh_cn": "陆上彗星µS2µ敞篷版"
+    }
+   },
+   {
+    "hash": 1416466158,
+    "model": "paragon2",
+    "names": {
+     "ger": "Paragon R (Gepanzert)",
+     "eng": "Paragon R (Armored)",
+     "ru": "Paragon R (броня)",
+     "pl": "Paragon R (opancerzony)",
+     "fr": "Paragon R (blindée)",
+     "zh_cn": "帕拉贡µR（装甲版）"
+    }
+   },
+   {
+    "hash": 3540279623,
+    "model": "corsita",
+    "names": {
+     "ger": "Corsita",
+     "eng": "Corsita",
+     "ru": "Corsita",
+     "pl": "Corsita",
+     "fr": "Corsita",
+     "zh_cn": "科西塔"
+    }
+   },
+   {
+    "hash": 3400983137,
+    "model": "tenf",
+    "names": {
+     "ger": "10F",
+     "eng": "10F",
+     "ru": "10F",
+     "pl": "10F",
+     "fr": "10F",
+     "zh_cn": "10F"
+    }
+   },
+   {
+    "hash": 274946574,
+    "model": "tenf2",
+    "names": {
+     "ger": "10F Widebody",
+     "eng": "10F Widebody",
+     "ru": "10F широкий",
+     "pl": "Poszerzony 10F",
+     "fr": "10F large",
+     "zh_cn": "10Fµ宽体版"
+    }
+   },
+   {
+    "hash": 775514032,
+    "model": "sm722",
+    "names": {
+     "ger": "SM722",
+     "eng": "SM722",
+     "ru": "SM722",
+     "pl": "SM722",
+     "fr": "SM722",
+     "zh_cn": "SM722"
+    }
+   },
+   {
+    "hash": 2938086457,
+    "model": "sentinel4",
+    "names": {
+     "ger": "Sentinel Classic Widebody",
+     "eng": "Sentinel Classic Widebody",
+     "ru": "Sentinel Classic широкий",
+     "pl": "Poszerzony Sentinel Classic",
+     "fr": "Sentinel classique large",
+     "zh_cn": "卫士经典宽体版"
+    }
+   },
+   {
+    "hash": 3789743831,
+    "model": "omnisegt",
+    "names": {
+     "ger": "Omnis e-GT",
+     "eng": "Omnis e-GT",
+     "ru": "Omnis e-GT",
+     "pl": "Omnis e-GT",
+     "fr": "Omnis e-GT",
+     "zh_cn": "奥姆尼斯µe-GT"
+    }
+   },
+   {
+    "hash": 2100457220,
+    "model": "panthere",
+    "names": {
+     "ger": "Panthere",
+     "eng": "Panthere",
+     "ru": "Panthere",
+     "pl": "Panthere",
+     "fr": "Panthere",
+     "zh_cn": "潘瑟力"
+    }
+   },
+   {
+    "hash": 4163619118,
+    "model": "everon2",
+    "names": {
+     "ger": "Hotring Everon",
+     "eng": "Hotring Everon",
+     "ru": "Hotring Everon",
+     "pl": "Hotring Everon",
+     "fr": "Hotring Everon",
+     "zh_cn": "燃轨埃弗伦"
+    }
+   },
+   {
+    "hash": 1076201208,
+    "model": "r300",
+    "names": {
+     "ger": "300R",
+     "eng": "300R",
+     "ru": "300R",
+     "pl": "300R",
+     "fr": "300R",
+     "zh_cn": "300R"
+    }
+   },
+   {
+    "hash": 1336514315,
+    "model": "gauntlet6",
+    "names": {
+     "ger": "Hotring Hellfire",
+     "eng": "Hotring Hellfire",
+     "ru": "Hotring Hellfire",
+     "pl": "Hotring Hellfire",
+     "fr": "Hotring Hellfire",
+     "zh_cn": "燃轨地狱火"
+    }
+   },
+   {
+    "hash": 1447690049,
+    "model": "stingertt",
+    "names": {
+     "ger": "Itali GTO Stinger TT",
+     "eng": "Itali GTO Stinger TT",
+     "ru": "Itali GTO Stinger TT",
+     "pl": "Itali GTO Stinger TT",
+     "fr": "Itali GTO Stinger TT",
+     "zh_cn": "义塔力µGTOµ史汀格µTT"
+    }
+   },
+   {
+    "hash": 610429990,
+    "model": "coureur",
+    "names": {
+     "ger": "La Coureuse",
+     "eng": "La Coureuse",
+     "ru": "La Coureuse",
+     "pl": "La Coureuse",
+     "fr": "La Coureuse",
+     "zh_cn": "跑者"
+    }
+   },
+   {
+    "hash": 1121330119,
+    "model": "envisage",
+    "names": {
+     "ger": "Envisage",
+     "eng": "Envisage",
+     "ru": "Envisage",
+     "pl": "Envisage",
+     "fr": "Envisage",
+     "zh_cn": "英维萨格"
+    }
+   },
+   {
+    "hash": 1881415402,
+    "model": "niobe",
+    "names": {
+     "ger": "Niobe",
+     "eng": "Niobe",
+     "ru": "Niobe",
+     "pl": "Niobe",
+     "fr": "Niobe",
+     "zh_cn": "奈奥比"
+    }
+   },
+   {
+    "hash": 3348919626,
+    "model": "paragon3",
+    "names": {
+     "ger": "Paragon S",
+     "eng": "Paragon S",
+     "ru": "Paragon S",
+     "pl": "Paragon S",
+     "fr": "Paragon S",
+     "zh_cn": "帕拉贡µS"
+    }
+   },
+   {
+    "hash": 1484920335,
+    "model": "jester5",
+    "names": {
+     "ger": "Jester RR Widebody",
+     "eng": "Jester RR Widebody",
+     "ru": "Широкий Jester RR",
+     "pl": "Poszerzony Jester RR",
+     "fr": "Jester RR large",
+     "zh_cn": "弄臣µRRµ宽体版"
+    }
+   },
+   {
+    "hash": 127317925,
+    "model": "coquette6",
+    "names": {
+     "ger": "Coquette D5",
+     "eng": "Coquette D5",
+     "ru": "Coquette D5",
+     "pl": "Coquette D5",
+     "fr": "Coquette D5",
+     "zh_cn": "艳妇µD5"
+    }
+   },
+   {
+    "hash": 3634959571,
+    "model": "banshee3",
+    "names": {
+     "ger": "Banshee GTS",
+     "eng": "Banshee GTS",
+     "ru": "Banshee GTS",
+     "pl": "Banshee GTS",
+     "fr": "Banshee GTS",
+     "zh_cn": "女妖µGTS"
+    }
+   },
+   {
+    "hash": 2709293299,
+    "model": "sentinel5",
+    "names": {
+     "ger": "Sentinel GTS",
+     "eng": "Sentinel GTS",
+     "ru": "Sentinel GTS",
+     "pl": "Sentinel GTS",
+     "fr": "Sentinel GTS",
+     "zh_cn": "卫士µGTS"
+    }
+   },
+   {
+    "hash": 1761301369,
+    "model": "rapidgt4",
+    "names": {
+     "ger": "Rapid GT X",
+     "eng": "Rapid GT X",
+     "ru": "Rapid GT X",
+     "pl": "Rapid GT X",
+     "fr": "Rapid GT X",
+     "zh_cn": "疾速µGTµX"
+    }
+   },
+   {
+    "hash": 1032823388,
+    "model": "ninef",
+    "names": {
+     "ger": "9F",
+     "eng": "9F",
+     "ru": "9F",
+     "pl": "9F",
+     "fr": "9F",
+     "zh_cn": "9F"
+    }
+   },
+   {
+    "hash": 736902334,
+    "model": "buffalo2",
+    "names": {
+     "ger": "Buffalo S",
+     "eng": "Buffalo S",
+     "ru": "Buffalo S",
+     "pl": "Buffalo S",
+     "fr": "Buffalo S",
+     "zh_cn": "猛牛µS"
+    }
+   },
+   {
+    "hash": 3990165190,
+    "model": "buffalo",
+    "names": {
+     "ger": "Buffalo",
+     "eng": "Buffalo",
+     "ru": "Buffalo",
+     "pl": "Buffalo",
+     "fr": "Buffalo",
+     "zh_cn": "猛牛"
+    }
+   },
+   {
+    "hash": 3917501776,
+    "model": "penumbra",
+    "names": {
+     "ger": "Penumbra",
+     "eng": "Penumbra",
+     "ru": "Penumbra",
+     "pl": "Penumbra",
+     "fr": "Penumbra",
+     "zh_cn": "半影使者"
+    }
+   },
+   {
+    "hash": 2360515092,
+    "model": "rapidgt",
+    "names": {
+     "ger": "Rapid GT",
+     "eng": "Rapid GT",
+     "ru": "Rapid GT",
+     "pl": "Rapid GT",
+     "fr": "Rapid GT",
+     "zh_cn": "疾速µGT"
+    }
+   },
+   {
+    "hash": 384071873,
+    "model": "surano",
+    "names": {
+     "ger": "Surano",
+     "eng": "Surano",
+     "ru": "Surano",
+     "pl": "Surano",
+     "fr": "Surano",
+     "zh_cn": "速雷"
+    }
+   },
+   {
+    "hash": 3703315515,
+    "model": "blista3",
+    "names": {
+     "ger": "Go Go Monkey Blista",
+     "eng": "Go Go Monkey Blista",
+     "ru": "Go Go Monkey Blista",
+     "pl": "Blista Go Go Monkey",
+     "fr": "Blista Go Go Monkey",
+     "zh_cn": "冲冲猴旅行家"
+    }
+   },
+   {
+    "hash": 2271995207,
+    "model": "cartuccia",
+    "names": {
+     "ger": "Cartuccia GT",
+     "eng": "Cartuccia GT",
+     "ru": "Cartuccia GT",
+     "pl": "Cartuccia GT",
+     "fr": "Cartuccia GT",
+     "zh_cn": "卡图西亚 GT"
+    }
+   }
+  ]
+ },
+ {
+  "class": 7,
+  "base": [
+   {
+    "hash": 3078201489,
+    "model": "adder",
+    "names": {
+     "ger": "Adder",
+     "eng": "Adder",
+     "ru": "Adder",
+     "pl": "Adder",
+     "fr": "Adder",
+     "zh_cn": "灵蛇"
+    }
+   },
+   {
+    "hash": 2598821281,
+    "model": "bullet",
+    "names": {
+     "ger": "Bullet",
+     "eng": "Bullet",
+     "ru": "Bullet",
+     "pl": "Bullet",
+     "fr": "Bullet",
+     "zh_cn": "子弹"
+    }
+   },
+   {
+    "hash": 2983812512,
+    "model": "cheetah",
+    "names": {
+     "ger": "Cheetah",
+     "eng": "Cheetah",
+     "ru": "Cheetah",
+     "pl": "Cheetah",
+     "fr": "Cheetah",
+     "zh_cn": "猎豹"
+    }
+   },
+   {
+    "hash": 3003014393,
+    "model": "entityxf",
+    "names": {
+     "ger": "Entity XF",
+     "eng": "Entity XF",
+     "ru": "Entity XF",
+     "pl": "Entity XF",
+     "fr": "Entity XF",
+     "zh_cn": "本质µXF"
+    }
+   },
+   {
+    "hash": 418536135,
+    "model": "infernus",
+    "names": {
+     "ger": "Infernus",
+     "eng": "Infernus",
+     "ru": "Infernus",
+     "pl": "Infernus",
+     "fr": "Infernus",
+     "zh_cn": "炼狱魔"
+    }
+   },
+   {
+    "hash": 338562499,
+    "model": "vacca",
+    "names": {
+     "ger": "Vacca",
+     "eng": "Vacca",
+     "ru": "Vacca",
+     "pl": "Vacca",
+     "fr": "Vacca",
+     "zh_cn": "狂牛"
+    }
+   },
+   {
+    "hash": 2672523198,
+    "model": "voltic",
+    "names": {
+     "ger": "Voltic",
+     "eng": "Voltic",
+     "ru": "Voltic",
+     "pl": "Voltic",
+     "fr": "Voltic",
+     "zh_cn": "狂雷"
+    }
+   }
+  ],
+  "dlc": [
+   {
+    "hash": 408192225,
+    "model": "turismor",
+    "names": {
+     "ger": "Turismo R",
+     "eng": "Turismo R",
+     "ru": "Turismo R",
+     "pl": "Turismo R",
+     "fr": "Turismo R",
+     "zh_cn": "远途µR"
+    }
+   },
+   {
+    "hash": 2891838741,
+    "model": "zentorno",
+    "names": {
+     "ger": "Zentorno",
+     "eng": "Zentorno",
+     "ru": "Zentorno",
+     "pl": "Zentorno",
+     "fr": "Zentorno",
+     "zh_cn": "桑托劳"
+    }
+   },
+   {
+    "hash": 1987142870,
+    "model": "osiris",
+    "names": {
+     "ger": "Osiris",
+     "eng": "Osiris",
+     "ru": "Osiris",
+     "pl": "Osiris",
+     "fr": "Osiris",
+     "zh_cn": "奥西里斯"
+    }
+   },
+   {
+    "hash": 1663218586,
+    "model": "t20",
+    "names": {
+     "ger": "T20",
+     "eng": "T20",
+     "ru": "T20",
+     "pl": "T20",
+     "fr": "T20",
+     "zh_cn": "T20"
+    }
+   },
+   {
+    "hash": 633712403,
+    "model": "banshee2",
+    "names": {
+     "ger": "Banshee 900R",
+     "eng": "Banshee 900R",
+     "ru": "Banshee 900R",
+     "pl": "Banshee 900R",
+     "fr": "Banshee 900R",
+     "zh_cn": "女妖µ900R"
+    }
+   },
+   {
+    "hash": 3999278268,
+    "model": "sultanrs",
+    "names": {
+     "ger": "Sultan RS",
+     "eng": "Sultan RS",
+     "ru": "Sultan RS",
+     "pl": "Sultan RS",
+     "fr": "Sultan RS",
+     "zh_cn": "王者µRS"
+    }
+   },
+   {
+    "hash": 234062309,
+    "model": "reaper",
+    "names": {
+     "ger": "Reaper",
+     "eng": "Reaper",
+     "ru": "Reaper",
+     "pl": "Reaper",
+     "fr": "Reaper",
+     "zh_cn": "死神"
+    }
+   },
+   {
+    "hash": 1426219628,
+    "model": "fmj",
+    "names": {
+     "ger": "FMJ",
+     "eng": "FMJ",
+     "ru": "FMJ",
+     "pl": "FMJ",
+     "fr": "FMJ",
+     "zh_cn": "FMJ"
+    }
+   },
+   {
+    "hash": 2123327359,
+    "model": "prototipo",
+    "names": {
+     "ger": "X80 Proto",
+     "eng": "X80 Proto",
+     "ru": "X80 Proto",
+     "pl": "X80 Proto",
+     "fr": "X80 Proto",
+     "zh_cn": "X80µ原型"
+    }
+   },
+   {
+    "hash": 2465164804,
+    "model": "pfister811",
+    "names": {
+     "ger": "811",
+     "eng": "811",
+     "ru": "811",
+     "pl": "811",
+     "fr": "811",
+     "zh_cn": "811"
+    }
+   },
+   {
+    "hash": 3062131285,
+    "model": "le7b",
+    "names": {
+     "ger": "RE-7B",
+     "eng": "RE-7B",
+     "ru": "RE-7B",
+     "pl": "RE-7B",
+     "fr": "RE-7B",
+     "zh_cn": "RE-7B"
+    }
+   },
+   {
+    "hash": 2067820283,
+    "model": "tyrus",
+    "names": {
+     "ger": "Tyrus",
+     "eng": "Tyrus",
+     "ru": "Tyrus",
+     "pl": "Tyrus",
+     "fr": "Tyrus",
+     "zh_cn": "泰勒斯"
+    }
+   },
+   {
+    "hash": 819197656,
+    "model": "sheava",
+    "names": {
+     "ger": "ETR1",
+     "eng": "ETR1",
+     "ru": "ETR1",
+     "pl": "ETR1",
+     "fr": "ETR1",
+     "zh_cn": "ETR1"
+    }
+   },
+   {
+    "hash": 2536829930,
+    "model": "penetrator",
+    "names": {
+     "ger": "Penetrator",
+     "eng": "Penetrator",
+     "ru": "Penetrator",
+     "pl": "Penetrator",
+     "fr": "Penetrator",
+     "zh_cn": "穿刺者"
+    }
+   },
+   {
+    "hash": 272929391,
+    "model": "tempesta",
+    "names": {
+     "ger": "Tempesta",
+     "eng": "Tempesta",
+     "ru": "Tempesta",
+     "pl": "Tempesta",
+     "fr": "Tempesta",
+     "zh_cn": "风暴"
+    }
+   },
+   {
+    "hash": 2246633323,
+    "model": "italigtb",
+    "names": {
+     "ger": "Itali GTB",
+     "eng": "Itali GTB",
+     "ru": "Itali GTB",
+     "pl": "Itali GTB",
+     "fr": "Itali GTB",
+     "zh_cn": "义塔力µGTB"
+    }
+   },
+   {
+    "hash": 3812247419,
+    "model": "italigtb2",
+    "names": {
+     "ger": "Itali GTB Custom",
+     "eng": "Itali GTB Custom",
+     "ru": "Itali GTB заказной",
+     "pl": "Itali GTB - niest.",
+     "fr": "Itali GTB custom",
+     "zh_cn": "义塔力µGTBµ改装版"
+    }
+   },
+   {
+    "hash": 1034187331,
+    "model": "nero",
+    "names": {
+     "ger": "Nero",
+     "eng": "Nero",
+     "ru": "Nero",
+     "pl": "Nero",
+     "fr": "Nero",
+     "zh_cn": "尼罗"
+    }
+   },
+   {
+    "hash": 1093792632,
+    "model": "nero2",
+    "names": {
+     "ger": "Nero Custom",
+     "eng": "Nero Custom",
+     "ru": "Nero заказной",
+     "pl": "Nero - niest.",
+     "fr": "Nero custom",
+     "zh_cn": "尼罗改装版"
+    }
+   },
+   {
+    "hash": 1234311532,
+    "model": "gp1",
+    "names": {
+     "ger": "GP1",
+     "eng": "GP1",
+     "ru": "GP1",
+     "pl": "GP1",
+     "fr": "GP1",
+     "zh_cn": "GP1"
+    }
+   },
+   {
+    "hash": 1939284556,
+    "model": "vagner",
+    "names": {
+     "ger": "Vagner",
+     "eng": "Vagner",
+     "ru": "Vagner",
+     "pl": "Vagner",
+     "fr": "Vagner",
+     "zh_cn": "瓦格纳"
+    }
+   },
+   {
+    "hash": 917809321,
+    "model": "xa21",
+    "names": {
+     "ger": "XA-21",
+     "eng": "XA-21",
+     "ru": "XA-21",
+     "pl": "XA-21",
+     "fr": "XA-21",
+     "zh_cn": "XA-21"
+    }
+   },
+   {
+    "hash": 3296789504,
+    "model": "visione",
+    "names": {
+     "ger": "Visione",
+     "eng": "Visione",
+     "ru": "Visione",
+     "pl": "Visione",
+     "fr": "Visione",
+     "zh_cn": "幻象"
+    }
+   },
+   {
+    "hash": 1392481335,
+    "model": "cyclone",
+    "names": {
+     "ger": "Cyclone",
+     "eng": "Cyclone",
+     "ru": "Cyclone",
+     "pl": "Cyclone",
+     "fr": "Cyclone",
+     "zh_cn": "飓风"
+    }
+   },
+   {
+    "hash": 1352136073,
+    "model": "sc1",
+    "names": {
+     "ger": "SC1",
+     "eng": "SC1",
+     "ru": "SC1",
+     "pl": "SC1",
+     "fr": "SC1",
+     "zh_cn": "SC1"
+    }
+   },
+   {
+    "hash": 3981782132,
+    "model": "autarch",
+    "names": {
+     "ger": "Autarch",
+     "eng": "Autarch",
+     "ru": "Autarch",
+     "pl": "Autarch",
+     "fr": "Autarch",
+     "zh_cn": "独裁者"
+    }
+   },
+   {
+    "hash": 3160260734,
+    "model": "taipan",
+    "names": {
+     "ger": "Taipan",
+     "eng": "Taipan",
+     "ru": "Taipan",
+     "pl": "Taipan",
+     "fr": "Taipan",
+     "zh_cn": "泰斑"
+    }
+   },
+   {
+    "hash": 2174267100,
+    "model": "entity2",
+    "names": {
+     "ger": "Entity XXR",
+     "eng": "Entity XXR",
+     "ru": "Entity XXR",
+     "pl": "Entity XXR",
+     "fr": "Entity XXR",
+     "zh_cn": "本质µXXR"
+    }
+   },
+   {
+    "hash": 1031562256,
+    "model": "tezeract",
+    "names": {
+     "ger": "Tezeract",
+     "eng": "Tezeract",
+     "ru": "Tezeract",
+     "pl": "Tezeract",
+     "fr": "Tezeract",
+     "zh_cn": "泰泽拉克"
+    }
+   },
+   {
+    "hash": 3918533058,
+    "model": "tyrant",
+    "names": {
+     "ger": "Tyrant",
+     "eng": "Tyrant",
+     "ru": "Tyrant",
+     "pl": "Tyrant",
+     "fr": "Tyrant",
+     "zh_cn": "统治者"
+    }
+   },
+   {
+    "hash": 1591739866,
+    "model": "deveste",
+    "names": {
+     "ger": "Deveste Eight",
+     "eng": "Deveste Eight",
+     "ru": "Deveste Eight",
+     "pl": "Deveste Eight",
+     "fr": "Deveste Eight",
+     "zh_cn": "蹂躏者µ8"
+    }
+   },
+   {
+    "hash": 1044193113,
+    "model": "thrax",
+    "names": {
+     "ger": "Thrax",
+     "eng": "Thrax",
+     "ru": "Thrax",
+     "pl": "Thrax",
+     "fr": "Thrax",
+     "zh_cn": "特拉克斯"
+    }
+   },
+   {
+    "hash": 3612858749,
+    "model": "zorrusso",
+    "names": {
+     "ger": "Zorrusso",
+     "eng": "Zorrusso",
+     "ru": "Zorrusso",
+     "pl": "Zorrusso",
+     "fr": "Zorrusso",
+     "zh_cn": "佐路索"
+    }
+   },
+   {
+    "hash": 3630826055,
+    "model": "krieger",
+    "names": {
+     "ger": "Krieger",
+     "eng": "Krieger",
+     "ru": "Krieger",
+     "pl": "Krieger",
+     "fr": "Krieger",
+     "zh_cn": "武夫"
+    }
+   },
+   {
+    "hash": 1323778901,
+    "model": "emerus",
+    "names": {
+     "ger": "Emerus",
+     "eng": "Emerus",
+     "ru": "Emerus",
+     "pl": "Emerus",
+     "fr": "Emerus",
+     "zh_cn": "艾梅鲁斯"
+    }
+   },
+   {
+    "hash": 3970348707,
+    "model": "s80",
+    "names": {
+     "ger": "S80RR",
+     "eng": "S80RR",
+     "ru": "S80RR",
+     "pl": "S80RR",
+     "fr": "S80RR",
+     "zh_cn": "S80RR"
+    }
+   },
+   {
+    "hash": 960812448,
+    "model": "furia",
+    "names": {
+     "ger": "Furia",
+     "eng": "Furia",
+     "ru": "Furia",
+     "pl": "Furia",
+     "fr": "Furia",
+     "zh_cn": "狂热"
+    }
+   },
+   {
+    "hash": 2936769864,
+    "model": "tigon",
+    "names": {
+     "ger": "Tigon",
+     "eng": "Tigon",
+     "ru": "Tigon",
+     "pl": "Tigon",
+     "fr": "Tigon",
+     "zh_cn": "虎狮兽"
+    }
+   },
+   {
+    "hash": 2850852987,
+    "model": "ignus",
+    "names": {
+     "ger": "Ignus",
+     "eng": "Ignus",
+     "ru": "Ignus",
+     "pl": "Ignus",
+     "fr": "Ignus",
+     "zh_cn": "伊格纳斯"
+    }
+   },
+   {
+    "hash": 655665811,
+    "model": "zeno",
+    "names": {
+     "ger": "Zeno",
+     "eng": "Zeno",
+     "ru": "Zeno",
+     "pl": "Zeno",
+     "fr": "Zeno",
+     "zh_cn": "捷诺"
+    }
+   },
+   {
+    "hash": 3379732821,
+    "model": "champion",
+    "names": {
+     "ger": "Champion",
+     "eng": "Champion",
+     "ru": "Champion",
+     "pl": "Champion",
+     "fr": "Champion",
+     "zh_cn": "冠军"
+    }
+   },
+   {
+    "hash": 4284049613,
+    "model": "lm87",
+    "names": {
+     "ger": "LM87",
+     "eng": "LM87",
+     "ru": "LM87",
+     "pl": "LM87",
+     "fr": "LM87",
+     "zh_cn": "LM87"
+    }
+   },
+   {
+    "hash": 4129572538,
+    "model": "torero2",
+    "names": {
+     "ger": "Torero XO",
+     "eng": "Torero XO",
+     "ru": "Torero XO",
+     "pl": "Torero XO",
+     "fr": "Torero XO",
+     "zh_cn": "斗牛µXO"
+    }
+   },
+   {
+    "hash": 1748565021,
+    "model": "entity3",
+    "names": {
+     "ger": "Entity MT",
+     "eng": "Entity MT",
+     "ru": "Entity MT",
+     "pl": "Entity MT",
+     "fr": "Entity MT",
+     "zh_cn": "本质µMT"
+    }
+   },
+   {
+    "hash": 669204833,
+    "model": "virtue",
+    "names": {
+     "ger": "Virtue",
+     "eng": "Virtue",
+     "ru": "Virtue",
+     "pl": "Virtue",
+     "fr": "Virtue",
+     "zh_cn": "美德"
+    }
+   },
+   {
+    "hash": 4171974011,
+    "model": "turismo3",
+    "names": {
+     "ger": "Turismo Omaggio",
+     "eng": "Turismo Omaggio",
+     "ru": "Turismo Omaggio",
+     "pl": "Turismo Omaggio",
+     "fr": "Turismo Omaggio",
+     "zh_cn": "远途致敬"
+    }
+   },
+   {
+    "hash": 4071505793,
+    "model": "pipistrello",
+    "names": {
+     "ger": "Pipistrello",
+     "eng": "Pipistrello",
+     "ru": "Pipistrello",
+     "pl": "Pipistrello",
+     "fr": "Pipistrello",
+     "zh_cn": "伏翼"
+    }
+   },
+   {
+    "hash": 687627128,
+    "model": "suzume",
+    "names": {
+     "ger": "Suzume",
+     "eng": "Suzume",
+     "ru": "Suzume",
+     "pl": "Suzume",
+     "fr": "Suzume",
+     "zh_cn": "飞雀"
+    }
+   },
+   {
+    "hash": 3356898886,
+    "model": "luiva",
+    "names": {
+     "ger": "Luiva",
+     "eng": "Luiva",
+     "ru": "Luiva",
+     "pl": "Luiva",
+     "fr": "Luiva",
+     "zh_cn": "露伊瓦"
+    }
+   },
+   {
+    "hash": 2515968713,
+    "model": "xtreme",
+    "names": {
+     "ger": "X-treme",
+     "eng": "X-treme",
+     "ru": "X-treme",
+     "pl": "X-treme",
+     "fr": "X-treme",
+     "zh_cn": "极限"
+    }
+   },
+   {
+    "hash": 3287642921,
+    "model": "fmj2",
+    "names": {
+     "ger": "FMJ MK V",
+     "eng": "FMJ MK V",
+     "ru": "FMJ MK V",
+     "pl": "FMJ MK V",
+     "fr": "FMJ MK V",
+     "zh_cn": "FMJµMKµV"
+    }
+   },
+   {
+    "hash": 3316510914,
+    "model": "velenogt",
+    "names": {
+     "ger": "Veleno GT",
+     "eng": "Veleno GT",
+     "ru": "Veleno GT",
+     "pl": "Veleno GT",
+     "fr": "Veleno GT",
+     "zh_cn": "维利诺 GT"
+    }
+   },
+   {
+    "hash": 1494708164,
+    "model": "lrcgt",
+    "names": {
+     "ger": "LRC GT",
+     "eng": "LRC GT",
+     "ru": "LRC GT",
+     "pl": "LRC GT",
+     "fr": "LRC GT",
+     "zh_cn": "LRC GT"
+    }
+   },
+   {
+    "hash": 4017955470,
+    "model": "horus",
+    "names": {
+     "ger": "Horus",
+     "eng": "Horus",
+     "ru": "Horus",
+     "pl": "Horus",
+     "fr": "Horus",
+     "zh_cn": "荷鲁斯"
+    }
+   }
+  ]
+ },
+ {
+  "class": 8,
+  "base": [
+   {
+    "hash": 1672195559,
+    "model": "akuma",
+    "names": {
+     "ger": "Akuma",
+     "eng": "Akuma",
+     "ru": "Akuma",
+     "pl": "Akuma",
+     "fr": "Akuma",
+     "zh_cn": "街头恶魔"
+    }
+   },
+   {
+    "hash": 2154536131,
+    "model": "bagger",
+    "names": {
+     "ger": "Bagger",
+     "eng": "Bagger",
+     "ru": "Bagger",
+     "pl": "Bagger",
+     "fr": "Bagger",
+     "zh_cn": "驮兽"
+    }
+   },
+   {
+    "hash": 4180675781,
+    "model": "bati",
+    "names": {
+     "ger": "Bati 801",
+     "eng": "Bati 801",
+     "ru": "Bati 801",
+     "pl": "Bati 801",
+     "fr": "Bati 801",
+     "zh_cn": "801µ巴提"
+    }
+   },
+   {
+    "hash": 3403504941,
+    "model": "bati2",
+    "names": {
+     "ger": "Bati 801RR",
+     "eng": "Bati 801RR",
+     "ru": "Bati 801RR",
+     "pl": "Bati 801RR",
+     "fr": "Bati 801RR",
+     "zh_cn": "801RRµ巴提"
+    }
+   },
+   {
+    "hash": 2166734073,
+    "model": "blazer",
+    "names": {
+     "ger": "Blazer",
+     "eng": "Blazer",
+     "ru": "Blazer",
+     "pl": "Blazer",
+     "fr": "Blazer",
+     "zh_cn": "烈焰"
+    }
+   },
+   {
+    "hash": 2006142190,
+    "model": "daemon",
+    "names": {
+     "ger": "Daemon",
+     "eng": "Daemon",
+     "ru": "Daemon",
+     "pl": "Daemon",
+     "fr": "Daemon",
+     "zh_cn": "恶魔"
+    }
+   },
+   {
+    "hash": 2623969160,
+    "model": "double",
+    "names": {
+     "ger": "Double-T",
+     "eng": "Double-T",
+     "ru": "Double-T",
+     "pl": "Double-T",
+     "fr": "Double-T",
+     "zh_cn": "双µT"
+    }
+   },
+   {
+    "hash": 3660088182,
+    "model": "nemesis",
+    "names": {
+     "ger": "Nemesis",
+     "eng": "Nemesis",
+     "ru": "Nemesis",
+     "pl": "Nemesis",
+     "fr": "Nemesis",
+     "zh_cn": "复仇女神"
+    }
+   },
+   {
+    "hash": 3385765638,
+    "model": "pcj",
+    "names": {
+     "ger": "PCJ 600",
+     "eng": "PCJ 600",
+     "ru": "PCJ 600",
+     "pl": "PCJ 600",
+     "fr": "PCJ 600",
+     "zh_cn": "PCJµ600"
+    }
+   },
+   {
+    "hash": 3401388520,
+    "model": "ruffian",
+    "names": {
+     "ger": "Ruffian",
+     "eng": "Ruffian",
+     "ru": "Ruffian",
+     "pl": "Ruffian",
+     "fr": "Ruffian",
+     "zh_cn": "恶霸"
+    }
+   },
+   {
+    "hash": 2841686334,
+    "model": "sanchez2",
+    "names": {
+     "ger": "Sanchez",
+     "eng": "Sanchez",
+     "ru": "Sanchez",
+     "pl": "Sanchez",
+     "fr": "Sanchez",
+     "zh_cn": "桑切斯"
+    }
+   },
+   {
+    "hash": 788045382,
+    "model": "sanchez",
+    "names": {
+     "ger": "Sanchez (Beschriftung)",
+     "eng": "Sanchez (livery)",
+     "ru": "Sanchez (раскраска)",
+     "pl": "Sanchez (oznaczenie)",
+     "fr": "Sanchez (couleurs)",
+     "zh_cn": "桑切斯（涂装版）"
+    }
+   },
+   {
+    "hash": 4154065143,
+    "model": "vader",
+    "names": {
+     "ger": "Vader",
+     "eng": "Vader",
+     "ru": "Vader",
+     "pl": "Vader",
+     "fr": "Vader",
+     "zh_cn": "威德"
+    }
+   },
+   {
+    "hash": 1032823388,
+    "model": "ninef",
+    "names": {
+     "ger": "9F",
+     "eng": "9F",
+     "ru": "9F",
+     "pl": "9F",
+     "fr": "9F",
+     "zh_cn": "9F"
+    }
+   }
+  ],
+  "dlc": [
+   {
+    "hash": 1836027715,
+    "model": "thrust",
+    "names": {
+     "ger": "Thrust",
+     "eng": "Thrust",
+     "ru": "Thrust",
+     "pl": "Thrust",
+     "fr": "Thrust",
+     "zh_cn": "猛冲"
+    }
+   },
+   {
+    "hash": 743478836,
+    "model": "sovereign",
+    "names": {
+     "ger": "Sovereign",
+     "eng": "Sovereign",
+     "ru": "Sovereign",
+     "pl": "Sovereign",
+     "fr": "Sovereign",
+     "zh_cn": "君主"
+    }
+   },
+   {
+    "hash": 4135840458,
+    "model": "innovation",
+    "names": {
+     "ger": "Innovation",
+     "eng": "Innovation",
+     "ru": "Innovation",
+     "pl": "Innovation",
+     "fr": "Innovation",
+     "zh_cn": "创新"
+    }
+   },
+   {
+    "hash": 1265391242,
+    "model": "hakuchou",
+    "names": {
+     "ger": "Hakuchou",
+     "eng": "Hakuchou",
+     "ru": "Hakuchou",
+     "pl": "Hakuchou",
+     "fr": "Hakuchou",
+     "zh_cn": "白鸟"
+    }
+   },
+   {
+    "hash": 1753414259,
+    "model": "enduro",
+    "names": {
+     "ger": "Enduro",
+     "eng": "Enduro",
+     "ru": "Enduro",
+     "pl": "Enduro",
+     "fr": "Enduro",
+     "zh_cn": "恩斗罗"
+    }
+   },
+   {
+    "hash": 640818791,
+    "model": "lectro",
+    "names": {
+     "ger": "Lectro",
+     "eng": "Lectro",
+     "ru": "Lectro",
+     "pl": "Lectro",
+     "fr": "Lectro",
+     "zh_cn": "雷克卓"
+    }
+   },
+   {
+    "hash": 2941886209,
+    "model": "vindicator",
+    "names": {
+     "ger": "Vindicator",
+     "eng": "Vindicator",
+     "ru": "Vindicator",
+     "pl": "Vindicator",
+     "fr": "Vindicator",
+     "zh_cn": "审判者"
+    }
+   },
+   {
+    "hash": 86520421,
+    "model": "bf400",
+    "names": {
+     "ger": "BF400",
+     "eng": "BF400",
+     "ru": "BF400",
+     "pl": "BF400",
+     "fr": "BF400",
+     "zh_cn": "BF400"
+    }
+   },
+   {
+    "hash": 741090084,
+    "model": "gargoyle",
+    "names": {
+     "ger": "Gargoyle",
+     "eng": "Gargoyle",
+     "ru": "Gargoyle",
+     "pl": "Gargoyle",
+     "fr": "Gargoyle",
+     "zh_cn": "石像鬼"
+    }
+   },
+   {
+    "hash": 390201602,
+    "model": "cliffhanger",
+    "names": {
+     "ger": "Cliffhanger",
+     "eng": "Cliffhanger",
+     "ru": "Cliffhanger",
+     "pl": "Cliffhanger",
+     "fr": "Cliffhanger",
+     "zh_cn": "高潮"
+    }
+   },
+   {
+    "hash": 4039289119,
+    "model": "hakuchou2",
+    "names": {
+     "ger": "Hakuchou Drag",
+     "eng": "Hakuchou Drag",
+     "ru": "Hakuchou Drag",
+     "pl": "Hakuchou Drag",
+     "fr": "Hakuchou drag",
+     "zh_cn": "白鸟竞速版"
+    }
+   },
+   {
+    "hash": 822018448,
+    "model": "defiler",
+    "names": {
+     "ger": "Defiler",
+     "eng": "Defiler",
+     "ru": "Defiler",
+     "pl": "Defiler",
+     "fr": "Defiler",
+     "zh_cn": "亵渎者"
+    }
+   },
+   {
+    "hash": 3724934023,
+    "model": "zombieb",
+    "names": {
+     "ger": "Zombie Chopper",
+     "eng": "Zombie Chopper",
+     "ru": "Zombie Chopper",
+     "pl": "Zombie Chopper",
+     "fr": "Zombie chopper",
+     "zh_cn": "碎尸者"
+    }
+   },
+   {
+    "hash": 3724934023,
+    "model": "zombieb",
+    "names": {
+     "ger": "Zombie Chopper",
+     "eng": "Zombie Chopper",
+     "ru": "Zombie Chopper",
+     "pl": "Zombie Chopper",
+     "fr": "Zombie chopper",
+     "zh_cn": "碎尸者"
+    }
+   },
+   {
+    "hash": 2179174271,
+    "model": "avarus",
+    "names": {
+     "ger": "Avarus",
+     "eng": "Avarus",
+     "ru": "Avarus",
+     "pl": "Avarus",
+     "fr": "Avarus",
+     "zh_cn": "阿瓦鲁斯"
+    }
+   },
+   {
+    "hash": 2688780135,
+    "model": "nightblade",
+    "names": {
+     "ger": "Nightblade",
+     "eng": "Nightblade",
+     "ru": "Nightblade",
+     "pl": "Nightblade",
+     "fr": "Nightblade",
+     "zh_cn": "夜刃"
+    }
+   },
+   {
+    "hash": 3285698347,
+    "model": "zombiea",
+    "names": {
+     "ger": "Zombie Bobber",
+     "eng": "Zombie Bobber",
+     "ru": "Zombie Bobber",
+     "pl": "Zombie Bobber",
+     "fr": "Zombie bobber",
+     "zh_cn": "鞭尸者"
+    }
+   },
+   {
+    "hash": 3676349299,
+    "model": "wolfsbane",
+    "names": {
+     "ger": "Wolfsbane",
+     "eng": "Wolfsbane",
+     "ru": "Wolfsbane",
+     "pl": "Wolfsbane",
+     "fr": "Wolfsbane",
+     "zh_cn": "恶狼克星"
+    }
+   },
+   {
+    "hash": 2771538552,
+    "model": "manchez",
+    "names": {
+     "ger": "Manchez",
+     "eng": "Manchez",
+     "ru": "Manchez",
+     "pl": "Manchez",
+     "fr": "Manchez",
+     "zh_cn": "曼切兹"
+    }
+   },
+   {
+    "hash": 1873600305,
+    "model": "ratbike",
+    "names": {
+     "ger": "Rat Bike",
+     "eng": "Rat Bike",
+     "ru": "Rat Bike",
+     "pl": "Szczur",
+     "fr": "Rat bike",
+     "zh_cn": "破烂摩托车"
+    }
+   },
+   {
+    "hash": 3005788552,
+    "model": "faggio3",
+    "names": {
+     "ger": "Faggio Mod",
+     "eng": "Faggio Mod",
+     "ru": "Faggio заказной",
+     "pl": "Faggio Mod",
+     "fr": "Faggio mod",
+     "zh_cn": "费甲欧摩登版"
+    }
+   },
+   {
+    "hash": 2452219115,
+    "model": "faggio",
+    "names": {
+     "ger": "Faggio Sport",
+     "eng": "Faggio Sport",
+     "ru": "Faggio гоночный",
+     "pl": "Faggio Sport",
+     "fr": "Faggio sport",
+     "zh_cn": "费甲欧现代版"
+    }
+   },
+   {
+    "hash": 2890830793,
+    "model": "daemon2",
+    "names": {
+     "ger": "Daemon Custom",
+     "eng": "Daemon Custom",
+     "ru": "Заказной Daemon",
+     "pl": "Daemon - niest.",
+     "fr": "Daemon custom",
+     "zh_cn": "恶魔"
+    }
+   },
+   {
+    "hash": 3685342204,
+    "model": "vortex",
+    "names": {
+     "ger": "Vortex",
+     "eng": "Vortex",
+     "ru": "Vortex",
+     "pl": "Vortex",
+     "fr": "Vortex",
+     "zh_cn": "漩涡"
+    }
+   },
+   {
+    "hash": 3889340782,
+    "model": "shotaro",
+    "names": {
+     "ger": "Shotaro",
+     "eng": "Shotaro",
+     "ru": "Shotaro",
+     "pl": "Shotaro",
+     "fr": "Shotaro",
+     "zh_cn": "圣太郎"
+    }
+   },
+   {
+    "hash": 2035069708,
+    "model": "esskey",
+    "names": {
+     "ger": "Esskey",
+     "eng": "Esskey",
+     "ru": "Esskey",
+     "pl": "Esskey",
+     "fr": "Esskey",
+     "zh_cn": "爱时吉"
+    }
+   },
+   {
+    "hash": 4055125828,
+    "model": "diablous",
+    "names": {
+     "ger": "Diabolus",
+     "eng": "Diabolus",
+     "ru": "Diabolus",
+     "pl": "Diabolus",
+     "fr": "Diabolus",
+     "zh_cn": "蒂雅布萝"
+    }
+   },
+   {
+    "hash": 1790834270,
+    "model": "diablous2",
+    "names": {
+     "ger": "Diabolus Custom",
+     "eng": "Diabolus Custom",
+     "ru": "Diabolus заказной",
+     "pl": "Diabolus (niest.)",
+     "fr": "Diabolus custom",
+     "zh_cn": "蒂雅布萝改装版"
+    }
+   },
+   {
+    "hash": 627535535,
+    "model": "fcr",
+    "names": {
+     "ger": "FCR 1000",
+     "eng": "FCR 1000",
+     "ru": "FCR 1000",
+     "pl": "FCR 1000",
+     "fr": "FCR 1000",
+     "zh_cn": "FCRµ1000"
+    }
+   },
+   {
+    "hash": 3537231886,
+    "model": "fcr2",
+    "names": {
+     "ger": "FCR 1000 Custom",
+     "eng": "FCR 1000 Custom",
+     "ru": "FCR 1000 заказной",
+     "pl": "FCR 1000 (niest.)",
+     "fr": "FCR 1000 custom",
+     "zh_cn": "FCRµ1000µ改装版"
+    }
+   },
+   {
+    "hash": 1491277511,
+    "model": "sanctus",
+    "names": {
+     "ger": "Sanctus",
+     "eng": "Sanctus",
+     "ru": "Sanctus",
+     "pl": "Sanctus",
+     "fr": "Sanctus",
+     "zh_cn": "圣驹"
+    }
+   },
+   {
+    "hash": 916547552,
+    "model": "rrocket",
+    "names": {
+     "ger": "Rampant Rocket",
+     "eng": "Rampant Rocket",
+     "ru": "Rampant Rocket",
+     "pl": "Rampant Rocket",
+     "fr": "Rampant Rocket",
+     "zh_cn": "狂暴火箭"
+    }
+   },
+   {
+    "hash": 301304410,
+    "model": "stryder",
+    "names": {
+     "ger": "Stryder",
+     "eng": "Stryder",
+     "ru": "Stryder",
+     "pl": "Stryder",
+     "fr": "Stryder",
+     "zh_cn": "斯特德"
+    }
+   },
+   {
+    "hash": 1086534307,
+    "model": "manchez2",
+    "names": {
+     "ger": "Manchez Scout",
+     "eng": "Manchez Scout",
+     "ru": "Manchez Scout",
+     "pl": "Manchez Scout",
+     "fr": "Manchez Scout",
+     "zh_cn": "曼切兹侦查"
+    }
+   },
+   {
+    "hash": 1353120668,
+    "model": "shinobi",
+    "names": {
+     "ger": "Shinobi",
+     "eng": "Shinobi",
+     "ru": "Shinobi",
+     "pl": "Shinobi",
+     "fr": "Shinobi",
+     "zh_cn": "信奴比"
+    }
+   },
+   {
+    "hash": 1993851908,
+    "model": "reever",
+    "names": {
+     "ger": "Reever",
+     "eng": "Reever",
+     "ru": "Reever",
+     "pl": "Reever",
+     "fr": "Reever",
+     "zh_cn": "里弗"
+    }
+   },
+   {
+    "hash": 2908631255,
+    "model": "powersurge",
+    "names": {
+     "ger": "Powersurge",
+     "eng": "Powersurge",
+     "ru": "Powersurge",
+     "pl": "Powersurge",
+     "fr": "Powersurge",
+     "zh_cn": "电涌"
+    }
+   },
+   {
+    "hash": 2841686334,
+    "model": "sanchez2",
+    "names": {
+     "ger": "Sanchez",
+     "eng": "Sanchez",
+     "ru": "Sanchez",
+     "pl": "Sanchez",
+     "fr": "Sanchez",
+     "zh_cn": "桑切斯"
+    }
+   },
+   {
+    "hash": 1968807591,
+    "model": "pizzaboy",
+    "names": {
+     "ger": "Pizza Boy",
+     "eng": "Pizza Boy",
+     "ru": "Pizza Boy",
+     "pl": "Pizza Boy",
+     "fr": "Pizza Boy",
+     "zh_cn": "披萨派送员"
+    }
+   }
+  ]
+ },
+ {
+  "class": 9,
+  "base": [
+   {
+    "hash": 1126868326,
+    "model": "bfinjection",
+    "names": {
+     "ger": "Injection",
+     "eng": "Injection",
+     "ru": "Injection",
+     "pl": "Injection",
+     "fr": "Injection",
+     "zh_cn": "沙丘征服者"
+    }
+   },
+   {
+    "hash": 3486135912,
+    "model": "baller",
+    "names": {
+     "ger": "Baller",
+     "eng": "Baller",
+     "ru": "Baller",
+     "pl": "Baller",
+     "fr": "Baller",
+     "zh_cn": "行者"
+    }
+   },
+   {
+    "hash": 2166734073,
+    "model": "blazer",
+    "names": {
+     "ger": "Blazer",
+     "eng": "Blazer",
+     "ru": "Blazer",
+     "pl": "Blazer",
+     "fr": "Blazer",
+     "zh_cn": "烈焰"
+    }
+   },
+   {
+    "hash": 1770332643,
+    "model": "dloader",
+    "names": {
+     "ger": "Duneloader",
+     "eng": "Duneloader",
+     "ru": "Duneloader",
+     "pl": "Duneloader",
+     "fr": "Duneloader",
+     "zh_cn": "越野游侠"
+    }
+   },
+   {
+    "hash": 2633113103,
+    "model": "dune",
+    "names": {
+     "ger": "Dune Buggy",
+     "eng": "Dune Buggy",
+     "ru": "Dune Buggy",
+     "pl": "Dune Buggy",
+     "fr": "Dune Buggy",
+     "zh_cn": "沙丘魔宝"
+    }
+   },
+   {
+    "hash": 3486509883,
+    "model": "patriot",
+    "names": {
+     "ger": "Patriot",
+     "eng": "Patriot",
+     "ru": "Patriot",
+     "pl": "Patriot",
+     "fr": "Patriot",
+     "zh_cn": "爱国者"
+    }
+   },
+   {
+    "hash": 2841686334,
+    "model": "sanchez2",
+    "names": {
+     "ger": "Sanchez",
+     "eng": "Sanchez",
+     "ru": "Sanchez",
+     "pl": "Sanchez",
+     "fr": "Sanchez",
+     "zh_cn": "桑切斯"
+    }
+   },
+   {
+    "hash": 3105951696,
+    "model": "sandking",
+    "names": {
+     "ger": "Sandking XL",
+     "eng": "Sandking XL",
+     "ru": "Sandking XL",
+     "pl": "Sandking XL",
+     "fr": "Sandking XL",
+     "zh_cn": "大脚霸王µXL"
+    }
+   },
+   {
+    "hash": 2859047862,
+    "model": "bodhi2",
+    "names": {
+     "ger": "Bodhi",
+     "eng": "Bodhi",
+     "ru": "Bodhi",
+     "pl": "Bodhi",
+     "fr": "Bodhi",
+     "zh_cn": "万用行者"
+    }
+   },
+   {
+    "hash": 1177543287,
+    "model": "dubsta",
+    "names": {
+     "ger": "Dubsta",
+     "eng": "Dubsta",
+     "ru": "Dubsta",
+     "pl": "Dubsta",
+     "fr": "Dubsta",
+     "zh_cn": "迪布达"
+    }
+   },
+   {
+    "hash": 914654722,
+    "model": "mesa",
+    "names": {
+     "ger": "Mesa",
+     "eng": "Mesa",
+     "ru": "Mesa",
+     "pl": "Mesa",
+     "fr": "Mesa",
+     "zh_cn": "炎魔"
+    }
+   },
+   {
+    "hash": 3087195462,
+    "model": "rebel",
+    "names": {
+     "ger": "Rostiger Rebel",
+     "eng": "Rusty Rebel",
+     "ru": "Rusty Rebel",
+     "pl": "Rebel - zardzewiały",
+     "fr": "Rebel rouillé",
+     "zh_cn": "叛逆男女生锈版"
+    }
+   },
+   {
+    "hash": 989381445,
+    "model": "sandking2",
+    "names": {
+     "ger": "Sandking SWB",
+     "eng": "Sandking SWB",
+     "ru": "Sandking SWB",
+     "pl": "Sandking SWB",
+     "fr": "Sandking SWB",
+     "zh_cn": "大脚霸王µSWB"
+    }
+   },
+   {
+    "hash": 2261744861,
+    "model": "tornado4",
+    "names": {
+     "ger": "Tornado",
+     "eng": "Tornado",
+     "ru": "Tornado",
+     "pl": "Tornado",
+     "fr": "Tornado",
+     "zh_cn": "龙卷风"
+    }
+   },
+   {
+    "hash": 788045382,
+    "model": "sanchez",
+    "names": {
+     "ger": "Sanchez (Beschriftung)",
+     "eng": "Sanchez (livery)",
+     "ru": "Sanchez (раскраска)",
+     "pl": "Sanchez (oznaczenie)",
+     "fr": "Sanchez (couleurs)",
+     "zh_cn": "桑切斯（涂装版）"
+    }
+   },
+   {
+    "hash": 3057713523,
+    "model": "dubsta3",
+    "names": {
+     "ger": "Dubsta 6x6",
+     "eng": "Dubsta 6x6",
+     "ru": "Dubsta 6x6",
+     "pl": "Dubsta 6x6",
+     "fr": "Dubsta 6x6",
+     "zh_cn": "迪布达µ6x6"
+    }
+   }
+  ],
+  "dlc": [
+   {
+    "hash": 3945366167,
+    "model": "bifta",
+    "names": {
+     "ger": "Bifta",
+     "eng": "Bifta",
+     "ru": "Bifta",
+     "pl": "Bifta",
+     "fr": "Bifta",
+     "zh_cn": "必浮塔"
+    }
+   },
+   {
+    "hash": 92612664,
+    "model": "kalahari",
+    "names": {
+     "ger": "Kalahari",
+     "eng": "Kalahari",
+     "ru": "Kalahari",
+     "pl": "Kalahari",
+     "fr": "Kalahari",
+     "zh_cn": "卡拉哈里"
+    }
+   },
+   {
+    "hash": 1488164764,
+    "model": "paradise",
+    "names": {
+     "ger": "Paradise",
+     "eng": "Paradise",
+     "ru": "Paradise",
+     "pl": "Paradise",
+     "fr": "Paradise",
+     "zh_cn": "天堂"
+    }
+   },
+   {
+    "hash": 3449006043,
+    "model": "monster",
+    "names": {
+     "ger": "The Liberator",
+     "eng": "Monster",
+     "ru": "The Liberator",
+     "pl": "Liberator",
+     "fr": "Monster",
+     "zh_cn": "解放者"
+    }
+   },
+   {
+    "hash": 1233534620,
+    "model": "marshall",
+    "names": {
+     "ger": "Marshall",
+     "eng": "Marshall",
+     "ru": "Marshall",
+     "pl": "Marshall",
+     "fr": "Marshall",
+     "zh_cn": "马绍尔"
+    }
+   },
+   {
+    "hash": 2071877360,
+    "model": "insurgent2",
+    "names": {
+     "ger": "Insurgent",
+     "eng": "Insurgent",
+     "ru": "Insurgent",
+     "pl": "Insurgent",
+     "fr": "Insurgent",
+     "zh_cn": "叛乱分子"
+    }
+   },
+   {
+    "hash": 2186977100,
+    "model": "guardian",
+    "names": {
+     "ger": "Guardian",
+     "eng": "Guardian",
+     "ru": "Guardian",
+     "pl": "Guardian",
+     "fr": "Guardian",
+     "zh_cn": "守护者"
+    }
+   },
+   {
+    "hash": 2815302597,
+    "model": "brawler",
+    "names": {
+     "ger": "Brawler",
+     "eng": "Brawler",
+     "ru": "Brawler",
+     "pl": "Brawler",
+     "fr": "Brawler",
+     "zh_cn": "斗殴者"
+    }
+   },
+   {
+    "hash": 101905590,
+    "model": "trophytruck",
+    "names": {
+     "ger": "Trophy-Truck",
+     "eng": "Trophy Truck",
+     "ru": "Пикап трофи",
+     "pl": "Trophy pickup",
+     "fr": "Trophy Truck",
+     "zh_cn": "越野卡车"
+    }
+   },
+   {
+    "hash": 3631668194,
+    "model": "trophytruck2",
+    "names": {
+     "ger": "Desert Raid",
+     "eng": "Desert Raid",
+     "ru": "Desert Raid",
+     "pl": "Desert Raid",
+     "fr": "Buggy raid",
+     "zh_cn": "沙漠突击"
+    }
+   },
+   {
+    "hash": 86520421,
+    "model": "bf400",
+    "names": {
+     "ger": "BF400",
+     "eng": "BF400",
+     "ru": "BF400",
+     "pl": "BF400",
+     "fr": "BF400",
+     "zh_cn": "BF400"
+    }
+   },
+   {
+    "hash": 2191146052,
+    "model": "rallytruck",
+    "names": {
+     "ger": "Dune",
+     "eng": "Dune",
+     "ru": "Dune",
+     "pl": "Dune",
+     "fr": "Dune",
+     "zh_cn": "沙丘"
+    }
+   },
+   {
+    "hash": 3854198872,
+    "model": "blazer4",
+    "names": {
+     "ger": "Street Blazer",
+     "eng": "Street Blazer",
+     "ru": "Street Blazer",
+     "pl": "Street Blazer",
+     "fr": "Blazer street",
+     "zh_cn": "街头烈焰"
+    }
+   },
+   {
+    "hash": 2762269779,
+    "model": "riata",
+    "names": {
+     "ger": "Riata",
+     "eng": "Riata",
+     "ru": "Riata",
+     "pl": "Riata",
+     "fr": "Riata",
+     "zh_cn": "利雅塔"
+    }
+   },
+   {
+    "hash": 4173521127,
+    "model": "kamacho",
+    "names": {
+     "ger": "Kamacho",
+     "eng": "Kamacho",
+     "ru": "Kamacho",
+     "pl": "Kamacho",
+     "fr": "Kamacho",
+     "zh_cn": "卡马乔"
+    }
+   },
+   {
+    "hash": 4240635011,
+    "model": "freecrawler",
+    "names": {
+     "ger": "Freecrawler",
+     "eng": "Freecrawler",
+     "ru": "Freecrawler",
+     "pl": "Freecrawler",
+     "fr": "Freecrawler",
+     "zh_cn": "自由攀登者"
+    }
+   },
+   {
+    "hash": 2044532910,
+    "model": "menacer",
+    "names": {
+     "ger": "Menacer",
+     "eng": "Menacer",
+     "ru": "Menacer",
+     "pl": "Menacer",
+     "fr": "Menacer",
+     "zh_cn": "威胁者"
+    }
+   },
+   {
+    "hash": 3932816511,
+    "model": "hellion",
+    "names": {
+     "ger": "Hellion",
+     "eng": "Hellion",
+     "ru": "Hellion",
+     "pl": "Hellion",
+     "fr": "Hellion",
+     "zh_cn": "恶人"
+    }
+   },
+   {
+    "hash": 2945871676,
+    "model": "caracara2",
+    "names": {
+     "ger": "Caracara 4x4",
+     "eng": "Caracara 4x4",
+     "ru": "Caracara 4x4",
+     "pl": "Caracara 4x4",
+     "fr": "4x4 Caracara",
+     "zh_cn": "卡拉卡拉四驱车"
+    }
+   },
+   {
+    "hash": 1645267888,
+    "model": "rancherxl",
+    "names": {
+     "ger": "Rancher XL",
+     "eng": "Rancher XL",
+     "ru": "Rancher XL",
+     "pl": "Rancher XL",
+     "fr": "Rancher XL",
+     "zh_cn": "蓝彻µXL"
+    }
+   },
+   {
+    "hash": 408825843,
+    "model": "outlaw",
+    "names": {
+     "ger": "Outlaw",
+     "eng": "Outlaw",
+     "ru": "Outlaw",
+     "pl": "Outlaw",
+     "fr": "Outlaw",
+     "zh_cn": "不法之徒"
+    }
+   },
+   {
+    "hash": 2538945576,
+    "model": "everon",
+    "names": {
+     "ger": "Everon",
+     "eng": "Everon",
+     "ru": "Everon",
+     "pl": "Everon",
+     "fr": "Everon",
+     "zh_cn": "埃弗伦"
+    }
+   },
+   {
+    "hash": 1284356689,
+    "model": "zhaba",
+    "names": {
+     "ger": "Zhaba",
+     "eng": "Zhaba",
+     "ru": "Zhaba",
+     "pl": "Zhaba",
+     "fr": "Zhaba",
+     "zh_cn": "炸吧"
+    }
+   },
+   {
+    "hash": 740289177,
+    "model": "vagrant",
+    "names": {
+     "ger": "Vagrant",
+     "eng": "Vagrant",
+     "ru": "Vagrant",
+     "pl": "Vagrant",
+     "fr": "Vagrant",
+     "zh_cn": "流浪者"
+    }
+   },
+   {
+    "hash": 67753863,
+    "model": "yosemite3",
+    "names": {
+     "ger": "Yosemite Rancher",
+     "eng": "Yosemite Rancher",
+     "ru": "Yosemite Rancher",
+     "pl": "Yosemite Rancher",
+     "fr": "Yosemite Rancher",
+     "zh_cn": "约塞米蒂蓝彻"
+    }
+   },
+   {
+    "hash": 2249373259,
+    "model": "rebel2",
+    "names": {
+     "ger": "Rebel",
+     "eng": "Rebel",
+     "ru": "Rebel",
+     "pl": "Rebel",
+     "fr": "Rebel",
+     "zh_cn": "叛逆男女"
+    }
+   },
+   {
+    "hash": 4084658662,
+    "model": "winky",
+    "names": {
+     "ger": "Winky",
+     "eng": "Winky",
+     "ru": "Winky",
+     "pl": "Winky",
+     "fr": "Winky",
+     "zh_cn": "威起"
+    }
+   },
+   {
+    "hash": 298565713,
+    "model": "verus",
+    "names": {
+     "ger": "Verus",
+     "eng": "Verus",
+     "ru": "Verus",
+     "pl": "Verus",
+     "fr": "Verus",
+     "zh_cn": "维鲁斯"
+    }
+   },
+   {
+    "hash": 1086534307,
+    "model": "manchez2",
+    "names": {
+     "ger": "Manchez Scout",
+     "eng": "Manchez Scout",
+     "ru": "Manchez Scout",
+     "pl": "Manchez Scout",
+     "fr": "Manchez Scout",
+     "zh_cn": "曼切兹侦查"
+    }
+   },
+   {
+    "hash": 433954513,
+    "model": "nightshark",
+    "names": {
+     "ger": "Nightshark",
+     "eng": "Nightshark",
+     "ru": "Nightshark",
+     "pl": "Nightshark",
+     "fr": "Nightshark",
+     "zh_cn": "夜鲨"
+    }
+   },
+   {
+    "hash": 3624880708,
+    "model": "patriot3",
+    "names": {
+     "ger": "Patriot Mil-Spec",
+     "eng": "Patriot Mil-Spec",
+     "ru": "Patriot военный",
+     "pl": "Wojskowy Patriot",
+     "fr": "Patriot Mil-Spec",
+     "zh_cn": "爱国者军用版"
+    }
+   },
+   {
+    "hash": 3526730918,
+    "model": "draugur",
+    "names": {
+     "ger": "Draugur",
+     "eng": "Draugur",
+     "ru": "Draugur",
+     "pl": "Draugur",
+     "fr": "Draugur",
+     "zh_cn": "德劳古尔"
+    }
+   },
+   {
+    "hash": 996383885,
+    "model": "boor",
+    "names": {
+     "ger": "Boor",
+     "eng": "Boor",
+     "ru": "Boor",
+     "pl": "Boor",
+     "fr": "Boor",
+     "zh_cn": "粗人"
+    }
+   },
+   {
+    "hash": 2531292011,
+    "model": "l35",
+    "names": {
+     "ger": "Walton L35",
+     "eng": "Walton L35",
+     "ru": "Walton L35",
+     "pl": "Walton L35",
+     "fr": "Walton L35",
+     "zh_cn": "瓦尔顿µL35"
+    }
+   },
+   {
+    "hash": 3758861739,
+    "model": "ratel",
+    "names": {
+     "ger": "Ratel",
+     "eng": "Ratel",
+     "ru": "Ratel",
+     "pl": "Ratel",
+     "fr": "Ratel",
+     "zh_cn": "蜜獾"
+    }
+   },
+   {
+    "hash": 802856453,
+    "model": "monstrociti",
+    "names": {
+     "ger": "MonstroCiti",
+     "eng": "MonstroCiti",
+     "ru": "MonstroCiti",
+     "pl": "MonstroCiti",
+     "fr": "MonstroCiti",
+     "zh_cn": "城域怪兽"
+    }
+   },
+   {
+    "hash": 167522317,
+    "model": "terminus",
+    "names": {
+     "ger": "Terminus",
+     "eng": "Terminus",
+     "ru": "Terminus",
+     "pl": "Terminus",
+     "fr": "Terminus",
+     "zh_cn": "终末"
+    }
+   },
+   {
+    "hash": 2398479240,
+    "model": "yosemite1500",
+    "names": {
+     "ger": "Yosemite 1500",
+     "eng": "Yosemite 1500",
+     "ru": "Yosemite 1500",
+     "pl": "Yosemite 1500",
+     "fr": "Yosemite 1500",
+     "zh_cn": "约塞米蒂µ1500"
+    }
+   },
+   {
+    "hash": 3321950518,
+    "model": "firebolt",
+    "names": {
+     "ger": "Firebolt ASP",
+     "eng": "Firebolt ASP",
+     "ru": "Firebolt ASP",
+     "pl": "Firebolt ASP",
+     "fr": "Firebolt ASP",
+     "zh_cn": "火霹雳µASP"
+    }
+   },
+   {
+    "hash": 691148275,
+    "model": "l352",
+    "names": {
+     "ger": "Walton L35 Stock",
+     "eng": "Walton L35 Stock",
+     "ru": "Walton L35 базовый",
+     "pl": "Fabryczny Walton L35",
+     "fr": "Walton L35 de série",
+     "zh_cn": "瓦尔顿µL35µ原厂"
+    }
+   },
+   {
+    "hash": 3025077634,
+    "model": "blazer3",
+    "names": {
+     "ger": "Hot Rod Blazer",
+     "eng": "Hot Rod Blazer",
+     "ru": "Hot Rod Blazer",
+     "pl": "Hot Rod Blazer",
+     "fr": "Hot Rod Blazer",
+     "zh_cn": "火辣烈焰"
+    }
+   }
+  ]
+ },
+ {
+  "class": 10,
+  "base": [
+   {
+    "hash": 1886712733,
+    "model": "bulldozer",
+    "names": {
+     "ger": "Dozer",
+     "eng": "Dozer",
+     "ru": "Dozer",
+     "pl": "Dozer",
+     "fr": "Dozer",
+     "zh_cn": "推土机"
+    }
+   },
+   {
+    "hash": 3288047904,
+    "model": "cutter",
+    "names": {
+     "ger": "Bohrer",
+     "eng": "Cutter",
+     "ru": "Тоннелепроходчик",
+     "pl": "Cutter",
+     "fr": "Foreuse",
+     "zh_cn": "钻洞机"
+    }
+   },
+   {
+    "hash": 2164484578,
+    "model": "dump",
+    "names": {
+     "ger": "Kipplaster",
+     "eng": "Dump",
+     "ru": "Dump",
+     "pl": "Wywrotka",
+     "fr": "Camion benne",
+     "zh_cn": "矿石搬运车"
+    }
+   },
+   {
+    "hash": 444583674,
+    "model": "handler",
+    "names": {
+     "ger": "Frachtlader",
+     "eng": "Dock Handler",
+     "ru": "Портовый погрузчик",
+     "pl": "Dźwig portowy",
+     "fr": "Porte-conteneur",
+     "zh_cn": "码头装卸车"
+    }
+   },
+   {
+    "hash": 3510150843,
+    "model": "mixer",
+    "names": {
+     "ger": "Mixer",
+     "eng": "Mixer",
+     "ru": "Бетономешалка",
+     "pl": "Betoniarka",
+     "fr": "Bétonnière",
+     "zh_cn": "混凝土搅拌车"
+    }
+   }
+  ],
+  "dlc": []
+ },
+ {
+  "class": 11,
+  "base": [
+   {
+    "hash": 1560980623,
+    "model": "airtug",
+    "names": {
+     "ger": "Airtug",
+     "eng": "Airtug",
+     "ru": "Airtug",
+     "pl": "Airtug",
+     "fr": "Airtug",
+     "zh_cn": "行李拖车"
+    }
+   },
+   {
+    "hash": 1147287684,
+    "model": "caddy",
+    "names": {
+     "ger": "Caddie",
+     "eng": "Caddy",
+     "ru": "Caddy",
+     "pl": "Wózek golfowy",
+     "fr": "Caddie",
+     "zh_cn": "高尔夫球车"
+    }
+   },
+   {
+    "hash": 55628203,
+    "model": "faggio2",
+    "names": {
+     "ger": "Faggio",
+     "eng": "Faggio",
+     "ru": "Faggio",
+     "pl": "Faggio",
+     "fr": "Faggio",
+     "zh_cn": "费甲欧"
+    }
+   },
+   {
+    "hash": 2218488798,
+    "model": "tractor2",
+    "names": {
+     "ger": "Fieldmaster",
+     "eng": "Fieldmaster",
+     "ru": "Fieldmaster",
+     "pl": "Fieldmaster",
+     "fr": "Fieldmaster",
+     "zh_cn": "农耕机"
+    }
+   },
+   {
+    "hash": 1783355638,
+    "model": "mower",
+    "names": {
+     "ger": "Rasenmäher",
+     "eng": "Lawn Mower",
+     "ru": "Газонокосилка",
+     "pl": "Kosiarka",
+     "fr": "Tondeuse à gazon",
+     "zh_cn": "割草车"
+    }
+   }
+  ],
+  "dlc": [
+   {
+    "hash": 3249056020,
+    "model": "slamtruck",
+    "names": {
+     "ger": "Slamtruck",
+     "eng": "Slamtruck",
+     "ru": "Slamtruck",
+     "pl": "Slamtruck",
+     "fr": "Slamtruck",
+     "zh_cn": "大满贯卡车"
+    }
+   },
+   {
+    "hash": 3892551591,
+    "model": "keitora",
+    "names": {
+     "ger": "Keitora",
+     "eng": "Keitora",
+     "ru": "Keitora",
+     "pl": "Keitora",
+     "fr": "Keitora",
+     "zh_cn": "轻小卡"
+    }
+   },
+   {
+    "hash": 3757070668,
+    "model": "caddy2",
+    "names": {
+     "ger": "Caddie",
+     "eng": "Caddy",
+     "ru": "Caddy",
+     "pl": "Wózek golfowy",
+     "fr": "Caddie",
+     "zh_cn": "高尔夫球车"
+    }
+   },
+   {
+    "hash": 3410276810,
+    "model": "docktug",
+    "names": {
+     "ger": "Docktug",
+     "eng": "Docktug",
+     "ru": "Буксир",
+     "pl": "Docktug",
+     "fr": "Docktug",
+     "zh_cn": "码头拖车"
+    }
+   },
+   {
+    "hash": 1445631933,
+    "model": "tractor3",
+    "names": {
+     "ger": "Fieldmaster",
+     "eng": "Fieldmaster",
+     "ru": "Fieldmaster",
+     "pl": "Fieldmaster",
+     "fr": "Fieldmaster",
+     "zh_cn": "农耕机"
+    }
+   },
+   {
+    "hash": 1641462412,
+    "model": "tractor",
+    "names": {
+     "ger": "Traktor",
+     "eng": "Tractor",
+     "ru": "Трактор",
+     "pl": "Traktor",
+     "fr": "Tracteur",
+     "zh_cn": "老式拖拉机"
+    }
+   },
+   {
+    "hash": 516990260,
+    "model": "utillitruck",
+    "names": {
+     "ger": "Nutz-Lastwagen",
+     "eng": "Utility Truck",
+     "ru": "Машина техобслуживания",
+     "pl": "Wóz techniczny",
+     "fr": "Camion utilitaire",
+     "zh_cn": "公共事业卡车"
+    }
+   },
+   {
+    "hash": 887537515,
+    "model": "utillitruck2",
+    "names": {
+     "ger": "Nutz-Lastwagen",
+     "eng": "Utility Truck",
+     "ru": "Машина техобслуживания",
+     "pl": "Wóz techniczny",
+     "fr": "Camion utilitaire",
+     "zh_cn": "公共事业卡车"
+    }
+   },
+   {
+    "hash": 2132890591,
+    "model": "utillitruck3",
+    "names": {
+     "ger": "Nutz-Lastwagen",
+     "eng": "Utility Truck",
+     "ru": "Машина техобслуживания",
+     "pl": "Wóz techniczny",
+     "fr": "Camion utilitaire",
+     "zh_cn": "公共事业卡车"
+    }
+   }
+  ]
+ },
+ {
+  "class": 12,
+  "base": [
+   {
+    "hash": 2307837162,
+    "model": "boxville",
+    "names": {
+     "ger": "Boxville",
+     "eng": "Boxville",
+     "ru": "Boxville",
+     "pl": "Boxville",
+     "fr": "Boxville",
+     "zh_cn": "厢村"
+    }
+   },
+   {
+    "hash": 3387490166,
+    "model": "burrito2",
+    "names": {
+     "ger": "Bugstars Burrito",
+     "eng": "Bugstars Burrito",
+     "ru": "Bugstars Burrito",
+     "pl": "Burrito Bugstars",
+     "fr": "Burrito Bugstars",
+     "zh_cn": "除虫大师屌客"
+    }
+   },
+   {
+    "hash": 1876516712,
+    "model": "camper",
+    "names": {
+     "ger": "Camper",
+     "eng": "Camper",
+     "ru": "Camper",
+     "pl": "Camper",
+     "fr": "Camper",
+     "zh_cn": "露营车"
+    }
+   },
+   {
+    "hash": 728614474,
+    "model": "speedo2",
+    "names": {
+     "ger": "Clown",
+     "eng": "Clown Van",
+     "ru": "Фургон клоуна",
+     "pl": "Klaunowóz",
+     "fr": "Van de clown",
+     "zh_cn": "小丑花车"
+    }
+   },
+   {
+    "hash": 4174679674,
+    "model": "journey",
+    "names": {
+     "ger": "Journey",
+     "eng": "Journey",
+     "ru": "Journey",
+     "pl": "Journey",
+     "fr": "Journey",
+     "zh_cn": "安旅者"
+    }
+   },
+   {
+    "hash": 4175309224,
+    "model": "pony",
+    "names": {
+     "ger": "Pony",
+     "eng": "Pony",
+     "ru": "Pony",
+     "pl": "Pony",
+     "fr": "Pony",
+     "zh_cn": "小马"
+    }
+   },
+   {
+    "hash": 3984502180,
+    "model": "minivan",
+    "names": {
+     "ger": "Minivan",
+     "eng": "Minivan",
+     "ru": "Minivan",
+     "pl": "Minivan",
+     "fr": "Minivan",
+     "zh_cn": "迷你厢型车"
+    }
+   },
+   {
+    "hash": 1162065741,
+    "model": "rumpo",
+    "names": {
+     "ger": "Rumpo",
+     "eng": "Rumpo",
+     "ru": "Rumpo",
+     "pl": "Rumpo",
+     "fr": "Rumpo",
+     "zh_cn": "澜波"
+    }
+   },
+   {
+    "hash": 699456151,
+    "model": "surfer",
+    "names": {
+     "ger": "Surfer",
+     "eng": "Surfer",
+     "ru": "Surfer",
+     "pl": "Surfer",
+     "fr": "Surfer",
+     "zh_cn": "乘风"
+    }
+   },
+   {
+    "hash": 1951180813,
+    "model": "taco",
+    "names": {
+     "ger": "Taco-Lieferwagen",
+     "eng": "Taco Van",
+     "ru": "Фургон Тако",
+     "pl": "Wóz z taco",
+     "fr": "Taco Van",
+     "zh_cn": "玉米饼餐车"
+    }
+   },
+   {
+    "hash": 65402552,
+    "model": "youga",
+    "names": {
+     "ger": "Youga",
+     "eng": "Youga",
+     "ru": "Youga",
+     "pl": "Youga",
+     "fr": "Youga",
+     "zh_cn": "游侠"
+    }
+   },
+   {
+    "hash": 2242229361,
+    "model": "mule3",
+    "names": {
+     "ger": "Mule",
+     "eng": "Mule",
+     "ru": "Mule",
+     "pl": "Mule",
+     "fr": "Mule",
+     "zh_cn": "猛骡"
+    }
+   },
+   {
+    "hash": 3259477733,
+    "model": "surfer3",
+    "names": {
+     "ger": "Surfer Custom",
+     "eng": "Surfer Custom",
+     "ru": "Surfer заказной",
+     "pl": "Surfer - niest.",
+     "fr": "Surfer custom",
+     "zh_cn": "乘风改装版"
+    }
+   }
+  ],
+  "dlc": [
+   {
+    "hash": 296357396,
+    "model": "gburrito2",
+    "names": {
+     "ger": "Gang-Burrito",
+     "eng": "Gang Burrito",
+     "ru": "Gang Burrito",
+     "pl": "Burrito gangu",
+     "fr": "Burrito de gang",
+     "zh_cn": "屌客帮派版"
+    }
+   },
+   {
+    "hash": 3168702960,
+    "model": "minivan2",
+    "names": {
+     "ger": "Minivan Custom",
+     "eng": "Minivan Custom",
+     "ru": "Minivan заказной",
+     "pl": "Minivan - niest.",
+     "fr": "Minivan custom",
+     "zh_cn": "迷你厢型车改装版"
+    }
+   },
+   {
+    "hash": 1475773103,
+    "model": "rumpo3",
+    "names": {
+     "ger": "Rumpo Custom",
+     "eng": "Rumpo Custom",
+     "ru": "Rumpo заказной",
+     "pl": "Rumpo - niestandardowy",
+     "fr": "Rumpo custom",
+     "zh_cn": "澜波改装版"
+    }
+   },
+   {
+    "hash": 1026149675,
+    "model": "youga2",
+    "names": {
+     "ger": "Youga Classic",
+     "eng": "Youga Classic",
+     "ru": "Youga Classic",
+     "pl": "Youga Classic",
+     "fr": "Youga classique",
+     "zh_cn": "游侠经典版"
+    }
+   },
+   {
+    "hash": 219613597,
+    "model": "speedo4",
+    "names": {
+     "ger": "Speedo Custom",
+     "eng": "Speedo Custom",
+     "ru": "Speedo заказной",
+     "pl": "Speedo – niest.",
+     "fr": "Speedo custom",
+     "zh_cn": "劲速改装版"
+    }
+   },
+   {
+    "hash": 1945374990,
+    "model": "mule4",
+    "names": {
+     "ger": "Mule Custom",
+     "eng": "Mule Custom",
+     "ru": "Mule заказной",
+     "pl": "Mule – niest.",
+     "fr": "Mule custom",
+     "zh_cn": "猛骡改装版"
+    }
+   },
+   {
+    "hash": 1739845664,
+    "model": "bison3",
+    "names": {
+     "ger": "Bison",
+     "eng": "Bison",
+     "ru": "Bison",
+     "pl": "Bison",
+     "fr": "Bison",
+     "zh_cn": "野牛"
+    }
+   },
+   {
+    "hash": 2307837162,
+    "model": "boxville",
+    "names": {
+     "ger": "Boxville",
+     "eng": "Boxville",
+     "ru": "Boxville",
+     "pl": "Boxville",
+     "fr": "Boxville",
+     "zh_cn": "厢村"
+    }
+   },
+   {
+    "hash": 2948279460,
+    "model": "burrito",
+    "names": {
+     "ger": "Burrito",
+     "eng": "Burrito",
+     "ru": "Burrito",
+     "pl": "Burrito",
+     "fr": "Burrito",
+     "zh_cn": "屌客"
+    }
+   },
+   {
+    "hash": 3387490166,
+    "model": "burrito2",
+    "names": {
+     "ger": "Bugstars Burrito",
+     "eng": "Bugstars Burrito",
+     "ru": "Bugstars Burrito",
+     "pl": "Burrito Bugstars",
+     "fr": "Burrito Bugstars",
+     "zh_cn": "除虫大师屌客"
+    }
+   },
+   {
+    "hash": 4175309224,
+    "model": "pony",
+    "names": {
+     "ger": "Pony",
+     "eng": "Pony",
+     "ru": "Pony",
+     "pl": "Pony",
+     "fr": "Pony",
+     "zh_cn": "小马"
+    }
+   },
+   {
+    "hash": 1802742206,
+    "model": "youga3",
+    "names": {
+     "ger": "Youga Classic 4x4",
+     "eng": "Youga Classic 4x4",
+     "ru": "Youga Classic 4x4",
+     "pl": "Youga Classic 4x4",
+     "fr": "Youga classique 4x4",
+     "zh_cn": "游侠经典四驱车"
+    }
+   },
+   {
+    "hash": 728614474,
+    "model": "speedo2",
+    "names": {
+     "ger": "Clown",
+     "eng": "Clown Van",
+     "ru": "Фургон клоуна",
+     "pl": "Klaunowóz",
+     "fr": "Van de clown",
+     "zh_cn": "小丑花车"
+    }
+   },
+   {
+    "hash": 2667889793,
+    "model": "journey2",
+    "names": {
+     "ger": "Journey II",
+     "eng": "Journey II",
+     "ru": "Journey II",
+     "pl": "Journey II",
+     "fr": "Journey II",
+     "zh_cn": "安旅者µ2"
+    }
+   },
+   {
+    "hash": 3259477733,
+    "model": "surfer3",
+    "names": {
+     "ger": "Surfer Custom",
+     "eng": "Surfer Custom",
+     "ru": "Surfer заказной",
+     "pl": "Surfer - niest.",
+     "fr": "Surfer custom",
+     "zh_cn": "乘风改装版"
+    }
+   },
+   {
+    "hash": 728350375,
+    "model": "benson2",
+    "names": {
+     "ger": "Benson (Cluckin' Bell)",
+     "eng": "Benson (Cluckin' Bell)",
+     "ru": "Benson (Cluckin' Bell)",
+     "pl": "Benson (Cluckin' Bell)",
+     "fr": "Benson (Cluckin' Bell)",
+     "zh_cn": "班森（当当钟）"
+    }
+   },
+   {
+    "hash": 3452201761,
+    "model": "boxville6",
+    "names": {
+     "ger": "Boxville (LSDS)",
+     "eng": "Boxville (LSDS)",
+     "ru": "Boxville (LSDS)",
+     "pl": "Boxville (sanitarny)",
+     "fr": "Boxville (LSDS)",
+     "zh_cn": "厢村（洛圣都清洁公司）"
+    }
+   },
+   {
+    "hash": 1069929536,
+    "model": "bobcatxl",
+    "names": {
+     "ger": "Bobcat XL",
+     "eng": "Bobcat XL",
+     "ru": "Bobcat XL",
+     "pl": "Bobcat XL",
+     "fr": "Bobcat XL",
+     "zh_cn": "雄猫µXL"
+    }
+   },
+   {
+    "hash": 2234547542,
+    "model": "laufer",
+    "names": {
+     "ger": "Läufer",
+     "eng": "Läufer",
+     "ru": "Laufer",
+     "pl": "Läufer",
+     "fr": "Läufer",
+     "zh_cn": "劳费尔"
+    }
+   }
+  ]
+ },
+ {
+  "class": 13,
+  "base": [
+   {
+    "hash": 1131912276,
+    "model": "bmx",
+    "names": {
+     "ger": "BMX",
+     "eng": "BMX",
+     "ru": "BMX",
+     "pl": "BMX",
+     "fr": "BMX",
+     "zh_cn": "BMX"
+    }
+   },
+   {
+    "hash": 448402357,
+    "model": "cruiser",
+    "names": {
+     "ger": "Cruiser",
+     "eng": "Cruiser",
+     "ru": "Cruiser",
+     "pl": "Cruiser",
+     "fr": "Cruiser",
+     "zh_cn": "巡航者"
+    }
+   },
+   {
+    "hash": 4108429845,
+    "model": "scorcher",
+    "names": {
+     "ger": "Scorcher",
+     "eng": "Scorcher",
+     "ru": "Scorcher",
+     "pl": "Scorcher",
+     "fr": "Scorcher",
+     "zh_cn": "先驱者"
+    }
+   },
+   {
+    "hash": 1127861609,
+    "model": "tribike",
+    "names": {
+     "ger": "Whippet Rennrad",
+     "eng": "Whippet Race Bike",
+     "ru": "Whippet",
+     "pl": "Whippet",
+     "fr": "Whippet",
+     "zh_cn": "惠比特竞速自行车"
+    }
+   },
+   {
+    "hash": 3061159916,
+    "model": "tribike2",
+    "names": {
+     "ger": "Endurex Rennrad",
+     "eng": "Endurex Race Bike",
+     "ru": "Endurex",
+     "pl": "Endurex",
+     "fr": "Endurex",
+     "zh_cn": "极限耐力竞速自行车"
+    }
+   },
+   {
+    "hash": 3894672200,
+    "model": "tribike3",
+    "names": {
+     "ger": "Tri-Cycles Rennrad",
+     "eng": "Tri-Cycles Race Bike",
+     "ru": "Tri-Cycles",
+     "pl": "Tri-Cycles",
+     "fr": "Tri-Cycles",
+     "zh_cn": "特莱赛可竞速自行车"
+    }
+   }
+  ],
+  "dlc": [
+   {
+    "hash": 3397143273,
+    "model": "inductor",
+    "names": {
+     "ger": "Inductor",
+     "eng": "Inductor",
+     "ru": "Inductor",
+     "pl": "Inductor",
+     "fr": "Inductor",
+     "zh_cn": "电感"
+    }
+   },
+   {
+    "hash": 2311345272,
+    "model": "inductor2",
+    "names": {
+     "ger": "Junk Energy Inductor",
+     "eng": "Junk Energy Inductor",
+     "ru": "Junk Energy Inductor",
+     "pl": "Inductor Junk Energy",
+     "fr": "Inductor Junk Energy",
+     "zh_cn": "拉机能量电感"
+    }
+   },
+   {
+    "hash": 3458454463,
+    "model": "fixter",
+    "names": {
+     "ger": "Fixter",
+     "eng": "Fixter",
+     "ru": "Fixter",
+     "pl": "Fixter",
+     "fr": "Fixter",
+     "zh_cn": "费斯特"
+    }
+   }
+  ]
+ },
+ {
+  "class": 15,
+  "base": [],
+  "dlc": [
+   {
+    "hash": 2704629607,
+    "model": "blazer5",
+    "names": {
+     "ger": "Blazer Aqua",
+     "eng": "Blazer Aqua",
+     "ru": "Blazer Aqua",
+     "pl": "Blazer Aqua",
+     "fr": "Blazer aqua",
+     "zh_cn": "水陆烈焰骑士"
+    }
+   },
+   {
+    "hash": 941494461,
+    "model": "ruiner2",
+    "names": {
+     "ger": "Ruiner 2000",
+     "eng": "Ruiner 2000",
+     "ru": "Ruiner 2000",
+     "pl": "Ruiner 2000",
+     "fr": "Ruiner 2000",
+     "zh_cn": "灭世暴徒µ2000"
+    }
+   },
+   {
+    "hash": 989294410,
+    "model": "voltic2",
+    "names": {
+     "ger": "Rocket Voltic",
+     "eng": "Rocket Voltic",
+     "ru": "Rocket Voltic",
+     "pl": "Voltic Rocket",
+     "fr": "Rocket Voltic",
+     "zh_cn": "火箭狂雷"
+    }
+   },
+   {
+    "hash": 1483171323,
+    "model": "deluxo",
+    "names": {
+     "ger": "Deluxo",
+     "eng": "Deluxo",
+     "ru": "Deluxo",
+     "pl": "Deluxo",
+     "fr": "Deluxo",
+     "zh_cn": "德罗索"
+    }
+   },
+   {
+    "hash": 886810209,
+    "model": "stromberg",
+    "names": {
+     "ger": "Stromberg",
+     "eng": "Stromberg",
+     "ru": "Stromberg",
+     "pl": "Stromberg",
+     "fr": "Stromberg",
+     "zh_cn": "斯特龙伯格"
+    }
+   },
+   {
+    "hash": 1489874736,
+    "model": "thruster",
+    "names": {
+     "ger": "Thruster",
+     "eng": "Thruster",
+     "ru": "Thruster",
+     "pl": "Thruster",
+     "fr": "Thruster",
+     "zh_cn": "推进者"
+    }
+   },
+   {
+    "hash": 884483972,
+    "model": "oppressor",
+    "names": {
+     "ger": "Oppressor",
+     "eng": "Oppressor",
+     "ru": "Oppressor",
+     "pl": "Oppressor",
+     "fr": "Oppressor",
+     "zh_cn": "暴君"
+    }
+   },
+   {
+    "hash": 3052358707,
+    "model": "vigilante",
+    "names": {
+     "ger": "Vigilante",
+     "eng": "Vigilante",
+     "ru": "Vigilante",
+     "pl": "Vigilante",
+     "fr": "Vigilante",
+     "zh_cn": "义警"
+    }
+   },
+   {
+    "hash": 2069146067,
+    "model": "oppressor2",
+    "names": {
+     "ger": "Oppressor Mk II",
+     "eng": "Oppressor Mk II",
+     "ru": "Oppressor Mk II",
+     "pl": "Oppressor II",
+     "fr": "Oppressor Mk II",
+     "zh_cn": "暴君µMkµ2"
+    }
+   },
+   {
+    "hash": 3656405053,
+    "model": "scramjet",
+    "names": {
+     "ger": "Scramjet",
+     "eng": "Scramjet",
+     "ru": "Scramjet",
+     "pl": "Scramjet",
+     "fr": "Scramjet",
+     "zh_cn": "超燃"
+    }
+   },
+   {
+    "hash": 4008920556,
+    "model": "rcbandito",
+    "names": {
+     "ger": "RC Bandito",
+     "eng": "RC Bandito",
+     "ru": "RC Bandito",
+     "pl": "RC Bandito",
+     "fr": "RC Bandito",
+     "zh_cn": "RCµ匪徒"
+    }
+   },
+   {
+    "hash": 1455990255,
+    "model": "toreador",
+    "names": {
+     "ger": "Toreador",
+     "eng": "Toreador",
+     "ru": "Toreador",
+     "pl": "Toreador",
+     "fr": "Toreador",
+     "zh_cn": "图拉尔多"
+    }
+   },
+   {
+    "hash": 534258863,
+    "model": "dune2",
+    "names": {
+     "ger": "Space Docker",
+     "eng": "Space Docker",
+     "ru": "Space Docker",
+     "pl": "Space Docker",
+     "fr": "Space Docker",
+     "zh_cn": "太空码头工"
+    }
+   }
+  ]
+ },
+ {
+  "class": 16,
+  "base": [],
+  "dlc": [
+   {
+    "hash": 1180875963,
+    "model": "technical2",
+    "names": {
+     "ger": "Technical Aqua",
+     "eng": "Technical Aqua",
+     "ru": "Technical Aqua",
+     "pl": "Technical Aqua",
+     "fr": "Pick-up armé aqua",
+     "zh_cn": "水陆铁尼高"
+    }
+   },
+   {
+    "hash": 1356124575,
+    "model": "technical3",
+    "names": {
+     "ger": "Technical Custom",
+     "eng": "Technical Custom",
+     "ru": "Technical заказной",
+     "pl": "Technical - niest.",
+     "fr": "Pick-up armé custom",
+     "zh_cn": "铁尼高改装版"
+    }
+   },
+   {
+    "hash": 2198148358,
+    "model": "technical",
+    "names": {
+     "ger": "Technical",
+     "eng": "Technical",
+     "ru": "Technical",
+     "pl": "Technical",
+     "fr": "Pick-up armé",
+     "zh_cn": "铁尼高"
+    }
+   },
+   {
+    "hash": 1897744184,
+    "model": "dune3",
+    "names": {
+     "ger": "Dune FAV",
+     "eng": "Dune FAV",
+     "ru": "Dune FAV",
+     "pl": "Łazik Dune",
+     "fr": "Dune FAV",
+     "zh_cn": "沙丘µFAV"
+    }
+   },
+   {
+    "hash": 682434785,
+    "model": "boxville5",
+    "names": {
+     "ger": "Gepanzerter Boxville",
+     "eng": "Armored Boxville",
+     "ru": "Boxville (броня)",
+     "pl": "Boxville (opancerzony)",
+     "fr": "Boxville blindé",
+     "zh_cn": "装甲版厢村"
+    }
+   },
+   {
+    "hash": 4180339789,
+    "model": "limo2",
+    "names": {
+     "ger": "Limousine mit Bordgeschütz",
+     "eng": "Turreted Limo",
+     "ru": "Лимузин с турелью",
+     "pl": "Limuzyna z wieżyczką",
+     "fr": "Limousine armée",
+     "zh_cn": "武装礼车"
+    }
+   },
+   {
+    "hash": 4081974053,
+    "model": "barrage",
+    "names": {
+     "ger": "Barrage",
+     "eng": "Barrage",
+     "ru": "Barrage",
+     "pl": "Barrage",
+     "fr": "Barrage",
+     "zh_cn": "巴拉杰"
+    }
+   },
+   {
+    "hash": 4262731174,
+    "model": "halftrack",
+    "names": {
+     "ger": "Halbkettenfahrzeug",
+     "eng": "Half-track",
+     "ru": "Half-track",
+     "pl": "Wóz półgąsienicowy",
+     "fr": "Autochenille",
+     "zh_cn": "半履战车"
+    }
+   },
+   {
+    "hash": 562680400,
+    "model": "apc",
+    "names": {
+     "ger": "MTW",
+     "eng": "APC",
+     "ru": "БТР",
+     "pl": "BWP",
+     "fr": "APC",
+     "zh_cn": "APC"
+    }
+   },
+   {
+    "hash": 1254014755,
+    "model": "caracara",
+    "names": {
+     "ger": "Caracara",
+     "eng": "Caracara",
+     "ru": "Caracara",
+     "pl": "Caracara",
+     "fr": "Caracara",
+     "zh_cn": "卡拉卡拉"
+    }
+   },
+   {
+    "hash": 2370534026,
+    "model": "insurgent3",
+    "names": {
+     "ger": "Insurgent Pickup Custom",
+     "eng": "Insurgent Pick-Up Custom",
+     "ru": "Insurgent пикап заказной",
+     "pl": "Insurgent (pickup) - niest.",
+     "fr": "Pick-up Insurgent custom",
+     "zh_cn": "叛乱分子皮卡改装版"
+    }
+   },
+   {
+    "hash": 2434067162,
+    "model": "insurgent",
+    "names": {
+     "ger": "Insurgent Pickup",
+     "eng": "Insurgent Pick-Up",
+     "ru": "Insurgent (пикап)",
+     "pl": "Insurgent (pickup)",
+     "fr": "Pick-up Insurgent",
+     "zh_cn": "叛乱分子皮卡"
+    }
+   },
+   {
+    "hash": 2044532910,
+    "model": "menacer",
+    "names": {
+     "ger": "Menacer",
+     "eng": "Menacer",
+     "ru": "Menacer",
+     "pl": "Menacer",
+     "fr": "Menacer",
+     "zh_cn": "威胁者"
+    }
+   },
+   {
+    "hash": 2647706545,
+    "model": "caracara3",
+    "names": {
+     "ger": "Caracara (gepanzert)",
+     "eng": "Caracara (Armored)",
+     "ru": "Caracara (бронированный)",
+     "pl": "Caracara (opancerzona)",
+     "fr": "Caracara (blindé)",
+     "zh_cn": "卡拉卡拉（武装版）"
+    }
+   }
+  ]
+ },
+ {
+  "class": 17,
+  "base": [],
+  "dlc": [
+   {
+    "hash": 668439077,
+    "model": "bruiser",
+    "names": {
+     "ger": "Bruiser (Apokalypse)",
+     "eng": "Apocalypse Bruiser",
+     "ru": "Bruiser (апокалипсис)",
+     "pl": "Bruiser (apokalipsa)",
+     "fr": "Bruiser apocalypse",
+     "zh_cn": "末日捍士"
+    }
+   },
+   {
+    "hash": 2139203625,
+    "model": "brutus",
+    "names": {
+     "ger": "Brutus (Apokalypse)",
+     "eng": "Apocalypse Brutus",
+     "ru": "Brutus (апокалипсис)",
+     "pl": "Brutus (apokalipsa)",
+     "fr": "Brutus apocalypse",
+     "zh_cn": "末日布鲁图斯"
+    }
+   },
+   {
+    "hash": 3493417227,
+    "model": "cerberus",
+    "names": {
+     "ger": "Cerberus (Apokalypse)",
+     "eng": "Apocalypse Cerberus",
+     "ru": "Cerberus (апокалипсис)",
+     "pl": "Cerberus (apokalipsa)",
+     "fr": "Cerberus apocalypse",
+     "zh_cn": "末日地狱犬"
+    }
+   },
+   {
+    "hash": 4267640610,
+    "model": "deathbike",
+    "names": {
+     "ger": "Deathbike (Apokalypse)",
+     "eng": "Apocalypse Deathbike",
+     "ru": "Deathbike (апокалипсис)",
+     "pl": "Deathbike (apokalipsa)",
+     "fr": "Deathbike apocalypse",
+     "zh_cn": "末日丧尸"
+    }
+   },
+   {
+    "hash": 3606777648,
+    "model": "dominator4",
+    "names": {
+     "ger": "Dominator (Apokalypse)",
+     "eng": "Apocalypse Dominator",
+     "ru": "Dominator (апокалипсис)",
+     "pl": "Dominator (apokalipsa)",
+     "fr": "Dominator apocalypse",
+     "zh_cn": "末日公路霸者"
+    }
+   },
+   {
+    "hash": 1009171724,
+    "model": "impaler2",
+    "names": {
+     "ger": "Impaler (Apokalypse)",
+     "eng": "Apocalypse Impaler",
+     "ru": "Impaler (апокалипсис)",
+     "pl": "Impaler (apokalipsa)",
+     "fr": "Impaler apocalypse",
+     "zh_cn": "末日刺刑官"
+    }
+   },
+   {
+    "hash": 444994115,
+    "model": "imperator",
+    "names": {
+     "ger": "Imperator (Apokalypse)",
+     "eng": "Apocalypse Imperator",
+     "ru": "Imperator (апокалипсис)",
+     "pl": "Imperator (apokalipsa)",
+     "fr": "Imperator apocalypse",
+     "zh_cn": "末日凯撒大帝"
+    }
+   },
+   {
+    "hash": 628003514,
+    "model": "issi4",
+    "names": {
+     "ger": "Issi (Apokalypse)",
+     "eng": "Apocalypse Issi",
+     "ru": "Issi (апокалипсис)",
+     "pl": "Issi (apokalipsa)",
+     "fr": "Issi apocalypse",
+     "zh_cn": "末日天威"
+    }
+   },
+   {
+    "hash": 1721676810,
+    "model": "monster3",
+    "names": {
+     "ger": "Sasquatch (Apokalypse)",
+     "eng": "Apocalypse Sasquatch",
+     "ru": "Sasquatch (апокалипсис)",
+     "pl": "Sasquatch (apokalipsa)",
+     "fr": "Sasquatch apocalypse",
+     "zh_cn": "末日大脚怪"
+    }
+   },
+   {
+    "hash": 3147997943,
+    "model": "scarab",
+    "names": {
+     "ger": "Scarab (Apokalypse)",
+     "eng": "Apocalypse Scarab",
+     "ru": "Scarab (апокалипсис)",
+     "pl": "Scarab (apokalipsa)",
+     "fr": "Scarab apocalypse",
+     "zh_cn": "末日圣甲虫"
+    }
+   },
+   {
+    "hash": 2233918197,
+    "model": "slamvan4",
+    "names": {
+     "ger": "Slamvan (Apokalypse)",
+     "eng": "Apocalypse Slamvan",
+     "ru": "Slamvan (апокалипсис)",
+     "pl": "Slamvan (apokalipsa)",
+     "fr": "Slamvan apocalypse",
+     "zh_cn": "末日大满贯皮卡"
+    }
+   },
+   {
+    "hash": 540101442,
+    "model": "zr380",
+    "names": {
+     "ger": "ZR380 (Apokalypse)",
+     "eng": "Apocalypse ZR380",
+     "ru": "ZR380 (апокалипсис)",
+     "pl": "ZR380 (apokalipsa)",
+     "fr": "ZR380 apocalypse",
+     "zh_cn": "末日µZR380"
+    }
+   }
+  ]
+ },
+ {
+  "class": 18,
+  "base": [],
+  "dlc": [
+   {
+    "hash": 340154634,
+    "model": "formula",
+    "names": {
+     "ger": "PR4",
+     "eng": "PR4",
+     "ru": "PR4",
+     "pl": "PR4",
+     "fr": "PR4",
+     "zh_cn": "PR4"
+    }
+   },
+   {
+    "hash": 2334210311,
+    "model": "formula2",
+    "names": {
+     "ger": "R88",
+     "eng": "R88",
+     "ru": "R88",
+     "pl": "R88",
+     "fr": "R88",
+     "zh_cn": "R88"
+    }
+   },
+   {
+    "hash": 1492612435,
+    "model": "openwheel1",
+    "names": {
+     "ger": "BR8",
+     "eng": "BR8",
+     "ru": "BR8",
+     "pl": "BR8",
+     "fr": "BR8",
+     "zh_cn": "BR8"
+    }
+   },
+   {
+    "hash": 1181339704,
+    "model": "openwheel2",
+    "names": {
+     "ger": "DR1",
+     "eng": "DR1",
+     "ru": "DR1",
+     "pl": "DR1",
+     "fr": "DR1",
+     "zh_cn": "DR1"
+    }
+   }
+  ]
+ },
+ {
+  "class": 19,
+  "base": [],
+  "dlc": [
+   {
+    "hash": 3437611258,
+    "model": "veto",
+    "names": {
+     "ger": "Veto Classic",
+     "eng": "Veto Classic",
+     "ru": "Veto Classic",
+     "pl": "Veto Classic",
+     "fr": "Veto classique",
+     "zh_cn": "微托经典版"
+    }
+   },
+   {
+    "hash": 2802050217,
+    "model": "veto2",
+    "names": {
+     "ger": "Veto Modern",
+     "eng": "Veto Modern",
+     "ru": "Veto Modern",
+     "pl": "Veto Modern",
+     "fr": "Veto moderne",
+     "zh_cn": "微托现代版"
+    }
+   }
+  ]
+ },
+ {
+  "class": 20,
+  "base": [],
+  "dlc": [
+   {
+    "hash": 3101054893,
+    "model": "calico",
+    "names": {
+     "ger": "Calico GTF",
+     "eng": "Calico GTF",
+     "ru": "Calico GTF",
+     "pl": "Calico GTF",
+     "fr": "Calico GTF",
+     "zh_cn": "卡利科µGTF"
+    }
+   },
+   {
+    "hash": 2712905841,
+    "model": "jester4",
+    "names": {
+     "ger": "Jester RR",
+     "eng": "Jester RR",
+     "ru": "Jester RR",
+     "pl": "Jester RR",
+     "fr": "Jester RR",
+     "zh_cn": "弄臣µRR"
+    }
+   },
+   {
+    "hash": 2436313176,
+    "model": "zr350",
+    "names": {
+     "ger": "ZR350",
+     "eng": "ZR350",
+     "ru": "ZR350",
+     "pl": "ZR350",
+     "fr": "ZR350",
+     "zh_cn": "ZR350"
+    }
+   },
+   {
+    "hash": 1377217886,
+    "model": "remus",
+    "names": {
+     "ger": "Remus",
+     "eng": "Remus",
+     "ru": "Remus",
+     "pl": "Remus",
+     "fr": "Remus",
+     "zh_cn": "雷姆斯"
+    }
+   },
+   {
+    "hash": 2754593701,
+    "model": "vectre",
+    "names": {
+     "ger": "Vectre",
+     "eng": "Vectre",
+     "ru": "Vectre",
+     "pl": "Vectre",
+     "fr": "Vectre",
+     "zh_cn": "韦柯特"
+    }
+   },
+   {
+    "hash": 1755697647,
+    "model": "cypher",
+    "names": {
+     "ger": "Cypher",
+     "eng": "Cypher",
+     "ru": "Cypher",
+     "pl": "Cypher",
+     "fr": "Cypher",
+     "zh_cn": "塞弗"
+    }
+   },
+   {
+    "hash": 426742808,
+    "model": "dominator7",
+    "names": {
+     "ger": "Dominator ASP",
+     "eng": "Dominator ASP",
+     "ru": "Dominator ASP",
+     "pl": "Dominator ASP",
+     "fr": "Dominator ASP",
+     "zh_cn": "公路霸者µASP"
+    }
+   },
+   {
+    "hash": 2568944644,
+    "model": "comet6",
+    "names": {
+     "ger": "Comet S2",
+     "eng": "Comet S2",
+     "ru": "Comet S2",
+     "pl": "Comet S2",
+     "fr": "Comet S2",
+     "zh_cn": "陆上彗星µS2"
+    }
+   },
+   {
+    "hash": 579912970,
+    "model": "warrener2",
+    "names": {
+     "ger": "Warrener HKR",
+     "eng": "Warrener HKR",
+     "ru": "Warrener HKR",
+     "pl": "Warrener HKR",
+     "fr": "Warrener HKR",
+     "zh_cn": "守护星µHKR"
+    }
+   },
+   {
+    "hash": 3842363289,
+    "model": "rt3000",
+    "names": {
+     "ger": "RT3000",
+     "eng": "RT3000",
+     "ru": "RT3000",
+     "pl": "RT3000",
+     "fr": "RT3000",
+     "zh_cn": "RT3000"
+    }
+   },
+   {
+    "hash": 3050505892,
+    "model": "tailgater2",
+    "names": {
+     "ger": "Tailgater S",
+     "eng": "Tailgater S",
+     "ru": "Tailgater S",
+     "pl": "Tailgater S",
+     "fr": "Tailgater S",
+     "zh_cn": "密探µS"
+    }
+   },
+   {
+    "hash": 4003946083,
+    "model": "sultan3",
+    "names": {
+     "ger": "Sultan RS Classic",
+     "eng": "Sultan RS Classic",
+     "ru": "Sultan RS Classic",
+     "pl": "Sultan RS Classic",
+     "fr": "Sultan RS classique",
+     "zh_cn": "王者µRSµ经典版"
+    }
+   },
+   {
+    "hash": 2787736776,
+    "model": "futo2",
+    "names": {
+     "ger": "Futo GTX",
+     "eng": "Futo GTX",
+     "ru": "Futo GTX",
+     "pl": "Futo GTX",
+     "fr": "Futo GTX",
+     "zh_cn": "福多µGTX"
+    }
+   },
+   {
+    "hash": 736672010,
+    "model": "dominator8",
+    "names": {
+     "ger": "Dominator GTT",
+     "eng": "Dominator GTT",
+     "ru": "Dominator GTT",
+     "pl": "Dominator GTT",
+     "fr": "Dominator GTT",
+     "zh_cn": "公路霸者µGTT"
+    }
+   },
+   {
+    "hash": 1416471345,
+    "model": "previon",
+    "names": {
+     "ger": "Previon",
+     "eng": "Previon",
+     "ru": "Previon",
+     "pl": "Previon",
+     "fr": "Previon",
+     "zh_cn": "普莱温"
+    }
+   },
+   {
+    "hash": 2038480341,
+    "model": "euros",
+    "names": {
+     "ger": "Euros",
+     "eng": "Euros",
+     "ru": "Euros",
+     "pl": "Euros",
+     "fr": "Euros",
+     "zh_cn": "欧洲"
+    }
+   },
+   {
+    "hash": 1304459735,
+    "model": "growler",
+    "names": {
+     "ger": "Growler",
+     "eng": "Growler",
+     "ru": "Growler",
+     "pl": "Growler",
+     "fr": "Growler",
+     "zh_cn": "嚎叫者"
+    }
+   },
+   {
+    "hash": 4230891418,
+    "model": "kanjosj",
+    "names": {
+     "ger": "Kanjo SJ",
+     "eng": "Kanjo SJ",
+     "ru": "Kanjo SJ",
+     "pl": "Kanjo SJ",
+     "fr": "Kanjo SJ",
+     "zh_cn": "羽黑µSJ"
+    }
+   },
+   {
+    "hash": 4000288633,
+    "model": "postlude",
+    "names": {
+     "ger": "Postlude",
+     "eng": "Postlude",
+     "ru": "Postlude",
+     "pl": "Postlude",
+     "fr": "Postlude",
+     "zh_cn": "后奏"
+    }
+   },
+   {
+    "hash": 1484920335,
+    "model": "jester5",
+    "names": {
+     "ger": "Jester RR Widebody",
+     "eng": "Jester RR Widebody",
+     "ru": "Широкий Jester RR",
+     "pl": "Poszerzony Jester RR",
+     "fr": "Jester RR large",
+     "zh_cn": "弄臣µRRµ宽体版"
+    }
+   },
+   {
+    "hash": 1580292663,
+    "model": "hardy",
+    "names": {
+     "ger": "Hardy",
+     "eng": "Hardy",
+     "ru": "Hardy",
+     "pl": "Hardy",
+     "fr": "Hardy",
+     "zh_cn": "哈帝"
+    }
+   },
+   {
+    "hash": 471399650,
+    "model": "cheetah3",
+    "names": {
+     "ger": "LSCM Cheetah Classic",
+     "eng": "LSCM Cheetah Classic",
+     "ru": "Cheetah Classic автоклуба ЛС",
+     "pl": "LSCM Cheetah Classic",
+     "fr": "LSCM Cheetah classique",
+     "zh_cn": "洛圣都车友会猎豹经典版"
+    }
+   }
+  ]
+ },
+ {
+  "class": 25,
+  "base": [],
+  "dlc": [
+   {
+    "hash": 2598648200,
+    "model": "drifttampa",
+    "names": {
+     "ger": "Drift Tampa",
+     "eng": "Drift Tampa",
+     "ru": "Drift Tampa",
+     "pl": "Tampa Drift",
+     "fr": "Tampa drift",
+     "zh_cn": "漂移坦帕"
+    }
+   },
+   {
+    "hash": 2613313775,
+    "model": "driftyosemite",
+    "names": {
+     "ger": "Drift Yosemite",
+     "eng": "Drift Yosemite",
+     "ru": "Drift Yosemite",
+     "pl": "Yosemite Drift",
+     "fr": "Yosemite drift",
+     "zh_cn": "漂移约塞米蒂"
+    }
+   },
+   {
+    "hash": 821121576,
+    "model": "drifteuros",
+    "names": {
+     "ger": "Euros",
+     "eng": "Euros",
+     "ru": "Euros",
+     "pl": "Euros",
+     "fr": "Euros",
+     "zh_cn": "欧洲"
+    }
+   },
+   {
+    "hash": 4113404654,
+    "model": "driftfuto",
+    "names": {
+     "ger": "Futo GTX",
+     "eng": "Futo GTX",
+     "ru": "Futo GTX",
+     "pl": "Futo GTX",
+     "fr": "Futo GTX",
+     "zh_cn": "福多µGTX"
+    }
+   },
+   {
+    "hash": 2531693357,
+    "model": "driftjester",
+    "names": {
+     "ger": "Jester RR",
+     "eng": "Jester RR",
+     "ru": "Jester RR",
+     "pl": "Jester RR",
+     "fr": "Jester RR",
+     "zh_cn": "弄臣µRR"
+    }
+   },
+   {
+    "hash": 2670883828,
+    "model": "driftremus",
+    "names": {
+     "ger": "Remus",
+     "eng": "Remus",
+     "ru": "Remus",
+     "pl": "Remus",
+     "fr": "Remus",
+     "zh_cn": "雷姆斯"
+    }
+   },
+   {
+    "hash": 1923534526,
+    "model": "driftzr350",
+    "names": {
+     "ger": "ZR350",
+     "eng": "ZR350",
+     "ru": "ZR350",
+     "pl": "ZR350",
+     "fr": "ZR350",
+     "zh_cn": "ZR350"
+    }
+   },
+   {
+    "hash": 2815031719,
+    "model": "driftfr36",
+    "names": {
+     "ger": "FR36",
+     "eng": "FR36",
+     "ru": "FR36",
+     "pl": "FR36",
+     "fr": "FR36",
+     "zh_cn": "FR36"
+    }
+   },
+   {
+    "hash": 258105345,
+    "model": "driftcypher",
+    "names": {
+     "ger": "Cypher",
+     "eng": "Cypher",
+     "ru": "Cypher",
+     "pl": "Cypher",
+     "fr": "Cypher",
+     "zh_cn": "塞弗"
+    }
+   },
+   {
+    "hash": 4151380270,
+    "model": "driftvorschlag",
+    "names": {
+     "ger": "Vorschlaghammer",
+     "eng": "Vorschlaghammer",
+     "ru": "Vorschlaghammer",
+     "pl": "Vorschlaghammer",
+     "fr": "Vorschlaghammer",
+     "zh_cn": "虎头飞锤"
+    }
+   },
+   {
+    "hash": 3308310822,
+    "model": "driftsentinel",
+    "names": {
+     "ger": "Sentinel Classic Widebody",
+     "eng": "Sentinel Classic Widebody",
+     "ru": "Sentinel Classic широкий",
+     "pl": "Poszerzony Sentinel Classic",
+     "fr": "Sentinel classique large",
+     "zh_cn": "卫士经典宽体版"
+    }
+   },
+   {
+    "hash": 1690421418,
+    "model": "driftnebula",
+    "names": {
+     "ger": "Nebula Turbo",
+     "eng": "Nebula Turbo",
+     "ru": "Nebula Turbo",
+     "pl": "Nebula Turbo",
+     "fr": "Nebula turbo",
+     "zh_cn": "星云涡轮"
+    }
+   },
+   {
+    "hash": 3005741670,
+    "model": "driftfuto2",
+    "names": {
+     "ger": "Futo",
+     "eng": "Futo",
+     "ru": "Futo",
+     "pl": "Futo",
+     "fr": "Futo",
+     "zh_cn": "福多"
+    }
+   },
+   {
+    "hash": 2828274931,
+    "model": "driftcheburek",
+    "names": {
+     "ger": "Cheburek",
+     "eng": "Cheburek",
+     "ru": "Cheburek",
+     "pl": "Cheburek",
+     "fr": "Cheburek",
+     "zh_cn": "切布列克"
+    }
+   },
+   {
+    "hash": 3932276298,
+    "model": "driftjester3",
+    "names": {
+     "ger": "Jester Classic",
+     "eng": "Jester Classic",
+     "ru": "Jester Classic",
+     "pl": "Jester Classic",
+     "fr": "Jester classique",
+     "zh_cn": "弄臣经典版"
+    }
+   },
+   {
+    "hash": 3355365473,
+    "model": "driftdominator10",
+    "names": {
+     "ger": "Dominator FX",
+     "eng": "Dominator FX",
+     "ru": "Dominator FX",
+     "pl": "Dominator FX",
+     "fr": "Dominator FX",
+     "zh_cn": "公路霸者µFX"
+    }
+   },
+   {
+    "hash": 3933619103,
+    "model": "driftgauntlet4",
+    "names": {
+     "ger": "Gauntlet Hellfire",
+     "eng": "Gauntlet Hellfire",
+     "ru": "Gauntlet Hellfire",
+     "pl": "Gauntlet Hellfire",
+     "fr": "Gauntlet Hellfire",
+     "zh_cn": "铁腕地狱火"
+    }
+   },
+   {
+    "hash": 2312533665,
+    "model": "driftl352",
+    "names": {
+     "ger": "Drift Walton L35",
+     "eng": "Drift Walton L35",
+     "ru": "Walton L35 дрифтовый",
+     "pl": "Walton L35 Drift",
+     "fr": "Walton L35 de drift",
+     "zh_cn": "漂移瓦尔顿µL35"
+    }
+   },
+   {
+    "hash": 457814204,
+    "model": "driftchavosv6",
+    "names": {
+     "ger": "Chavos V6",
+     "eng": "Chavos V6",
+     "ru": "Chavos V6",
+     "pl": "Chavos V6",
+     "fr": "Chavos V6",
+     "zh_cn": "查沃斯µV6"
+    }
+   },
+   {
+    "hash": 3893408850,
+    "model": "drifthardy",
+    "names": {
+     "ger": "Hardy",
+     "eng": "Hardy",
+     "ru": "Hardy",
+     "pl": "Hardy",
+     "fr": "Hardy",
+     "zh_cn": "哈迪"
+    }
+   },
+   {
+    "hash": 2739875593,
+    "model": "driftkeitora",
+    "names": {
+     "ger": "Keitora",
+     "eng": "Keitora",
+     "ru": "Keitora",
+     "pl": "Keitora",
+     "fr": "Keitora",
+     "zh_cn": "轻小卡"
+    }
+   },
+   {
+    "hash": 3439117103,
+    "model": "driftdominator9",
+    "names": {
+     "ger": "Dominator GT",
+     "eng": "Dominator GT",
+     "ru": "Dominator GT",
+     "pl": "Dominator GT",
+     "fr": "Dominator GT",
+     "zh_cn": "公路霸者µGT"
+    }
+   },
+   {
+    "hash": 1730644782,
+    "model": "driftrt3000",
+    "names": {
+     "ger": "RT3000",
+     "eng": "RT3000",
+     "ru": "RT3000",
+     "pl": "RT3000",
+     "fr": "RT3000",
+     "zh_cn": "RT3000"
+    }
+   },
+   {
+    "hash": 3288768346,
+    "model": "driftsentinel2",
+    "names": {
+     "ger": "Sentinel XS",
+     "eng": "Sentinel XS",
+     "ru": "Sentinel XS",
+     "pl": "Sentinel XS",
+     "fr": "Sentinel XS",
+     "zh_cn": "卫士µXS"
+    }
+   },
+   {
+    "hash": 621456687,
+    "model": "driftcoquette",
+    "names": {
+     "ger": "Coquette",
+     "eng": "Coquette",
+     "ru": "Coquette",
+     "pl": "Coquette",
+     "fr": "Coquette",
+     "zh_cn": "艳妇"
+    }
+   },
+   {
+    "hash": 3736495778,
+    "model": "driftdominator8",
+    "names": {
+     "ger": "Dominator GTT",
+     "eng": "Dominator GTT",
+     "ru": "Dominator GTT",
+     "pl": "Dominator GTT",
+     "fr": "Dominator GTT",
+     "zh_cn": "公路霸者 GTT"
+    }
+   },
+   {
+    "hash": 707880171,
+    "model": "driftelegy",
+    "names": {
+     "ger": "Elegy Retro Custom",
+     "eng": "Elegy Retro Custom",
+     "ru": "Elegy Retro заказной",
+     "pl": "Retro Elegy (niest.)",
+     "fr": "Elegy rétro custom",
+     "zh_cn": "挽歌怀旧改装版"
+    }
+   }
+  ]
+ }
+]

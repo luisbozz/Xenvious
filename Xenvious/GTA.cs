@@ -190,7 +190,8 @@ namespace Xenvious
                 GTA.Offsets.Editor.AOB_nextcp_ptr, GTA.Offsets.Editor.AOB_session_ptr, GTA.Offsets.Editor.AOB_img_ptr,
                 GTA.Offsets.Editor.AOB_cursor_ptr, GTA.Offsets.Editor.AOB_scrProgramptr, GTA.Offsets.Editor.AOB_devptr,
                 GTA.Offsets.Editor.AOB_camptr, GTA.Offsets.Editor.AOB_versionptr, GTA.Offsets.Editor.AOB_creator_camptr,
-                GTA.Offsets.Editor.AOB_creator_cam_nocollision, GTA.Offsets.Editor.AOB_creator_budget, GTA.Offsets.Editor.AOB_testmode
+                GTA.Offsets.Editor.AOB_creator_cam_nocollision, GTA.Offsets.Editor.AOB_creator_budget, GTA.Offsets.Editor.AOB_testmode,
+                GTA.Offsets.Editor.AOB_packfiles
             };
             ulong ignored;
             return patterns.Where(p => !string.IsNullOrWhiteSpace(p)).All(p => AobCache.TryGet(p, out ignored));
@@ -248,12 +249,35 @@ namespace Xenvious
             return (IntPtr)(MainWindow.m.rip(IntPtr.Add((IntPtr)addy, 3)).ToInt64() - (long)MainWindow.m.getBaseAddress());
         }
 
+        /// <summary>Absolute address of the game's table of loaded packfiles (ScriptSpace).</summary>
+        public static long getPackfileTable(byte[] buffer = null)
+        {
+            if (!HasPattern(GTA.Offsets.Editor.AOB_packfiles, "AOB_packfiles"))
+                return 0;
+
+            ulong addy = ScanModule(GTA.Offsets.Editor.AOB_packfiles, buffer);
+
+            if (!Found(addy, "AOB_packfiles"))
+                return 0;
+
+            return MainWindow.m.rip(IntPtr.Add((IntPtr)addy, 3)).ToInt64();
+        }
+
         public static IntPtr getDEVPointer(byte[] buffer = null)
         {
             if (!HasPattern(GTA.Offsets.Editor.AOB_devptr, "AOB_devptr"))
                 return IntPtr.Zero;
 
             ulong addy = ScanModule(GTA.Offsets.Editor.AOB_devptr, buffer);
+
+            // Developer mode left on by an earlier run changes the bytes the Enhanced pattern
+            // starts with; the site stored from a clean scan still holds the patch then.
+            if (addy == 0 && AobCache.TryGetStored(GTA.Offsets.Editor.AOB_devptr, out ulong stored)
+                && MainWindow.m.memory(stored.ToString("X")).Get<int>() == DevPatched)
+            {
+                Log.Info("AOB_devptr: developer mode still on from an earlier run, found at its stored site.", source: "GTA");
+                addy = stored;
+            }
 
             if (!Found(addy, "AOB_devptr"))
                 return IntPtr.Zero;
@@ -472,6 +496,26 @@ namespace Xenvious
 
         /// <summary>True when a live thread of the script runs.</summary>
         public static bool IsScriptRunning(string scriptname) => getLocalScriptAddy(scriptname) != null;
+
+        /// <summary>Script hashes of all live threads, for the log when the game is stuck.</summary>
+        public static List<uint> LiveScriptHashes()
+        {
+            var hashes = new List<uint>();
+            if (GTA.Offsets.Editor.OFFSET_script_hash == 0)
+                return hashes;
+            long localaddy = getLocalPointer().ToInt64();
+            for (int d = 0; d < 0x800; d += 0x8)
+            {
+                try
+                {
+                    uint hash = MainWindow.m.memory(localaddy, new long[] { d, GTA.Offsets.Editor.OFFSET_script_hash }).Get<uint>();
+                    if (hash != 0 && IsLiveThread(localaddy, d))
+                        hashes.Add(hash);
+                }
+                catch { }
+            }
+            return hashes;
+        }
 
         public static long[] getLocalScriptAddy(string scriptname)
         {
@@ -1128,6 +1172,7 @@ namespace Xenvious
                     public static long adlc = 0;
                     public static long adlc2 = 0;
                     public static long adlc3 = 0;
+                    public static long adlc4 = 0;
                     public static long adlc_NEXT = 0;
                     public class Checkpoints
                     {
@@ -1326,6 +1371,9 @@ namespace Xenvious
                     public static long mcp = 0;
                     public static long number = 0;
                     public static long NEXT = 0;
+                    public static long cutscene = 0;
+                    public static long cutscene_number = 0;
+                    public static long cutscene_NEXT = 0;
                 }
 
                 public class otzone
@@ -1424,6 +1472,7 @@ namespace Xenvious
                 public static string AOB_session_ptr = "";
                 public static string AOB_cursor_ptr = "";
                 public static string AOB_scrProgramptr = "";
+                public static string AOB_packfiles = "";
 
                 public static string checksum_rstar = "";
                 public static string checksum_steam = "";
@@ -1461,11 +1510,22 @@ namespace Xenvious
                 public static long custom_dimension_model = 0x0;
                 public static long custom_dimension_min = 0x0;
                 public static long custom_dimension_max = 0x0;
+                public static long custom_tune = 0x0;
+                public static long custom_pv_slot = 0x0;
+                public static long custom_pv_result = 0x0;
+                public static long custom_pv_list = 0x0;
                 public static long templates = 0x0;
                 public static long templates_count = 0x0;
                 public static long OFFSET_script_name = 0x0;
                 public static long OFFSET_script_id = 0x0;
                 public static long OFFSET_script_state = 0x0;
+                // fiPackfile: its file name, the names and entries of its table of contents, the entry count.
+                public static long OFFSET_packfile_name = 0x0;
+                public static long OFFSET_packfile_names = 0x0;
+                public static long OFFSET_packfile_entries = 0x0;
+                public static long OFFSET_packfile_count = 0x0;
+                // Script name -> "<shipped virtual page flags>, <virtual page flags to load it with>" (ScriptSpace).
+                public static Dictionary<string, string> ScriptSpaceReservations = new Dictionary<string, string>();
                 // Enhanced keeps no name in the thread, only the joaat hash of its script.
                 // 0 means "match by name" (Legacy).
                 public static long OFFSET_script_hash = 0x0;
@@ -1482,6 +1542,7 @@ namespace Xenvious
                 public static long load_job_id = 0;
                 public static long creator_quit_flag = 0;
                 public static long OFFSET_current_creator_worker_offset_menu = 0x0;
+                public static long OFFSET_current_creator_worker_offset_test_state = 0x0;
                 public static long OFFSET_current_creator_worker_heading = 0x0;
                 public static long OFFSET_current_creator_worker_pos = 0x0;
                 public static long OFFSET_current_creator_cam_heading_survival = 0x0;
@@ -1526,6 +1587,16 @@ namespace Xenvious
                 public static long OFFSET_current_creator_test_dm = 0x0;
                 public static long OFFSET_current_creator_test_capture = 0x0;
                 public static long OFFSET_current_creator_test_lts = 0x0;
+                // fm_lts_creator's camera struct: f_2 is where the fly camera is rebuilt after a test.
+                public static long OFFSET_current_creator_cam_lts = 0x0;
+                // fm_lts_creator: 1 from the test start until the creator is back; and 1 once the
+                // creator has seen the mission controller end (it then waits for the session to end).
+                public static long OFFSET_current_creator_test_running_lts = 0x0;
+                public static long OFFSET_current_creator_test_ended_lts = 0x0;
+                // The creator hub script ("creator"): its menu stage, 6 = quit (sky swoop up, start the transition, clean up).
+                public static long OFFSET_creator_hub_stage = 0x0;
+                // g_bBringUpMPHud (TRIGGER_TRANSITION_MENU_ACTIVE): selector starts maintransition when it is set.
+                public static long OFFSET_transition_menu_trigger = 0x0;
                 public static long OFFSET_current_creator_test_mission = 0x0;
                 public static long OFFSET_current_creator_refresh_lts = 0x0;
                 public static long OFFSET_current_creator_refresh_mission = 0x0;
@@ -1538,6 +1609,8 @@ namespace Xenvious
                 public static long todhr = 0;
                 public static long todmn = 0;
                 public static long testcomplete = 0;
+                // The creators set it to end a running test (their "Exit test" prompt); the controller then fades out and quits.
+                public static long endtest = 0;
                 public static long dec = 0;
                 public static long nm = 0;
                 public static long sztag = 0;
@@ -1717,6 +1790,14 @@ namespace Xenvious
                 public static long player_head = 0;
                 public static long player_bit = 0;
                 public static long player_veh = 0;
+                public static long player_seat = 0;
+                public static long player_team = 0;
+                public static long player_vehid = 0;
+                public static long player_ttm = 0;
+                public static long player_tspr = 0;
+                public static long player_lcet = 0;
+                public static long player_lcid = 0;
+                public static long player_pvhead = 0;
                 public static long player_tars = 0;
                 public static long player_vfrs = 0;
                 public static long player_vfre = 0;
@@ -1743,6 +1824,9 @@ namespace Xenvious
                 public static long txt_NEXT = 0;
                 public static long NEXT_txt = 0;
                 public static long tstrt = 0;
+                // Rule presets (OFFSET_rp_*): field number -> offset; "teambits1/2", "f2389" and
+                // their strides by name. Filled by OffsetLoader, used by RulePresets.
+                public static Dictionary<string, long> RulePreset = new Dictionary<string, long>();
                 public static long next_settings = 0;
                 public static long team_NEXT_settings = 0;
                 public static long team_NEXT = 0;
@@ -1934,30 +2018,6 @@ namespace Xenvious
 
 
             public static string[] country_codes = new[] { "en", "de", "es", "fr", "it", "ja", "ko", "pl", "ru", "zh", "zh-cn", "pt", "pt-pt", "en-gb", "es-mx" };
-
-            //avehs
-            public static readonly string[] classes = new[] { "'Compacts", "Sedans", "SUVs", "Coupes", "Muscle", "Sports Classics", "Sports", "Super", "Motorcycles", "Off-Road", "Industrial", "Utility", "Vans", "Cycles", "Custom", "Special", "Weaponized", "Arena Contender", "Open Wheel", "Go Kart", "Tuner'" };
-            public static readonly string[] Compacts = new[] { "'Blista", "Dilettante", "Issi", "Prairie", "Rhapsody", "Panto", "Brioso R/A", "Issi Classic", "Blista Kanjo", "Asbo", "Club", "Brioso 300", "Weevil'" };
-            public static readonly string[] Sedans = new[] { "'Asea", "Asterope", "Fugitive", "Premier", "Primo", "Schafter", "Stainer", "Super Diamond", "Surge", "Tailgater", "Washington", "Glendale", "Warrener", "Primo Custom", "Schafter V12", "Schafter V12 armored", "Schafter LWB", "Schafter LWB armored", "Cognoscenti 55", "Cognoscenti 55 armored", "Cognoscenti", "Cognoscenti armored", "Stafford", "Glendale Custom", "Warrener HKR", "Tailgator @", "Enus Deity", "Lampadati Cinquemila'" };
-            public static readonly string[] SUVs = new[] { "'Baller", "Baller 2013", "BeeJay XL", "Cavalcade", "Crusader", "Dubsta", "Granger", "Gresley", "Landstalker", "Mesa", "Park Ranger", "Radius", "Seminole", "Serrano", "Dubsta 6X6", "Huntley S", "Baller LE", "Baller LE LWB", "Baller LE armored", "Baller LE LWB armored", "XLS", "XLS armored", "Contender", "Patriot", "FQ2", "Habanero", "Toros", "Novak", "Rebla GTS", "Landstalker XL", "Seminole Frontier", "Squaddie", "Pfister Astron", "Enus Jubilee'" };
-            public static readonly string[] Coupes = new[] { "'Cognoscenti Cabrio", "Exemplar", "F620", "Felon GT", "Jackal", "Oracle", "Sentinel", "Windsor", "Windsor Cabrio", "Previon'" };
-            public static readonly string[] Muscle = new[] { "'Buccaneer", "Dominator", "Gauntlet", "Phoenix", "Picador", "Ruiner", "Sabre Turbo", "Vigero", "Hotknife", "Blade", "Rat-Truck", "Slamvan", "Dukes", "Stallion", "Vigro", "Coquette Black Fin", "Chino", "Faction", "Faction Custom", "Moonbeam Custom", "Chino Custom", "Voodoo Custom", "Buccaneer Custom", "Nightshade", "Faction Custom Donk", "Slamvan Custom", "Virgo Classic", "Virgo Classic Custom", "Sabre Turbo Custom", "Pisswasser Dominator", "Redwood Gauntlet", "Burger Shot Stallion", "Duke ODeath", "Yosemite", "Hermes", "Hustler", "Ellie", "Dominator GTX", "Impaler", "Deviant", "Tulip", "Clique", "Gauntlet Classic", "Gauntlet Hellfire", "Peyote Gasser", "Drift Yosemite", "Beater Dukes", "Gauntlet Classic Custom", "Manana Custom", "Dominator ASP", "Dominator GTT", "Bravado Buffalo STX'" };
-            public static readonly string[] Sports_Classics = new[] { "'JB 007", "Monroe", "Stinger", "Z-Type", "Roosebelt", "Pigalle", "Coquette Classic", "Casco", "Stirling GT", "Mamba", "Tornado Custom", "Tornado Rat Rod", "Invernus Classic", "Turismo Classic", "Cheetah Classic", "Torero", "Retinue", "Rapid GT Classic", "Savestra", "Viseris", "GT500", "190z", "Fagaloa", "Cheburek", "Michelli GT", "Jester Classic", "Swinger", "Zion Classic", "Dynasty", "Nebula Turbo", "Retinue Mk II", "Fränken Stange", "Peyote Custom", "Ardent", "JB 700W'" };
-            public static readonly string[] Sports = new[] { "'9F Cabrio", "Banshee", "Carbonizzare", "Comet", "Coquette", "Feltzer", "Fusilade", "Futo", "Rapid GT", "Sultan", "Khamelion", "Alpha", "Jester", "Massacro", "Furore GT", "Jester Race", "Massacro Race", "Blista", "Kuruma", "Kuruma armored", "Verlierer", "Bestia GTS", "Seve-70", "Omnis", "Tropos Rallye", "Lynx", "Drift Tampa", "Sprunk Buffalo", "Raptor", "Elegy RH8", "Elegy Retro Custom", "Comet Retro Custom", "Specter", "Specter Custom", "Ruston", "Raiden", "Pariah", "Comet Safari", "Sentinel Classic", "Streiter", "Revolter", "Neon", "Comet SR", "Hotring Sabre", "GB 200", "Flasch GT", "Schlagen GT", "Itali GTO", "8F Drafter", "Issi Sport", "Neo", "Locust", "Jugular", "Paragon R", "Schwartzer", "Imorgon", "Sugoi", "V-STR", "Komoda", "Sultan Classic", "Penumbra FF", "Coquette D10", "Itali RSX", "Calico GTF", "Jester RR", "ZR350", "Remus", "Vectre", "Cypher", "Comet S2", "RT3000", "Sultan RS Classic", "Futo GTX", "Euros", "Growler", "UNKNOWN", "Comet S2 Cabrio", "Paragon R(armored)'" };
-            public static readonly string[] Super = new[] { "'Adder", "Bullet", "Cheetah", "Entity XF", "Infernus", "Vacca", "Voltic", "Turismo R", "Zentorno", "Osiris", "T20", "Banshee 900R", "Sultan RS", "Reaperm", "FMJ", "X80", "Pfister 811", "RE-7B", "Tyrus", "ETR1", "Penetrator", "Tempesta", "Itali GTB", "Itali GTB Custom", "Nero", "Nero Custom", "GP1", "Vagner", "XA-21", "Visione", "Cyclone", "SC1", "Autarch", "Tapian", "Entity", "Tezeract", "Tyrant", "Deveste Eight", "Thrax", "Zorrusso", "Krieger", "Emerus", "S80RR", "Furia", "Tigon", "Pegassi Ignus", "UNKNOWN", "UNKNOWN", "Zeno", "Dewbauchee Champion'" };
-            public static readonly string[] Motorcycles = new[] { "'Akuma", "Bagger", "Bati 801", "Bati 801R", "Blazer", "Deamon", "Duble-T", "Nemisis", "PCJ 600", "Ruffian", "Sanchez", "Sanchez Label", "Vader", "Carbon RS", "Thrust", "Soveregin", "Innovation", "Hakuchou", "Enduro", "Lectro", "Vindicator", "BF400", "Gargoyle", "Cliffhanger", "Hakuchou Drag", "Defiler", "Chimera", "Zombie Chopper", "Avarus", "Nightblade", "Zombie Bobber", "Wolfsbane", "Manchez", "Rat Bike", "Faggio Mod", "Faggio Sport", "Daemon Custom", "Vortex", "Shotaro", "Esskey", "Diablus", "Diablus Custom", "FRC 1000", "FRC 1000 Custom", "Sanctus", "Rampant Rocket", "Stryder", "Manchez Scout'" };
-            public static readonly string[] Off_Road = new[] { "'Injection", "Baller", "Blazer", "Duneloader", "Dune Buggy", "Patriot", "Sanchez", "Sandking XL", "Bodhi", "Dubsta", "Mesa", "Rusty Rebell", "Sandking SWB", "Tornado", "Sanches label", "Dubsta 6X6", "Bifta", "Kalahari", "Paradiese", "The Liberator", "Marshal", "Insurgent", "Guardian", "Brawler", "Trophy Truck", "Desert Raid", "BF400", "Dune", "Street Blazer", "Riata", "Kamacho", "Freecrawler", "Menacer", "Hellion", "Caracara 4x4", "Rancher XL", "Outlaw", "Everon", "Zhaba", "Vagrant", "Yosemite Rancher", "Rebel", "Winky", "Verus", "Manchez Scout", "Nightshark", "Patriot Mil-Spec'" };
-            public static readonly string[] Industrial = new[] { "'Dozer", "Bohrer", "Kipplaster", "Frachtlader", "Dock Handler", "Mixer'" };
-            public static readonly string[] Utility = new[] { "'Airtug", "Caddie", "Faggio", "Fieldmaster", "Lawn Mower", "Slamtruck'" };
-            public static readonly string[] Vans = new[] { "'Boxville", "Buritto", "Camper", "Clown", "Journey", "Pony", "Minivan", "Rumpo", "Surfer", "Taco", "Youga", "Mule", "Gang Buritto", "Minivan Custom", "Rumpo Custom", "Youga Classic", "Speedo Custom", "Mule Custom", "Bravado Bison", "Brute Boxville", "Declasse Burrito", "Declasse Bugstars Burrito", "Brute Pony'" };
-            public static readonly string[] Cycles = new[] { "'BMX", "Cruiser", "Scorcher", "Whippet Race Bike", "Endurex Race Bike", "Tri-Cycles Race Bike'" };
-            public static readonly string[] Custom = new[] { "''" };
-            public static readonly string[] Special = new[] { "'Blazer Aqua", "Ruiner 2000", "Rocket Voltic", "Deluxo", "Stromberg", "Thruster", "Opressor", "Vigelante", "Oppressor Mk II", "Scramjet", "RC Bandito'" };
-            public static readonly string[] Weaponized = new[] { "'Technical Aqua", "Technical Custom", "Technical", "Dune FAV", "Armored Boxville", "Turretted Limo", "Barrage", "Half-track", "APC", "Caracara", "Insurgend Pick-Up Custom", "Insurgend Pick-Up", "Menacer'" };
-            public static readonly string[] Arena_Contender = new[] { "'Apocalypse Bruiser", "Apocalypse Brutus", "Apocalypse Cerberus", "Apocalypse Deathbike", "Apocalypse Dominator", "Apocalypse Impaler", "Apocalypse Imperator", "Apocalypse Issi", "Apocalypse Sasquatch", "Apocalypse Scarab", "Apocalypse Slamvan", "Apocalypse ZR380'" };
-            public static readonly string[] Open_Wheel = new[] { "'PR4", "R88", "BR8", "DR1'" };
-            public static readonly string[] Go_Kart = new[] { "'Dinka Veto Classic", "Dinka Veto Modern'" };
-            public static readonly string[] Tuner = new[] { "'Calico GTF", "Jester RR", "ZR350", "Remus", "Vectre", "Cypher", "Dominator ASP", "Comet S2", "Warrener HKR", "RT3000", "Tailgator S", "Sultan RS Classic", "Futo GTX", "Dominator GTT", "Previon", "Euros", "Growler'" };
 
             public static ObservableCollection<Outfit> Outfits
             {
@@ -2533,6 +2593,16 @@ namespace Xenvious
             // PreciseTemplates.Active) and takes them back out afterwards.
             public string trigger { get; set; }
 
+            // A payload for the extra code pages behind the script (ScriptSpace): bytes_to_patch
+            // goes to pc page_base + offset, assembled for that address, and no pattern is scanned.
+            // It is only written when the script's extra pages start at page_base.
+            public bool page { get; set; }
+            public int page_base { get; set; }
+
+            // A patch that calls into the extra pages: left out until every page payload of its
+            // script is in.
+            public bool needs_page { get; set; }
+
             // Defaults to true so every existing entry keeps working: the field
             // is absent from most of scrpatches.json, and an absent bool would
             // otherwise deserialize to false and silently disable the patch.
@@ -2617,6 +2687,7 @@ namespace Xenvious
         {
             public string Name;
             public uint UInt32;
+            public string Model;
 
             public Actor(string name, uint uInt32)
             {

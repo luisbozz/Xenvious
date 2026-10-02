@@ -20,6 +20,7 @@ namespace Xenvious
         public ModelCard()
         {
             InitializeComponent();
+            ModelCatalogStore.ShowOnPageChanged += (_, __) => RefreshChips();
         }
 
         /// <summary>Accent frame for the page's main card (the Vehicles page).</summary>
@@ -95,6 +96,13 @@ namespace Xenvious
         /// <summary>Rebuilds the recent and favourite chips (after a pick or a favourite change).</summary>
         public void RefreshChips()
         {
+            if (!ModelCatalogStore.ShowOnPage)
+            {
+                RecentChips.Children.Clear();
+                FavoriteChips.Children.Clear();
+                RecentLabel.Visibility = FavoriteLabel.Visibility = Visibility.Collapsed;
+                return;
+            }
             var items = Items?.Invoke();
             if (items == null || items.Count == 0)
                 return;

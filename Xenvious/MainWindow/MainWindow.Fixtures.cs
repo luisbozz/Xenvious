@@ -76,13 +76,11 @@ namespace Xenvious
         }
 
 
-        // The prop under the cursor comes from the injected creator script (custom_hovered_model),
+        // The prop under the cursor comes from the injected creator script (ScriptVars.HoveredModel),
         // so it only changes while the script features are on.
         private void ShowHoveredFixtureModel(int index)
         {
-            int hovered = 0;
-            if (m.IsProcOpen && GTA.Offsets.Editor.custom_hovered_model != 0)
-                hovered = new Global(GTA.Offsets.Editor.custom_hovered_model).Get<int>();
+            int hovered = ScriptVars.Get<int>(ScriptVars.HoveredModel);
 
             string name = PropName(hovered);
             lblcdefhovered.Text = hovered == 0
@@ -134,7 +132,7 @@ namespace Xenvious
 
         private void Btncdefgetmodel_Click(object sender, RoutedEventArgs e)
         {
-            tbcdefmodel.Text = new Global(GTA.Offsets.Editor.custom_hovered_model).Get<int>().ToString();
+            tbcdefmodel.Text = ScriptVars.Get<int>(ScriptVars.HoveredModel).ToString();
         }
 
         private void tbcdeflocx_TextChanged(object sender, TextChangedEventArgs e)

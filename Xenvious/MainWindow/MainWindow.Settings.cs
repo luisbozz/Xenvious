@@ -212,22 +212,6 @@ namespace Xenvious
 
             try
             {
-                if (ini.ReadBoolean("Settings", "killload"))
-                {
-                    var tempkillfromconfig = JsonConvert.DeserializeObject<Kill>(ConfigText.Decode(ini.ReadString("Settings", "killvalues")));
-                    if (tempkillfromconfig != null)
-                    {
-                        kill = tempkillfromconfig;
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Log.Error("Error loading killload", e, "init");
-            }
-
-            try
-            {
                 var temp_current_creator_ptr = ini.ReadString("Settings", "lastpresets").Split(',');
                 if (temp_current_creator_ptr[0].Length == 7)
                 {
@@ -281,10 +265,10 @@ namespace Xenvious
 
             try
             {
+                // A fresh config has no list yet.
                 string decrypted = ConfigText.Decode(ini.ReadString("Settings", "gefreeze"));
-
-                var entries = System.Text.Json.JsonSerializer.Deserialize<List<GlobalFreezeEntry>>(decrypted) ?? new List<GlobalFreezeEntry>()
-;
+                var entries = string.IsNullOrWhiteSpace(decrypted) ? new List<GlobalFreezeEntry>()
+                    : System.Text.Json.JsonSerializer.Deserialize<List<GlobalFreezeEntry>>(decrypted) ?? new List<GlobalFreezeEntry>();
                 foreach (var e in entries)
                 {
                     switch (e.Type)
@@ -341,7 +325,8 @@ namespace Xenvious
             try
             {
                 string decrypted = ConfigText.Decode(ini.ReadString("Settings", "lefreeze"));
-                List<LocalFreezeEntry>  entries = System.Text.Json.JsonSerializer.Deserialize<List<LocalFreezeEntry>>(decrypted) ?? new List<LocalFreezeEntry>();
+                List<LocalFreezeEntry> entries = string.IsNullOrWhiteSpace(decrypted) ? new List<LocalFreezeEntry>()
+                    : System.Text.Json.JsonSerializer.Deserialize<List<LocalFreezeEntry>>(decrypted) ?? new List<LocalFreezeEntry>();
 
                 foreach (var e in entries)
                 {
@@ -536,20 +521,6 @@ namespace Xenvious
 
                 SaveMenuPresets(ini);
 
-                if (cbmissionkills2c.IsChecked ?? true)
-                {
-                    var killjsonstring = JsonConvert.SerializeObject(kill);
-
-                    string storedkilljson = ConfigText.Encode(killjsonstring);
-
-                    ini.Write("Settings", "killload", true);
-                    ini.Write("Settings", "killvalues", storedkilljson);
-                }
-                else
-                {
-                    ini.Write("Settings", "killload", false);
-                }
-
                 //if (GTA.Editor.mpropsaddys != null)
                 //    ini.Write("Settings", "lastmprops", String.Join(",", GTA.Editor.mpropsaddys));
                 ini.Write("Settings", "gmwarning", cbgmwarning.IsChecked ?? true);
@@ -644,34 +615,37 @@ namespace Xenvious
             WriteScriptFeatureBits(cbsettingsexpscrfeat.IsChecked ?? true);
         }
 
-        // The script feature bits of custom_check: dispatch bits 1..5 for the injected
-        // functions, bit 30 for the dev patches. Bit 5 makes the race creator flicker, so it
-        // is only set inside the other creators (and outside a creator it waits until one
-        // is known, so the race creator never runs a frame with it).
+        // The script feature bits of ScriptVars.Check: dispatch bits 1..5 for the injected
+        // functions; the setting itself (ScriptVars.FeaturesOn) gates the dev patches. Bit 5
+        // makes the race creator flicker, so it is only set inside the other creators (and
+        // outside a creator it waits until one is known, so the race creator never runs a
+        // frame with it).
         // Bits 2 and 3 (customfuncs fn3 play areas, fn4 gang chase areas) also follow their
-        // switches on the "Show in game" card.
+        // switches on the "Show in game" card, and stay off while the creator's drawer runs:
+        // PlayAreaOverlay draws the same areas through it then.
         private static void WriteScriptFeatureBits(bool enable)
         {
             string creator = GTA.CurrentCreatorName();
+            bool drawer = ScriptDrawer.Running(creator);
             for (int bit = 1; bit <= 5; bit++)
             {
                 bool wanted = enable && (bit != 5 || (creator != "" && creator != "fm_race_creator"))
-                    && (bit != 2 || VisibilityGroups.IsOn(VisibilityGroups.PlayAreaBit))
-                    && (bit != 3 || VisibilityGroups.IsOn(VisibilityGroups.GangChaseBit));
-                Functions.Write.writebinary(bit, GTA.Offsets.Editor.custom_check, wanted);
+                    && (bit != 2 || (VisibilityGroups.IsOn(VisibilityGroups.PlayAreaBit) && !drawer))
+                    && (bit != 3 || (VisibilityGroups.IsOn(VisibilityGroups.GangChaseBit) && !drawer));
+                ScriptVars.SetBit(bit, wanted);
             }
-            Functions.Write.writebinary(30, GTA.Offsets.Editor.custom_check, enable);
+            ScriptVars.FeaturesOn = enable;
         }
 
         public void RefreshScriptFeatureBits()
         {
-            if (m.IsProcOpen && GTA.Offsets.Editor.custom_check != 0)
+            if (m.IsProcOpen)
                 WriteScriptFeatureBits(cbsettingsexpscrfeat.IsChecked == true);
         }
 
         private void cbsettingsswitchcamkey_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(31, GTA.Offsets.Editor.custom_check, cbsettingsswitchcamkey);
+            ScriptVars.CameraKey = cbsettingsswitchcamkey.IsChecked == true;
         }
 
         private void cbsettingswritelogstofile_Checked(object sender, RoutedEventArgs e)

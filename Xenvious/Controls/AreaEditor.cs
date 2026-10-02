@@ -45,6 +45,10 @@ namespace Xenvious
         // next to each takes any number.
         private readonly Slider _widthSlider = new Slider { Minimum = 0, Maximum = 50, VerticalAlignment = VerticalAlignment.Center };
         private readonly Slider _heightSlider = new Slider { Minimum = 0, Maximum = 50, VerticalAlignment = VerticalAlignment.Center };
+        private readonly Slider _lengthSlider = new Slider { Minimum = 0, Maximum = 50, VerticalAlignment = VerticalAlignment.Center };
+        private readonly TextBox _lengthValue = new TextBox { Width = 76, Height = 30, Margin = new Thickness(10, 0, 0, 0) };
+        private readonly Slider _depthSlider = new Slider { Minimum = 0, Maximum = 50, VerticalAlignment = VerticalAlignment.Center };
+        private readonly TextBox _depthValue = new TextBox { Width = 76, Height = 30, Margin = new Thickness(10, 0, 0, 0) };
         private readonly TextBox _widthValue = new TextBox { Width = 76, Height = 30, Margin = new Thickness(10, 0, 0, 0) };
         private readonly TextBox _heightValue = new TextBox { Width = 76, Height = 30, Margin = new Thickness(10, 0, 0, 0) };
         private readonly CheckBox _below = new CheckBox { IsChecked = true };
@@ -54,7 +58,7 @@ namespace Xenvious
         private readonly TextBlock _status = new TextBlock { FontSize = 12, Margin = new Thickness(0, 6, 0, 0), TextWrapping = TextWrapping.Wrap };
         private readonly Canvas _top = new Canvas { Height = 130, ClipToBounds = true };
         private readonly Canvas _side = new Canvas { Height = 130, ClipToBounds = true };
-        private FrameworkElement _widthRow, _heightRow;
+        private FrameworkElement _widthRow, _heightRow, _lengthRow, _depthRow;
 
         private static string T(string key, string fallback) => MainWindow.Instance?.TranslateOr(key, fallback) ?? fallback;
 
@@ -148,6 +152,8 @@ namespace Xenvious
             _belowRow = ToggleRow(T("area_below", "Reach 1 m below the ground (players on slopes stay inside)"), _below);
 
             _widthRow = SliderRow(T("width", "Width"), _widthSlider, _widthValue, v => SetWidth(v));
+            _lengthRow = SliderRow(T("area_length", "Length"), _lengthSlider, _lengthValue, v => SetLength(v));
+            _depthRow = SliderRow(T("area_size_y", "Size north-south"), _depthSlider, _depthValue, v => SetAxisSize(false, v));
             _heightRow = SliderRow(T("area_height", "Height above the ground"), _heightSlider, _heightValue, v => { _heightM = v; Apply(); });
             _below.Click += (_, __) =>
             {
@@ -157,6 +163,8 @@ namespace Xenvious
 
             Children.Add(_hint);
             Children.Add(_widthRow);
+            Children.Add(_lengthRow);
+            Children.Add(_depthRow);
             Children.Add(_heightRow);
             Children.Add(_belowRow);
 
@@ -173,6 +181,7 @@ namespace Xenvious
             Children.Add(_status);
 
             _top.SizeChanged += (_, __) => Draw();
+            SatelliteTiles.TileLoaded += () => Dispatcher.BeginInvoke(new Action(() => { if (IsVisible) Draw(); }), System.Windows.Threading.DispatcherPriority.Background);
             _side.SizeChanged += (_, __) => Draw();
             Refresh();
         }
@@ -272,6 +281,42 @@ namespace Xenvious
             Draw();
         }
 
+        // Width only grows the angled box across its axis; the length moves both points along
+        // the axis, the same distance each way, so the box grows or shrinks around its middle.
+        private void SetLength(float v)
+        {
+            if (_shape == AreaShape.AxisBox)
+            {
+                SetAxisSize(true, v);
+                return;
+            }
+            if (_shape != AreaShape.AngledBox || !Read(out var s, out var e, out _))
+                return;
+            double dx = e.X - s.X, dy = e.Y - s.Y;
+            double len = Math.Sqrt(dx * dx + dy * dy);
+            if (len < 0.001)
+            {
+                dx = 1; dy = 0; len = 1;
+            }
+            double cx = (s.X + e.X) / 2, cy = (s.Y + e.Y) / 2, half = v / 2;
+            Set(_sx, (float)(cx - dx / len * half)); Set(_sy, (float)(cy - dy / len * half));
+            Set(_ex, (float)(cx + dx / len * half)); Set(_ey, (float)(cy + dy / len * half));
+            Draw();
+        }
+
+        // An axis box has no width: its size is the corners' distance on X and on Y. Both
+        // corners move, so the box keeps its middle.
+        private void SetAxisSize(bool x, float v)
+        {
+            if (_shape != AreaShape.AxisBox || !Read(out var s, out var e, out _))
+                return;
+            float mid = x ? (s.X + e.X) / 2 : (s.Y + e.Y) / 2;
+            float lo = mid - v / 2, hi = mid + v / 2;
+            if (x) { Set(_sx, lo); Set(_ex, hi); }
+            else { Set(_sy, lo); Set(_ey, hi); }
+            Draw();
+        }
+
         private FrameworkElement View(string label, Canvas canvas)
         {
             var panel = new StackPanel();
@@ -294,6 +339,10 @@ namespace Xenvious
             _heightRow.Visibility = usesHeight ? Visibility.Visible : Visibility.Collapsed;
             _belowRow.Visibility = usesHeight ? Visibility.Visible : Visibility.Collapsed;
             _widthRow.Visibility = _shape == AreaShape.AxisBox ? Visibility.Collapsed : Visibility.Visible;
+            _lengthRow.Visibility = _shape == AreaShape.AngledBox || _shape == AreaShape.AxisBox ? Visibility.Visible : Visibility.Collapsed;
+            _depthRow.Visibility = _shape == AreaShape.AxisBox ? Visibility.Visible : Visibility.Collapsed;
+            if (_lengthRow is Panel lengthPanel && lengthPanel.Children[0] is TextBlock lengthLabel)
+                lengthLabel.Text = _shape == AreaShape.AxisBox ? T("area_size_x", "Size east-west") : T("area_length", "Length");
             if (_widthRow is Panel widthPanel && widthPanel.Children[0] is TextBlock widthLabel)
                 widthLabel.Text = _shape == AreaShape.Sphere || _shape == AreaShape.Cylinder ? T("pa_radius", "Radius") : T("width", "Width");
             if (!Read(out var s, out var e, out float width))
@@ -309,6 +358,13 @@ namespace Xenvious
             _widthM = width;
             Show(_heightSlider, _heightValue, height);
             Show(_widthSlider, _widthValue, width);
+            if (_shape == AreaShape.AxisBox)
+            {
+                Show(_lengthSlider, _lengthValue, Math.Abs(e.X - s.X));
+                Show(_depthSlider, _depthValue, Math.Abs(e.Y - s.Y));
+            }
+            else
+                Show(_lengthSlider, _lengthValue, (float)Math.Sqrt((e.X - s.X) * (e.X - s.X) + (e.Y - s.Y) * (e.Y - s.Y)));
             Draw();
         }
 
@@ -411,6 +467,7 @@ namespace Xenvious
             }
             double scale = Math.Min(w, h) * 0.75 / Math.Max(extent, 1);
             Point P(double x, double y) => new Point(w / 2 + (x - cx) * scale, h / 2 - (y - cy) * scale);
+            SatelliteTiles.Draw(_top, w, h, cx, cy, scale);
 
             if (_shape == AreaShape.Sphere || _shape == AreaShape.Cylinder)
             {

@@ -63,12 +63,15 @@ namespace Xenvious
         {
             if (m.IsProcOpen)
                 new Global((GTA.Offsets.Editor.DProps.vrot + 2 + GTA.Offsets.Editor.DProps.NEXT * dddpropno.SelectedIndex)).SetFloat(tbdpropsrotz.Text);
+            // Typed rotation Z is the heading too.
+            if (tbdpropsrotz.IsKeyboardFocusWithin)
+                WriteHeading(GTA.Offsets.Editor.DProps.head + GTA.Offsets.Editor.DProps.NEXT * dddpropno.SelectedIndex, 0, tbdpropsrotz.Text);
         }
 
         private void tbdpropshead_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (m.IsProcOpen)
-                new Global((GTA.Offsets.Editor.DProps.head + GTA.Offsets.Editor.DProps.NEXT * dddpropno.SelectedIndex)).SetFloat(tbdpropshead.Text);
+            WriteHeading(GTA.Offsets.Editor.DProps.head + GTA.Offsets.Editor.DProps.NEXT * dddpropno.SelectedIndex,
+                GTA.Offsets.Editor.DProps.vrot + GTA.Offsets.Editor.DProps.NEXT * dddpropno.SelectedIndex, tbdpropshead.Text);
         }
 
         private void tbdpropssettings1_TextChanged(object sender, TextChangedEventArgs e)
