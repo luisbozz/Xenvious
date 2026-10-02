@@ -125,15 +125,15 @@ namespace Xenvious
                 {
                     try
                     {
-                        return new Global(GTA.Offsets.Editor.custom_dimension_model).SetInt(id);
+                        return ScriptVars.Set(ScriptVars.DimensionModel, id);
                     }
                     catch
                     {
                         return false;
                     }
                 },
-                () => new Global(GTA.Offsets.Editor.custom_dimension_min).GetVector3(),
-                () => new Global(GTA.Offsets.Editor.custom_dimension_max).GetVector3());
+                () => ScriptVars.GetVector3(ScriptVars.DimensionMin),
+                () => ScriptVars.GetVector3(ScriptVars.DimensionMax));
 
             var propPlacementService = new PropPlacementService();
             var scriptFeatures = new ScriptFeatureMonitor(

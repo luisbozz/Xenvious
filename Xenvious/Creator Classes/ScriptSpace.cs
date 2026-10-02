@@ -30,7 +30,7 @@ namespace Xenvious
     /// against the code size, so CALLs into these pages run. Measured on Enhanced 1.0.1158
     /// (Capture, DM, Race).
     ///
-    /// The last slot is a data page for Xenvious and the payload (ScriptDrawer). The script reaches
+    /// The last slot is a data page for Xenvious and the payload (ScriptVars, ScriptDrawer). The script reaches
     /// it as string page 63 of a string page array of our own (scrProgram+0x68 switched the same
     /// way): PUSH_CONST_U24 0xFC000 + offset; STRING gives a pointer into it, and LOAD and STORE
     /// work on any pointer. The VM's STRING handler takes pages[index &gt;&gt; 14] + (index &amp; 0x3FFF)
@@ -80,6 +80,7 @@ namespace Xenvious
             }
         }
 
+        private static readonly object Gate = new object();
         private static List<Reservation> reservations;
         private static long scriptPack;
 
@@ -90,7 +91,7 @@ namespace Xenvious
         {
             if (reservations != null)
                 return;
-            reservations = new List<Reservation>();
+            var list = new List<Reservation>();
             foreach (var kv in GTA.Offsets.Editor.ScriptSpaceReservations)
             {
                 // "<shipped virtual flags>, <virtual flags to load with>"
@@ -108,8 +109,10 @@ namespace Xenvious
                     Log.Warn($"Script space for {kv.Key}: 0x{target:X8} does not fit 0x{shipped:X8}: {problem}", source: "ScriptSpace");
                     continue;
                 }
-                reservations.Add(new Reservation { Script = kv.Key, Shipped = shipped, Target = target });
+                list.Add(new Reservation { Script = kv.Key, Shipped = shipped, Target = target });
             }
+            // Published whole: other threads read it without the lock.
+            reservations = list;
         }
 
         /// <summary>Forgets the addresses of the last game process.</summary>
@@ -171,6 +174,21 @@ namespace Xenvious
         {
             if (!MainWindow.m.IsProcOpen)
                 return null;
+            // Several threads ask; two setting up the same script at once could clear the data
+            // page after the first one already handed it out.
+            lock (Gate)
+                return GetLocked(script);
+        }
+
+        /// <summary>Whether this edition gives the script extra pages (it may still be loaded without them).</summary>
+        public static bool Configured(string script)
+        {
+            Load();
+            return reservations.Any(x => x.Script == script);
+        }
+
+        private static Space GetLocked(string script)
+        {
             Load();
             var r = reservations.FirstOrDefault(x => x.Script == script);
             if (r == null)

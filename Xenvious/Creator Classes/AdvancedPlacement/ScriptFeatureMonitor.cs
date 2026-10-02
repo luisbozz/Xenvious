@@ -23,7 +23,7 @@ namespace Xenvious.AdvancedPlacement
     /// <summary>
     /// Whether the injected creator functions (model dimensions, hovered model) work.
     ///
-    /// The dispatch bits in custom_check do not answer that on their own: the LTS
+    /// The dispatch bits do not answer that on their own: the LTS
     /// creator runs a function when its bit is clear, race and capture when it is set,
     /// and a GTA process can keep stale bytecode across Xenvious restarts. So the check
     /// asks the function itself: write two known models and see whether the dimensions
@@ -87,11 +87,10 @@ namespace Xenvious.AdvancedPlacement
 
         private static async Task<Vector3> ProbeAsync(int model)
         {
-            new Global(GTA.Offsets.Editor.custom_dimension_model).SetInt(model);
+            ScriptVars.Set(ScriptVars.DimensionModel, model);
             // The function runs once per frame; give it a few.
             await Task.Delay(150).ConfigureAwait(true);
-            return new Global(GTA.Offsets.Editor.custom_dimension_max).GetVector3()
-                 - new Global(GTA.Offsets.Editor.custom_dimension_min).GetVector3();
+            return ScriptVars.GetVector3(ScriptVars.DimensionMax) - ScriptVars.GetVector3(ScriptVars.DimensionMin);
         }
 
         /// <summary>Model under the creator cursor, 0 when none.</summary>
@@ -99,7 +98,7 @@ namespace Xenvious.AdvancedPlacement
         {
             try
             {
-                return GTA.Offsets.Editor.custom_hovered_model == 0 ? 0 : new Global(GTA.Offsets.Editor.custom_hovered_model).Get<int>();
+                return ScriptVars.Get<int>(ScriptVars.HoveredModel);
             }
             catch
             {

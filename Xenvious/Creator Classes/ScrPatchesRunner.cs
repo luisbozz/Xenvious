@@ -120,7 +120,7 @@ namespace Xenvious
         private static bool Wanted(ScrPatches patch)
         {
             return patch.enabled && TriggerActive(patch.trigger)
-                && (!patch.dev || Functions.Read.checkbinary(30, GTA.Offsets.Editor.custom_check))
+                && (!patch.dev || ScriptVars.FeaturesOn)
                 && !string.IsNullOrEmpty(patch.script_name) && !string.IsNullOrEmpty(patch.bytes_to_patch);
         }
 
@@ -170,7 +170,7 @@ namespace Xenvious
 
                     if (patch.patch_name.Equals("set switch camera to caps lock"))
                     {
-                        if (!Functions.Read.checkbinary(31, GTA.Offsets.Editor.custom_check))
+                        if (!ScriptVars.CameraKey)
                         {
                             continue;
                         }

@@ -14,16 +14,16 @@ namespace Xenvious
     /// payload reads it as string page 63, so neither globals nor statics are involved.
     ///
     /// Data page (byte offsets): 0x00 "STRING" (the text label BEGIN_TEXT_COMMAND_DISPLAY_TEXT
-    /// needs), 0x08 entry count, 0x10 a heartbeat the drawer counts up every frame, 0x100 the
-    /// entries, 0x100 bytes each. An entry is 8 byte slots with the value in the low 4 bytes:
+    /// needs), 0x08 entry count, 0x10 a heartbeat the drawer counts up every frame, 0x18 the
+    /// customfuncs variables (ScriptVars), 0x800 the entries, 0x100 bytes each. An entry is 8 byte slots with the value in the low 4 bytes:
     /// 0 kind, 1 parts, 2..9 prism corners (x, y) or marker type, position and scale, 10/11 prism
     /// bottom and top, 12..16 r, g, b, fill alpha, line alpha, 17..19 label position, 20 label
     /// scale, 21..24 label r, g, b, a, 25..31 the label (56 bytes, NUL terminated).
     /// </summary>
     public static class ScriptDrawer
     {
-        public const int MaxShapes = 63;
-        private const int CountAt = 0x08, BeatAt = 0x10, EntriesAt = 0x100, EntrySize = 0x100;
+        public const int MaxShapes = 56;
+        private const int CountAt = 0x08, BeatAt = 0x10, EntriesAt = 0x800, EntrySize = 0x100;
         private const int TextAt = 25 * 8, TextBytes = 56;
         private static readonly byte[] Header = Encoding.ASCII.GetBytes("STRING\0\0");
 

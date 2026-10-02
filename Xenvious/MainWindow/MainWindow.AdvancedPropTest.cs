@@ -132,7 +132,7 @@ namespace Xenvious
         {
             int lastpropnum = new Global(GTA.Offsets.Editor.Props.number).Get<int>() - 1;
             int model = new Global(GTA.Offsets.Editor.Props.model + lastpropnum * GTA.Offsets.Editor.Props.NEXT).Get<int>();
-            new Global(GTA.Offsets.Editor.custom_dimension_model).SetInt(model);
+            ScriptVars.Set(ScriptVars.DimensionModel, model);
 
             creatorRefresh();
         }
@@ -153,8 +153,8 @@ namespace Xenvious
 
             int model = new Global(GTA.Offsets.Editor.Props.model + lastpropnum * GTA.Offsets.Editor.Props.NEXT).Get<int>();
 
-            XenVector3 min = new Global(GTA.Offsets.Editor.custom_dimension_min).Get<XenVector3>();
-            XenVector3 max = new Global(GTA.Offsets.Editor.custom_dimension_max).Get<XenVector3>();
+            XenVector3 min = ScriptVars.Get<XenVector3>(ScriptVars.DimensionMin);
+            XenVector3 max = ScriptVars.Get<XenVector3>(ScriptVars.DimensionMax);
 
             int newpropnum = lastpropnum + 1;
 

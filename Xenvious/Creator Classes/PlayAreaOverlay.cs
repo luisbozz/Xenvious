@@ -50,8 +50,7 @@ namespace Xenvious
             var groups = new Dictionary<string, Group>();
             // The drawer itself runs whenever its payload is in; the script features switch only
             // stops the dispatch bits, so the shapes go with it here.
-            bool features = GTA.Offsets.Editor.custom_check != 0 && Functions.Read.checkbinary(30, GTA.Offsets.Editor.custom_check);
-            if (!features)
+            if (!ScriptVars.FeaturesOn)
             {
                 ScriptDrawer.Show(script, groups.Values.Select(g => g.Shape).ToList());
                 return;

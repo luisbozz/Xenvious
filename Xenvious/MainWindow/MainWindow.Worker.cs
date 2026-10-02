@@ -42,22 +42,12 @@ namespace Xenvious
                                 ? Visibility.Visible
                                 : Visibility.Collapsed;
 
-                        // custom_check is reset whenever the game rebuilds its globals
-                        // (a new creator session, a restart), so the ticked settings are
-                        // put back here -- the same bits their checkboxes write: script
-                        // features = dispatch bits 1..5 plus bit 30 (gates the dev
-                        // patches), camera key = bit 31. writebinary only writes when a
-                        // bit is not already as wanted.
-                        if (globalPtrSanityCheck(GTA.Offsets.Editor.GlobalPTRversion))
+                        // The dispatch bits start empty whenever a creator script is loaded
+                        // again (its data page) or the game rebuilds its globals (Legacy), so
+                        // they are put back here. SetBit only writes a bit that changes.
+                        if (globalPtrSanityCheck(GTA.Offsets.Editor.GlobalPTRversion) && cbsettingsexpscrfeat.IsChecked == true)
                         {
-                            if (cbsettingsexpscrfeat.IsChecked == true)
-                            {
-                                WriteScriptFeatureBits(true);
-                            }
-                            if (cbsettingsswitchcamkey.IsChecked == true)
-                            {
-                                Functions.Write.writebinary(31, GTA.Offsets.Editor.custom_check);
-                            }
+                            WriteScriptFeatureBits(true);
                         }
                         
                         if (IsInCreator())

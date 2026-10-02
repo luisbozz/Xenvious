@@ -266,6 +266,7 @@
     <Compile Include="Creator Classes\PlayAreaOverlay.cs" />
     <Compile Include="Creator Classes\ScriptDrawer.cs" />
     <Compile Include="Creator Classes\ScriptSpace.cs" />
+    <Compile Include="Creator Classes\ScriptVars.cs" />
     <Compile Include="Creator Classes\ModdedPropSource.cs" />
     <Compile Include="Creator Classes\ModdedPropMemory.cs" />
     <Compile Include="Creator Classes\ModdedPropTable.cs" />

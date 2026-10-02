@@ -12,13 +12,13 @@ namespace Xenvious
     /// <summary>
     /// Tunes the vehicle the player sits in while testing a race. The race creator itself never
     /// mods its test vehicle (it only creates it and sets proofs, CREATE_VEHICLE in the test
-    /// start), so the injected race customfuncs carry fn7: one request per frame on custom_check
-    /// bit 5 (helper bit 6). Xenvious writes slot and value to custom_tune, sets the bit, and the
+    /// start), so the injected race customfuncs carry fn7: one request per frame on dispatch
+    /// bit 5 (helper bit 6). Xenvious writes slot and value to ScriptVars.Tune, sets the bit, and the
     /// function sets the mod (or only reads it for value -99), writes back the option count, the
     /// current value, model and vehicle handle, and clears the bit.
     ///
     /// The function is part of the dev customfuncs payload, so it only exists while the script
-    /// features are on (custom_check bit 30). Without it the bit never clears; Request then
+    /// features are on. Without it the bit never clears; Request then
     /// times out and reports false.
     /// </summary>
     public static class TestVehicleTune
@@ -30,9 +30,8 @@ namespace Xenvious
         public const int WheelType = 50, Primary = 51, Secondary = 52, Pearl = 53, WheelColour = 54, WindowTint = 55, XenonColour = 56, Livery = 57;
         public const int Turbo = 18, TyreSmoke = 20, Xenon = 22, FrontWheels = 23, BackWheels = 24, LiveryMod = 48;
 
-        // custom_check bit 5 of the bytecode; the helpers count from 1.
+        // Dispatch bit 5 of the bytecode; ScriptVars counts from 1.
         private const int RequestBit = 6;
-        private const int ScriptFeaturesBit = 30;
 
         private static readonly object Gate = new object();
 
@@ -44,12 +43,11 @@ namespace Xenvious
         /// <summary>The slots that switch on and off instead of picking an option.</summary>
         public static bool IsToggle(int slot) => slot == Turbo || slot == TyreSmoke || slot == Xenon;
 
-        public static bool Ready => MainWindow.m != null && MainWindow.m.IsProcOpen
-            && GTA.Offsets.Editor.custom_check != 0 && GTA.Offsets.Editor.custom_tune != 0;
+        public static bool Ready => MainWindow.m != null && MainWindow.m.IsProcOpen;
 
         public static bool InRaceCreator => Ready && GTA.CurrentCreatorName() == "fm_race_creator";
 
-        public static bool ScriptFeaturesOn => Ready && Functions.Read.checkbinary(ScriptFeaturesBit, GTA.Offsets.Editor.custom_check);
+        public static bool ScriptFeaturesOn => Ready && ScriptVars.FeaturesOn;
 
         /// <summary>
         /// Sends one request and waits for the script to answer (it runs once per frame).
@@ -58,17 +56,16 @@ namespace Xenvious
         public static bool Request(int slot, int value, out Answer answer)
         {
             answer = default;
-            long tune = GTA.Offsets.Editor.custom_tune;
             if (!Run(RequestBit, () =>
                 {
-                    new Global(tune).SetInt(slot);
-                    new Global(tune + 1).SetInt(value);
+                    ScriptVars.Set(ScriptVars.Tune, slot);
+                    ScriptVars.Set(ScriptVars.Tune, value, 1);
                 }))
                 return false;
-            answer.Count = new Global(tune + 2).Get<int>();
-            answer.Current = new Global(tune + 3).Get<int>();
-            answer.Model = new Global(tune + 4).Get<int>();
-            answer.Vehicle = new Global(tune + 5).Get<int>();
+            answer.Count = ScriptVars.Get<int>(ScriptVars.Tune, 2);
+            answer.Current = ScriptVars.Get<int>(ScriptVars.Tune, 3);
+            answer.Model = ScriptVars.Get<int>(ScriptVars.Tune, 4);
+            answer.Vehicle = ScriptVars.Get<int>(ScriptVars.Tune, 5);
             return true;
         }
 
@@ -79,19 +76,19 @@ namespace Xenvious
                 return false;
             lock (Gate)
             {
-                long check = GTA.Offsets.Editor.custom_check;
                 // A request still pending (the function is not there, or the game is paused)
                 // is dropped first, so it does not apply a stale value later.
-                Functions.Write.writebinary(bit, check, false);
+                if (!ScriptVars.SetBit(bit, false))
+                    return false;
                 write();
-                Functions.Write.writebinary(bit, check, true);
+                ScriptVars.SetBit(bit, true);
 
                 var clock = Stopwatch.StartNew();
-                while (Functions.Read.checkbinary(bit, check))
+                while (ScriptVars.IsBitSet(bit))
                 {
                     if (clock.ElapsedMilliseconds > 2000 || !MainWindow.m.IsProcOpen)
                     {
-                        Functions.Write.writebinary(bit, check, false);
+                        ScriptVars.SetBit(bit, false);
                         return false;
                     }
                     Thread.Sleep(4);
@@ -105,7 +102,7 @@ namespace Xenvious
         // The creator does not load the garage (freemode fills the personal vehicle array, and
         // freemode does not run in the creator), but the MPSV stats are there. pvscan reads the
         // model stat of 100 garage slots per request; pvload reads one slot's MPSV stats into a
-        // struct in the custom globals, the way maintransition loads the garage, and puts it on
+        // struct in the script variables, the way maintransition loads the garage, and puts it on
         // the vehicle the player sits in with the creator's own personal vehicle setup
         // (func_489: mods, paint, wheels, neon, tint, liveries). Neither writes a stat.
 
@@ -119,8 +116,7 @@ namespace Xenvious
 
         public enum LoadResult { Applied, OtherModel, NoVehicle, NoAnswer }
 
-        public static bool OnlineReady => InRaceCreator && GTA.Offsets.Editor.custom_pv_slot != 0
-            && GTA.Offsets.Editor.custom_pv_result != 0 && GTA.Offsets.Editor.custom_pv_list != 0;
+        public static bool OnlineReady => InRaceCreator;
 
         /// <summary>The garage slots that hold a vehicle; null when the script does not answer.</summary>
         public static List<OnlineVehicle> ScanGarage()
@@ -130,11 +126,11 @@ namespace Xenvious
             var list = new List<OnlineVehicle>();
             for (int start = 0; start < GarageSlots; start += 100)
             {
-                if (!Run(ScanBit, () => new Global(GTA.Offsets.Editor.custom_pv_slot).SetInt(start)))
+                if (!Run(ScanBit, () => ScriptVars.Set(ScriptVars.GarageSlot, start)))
                     return null;
                 for (int i = 0; i < 100; i++)
                 {
-                    int model = new Global(GTA.Offsets.Editor.custom_pv_list + i).Get<int>();
+                    int model = ScriptVars.Get<int>(ScriptVars.GarageList, i);
                     if (model != 0)
                         list.Add(new OnlineVehicle { Slot = start + i, Model = model });
                 }
@@ -145,9 +141,9 @@ namespace Xenvious
         /// <summary>Loads a garage slot and puts it on the current vehicle when the model matches.</summary>
         public static LoadResult LoadOnto(int slot)
         {
-            if (!OnlineReady || !Run(LoadBit, () => new Global(GTA.Offsets.Editor.custom_pv_slot).SetInt(slot)))
+            if (!OnlineReady || !Run(LoadBit, () => ScriptVars.Set(ScriptVars.GarageSlot, slot)))
                 return LoadResult.NoAnswer;
-            switch (new Global(GTA.Offsets.Editor.custom_pv_result).Get<int>())
+            switch (ScriptVars.Get<int>(ScriptVars.GarageResult))
             {
                 case 1: return LoadResult.Applied;
                 case 0: return LoadResult.OtherModel;

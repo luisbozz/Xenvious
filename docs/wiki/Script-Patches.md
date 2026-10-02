@@ -57,13 +57,22 @@ functions that are injected into the creator (for example to check a model or
 call natives the creator does not). Native indices and call targets differ per
 creator script and per build, so they are table-driven per `CreatorType`.
 
-The injected functions are switched on and off through bits of a
-`custom_check` global (`OFFSET_custom_check`), next to globals for the hovered
-model and the model dimensions the functions report back. **The custom
-function patch must be active whenever a patch that calls it is active**;
-otherwise the creator calls into bytecode that is not there and GTA crashes.
-Remember the 1-based bit helpers: bit 30 in the helpers is bit 29 in the
-bytecode.
+The injected functions are switched on and off through dispatch bits, next to
+variables for the hovered model, the model dimensions and the race test
+tuning that the functions report back. `Creator Classes/ScriptVars.cs` reads
+and writes them; its bit helpers count from 1 like the ones in `Functions.cs`.
+**The custom function patch must be active whenever a patch that calls it is
+active**; otherwise the creator calls into bytecode that is not there and GTA
+crashes.
+
+On Enhanced the creators load with extra 16 KB pages behind their code
+(`Creator Classes/ScriptSpace.cs`, `[SCRIPTSPACE]` in `offsets.ini`). The
+custom functions and the shape drawer (`ScriptDrawer`) run from the first
+extra page; the last one is a data page the script reaches as string page 63,
+and it holds the variables. Legacy still injects into a sacrificial function
+and keeps the variables in the `custom_*` globals of its `offsets.ini`. The
+page payload sources and their builder are in ysc-global-updater
+(`scrpatches/scrasm/customfuncs/page/`).
 
 ## Opcode cheat sheet (GTA V YSC)
 
