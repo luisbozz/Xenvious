@@ -24,7 +24,7 @@ namespace Xenvious
             public string Key;
             public string Fallback;
             public string Icon;
-            public int Group;               // 0 place, 1 job rules, 2 more options
+            public int Group;               // 0 place, 1 job type, 2 more options
             public string Creators;
             public TabItem Page;
             public Action Open;
@@ -165,9 +165,29 @@ namespace Xenvious
                 return;
             }
             _editNavCreator = creator;
+            OpenOwnJobType(creator);
             HideInnerSwitchers();
             RenderEditNav();
             UpdateEditScriptStatus();
+        }
+
+        // The job type page of the open creator shows its sub-pages from the start; the one
+        // opened for the previous creator folds away again. Capture has its own page besides
+        // Mission, so the page made for fewer creators wins.
+        private EditNavEntry _editNavOwnType;
+
+        private void OpenOwnJobType(string creator)
+        {
+            string letter = CreatorLetter(creator ?? "");
+            var own = letter.Length == 0 ? null : EditNav
+                .Where(e => e.Group == 1 && e.Creators.Contains(letter))
+                .OrderBy(e => e.Creators.Length)
+                .FirstOrDefault();
+            if (_editNavOwnType != null && _editNavOwnType != own && _editNavOwnType != _editNavEntry)
+                _editNavOpen.Remove(_editNavOwnType);
+            if (own != null)
+                _editNavOpen.Add(own);
+            _editNavOwnType = own;
         }
 
         // The pages still carry their own list of sub-page buttons on the left; the side
@@ -213,7 +233,7 @@ namespace Xenvious
             string[] groups =
             {
                 TranslateOr("editnav_grp_place", "Place"),
-                TranslateOr("editnav_grp_rules", "Job rules"),
+                TranslateOr("editnav_grp_rules", "Job type"),
                 TranslateOr("editnav_grp_more", "More options"),
             };
             RenderFavorites();
