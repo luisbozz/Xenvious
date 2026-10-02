@@ -80,6 +80,8 @@ namespace Xenvious
         {
             hit = 0;
             ProcessModule mod = MainWindow.m.getMainModule();
+            if (mod == null)
+                return false;
             long baseAddr = mod.BaseAddress.ToInt64();
             string mkey = baseAddr.ToString("X") + "|" + pattern;
             if (memo.TryGetValue(mkey, out hit))
@@ -109,6 +111,8 @@ namespace Xenvious
             if (hit == 0)
                 return;
             ProcessModule mod = MainWindow.m.getMainModule();
+            if (mod == null)
+                return;
             long baseAddr = mod.BaseAddress.ToInt64();
             memo[baseAddr.ToString("X") + "|" + pattern] = hit;
             try
