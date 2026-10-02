@@ -67,6 +67,8 @@ namespace Xenvious
                 // patch set was switched on.
                 if (MainWindow.m.IsProcOpen && (tick % 5 == 0 || templatesChanged))
                 {
+                    try { ScriptSpace.Reserve(); }
+                    catch (Exception ex) { Log.Debug("ScriptSpace: " + ex.Message, source: "ScrPatchesRunner"); }
                     ScrPatchesRunner.ApplyPatches(GTA.Editor.ScrPatchesDev);
                     ScrPatchesRunner.ApplyPatches(GTA.Editor.ScrPatches);
                     // Same reason: a creator script that was just loaded gets the kept prop changes.
@@ -109,23 +111,53 @@ namespace Xenvious
             }
         }
 
+        private static bool Wanted(ScrPatches patch)
+        {
+            return patch.enabled && TriggerActive(patch.trigger)
+                && (!patch.dev || Functions.Read.checkbinary(30, GTA.Offsets.Editor.custom_check))
+                && !string.IsNullOrEmpty(patch.script_name) && !string.IsNullOrEmpty(patch.bytes_to_patch);
+        }
+
+        /// <summary>
+        /// Writes the payloads for the extra code pages and returns the scripts whose payloads are
+        /// all in. The pages are code nobody else runs, so a payload is simply written again
+        /// whenever its bytes are not there (a freshly loaded script) and never taken out.
+        /// </summary>
+        private static HashSet<string> ApplyPagePatches(List<ScrPatches> patches)
+        {
+            var ready = new HashSet<string>();
+            var missing = new HashSet<string>();
+            foreach (var patch in patches.Where(p => p.page && Wanted(p)))
+            {
+                var space = ScriptSpace.Get(patch.script_name);
+                long address = space == null || space.Base != patch.page_base ? 0 : space.Address(patch.page_base + patch.offset);
+                int length = patch.bytes_to_patch.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Length;
+                // The payload must not run past its page's end into the next page, which is elsewhere in memory.
+                bool fits = address != 0 && space.Address(patch.page_base + patch.offset + length - 1) == address + length - 1;
+                if (!fits || (!HasBytes((ulong)address, patch.bytes_to_patch) && !PatchScrProgramBytecode((ulong)address, patch.bytes_to_patch)))
+                {
+                    missing.Add(patch.script_name);
+                    continue;
+                }
+                ready.Add(patch.script_name);
+            }
+            ready.ExceptWith(missing);
+            return ready;
+        }
+
         public static void ApplyPatches(List<ScrPatches> patches)
         {
-            if (patches != null || patches.Count > 0)
+            if (patches != null && patches.Count > 0)
             {
+                var pagesReady = ApplyPagePatches(patches);
                 foreach (var patch in patches)
                 {
-                    if (!patch.enabled)
+                    if (patch.page || !Wanted(patch))
                     {
                         continue;
                     }
 
-                    if (!TriggerActive(patch.trigger))
-                    {
-                        continue;
-                    }
-
-                    if (patch.dev && !Functions.Read.checkbinary(30, GTA.Offsets.Editor.custom_check))
+                    if (patch.needs_page && !pagesReady.Contains(patch.script_name))
                     {
                         continue;
                     }

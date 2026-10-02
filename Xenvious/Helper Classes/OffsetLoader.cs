@@ -53,6 +53,17 @@ namespace Xenvious
             GTA.Offsets.Editor.OFFSET_script_hash = ini.ReadInteger("OFFSETS", "OFFSET_script_hash");
             GTA.Offsets.Editor.OFFSET_script_id = ini.ReadInteger("OFFSETS", "OFFSET_script_id");
             GTA.Offsets.Editor.OFFSET_script_state = ini.ReadInteger("OFFSETS", "OFFSET_script_state");
+            GTA.Offsets.Editor.OFFSET_packfile_name = ini.ReadInteger("OFFSETS", "OFFSET_packfile_name");
+            GTA.Offsets.Editor.OFFSET_packfile_names = ini.ReadInteger("OFFSETS", "OFFSET_packfile_names");
+            GTA.Offsets.Editor.OFFSET_packfile_entries = ini.ReadInteger("OFFSETS", "OFFSET_packfile_entries");
+            GTA.Offsets.Editor.OFFSET_packfile_count = ini.ReadInteger("OFFSETS", "OFFSET_packfile_count");
+            GTA.Offsets.Editor.ScriptSpaceReservations.Clear();
+            foreach (string script in new[] { "fm_lts_creator", "fm_capture_creator", "fm_deathmatch_creator", "fm_race_creator", "fm_survival_creator", "public_mission_creator" })
+            {
+                string reservation = ini.ReadString("SCRIPTSPACE", script);
+                if (!string.IsNullOrWhiteSpace(reservation))
+                    GTA.Offsets.Editor.ScriptSpaceReservations[script] = reservation;
+            }
             GTA.Offsets.Editor.OFFSET_script_local_start = ini.ReadInteger("OFFSETS", "OFFSET_script_local_start");
             GTA.Offsets.Editor.OFFSET_current_creator_worker_survival = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_worker_survival"), 0);
             GTA.Offsets.Editor.OFFSET_current_creator_worker_race = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_worker_race"), 0);
@@ -1274,6 +1285,7 @@ namespace Xenvious
             GTA.Offsets.Editor.AOB_session_ptr = ini.ReadString("AOB", "session_ptr");
             GTA.Offsets.Editor.AOB_cursor_ptr = ini.ReadString("AOB", "cursor_ptr");
             GTA.Offsets.Editor.AOB_scrProgramptr = ini.ReadString("AOB", "scrProgramptr");
+            GTA.Offsets.Editor.AOB_packfiles = ini.ReadString("AOB", "packfiles");
 
             //links
             settings.link_sc = StaticData.Links.SocialClub;

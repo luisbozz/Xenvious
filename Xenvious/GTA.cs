@@ -190,7 +190,8 @@ namespace Xenvious
                 GTA.Offsets.Editor.AOB_nextcp_ptr, GTA.Offsets.Editor.AOB_session_ptr, GTA.Offsets.Editor.AOB_img_ptr,
                 GTA.Offsets.Editor.AOB_cursor_ptr, GTA.Offsets.Editor.AOB_scrProgramptr, GTA.Offsets.Editor.AOB_devptr,
                 GTA.Offsets.Editor.AOB_camptr, GTA.Offsets.Editor.AOB_versionptr, GTA.Offsets.Editor.AOB_creator_camptr,
-                GTA.Offsets.Editor.AOB_creator_cam_nocollision, GTA.Offsets.Editor.AOB_creator_budget, GTA.Offsets.Editor.AOB_testmode
+                GTA.Offsets.Editor.AOB_creator_cam_nocollision, GTA.Offsets.Editor.AOB_creator_budget, GTA.Offsets.Editor.AOB_testmode,
+                GTA.Offsets.Editor.AOB_packfiles
             };
             ulong ignored;
             return patterns.Where(p => !string.IsNullOrWhiteSpace(p)).All(p => AobCache.TryGet(p, out ignored));
@@ -246,6 +247,20 @@ namespace Xenvious
                 return IntPtr.Zero;
 
             return (IntPtr)(MainWindow.m.rip(IntPtr.Add((IntPtr)addy, 3)).ToInt64() - (long)MainWindow.m.getBaseAddress());
+        }
+
+        /// <summary>Absolute address of the game's table of loaded packfiles (ScriptSpace).</summary>
+        public static long getPackfileTable(byte[] buffer = null)
+        {
+            if (!HasPattern(GTA.Offsets.Editor.AOB_packfiles, "AOB_packfiles"))
+                return 0;
+
+            ulong addy = ScanModule(GTA.Offsets.Editor.AOB_packfiles, buffer);
+
+            if (!Found(addy, "AOB_packfiles"))
+                return 0;
+
+            return MainWindow.m.rip(IntPtr.Add((IntPtr)addy, 3)).ToInt64();
         }
 
         public static IntPtr getDEVPointer(byte[] buffer = null)
@@ -1448,6 +1463,7 @@ namespace Xenvious
                 public static string AOB_session_ptr = "";
                 public static string AOB_cursor_ptr = "";
                 public static string AOB_scrProgramptr = "";
+                public static string AOB_packfiles = "";
 
                 public static string checksum_rstar = "";
                 public static string checksum_steam = "";
@@ -1494,6 +1510,13 @@ namespace Xenvious
                 public static long OFFSET_script_name = 0x0;
                 public static long OFFSET_script_id = 0x0;
                 public static long OFFSET_script_state = 0x0;
+                // fiPackfile: its file name, the names and entries of its table of contents, the entry count.
+                public static long OFFSET_packfile_name = 0x0;
+                public static long OFFSET_packfile_names = 0x0;
+                public static long OFFSET_packfile_entries = 0x0;
+                public static long OFFSET_packfile_count = 0x0;
+                // Script name -> "<shipped virtual page flags>, <virtual page flags to load it with>" (ScriptSpace).
+                public static Dictionary<string, string> ScriptSpaceReservations = new Dictionary<string, string>();
                 // Enhanced keeps no name in the thread, only the joaat hash of its script.
                 // 0 means "match by name" (Legacy).
                 public static long OFFSET_script_hash = 0x0;
@@ -2560,6 +2583,16 @@ namespace Xenvious
             // runner leaves them out unless that feature is active ("templates":
             // PreciseTemplates.Active) and takes them back out afterwards.
             public string trigger { get; set; }
+
+            // A payload for the extra code pages behind the script (ScriptSpace): bytes_to_patch
+            // goes to pc page_base + offset, assembled for that address, and no pattern is scanned.
+            // It is only written when the script's extra pages start at page_base.
+            public bool page { get; set; }
+            public int page_base { get; set; }
+
+            // A patch that calls into the extra pages: left out until every page payload of its
+            // script is in.
+            public bool needs_page { get; set; }
 
             // Defaults to true so every existing entry keeps working: the field
             // is absent from most of scrpatches.json, and an absent bool would

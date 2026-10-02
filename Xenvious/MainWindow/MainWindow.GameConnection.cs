@@ -49,6 +49,7 @@ namespace Xenvious
                         Log.Info("First Init", source: "timercheckgta");
                     }
                     OnlineEnable.isInjected();
+                    ScriptSpace.Reset();
                     var mainmodule = m.getMainModule();
                     // With every pattern cached for this game build there is nothing to scan,
                     // so skip reading the whole module; the getters answer from the cache.
@@ -78,6 +79,7 @@ namespace Xenvious
                         //() => GTA.Offsets.Editor.img_addy = m.memory((m.memory(GTA.getIMGPointer(buff).ToInt64()).GetAddress() + 0x18)).Get<long>(),
                         () => GTA.Offsets.Editor.cursor_addy = (m.memory(GTA.getCursorPointer(buff).ToInt64()).GetAddress() + 0x20),
                         () => GTA.Offsets.Editor.scrProgram_addy = GTA.getscrProgramPointer(buff).ToInt64(),
+                        () => ScriptSpace.PackfileTable = GTA.getPackfileTable(buff),
                         () => GTA.Offsets.Editor.nextcp = GTA.getNEXTCPPointer(buff).ToInt64(),
                         () => GTA.Offsets.Editor.localptr = GTA.getCurrentCreatorAddy()
                         };
