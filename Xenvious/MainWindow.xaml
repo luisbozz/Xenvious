@@ -845,7 +845,7 @@
                                         <!-- Game patch "ignore creator budget"; the same switch as on the Patches page, remembered. -->
                                         <Border x:Name="DashTileBudget" Style="{StaticResource DashTile}" ToolTip="{Binding Translation[np_nobudget], FallbackValue='Ignore creator budget'}">
                                             <StackPanel Orientation="Horizontal">
-                                                <TextBlock Style="{StaticResource DashTileLabel}" VerticalAlignment="Center" Margin="0,0,12,0" Text="{Binding Translation[dash_budget], FallbackValue='Creator budget'}"/>
+                                                <TextBlock Style="{StaticResource DashTileLabel}" VerticalAlignment="Center" Margin="0,0,12,0" Text="{Binding Translation[dash_test], FallbackValue='Testmode'}"/>
                                                 <CheckBox x:Name="DashTestSwitch" Style="{StaticResource SwitchToggle}" Click="DashTestSwitch_Click"/>
                                             </StackPanel>
                                         </Border>
