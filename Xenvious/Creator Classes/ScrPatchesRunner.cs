@@ -76,6 +76,12 @@ namespace Xenvious
                     // Same thread: "nrl fix" leaves nrl as it is, which must never be below 1 at save.
                     try { Rules.KeepNrl(); }
                     catch (Exception ex) { Log.Debug("KeepNrl: " + ex.Message, source: "ScrPatchesRunner"); }
+                    // After the patch pass, which sets up the data page the drawer reads.
+                    if (tick % 10 == 0)
+                    {
+                        try { PlayAreaOverlay.Tick(); }
+                        catch (Exception ex) { Log.Debug("PlayAreaOverlay: " + ex.Message, source: "ScrPatchesRunner"); }
+                    }
                 }
                 tick++;
                 Thread.Sleep(50);
