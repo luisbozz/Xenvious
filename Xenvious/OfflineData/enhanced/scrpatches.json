@@ -912,5 +912,37 @@
         "offset": 15,
         "bytes_to_patch": "71",
         "dev": false
+    },
+    {
+        "patch_name": "keep team start points over the team size",
+        "script_name": "fm_lts_creator",
+        "pattern": "71 39 06 38 06 74 5C ? ? 38 06 61 ? ? ? 64 ? ? ? 3F 35 01 38 06 38 01 35 01 59 ? ? 38 06 38 01 35 01 71 57",
+        "offset": 22,
+        "bytes_to_patch": "43 FF 7F 00 00 00",
+        "dev": false
+    },
+    {
+        "patch_name": "keep team start points outside the play area",
+        "script_name": "fm_lts_creator",
+        "pattern": "2D 00 04 00 00 71 39 02 38 02 74 5C ? ? 71 39 03 38 03 38 02 61 ? ? ? 64 ? ? ? 3F 35 01 5C ? ? 74 71 38 02 61 ? ? ? 46 ? ?",
+        "offset": 5,
+        "bytes_to_patch": "2E 00 00",
+        "dev": false
+    },
+    {
+        "patch_name": "keep team start points outside the play area",
+        "script_name": "fm_lts_creator",
+        "pattern": "74 61 ? ? ? 64 ? ? ? 3F 35 01 71 0A 20 56 08 00 4F ? ? 72 5D ? ? ? 2E 00 00",
+        "offset": 18,
+        "bytes_to_patch": "00 00 00 00 00 00 00 00",
+        "dev": false
+    },
+    {
+        "patch_name": "keep team start points outside the play area",
+        "script_name": "fm_lts_creator",
+        "pattern": "38 02 3D 01 39 02 55 ? ? 4F ? ? 72 5D ? ? ? 4F ? ? 5D ? ? ? 50",
+        "offset": 9,
+        "bytes_to_patch": "00 00 00 00 00 00 00 00",
+        "dev": false
     }
 ]
