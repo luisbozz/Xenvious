@@ -10,8 +10,6 @@ namespace Xenvious.AdvancedPlacement
         NoGame,
         /// <summary>No creator is open.</summary>
         NoCreator,
-        /// <summary>This creator gets no injected functions (deathmatch, survival).</summary>
-        Unsupported,
         /// <summary>The "experimental script features" setting is off.</summary>
         Disabled,
         /// <summary>Not checked yet.</summary>
@@ -39,14 +37,12 @@ namespace Xenvious.AdvancedPlacement
 
         private readonly Func<bool> _isProcessOpen;
         private readonly Func<bool> _isCreatorRunning;
-        private readonly Func<string> _creatorName;
         private readonly Func<bool> _isEnabled;
 
-        public ScriptFeatureMonitor(Func<bool> isProcessOpen, Func<bool> isCreatorRunning, Func<string> creatorName, Func<bool> isEnabled)
+        public ScriptFeatureMonitor(Func<bool> isProcessOpen, Func<bool> isCreatorRunning, Func<bool> isEnabled)
         {
             _isProcessOpen = isProcessOpen;
             _isCreatorRunning = isCreatorRunning;
-            _creatorName = creatorName;
             _isEnabled = isEnabled;
         }
 
@@ -59,9 +55,6 @@ namespace Xenvious.AdvancedPlacement
                     return ScriptFeatureState.NoGame;
                 if (!_isCreatorRunning())
                     return ScriptFeatureState.NoCreator;
-                string name = _creatorName() ?? "";
-                if (name == "fm_deathmatch_creator" || name == "fm_survival_creator")
-                    return ScriptFeatureState.Unsupported;
                 if (!_isEnabled())
                     return ScriptFeatureState.Disabled;
                 return ScriptFeatureState.Checking;

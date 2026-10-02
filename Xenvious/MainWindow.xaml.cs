@@ -139,7 +139,6 @@ namespace Xenvious
             var scriptFeatures = new ScriptFeatureMonitor(
                 () => m.IsProcOpen,
                 () => IsCreatorRunning(),
-                () => GTA.CurrentCreatorName(),
                 () => cbsettingsexpscrfeat.IsChecked == true);
 
             AdvancedPropPlacementVm = new AdvancedPropPlacementViewModel(
