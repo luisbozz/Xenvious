@@ -903,5 +903,13 @@
         "offset": 6,
         "bytes_to_patch": "71",
         "dev": false
+    },
+    {
+        "patch_name": "transform vehicle player index fix",
+        "script_name": "fm_race_creator",
+        "pattern": "2D 02 25 00 00 2C 01 ? ? 39 04 38 04 2C 05 ? ? 39 05 38 04 5D",
+        "offset": 11,
+        "bytes_to_patch": "71 00 00 00 00 00",
+        "dev": false
     }
 ]
