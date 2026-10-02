@@ -730,5 +730,29 @@
         "offset": 7,
         "bytes_to_patch": "5C",
         "dev": false
+    },
+    {
+        "patch_name": "allow jump and climb on foot",
+        "script_name": "fm_lts_creator",
+        "pattern": "25 1E 82 56 05 00 72 5D ? ? ?",
+        "offset": 6,
+        "bytes_to_patch": "71",
+        "dev": false
+    },
+    {
+        "patch_name": "allow jump and climb on foot",
+        "script_name": "fm_capture_creator",
+        "pattern": "25 1E 82 56 05 00 72 5D ? ? ?",
+        "offset": 6,
+        "bytes_to_patch": "71",
+        "dev": false
+    },
+    {
+        "patch_name": "allow jump and climb on foot",
+        "script_name": "fm_deathmatch_creator",
+        "pattern": "25 1E 82 56 05 00 72 5D ? ? ?",
+        "offset": 6,
+        "bytes_to_patch": "71",
+        "dev": false
     }
 ]
