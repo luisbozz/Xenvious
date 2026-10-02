@@ -598,8 +598,7 @@ namespace Xenvious
 
         // The game patch switches are kept in config.ini and written again whenever Xenvious
         // connects, so they survive a GTA or Xenvious restart. A switch that was never touched
-        // has no key, and the game keeps what it has. Test Mode is not remembered: it is only
-        // meant for one session.
+        // has no key, and the game keeps what it has.
         private const string GamePatchSection = "GamePatches";
 
         private static Action<bool> RememberedGamePatch(string key)

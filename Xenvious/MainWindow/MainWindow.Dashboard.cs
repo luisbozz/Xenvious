@@ -167,7 +167,7 @@ namespace Xenvious
                 UpdateDashboardCreatorCounts(creator);
             }
 
-            // The budget switch follows the game: it may also be switched on the Patches page.
+            // The test mode switch follows the game: it may also be switched on the Patches page.
             DashTestSwitch.IsEnabled = game && GamePatches.TestMode.Available;
             if (!DashTestSwitch.IsMouseOver)
                 DashTestSwitch.IsChecked = game && GamePatches.TestMode.IsOn;
@@ -185,7 +185,7 @@ namespace Xenvious
         {
             bool on = DashTestSwitch.IsChecked == true;
             GamePatches.TestMode.Set(on);
-            RememberGamePatch("creator_test", on);
+            RememberGamePatch("testmode", on);
         }
 
         private void ShowStatus(string label, string value, Brush dot)

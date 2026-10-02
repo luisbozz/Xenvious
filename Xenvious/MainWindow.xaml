@@ -842,8 +842,8 @@
                                                 </StackPanel>
                                             </StackPanel>
                                         </Border>
-                                        <!-- Game patch "ignore creator budget"; the same switch as on the Patches page, remembered. -->
-                                        <Border x:Name="DashTileBudget" Style="{StaticResource DashTile}" ToolTip="{Binding Translation[np_nobudget], FallbackValue='Ignore creator budget'}">
+                                        <!-- Game patch "test mode"; the same switch as on the Patches page, remembered. -->
+                                        <Border x:Name="DashTileTest" Style="{StaticResource DashTile}" ToolTip="{Binding Translation[patches_testmode_desc], FallbackValue='Enables test mode features.'}">
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock Style="{StaticResource DashTileLabel}" VerticalAlignment="Center" Margin="0,0,12,0" Text="{Binding Translation[dash_test], FallbackValue='Testmode'}"/>
                                                 <CheckBox x:Name="DashTestSwitch" Style="{StaticResource SwitchToggle}" Click="DashTestSwitch_Click"/>
