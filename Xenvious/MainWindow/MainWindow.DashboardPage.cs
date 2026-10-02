@@ -856,7 +856,7 @@ namespace Xenvious
             // would write to the last creator's stale locals.
             _runningCreatorScript = globals ? GTA.CreatorScripts.FirstOrDefault(GTA.IsScriptRunning) : null;
             BtnTryFixBlackScreen.IsEnabled = _runningCreatorScript != null;
-            bool running = globals && GTA.Offsets.Editor.endtest != 0 && TestControllers.Any(GTA.IsScriptRunning);
+            bool running = globals && ((GTA.Offsets.Editor.endtest != 0 && TestControllers.Any(GTA.IsScriptRunning)) || RaceTestRunning());
             if (running == _testRunning)
                 return;
             _testRunning = running;
@@ -866,10 +866,45 @@ namespace Xenvious
                 BtnTestMain.SetBinding(Button.ContentProperty, new Binding("Translation[test]") { FallbackValue = "Test" });
         }
 
+        // The race creator tests inside its own script, without a controller: bit 18 of its test
+        // local is the running test (SET_BIT when the test starts, fm_race_creator).
+        private bool RaceTestRunning()
+        {
+            if (_runningCreatorScript != "fm_race_creator" || GTA.Offsets.Editor.OFFSET_current_creator_test_race == 0)
+                return false;
+            if (curcreatorscanneeded())
+                GTA.Offsets.Editor.localptr = GTA.getCurrentCreatorAddy();
+            var ptr = GTA.Offsets.Editor.localptr;
+            if (ptr == null || GTA.ReadScriptName(ptr[0], ptr[1]) != "fm_race_creator")
+                return false;
+            long address = m.memory(ptr[0], new long[] { ptr[1], GTA.Offsets.Editor.OFFSET_script_local_start, GTA.Offsets.Editor.OFFSET_current_creator_test_race * 8 }).GetAddress();
+            return (m.memory(address.ToString("X")).Get<int>() & (1 << 18)) != 0;
+        }
+
+        // What the race creator's own end-test prompt does: state 9 shows the prompt and shuts the
+        // test's controls down, accepting it sets 10, which ends the test and returns to the creator.
+        private async void EndRaceTest()
+        {
+            if (GTA.Offsets.Editor.OFFSET_current_creator_worker_offset_test_state == 0)
+                return;
+            long state = getCreatorScriptLocalWorkerBase() + GTA.Offsets.Editor.OFFSET_current_creator_worker_offset_test_state * 8;
+            if (state == GTA.Offsets.Editor.OFFSET_current_creator_worker_offset_test_state * 8)
+                return;
+            m.memory(state.ToString("X")).SetInt(9);
+            await System.Threading.Tasks.Task.Delay(300);
+            if (m.IsProcOpen && RaceTestRunning() && m.memory(state.ToString("X")).Get<int>() == 9)
+                m.memory(state.ToString("X")).SetInt(10);
+        }
+
         private void BtnTestMain_Click(object sender, RoutedEventArgs e)
         {
             if (m.IsProcOpen && _testRunning)
             {
+                if (RaceTestRunning())
+                {
+                    EndRaceTest();
+                    return;
+                }
                 // What the creator's own "Exit test" prompt does: the controller sees the flag,
                 // fades out and quits, and the creator takes over again.
                 new Global(GTA.Offsets.Editor.endtest).SetInt(1);

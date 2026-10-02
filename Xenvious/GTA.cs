@@ -1506,6 +1506,7 @@ namespace Xenvious
                 public static long load_job_id = 0;
                 public static long creator_quit_flag = 0;
                 public static long OFFSET_current_creator_worker_offset_menu = 0x0;
+                public static long OFFSET_current_creator_worker_offset_test_state = 0x0;
                 public static long OFFSET_current_creator_worker_heading = 0x0;
                 public static long OFFSET_current_creator_worker_pos = 0x0;
                 public static long OFFSET_current_creator_cam_heading_survival = 0x0;

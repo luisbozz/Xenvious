@@ -66,6 +66,7 @@ namespace Xenvious
             GTA.Offsets.Editor.load_job_id = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_load_job_id"), 0);
             GTA.Offsets.Editor.creator_quit_flag = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_creator_quit_flag"), 0);
             GTA.Offsets.Editor.OFFSET_current_creator_worker_offset_menu = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_worker_offset_menu"), 0);
+            GTA.Offsets.Editor.OFFSET_current_creator_worker_offset_test_state = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_worker_offset_test_state"), 0);
             GTA.Offsets.Editor.OFFSET_current_creator_worker_heading = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_worker_heading"), 0);
             GTA.Offsets.Editor.OFFSET_current_creator_worker_pos = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_worker_pos"), 0);
             GTA.Offsets.Editor.OFFSET_current_creator_cam_heading_survival = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_cam_heading_survival"), 0);
