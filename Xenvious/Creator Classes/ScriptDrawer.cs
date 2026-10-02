@@ -225,6 +225,9 @@ namespace Xenvious
         /// <summary>True while the drawer of this script ran in the last seconds (as seen by <see cref="Show"/>).</summary>
         public static bool Running(string script) => !string.IsNullOrEmpty(script) && running == script;
 
+        /// <summary>How many shapes the drawer was last given.</summary>
+        public static int ShownCount => writtenCount;
+
         private static bool Same(byte[] a, byte[] b)
         {
             if (a == null || b == null || a.Length != b.Length)

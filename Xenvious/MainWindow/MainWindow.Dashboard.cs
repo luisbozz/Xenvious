@@ -167,6 +167,11 @@ namespace Xenvious
                 UpdateDashboardCreatorCounts(creator);
             }
 
+            // The budget switch follows the game: it may also be switched on the Patches page.
+            DashBudgetSwitch.IsEnabled = game && GamePatches.NoBudget.Available;
+            if (!DashBudgetSwitch.IsMouseOver)
+                DashBudgetSwitch.IsChecked = game && GamePatches.NoBudget.IsOn;
+
             bool script = cbsettingsexpscrfeat.IsChecked == true;
             DashStatusScript.Text = script
                 ? TranslateOr("dash_script_on", "Script-Funktionen an")
@@ -174,6 +179,13 @@ namespace Xenvious
             DashStatusScriptDot.Fill = script ? DotOk : DotOff;
 
             UpdateDashboardForCreator(inCreator ? creator : null);
+        }
+
+        private void DashBudgetSwitch_Click(object sender, RoutedEventArgs e)
+        {
+            bool on = DashBudgetSwitch.IsChecked == true;
+            GamePatches.NoBudget.Set(on);
+            RememberGamePatch("creator_budget", on);
         }
 
         private void ShowStatus(string label, string value, Brush dot)

@@ -108,6 +108,7 @@ namespace Xenvious
                     }
 
                     Log.Info($"Connected to GTA V {GameVariant.DisplayName(GameVariant.Current)} {GTA.GameVersion()}", source: "timercheckgta");
+                    RestoreGamePatches();
 
                     GTA.Offsets.Editor.preset_version = IntPtr.Subtract((IntPtr)GTA.Offsets.Editor.GlobalPTRversion, 304).ToInt64();
                     GTA.Offsets.Editor.version = GTA.Offsets.Editor.GlobalPTRversion + 0x90;

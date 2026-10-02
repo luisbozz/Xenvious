@@ -160,6 +160,7 @@ namespace Xenvious
             string creator = m != null && m.IsProcOpen ? GTA.CurrentCreatorName() ?? "" : "";
             var natives = GamePatchRows();
             string key = string.Join(",", natives.Select(n => n.State)) + "|" + creator + "|" + _scrPatchScript + "|" + _patchesQuery + "|"
+                + ScriptVars.FeaturesOn + ScriptVars.CameraKey + ScriptDrawer.Running(creator) + ScriptDrawer.ShownCount + "|"
                 + string.Join(",", _scrPatchGroups.Select(g => (g.Enabled ? "1" : "0") + string.Concat(g.Patches.Select(p => ScrPatchesRunner.IsApplied(p) ? "a" : "-"))));
             if (key == _patchesShownKey)
                 return;
@@ -173,15 +174,18 @@ namespace Xenvious
                 if (MatchesPatchQuery(row.Name + " " + row.Description))
                     patchesGame.Children.Add(GamePatchCard(row));
 
+            RenderCustomFuncs(creator);
+
             RenderScrPatchFilter();
             patchesScripts.Children.Clear();
             var visible = _scrPatchGroups
+                .Where(g => !IsCustomFuncGroup(g))
                 .Where(g => _scrPatchScript == null || g.Patches.Any(p => p.script_name == _scrPatchScript))
                 .Where(g => MatchesPatchQuery(ScrPatchName(g.Name) + " " + g.Description + " " + g.Name))
                 .ToList();
             foreach (var (groupKey, fallback) in ScrPatchGroups)
             {
-                var items = visible.Where(g => !g.Patches.Any(p => p.dev) && ScrPatchGroupKey(g.Name) == groupKey).ToList();
+                var items = visible.Where(g => ScrPatchGroupKey(g.Name) == groupKey).ToList();
                 if (items.Count == 0)
                     continue;
                 patchesScripts.Children.Add(PatchGroupLabel(string.Format(CultureInfo.CurrentCulture, "{0} · {1}/{2} {3}",
@@ -194,17 +198,7 @@ namespace Xenvious
             if (visible.Count == 0)
                 patchesScripts.Children.Add(new TextBlock { Text = TranslateOr("patches_none", "No patch matches the search."), Foreground = ThemeBrush("NavMutedBrush"), Margin = new Thickness(0, 4, 0, 8) });
 
-            // Script features: needed by other functions, so they are listed but not switchable.
-            var dev = visible.Where(g => g.Patches.Any(p => p.dev)).ToList();
-            patchesDevList.Children.Clear();
-            foreach (var group in dev)
-                patchesDevList.Children.Add(ScrPatchCard(group, creator, readOnly: true));
-            patchesDevHeader.Inlines.Clear();
-            patchesDevHeader.Inlines.Add(new Run(TranslateOr("patches_internal", "Internal: needed by other functions")));
-            patchesDevHeader.Inlines.Add(new Run("  (" + dev.Count + ")") { FontWeight = FontWeights.Normal, Foreground = ThemeBrush("FaintTextBrush") });
-            patchesDev.Visibility = dev.Count == 0 ? Visibility.Collapsed : Visibility.Visible;
-
-            int on = _scrPatchGroups.Count(g => !g.Patches.Any(p => p.dev) && g.Enabled), total = _scrPatchGroups.Count(g => !g.Patches.Any(p => p.dev));
+            int on = _scrPatchGroups.Count(g => !IsCustomFuncGroup(g) && g.Enabled), total = _scrPatchGroups.Count(g => !IsCustomFuncGroup(g));
             patchesScriptCount.Text = string.Format(CultureInfo.CurrentCulture, TranslateOr("patches_count", "{0} of {1} on"), on, total);
         }
 
@@ -246,12 +240,12 @@ namespace Xenvious
 
         private void RenderScrPatchFilter()
         {
-            var scripts = _scrPatchGroups.SelectMany(g => g.Patches).Where(p => !p.dev).Select(p => p.script_name).Where(n => !string.IsNullOrEmpty(n)).Distinct()
+            var scripts = _scrPatchGroups.Where(g => !IsCustomFuncGroup(g)).SelectMany(g => g.Patches).Select(p => p.script_name).Where(n => !string.IsNullOrEmpty(n)).Distinct()
                 .OrderBy(n => Array.IndexOf(ScrPatchScriptOrder, n) < 0 ? int.MaxValue : Array.IndexOf(ScrPatchScriptOrder, n)).ToList();
             if (_scrPatchScript != null && !scripts.Contains(_scrPatchScript))
                 _scrPatchScript = null;
             scrPatchesFilter.Children.Clear();
-            int Count(string script) => _scrPatchGroups.Count(g => !g.Patches.Any(p => p.dev) && (script == null || g.Patches.Any(p => p.script_name == script)));
+            int Count(string script) => _scrPatchGroups.Count(g => !IsCustomFuncGroup(g) && (script == null || g.Patches.Any(p => p.script_name == script)));
             scrPatchesFilter.Children.Add(ScrPatchFilterChip(TranslateOr("scrpatch_filter_all", "All"), null, Count(null)));
             foreach (string script in scripts)
                 scrPatchesFilter.Children.Add(ScrPatchFilterChip(ScrPatchScriptLabel(script), script, Count(script)));
@@ -276,7 +270,7 @@ namespace Xenvious
         }
 
         // A card: title and description on the left, the switch on the right, status chips below.
-        private Border PatchCard(string title, string description, string warning, bool on, bool canSwitch, Action<bool> toggled, IEnumerable<FrameworkElement> chips)
+        private Border PatchCard(string title, string description, bool on, bool canSwitch, Action<bool> toggled, IEnumerable<FrameworkElement> chips)
         {
             var grid = new Grid();
             grid.ColumnDefinitions.Add(new ColumnDefinition());
@@ -288,12 +282,6 @@ namespace Xenvious
                 var d = new TextBlock { Text = description, FontSize = 12.5, TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 3, 0, 0) };
                 d.SetResourceReference(TextBlock.ForegroundProperty, "MutedTextBrush");
                 text.Children.Add(d);
-            }
-            if (!string.IsNullOrEmpty(warning))
-            {
-                var w = new TextBlock { Text = warning, FontSize = 12, TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 3, 0, 0) };
-                w.SetResourceReference(TextBlock.ForegroundProperty, "WarnBrush");
-                text.Children.Add(w);
             }
             var foot = new WrapPanel { Margin = new Thickness(0, 8, 0, 0) };
             foreach (var chip in chips)
@@ -352,17 +340,21 @@ namespace Xenvious
             return chip;
         }
 
-        private Border ScrPatchCard(ScrPatchGroup group, string creator, bool readOnly = false)
+        private Border ScrPatchCard(ScrPatchGroup group, string creator)
+            => PatchCard(ScrPatchName(group.Name), group.Description, group.Enabled, true, on => group.Enabled = on, ScrPatchChips(group, creator, false));
+
+        // Per script: green = written into the running creator, yellow = on but not found in it
+        // (pattern no longer matches), grey = that creator is not open (applied when opened).
+        // Custom func patches count as on: they follow the script features switch.
+        private List<FrameworkElement> ScrPatchChips(ScrPatchGroup group, string creator, bool customFunc)
         {
-            // Per script: green = written into the running creator, yellow = on but not found in
-            // it (pattern no longer matches), grey = that creator is not open (applied when opened).
             var chips = new List<FrameworkElement>();
             foreach (var script in group.Patches.Select(p => p.script_name).Where(n => !string.IsNullOrEmpty(n)).Distinct()
                 .OrderBy(n => Array.IndexOf(ScrPatchScriptOrder, n) < 0 ? int.MaxValue : Array.IndexOf(ScrPatchScriptOrder, n)))
             {
                 var patches = group.Patches.Where(p => p.script_name == script).ToList();
                 bool applied = patches.Any(ScrPatchesRunner.IsApplied);
-                bool enabled = readOnly || patches.All(p => p.enabled);
+                bool enabled = customFunc ? ScriptVars.FeaturesOn || !patches.Any(p => p.dev) : patches.All(p => p.enabled);
                 // Triggered patches (precise templates) are only in the script while their feature runs.
                 bool waitsForTrigger = !applied && patches.All(p => !string.IsNullOrEmpty(p.trigger));
                 // Found written by an earlier session without its original bytes: only a GTA restart takes it out.
@@ -378,27 +370,141 @@ namespace Xenvious
             }
             if (group.Patches.Any(p => p.trigger == "templates"))
                 chips.Add(StatusChip(TranslateOr("scrpatch_tag_templates", "templates only"), null));
-            if (readOnly)
+            return chips;
+        }
+
+        // ----- custom funcs -----
+
+        // The patches that inject and call the custom funcs: the dev patches (switched by the
+        // script features setting) and the one that clears room for them.
+        private static bool IsCustomFuncGroup(ScrPatchGroup group)
+            => group.Patches.Any(p => p.dev) || ScrPatchSlug(group.Name) == "nop_some_func_for_custom_funcs";
+
+        private bool _customFuncPatchesOpen;
+
+        // What the custom funcs give, and in which creators: null = all of them.
+        private static readonly (string Key, string Fallback, string[] Scripts)[] CustomFuncFeatures =
+        {
+            ("patches_cf_f_dims", "Model sizes", null),
+            ("patches_cf_f_hover", "Hovered model", null),
+            ("patches_cf_f_drawer", "Play area drawer", null),
+            ("patches_cf_f_hidden", "Hidden categories", new[] { "fm_lts_creator", "fm_capture_creator" }),
+            ("patches_cf_f_race", "Race: tuning and garage", new[] { "fm_race_creator" }),
+            ("patches_cf_f_camera", "Camera with Caps Lock", null),
+        };
+
+        private void RenderCustomFuncs(string creator)
+        {
+            var groups = _scrPatchGroups.Where(IsCustomFuncGroup).ToList();
+            var patches = groups.SelectMany(g => g.Patches).ToList();
+            var root = new StackPanel();
+
+            // Main switch: the script features setting itself.
+            var head = new Grid();
+            head.ColumnDefinitions.Add(new ColumnDefinition());
+            head.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+            var text = new StackPanel();
+            text.Children.Add(new TextBlock { Text = TranslateOr("patches_cf_switch", "Script features"), FontSize = 14.5, FontWeight = FontWeights.Bold, Foreground = ThemeBrush("TextColor") });
+            var desc = new TextBlock { Text = TranslateOr("patches_cf_switch_desc", "Switches all custom funcs on. Same switch as in the settings."), FontSize = 12.5, TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 2, 0, 0) };
+            desc.SetResourceReference(TextBlock.ForegroundProperty, "MutedTextBrush");
+            text.Children.Add(desc);
+            head.Children.Add(text);
+            var main = new CheckBox { Style = (Style)FindResource("SwitchToggle"), IsChecked = cbsettingsexpscrfeat.IsChecked == true, Margin = new Thickness(12, 0, 0, 0) };
+            main.Click += (_, __) => { cbsettingsexpscrfeat.IsChecked = main.IsChecked == true; _patchesShownKey = null; RenderPatchesPage(); };
+            Grid.SetColumn(main, 1);
+            head.Children.Add(main);
+            root.Children.Add(head);
+
+            // One tile per creator that has custom funcs.
+            var scripts = patches.Select(p => p.script_name).Where(n => !string.IsNullOrEmpty(n)).Distinct()
+                .OrderBy(n => Array.IndexOf(ScrPatchScriptOrder, n) < 0 ? int.MaxValue : Array.IndexOf(ScrPatchScriptOrder, n)).ToList();
+            var tiles = new System.Windows.Controls.Primitives.UniformGrid { Columns = Math.Max(1, scripts.Count), Margin = new Thickness(0, 12, -8, 0) };
+            foreach (string script in scripts)
+                tiles.Children.Add(CustomFuncTile(script, creator, patches.Where(p => p.script_name == script).ToList()));
+            root.Children.Add(tiles);
+
+            // What they give; green where it works in the open creator (or anywhere, with none open).
+            var features = new WrapPanel { Margin = new Thickness(0, 12, 0, 0) };
+            foreach (var (key, fallback, only) in CustomFuncFeatures)
             {
-                var head = new DockPanel();
-                var always = StatusChip(TranslateOr("patches_always", "always on"), "OkBrush", group.Description);
-                always.Margin = new Thickness(10, 0, 0, 0);
-                always.VerticalAlignment = VerticalAlignment.Top;
-                DockPanel.SetDock(always, Dock.Right);
-                head.Children.Add(always);
-                head.Children.Add(new TextBlock { Text = ScrPatchName(group.Name), FontSize = 14.5, FontWeight = FontWeights.Bold, TextWrapping = TextWrapping.Wrap, Foreground = ThemeBrush("TextColor"), ToolTip = group.Description });
-                var body = new StackPanel();
-                body.Children.Add(head);
-                var foot = new WrapPanel { Margin = new Thickness(0, 8, 0, 0) };
-                foreach (var chip in chips)
-                    foot.Children.Add(chip);
-                body.Children.Add(foot);
-                var card = new Border { CornerRadius = new CornerRadius(8), Padding = new Thickness(14, 12, 14, 10), Margin = new Thickness(0, 0, 10, 10), BorderThickness = new Thickness(1), Child = body };
-                card.SetResourceReference(Border.BackgroundProperty, "SectionBackgroundBrush");
-                card.SetResourceReference(Border.BorderBrushProperty, "LineBrush");
-                return card;
+                bool on = key == "patches_cf_f_camera" ? ScriptVars.CameraKey
+                    : key == "patches_cf_f_drawer" && creator.Length > 0 ? ScriptDrawer.Running(creator)
+                    : ScriptVars.FeaturesOn && (creator.Length == 0 || only == null || only.Contains(creator));
+                string tip = only == null ? null : string.Join(", ", only.Select(ScrPatchScriptLabel));
+                features.Children.Add(StatusChip(TranslateOr(key, fallback), on ? "OkBrush" : "FaintTextBrush", tip));
             }
-            return PatchCard(ScrPatchName(group.Name), group.Description, null, group.Enabled, true, on => group.Enabled = on, chips);
+            root.Children.Add(features);
+
+            // The script patches behind them, folded away.
+            var list = new Grid { Margin = new Thickness(14, 10, 0, 0) };
+            list.ColumnDefinitions.Add(new ColumnDefinition());
+            list.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+            int row = 0;
+            foreach (var group in groups.OrderBy(g => ScrPatchName(g.Name), StringComparer.CurrentCultureIgnoreCase))
+            {
+                list.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+                var name = new TextBlock { Text = ScrPatchName(group.Name), FontSize = 12.5, TextWrapping = TextWrapping.Wrap, VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(0, 0, 14, 4), ToolTip = string.IsNullOrEmpty(group.Description) ? null : group.Description };
+                name.SetResourceReference(TextBlock.ForegroundProperty, "TextColor");
+                Grid.SetRow(name, row);
+                list.Children.Add(name);
+                var chips = new WrapPanel { HorizontalAlignment = HorizontalAlignment.Right };
+                foreach (var chip in ScrPatchChips(group, creator, true))
+                    chips.Children.Add(chip);
+                Grid.SetRow(chips, row);
+                Grid.SetColumn(chips, 1);
+                list.Children.Add(chips);
+                row++;
+            }
+            var header = new TextBlock { FontWeight = FontWeights.SemiBold, Text = string.Format(CultureInfo.CurrentCulture, TranslateOr("patches_cf_patches", "Script patches for them ({0})"), groups.Count) };
+            header.SetResourceReference(TextBlock.ForegroundProperty, "MutedTextBrush");
+            var fold = new Expander { Style = (Style)FindResource("CardExpander"), Header = header, Content = list, IsExpanded = _customFuncPatchesOpen, Margin = new Thickness(0, 10, 0, 0) };
+            fold.Expanded += (_, __) => _customFuncPatchesOpen = true;
+            fold.Collapsed += (_, __) => _customFuncPatchesOpen = false;
+            root.Children.Add(fold);
+
+            patchesCustomFuncs.Child = root;
+            patchesCustomFuncs.Visibility = groups.Count == 0 ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        // A creator: whether its custom funcs run, and where they live in the script.
+        private Border CustomFuncTile(string script, string creator, List<GTA.ScrPatches> patches)
+        {
+            bool here = script == creator;
+            bool applied = patches.Where(p => p.dev).Any(ScrPatchesRunner.IsApplied);
+            string status, dot;
+            if (!here) { status = TranslateOr("patches_cf_notopen", "not open"); dot = "FaintTextBrush"; }
+            else if (!ScriptVars.FeaturesOn) { status = TranslateOr("patches_st_off", "Off"); dot = "FaintTextBrush"; }
+            else if (applied)
+            {
+                status = TranslateOr("patches_cf_running", "running");
+                if (ScriptDrawer.Running(script))
+                    status += " · " + string.Format(CultureInfo.CurrentCulture, TranslateOr("patches_cf_drawer", "drawer {0} shapes"), ScriptDrawer.ShownCount);
+                dot = "OkBrush";
+            }
+            else { status = TranslateOr("patches_cf_notwritten", "not written"); dot = "WarnBrush"; }
+
+            var page = patches.FirstOrDefault(p => p.page);
+            string where = page != null
+                ? string.Format(CultureInfo.InvariantCulture, TranslateOr("patches_cf_page", "Page {0}"), "0x" + page.page_base.ToString("X", CultureInfo.InvariantCulture))
+                : TranslateOr("patches_cf_inline", "in a script function");
+
+            var panel = new StackPanel();
+            var title = new StackPanel { Orientation = Orientation.Horizontal };
+            var d = new System.Windows.Shapes.Ellipse { Width = 8, Height = 8, Margin = new Thickness(0, 0, 6, 0), VerticalAlignment = VerticalAlignment.Center };
+            d.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, dot);
+            title.Children.Add(d);
+            title.Children.Add(new TextBlock { Text = ScrPatchScriptLabel(script), FontWeight = FontWeights.Bold, FontSize = 13, Foreground = ThemeBrush("TextColor") });
+            panel.Children.Add(title);
+            var st = new TextBlock { Text = status, FontSize = 11.5, Margin = new Thickness(0, 3, 0, 0), TextTrimming = TextTrimming.CharacterEllipsis, ToolTip = status };
+            st.SetResourceReference(TextBlock.ForegroundProperty, "MutedTextBrush");
+            panel.Children.Add(st);
+            var w = new TextBlock { Text = where, FontSize = 11, FontFamily = new FontFamily("Consolas"), Margin = new Thickness(0, 2, 0, 0), TextTrimming = TextTrimming.CharacterEllipsis };
+            w.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
+            panel.Children.Add(w);
+
+            var body = new Border { CornerRadius = new CornerRadius(8), Padding = new Thickness(10, 8, 10, 8), Child = panel };
+            body.SetResourceReference(Border.BackgroundProperty, "DeepBrush");
+            return new Border { Margin = new Thickness(0, 0, 8, 0), Child = Framed(body, 8, here) };
         }
 
         // ----- patches in the game executable -----
@@ -407,7 +513,7 @@ namespace Xenvious
 
         private sealed class GamePatchRow
         {
-            public string Name, Description, Warning, Key;
+            public string Name, Description, Key;
             public GamePatchState State;
             public Action<bool> Set;
         }
@@ -423,24 +529,24 @@ namespace Xenvious
                 Name = TranslateOr("developermode", "Developer Mode"), Key = "devptr",
                 Description = TranslateOr("patches_dev_desc", "Unlocks the game's developer functions that several script patches need."),
                 State = !open ? GamePatchState.Offline : !devFound ? GamePatchState.NoPattern : m.memory(GTA.Offsets.Editor.dev).Get<int>() == GTA.DevPatched ? GamePatchState.Active : GamePatchState.Found,
-                Set = on => { if (m.IsProcOpen && GTA.Offsets.Editor.dev != 0) m.memory(GTA.Offsets.Editor.dev).SetInt(on ? GTA.DevPatched : GTA.DevOriginal); },
+                Set = SetDevMode,
             });
-            rows.Add(GamePatchRowFor(GamePatches.CameraNoCollision, TranslateOr("np_camnocol", "Creator camera without collision"), TranslateOr("np_camnocol_tip", "The creator camera passes through walls and the ground."), null,
+            rows.Add(GamePatchRowFor(GamePatches.CameraNoCollision, TranslateOr("np_camnocol", "Creator camera without collision"), TranslateOr("np_camnocol_tip", "The creator camera passes through walls and the ground."),
                 "creator_cam_nocollision", GTA.Offsets.Editor.AOB_creator_cam_nocollision));
             rows.Add(GamePatchRowFor(GamePatches.NoBudget, TranslateOr("np_nobudget", "Ignore creator budget"), TranslateOr("patches_budget_desc", "The budget bar stays empty."),
-                TranslateOr("patches_budget_warn", "Too many entities can make the job fail to save or load."), "creator_budget", GTA.Offsets.Editor.AOB_creator_budget));
+                "creator_budget", GTA.Offsets.Editor.AOB_creator_budget));
             rows.Add(GamePatchRowFor(GamePatches.TestMode, TranslateOr("np_testmode", "Test Mode"), TranslateOr("patches_testmode_desc", "Enables test mode features."),
-                TranslateOr("patches_testmode_warn", "Enable Test mode in Creator with BE disabled"), "testmode", GTA.Offsets.Editor.AOB_testmode));
+                "testmode", GTA.Offsets.Editor.AOB_testmode));
             return rows;
         }
 
-        private GamePatchRow GamePatchRowFor(GamePatch patch, string name, string description, string warning, string key, string pattern)
+        private GamePatchRow GamePatchRowFor(GamePatch patch, string name, string description, string key, string pattern)
         {
             var state = string.IsNullOrWhiteSpace(pattern) ? GamePatchState.NoPattern
                 : !(m != null && m.IsProcOpen) ? GamePatchState.Offline
                 : !patch.Available ? GamePatchState.Stuck
                 : patch.IsOn ? GamePatchState.Active : GamePatchState.Found;
-            return new GamePatchRow { Name = name, Description = description, Warning = warning, Key = key, State = state, Set = patch.Set };
+            return new GamePatchRow { Name = name, Description = description, Key = key, State = state, Set = patch.Set };
         }
 
         private Border GamePatchCard(GamePatchRow row)
@@ -454,10 +560,91 @@ namespace Xenvious
                 case GamePatchState.Offline: text = TranslateOr("patches_st_offline", "GTA not connected"); brush = "FaintTextBrush"; break;
                 default: text = string.Format(CultureInfo.CurrentCulture, TranslateOr("patches_st_nopattern", "no pattern for {0}"), GameVariant.DisplayName(GameVariant.Current)); brush = "BadBrush"; break;
             }
-            var key = new TextBlock { Text = row.Key, FontSize = 11, FontFamily = new FontFamily("Consolas"), VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(2, 0, 0, 4) };
-            key.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
+            // One slim row: state dot, name, switch; the description and state are in the tooltip.
             bool usable = row.State == GamePatchState.Active || row.State == GamePatchState.Found;
-            return PatchCard(row.Name, row.Description, row.Warning, row.State == GamePatchState.Active, usable, row.Set, new FrameworkElement[] { StatusChip(text, brush), key });
+            bool on = row.State == GamePatchState.Active;
+            var grid = new Grid { ToolTip = row.Description + "\n" + text };
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+            grid.ColumnDefinitions.Add(new ColumnDefinition());
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+            var dot = new System.Windows.Shapes.Ellipse { Width = 8, Height = 8, Margin = new Thickness(0, 0, 9, 0), VerticalAlignment = VerticalAlignment.Center };
+            dot.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, brush ?? "FaintTextBrush");
+            grid.Children.Add(dot);
+            var name = new TextBlock { Text = row.Name, FontSize = 13, FontWeight = FontWeights.SemiBold, VerticalAlignment = VerticalAlignment.Center, TextTrimming = TextTrimming.CharacterEllipsis, Foreground = ThemeBrush("TextColor") };
+            Grid.SetColumn(name, 1);
+            grid.Children.Add(name);
+            var box = new CheckBox { Style = (Style)FindResource("SwitchToggle"), IsChecked = on, IsEnabled = usable, Margin = new Thickness(10, 0, 0, 0) };
+            box.Click += (_, __) =>
+            {
+                row.Set(box.IsChecked == true);
+                RememberGamePatch(row.Key, box.IsChecked == true);
+                _patchesShownKey = null;
+                RenderPatchesPage();
+            };
+            Grid.SetColumn(box, 2);
+            grid.Children.Add(box);
+            var body = new Border { CornerRadius = new CornerRadius(8), Padding = new Thickness(12, 8, 10, 8), Child = grid };
+            body.SetResourceReference(Border.BackgroundProperty, "SectionBackgroundBrush");
+            return new Border { Margin = new Thickness(0, 0, 8, 8), Child = Framed(body, 8, on) };
+        }
+
+        private static void SetDevMode(bool on)
+        {
+            if (m.IsProcOpen && GTA.Offsets.Editor.dev != 0)
+                m.memory(GTA.Offsets.Editor.dev).SetInt(on ? GTA.DevPatched : GTA.DevOriginal);
+        }
+
+        // ----- remembered game patches -----
+
+        // The game patch switches are kept in config.ini and written again whenever Xenvious
+        // connects, so they survive a GTA or Xenvious restart. A switch that was never touched
+        // has no key, and the game keeps what it has. Test Mode is not remembered: it is only
+        // meant for one session.
+        private const string GamePatchSection = "GamePatches";
+
+        private static Action<bool> RememberedGamePatch(string key)
+        {
+            switch (key)
+            {
+                case "devptr": return SetDevMode;
+                case "creator_cam_nocollision": return GamePatches.CameraNoCollision.Set;
+                case "creator_budget": return GamePatches.NoBudget.Set;
+                default: return null;
+            }
+        }
+
+        internal static void RememberGamePatch(string key, bool on)
+        {
+            if (RememberedGamePatch(key) == null)
+                return;
+            try
+            {
+                new ini_reader(Functions.getRoamingConfigFilePath()).Write(GamePatchSection, key, on);
+            }
+            catch (Exception e)
+            {
+                Log.Error("Saving game patch " + key + " failed", e, "scrpatches");
+            }
+        }
+
+        /// <summary>Writes the remembered game patch switches; call once the patches are resolved.</summary>
+        internal static void RestoreGamePatches()
+        {
+            try
+            {
+                var ini = new ini_reader(Functions.getRoamingConfigFilePath());
+                foreach (string key in new[] { "devptr", "creator_cam_nocollision", "creator_budget" })
+                {
+                    if (!bool.TryParse(ini.ReadString(GamePatchSection, key), out bool on))
+                        continue;
+                    RememberedGamePatch(key)(on);
+                    Log.Info($"Game patch {key} {(on ? "on" : "off")} (remembered)", source: "scrpatches");
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error("Restoring game patches failed", e, "scrpatches");
+            }
         }
 
         internal string TranslateOr(string key, string fallback)

@@ -231,6 +231,34 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+            <!-- A sliding switch: green track with a white knob when on, grey when off. -->
+            <Style x:Key="SwitchToggle" TargetType="{x:Type CheckBox}">
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type CheckBox}">
+                            <Border x:Name="track" Width="42" Height="24" CornerRadius="12" Background="{DynamicResource SelectedTileBrush}">
+                                <Ellipse x:Name="knob" Width="20" Height="20" Margin="2,0" Fill="White" HorizontalAlignment="Left">
+                                    <Ellipse.Effect>
+                                        <DropShadowEffect BlurRadius="4" ShadowDepth="1" Opacity="0.35"/>
+                                    </Ellipse.Effect>
+                                </Ellipse>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Setter TargetName="track" Property="Background" Value="{DynamicResource OkBrush}"/>
+                                    <Setter TargetName="knob" Property="HorizontalAlignment" Value="Right"/>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Opacity" Value="0.45"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
             <!-- One button of a segmented control (team switch of the entity cards): the chosen one raised, with an accent line. -->
             <Style x:Key="TeamSegButton" TargetType="{x:Type ToggleButton}">
                 <Setter Property="Foreground" Value="{DynamicResource MutedTextBrush}"/>
@@ -617,7 +645,9 @@
                                 </Style>
                                 <Style x:Key="DashTile" TargetType="{x:Type Border}">
                                     <Setter Property="Background" Value="{DynamicResource SeactionHeaderBackgroundBrush}"/>
-                                    <Setter Property="CornerRadius" Value="5"/>
+                                    <Setter Property="BorderBrush" Value="{DynamicResource LineBrush}"/>
+                                    <Setter Property="BorderThickness" Value="1"/>
+                                    <Setter Property="CornerRadius" Value="8"/>
                                     <Setter Property="Padding" Value="12,6"/>
                                     <Setter Property="MinHeight" Value="50"/>
                                     <Setter Property="Margin" Value="0,0,10,8"/>
@@ -812,6 +842,13 @@
                                                 </StackPanel>
                                             </StackPanel>
                                         </Border>
+                                        <!-- Game patch "ignore creator budget"; the same switch as on the Patches page, remembered. -->
+                                        <Border x:Name="DashTileBudget" Style="{StaticResource DashTile}" ToolTip="{Binding Translation[np_nobudget], FallbackValue='Ignore creator budget'}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Style="{StaticResource DashTileLabel}" VerticalAlignment="Center" Margin="0,0,12,0" Text="{Binding Translation[dash_budget], FallbackValue='Creator budget'}"/>
+                                                <CheckBox x:Name="DashBudgetSwitch" Style="{StaticResource SwitchToggle}" Click="DashBudgetSwitch_Click"/>
+                                            </StackPanel>
+                                        </Border>
                                         <!-- Props and dynamic props in their in-game colours. -->
                                         <Border x:Name="DashTileProps" Style="{StaticResource DashTile}">
                                             <StackPanel VerticalAlignment="Center">
@@ -909,7 +946,7 @@
                                                         <ColumnDefinition Width="Auto"/>
                                                     </Grid.ColumnDefinitions>
                                                     <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[developermode], FallbackValue='Developer Mode'}"/>
-                                                    <CheckBox x:Name="cb_dev" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cb_dev_Checked" Unchecked="cb_dev_Checked"/>
+                                                    <CheckBox x:Name="cb_dev" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cb_dev_Checked" Unchecked="cb_dev_Checked" Click="cb_dev_Click"/>
                                                 </Grid>
                                                 <Grid Style="{StaticResource FormRow}" Margin="0,0,8,0">
                                                     <Grid.ColumnDefinitions>
@@ -11027,7 +11064,7 @@
                                             <!-- Game and script patches on one page; cards are built in MainWindow.Misc.ScrPatches.cs. -->
                                             <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                                                 <StackPanel x:Name="patchesPage" Margin="20,12" MaxWidth="1080">
-                                                    <Border Style="{StaticResource DashCard}" Padding="14,8" Margin="0,0,0,16">
+                                                    <Border Style="{StaticResource DashCard}" Padding="14,8" Margin="0,0,0,16" CornerRadius="8" BorderThickness="1" BorderBrush="{DynamicResource LineBrush}">
                                                         <DockPanel>
                                                             <Button DockPanel.Dock="Right" Style="{StaticResource FormButton}" Margin="14,0,0,0" Padding="12,0" Click="BtnPatchesApply_Click"
                                                                     Content="{Binding Translation[patches_reload], FallbackValue='Reload'}"/>
@@ -11036,14 +11073,19 @@
                 <TextBlock x:Name="patchesMeta" VerticalAlignment="Center" FontSize="13" Foreground="{DynamicResource MutedTextBrush}"/>
                                                         </DockPanel>
                                                     </Border>
+                                                    <TextBlock Margin="0,0,0,8" FontSize="15" FontWeight="Bold" Foreground="{DynamicResource TextColor}">
+                                                        <Run Text="{Binding Translation[patches_cf_title], FallbackValue='Custom Funcs', Mode=OneWay}"/><Run Text="  "/><Run FontSize="12" FontWeight="Normal" Foreground="{DynamicResource FaintTextBrush}" Text="{Binding Translation[patches_cf_sub], FallbackValue='own functions in the creator script', Mode=OneWay}"/>
+                                                    </TextBlock>
+                                                    <!-- Built in MainWindow.Misc.ScrPatches.cs: main switch, creators, features, their script patches. -->
+                                                    <Border x:Name="patchesCustomFuncs" Style="{StaticResource DashCard}" Margin="0,0,0,20" Padding="16,14" CornerRadius="8" BorderThickness="1" BorderBrush="{DynamicResource LineBrush}"/>
                                                     <DockPanel Margin="0,0,0,8">
                                                         <TextBlock DockPanel.Dock="Right" VerticalAlignment="Bottom" FontSize="12" Foreground="{DynamicResource FaintTextBrush}"
-                                                                   Text="{Binding Translation[patches_game_hint], FallbackValue='Found when Xenvious connects; stay until switched off or GTA restarts'}"/>
+                                                                   Text="{Binding Translation[patches_remembered], FallbackValue='remembered'}"/>
                                                         <TextBlock FontSize="15" FontWeight="Bold" Foreground="{DynamicResource TextColor}">
                                                             <Run Text="{Binding Translation[patches_game], FallbackValue=Game, Mode=OneWay}"/><Run Text="  "/><Run x:Name="patchesExe" FontSize="12" FontWeight="Normal" FontFamily="Consolas" Foreground="{DynamicResource FaintTextBrush}"/>
                                                         </TextBlock>
                                                     </DockPanel>
-                                                    <UniformGrid x:Name="patchesGame" Columns="3" Margin="0,0,-10,12"/>
+                                                    <UniformGrid x:Name="patchesGame" Columns="4" Margin="0,0,-8,16"/>
                                                     <DockPanel Margin="0,4,0,8">
                                                         <WrapPanel x:Name="scrPatchesFilter" DockPanel.Dock="Right" VerticalAlignment="Bottom"/>
                                                         <TextBlock FontSize="15" FontWeight="Bold" Foreground="{DynamicResource TextColor}" VerticalAlignment="Center">
@@ -11051,14 +11093,6 @@
                                                         </TextBlock>
                                                     </DockPanel>
                                                     <StackPanel x:Name="patchesScripts"/>
-                                                    <Border x:Name="patchesDev" Style="{StaticResource DashCard}" Margin="0,4,0,0">
-                                                        <Expander Style="{StaticResource CardExpander}" IsExpanded="False">
-                                                            <Expander.Header>
-                                                                <TextBlock x:Name="patchesDevHeader" FontWeight="Bold" Foreground="{DynamicResource MutedTextBrush}"/>
-                                                            </Expander.Header>
-                                                            <UniformGrid x:Name="patchesDevList" Columns="2" Margin="14,12,4,4"/>
-                                                        </Expander>
-                                                    </Border>
                                                 </StackPanel>
                                             </ScrollViewer>
                                         </TabItem>

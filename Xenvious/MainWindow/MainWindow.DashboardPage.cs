@@ -33,6 +33,12 @@ namespace Xenvious
                 m.memory(GTA.Offsets.Editor.dev).SetInt(cb_dev.IsChecked == true ? GTA.DevPatched : GTA.DevOriginal);
         }
 
+        // Only a click is remembered: the worker also sets the box from the game's state.
+        private void cb_dev_Click(object sender, RoutedEventArgs e)
+        {
+            RememberGamePatch("devptr", cb_dev.IsChecked == true);
+        }
+
         public void IntegerPasteHandler(object sender, DataObjectPastingEventArgs e)
         {
             if (e.DataObject.GetDataPresent(typeof(string)) && sender is TextBox)
