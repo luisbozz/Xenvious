@@ -9,8 +9,10 @@ namespace Xenvious
     /// that is ScrPatchesRunner). Each patch finds its site with an [AOB] pattern when Xenvious
     /// attaches, keeps the original bytes and writes either them or the patch.
     ///
-    /// Once patched the pattern no longer matches, so a patch left on by an earlier Xenvious run
-    /// cannot be found again: it stays on until GTA restarts, and the switch shows as unavailable.
+    /// Once patched the pattern may no longer match (or the site already holds the patch), so the
+    /// site and its original bytes are stored in config.ini the first time they are found clean.
+    /// A patch left on by an earlier Xenvious run is found again through them; only a patch that
+    /// was never seen clean on this game binary shows as unavailable until GTA restarts.
     /// </summary>
     public sealed class GamePatch
     {
@@ -51,27 +53,41 @@ namespace Xenvious
                 return;
             }
             ulong hit = GTA.ScanModule(pattern, buffer);
-            if (hit == 0)
+            if (hit != 0)
             {
-                Log.Warn($"{Name} did not match; either it is still patched from an earlier run (restart GTA) or the pattern needs updating.", source: "GamePatches");
-                return;
-            }
-            long address = _resolve((long)hit);
-            // A rel32 that led to 0 means the match is not the expected instruction.
-            if (address == 0)
-            {
-                Log.Warn($"{Name}: match at 0x{hit:X} resolved to 0; the pattern needs updating.", source: "GamePatches");
-                return;
-            }
-            else
-            {
+                long address = _resolve((long)hit);
+                // A rel32 that led to 0 means the match is not the expected instruction.
+                if (address == 0)
+                {
+                    Log.Warn($"{Name}: match at 0x{hit:X} resolved to 0; the pattern needs updating.", source: "GamePatches");
+                    return;
+                }
                 Log.Debug($"{Name} matched at 0x{hit:X} and resolved to 0x{address:X}.", source: "GamePatches");
+                byte[] original = Read(address);
+                if (original == null)
+                    return;
+                if (!original.SequenceEqual(_patch))
+                {
+                    _address = address;
+                    _original = original;
+                    AobCache.PutOriginal(pattern, (ulong)address, original);
+                    return;
+                }
             }
-            byte[] original = Read(address);
-            if (original == null || original.SequenceEqual(_patch))
-                return;
-            _address = address;
-            _original = original;
+
+            // No match, or the site already holds the patch: left on by an earlier Xenvious run.
+            if (AobCache.TryGetOriginal(pattern, out ulong at, out byte[] stored) && stored.Length == _patch.Length)
+            {
+                byte[] now = Read((long)at);
+                if (now != null && (now.SequenceEqual(_patch) || now.SequenceEqual(stored)))
+                {
+                    _address = (long)at;
+                    _original = stored;
+                    Log.Info($"{Name} found again at its stored site ({(now.SequenceEqual(_patch) ? "still patched" : "original")}).", source: "GamePatches");
+                    return;
+                }
+            }
+            Log.Warn($"{Name} did not match; either it is still patched from an earlier run (restart GTA) or the pattern needs updating.", source: "GamePatches");
         }
 
         public bool IsOn => Available && (Read(_address)?.SequenceEqual(_patch) ?? false);
