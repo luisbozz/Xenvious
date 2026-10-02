@@ -609,6 +609,7 @@ namespace Xenvious
                 case "devptr": return SetDevMode;
                 case "creator_cam_nocollision": return GamePatches.CameraNoCollision.Set;
                 case "creator_budget": return GamePatches.NoBudget.Set;
+                case "testmode": return GamePatches.TestMode.Set;
                 default: return null;
             }
         }
@@ -633,7 +634,7 @@ namespace Xenvious
             try
             {
                 var ini = new ini_reader(Functions.getRoamingConfigFilePath());
-                foreach (string key in new[] { "devptr", "creator_cam_nocollision", "creator_budget" })
+                foreach (string key in new[] { "devptr", "creator_cam_nocollision", "creator_budget", "testmode" })
                 {
                     if (!bool.TryParse(ini.ReadString(GamePatchSection, key), out bool on))
                         continue;

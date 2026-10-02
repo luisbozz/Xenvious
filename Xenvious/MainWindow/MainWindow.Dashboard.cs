@@ -168,9 +168,9 @@ namespace Xenvious
             }
 
             // The budget switch follows the game: it may also be switched on the Patches page.
-            DashBudgetSwitch.IsEnabled = game && GamePatches.NoBudget.Available;
-            if (!DashBudgetSwitch.IsMouseOver)
-                DashBudgetSwitch.IsChecked = game && GamePatches.NoBudget.IsOn;
+            DashTestSwitch.IsEnabled = game && GamePatches.TestMode.Available;
+            if (!DashTestSwitch.IsMouseOver)
+                DashTestSwitch.IsChecked = game && GamePatches.TestMode.IsOn;
 
             bool script = cbsettingsexpscrfeat.IsChecked == true;
             DashStatusScript.Text = script
@@ -181,11 +181,11 @@ namespace Xenvious
             UpdateDashboardForCreator(inCreator ? creator : null);
         }
 
-        private void DashBudgetSwitch_Click(object sender, RoutedEventArgs e)
+        private void DashTestSwitch_Click(object sender, RoutedEventArgs e)
         {
-            bool on = DashBudgetSwitch.IsChecked == true;
-            GamePatches.NoBudget.Set(on);
-            RememberGamePatch("creator_budget", on);
+            bool on = DashTestSwitch.IsChecked == true;
+            GamePatches.TestMode.Set(on);
+            RememberGamePatch("creator_test", on);
         }
 
         private void ShowStatus(string label, string value, Brush dot)
