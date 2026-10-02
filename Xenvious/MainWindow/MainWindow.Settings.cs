@@ -265,10 +265,10 @@ namespace Xenvious
 
             try
             {
+                // A fresh config has no list yet.
                 string decrypted = ConfigText.Decode(ini.ReadString("Settings", "gefreeze"));
-
-                var entries = System.Text.Json.JsonSerializer.Deserialize<List<GlobalFreezeEntry>>(decrypted) ?? new List<GlobalFreezeEntry>()
-;
+                var entries = string.IsNullOrWhiteSpace(decrypted) ? new List<GlobalFreezeEntry>()
+                    : System.Text.Json.JsonSerializer.Deserialize<List<GlobalFreezeEntry>>(decrypted) ?? new List<GlobalFreezeEntry>();
                 foreach (var e in entries)
                 {
                     switch (e.Type)
@@ -325,7 +325,8 @@ namespace Xenvious
             try
             {
                 string decrypted = ConfigText.Decode(ini.ReadString("Settings", "lefreeze"));
-                List<LocalFreezeEntry>  entries = System.Text.Json.JsonSerializer.Deserialize<List<LocalFreezeEntry>>(decrypted) ?? new List<LocalFreezeEntry>();
+                List<LocalFreezeEntry> entries = string.IsNullOrWhiteSpace(decrypted) ? new List<LocalFreezeEntry>()
+                    : System.Text.Json.JsonSerializer.Deserialize<List<LocalFreezeEntry>>(decrypted) ?? new List<LocalFreezeEntry>();
 
                 foreach (var e in entries)
                 {
