@@ -997,5 +997,53 @@
         "offset": 11,
         "bytes_to_patch": "71 00 00 00 00 00",
         "dev": false
+    },
+    {
+        "patch_name": "allow climb on foot",
+        "script_name": "fm_lts_creator",
+        "pattern": "43 63 01 72 2C ? ? ? 2C ? ? ? 43 61 01 72",
+        "offset": 3,
+        "bytes_to_patch": "71",
+        "dev": false
+    },
+    {
+        "patch_name": "allow climb on foot",
+        "script_name": "fm_lts_creator",
+        "pattern": "43 63 01 72 2C ? ? ? 2C ? ? ? 43 61 01 72",
+        "offset": 15,
+        "bytes_to_patch": "71",
+        "dev": false
+    },
+    {
+        "patch_name": "allow climb on foot",
+        "script_name": "fm_capture_creator",
+        "pattern": "43 63 01 72 2C ? ? ? 2C ? ? ? 43 61 01 72",
+        "offset": 3,
+        "bytes_to_patch": "71",
+        "dev": false
+    },
+    {
+        "patch_name": "allow climb on foot",
+        "script_name": "fm_capture_creator",
+        "pattern": "43 63 01 72 2C ? ? ? 2C ? ? ? 43 61 01 72",
+        "offset": 15,
+        "bytes_to_patch": "71",
+        "dev": false
+    },
+    {
+        "patch_name": "allow climb on foot",
+        "script_name": "fm_deathmatch_creator",
+        "pattern": "43 63 01 72 2C ? ? ? 2C ? ? ? 43 61 01 72",
+        "offset": 3,
+        "bytes_to_patch": "71",
+        "dev": false
+    },
+    {
+        "patch_name": "allow climb on foot",
+        "script_name": "fm_deathmatch_creator",
+        "pattern": "43 63 01 72 2C ? ? ? 2C ? ? ? 43 61 01 72",
+        "offset": 15,
+        "bytes_to_patch": "71",
+        "dev": false
     }
 ]
