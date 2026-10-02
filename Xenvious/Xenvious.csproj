@@ -184,6 +184,7 @@
     <Compile Include="Controls\EntityPicker.cs" />
     <Compile Include="Controls\PlayAreaView.cs" />
     <Compile Include="Controls\RaceVehiclesView.cs" />
+    <Compile Include="Controls\TestVehicleTuneView.cs" />
     <Compile Include="Controls\GtaTextAssist.cs" />
     <Compile Include="Controls\RulesView.cs" />
     <Compile Include="Controls\RulesView.Flow.cs" />
@@ -245,6 +246,7 @@
     <Compile Include="Creator Classes\GamePatches.cs" />
     <Compile Include="Creator Classes\PlayAreas.cs" />
     <Compile Include="Creator Classes\RaceVehicles.cs" />
+    <Compile Include="Creator Classes\TestVehicleTune.cs" />
     <Compile Include="Creator Classes\RulePresets.cs" />
     <Compile Include="Creator Classes\StartPoints.cs" />
     <Compile Include="Creator Classes\TestReturn.cs" />
@@ -448,6 +450,7 @@
     <Compile Include="MainWindow\MainWindow.GlobalLocalEditor.cs" />
     <Compile Include="MainWindow\MainWindow.Input.cs" />
     <Compile Include="MainWindow\MainWindow.JobImage.cs" />
+    <Compile Include="MainWindow\MainWindow.ImagePicker.cs" />
     <Compile Include="MainWindow\MainWindow.Misc.CopyJobs.cs" />
     <Compile Include="MainWindow\MainWindow.Misc.JobLinks.cs" />
     <Compile Include="MainWindow\MainWindow.Misc.MapMover.cs" />

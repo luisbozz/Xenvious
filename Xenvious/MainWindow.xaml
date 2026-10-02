@@ -3727,6 +3727,8 @@
 
                                                                 <Button x:Name="BtnRaceAVEH" Style="{DynamicResource CustomButton}"  Height="45" Content="{Binding Translation[aveh], FallbackValue=Available Vehicles}" Click="BtnRaceAVEH_Click" FontSize="20" Background="{DynamicResource ButtonHoverBackgroundBrush}"/>
 
+                                                                <Button x:Name="BtnRaceTune" Style="{DynamicResource CustomButton}"  Height="45" Content="{Binding Translation[tv_page], FallbackValue=Test Vehicle}" Click="BtnRaceTune_Click" FontSize="20" Background="{DynamicResource ButtonHoverBackgroundBrush}"/>
+
                                                                 <Button x:Name="BtnRaceArena" Style="{DynamicResource CustomButton}" Height="45" Content="{Binding Translation[arena], FallbackValue=Arena}" Click="BtnRaceArena_Click" FontSize="20" Background="{DynamicResource ButtonHoverBackgroundBrush}" Visibility="Collapsed"/>
 
                                                             </StackPanel>
@@ -4251,6 +4253,11 @@
                                                         <TabItem x:Name="PageInnerRaceAVEH" Header="AVEH">
                                                             <!-- Available vehicles, built in code: Controls/RaceVehiclesView.cs. -->
                                                             <local:RaceVehiclesView x:Name="raceVehiclesView" Margin="10,0"/>
+                                                        </TabItem>
+
+                                                        <TabItem x:Name="PageInnerRaceTune" Header="Tune">
+                                                            <!-- Test vehicle tuning, built in code: Controls/TestVehicleTuneView.cs. -->
+                                                            <local:TestVehicleTuneView Margin="10,0"/>
                                                         </TabItem>
 
                                                         <TabItem x:Name="PageInnerRaceArena" Header="Arena"/>

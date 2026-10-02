@@ -1485,6 +1485,10 @@ namespace Xenvious
                 public static long custom_dimension_model = 0x0;
                 public static long custom_dimension_min = 0x0;
                 public static long custom_dimension_max = 0x0;
+                public static long custom_tune = 0x0;
+                public static long custom_pv_slot = 0x0;
+                public static long custom_pv_result = 0x0;
+                public static long custom_pv_list = 0x0;
                 public static long templates = 0x0;
                 public static long templates_count = 0x0;
                 public static long OFFSET_script_name = 0x0;

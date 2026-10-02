@@ -148,6 +148,10 @@ namespace Xenvious
             GTA.Offsets.Editor.custom_dimension_model = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_custom_dimension_model"), 0);
             GTA.Offsets.Editor.custom_dimension_min = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_custom_dimension_min"), 0);
             GTA.Offsets.Editor.custom_dimension_max = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_custom_dimension_max"), 0);
+            GTA.Offsets.Editor.custom_tune = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_custom_tune"), 0);
+            GTA.Offsets.Editor.custom_pv_slot = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_custom_pv_slot"), 0);
+            GTA.Offsets.Editor.custom_pv_result = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_custom_pv_result"), 0);
+            GTA.Offsets.Editor.custom_pv_list = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_custom_pv_list"), 0);
             // Array base (its size word), and the number of templates in use.
             GTA.Offsets.Editor.templates = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_templates"), 0);
             GTA.Offsets.Editor.templates_count = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_templates_count"), 0);

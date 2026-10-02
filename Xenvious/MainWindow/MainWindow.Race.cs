@@ -25,6 +25,11 @@ namespace Xenvious
             PageInnerRace.SelectedItem = PageInnerRaceCP;
         }
 
+        private void BtnRaceTune_Click(object sender, RoutedEventArgs e)
+        {
+            PageInnerRace.SelectedItem = PageInnerRaceTune;
+        }
+
         private void BtnRaceArena_Click(object sender, RoutedEventArgs e)
         {
             PageInnerRace.SelectedItem = PageInnerRaceArena;
@@ -260,6 +265,7 @@ namespace Xenvious
             BtnRaceGeneral.Background = (SolidColorBrush)Resources["SeactionHeaderBackgroundBrush"];
             BtnRaceCheckpoints.Background = (SolidColorBrush)Resources["SeactionHeaderBackgroundBrush"];
             BtnRaceAVEH.Background = (SolidColorBrush)Resources["SeactionHeaderBackgroundBrush"];
+            BtnRaceTune.Background = (SolidColorBrush)Resources["SeactionHeaderBackgroundBrush"];
 
             if (PageInnerRace.SelectedItem == PageInnerRaceGeneral)
             {
@@ -272,6 +278,10 @@ namespace Xenvious
             else if (PageInnerRace.SelectedItem == PageInnerRaceAVEH)
             {
                 BtnRaceAVEH.Background = (SolidColorBrush)Resources["ButtonHoverBackgroundBrush"];
+            }
+            else if (PageInnerRace.SelectedItem == PageInnerRaceTune)
+            {
+                BtnRaceTune.Background = (SolidColorBrush)Resources["ButtonHoverBackgroundBrush"];
             }
         }
 
