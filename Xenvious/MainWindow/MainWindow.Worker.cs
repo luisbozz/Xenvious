@@ -785,7 +785,6 @@ namespace Xenvious
                                                 }
                                             }
                                         }
-                                        GetBlips();
                                     }
                                     else if (PageInnerMission.SelectedItem == PageInnerMissionGoto)
                                     {

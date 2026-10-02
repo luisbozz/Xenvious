@@ -2532,6 +2532,7 @@
                                                     <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,12" Tag="EntryBar">
                                                         <DockPanel>
                                                             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                                                                <Button x:Name="BtnVehBlip" Style="{StaticResource BarButton}" Click="BtnVehBlip_Click" Content="+ Blip"/>
                                                                 <!-- ‹ number › : steps through the entries without opening the list. -->
                                                                 <Border Background="{DynamicResource ComboBoxBackground}" BorderBrush="{DynamicResource ComboBoxBorder}" BorderThickness="1" CornerRadius="4" Height="32" Margin="0,0,10,0">
                                                                     <StackPanel Orientation="Horizontal">
@@ -7166,7 +7167,7 @@
                                                                                 <Border Background="{DynamicResource ComboBoxBackground}" BorderBrush="{DynamicResource ComboBoxBorder}" BorderThickness="1" CornerRadius="4" Height="32" Margin="0,0,16,0">
                                                                                     <StackPanel Orientation="Horizontal">
                                                                                         <Button Style="{StaticResource EntryStepButton}" Content="‹" Tag="{Binding ElementName=ddmissionddblipno}" CommandParameter="-1" Click="EntryStep_Click" ToolTip="{Binding Translation[entry_prev], FallbackValue=Previous}"/>
-                                                                                        <ComboBox x:Name="ddmissionddblipno" FontFamily="{DynamicResource Volte}" SelectionChanged="ddmissionddblipno_SelectionChanged" Width="84" Height="30" BorderThickness="0">
+                                                                                        <ComboBox x:Name="ddmissionddblipno" FontFamily="{DynamicResource Volte}" Width="84" Height="30" BorderThickness="0">
                                                                                         </ComboBox>
                                                                                         <Button Style="{StaticResource EntryStepButton}" Content="›" Tag="{Binding ElementName=ddmissionddblipno}" CommandParameter="1" Click="EntryStep_Click" ToolTip="{Binding Translation[entry_next], FallbackValue=Next}"/>
                                                                                     </StackPanel>
@@ -7187,142 +7188,7 @@
                                                                             </TextBlock>
                                                                         </DockPanel>
                                                                     </Border>
-                                                                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                                                        <local:MasonryPanel Margin="0,12,0,12">
-                                                                            <StackPanel>
-                                                                                <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
-                                                                                    <DockPanel>
-                                                                                        <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
-                                                                                            <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[general], FallbackValue=General}"/>
-                                                                                        </Border>
-                                                                                        <StackPanel Margin="14,12,14,4">
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[loc], FallbackValue=Location}"/>
-                                                                                        <Grid Margin="0,0,0,10">
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="6"/>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="6"/>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="6"/>
-                                                                                                <ColumnDefinition Width="30"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <StackPanel Grid.Column="0">
-                                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="X"/>
-                                                                                                <TextBox x:Name="tbmissionddblipposox" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissionddblipposox_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
-                                                                                            </StackPanel>
-                                                                                            <StackPanel Grid.Column="2">
-                                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="Y"/>
-                                                                                                <TextBox x:Name="tbmissionddblipposoy" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissionddblipposoy_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
-                                                                                            </StackPanel>
-                                                                                            <StackPanel Grid.Column="4">
-                                                                                                <TextBlock Style="{StaticResource FieldAxis}" Text="Z"/>
-                                                                                                <TextBox x:Name="tbmissionddblipposoz" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissionddblipposoz_TextChanged" KeyDown="FormatTextForFloat" Height="30"/>
-                                                                                            </StackPanel>
-                                                                                            <Border Grid.Column="6" Width="30" Height="30" VerticalAlignment="Bottom">
-                                                                                                <Button x:Name="Btmissionddblipposgetloc" Style="{StaticResource FieldIconButton}" Click="Btmissionddblipposgetloc_Click" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Translation[getcursorloc], FallbackValue=Get Cursor Location}" IsEnabled="False" >
-                                                                                                    <Path Data="M8,1.5 L8,4.5 M8,11.5 L8,14.5 M1.5,8 L4.5,8 M11.5,8 L14.5,8 M8,5 A3,3 0 1 1 7.99,5" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.6" Width="16" Height="16" />
-                                                                                                </Button>
-                                                                                            </Border>
-                                                                                        </Grid>
-                                                                                        <Rectangle Height="1" Fill="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="0,4,0,12"/>
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[size], FallbackValue=Size}"/>
-                                                                                        <TextBox x:Name="tbmissionddblipsize" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissionddblipsize_TextChanged" KeyDown="FormatTextForInteger" Height="30" Margin="0,0,0,10"/>
-                                                                                        </StackPanel>
-                                                                                    </DockPanel>
-                                                                                </Border>
-                                                                            </StackPanel>
-                                                                            <StackPanel>
-                                                                                <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
-                                                                                    <DockPanel>
-                                                                                        <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
-                                                                                            <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[options], FallbackValue=Options}"/>
-                                                                                        </Border>
-                                                                                        <StackPanel Margin="14,12,14,4">
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[name], FallbackValue=Name}"/>
-                                                                                        <TextBox x:Name="tbmissionddblipname" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissionddblipname_TextChanged" Height="30" Margin="0,0,0,10"/>
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[color], FallbackValue=Color}"/>
-                                                                                        <TextBox x:Name="tbmissionddblipclr" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissionddblipclr_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[entt], FallbackValue=Entity Type}"/>
-                                                                                        <TextBox x:Name="tbmissionddblipentt" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissionddblipentt_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[enti], FallbackValue=Entity ID}"/>
-                                                                                        <TextBox x:Name="tbmissionddblipenti" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissionddblipenti_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                        <Grid Style="{StaticResource FormRow}">
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="46"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[missionddblipeft1], FallbackValue=Enable for Team 1}"/>
-                                                                                            <CheckBox x:Name="cbmissionddblipeft1" Checked="cbmissionddblipeft1_Checked" Unchecked="cbmissionddblipeft1_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                        </Grid>
-                                                                                        <Grid Style="{StaticResource FormRow}">
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="46"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[missionddblipeft2], FallbackValue=Enable for Team 2}"/>
-                                                                                            <CheckBox x:Name="cbmissionddblipeft2" Checked="cbmissionddblipeft2_Checked" Unchecked="cbmissionddblipeft2_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                        </Grid>
-                                                                                        <Grid Style="{StaticResource FormRow}">
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="46"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[missionddblipeft3], FallbackValue=Enable for Team 3}"/>
-                                                                                            <CheckBox x:Name="cbmissionddblipeft3" Checked="cbmissionddblipeft3_Checked" Unchecked="cbmissionddblipeft3_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                        </Grid>
-                                                                                        <Grid Style="{StaticResource FormRow}">
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="46"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[missionddblipeft4], FallbackValue=Enable for Team 4}"/>
-                                                                                            <CheckBox x:Name="cbmissionddblipeft4" Checked="cbmissionddblipeft4_Checked" Unchecked="cbmissionddblipeft4_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                        </Grid>
-                                                                                        <Grid Style="{StaticResource FormRow}">
-                                                                                            <Grid.ColumnDefinitions>
-                                                                                                <ColumnDefinition Width="*"/>
-                                                                                                <ColumnDefinition Width="46"/>
-                                                                                            </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[missionddbliperoute], FallbackValue=Enable Route}"/>
-                                                                                            <CheckBox x:Name="cbmissionddbliperoute" Checked="cbmissionddbliperoute_Checked" Unchecked="cbmissionddbliperoute_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                                        </Grid>
-                                                                                        </StackPanel>
-                                                                                    </DockPanel>
-                                                                                </Border>
-                                                                            </StackPanel>
-                                                                            <StackPanel>
-                                                                                <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
-                                                                                    <Expander Style="{StaticResource CardExpander}" IsExpanded="True" Header="{Binding Translation[advanced], FallbackValue=Advanced}">
-                                                                                        <StackPanel Margin="14,12,14,4">
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[rule], FallbackValue=Rule}"/>
-                                                                                        <TextBox x:Name="tbmissionddbliprule" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissionddbliprule_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[team], FallbackValue=Team}"/>
-                                                                                        <TextBox x:Name="tbmissionddblipteam" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissionddblipteam_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[bits], FallbackValue=bits}"/>
-                                                                                        <TextBox x:Name="tbmissionddblipbits" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissionddblipbits_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[type], FallbackValue=Type}"/>
-                                                                                        <TextBox x:Name="tbmissionddbliptype" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissionddbliptype_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[veh], FallbackValue=veh}"/>
-                                                                                        <TextBox x:Name="tbmissionddblipveh" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissionddblipveh_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[sprite], FallbackValue=sprite}"/>
-                                                                                        <TextBox x:Name="tbmissionddblipsprite" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissionddblipsprite_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                        <TextBlock Style="{StaticResource CardSub}" Text="{Binding Translation[ddblipbind], FallbackValue=Binding}"/>
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[ddblipbindto], FallbackValue=Bind to}"/>
-                                                                                        <ComboBox x:Name="ddmissionddbliptype" FontFamily="{DynamicResource Volte}" SelectionChanged="ddmissionddbliptype_SelectionChanged" IsEnabled="False"  Height="30" Margin="0,0,0,10">
-                                                                                            <ComboBoxItem Content="{Binding Translation[ddblipbind1], FallbackValue=Blip Location}" ToolTip="{Binding Translation[ddblipbind1info], FallbackValue='The Location set for the Blip'}"/>
-                                                                                            <ComboBoxItem Content="{Binding Translation[ddblipbind2], FallbackValue=Ped}" ToolTip="{Binding Translation[ddblipbind2info], FallbackValue='Bind to a placed Actor'}"/>
-                                                                                            <ComboBoxItem Content="{Binding Translation[ddblipbind3], FallbackValue=Vehicle}" ToolTip="{Binding Translation[ddblipbind3info], FallbackValue='Bind to a placed Vehicle'}"/>
-                                                                                            <ComboBoxItem Content="{Binding Translation[ddblipbind4], FallbackValue=Apartment}" ToolTip="{Binding Translation[ddblipbind4info], FallbackValue='currently unknown on how to be used'}"/>
-                                                                                            <ComboBoxItem Content="{Binding Translation[ddblipbind5], FallbackValue=Leader Garage}" ToolTip="{Binding Translation[ddblipbind5info], FallbackValue='currently unknown on how to be used'}"/>
-                                                                                        </ComboBox>
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[index], FallbackValue=Index}"/>
-                                                                                        <TextBox x:Name="tbmissionddblipbindindex" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbmissionddblipbindindex_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                        </StackPanel>
-                                                                                    </Expander>
-                                                                                </Border>
-                                                                            </StackPanel>
-                                                                        </local:MasonryPanel>
+                                                                    <ScrollViewer x:Name="scrollMissionBlips" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                                                                     </ScrollViewer>
                                                                 </DockPanel>
 
@@ -7896,6 +7762,7 @@
                                                     <Border DockPanel.Dock="Top" Padding="2,0" Margin="0,12,0,12" Tag="EntryBar">
                                                         <DockPanel>
                                                             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                                                                <Button x:Name="BtnActorBlip" Style="{StaticResource BarButton}" Click="BtnActorBlip_Click" Content="+ Blip"/>
                                                                 <Button x:Name="BtnActorDuplicate" Content="{Binding Translation[duplicate], FallbackValue=Duplicate}" Click="BtnActorDuplicate_Click" Style="{StaticResource BarButton}"/>
                                                                 <!-- ‹ number › : steps through the entries without opening the list. -->
                                                                 <Border Background="{DynamicResource ComboBoxBackground}" BorderBrush="{DynamicResource ComboBoxBorder}" BorderThickness="1" CornerRadius="4" Height="32" Margin="0,0,10,0">

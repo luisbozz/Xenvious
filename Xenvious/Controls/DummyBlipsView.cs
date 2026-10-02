@@ -102,6 +102,7 @@ namespace Xenvious
         private readonly Action _rebuild;
         private readonly SectionCard _mapCard = new SectionCard(), _listCard = new SectionCard(), _editCard = new SectionCard(), _linkCard = new SectionCard(), _lookCard = new SectionCard(), _visCard = new SectionCard();
         private readonly StackPanel _link = new StackPanel(), _look = new StackPanel(), _vis = new StackPanel();
+        private readonly Grid _top = new Grid();
         private readonly BlipLifecycleCard _lifecycle = new BlipLifecycleCard();
         private int _lifecycleBlip = -1;
         private readonly Canvas _map = new Canvas { Height = 320, ClipToBounds = true, Background = Brushes.Transparent, Cursor = Cursors.Cross };
@@ -130,6 +131,18 @@ namespace Xenvious
             ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(540) });
 
             var left = new StackPanel();
+            Card(_editCard, T("bl_blip", "Blip"), "M12,2 C8,2 5,5 5,9 C5,14 12,22 12,22 C12,22 19,14 19,9 C19,5 16,2 12,2 M12,6.5 A2.5,2.5 0 1 0 12,11.5 A2.5,2.5 0 1 0 12,6.5");
+            _editCard.Content = _editor;
+            Card(_linkCard, T("bl_link", "Tie to an entity"), "M10,14 L14,10 M8.5,11.5 L6,14 A3.2,3.2 0 0 0 10,18 L12.5,15.5 M11.5,8.5 L14,6 A3.2,3.2 0 0 1 18,10 L15.5,12.5");
+            _linkCard.Content = _link;
+            _top.ColumnDefinitions.Add(new ColumnDefinition());
+            _top.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(12) });
+            _top.ColumnDefinitions.Add(new ColumnDefinition());
+            Grid.SetColumn(_linkCard, 2);
+            _top.Children.Add(_editCard);
+            _top.Children.Add(_linkCard);
+            left.Children.Add(_top);
+
             Card(_mapCard, T("bl_map", "Map"), "M3,6 L9,3 L15,6 L21,3 V18 L15,21 L9,18 L3,21 Z M9,3 V18 M15,6 V21");
             var previewBar = new DockPanel { Margin = new Thickness(0, 0, 0, 8), LastChildFill = false };
             previewBar.Children.Add(Faint(T("bl_preview", "In the test:"), 12.5).Also(t => { t.VerticalAlignment = VerticalAlignment.Center; t.Margin = new Thickness(0); }));
@@ -154,11 +167,6 @@ namespace Xenvious
             left.Children.Add(_listCard);
             Children.Add(left);
 
-            Card(_editCard, T("bl_blip", "Blip"), "M12,2 C8,2 5,5 5,9 C5,14 12,22 12,22 C12,22 19,14 19,9 C19,5 16,2 12,2 M12,6.5 A2.5,2.5 0 1 0 12,11.5 A2.5,2.5 0 1 0 12,6.5");
-            _editCard.Content = _editor;
-            Card(_linkCard, T("bl_link", "Tie to an entity"), "M10,14 L14,10 M8.5,11.5 L6,14 A3.2,3.2 0 0 0 10,18 L12.5,15.5 M11.5,8.5 L14,6 A3.2,3.2 0 0 1 18,10 L15.5,12.5");
-            _linkCard.CanCollapse = true;
-            _linkCard.Content = _link;
             Card(_lookCard, T("bl_look", "Look"), "M12,3 A9,9 0 1 0 12,21 C13.5,21 14,20 13.4,18.8 C12.8,17.6 13.6,16.5 15,16.5 H17 A4,4 0 0 0 21,12.5 C21,7.3 17,3 12,3 M7.5,11 A1.2,1.2 0 1 0 7.5,11.01 M10.5,7 A1.2,1.2 0 1 0 10.5,7.01 M15,7.5 A1.2,1.2 0 1 0 15,7.51");
             _lookCard.Content = _look;
             Card(_visCard, T("bl_visibility", "Visibility"), "M2,12 C5,6 19,6 22,12 C19,18 5,18 2,12 Z M12,9 A3,3 0 1 0 12,15 A3,3 0 1 0 12,9");
@@ -173,7 +181,7 @@ namespace Xenvious
                 SetInt(GTA.Offsets.Editor.ddblip.trul, i, to);
                 Refresh(true);
             };
-            var right = new StackPanel { VerticalAlignment = VerticalAlignment.Top, Children = { _editCard, _linkCard, _lookCard, _visCard, _lifecycle } };
+            var right = new StackPanel { VerticalAlignment = VerticalAlignment.Top, Children = { _lookCard, _lifecycle, _visCard } };
             SetColumn(right, 2);
             Children.Add(right);
 
@@ -452,12 +460,14 @@ namespace Xenvious
                 _editCard.Title = T("bl_blip", "Blip");
                 _editCard.HeaderRight = null;
                 _linkCard.Visibility = _lookCard.Visibility = _visCard.Visibility = _lifecycle.Visibility = Visibility.Collapsed;
+                Grid.SetColumnSpan(_editCard, 3);
                 _editor.Children.Add(Faint(_blips.Count == 0 ? T("bl_add_first", "Add a blip with \"+ New blip at cursor\".") : T("bl_pick", "Pick a blip in the list or on the map."), 13));
                 return;
             }
             var b = _blips[i];
             _editCard.Title = BlipName(b);
             _linkCard.Visibility = _lookCard.Visibility = _visCard.Visibility = _lifecycle.Visibility = Visibility.Visible;
+            Grid.SetColumnSpan(_editCard, 1);
             _lifecycleBlip = i;
             _lifecycle.Show(b.Team, b.Rule, b.From, b.To);
             _look.Children.Clear();
@@ -468,7 +478,8 @@ namespace Xenvious
             _editCard.HeaderRight = SpriteImage(b.Sprite, b.Colour, 24);
 
             string problem = Problem(b);
-            _editor.Children.Add(Notice(problem ?? string.Format(CultureInfo.CurrentCulture, T("bl_ok", "Shows in the test for {0}: {1}."), TeamsText(b), WhenText(b)), problem == null));
+            if (problem != null)
+                _editor.Children.Add(Notice(problem, false));
 
             // Name
             _editor.Children.Add(Label(T("bl_name", "Name")));
@@ -497,7 +508,7 @@ namespace Xenvious
                 SetInt(GTA.Offsets.Editor.ddblip.type, i, anchorTypes[a]);
                 SetInt(GTA.Offsets.Editor.ddblip.veh, i, a == 1 || a == 2 ? Math.Max(0, b.Entity) : -1);
                 Refresh(true);
-            }, 3));
+            }));
             if (b.Type == TypeProperty || b.Type == TypeGarage)
                 _editor.Children.Add(Faint(T("bl_leader_hint", "Heists only: the blip sits at the entrance of the lobby leader's apartment or garage, not at the spot below."), 12));
             if (anchor < 0)
@@ -524,6 +535,14 @@ namespace Xenvious
                 _editor.Children.Add(Faint(b.Type == TypeVehicle
                     ? T("bl_follow_veh_hint", "The blip hangs on the vehicle and moves with it. When it is wrecked, the blip stays at the spot below.")
                     : T("bl_follow_ped_hint", "The blip hangs on the actor and moves with it. When the actor is dead, the blip stays at the spot below."), 12));
+                if (b.Entity >= 0 && b.Entity < count)
+                {
+                    int entityType = type, entity = b.Entity;
+                    var own = new CheckBox { IsChecked = OwnBlipHidden(entityType, entity) };
+                    own.Click += (_, __) => { SetOwnBlipHidden(entityType, entity, own.IsChecked == true); Refresh(true); };
+                    _editor.Children.Add(SwitchRow(b.Type == TypeVehicle ? T("bl_hide_own_veh", "Hide the vehicle's own map icon") : T("bl_hide_own_ped", "Hide the actor's own map icon"), own)
+                        .Also(r => r.Margin = new Thickness(0, 8, 0, 0)));
+                }
             }
             _editor.Children.Add(PositionRow(b));
 
@@ -598,15 +617,20 @@ namespace Xenvious
             _vis.Children.Add(BitCheck(b, BitHideInInterior, T("bl_hide_interior", "Hide inside buildings")));
             _vis.Children.Add(BitCheck(b, BitNoHeight, T("bl_no_height", "No height arrow")));
 
-            // More
-            var more = new StackPanel { Margin = new Thickness(0, 4, 0, 0) };
-            more.Children.Add(SubLabel(T("bl_show_range", "Only visible within (m, 0 = always)")));
-            more.Children.Add(FloatBox(b.ShowRange, v => SetFloat(GTA.Offsets.Editor.ddblip.sbr, i, v)));
-            more.Children.Add(SubLabel(T("bl_hide_range", "Hide when closer than (m, 0 = never)")));
-            more.Children.Add(FloatBox(b.HideRange, v => SetFloat(GTA.Offsets.Editor.ddblip.hbr, i, v)));
-            var expander = new Expander { Header = T("bl_more_range", "More: visible range"), Content = more, Margin = new Thickness(0, 12, 0, 0), IsExpanded = b.ShowRange != 0 || b.HideRange != 0 };
-            expander.SetResourceReference(Control.ForegroundProperty, "TextColor");
-            _vis.Children.Add(expander);
+            // Range
+            _vis.Children.Add(Label(T("bl_range", "Visible range")));
+            var range = new Grid();
+            range.ColumnDefinitions.Add(new ColumnDefinition());
+            range.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(12) });
+            range.ColumnDefinitions.Add(new ColumnDefinition());
+            var show = new StackPanel { Children = { SubLabel(T("bl_show_range", "Only visible within (m, 0 = always)")), FloatBox(b.ShowRange, v => SetFloat(GTA.Offsets.Editor.ddblip.sbr, i, v)) } };
+            var hide = new StackPanel { Children = { SubLabel(T("bl_hide_range", "Hide when closer than (m, 0 = never)")), FloatBox(b.HideRange, v => SetFloat(GTA.Offsets.Editor.ddblip.hbr, i, v)) } };
+            show.Children[0].SetValue(MarginProperty, new Thickness(0, 0, 0, 5));
+            hide.Children[0].SetValue(MarginProperty, new Thickness(0, 0, 0, 5));
+            Grid.SetColumn(hide, 2);
+            range.Children.Add(show);
+            range.Children.Add(hide);
+            _vis.Children.Add(range);
 
             // Raw values
             var raw = new TextBlock { FontFamily = new FontFamily("Consolas"), FontSize = 11.5, TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 10, 0, 0),
@@ -614,7 +638,7 @@ namespace Xenvious
                     b.Rule, b.Team, b.Type, b.Entity, b.Size, b.Colour, b.Sprite, b.Bits, b.From, b.To, b.LinkType, b.LinkIndex) };
             raw.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
             _vis.Children.Add(raw);
-            foreach (var panel in new[] { _look, _vis })
+            foreach (var panel in new[] { _editor, _look, _vis })
                 if (panel.Children.Count > 0 && panel.Children[0] is TextBlock first)
                     first.Margin = new Thickness(0, 0, 0, 7);
         }
@@ -727,7 +751,7 @@ namespace Xenvious
 
         private FrameworkElement FloatBox(float value, Action<float> write)
         {
-            var box = new TextBox { Text = value.ToString("0.##", CultureInfo.InvariantCulture), Height = 30, Width = 120, HorizontalAlignment = HorizontalAlignment.Left, VerticalContentAlignment = VerticalAlignment.Center };
+            var box = new TextBox { Text = value.ToString("0.##", CultureInfo.InvariantCulture), Height = 30, VerticalContentAlignment = VerticalAlignment.Center };
             box.SetResourceReference(StyleProperty, "Watermark");
             void Save()
             {
@@ -807,18 +831,86 @@ namespace Xenvious
         /// <summary>A new blip at the cursor that shows for team 1 on every rule.</summary>
         public void AddAtCursor()
         {
+            if (TryCursor(out float x, out float y, out float z))
+                Add(x, y, z, TypeCylinder, -1);
+        }
+
+        /// <summary>
+        /// A new blip that hangs on a vehicle or actor of the job (EntityPicker.Vehicle / Actor),
+        /// starting at its placed spot, where the blip stays once the entity is gone.
+        /// </summary>
+        public void AddFollowing(int entityType, int index, float x, float y, float z)
+        {
+            if (index < 0 || (entityType != EntityPicker.Vehicle && entityType != EntityPicker.Actor))
+                return;
+            Add(x, y, z, entityType == EntityPicker.Vehicle ? TypeVehicle : TypePed, index);
+            // The entity's own blip would sit on the same spot as this one.
+            SetOwnBlipHidden(entityType, index, true);
+        }
+
+        // The creator's "Blip off" of the entity itself: actor iPedBitset (f_575) bit 7, vehicle
+        // bitset f_115 bit 15 (FMMC_BLIPOFF in the blip menus of fm_lts_creator).
+        private static long OwnBlipField(int entityType, int index, out int bit)
+        {
+            bit = entityType == EntityPicker.Actor ? 7 : 15;
+            long field = entityType == EntityPicker.Actor ? GTA.Offsets.Editor.Actor.pedbs : entityType == EntityPicker.Vehicle ? GTA.Offsets.Editor.Vehicle.drbs : 0;
+            long next = entityType == EntityPicker.Actor ? GTA.Offsets.Editor.Actor.NEXT : GTA.Offsets.Editor.Vehicle.NEXT;
+            return field == 0 || next == 0 || index < 0 ? 0 : field + index * next;
+        }
+
+        private static bool OwnBlipHidden(int entityType, int index)
+        {
+            long at = OwnBlipField(entityType, index, out int bit);
+            return at != 0 && Live && (new Global(at).Get<int>() & (1 << bit)) != 0;
+        }
+
+        private static void SetOwnBlipHidden(int entityType, int index, bool hide)
+        {
+            long at = OwnBlipField(entityType, index, out int bit);
+            if (at == 0 || !Live)
+                return;
+            var g = new Global(at);
+            int bits = g.Get<int>();
+            g.SetInt(hide ? bits | (1 << bit) : bits & ~(1 << bit));
+        }
+
+        /// <summary>
+        /// The first blip that follows the vehicle or actor, or is tied to it; -1 when none. Reads
+        /// the creator's data, so it also works before the Blips page was opened.
+        /// </summary>
+        public static int FindFor(int entityType, int index)
+        {
+            if (!Live || index < 0)
+                return -1;
+            int follow = entityType == EntityPicker.Vehicle ? TypeVehicle : entityType == EntityPicker.Actor ? TypePed : -1;
+            int n = Math.Max(0, Math.Min(new Global(GTA.Offsets.Editor.ddblip.number).Get<int>(), Max));
+            for (int i = 0; i < n; i++)
+            {
+                if (Int(GTA.Offsets.Editor.ddblip.type, i, 0) == follow && Int(GTA.Offsets.Editor.ddblip.veh, i, -1) == index)
+                    return i;
+                if (Int(GTA.Offsets.Editor.ddblip.entt, i, -1) == entityType && Int(GTA.Offsets.Editor.ddblip.enti, i, -1) == index)
+                    return i;
+            }
+            return -1;
+        }
+
+        /// <summary>Picks a blip for editing.</summary>
+        public void Open(int index) => Pick(index);
+
+        private void Add(float x, float y, float z, int type, int entity)
+        {
             if (!Live)
                 return;
             int n = new Global(GTA.Offsets.Editor.ddblip.number).Get<int>();
-            if (n < 0 || n >= Max || !TryCursor(out float x, out float y, out float z))
+            if (n < 0 || n >= Max)
                 return;
             long o = At(GTA.Offsets.Editor.ddblip.pos, n);
             new Global(o).SetFloat(x);
             new Global(o + 1).SetFloat(y);
             new Global(o + 2).SetFloat(z);
-            SetInt(GTA.Offsets.Editor.ddblip.type, n, TypeCylinder);
+            SetInt(GTA.Offsets.Editor.ddblip.type, n, type);
             SetInt(GTA.Offsets.Editor.ddblip.size, n, 4);
-            SetInt(GTA.Offsets.Editor.ddblip.veh, n, -1);
+            SetInt(GTA.Offsets.Editor.ddblip.veh, n, entity);
             SetInt(GTA.Offsets.Editor.ddblip.rule, n, -2);
             SetInt(GTA.Offsets.Editor.ddblip.team, n, 0);
             SetInt(GTA.Offsets.Editor.ddblip.frul, n, -1);
@@ -969,24 +1061,26 @@ namespace Xenvious
 
         // ---------- small parts ----------
 
-        private static FrameworkElement Tiles(string[] labels, int selected, Action<int> pick, int columns = 0)
+        // Segmented tabs in the look of the team selection; they wrap when the card is narrow.
+        private static FrameworkElement Tiles(string[] labels, int selected, Action<int> pick)
         {
-            var grid = new UniformGrid { Columns = columns > 0 ? columns : labels.Length, Margin = new Thickness(0, 0, -6, 0) };
+            var tabs = new WrapPanel();
             for (int k = 0; k < labels.Length; k++)
             {
                 int index = k;
-                var tile = new ToggleButton { IsChecked = k == selected, Margin = new Thickness(0, 0, 6, 6), Padding = new Thickness(4, 6, 4, 6), Cursor = Cursors.Hand,
-                    Content = new TextBlock { Text = labels[k], FontSize = 12.5, FontWeight = FontWeights.SemiBold, TextWrapping = TextWrapping.Wrap, TextAlignment = TextAlignment.Center } };
-                tile.SetResourceReference(StyleProperty, "ChoiceTile");
-                tile.Click += (_, __) => pick(index);
-                grid.Children.Add(tile);
+                var tab = new ToggleButton { Content = labels[k], IsChecked = k == selected };
+                tab.SetResourceReference(StyleProperty, "NavTab");
+                tab.Click += (_, __) => pick(index);
+                tabs.Children.Add(tab);
             }
-            return grid;
+            var box = new Border { Child = tabs, HorizontalAlignment = HorizontalAlignment.Left, Margin = new Thickness(0, 0, 0, 6) };
+            box.SetResourceReference(StyleProperty, "NavGroup");
+            return box;
         }
 
         private static TextBlock Label(string text)
         {
-            var t = new TextBlock { Text = text, FontSize = 15, FontWeight = FontWeights.Bold, Margin = new Thickness(0, 18, 0, 7) };
+            var t = new TextBlock { Text = text, FontSize = 15, FontWeight = FontWeights.Bold, Margin = new Thickness(0, 12, 0, 6) };
             t.SetResourceReference(TextBlock.ForegroundProperty, "TextColor");
             return t;
         }
