@@ -1,5 +1,65 @@
 # Changelog
 
+## [1.73.2](https://github.com/luisbozz/Xenvious/compare/v1.73.1...v1.73.2) (2026-10-02)
+
+
+### Features
+
+* **actors:** goto route as numbered steps, three-column layout ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **blips:** "+ Blip" on vehicles and actors, opens the blip they already have ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **blips:** editor with symbols, follow target, teams, rule window and lifecycle ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **catalog:** pictures for vehicles, actors and weapons, heading slider ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **copyjob:** copy the fourth race DLC vehicle word (adlc4) ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **customfuncs:** custom functions run from their own pages in the Enhanced creator scripts ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **dashboard:** back to story mode when the creator or a test is stuck ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **dashboard:** placed counts with creator limits and fixtures tile ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **dashboard:** running test as its own game state, status tile names the situation ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **dashboard:** test mode switch in the status strip ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **editnav:** list other creators' pages greyed out ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **editnav:** the job type of the open creator is unfolded ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **entities:** hide the map icon of a vehicle or actor ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **inventory:** categories with switches, weapon chips and presets ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **jobimage:** paste, pick or drop the job image in a preview dialog ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **kill:** player rules as goals with LTS patch status and per-goal controls ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **lts:** return to the camera or stay on foot where the test ended ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **mapmover:** zoom towards the cursor ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **mission:** custom functions in the Mission Creator: model sizes, hovered model, refresh ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **patches:** creator camera without collision and ignore budget on Enhanced ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **patches:** Custom Funcs section, slim game patch switches that are remembered ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **patches:** small starting grid offers every vehicle class in races ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **patches:** test mode patch for Enhanced ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **playarea:** team tabs in team colours, copy values to added teams ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **playarea:** the creator script draws the play areas in game (Enhanced) ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **players:** start point list and map of every team's start points ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **race:** Available Vehicles with class rail, vehicle tiles and start vehicle ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **race:** start and end the race test from the dashboard and the tuning page ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **race:** tune the test vehicle, use an online garage vehicle and save presets ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **scrpatches:** custom functions in the Survival and Deathmatch creators ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **scrpatches:** fix race turbo mode in the Enhanced race creator ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **scrpatches:** hidden placement categories in the LTS and Capture creators ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **scrpatches:** jump and climb on foot in the LTS, Capture and DM creators ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **scrpatches:** keep LTS team start points over the team size and outside the play area ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **ui:** framed buttons in the entry bars, "Move to dynamic/static" ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **ui:** lifecycle card on zones, props, dynamic props and weapons ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **ui:** Pleb Masters map under start points, goto routes, areas and job map ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+
+
+### Bug Fixes
+
+* **config:** no error at start with a fresh config ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **connect:** no crash when Xenvious cannot open GTA, the reason goes to the log ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **lts:** take the test start and end from the creator itself ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **mapmover:** whole map without scrolling, no white corner ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **offsets:** vehicle rotation, actor goto points, race DLC vehicle bits, blip rule window, Enhanced race test local ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **patches:** game patches left on by an earlier run are recognised again ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **players:** checkpoints only in the Mission Creator ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **props:** one heading, and rotation keeps its Z ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **rules:** keep LTS and Capture nrl at 1 or more so saves keep the play zone ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **scrpatches:** black screen after a transform checkpoint and a test restart ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **scrpatches:** recognise patches already written after a restart ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **ui:** dialog buttons hover and click on their whole area ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+* **vehicles:** a new heading also turns the stored rotation ([93b6603](https://github.com/luisbozz/Xenvious/commit/93b660363f0cb101bd9b0c65daf5557c32f0f28c))
+
 ## [1.73.1](https://github.com/luisbozz/Xenvious/compare/v1.73.0...v1.73.1) (2026-09-28)
 
 
