@@ -107,6 +107,13 @@ namespace Xenvious
             return null;
         }
 
+        /// <summary>For pages that build their entry bar in code after the page opened.</summary>
+        public void RequestEntryBarMove()
+        {
+            if (EditPages.SelectedItem is TabItem)
+                QueueEntryBarMove();
+        }
+
         private void QueueEntryBarMove()
         {
             // After the tab switch has settled, so the new page's content is the selected one.

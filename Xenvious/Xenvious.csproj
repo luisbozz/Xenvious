@@ -183,6 +183,7 @@
     <Compile Include="Controls\BareSearchBox.cs" />
     <Compile Include="Controls\EntityPicker.cs" />
     <Compile Include="Controls\PlayAreaView.cs" />
+    <Compile Include="Controls\RaceCheckpointsView.cs" />
     <Compile Include="Controls\RaceVehiclesView.cs" />
     <Compile Include="Controls\TestVehicleTuneView.cs" />
     <Compile Include="Controls\GtaTextAssist.cs" />
@@ -245,6 +246,7 @@
     <Compile Include="Creator Classes\ExtraObjectives.cs" />
     <Compile Include="Creator Classes\GamePatches.cs" />
     <Compile Include="Creator Classes\PlayAreas.cs" />
+    <Compile Include="Creator Classes\RaceCheckpoints.cs" />
     <Compile Include="Creator Classes\RaceVehicles.cs" />
     <Compile Include="Creator Classes\TestVehicleTune.cs" />
     <Compile Include="Creator Classes\RulePresets.cs" />
@@ -483,7 +485,6 @@
     <Compile Include="Helper Classes\OffsetLoader.cs" />
     <Compile Include="MainWindow\MainWindow.OnlineEnabler.cs" />
     <Compile Include="MainWindow\MainWindow.Props.cs" />
-    <Compile Include="MainWindow\MainWindow.Race.Checkpoints.cs" />
     <Compile Include="MainWindow\MainWindow.Race.cs" />
     <Compile Include="MainWindow\MainWindow.ScreenMessage.cs" />
     <Compile Include="MainWindow\MainWindow.Settings.cs" />
