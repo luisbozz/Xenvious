@@ -315,6 +315,7 @@ namespace Xenvious
 
                                         if (ddcpssg.Items.Count != carnum)
                                         {
+                                            int keep = ddcpssg.SelectedIndex;
                                             if (carnum <= 0)
                                             {
                                                 ddcpssg.ItemsSource = null;
@@ -322,8 +323,14 @@ namespace Xenvious
                                             else
                                             {
                                                 ddcpssg.ItemsSource = Enumerable.Range(1, carnum);
+                                                ddcpssg.SelectedIndex = Math.Max(0, Math.Min(keep, carnum - 1));
                                             }
                                         }
+                                        // Show the first car and transform slot right away instead of empty fields.
+                                        if (ddcpssg.SelectedIndex < 0 && ddcpssg.Items.Count > 0)
+                                            ddcpssg.SelectedIndex = 0;
+                                        if (ddtrfmvmno.SelectedIndex < 0 && ddtrfmvmno.Items.Count > 0)
+                                            ddtrfmvmno.SelectedIndex = 0;
 
                                         if (!ddracetype.IsFocused)
                                             ddracetype.SelectedIndex = new Global(GTA.Offsets.Editor.Race.Checkpoints.gtar).Get<int>();

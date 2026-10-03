@@ -28,14 +28,6 @@ namespace Xenvious
         private void BtnSectionRace_Click(object sender, RoutedEventArgs e)
         {
             EditPages.SelectedItem = PageRace;
-            if (m.IsProcOpen && ddcpssg.SelectedIndex == -1 && ddcpssg.Items.Count > 0)
-            {
-                ddcpssg.SelectedIndex = 0;
-                if (ddtrfmvmno.SelectedIndex == -1)
-                {
-                    ddtrfmvmno.SelectedIndex = 0;
-                }
-            }
         }
 
         private void BtnSectionMission_Click(object sender, RoutedEventArgs e)
