@@ -31,7 +31,6 @@ namespace Xenvious
             if (m.IsProcOpen && ddcpssg.SelectedIndex == -1 && ddcpssg.Items.Count > 0)
             {
                 ddcpssg.SelectedIndex = 0;
-                ddRaceCPTransform.SelectedIndex = 0;
                 if (ddtrfmvmno.SelectedIndex == -1)
                 {
                     ddtrfmvmno.SelectedIndex = 0;
