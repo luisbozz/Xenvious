@@ -923,6 +923,24 @@ namespace Xenvious
                             if (jobjson.Mission.Race.Cptfrms != null) new Global(GTA.Offsets.Editor.Race.Checkpoints.cptfrms + (i * GTA.Offsets.Editor.Race.Checkpoints.NEXT)).SetInt((int)temp21[i]);
                         }
 
+                        // Checkpoint fields the copy did not carry before: third bitset (nitro recharge),
+                        // plane turn, pitch, Deluxo and Stromberg modes and the respawn offset.
+                        var raceJob = jobjson.Mission.Race;
+                        bool lap = raceJob.Ptp == 0;
+                        int cps = (int)raceJob.Chp;
+                        CopyCheckpointInts(raceJob.Cpbs3, GTA.Offsets.Editor.Race.Checkpoints.cpbs3, lap, cps);
+                        CopyCheckpointInts(raceJob.Cppsst, GTA.Offsets.Editor.Race.Checkpoints.cppsst, lap, cps);
+                        CopyCheckpointInts(raceJob.Chdlo, GTA.Offsets.Editor.Race.Checkpoints.chdlo, lap, cps);
+                        CopyCheckpointInts(raceJob.Chdlos, GTA.Offsets.Editor.Race.Checkpoints.chdlos, lap, cps);
+                        CopyCheckpointInts(raceJob.Chsto, GTA.Offsets.Editor.Race.Checkpoints.chsto, lap, cps);
+                        CopyCheckpointInts(raceJob.Chstos, GTA.Offsets.Editor.Race.Checkpoints.chstos, lap, cps);
+                        CopyCheckpointFloats(raceJob.Chpp, GTA.Offsets.Editor.Race.Checkpoints.chpp, lap, cps);
+                        CopyCheckpointFloats(raceJob.Chpps, GTA.Offsets.Editor.Race.Checkpoints.chpps, lap, cps);
+                        CopyCheckpointFloats(raceJob.Chpso, GTA.Offsets.Editor.Race.Checkpoints.chpso, lap, cps);
+                        CopyCheckpointFloats(raceJob.Chpsos, GTA.Offsets.Editor.Race.Checkpoints.chpsos, lap, cps);
+                        CopyCheckpointFloats(raceJob.Chpsoh, GTA.Offsets.Editor.Race.Checkpoints.chpsoh, lap, cps);
+                        CopyCheckpointFloats(raceJob.Chpsohs, GTA.Offsets.Editor.Race.Checkpoints.chpsohs, lap, cps);
+
                         temp = null;
                         temp1 = null;
                         temp2 = null;
@@ -1695,6 +1713,29 @@ namespace Xenvious
             // Make the copied data visible, then save or publish if asked to.
             if (jobjson != null)
                 _ = FinishCopyJobAsync();
+        }
+
+        // Lap races store the checkpoint lists shifted by one (see the right() calls above).
+        private static void CopyCheckpointInts(List<long> values, long field, bool lap, int count)
+        {
+            if (values == null || values.Count == 0 || field == 0)
+                return;
+            var list = new List<long>(values);
+            if (lap)
+                right(list);
+            for (int i = 0; i < count && i < list.Count; i++)
+                new Global(field + i * GTA.Offsets.Editor.Race.Checkpoints.NEXT).SetInt((int)list[i]);
+        }
+
+        private static void CopyCheckpointFloats(List<double> values, long field, bool lap, int count)
+        {
+            if (values == null || values.Count == 0 || field == 0)
+                return;
+            var list = new List<double>(values);
+            if (lap)
+                right(list);
+            for (int i = 0; i < count && i < list.Count; i++)
+                new Global(field + i * GTA.Offsets.Editor.Race.Checkpoints.NEXT).SetFloat((float)list[i]);
         }
     }
 }

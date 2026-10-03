@@ -18,6 +18,19 @@ namespace Xenvious
         int pid = 0;
 
         private int _noModuleWarned, _openFailedLogged;
+        private int _battlEyeWarned;
+
+        // Once per game start: the log line and the dialog, not every tick.
+        private async void WarnBattlEye(int gamePid, string process)
+        {
+            if (_battlEyeWarned == gamePid)
+                return;
+            _battlEyeWarned = gamePid;
+            Log.Warn("BattlEye is running (" + process + "); Xenvious does not connect to GTA.", source: "timercheckgta");
+            await ConfirmAsync(TranslateOr("be_title", "BattlEye is on"),
+                TranslateOr("be_text", "GTA runs with BattlEye. Xenvious does not connect while BattlEye is on. Close GTA and start it without BattlEye, then Xenvious connects by itself."),
+                TranslateOr("be_ok", "OK"), null);
+        }
 
         private async void Timercheckgta_Tick(object sender, EventArgs e)
         {
@@ -36,6 +49,13 @@ namespace Xenvious
             var p = Process.GetProcessesByName(GameVariant.ProcessName);
             if (p.Length > 0)
             {
+                // With BattlEye on, Xenvious must not touch the game at all: no handle, no scan.
+                string battlEye = m.IsProcOpen ? null : BattlEye.RunningProcess();
+                if (battlEye != null)
+                {
+                    WarnBattlEye(p[0].Id, battlEye);
+                    return;
+                }
                 if (!m.IsProcOpen)
                 {
                     try

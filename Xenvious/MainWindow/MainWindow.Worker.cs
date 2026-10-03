@@ -25,7 +25,8 @@ namespace Xenvious
             {
                 if (Process.GetProcessesByName(GameVariant.ProcessName).Length > 0)
                 {
-                    if (!m.IsProcOpen)
+                    // Never open a game that runs with BattlEye (MainWindow.GameConnection.cs warns).
+                    if (!m.IsProcOpen && BattlEye.RunningProcess() == null)
                     {
                         m.OpenProcess(GameVariant.ProcessName);
                     }
@@ -308,49 +309,13 @@ namespace Xenvious
                                 }
                                 else if (EditPages.SelectedItem == PageRace)
                                 {
-                                    if (PageInnerRace.SelectedItem == PageInnerRaceCP)
-                                    {
-                                        int cpnum = new Global(GTA.Offsets.Editor.Race.Checkpoints.number).Get<int>();
-
-                                        if (ddcpno.Items.Count != cpnum)
-                                        {
-                                            if (cpnum <= 0)
-                                            {
-                                                ddcpno.ItemsSource = null;
-                                            }
-                                            else
-                                            {
-                                                if (cpnum < 101)
-                                                {
-                                                    ddcpno.ItemsSource = Enumerable.Range(1, cpnum);
-                                                }
-                                            }
-                                        }
-
-                                        if (!ddRaceCPTransform.IsDropDownOpen)
-                                        {
-                                            ObservableCollection<string> temp = new ObservableCollection<string>();
-
-                                            temp.Add("Lobby Vehice");
-
-                                            for (int i = 0; i < GTA.Editor.TransformVehiclesCount; i++)
-                                            {
-                                                Global transformVeh = new Global(GTA.Offsets.Editor.Race.Checkpoints.trfmvm + i);
-                                                if (transformVeh.Get<int>() != 0)
-                                                {
-                                                    temp.Add(GTA.Editor.Vehiclenames.Where(x => (Functions.int_parse(Functions.joaat(x).ToString()) == transformVeh.Get<int>())).FirstOrDefault());
-                                                }
-                                            }
-
-                                            ddRaceCPTransform.ItemsSource = temp;
-                                        }
-                                    }
-                                    else if (PageInnerRace.SelectedItem == PageInnerRaceGeneral)
+                                    if (PageInnerRace.SelectedItem == PageInnerRaceGeneral)
                                     {
                                         int carnum = (Functions.Read.isMission()) ? (new Global(GTA.Offsets.Editor.num).Get<int>() + 1) : (new Global(GTA.Offsets.Editor.num).Get<int>() + 2);
 
                                         if (ddcpssg.Items.Count != carnum)
                                         {
+                                            int keep = ddcpssg.SelectedIndex;
                                             if (carnum <= 0)
                                             {
                                                 ddcpssg.ItemsSource = null;
@@ -358,8 +323,14 @@ namespace Xenvious
                                             else
                                             {
                                                 ddcpssg.ItemsSource = Enumerable.Range(1, carnum);
+                                                ddcpssg.SelectedIndex = Math.Max(0, Math.Min(keep, carnum - 1));
                                             }
                                         }
+                                        // Show the first car and transform slot right away instead of empty fields.
+                                        if (ddcpssg.SelectedIndex < 0 && ddcpssg.Items.Count > 0)
+                                            ddcpssg.SelectedIndex = 0;
+                                        if (ddtrfmvmno.SelectedIndex < 0 && ddtrfmvmno.Items.Count > 0)
+                                            ddtrfmvmno.SelectedIndex = 0;
 
                                         if (!ddracetype.IsFocused)
                                             ddracetype.SelectedIndex = new Global(GTA.Offsets.Editor.Race.Checkpoints.gtar).Get<int>();

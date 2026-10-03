@@ -19434,16 +19434,22 @@ namespace Xenvious.JSON
         public long? Chp { get; set; }
 
         [JsonProperty("chpp", NullValueHandling = NullValueHandling.Ignore)]
-        public List<long> Chpp { get; set; }
+        public List<double> Chpp { get; set; }
 
         [JsonProperty("chpps", NullValueHandling = NullValueHandling.Ignore)]
-        public List<long> Chpps { get; set; }
+        public List<double> Chpps { get; set; }
 
         [JsonProperty("chpso", NullValueHandling = NullValueHandling.Ignore)]
-        public List<long> Chpso { get; set; }
+        public List<double> Chpso { get; set; }
 
         [JsonProperty("chpsos", NullValueHandling = NullValueHandling.Ignore)]
-        public List<long> Chpsos { get; set; }
+        public List<double> Chpsos { get; set; }
+
+        [JsonProperty("chpsoh", NullValueHandling = NullValueHandling.Ignore)]
+        public List<double> Chpsoh { get; set; }
+
+        [JsonProperty("chpsohs", NullValueHandling = NullValueHandling.Ignore)]
+        public List<double> Chpsohs { get; set; }
 
         [JsonProperty("chs", NullValueHandling = NullValueHandling.Ignore)]
         public List<double> Chs { get; set; }
@@ -19480,6 +19486,9 @@ namespace Xenvious.JSON
 
         [JsonProperty("cpbs2", NullValueHandling = NullValueHandling.Ignore)]
         public List<long> Cpbs2 { get; set; }
+
+        [JsonProperty("cpbs3", NullValueHandling = NullValueHandling.Ignore)]
+        public List<long> Cpbs3 { get; set; }
 
         [JsonProperty("cppsst", NullValueHandling = NullValueHandling.Ignore)]
         public List<long> Cppsst { get; set; }

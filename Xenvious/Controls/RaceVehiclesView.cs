@@ -44,7 +44,7 @@ namespace Xenvious
         private readonly TextBlock _classTitle = new TextBlock(), _classCount = new TextBlock();
         private readonly CheckBox _classOn = new CheckBox();
         private FrameworkElement _classTools;
-        private readonly TextBlock _typeText = new TextBlock { FontSize = 16, FontWeight = FontWeights.Bold };
+        private readonly TextBlock _typeText = new TextBlock { FontSize = 12, FontWeight = FontWeights.Bold, VerticalAlignment = VerticalAlignment.Center };
         private readonly TextBlock _typeNote = new TextBlock { TextWrapping = TextWrapping.Wrap, FontSize = 12.5 };
         private Border _typeNoteBox;
         private readonly ComboBox _startClass = new ComboBox { Height = 30 };
@@ -88,8 +88,8 @@ namespace Xenvious
             var scroll = new ScrollViewer { VerticalScrollBarVisibility = ScrollBarVisibility.Auto, HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled };
             var page = new StackPanel { Margin = new Thickness(0, 12, 0, 12) };
 
-            var top = new UniformGrid { Columns = 3, Margin = new Thickness(0, 0, -12, 0) };
-            top.Children.Add(Spaced(TypeCard()));
+            page.Children.Add(TypeBar());
+            var top = new UniformGrid { Columns = 2, Margin = new Thickness(0, 0, -12, 0) };
             top.Children.Add(Spaced(StartCard()));
             top.Children.Add(Spaced(SummaryCard()));
             page.Children.Add(top);
@@ -111,6 +111,7 @@ namespace Xenvious
             BuildRail();
             Select(RaceVehicles.Classes.FirstOrDefault(c => c.Index == 7) ?? RaceVehicles.Classes.FirstOrDefault());
             Load();
+            MainWindow.Instance?.RequestEntryBarMove();
         }
 
         private static Border Spaced(Border card)
@@ -146,15 +147,31 @@ namespace Xenvious
             return t;
         }
 
-        private Border TypeCard()
+        // The race type only tells which vehicle lists apply, so it is a badge in the page header
+        // (the entry bar moves there, MainWindow.EditHeaderBar.cs); it is changed on Race › General.
+        // The note below it only shows when it matters.
+        private StackPanel TypeBar()
         {
-            var body = new StackPanel();
-            body.Children.Add(_typeText);
-            _typeNoteBox = new Border { BorderThickness = new Thickness(3, 0, 0, 0), Padding = new Thickness(10, 8, 10, 8), Margin = new Thickness(0, 10, 0, 0), Child = _typeNote, Visibility = Visibility.Collapsed };
+            var bar = new StackPanel();
+            var line = new StackPanel { Orientation = Orientation.Horizontal };
+            var label = new TextBlock { Text = T("rv_racetype", "Race type"), FontSize = 13, VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(0, 0, 8, 0) };
+            label.SetResourceReference(TextBlock.ForegroundProperty, "MutedTextBrush");
+            line.Children.Add(label);
+            var dot = new System.Windows.Shapes.Ellipse { Width = 8, Height = 8, Margin = new Thickness(0, 0, 6, 0), VerticalAlignment = VerticalAlignment.Center };
+            dot.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "AccentBrush");
+            var badgeContent = new StackPanel { Orientation = Orientation.Horizontal };
+            badgeContent.Children.Add(dot);
+            badgeContent.Children.Add(_typeText);
+            var badge = new Border { CornerRadius = new CornerRadius(11), BorderThickness = new Thickness(1), Padding = new Thickness(10, 3, 10, 4), Child = badgeContent, ToolTip = T("rv_racetype_tip", "The job's race type, only shown here. Change it on Race › General.") };
+            badge.SetResourceReference(Border.BackgroundProperty, "DeepBrush");
+            badge.SetResourceReference(Border.BorderBrushProperty, "LineBrush");
+            line.Children.Add(badge);
+            bar.Children.Add(new Border { Tag = "EntryBar", Child = line });
+            _typeNoteBox = new Border { BorderThickness = new Thickness(3, 0, 0, 0), CornerRadius = new CornerRadius(0, 6, 6, 0), Padding = new Thickness(10, 8, 10, 8), Margin = new Thickness(0, 0, 0, 12), Child = _typeNote, Visibility = Visibility.Collapsed };
             _typeNoteBox.SetResourceReference(Border.BorderBrushProperty, "WarnBrush");
             _typeNoteBox.SetResourceReference(Border.BackgroundProperty, "SeactionHeaderBackgroundBrush");
-            body.Children.Add(_typeNoteBox);
-            return Card(Title("rv_racetype", "Race type"), body);
+            bar.Children.Add(_typeNoteBox);
+            return bar;
         }
 
         private Border StartCard()
