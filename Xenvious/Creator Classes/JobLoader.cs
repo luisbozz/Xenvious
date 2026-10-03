@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Xenvious.Logging;
 
@@ -11,6 +12,11 @@ namespace Xenvious
     /// the cloud for that job and loads all of it. It works for other players' jobs as
     /// well, so this copies a job completely, including everything Xenvious has no
     /// fields for.
+    ///
+    /// With the job file known (version and language), the creator fetches that file
+    /// directly instead of searching the job first. The search only finds jobs of the
+    /// own platform, so a job made on another platform fails there with "The Job failed
+    /// to download"; the file itself loads on every platform.
     ///
     /// Race, LTS and Capture creator only; deathmatch and survival number their states
     /// differently. Afterwards the job counts as a new one, so saving it creates a job
@@ -43,7 +49,36 @@ namespace Xenvious
             return null;
         }
 
-        public static async Task<Result> LoadAsync(string contentId)
+        // The creator's language numbers (fm_*_creator.c turns them into game languages),
+        // by the language part of the job file name.
+        private static readonly string[] FileLanguages =
+            { "zh", "en", "fr", "de", "it", "ja", "ko", "pl", "pt-pt", "pt", "ru", "es", "es-mx", "zh-cn" };
+
+        private static long LoaderOffset(string creator)
+        {
+            switch (creator)
+            {
+                case "fm_race_creator": return GTA.Offsets.Editor.load_job_loader_race;
+                case "fm_lts_creator": return GTA.Offsets.Editor.load_job_loader_lts;
+                case "fm_capture_creator": return GTA.Offsets.Editor.load_job_loader_capture;
+                default: return 0;
+            }
+        }
+
+        /// <summary>Version and language number from a job file link (.../0_&lt;version&gt;_&lt;language&gt;.json), or -1.</summary>
+        public static (int Version, int Language) ParseJobFile(string jobFile)
+        {
+            var match = Regex.Match(jobFile ?? "", @"/\d+_(\d+)_([\w-]+)\.json$");
+            if (!match.Success || !int.TryParse(match.Groups[1].Value, out int version))
+                return (-1, -1);
+            return (version, Array.IndexOf(FileLanguages, match.Groups[2].Value.ToLowerInvariant()));
+        }
+
+        /// <summary>The language part of the job file name for a language number.</summary>
+        public static string LanguageCode(int language) =>
+            language >= 0 && language < FileLanguages.Length ? FileLanguages[language] : null;
+
+        public static async Task<Result> LoadAsync(string contentId, string jobFile = null)
         {
             string creator = CreatorMap.CurrentCreator();
             if (!CanLoad(creator) || string.IsNullOrEmpty(contentId))
@@ -57,9 +92,20 @@ namespace Xenvious
             // The id is a plain text label: ASCII, zero-terminated.
             byte[] id = Encoding.ASCII.GetBytes(contentId + "\0");
             new Global(GTA.Offsets.Editor.load_job_id).SetBytes(id);
+
+            // Both set (neither -1), the creator requests this file instead of searching the job.
+            long loader = LoaderOffset(creator);
+            var (version, language) = ParseJobFile(jobFile);
+            bool direct = loader != 0 && GTA.Offsets.Editor.load_job_loader_version != 0 && GTA.Offsets.Editor.load_job_loader_language != 0
+                && version >= 0 && language >= 0;
+            if (direct)
+            {
+                CreatorMap.WriteLocal(loader + GTA.Offsets.Editor.load_job_loader_version, version);
+                CreatorMap.WriteLocal(loader + GTA.Offsets.Editor.load_job_loader_language, language);
+            }
             new Global(GTA.Offsets.Editor.load_job_flag).SetInt(1);
             CreatorMap.WriteLocal(state, StateStart);
-            Log.Info($"load job {contentId}: creator restarted ({creator})", source: "copyjob");
+            Log.Info($"load job {contentId}: creator restarted ({creator}, {(direct ? $"file version {version}, language {language}" : "search")})", source: "copyjob");
 
             var started = DateTime.UtcNow;
             bool left = false;
@@ -86,6 +132,12 @@ namespace Xenvious
             {
                 // Left set, the creator loads the job again on its next start.
                 new Global(GTA.Offsets.Editor.load_job_flag).SetInt(0);
+                // Left set, its next load would fetch this file instead of the job it asks for.
+                if (direct && MainWindow.m.IsProcOpen)
+                {
+                    CreatorMap.WriteLocal(loader + GTA.Offsets.Editor.load_job_loader_version, -1);
+                    CreatorMap.WriteLocal(loader + GTA.Offsets.Editor.load_job_loader_language, -1);
+                }
             }
         }
     }

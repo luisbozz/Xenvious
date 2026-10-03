@@ -1553,6 +1553,11 @@ namespace Xenvious
                 public static long OFFSET_current_creator_worker_offset_editing_published = 0x0;
                 public static long load_job_flag = 0;
                 public static long load_job_id = 0;
+                public static long load_job_loader_race = 0;
+                public static long load_job_loader_lts = 0;
+                public static long load_job_loader_capture = 0;
+                public static long load_job_loader_version = 0;
+                public static long load_job_loader_language = 0;
                 public static long creator_quit_flag = 0;
                 public static long OFFSET_current_creator_worker_offset_menu = 0x0;
                 public static long OFFSET_current_creator_worker_offset_test_state = 0x0;

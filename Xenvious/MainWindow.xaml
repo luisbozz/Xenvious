@@ -11123,6 +11123,14 @@
                                             <ComboBox x:Name="ddCopyScope" Grid.Column="1" Width="230" Height="32" FontSize="14" VerticalContentAlignment="Center" FontFamily="{DynamicResource Volte}" SelectedIndex="0" SelectionChanged="DdCopyScope_SelectionChanged"/>
                                         </Grid>
                                         <TextBlock x:Name="tbCopyScopeHint" FontSize="12" Foreground="{DynamicResource MutedTextBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+                                        <!-- How the loaded job gets into the creator -->
+                                        <StackPanel x:Name="CopyRoute" Orientation="Horizontal" Margin="0,8,0,0" Visibility="Collapsed">
+                                            <Ellipse x:Name="CopyRouteDot" Width="9" Height="9" Margin="0,4,9,0" VerticalAlignment="Top"/>
+                                            <StackPanel>
+                                                <TextBlock x:Name="tbCopyRoute" FontSize="13" Foreground="{DynamicResource TextColor}" TextWrapping="Wrap"/>
+                                                <TextBlock x:Name="tbCopyRouteSub" FontSize="12" Foreground="{DynamicResource MutedTextBrush}" TextWrapping="Wrap"/>
+                                            </StackPanel>
+                                        </StackPanel>
                                         <WrapPanel x:Name="CopyPartsPanel" Margin="0,10,0,0">
                                             <WrapPanel.Resources>
                                                 <Style TargetType="TextBlock">

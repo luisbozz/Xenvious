@@ -75,6 +75,11 @@ namespace Xenvious
             GTA.Offsets.Editor.OFFSET_current_creator_worker_offset_editing_published = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_worker_offset_editing_published"), 0);
             GTA.Offsets.Editor.load_job_flag = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_load_job_flag"), 0);
             GTA.Offsets.Editor.load_job_id = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_load_job_id"), 0);
+            GTA.Offsets.Editor.load_job_loader_race = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_load_job_loader_race"), 0);
+            GTA.Offsets.Editor.load_job_loader_lts = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_load_job_loader_lts"), 0);
+            GTA.Offsets.Editor.load_job_loader_capture = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_load_job_loader_capture"), 0);
+            GTA.Offsets.Editor.load_job_loader_version = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_load_job_loader_version"), 0);
+            GTA.Offsets.Editor.load_job_loader_language = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_load_job_loader_language"), 0);
             GTA.Offsets.Editor.creator_quit_flag = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_creator_quit_flag"), 0);
             GTA.Offsets.Editor.OFFSET_current_creator_worker_offset_menu = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_worker_offset_menu"), 0);
             GTA.Offsets.Editor.OFFSET_current_creator_worker_offset_test_state = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_worker_offset_test_state"), 0);
