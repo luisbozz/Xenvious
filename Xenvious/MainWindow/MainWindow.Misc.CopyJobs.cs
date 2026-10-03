@@ -271,6 +271,7 @@ namespace Xenvious
             CopyAnimation.Visibility = Visibility.Collapsed;
             CopyAnimation.IsActive = false;
             SetCopyPreviewEnabled(worked);
+            UpdateCopyRoute();
             BtnCopyJobLoad.IsEnabled = true;
             gettingjobinfo = false;
         }
@@ -296,6 +297,7 @@ namespace Xenvious
             CopyMapLegend.Children.Clear();
             CopyMeta.Visibility = Visibility.Collapsed;
             CopyJobMap.SetMarkers(null);
+            UpdateCopyRoute();
         }
 
         private static string PickName(Array names, long? index)

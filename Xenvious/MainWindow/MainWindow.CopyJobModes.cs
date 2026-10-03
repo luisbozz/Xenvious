@@ -54,6 +54,46 @@ namespace Xenvious
             tbCopyScopeHint.Text = CopyCompleteJob
                 ? TranslateOr("copy_scope_full_hint", "GTA lädt den Job selbst in den offenen Creator, mit allem, was dazugehört. Der Creator muss zum Job passen (Race, LTS oder Capture).")
                 : TranslateOr("copy_scope_parts_hint", "Xenvious schreibt nur die angehakten Teile in den Job, der gerade offen ist.");
+            UpdateCopyRoute();
+        }
+
+        private static readonly System.Windows.Media.Brush RouteMuted = Frozen(0x8A, 0x8F, 0x98);
+
+        /// <summary>
+        /// Shows how the loaded job gets into the creator: GTA fetching the job file itself
+        /// (works for every platform), GTA searching the job (own platform only), or
+        /// Xenvious writing the parts from the file.
+        /// </summary>
+        private void UpdateCopyRoute()
+        {
+            if (CopyRoute == null)
+                return;
+            bool loaded = jobjson != null && !string.IsNullOrEmpty(full_link);
+            bool loadable = JobLoader.CreatorFor(ToInt(jobjson?.Mission?.Gen?.Type), ToInt(jobjson?.Mission?.Gen?.Subtype)) != null;
+            if (!loaded || (CopyCompleteJob && !loadable))
+            {
+                CopyRoute.Visibility = Visibility.Collapsed;
+                return;
+            }
+            CopyRoute.Visibility = Visibility.Visible;
+            if (!CopyCompleteJob)
+            {
+                CopyRouteDot.Fill = RouteMuted;
+                tbCopyRoute.Text = TranslateOr("copy_route_parts", "Xenvious schreibt die Daten aus der Jobdatei");
+                tbCopyRouteSub.Text = "";
+                tbCopyRouteSub.Visibility = Visibility.Collapsed;
+                return;
+            }
+            var (version, language) = JobLoader.ParseJobFile(full_link);
+            bool direct = version >= 0 && language >= 0;
+            CopyRouteDot.Fill = direct ? DotOk : RouteMuted;
+            tbCopyRoute.Text = direct
+                ? string.Format(TranslateOr("copy_route_direct", "Lädt die Jobdatei direkt: Version {0}, Sprache {1}"), version, JobLoader.LanguageCode(language))
+                : TranslateOr("copy_route_search", "Sucht den Job bei Rockstar");
+            tbCopyRouteSub.Text = direct
+                ? TranslateOr("copy_route_direct_sub", "Klappt auch bei Jobs von PS4 und Xbox.")
+                : TranslateOr("copy_route_search_sub", "Klappt nur bei Jobs von PC.");
+            tbCopyRouteSub.Visibility = Visibility.Visible;
         }
 
         private async Task CopyCompleteJobAsync()

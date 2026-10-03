@@ -74,6 +74,10 @@ namespace Xenvious
             return (version, Array.IndexOf(FileLanguages, match.Groups[2].Value.ToLowerInvariant()));
         }
 
+        /// <summary>The language part of the job file name for a language number.</summary>
+        public static string LanguageCode(int language) =>
+            language >= 0 && language < FileLanguages.Length ? FileLanguages[language] : null;
+
         public static async Task<Result> LoadAsync(string contentId, string jobFile = null)
         {
             string creator = CreatorMap.CurrentCreator();
