@@ -308,6 +308,7 @@
     <Compile Include="Helper Classes\ini_reader.cs" />
     <Compile Include="Helper Classes\IniText.cs" />
     <Compile Include="Helper Classes\AobCache.cs" />
+    <Compile Include="Helper Classes\BattlEye.cs" />
     <Compile Include="JSON\Converters\JsonDecimalConverter.cs" />
     <Compile Include="JSON\job_json.cs" />
     <Compile Include="JSON\job_meta.cs" />
