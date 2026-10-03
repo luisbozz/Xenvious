@@ -100,7 +100,7 @@ namespace Xenvious
                 }
 
                 SetCopyStatus(TranslateOr("copy_full_loading", "GTA lädt den Job …"), false);
-                var result = await JobLoader.LoadAsync(copyJobContentId);
+                var result = await JobLoader.LoadAsync(copyJobContentId, full_link);
                 switch (result)
                 {
                     case JobLoader.Result.Loaded:
