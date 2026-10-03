@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.73.3](https://github.com/luisbozz/Xenvious/compare/v1.73.2...v1.73.3) (2026-10-03)
+
+
+### Features
+
+* **connect:** Xenvious does not connect to GTA while BattlEye runs and says so ([579a1e1](https://github.com/luisbozz/Xenvious/commit/579a1e19044f73e1c78692ee7740fcabc4afbf73))
+* **copyjob:** copy jobs made on PS4 and other platforms completely in the Race, LTS and Capture creator ([ee96ba1](https://github.com/luisbozz/Xenvious/commit/ee96ba19a646b3e6fe73d5ad0fa0197147055bda))
+* **copyjob:** Copy Jobs shows how the job gets into the creator ([ee96ba1](https://github.com/luisbozz/Xenvious/commit/ee96ba19a646b3e6fe73d5ad0fa0197147055bda))
+* **copyjob:** copy recharge nitro, plane turn, pitch, Deluxo and Stromberg mode and respawn offset of checkpoints ([579a1e1](https://github.com/luisbozz/Xenvious/commit/579a1e19044f73e1c78692ee7740fcabc4afbf73))
+* **race:** heading slider, fly to a checkpoint and skip fake checkpoints ([579a1e1](https://github.com/luisbozz/Xenvious/commit/579a1e19044f73e1c78692ee7740fcabc4afbf73))
+* **race:** insert a checkpoint between two others ([579a1e1](https://github.com/luisbozz/Xenvious/commit/579a1e19044f73e1c78692ee7740fcabc4afbf73))
+* **race:** new Checkpoints page with a map of the route, respawn points and every checkpoint option ([579a1e1](https://github.com/luisbozz/Xenvious/commit/579a1e19044f73e1c78692ee7740fcabc4afbf73))
+* **race:** plane turn, Deluxo and Stromberg mode and random transform per checkpoint ([579a1e1](https://github.com/luisbozz/Xenvious/commit/579a1e19044f73e1c78692ee7740fcabc4afbf73))
+* **race:** race type shown in the header of Available Vehicles ([579a1e1](https://github.com/luisbozz/Xenvious/commit/579a1e19044f73e1c78692ee7740fcabc4afbf73))
+
+
+### Bug Fixes
+
+* **offsets:** pit stop, tall checkpoint and traffic options wrote into the wrong checkpoint field ([579a1e1](https://github.com/luisbozz/Xenvious/commit/579a1e19044f73e1c78692ee7740fcabc4afbf73))
+* **race:** checkpoint numbers and finish match the creator ([579a1e1](https://github.com/luisbozz/Xenvious/commit/579a1e19044f73e1c78692ee7740fcabc4afbf73))
+* **race:** Race General shows the first grid car and transform slot right away ([579a1e1](https://github.com/luisbozz/Xenvious/commit/579a1e19044f73e1c78692ee7740fcabc4afbf73))
+
 ## [1.73.2](https://github.com/luisbozz/Xenvious/compare/v1.73.1...v1.73.2) (2026-10-02)
 
 
