@@ -81,8 +81,12 @@ namespace Xenvious
             }
         }
 
-        /// <summary>Lap race (route type 0) or point to point.</summary>
-        public static bool IsLap => Ready && new Global(Checkpoints.ptp).Get<int>() == 0;
+        // Race types the creator treats as point to point (fm_race_creator.c, the check that picks
+        // the start grid instead of the last checkpoint as the one before checkpoint 0).
+        private static readonly int[] PointToPointTypes = { 1, 3, 5, 7, 8, 9, 11, 13, 19, 21, 23, 25, 26, 31, 32 };
+
+        /// <summary>Lap race (checkpoint 0 is start and finish) or point to point.</summary>
+        public static bool IsLap => Ready && Checkpoints.type != 0 && Array.IndexOf(PointToPointTypes, new Global(Checkpoints.type).Get<int>()) < 0;
 
         private static long At(long field, int index) => field + index * Checkpoints.NEXT;
 

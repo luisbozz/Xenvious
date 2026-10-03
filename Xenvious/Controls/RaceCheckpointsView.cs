@@ -450,6 +450,12 @@ namespace Xenvious
                 box.Items.Add(T(key, fallback));
         }
 
+        // The list reads "No transform", "Random", then the vehicle slots; the creator stores
+        // -1 for none, -2 for random and the slot number otherwise.
+        private static int TransformItem(int value) => value == -1 ? 0 : value == -2 ? 1 : value + 2;
+
+        private static int TransformValue(int item) => item == 0 ? -1 : item == 1 ? -2 : item - 2;
+
         private Border TransformCard()
         {
             var body = new StackPanel();
@@ -457,7 +463,7 @@ namespace Xenvious
             {
                 if (!_loading && Live && _transform.SelectedIndex >= 0)
                 {
-                    RaceCheckpoints.SetInt(RaceCheckpoints.TransformField(Secondary), Index, _transform.SelectedIndex - 2);
+                    RaceCheckpoints.SetInt(RaceCheckpoints.TransformField(Secondary), Index, TransformValue(_transform.SelectedIndex));
                     DrawMap();
                 }
             };
@@ -517,19 +523,31 @@ namespace Xenvious
 
         // ----- data -----
 
+        private bool _listLap;
+
+        /// <summary>
+        /// The number the creator shows. In a lap race checkpoint 0 lies on the start line and is
+        /// start and finish, so the others count from 1; point to point, the last one is the finish.
+        /// </summary>
+        private static int Number(int index, bool lap) => lap ? index : index + 1;
+
+        private static bool IsFinish(int index, bool lap, int count) => lap ? index == 0 : index == count - 1;
+
         private void Load()
         {
             if (!_built || !IsVisible)
                 return;
             int count = RaceCheckpoints.Count;
             _count.Text = count.ToString(CultureInfo.CurrentCulture);
-            if (_pointBox.Items.Count != count)
+            bool lap = RaceCheckpoints.IsLap;
+            if (_pointBox.Items.Count != count || _listLap != lap)
             {
+                _listLap = lap;
                 int keep = _pointBox.SelectedIndex;
                 _loading = true;
                 _pointBox.Items.Clear();
                 for (int i = 0; i < count; i++)
-                    _pointBox.Items.Add((i + 1).ToString(CultureInfo.CurrentCulture));
+                    _pointBox.Items.Add(IsFinish(i, lap, count) ? T("cp_map_finish", "Finish") : Number(i, lap).ToString(CultureInfo.CurrentCulture));
                 _loading = false;
                 _pointBox.SelectedIndex = count == 0 ? -1 : Math.Max(0, Math.Min(keep, count - 1));
             }
@@ -628,7 +646,7 @@ namespace Xenvious
                 chip.IsEnabled = !sec || flag.Secondary != flag.Primary;
                 chip.IsChecked = RaceCheckpoints.GetFlag(flag, i, sec);
             }
-            Pick(_transform, RaceCheckpoints.GetInt(RaceCheckpoints.TransformField(sec), i) + 2);
+            Pick(_transform, TransformItem(RaceCheckpoints.GetInt(RaceCheckpoints.TransformField(sec), i)));
             Pick(_planeTurn, RaceCheckpoints.GetPlaneTurn(i, sec));
             Pick(_deluxo, RaceCheckpoints.GetInt(RaceCheckpoints.DeluxoField(sec), i) + 1);
             Pick(_stromberg, RaceCheckpoints.GetInt(RaceCheckpoints.StrombergField(sec), i) + 1);
@@ -822,13 +840,13 @@ namespace Xenvious
                 }
             }
 
-            int last = primary.Count > 0 ? primary[primary.Count - 1].Index : -1;
+            int count = _pointBox.Items.Count;
             bool lap = RaceCheckpoints.IsLap;
             // The selected point last, so it lies on top.
             foreach (var p in _points.OrderBy(p => p.Index == Index && p.Secondary == Secondary))
             {
                 bool picked = p.Index == Index && p.Secondary == Secondary;
-                bool finish = !lap && !p.Secondary && p.Index == last;
+                bool finish = !p.Secondary && IsFinish(p.Index, lap, count);
                 Brush fill = picked ? Accent : finish ? Red : p.Fake ? Orange : p.Transform ? Purple : Yellow;
                 double size = picked ? 22 : p.Secondary ? 14 : 18;
                 var at = ToMap(p.X, p.Y);
@@ -840,7 +858,7 @@ namespace Xenvious
                     Stroke = picked ? Brushes.White : Brushes.Black,
                     StrokeThickness = picked ? 2 : 0.8,
                     Cursor = Cursors.Hand,
-                    ToolTip = (p.Index + 1) + (p.Secondary ? " · " + T("secondary", "Secondary") : "") + (p.Fake ? " · " + T("cp_f_fake", "Fake") : ""),
+                    ToolTip = (finish ? T("cp_map_finish", "Finish") : Number(p.Index, lap).ToString(CultureInfo.CurrentCulture)) + (p.Secondary ? " · " + T("secondary", "Secondary") : "") + (p.Fake ? " · " + T("cp_f_fake", "Fake") : ""),
                 };
                 Canvas.SetLeft(dot, at.X - size / 2);
                 Canvas.SetTop(dot, at.Y - size / 2);
@@ -849,7 +867,7 @@ namespace Xenvious
                 dot.MouseLeftButtonUp += (_, __) => PickPoint(index, sec);
                 _map.Children.Add(dot);
 
-                string label = finish ? "Z" : (p.Index + 1).ToString(CultureInfo.CurrentCulture) + (p.Secondary ? "b" : "");
+                string label = finish ? "Z" : Number(p.Index, lap).ToString(CultureInfo.CurrentCulture) + (p.Secondary ? "b" : "");
                 var text = new TextBlock
                 {
                     Text = label,
