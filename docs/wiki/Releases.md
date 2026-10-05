@@ -23,6 +23,27 @@ changelog by hand.
    shows the notes, downloads the exe, checks it against the SHA256 and swaps
    itself. The embedded `CHANGELOG.md` provides "New in X.Y.Z" afterwards.
 
+## Nightly builds
+
+`.github/workflows/nightly.yml` builds `main` every night at 01:00 UTC and on
+demand (Actions → Nightly → "Run workflow", or `gh workflow run nightly.yml`).
+The scheduled run skips the build when `main` has not moved since the last
+nightly.
+
+- Each run replaces one pre-release with the tag `nightly`. Its title carries
+  the version, its notes the `feat`/`fix` subjects since the last release tag.
+  It has the same `Xenvious.exe`, `Xenvious.exe.sha256` and build provenance
+  as a release.
+- The version is the release version plus the run number as a fourth part,
+  `1.73.3.12`. That is newer than release 1.73.3 and older than the next
+  release 1.73.4, so a nightly player moves on to that release by itself. The
+  fourth part exists only in the built exe; `main`, the changelog and
+  release-please do not change.
+- Players only get it with Settings → Updates → "Get nightly builds" on.
+  Pre-releases never count as `releases/latest`, so everyone else keeps
+  getting releases only. Turning the option off on a nightly build offers to
+  go back to the latest release.
+
 ## The first release
 
 The manifest (`.release-please-manifest.json`) starts at 2.71.11, the last
