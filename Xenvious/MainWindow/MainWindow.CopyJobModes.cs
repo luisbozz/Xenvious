@@ -52,7 +52,7 @@ namespace Xenvious
                 pair.Opacity = CopyCompleteJob ? 0.4 : 1.0;
             }
             tbCopyScopeHint.Text = CopyCompleteJob
-                ? TranslateOr("copy_scope_full_hint", "GTA lädt den Job selbst in den offenen Creator, mit allem, was dazugehört. Der Creator muss zum Job passen (Race, LTS oder Capture).")
+                ? TranslateOr("copy_scope_full_hint", "GTA lädt den Job selbst in den offenen Creator, mit allem, was dazugehört. Der Creator muss zum Job passen (Race, Deathmatch, LTS, Capture oder Survival).")
                 : TranslateOr("copy_scope_parts_hint", "Xenvious schreibt nur die angehakten Teile in den Job, der gerade offen ist.");
             UpdateCopyRoute();
         }
@@ -102,7 +102,7 @@ namespace Xenvious
             string wanted = JobLoader.CreatorFor(ToInt(jobjson?.Mission?.Gen?.Type), ToInt(jobjson?.Mission?.Gen?.Subtype));
             if (wanted == null)
             {
-                SetCopyStatus(TranslateOr("copy_full_unsupported", "Komplett laden geht nur für Races, LTS und Capture. Wähle „Nur ausgewählte Teile“."), true);
+                SetCopyStatus(TranslateOr("copy_full_unsupported", "Komplett laden geht nur für Races, Deathmatches, LTS, Capture und Survival. Wähle „Nur ausgewählte Teile“."), true);
                 return;
             }
             if (creator != wanted)
@@ -152,7 +152,7 @@ namespace Xenvious
                         SetCopyStatus(TranslateOr("copy_full_timeout", "Der Creator hat den Job nicht geladen. Schau in GTA nach einer Meldung."), true);
                         return;
                     default:
-                        SetCopyStatus(TranslateOr("copy_full_unsupported", "Komplett laden geht nur für Races, LTS und Capture. Wähle „Nur ausgewählte Teile“."), true);
+                        SetCopyStatus(TranslateOr("copy_full_unsupported", "Komplett laden geht nur für Races, Deathmatches, LTS, Capture und Survival. Wähle „Nur ausgewählte Teile“."), true);
                         return;
                 }
 

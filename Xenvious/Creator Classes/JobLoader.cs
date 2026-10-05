@@ -18,8 +18,8 @@ namespace Xenvious
     /// own platform, so a job made on another platform fails there with "The Job failed
     /// to download"; the file itself loads on every platform.
     ///
-    /// Race, LTS and Capture creator only; deathmatch and survival number their states
-    /// differently. Afterwards the job counts as a new one, so saving it creates a job
+    /// Race, Deathmatch, LTS, Capture and Survival creator; all five load in state 0 and
+    /// edit in state 3. Afterwards the job counts as a new one, so saving it creates a job
     /// in the player's account instead of trying to update the original.
     /// </summary>
     public static class JobLoader
@@ -32,7 +32,8 @@ namespace Xenvious
         // The Public Mission Creator loads jobs outside its start state, so not this way.
         public static bool CanLoad(string creator) =>
             creator != "public_mission_creator"
-            && CreatorMap.CanRebuild(creator)
+            && WorkerOffset(creator) != 0
+            && GTA.Offsets.Editor.OFFSET_current_creator_worker_offset_refresh != 0
             && GTA.Offsets.Editor.load_job_flag != 0
             && GTA.Offsets.Editor.load_job_id != 0
             && GTA.Offsets.Editor.OFFSET_current_creator_worker_offset_editing_published != 0;
@@ -40,8 +41,12 @@ namespace Xenvious
         /// <summary>The creator script a job of this type opens in, or null.</summary>
         public static string CreatorFor(int type, int subtype)
         {
+            if (type == 1)
+                return "fm_deathmatch_creator";
             if (type == 2)
                 return "fm_race_creator";
+            if (type == 3)
+                return "fm_survival_creator";
             if (type == 0 && subtype == 5)
                 return "fm_lts_creator";
             if (type == 0 && subtype == 6)
@@ -54,6 +59,18 @@ namespace Xenvious
         private static readonly string[] FileLanguages =
             { "zh", "en", "fr", "de", "it", "ja", "ko", "pl", "pt-pt", "pt", "ru", "es", "es-mx", "zh-cn" };
 
+        // CreatorMap leaves deathmatch and survival out, since their rebuild is not verified;
+        // loading a job only needs the state field, which they share with the others.
+        private static long WorkerOffset(string creator)
+        {
+            switch (creator)
+            {
+                case "fm_deathmatch_creator": return GTA.Offsets.Editor.OFFSET_current_creator_worker_dm;
+                case "fm_survival_creator": return GTA.Offsets.Editor.OFFSET_current_creator_worker_survival;
+                default: return CreatorMap.WorkerOffset(creator);
+            }
+        }
+
         private static long LoaderOffset(string creator)
         {
             switch (creator)
@@ -61,6 +78,8 @@ namespace Xenvious
                 case "fm_race_creator": return GTA.Offsets.Editor.load_job_loader_race;
                 case "fm_lts_creator": return GTA.Offsets.Editor.load_job_loader_lts;
                 case "fm_capture_creator": return GTA.Offsets.Editor.load_job_loader_capture;
+                case "fm_deathmatch_creator": return GTA.Offsets.Editor.load_job_loader_dm;
+                case "fm_survival_creator": return GTA.Offsets.Editor.load_job_loader_survival;
                 default: return 0;
             }
         }
@@ -84,7 +103,7 @@ namespace Xenvious
             if (!CanLoad(creator) || string.IsNullOrEmpty(contentId))
                 return Result.Unsupported;
 
-            long worker = CreatorMap.WorkerOffset(creator);
+            long worker = WorkerOffset(creator);
             long state = worker + GTA.Offsets.Editor.OFFSET_current_creator_worker_offset_refresh;
             if (CreatorMap.ReadLocal(state) != CreatorMap.StateEditing)
                 return Result.NotEditing;
