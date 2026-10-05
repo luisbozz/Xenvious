@@ -295,25 +295,21 @@ namespace Xenvious
             }
         }
 
-        // The job id in the job card's header: a link once the job is published.
+        // The job id in the job card's header: selectable text, plus a link once the job is published.
         private void UpdateDashboardJobId(bool inCreator)
         {
             string id = tbjobid.Text?.Trim() ?? "";
             if (!inCreator || id.Length == 0)
             {
-                BtnDashJobId.Visibility = Visibility.Collapsed;
+                DashJobIdChip.Visibility = Visibility.Collapsed;
                 return;
             }
 
             bool published = GTA.Offsets.Editor.jobpublished != 0 && new Global(GTA.Offsets.Editor.jobpublished).Get<int>() != 0;
-            BtnDashJobId.Visibility = Visibility.Visible;
-            BtnDashJobId.IsEnabled = published;
-            DashJobIdIcon.Visibility = published ? Visibility.Visible : Visibility.Collapsed;
-            BtnDashJobId.ToolTip = published
-                ? TranslateOr("dash_jobid_open", "Open the job in the Social Club")
-                : TranslateOr("dash_jobid_draft", "Not published yet");
-            // A disabled button would ignore the tooltip otherwise.
-            ToolTipService.SetShowOnDisabled(BtnDashJobId, true);
+            DashJobIdChip.Visibility = Visibility.Visible;
+            BtnDashJobId.Visibility = published ? Visibility.Visible : Visibility.Collapsed;
+            BtnDashJobId.ToolTip = TranslateOr("dash_jobid_open", "Open the job in the Social Club");
+            DashJobIdChip.ToolTip = published ? null : TranslateOr("dash_jobid_draft", "Not published yet");
         }
 
         private void BtnDashJobId_Click(object sender, RoutedEventArgs e)
