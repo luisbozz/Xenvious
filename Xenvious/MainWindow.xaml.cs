@@ -150,6 +150,7 @@ namespace Xenvious
                 creatorRefresh,
                 () => cbsettingsexpscrfeat.IsChecked = true,
                 PropDisplayName,
+                FindProp,
                 (key, fallback) =>
                 {
                     try { return Translation?[key] ?? fallback; }

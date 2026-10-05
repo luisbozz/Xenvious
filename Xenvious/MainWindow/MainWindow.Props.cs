@@ -1165,24 +1165,32 @@ namespace Xenvious
     
 
 
-        private Dictionary<int, string> _propNames;
+        private Dictionary<int, GTA.Prop> _propsByModel;
+
+        /// <summary>The prop list entry of a model, null when unknown.</summary>
+        private GTA.Prop FindProp(int model)
+        {
+            if (_propsByModel == null || _propsByModel.Count == 0)
+            {
+                if (GTA.Editor.PropList == null || GTA.Editor.PropList.Count == 0)
+                    return null;
+                _propsByModel = new Dictionary<int, GTA.Prop>();
+                foreach (GTA.Prop p in GTA.Editor.PropList)
+                {
+                    if (string.IsNullOrEmpty(p.Native)) continue;
+                    _propsByModel[p.Integer] = p;
+                }
+            }
+            return _propsByModel.TryGetValue(model, out GTA.Prop prop) ? prop : null;
+        }
 
         /// <summary>Readable name of a prop model ("Giant Wooden Block"), "" when unknown.</summary>
         private string PropDisplayName(int model)
         {
-            if (_propNames == null || _propNames.Count == 0)
-            {
-                if (GTA.Editor.PropList == null || GTA.Editor.PropList.Count == 0)
-                    return "";
-                _propNames = new Dictionary<int, string>();
-                foreach (GTA.Prop p in GTA.Editor.PropList)
-                {
-                    if (string.IsNullOrEmpty(p.Native)) continue;
-                    string label = string.IsNullOrEmpty(p.Name) || p.Name == p.Native ? p.Native : $"{p.Name} ({p.Native})";
-                    _propNames[p.Integer] = label;
-                }
-            }
-            return _propNames.TryGetValue(model, out string name) ? name : "";
+            GTA.Prop p = FindProp(model);
+            if (p == null)
+                return "";
+            return string.IsNullOrEmpty(p.Name) || p.Name == p.Native ? p.Native : $"{p.Name} ({p.Native})";
         }
 }
 }

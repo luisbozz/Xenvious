@@ -1,4 +1,4 @@
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
@@ -99,6 +99,7 @@ namespace Xenvious.ViewModels
         private readonly Action _refreshCreator;
         private readonly Action _enableScriptFeatures;
         private readonly Func<int, string> _modelName;
+        private readonly Func<int, GTA.Prop> _findProp;
         private readonly Func<string, string, string> _t;
         private readonly SemaphoreSlim _placementSemaphore = new SemaphoreSlim(1, 1);
         private readonly DispatcherTimer _pollTimer;
@@ -125,6 +126,7 @@ namespace Xenvious.ViewModels
             Action refreshCreator,
             Action enableScriptFeatures,
             Func<int, string> modelName,
+            Func<int, GTA.Prop> findProp,
             Func<string, string, string> translate)
         {
             _dimensionsProvider = dimensionsProvider ?? throw new ArgumentNullException(nameof(dimensionsProvider));
@@ -135,13 +137,14 @@ namespace Xenvious.ViewModels
             _refreshCreator = refreshCreator ?? throw new ArgumentNullException(nameof(refreshCreator));
             _enableScriptFeatures = enableScriptFeatures ?? throw new ArgumentNullException(nameof(enableScriptFeatures));
             _modelName = modelName ?? (_ => "");
+            _findProp = findProp ?? (_ => null);
             _t = translate ?? ((_, fallback) => fallback);
 
             ShapeOptions = Array.AsReadOnly((QuickShape[])Enum.GetValues(typeof(QuickShape)));
             AxisOptions = Array.AsReadOnly((StepAxis[])Enum.GetValues(typeof(StepAxis)));
 
             LoadDimensionsCommand = new AsyncRelayCommand(LoadDimensionsAsync, () => _modelId.HasValue && FeaturesReady);
-            PlaceCommand = new AsyncRelayCommand(() => PlaceAsync(false), () => CanPlace);
+            PlaceCommand = new AsyncRelayCommand(PlaceClickedAsync, () => CanPlace);
             UndoCommand = new RelayCommand(UndoPlacement, () => CanUndo);
             UseCursorCommand = new RelayCommand(UseCursor);
             ReadStartPropCommand = new RelayCommand(ReadStartProp);
@@ -283,6 +286,7 @@ namespace Xenvious.ViewModels
             _hoveredModel = -1;
             HoveredModel = hovered;
             OnPropertyChanged(nameof(QuickStepTitle));
+            OnPropertyChanged(nameof(PlaceButtonText));
             OnPropertyChanged(nameof(RiseLabel));
             OnPropertyChanged(nameof(DirectionALabel));
             OnPropertyChanged(nameof(DirectionBLabel));
@@ -298,6 +302,7 @@ namespace Xenvious.ViewModels
             if (active)
             {
                 RefreshPresetCards(); // prop names are only known once the prop list is loaded
+                UpdateModelHeader();
                 _lastCheck = DateTime.MinValue;
                 _pollTimer.Start();
                 _ = PollAsync();
@@ -413,6 +418,30 @@ namespace Xenvious.ViewModels
         private string _modelInfoText = "";
         public string ModelInfoText { get => _modelInfoText; private set => SetProperty(ref _modelInfoText, value); }
 
+        // The chosen prop over the preview: readable name, native name, hash as int and hex.
+        private string _modelTitle = "";
+        public string ModelTitle { get => _modelTitle; private set => SetProperty(ref _modelTitle, value); }
+
+        private string _modelNative = "";
+        public string ModelNative { get => _modelNative; private set => SetProperty(ref _modelNative, value); }
+
+        private string _modelHashText = "";
+        public string ModelHashText { get => _modelHashText; private set => SetProperty(ref _modelHashText, value); }
+
+        private void UpdateModelHeader()
+        {
+            if (!_modelId.HasValue)
+            {
+                ModelTitle = ModelNative = ModelHashText = "";
+                return;
+            }
+            int model = _modelId.Value;
+            GTA.Prop prop = _findProp(model);
+            ModelNative = prop?.Native ?? "";
+            ModelTitle = prop == null || string.IsNullOrEmpty(prop.Name) || prop.Name == prop.Native ? "" : prop.Name;
+            ModelHashText = string.Format(CultureInfo.InvariantCulture, "Int {0} · Hex 0x{1:X8}", model, unchecked((uint)model));
+        }
+
         private bool _hasDimensions;
         public bool HasDimensions
         {
@@ -459,6 +488,7 @@ namespace Xenvious.ViewModels
                 _modelId = null;
                 ModelInfoText = _t("adv_model_invalid", "Modell nicht erkannt.");
             }
+            UpdateModelHeader();
             LoadDimensionsCommand.NotifyCanExecuteChanged();
             ApplyQuickStart();
             Invalidate();
@@ -531,9 +561,13 @@ namespace Xenvious.ViewModels
             get => _modeIndex;
             set
             {
-                if (SetProperty(ref _modeIndex, value) && value == 0)
+                if (SetProperty(ref _modeIndex, value))
                 {
-                    ApplyQuickStart();
+                    OnPropertyChanged(nameof(PlaceButtonText));
+                    if (value == 0)
+                    {
+                        ApplyQuickStart();
+                    }
                 }
             }
         }
@@ -569,7 +603,7 @@ namespace Xenvious.ViewModels
         /// <summary>Height per piece (spiral, curve, straight), side drift per piece (loop), forward per piece (corkscrew).</summary>
         public double Rise { get => _rise; set => SetProperty(ref _rise, value); }
 
-        private bool _autoPitch;
+        private bool _autoPitch = true;
         /// <summary>Tilt the first piece so it follows the rise (a climbing curve drives like a ramp).</summary>
         public bool AutoPitch { get => _autoPitch; set => SetProperty(ref _autoPitch, value); }
 
@@ -776,10 +810,30 @@ namespace Xenvious.ViewModels
         // The plan (expert fields)
         // ------------------------------------------------------------------
         private StartSource _startSource = StartSource.Cursor;
-        public StartSource StartSource { get => _startSource; set => SetProperty(ref _startSource, value); }
+        public StartSource StartSource
+        {
+            get => _startSource;
+            set
+            {
+                if (SetProperty(ref _startSource, value))
+                {
+                    OnPropertyChanged(nameof(PlaceButtonText));
+                }
+            }
+        }
 
         private int _startPropIndex;
-        public int StartPropIndex { get => _startPropIndex; set => SetProperty(ref _startPropIndex, Math.Max(0, value)); }
+        public int StartPropIndex
+        {
+            get => _startPropIndex;
+            set
+            {
+                if (SetProperty(ref _startPropIndex, Math.Max(0, value)))
+                {
+                    OnPropertyChanged(nameof(PlaceButtonText));
+                }
+            }
+        }
 
         private double _startX, _startY, _startZ, _startPitch, _startRoll, _startYaw;
         public double StartX { get => _startX; set => SetProperty(ref _startX, value); }
@@ -1080,6 +1134,18 @@ namespace Xenvious.ViewModels
         // ------------------------------------------------------------------
         private void UseCursor()
         {
+            if (ReadCursor(true))
+            {
+                Status = _t("adv_status_cursor", "Cursor-Position übernommen.");
+            }
+        }
+
+        /// <summary>
+        /// Takes the creator cursor as the start. <paramref name="live"/> false keeps live mode
+        /// from moving its last placement there, for a placement that follows right away.
+        /// </summary>
+        private bool ReadCursor(bool live)
+        {
             try
             {
                 Vector3 c = _getCursorLocation();
@@ -1090,14 +1156,16 @@ namespace Xenvious.ViewModels
                 StartZ = Math.Round(c.Z, 3);
                 IncludeStart = true;
                 _startPropSource = -1;
-                _applyingQuick = false;
+                _applyingQuick = !live;
                 Invalidate();
-                Status = _t("adv_status_cursor", "Cursor-Position übernommen.");
+                _applyingQuick = false;
+                return true;
             }
             catch (Exception ex)
             {
                 _applyingQuick = false;
                 Status = ex.Message;
+                return false;
             }
         }
 
@@ -1235,6 +1303,36 @@ namespace Xenvious.ViewModels
             {
                 Status = ex.Message;
             }
+        }
+
+        /// <summary>The quick start places where the creator cursor is now; the expert view keeps its typed start.</summary>
+        public bool PlacesAtCursor => ModeIndex == 0 && StartSource == StartSource.Cursor;
+
+        public string PlaceButtonText
+        {
+            get
+            {
+                if (ModeIndex != 0)
+                    return _t("adv_place", "Platzieren");
+                switch (StartSource)
+                {
+                    case StartSource.LastProp:
+                        return _t("adv_place_after_last", "Ab letztem Prop platzieren");
+                    case StartSource.PropIndex:
+                        return string.Format(CultureInfo.CurrentCulture, _t("adv_place_after_prop", "Ab Prop {0} platzieren"), StartPropIndex);
+                    default:
+                        return _t("adv_place_cursor", "An Cursor platzieren");
+                }
+            }
+        }
+
+        private async Task PlaceClickedAsync()
+        {
+            if (PlacesAtCursor && !ReadCursor(false))
+            {
+                return;
+            }
+            await PlaceAsync(false).ConfigureAwait(true);
         }
 
         private async Task PlaceAsync(bool live)
