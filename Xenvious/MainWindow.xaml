@@ -10212,6 +10212,19 @@
                                                 <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[update_check_on_start], FallbackValue=Check for updates on start}"/>
                                                 <CheckBox x:Name="cbsettingscheckupdates" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbsettingscheckupdates_Checked" Unchecked="cbsettingscheckupdates_Checked"/>
                                             </Grid>
+                                            <!-- Opt-in: the nightly pre-release, built from main. -->
+                                            <Grid Style="{StaticResource FormRow}">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="46"/>
+                                                </Grid.ColumnDefinitions>
+                                                <StackPanel>
+                                                    <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[update_nightly], FallbackValue=Nightly-Builds erhalten}"/>
+                                                    <TextBlock FontSize="12" Foreground="{DynamicResource NavMutedBrush}" TextWrapping="Wrap" Margin="0,2,0,0"
+                                                               Text="{Binding Translation[update_nightly_hint], FallbackValue=Neue Funktionen und Fixes vor dem Release. Noch nicht getestet.}"/>
+                                                </StackPanel>
+                                                <CheckBox x:Name="cbsettingsnightly" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbsettingsnightly_Checked" Unchecked="cbsettingsnightly_Checked"/>
+                                            </Grid>
                                         </StackPanel>
                                     </DockPanel>
                                 </Border>
