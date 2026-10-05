@@ -32,8 +32,7 @@ namespace Xenvious
         // The Public Mission Creator loads jobs outside its start state, so not this way.
         public static bool CanLoad(string creator) =>
             creator != "public_mission_creator"
-            && WorkerOffset(creator) != 0
-            && GTA.Offsets.Editor.OFFSET_current_creator_worker_offset_refresh != 0
+            && CreatorMap.CanRebuild(creator)
             && GTA.Offsets.Editor.load_job_flag != 0
             && GTA.Offsets.Editor.load_job_id != 0
             && GTA.Offsets.Editor.OFFSET_current_creator_worker_offset_editing_published != 0;
@@ -58,18 +57,6 @@ namespace Xenvious
         // by the language part of the job file name.
         private static readonly string[] FileLanguages =
             { "zh", "en", "fr", "de", "it", "ja", "ko", "pl", "pt-pt", "pt", "ru", "es", "es-mx", "zh-cn" };
-
-        // CreatorMap leaves deathmatch and survival out, since their rebuild is not verified;
-        // loading a job only needs the state field, which they share with the others.
-        private static long WorkerOffset(string creator)
-        {
-            switch (creator)
-            {
-                case "fm_deathmatch_creator": return GTA.Offsets.Editor.OFFSET_current_creator_worker_dm;
-                case "fm_survival_creator": return GTA.Offsets.Editor.OFFSET_current_creator_worker_survival;
-                default: return CreatorMap.WorkerOffset(creator);
-            }
-        }
 
         private static long LoaderOffset(string creator)
         {
@@ -103,7 +90,7 @@ namespace Xenvious
             if (!CanLoad(creator) || string.IsNullOrEmpty(contentId))
                 return Result.Unsupported;
 
-            long worker = WorkerOffset(creator);
+            long worker = CreatorMap.WorkerOffset(creator);
             long state = worker + GTA.Offsets.Editor.OFFSET_current_creator_worker_offset_refresh;
             if (CreatorMap.ReadLocal(state) != CreatorMap.StateEditing)
                 return Result.NotEditing;

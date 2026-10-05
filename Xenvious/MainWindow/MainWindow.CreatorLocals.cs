@@ -326,8 +326,8 @@ namespace Xenvious
         {
             if (cbsettingsoldcreatorrefresh.IsChecked ?? true)
             {
-                // Race/LTS/capture: the rebuild that keeps menu and camera. Deathmatch and
-                // survival (other state numbering) keep the plain state 7.
+                // The rebuild that keeps menu and camera where the state-7 code is known
+                // (not in deathmatch and survival, which still rebuild); plain state 7 otherwise.
                 if (CreatorMap.CanRebuild(CreatorMap.CurrentCreator()))
                     _ = CreatorMap.RebuildAsync();
                 else
