@@ -617,7 +617,7 @@ namespace Xenvious
 
         private void BtnCopyJob_Click(object sender, RoutedEventArgs e)
         {
-            if (!m.IsProcOpen || !IsCreatorRunning())
+            if (!m.IsProcOpen || !IsInCreator())
             {
                 SetCopyStatus(TranslateOr("copy_need_creator", "Öffne zuerst einen Creator in GTA."), true);
                 return;

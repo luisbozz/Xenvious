@@ -191,7 +191,7 @@ namespace Xenvious
         /// </summary>
         private async Task FinishCopyJobAsync(bool rebuild = true)
         {
-            if (!m.IsProcOpen || !IsCreatorRunning())
+            if (!m.IsProcOpen || !IsInCreator())
                 return;
             var mode = (CopyJobMode)(ddCopyJobMode.SelectedIndex < 0 ? 0 : ddCopyJobMode.SelectedIndex);
 

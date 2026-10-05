@@ -91,7 +91,7 @@ namespace Xenvious
 
         private bool MapBackupReady()
         {
-            if (!m.IsProcOpen || !IsCreatorRunning())
+            if (!m.IsProcOpen || !IsInCreator())
             {
                 tbMapStatus.Text = TranslateOr("map_need_creator", "Dafür muss ein Creator laufen.");
                 return false;

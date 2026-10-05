@@ -138,7 +138,7 @@ namespace Xenvious
             var propPlacementService = new PropPlacementService();
             var scriptFeatures = new ScriptFeatureMonitor(
                 () => m.IsProcOpen,
-                () => IsCreatorRunning(),
+                () => IsInCreator(),
                 () => cbsettingsexpscrfeat.IsChecked == true);
 
             AdvancedPropPlacementVm = new AdvancedPropPlacementViewModel(
@@ -424,23 +424,10 @@ namespace Xenvious
         }
 
 
-        /// <summary>
-        /// Whether the game itself reports the player being in a creator.
-        ///
-        /// Separate from <see cref="IsInCreator"/>, which also returns true for
-        /// the "load values anyway" setting. That override exists so the editor
-        /// reads values outside a creator; it does not mean a creator is open,
-        /// and anything that acts on the game rather than on our own data has
-        /// to ask this instead.
-        /// </summary>
-        public bool IsCreatorRunning()
-        {
-            return new Global(GTA.Offsets.Editor.check_creator).Get<int>() == 1;
-        }
-
+        /// <summary>Whether the game itself reports the player being in a creator.</summary>
         public bool IsInCreator()
         {
-            return IsCreatorRunning() || cbsettingslva.IsChecked == true;
+            return new Global(GTA.Offsets.Editor.check_creator).Get<int>() == 1;
         }
 
 
