@@ -968,13 +968,22 @@
                                         <DockPanel>
                                             <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
                                                 <DockPanel>
-                                                    <!-- Job id; a link to the job page once the job is published. -->
-                                                    <Button x:Name="BtnDashJobId" DockPanel.Dock="Right" Style="{StaticResource DashChipButton}" Click="BtnDashJobId_Click" VerticalAlignment="Center">
+                                                    <!-- Job id, selectable to copy it; the icon links to the job page once the job is published. -->
+                                                    <Border x:Name="DashJobIdChip" DockPanel.Dock="Right" Background="{DynamicResource SectionBackgroundBrush}" CornerRadius="11" Padding="10,3" VerticalAlignment="Center">
                                                         <StackPanel Orientation="Horizontal">
-                                                            <TextBlock x:Name="tbjobid" FontSize="12" FontFamily="Consolas" FontWeight="Bold" VerticalAlignment="Center"/>
-                                                            <Path x:Name="DashJobIdIcon" Style="{StaticResource DashLinkIcon}" Width="11" Height="11" Stretch="Uniform" Margin="7,0,0,0"/>
+                                                            <TextBox x:Name="tbjobid" IsReadOnly="True" IsReadOnlyCaretVisible="False" FontSize="12" FontFamily="Consolas" FontWeight="Bold" VerticalAlignment="Center"
+                                                                     Background="Transparent" BorderThickness="0" Padding="0" Cursor="IBeam">
+                                                                <TextBox.Template>
+                                                                    <ControlTemplate TargetType="{x:Type TextBox}">
+                                                                        <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                                                                    </ControlTemplate>
+                                                                </TextBox.Template>
+                                                            </TextBox>
+                                                            <Button x:Name="BtnDashJobId" Style="{StaticResource DashChipButton}" Click="BtnDashJobId_Click" VerticalAlignment="Center" Margin="4,0,-8,0">
+                                                                <Path x:Name="DashJobIdIcon" Style="{StaticResource DashLinkIcon}" Width="11" Height="11" Stretch="Uniform"/>
+                                                            </Button>
                                                         </StackPanel>
-                                                    </Button>
+                                                    </Border>
                                                     <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[infoheader], FallbackValue='Job Information'}"/>
                                                 </DockPanel>
                                             </Border>

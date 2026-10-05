@@ -837,7 +837,9 @@ namespace Xenvious
                             Lblonlineversion.Text = GTA.getOnlineVersion();
                             Lblbuildversion.Text = GTA.getBuildVersion();
                             if (!cb_dev.IsFocused) cb_dev.IsChecked = m.memory(GTA.Offsets.Editor.dev).Get<int>() == GTA.DevPatched ? true : false;
-                            tbjobid.Text = new Global(GTA.Offsets.Editor.jobid).GetString();
+                            // Only on a change: a new text would drop the user's selection.
+                            string jobId = new Global(GTA.Offsets.Editor.jobid).GetString();
+                            if (tbjobid.Text != jobId) tbjobid.Text = jobId;
                         }
                         else if (MainPages.SelectedItem == PageEdit)
                         {
