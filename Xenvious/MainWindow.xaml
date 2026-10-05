@@ -10124,16 +10124,6 @@
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="46"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[settingslva], FallbackValue=Load values anyway}"/>
-                                                <CheckBox x:Name="cbsettingslva" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                            </Grid>
-                                            <TextBlock Margin="0,-4,52,6" FontSize="12" Foreground="{DynamicResource NavMutedBrush}" TextWrapping="Wrap"
-                                                       Text="{Binding Translation[settingslvainfo], FallbackValue='Values will get loaded even if the Player is not in the Creator'}"/>
-                                            <Grid Style="{StaticResource FormRow}">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="46"/>
-                                                </Grid.ColumnDefinitions>
                                                 <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[setexp], FallbackValue=Experimental Script Features}"/>
                                                 <CheckBox x:Name="cbsettingsexpscrfeat" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbsettingsexpscrfeat_Checked" Unchecked="cbsettingsexpscrfeat_Checked"/>
                                             </Grid>

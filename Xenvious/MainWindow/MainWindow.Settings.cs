@@ -172,7 +172,6 @@ namespace Xenvious
             try
             {
                 cbgmwarning.IsChecked = ini.ReadBoolean("Settings", "gmwarning");
-                cbsettingslva.IsChecked = ini.ReadBoolean("Settings", "lva");
                 cbsettingsoldcreatorrefresh.IsChecked = ini.ReadBoolean("Settings", "oldcreatorrefresh");
                 tbgeglobal.Text = ini.ReadString("Settings", "geglobal");
                 tblelocal.Text = ini.ReadString("Settings", "lelocal");
@@ -524,7 +523,6 @@ namespace Xenvious
                 //if (GTA.Editor.mpropsaddys != null)
                 //    ini.Write("Settings", "lastmprops", String.Join(",", GTA.Editor.mpropsaddys));
                 ini.Write("Settings", "gmwarning", cbgmwarning.IsChecked ?? true);
-                ini.Write("Settings", "lva", cbsettingslva.IsChecked ?? true);
                 ini.Write("Settings", "oldcreatorrefresh", cbsettingsoldcreatorrefresh.IsChecked ?? true);
                 ini.Write("Settings", "geglobal", tbgeglobal.Text);
                 ini.Write("Settings", "lelocal", tblelocal.Text);

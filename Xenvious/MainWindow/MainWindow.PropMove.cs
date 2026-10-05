@@ -19,7 +19,7 @@ namespace Xenvious
 
         private async System.Threading.Tasks.Task MoveProp(bool toDynamic, int index)
         {
-            if (!m.IsProcOpen || !IsCreatorRunning())
+            if (!m.IsProcOpen || !IsInCreator())
                 return;
             string problem = PropMover.Check(toDynamic, index);
             if (problem != null)

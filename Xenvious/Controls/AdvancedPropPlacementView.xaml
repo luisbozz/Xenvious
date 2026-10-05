@@ -768,6 +768,7 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -777,14 +778,25 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <Button Grid.Column="0" Style="{StaticResource PrimaryBtn}" Command="{Binding PlaceCommand}" ToolTip="{Binding FeatureHintText}" Tag="{Binding DataContext.Translation[adv_place], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Platzieren'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                        <Button Grid.Column="0" Style="{StaticResource PrimaryBtn}" Command="{Binding PlaceCommand}" ToolTip="{Binding FeatureHintText}" Content="{Binding PlaceButtonText}" />
                         <ToggleButton Grid.Column="1" Style="{StaticResource LivePill}" Margin="10,0,0,0" IsChecked="{Binding LiveChanges}" IsEnabled="{Binding CanPlace}"
                                       ToolTip="{Binding DataContext.Translation[adv_live_tip], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Jede Änderung wird sofort in GTA gesetzt (die vorige Live-Platzierung wird dabei ersetzt).'}"
                                       Tag="{Binding DataContext.Translation[adv_live], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Live'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
                         <Button Grid.Column="2" Style="{StaticResource SecondaryBtn}" Margin="10,0,0,0" Command="{Binding UndoCommand}" Tag="{Binding DataContext.Translation[adv_undo], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Rückgängig'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
                         <Button Grid.Column="4" Style="{StaticResource SecondaryBtn}" Margin="0,0,10,0" Command="{Binding SavePresetCommand}" Tag="{Binding DataContext.Translation[adv_save_preset], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Als Preset speichern'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
                         <Button Grid.Column="5" Style="{StaticResource SecondaryBtn}" Command="{Binding OpenTemplatesCommand}" IsEnabled="{Binding CanUseTemplates}" ToolTip="{Binding FeatureHintText}" Tag="{Binding DataContext.Translation[adv_copy_templates], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='In Templates kopieren'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
-                        <StackPanel Grid.Row="1" Grid.ColumnSpan="6" Margin="2,12,0,0">
+                        <!-- heading: the last thing to adjust after a preset, same value as yaw in step 4 -->
+                        <Grid Grid.Row="1" Grid.ColumnSpan="6" Margin="2,12,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="80"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Foreground="{DynamicResource TextColor}" FontSize="13" Margin="0,0,12,0" VerticalAlignment="Center" Tag="{Binding DataContext.Translation[adv_heading], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Richtung (Heading)'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                            <Slider Grid.Column="1" Minimum="-180" Maximum="180" VerticalAlignment="Center" Value="{Binding StartYaw, Mode=TwoWay}"/>
+                            <TextBox Grid.Column="2" Style="{StaticResource Field}" Margin="8,0,0,0" helpers:NumericNudge.Step="1" Text="{Binding StartYaw, Converter={StaticResource Num}, ConverterParameter=2, UpdateSourceTrigger=LostFocus}"/>
+                        </Grid>
+                        <StackPanel Grid.Row="2" Grid.ColumnSpan="6" Margin="2,10,0,0">
                             <TextBlock Foreground="{DynamicResource MutedTextBrush}" FontSize="12" Text="{Binding PlanInfoText}"/>
                             <TextBlock Foreground="{DynamicResource TextColor}" FontSize="13" Margin="0,3,0,0" TextWrapping="Wrap" Text="{Binding Status}"/>
                         </StackPanel>

@@ -1,4 +1,4 @@
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
@@ -142,7 +142,7 @@ namespace Xenvious.ViewModels
                     Rise = p.Rise ?? 0;
                     Bank = p.Bank ?? Bank;
                     Overlap = p.Overlap ?? 0;
-                    AutoPitch = p.AutoPitch ?? false;
+                    AutoPitch = p.AutoPitch ?? true;
                     PieceCount = p.Count;
                 }
             }
@@ -162,9 +162,9 @@ namespace Xenvious.ViewModels
             Invalidate();
             if (ModeIndex == 0)
             {
-                QuickStep = 3;
+                QuickStep = 2;
             }
-            Status = string.Format(CultureInfo.CurrentCulture, _t("adv_preset_loaded", "Preset „{0}“ geladen – Startpunkt wählen und platzieren."), card.Title);
+            Status = string.Format(CultureInfo.CurrentCulture, _t("adv_preset_loaded", "Preset „{0}“ geladen – im Creator zielen und „An Cursor platzieren“ klicken."), card.Title);
         }
 
         private PlacementPreset CurrentAsPreset(string name)
