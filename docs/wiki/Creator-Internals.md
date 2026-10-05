@@ -56,8 +56,9 @@ entities. `Creator Classes/CreatorMap.cs` forces a rebuild:
 - That path also resets the menu and moves the camera. For the one frame the
   rebuild takes, those two statements are NOPed in the bytecode and restored
   afterwards, so the user keeps their menu and camera.
-- Race, LTS and Capture share the state numbering. **Deathmatch and Survival
-  do not**, so `CanRebuild()` is false there until someone verifies them.
+- All five fm_* creators share the state numbering. Deathmatch and Survival
+  rebuild too, but their menu and camera are not kept (the NOP patterns only
+  cover Race, LTS, Capture and the Mission Creator).
 - Other states used: `5` = save, `91` = publish (see
   `MainWindow.CopyJobModes.cs`).
 

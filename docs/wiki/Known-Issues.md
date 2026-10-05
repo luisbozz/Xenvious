@@ -5,7 +5,7 @@ you pick one.
 
 | Area | Issue |
 |---|---|
-| Rebuild | Deathmatch and Survival use a different worker state numbering; their rebuild is not verified, and the Deathmatch worker local is wrong on both editions. |
+| Rebuild | Deathmatch and Survival rebuild, but reset menu and camera like after a test: their state-7 code is not NOPed yet. |
 | Enhanced | The creator camera teleport does not find the fly-cam object. |
 | Enhanced | The "Online version" shown in the app is empty (version pointer offset). |
 | Enhanced | Limits other than the prop limit (300) are unknown. |

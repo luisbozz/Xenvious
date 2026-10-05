@@ -82,8 +82,8 @@ When bumping a NuGet package, update `Xenvious/packages.config` **and** the
   another creator's locals.
 - Never overwrite an array's size slot (the slot before element 0).
 - After bulk writes to job data, the creator must rebuild
-  (`CreatorMap`) to show them. Rebuild is only verified for Race, LTS and
-  Capture.
+  (`CreatorMap`) to show them. Rebuild is verified for Race, LTS, Capture,
+  Deathmatch and Survival.
 
 ### Offsets and patches
 

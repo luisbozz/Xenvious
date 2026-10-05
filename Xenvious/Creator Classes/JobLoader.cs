@@ -18,8 +18,8 @@ namespace Xenvious
     /// own platform, so a job made on another platform fails there with "The Job failed
     /// to download"; the file itself loads on every platform.
     ///
-    /// Race, LTS and Capture creator only; deathmatch and survival number their states
-    /// differently. Afterwards the job counts as a new one, so saving it creates a job
+    /// Race, Deathmatch, LTS, Capture and Survival creator; all five load in state 0 and
+    /// edit in state 3. Afterwards the job counts as a new one, so saving it creates a job
     /// in the player's account instead of trying to update the original.
     /// </summary>
     public static class JobLoader
@@ -40,8 +40,12 @@ namespace Xenvious
         /// <summary>The creator script a job of this type opens in, or null.</summary>
         public static string CreatorFor(int type, int subtype)
         {
+            if (type == 1)
+                return "fm_deathmatch_creator";
             if (type == 2)
                 return "fm_race_creator";
+            if (type == 3)
+                return "fm_survival_creator";
             if (type == 0 && subtype == 5)
                 return "fm_lts_creator";
             if (type == 0 && subtype == 6)
@@ -61,6 +65,8 @@ namespace Xenvious
                 case "fm_race_creator": return GTA.Offsets.Editor.load_job_loader_race;
                 case "fm_lts_creator": return GTA.Offsets.Editor.load_job_loader_lts;
                 case "fm_capture_creator": return GTA.Offsets.Editor.load_job_loader_capture;
+                case "fm_deathmatch_creator": return GTA.Offsets.Editor.load_job_loader_dm;
+                case "fm_survival_creator": return GTA.Offsets.Editor.load_job_loader_survival;
                 default: return 0;
             }
         }
