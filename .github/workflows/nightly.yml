@@ -1,0 +1,128 @@
+name: Nightly
+
+# Builds main every night (and on demand) into one pre-release with the tag
+# "nightly", which each run replaces. Xenvious offers it only to players who
+# turned on nightly builds. The version gets the run number as a fourth part
+# (1.73.3.12): newer than the release it follows, older than the next release,
+# so nightly players move on to that release by themselves. Pre-releases never
+# count as "latest", so everyone else keeps getting releases only.
+on:
+  schedule:
+    - cron: '0 1 * * *'   # 01:00 UTC, 03:00 in German summer time; GitHub may start it later
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  id-token: write      # build provenance: signing through GitHub's OIDC token
+  attestations: write  # build provenance: storing the attestation
+
+concurrency:
+  group: nightly
+  cancel-in-progress: false
+
+jobs:
+  nightly:
+    runs-on: windows-latest
+    steps:
+      - name: Check out Xenvious
+        uses: actions/checkout@v7
+        with:
+          ref: main
+          path: Xenvious
+          fetch-depth: 0        # the notes list the commits since the last release tag
+          persist-credentials: false
+
+      # The scheduled run builds only when main moved since the last nightly; a run
+      # started by hand always builds.
+      - name: Check for new commits
+        id: changed
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $head = git -C Xenvious rev-parse HEAD
+          $last = gh release view nightly --repo "${{ github.repository }}" --json targetCommitish --jq .targetCommitish 2>$null
+          $build = "${{ github.event_name }}" -ne "schedule" -or $last -ne $head
+          "head=$head" >> $env:GITHUB_OUTPUT
+          "build=$($build.ToString().ToLowerInvariant())" >> $env:GITHUB_OUTPUT
+          if (-not $build) { Write-Host "main is still at $head, the nightly has it already." }
+          $global:LASTEXITCODE = 0   # no nightly release yet is fine
+
+      - name: Set the nightly version
+        id: version
+        if: steps.changed.outputs.build == 'true'
+        shell: pwsh
+        run: |
+          $file = "Xenvious/Xenvious/Properties/AssemblyInfo.cs"
+          $text = Get-Content $file -Raw
+          $release = [regex]::Match($text, 'AssemblyVersion\("(\d+\.\d+\.\d+)"\)').Groups[1].Value
+          if (-not $release) { throw "No three-part AssemblyVersion in $file" }
+          $version = "$release.${{ github.run_number }}"
+          $text = $text -replace 'Assembly(File)?Version\("\d+\.\d+\.\d+"\)', "Assembly`$1Version(""$version"")"
+          Set-Content $file $text -NoNewline
+          "version=$version" >> $env:GITHUB_OUTPUT
+
+      # Same layout and mry version as build.yml.
+      - name: Check out mry
+        if: steps.changed.outputs.build == 'true'
+        uses: actions/checkout@v7
+        with:
+          repository: luisbozz/mry
+          ref: v1.4
+          path: mry
+          persist-credentials: false
+
+      - uses: microsoft/setup-msbuild@v3
+        if: steps.changed.outputs.build == 'true'
+
+      - name: Restore packages
+        if: steps.changed.outputs.build == 'true'
+        run: |
+          nuget restore mry/mry.sln
+          nuget restore Xenvious/Xenvious.sln
+
+      - name: Build mry
+        if: steps.changed.outputs.build == 'true'
+        run: msbuild mry/mry.sln /p:Configuration=Release /p:Platform=x64 /m /nologo /verbosity:minimal
+
+      - name: Build Xenvious
+        if: steps.changed.outputs.build == 'true'
+        run: msbuild Xenvious/Xenvious.sln /p:Configuration=Release /p:Platform=x64 /m /nologo /verbosity:minimal
+
+      - name: Write the checksum and the notes
+        if: steps.changed.outputs.build == 'true'
+        shell: pwsh
+        run: |
+          Copy-Item Xenvious/Xenvious/bin/Release/Xenvious.exe Xenvious.exe
+          $hash = (Get-FileHash Xenvious.exe -Algorithm SHA256).Hash.ToLowerInvariant()
+          "$hash  Xenvious.exe" | Out-File -FilePath Xenvious.exe.sha256 -Encoding ascii -NoNewline
+
+          $since = git -C Xenvious describe --tags --abbrev=0 --match "v*" 2>$null
+          $range = if ($since) { "$since..HEAD" } else { "HEAD" }
+          $lines = git -C Xenvious log $range --no-merges --pretty=format:"- %s" | Where-Object { $_ -match '^- (feat|fix)' }
+          $notes = @("Nightly build of main at ${{ steps.changed.outputs.head }}, not tested yet.", "")
+          if ($since) { $notes += "## Since $since" } else { $notes += "## Changes" }
+          if ($lines) { $notes += $lines } else { $notes += "- No new features or fixes." }
+          $notes -join "`n" | Out-File -FilePath notes.md -Encoding utf8
+          $global:LASTEXITCODE = 0
+
+      # A signed statement that this exe was built here from this commit; anyone can
+      # check it with: gh attestation verify Xenvious.exe --repo <owner>/<repo>
+      - name: Attest the build provenance
+        if: steps.changed.outputs.build == 'true'
+        uses: actions/attest-build-provenance@v4
+        with:
+          subject-path: Xenvious.exe
+
+      # Replaced as a whole, so the tag follows main and the old files go away. The
+      # updater reads the version from the title.
+      - name: Publish the nightly release
+        if: steps.changed.outputs.build == 'true'
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete nightly --repo "${{ github.repository }}" --cleanup-tag --yes 2>$null
+          gh release create nightly Xenvious.exe Xenvious.exe.sha256 --repo "${{ github.repository }}" `
+            --prerelease --latest=false --target "${{ steps.changed.outputs.head }}" `
+            --title "Nightly ${{ steps.version.outputs.version }}" --notes-file notes.md

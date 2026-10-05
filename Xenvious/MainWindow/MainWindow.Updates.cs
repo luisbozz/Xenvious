@@ -12,6 +12,10 @@ namespace Xenvious
     {
         private const string SettingCheckUpdates = "checkupdates";
         private const string SettingLastVersion = "lastversion";
+        private const string SettingNightly = "nightly";
+
+        private bool NightlyEnabled => new ini_reader(Functions.getRoamingConfigFilePath()).ReadBoolean("Settings", SettingNightly, false);
+        private bool _loadingUpdateSettings;
 
         private bool _updateRunning;
 
@@ -30,7 +34,7 @@ namespace Xenvious
             var ini = new ini_reader(Functions.getRoamingConfigFilePath());
             if (!ini.ReadBoolean("Settings", SettingCheckUpdates, true))
                 return;
-            var update = await Updater.CheckAsync();
+            var update = await Updater.CheckAsync(NightlyEnabled);
             if (update != null)
                 await OfferUpdateAsync(update);
         }
@@ -38,9 +42,13 @@ namespace Xenvious
         private void ShowUpdateVersion()
         {
             tbUpdateVersion.Text = string.Format(CultureInfo.CurrentCulture,
-                TranslateOr("update_version", "Version {0}"), Updater.CurrentVersion);
+                TranslateOr("update_version", "Version {0}"), Updater.CurrentVersion)
+                + (Updater.IsNightly ? " · Nightly" : "");
             var ini = new ini_reader(Functions.getRoamingConfigFilePath());
+            _loadingUpdateSettings = true;
             cbsettingscheckupdates.IsChecked = ini.ReadBoolean("Settings", SettingCheckUpdates, true);
+            cbsettingsnightly.IsChecked = ini.ReadBoolean("Settings", SettingNightly, false);
+            _loadingUpdateSettings = false;
         }
 
         /// <summary>After an update, once: this version's part of the built-in changelog.</summary>
@@ -54,6 +62,8 @@ namespace Xenvious
             ini.Write("Settings", SettingLastVersion, current);
             if (string.IsNullOrEmpty(last))
                 return;   // first start ever: nothing "new" to show
+            if (Updater.IsNightly)
+                return;   // a nightly build has no changelog section; the update dialog showed its notes
 
             var lines = ChangelogText.Parse(ChangelogText.Section(ChangelogText.Embedded(), Updater.CurrentVersion));
             if (lines.Count == 0)
@@ -66,7 +76,9 @@ namespace Xenvious
         private async Task OfferUpdateAsync(UpdateInfo update)
         {
             bool install = await ConfirmAsync(
-                string.Format(CultureInfo.CurrentCulture, TranslateOr("update_available_title", "Xenvious {0} ist verfügbar"), update.Version),
+                update.Nightly
+                    ? string.Format(CultureInfo.CurrentCulture, TranslateOr("update_nightly_title", "Nightly {0} ist verfügbar"), update.Version)
+                    : string.Format(CultureInfo.CurrentCulture, TranslateOr("update_available_title", "Xenvious {0} ist verfügbar"), update.Version),
                 string.Format(CultureInfo.CurrentCulture, TranslateOr("update_available_text", "Du hast {0}. Xenvious lädt die neue Version, prüft sie und startet neu."), Updater.CurrentVersion),
                 TranslateOr("update_install", "Jetzt aktualisieren"), TranslateOr("update_later", "Später"),
                 details: ChangelogText.Parse(update.Notes));
@@ -108,7 +120,7 @@ namespace Xenvious
             BtnCheckUpdates.IsEnabled = false;
             try
             {
-                var update = await Updater.CheckAsync();
+                var update = await Updater.CheckAsync(NightlyEnabled);
                 if (update != null)
                     await OfferUpdateAsync(update);
                 else
@@ -128,6 +140,32 @@ namespace Xenvious
         {
             new ini_reader(Functions.getRoamingConfigFilePath())
                 .Write("Settings", SettingCheckUpdates, cbsettingscheckupdates.IsChecked ?? true);
+        }
+
+        /// <summary>
+        /// Nightly builds on or off. A nightly build is newer than the release it follows, so
+        /// turning them off would leave the player on it until the next release; Xenvious
+        /// offers to go back to the release instead.
+        /// </summary>
+        private async void cbsettingsnightly_Checked(object sender, RoutedEventArgs e)
+        {
+            if (_loadingUpdateSettings)
+                return;
+            bool on = cbsettingsnightly.IsChecked == true;
+            new ini_reader(Functions.getRoamingConfigFilePath()).Write("Settings", SettingNightly, on);
+            Log.Info("nightly builds " + (on ? "on" : "off"), source: "updater");
+            if (on || !Updater.IsNightly)
+                return;
+
+            var release = await Updater.LatestReleaseAsync();
+            if (release == null || release.ExeUrl == null || release.ChecksumUrl == null)
+                return;
+            bool back = await ConfirmAsync(
+                string.Format(CultureInfo.CurrentCulture, TranslateOr("update_back_title", "Zurück auf Xenvious {0}?"), release.Version),
+                string.Format(CultureInfo.CurrentCulture, TranslateOr("update_back_text", "Du hast die Nightly {0}. Ohne Nightly-Builds bleibt sie, bis ein neues Release kommt. Xenvious kann jetzt das Release {1} laden und neu starten."), Updater.CurrentVersion, release.Version),
+                TranslateOr("update_back_install", "Release laden"), TranslateOr("update_later", "Später"));
+            if (back)
+                await InstallUpdateAsync(release);
         }
 
         // Clicking the version shows the whole built-in changelog, also offline.
