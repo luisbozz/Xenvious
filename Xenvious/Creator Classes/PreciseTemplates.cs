@@ -72,7 +72,7 @@ namespace Xenvious
             if (GTA.Offsets.Editor.OFFSET_precise_template_category == 0)
                 return false;
             reason = "no creator running";
-            if (!MainWindow.Instance.IsCreatorRunning())
+            if (!MainWindow.Instance.IsInCreator())
                 return false;
 
             // The rest of Xenvious finds the creator thread on first use; so does this.
