@@ -41,6 +41,13 @@ namespace Xenvious
     /// The flags are only read when a script is loaded fresh. A creator the game still has
     /// cached from before keeps its old size until a session change frees it; a flag changed
     /// while the script was cached was harmless when the game freed it.
+    ///
+    /// Legacy cannot grow a resource: its loader inflates the zlib stream into every chunk and
+    /// waits forever for bytes a larger chunk never gets. There the space is a script function
+    /// given up for it ([SCRIPTVICTIM]): a 34 KB table that the patch "give up the vehicle preset
+    /// table" makes return at once. One whole 16 KB code page of it is the data page, the payload
+    /// and the string page array sit in another part of it. Nothing is set up before that patch
+    /// is in, so the game never runs the table while it holds our bytes.
     /// </summary>
     public static class ScriptSpace
     {
@@ -63,18 +70,30 @@ namespace Xenvious
             public bool Warned;
         }
 
+        private class Victim
+        {
+            public string Script;
+            // Script pcs: the given up function, the payload (up to Strings), the data page, the string page array.
+            public int Function, Code, Data, Strings;
+        }
+
         public class Space
         {
-            /// <summary>pc of the first extra page.</summary>
+            /// <summary>pc of the first extra page, or of the payload in a given up function.</summary>
             public int Base;
             /// <summary>Address of each extra page, in pc order.</summary>
             public List<long> Pages = new List<long>();
             /// <summary>Address of the data page (string page <see cref="DataStringPage"/>).</summary>
             public long Data;
+            // A given up function: the script's own code pages, and where the payload has to end.
+            internal long[] CodePages;
+            internal int End;
 
-            /// <summary>Address of a pc in the extra pages; 0 outside them.</summary>
+            /// <summary>Address of a pc in the extra pages (or the payload's part of a given up function); 0 outside them.</summary>
             public long Address(int pc)
             {
+                if (CodePages != null)
+                    return pc >= Base && pc < End && pc / PageSize < CodePages.Length ? CodePages[pc / PageSize] + pc % PageSize : 0;
                 int i = (pc - Base) / PageSize;
                 return pc >= Base && i < Pages.Count ? Pages[i] + (pc - Base) % PageSize : 0;
             }
@@ -82,6 +101,7 @@ namespace Xenvious
 
         private static readonly object Gate = new object();
         private static List<Reservation> reservations;
+        private static List<Victim> victims;
         private static long scriptPack;
 
         /// <summary>Absolute address of the game's packfile table; 0 without the pattern.</summary>
@@ -111,7 +131,22 @@ namespace Xenvious
                 }
                 list.Add(new Reservation { Script = kv.Key, Shipped = shipped, Target = target });
             }
-            // Published whole: other threads read it without the lock.
+            var given = new List<Victim>();
+            foreach (var kv in GTA.Offsets.Editor.ScriptVictims)
+            {
+                // "<function>, <payload>, <data page>, <string page array>", hex pcs
+                int[] pcs = kv.Value.Split(',').Select(x => int.TryParse(x.Trim().Replace("0x", ""), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out int v) ? v : -1).ToArray();
+                // The data page is a whole code page, the array (64 pointers) lies in one page behind the payload.
+                if (pcs.Length != 4 || pcs.Any(x => x < 0) || pcs[2] % PageSize != 0 || pcs[1] >= pcs[3] || pcs[3] % 8 != 0
+                    || pcs[3] / PageSize != (pcs[3] + (DataStringPage + 1) * 8 - 1) / PageSize)
+                {
+                    Log.Warn("Bad script victim entry " + kv.Key + " = " + kv.Value, source: "ScriptSpace");
+                    continue;
+                }
+                given.Add(new Victim { Script = kv.Key, Function = pcs[0], Code = pcs[1], Data = pcs[2], Strings = pcs[3] });
+            }
+            // Published whole: other threads read them without the lock.
+            victims = given;
             reservations = list;
         }
 
@@ -184,12 +219,15 @@ namespace Xenvious
         public static bool Configured(string script)
         {
             Load();
-            return reservations.Any(x => x.Script == script);
+            return reservations.Any(x => x.Script == script) || victims.Any(x => x.Script == script);
         }
 
         private static Space GetLocked(string script)
         {
             Load();
+            var v = victims.FirstOrDefault(x => x.Script == script);
+            if (v != null)
+                return GetVictim(v);
             var r = reservations.FirstOrDefault(x => x.Script == script);
             if (r == null)
                 return null;
@@ -232,22 +270,8 @@ namespace Xenvious
 
                 // Strings first: the payload that uses the data page is only written once Get
                 // returns, so it never runs with the script's own string array.
-                long strings = Read<long>(prog + ProgramStrings);
-                if (strings != array + StringArray)
-                {
-                    int stringPages = (Read<int>(prog + ProgramStringsSize) + PageSize - 1) / PageSize;
-                    if (stringPages >= DataStringPage)
-                        return null;
-                    MainWindow.m.memory(space.Data.ToString("X")).SetBytes(new byte[PageSize]);
-                    // The script's own string pages, then the data page for every index up to ours.
-                    var table = new byte[(DataStringPage + 1) * 8];
-                    Array.Copy(MainWindow.m.memory(strings.ToString("X")).GetBytes(stringPages * 8), table, stringPages * 8);
-                    for (int i = stringPages; i <= DataStringPage; i++)
-                        Array.Copy(BitConverter.GetBytes(space.Data), 0, table, i * 8, 8);
-                    MainWindow.m.memory((array + StringArray).ToString("X")).SetBytes(table);
-                    MainWindow.m.memory((prog + ProgramStrings).ToString("X")).SetBytes(BitConverter.GetBytes(array + StringArray));
-                    Log.Debug($"{script}: data page at string page {DataStringPage}", source: "ScriptSpace");
-                }
+                if (!SwitchStrings(script, prog, array + StringArray, space.Data))
+                    return null;
 
                 long blocks = Read<long>(prog + ProgramCodeBlocks);
                 if (blocks != array)
@@ -269,6 +293,60 @@ namespace Xenvious
                 Log.Debug("Space " + script + ": " + ex.Message, source: "ScriptSpace");
                 return null;
             }
+        }
+
+        private static Space GetVictim(Victim v)
+        {
+            long prog = (long)ScrProgramScanner.GetScrProgramByName(v.Script);
+            if (prog == 0)
+                return null;
+            try
+            {
+                int codeSize = Read<int>(prog + ProgramCodeSize);
+                if (v.Strings + (DataStringPage + 1) * 8 > codeSize)
+                    return null;
+                int pages = (codeSize + PageSize - 1) / PageSize;
+                byte[] raw = MainWindow.m.memory(Read<long>(prog + ProgramCodeBlocks).ToString("X")).GetBytes(pages * 8);
+                var codePages = new long[pages];
+                for (int i = 0; i < pages; i++)
+                    codePages[i] = BitConverter.ToInt64(raw, i * 8);
+                long At(int pc) => codePages[pc / PageSize] + pc % PageSize;
+
+                // Only once the function returns at once (its ENTER, then LEAVE 4, 0).
+                byte[] head = MainWindow.m.memory(At(v.Function).ToString("X")).GetBytes(8);
+                if (head[0] != 0x2D || head[1] != 4 || head[5] != 0x2E || head[6] != 4 || head[7] != 0)
+                    return null;
+
+                var space = new Space { Base = v.Code, End = v.Strings, Data = At(v.Data), CodePages = codePages };
+                return SwitchStrings(v.Script, prog, At(v.Strings), space.Data) ? space : null;
+            }
+            catch (Exception ex)
+            {
+                Log.Debug("Victim " + v.Script + ": " + ex.Message, source: "ScriptSpace");
+                return null;
+            }
+        }
+
+        // Points the program at a string page array of our own at `array`: the script's string
+        // pages, then the data page for every index up to DataStringPage. The data page starts
+        // empty. Nothing to do when the program already uses that array.
+        private static bool SwitchStrings(string script, long prog, long array, long data)
+        {
+            long strings = Read<long>(prog + ProgramStrings);
+            if (strings == array)
+                return true;
+            int stringPages = (Read<int>(prog + ProgramStringsSize) + PageSize - 1) / PageSize;
+            if (stringPages >= DataStringPage)
+                return false;
+            MainWindow.m.memory(data.ToString("X")).SetBytes(new byte[PageSize]);
+            var table = new byte[(DataStringPage + 1) * 8];
+            Array.Copy(MainWindow.m.memory(strings.ToString("X")).GetBytes(stringPages * 8), table, stringPages * 8);
+            for (int i = stringPages; i <= DataStringPage; i++)
+                Array.Copy(BitConverter.GetBytes(data), 0, table, i * 8, 8);
+            MainWindow.m.memory(array.ToString("X")).SetBytes(table);
+            MainWindow.m.memory((prog + ProgramStrings).ToString("X")).SetBytes(BitConverter.GetBytes(array));
+            Log.Debug($"{script}: data page at string page {DataStringPage}", source: "ScriptSpace");
+            return true;
         }
 
         // Chunk sizes the flags describe, in layout order: base << 8 down to base << 0, with
