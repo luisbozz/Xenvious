@@ -112,6 +112,7 @@ namespace Xenvious
                 case "cam_fix":
                 case "show_stunt_prop_item_cycle":
                 case "fm_capture_creator_80_actors_patch":
+                case "no_prop_model_limit":
                 case "precise_templates":
                 case "access_ch_planning_board_solo_gameplay_itself_re":
                     return "unlock";
