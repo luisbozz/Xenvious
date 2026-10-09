@@ -1149,5 +1149,53 @@
         "offset": 0,
         "bytes_to_patch": "72 38 03 42 1A 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00",
         "dev": false
+    },
+    {
+        "patch_name": "no prop model limit",
+        "script_name": "fm_race_creator",
+        "pattern": "2D 02 06 00 00 70 39 05 71 39 04 38 04 25 C7 5C ? ? 38 04 61 ? ? ? 35 02 38 00 57",
+        "offset": 5,
+        "bytes_to_patch": "71 2E 02 01",
+        "dev": false
+    },
+    {
+        "patch_name": "no prop model limit",
+        "script_name": "fm_lts_creator",
+        "pattern": "2D 02 06 00 00 70 39 05 71 39 04 38 04 25 C7 5C ? ? 38 04 61 ? ? ? 35 02 38 00 57",
+        "offset": 5,
+        "bytes_to_patch": "71 2E 02 01",
+        "dev": false
+    },
+    {
+        "patch_name": "no prop model limit",
+        "script_name": "fm_capture_creator",
+        "pattern": "2D 02 06 00 00 70 39 05 71 39 04 38 04 25 C7 5C ? ? 38 04 61 ? ? ? 35 02 38 00 57",
+        "offset": 5,
+        "bytes_to_patch": "71 2E 02 01",
+        "dev": false
+    },
+    {
+        "patch_name": "no prop model limit",
+        "script_name": "fm_deathmatch_creator",
+        "pattern": "2D 02 06 00 00 70 39 05 71 39 04 38 04 25 C7 5C ? ? 38 04 61 ? ? ? 35 02 38 00 57",
+        "offset": 5,
+        "bytes_to_patch": "71 2E 02 01",
+        "dev": false
+    },
+    {
+        "patch_name": "no prop model limit",
+        "script_name": "fm_survival_creator",
+        "pattern": "2D 02 06 00 00 70 39 05 71 39 04 38 04 25 C7 5C ? ? 38 04 61 ? ? ? 35 02 38 00 57",
+        "offset": 5,
+        "bytes_to_patch": "71 2E 02 01",
+        "dev": false
+    },
+    {
+        "patch_name": "no prop model limit",
+        "script_name": "public_mission_creator",
+        "pattern": "2D 02 06 00 00 70 39 05 71 39 04 38 04 25 C7 5C ? ? 38 04 61 ? ? ? 35 02 38 00 57",
+        "offset": 5,
+        "bytes_to_patch": "71 2E 02 01",
+        "dev": false
     }
 ]
