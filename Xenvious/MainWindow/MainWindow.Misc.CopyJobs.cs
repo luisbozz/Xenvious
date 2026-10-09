@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -43,6 +44,33 @@ namespace Xenvious
             CopyNrcidPanel.Visibility = nrcid ? Visibility.Visible : Visibility.Collapsed;
             BtnCopyModeLink.Tag = nrcid ? null : "active";
             BtnCopyModeNrcid.Tag = nrcid ? "active" : null;
+        }
+
+        /// <summary>Saves the downloaded job file unchanged into the jobs folder, where Map Backup lists it.</summary>
+        private void BtnCopySaveJson_Click(object sender, RoutedEventArgs e)
+        {
+            if (jobjson == null || string.IsNullOrEmpty(jobdata))
+                return;
+            Directory.CreateDirectory(JobFileFolder);
+            var dialog = new Microsoft.Win32.SaveFileDialog
+            {
+                Filter = "Job file (*.json)|*.json",
+                InitialDirectory = JobFileFolder,
+                FileName = SafeFileName(tbCopyName.Text, copyJobContentId ?? "job") + ".json"
+            };
+            if (dialog.ShowDialog(this) != true)
+                return;
+            try
+            {
+                File.WriteAllText(dialog.FileName, jobdata, new UTF8Encoding(false));
+                SetCopyStatus(string.Format(TranslateOr("copy_json_saved", "Gespeichert: {0}"), dialog.FileName), false);
+                Log.Info($"copy job: job file saved to {dialog.FileName}", source: "copyjob");
+            }
+            catch (Exception ex)
+            {
+                SetCopyStatus(TranslateOr("job_file_failed", "Fehlgeschlagen.") + " " + ex.Message, true);
+                Log.Warn("copy job: saving the job file", ex, source: "copyjob");
+            }
         }
 
         string jobdata = "";
@@ -305,52 +333,44 @@ namespace Xenvious
             return index.HasValue && index.Value >= 0 && index.Value < names.Length ? names.GetValue(index.Value).ToString() : "–";
         }
 
-        private static readonly Brush CopyPropBrush = FrozenBrush(0x6C, 0x5C, 0xE7);
-        private static readonly Brush CopyDynamicBrush = FrozenBrush(0xC0, 0x8B, 0xFF);
-        private static readonly Brush CopyCheckpointBrush = FrozenBrush(0xFA, 0xC8, 0x28);
-        private static readonly Brush CopyStartBrush = FrozenBrush(0xE3, 0xE5, 0xE8);
-        private static readonly Brush CopyTypeLabelBrush = FrozenBrush(0xCD, 0xB6, 0xFF);
-
-        private static Brush FrozenBrush(byte r, byte g, byte b)
-        {
-            var brush = new SolidColorBrush(Color.FromRgb(r, g, b));
-            brush.Freeze();
-            return brush;
-        }
 
         private static bool IsRace(JSON.Mission mission) => mission.Gen?.Type == 2;
 
-        // The tiles under the description: counts for every job, then what matters for
-        // its type (purple label).
+        // The tiles under the description: counts for every job, then what matters for its
+        // type. Placed things carry a dot in their colour (App.xaml), as on the dashboard and the map.
         private void FillCopyStats(JSON.Mission mission, string weather, string timeOfDay)
         {
-            var tiles = new List<(string Label, string Value, bool TypeSpecific)>
+            var tiles = new List<(string Label, string Value, Brush Dot)>
             {
-                ("Props", Count(mission.Prop?.No), false),
-                ("Dynamic Props", Count(mission.Dprop?.No), false),
-                ("Fixtures", Count(mission.Dhprop?.No), false),
-                ("Vehicles", Count(mission.Veh?.No), false),
-                ("Weapons", Count(mission.Weap?.No), false),
+                ("Props", Count(mission.Prop?.No), ThemeBrush("PropBrush")),
+                ("Dynamic Props", Count(mission.Dprop?.No), ThemeBrush("DynamicPropBrush")),
+                ("Fixtures", Count(mission.Dhprop?.No), ThemeBrush("FixtureBrush")),
+                ("Vehicles", Count(mission.Veh?.No), ThemeBrush("VehicleBrush")),
+                ("Weapons", Count(mission.Weap?.No), ThemeBrush("WeaponBrush")),
             };
             if (IsRace(mission))
             {
                 int secondary = mission.Race?.Sndchk?.Count(v => v.X != 0 || v.Y != 0 || v.Z != 0) ?? 0;
-                tiles.Add((TranslateOr("checkpoints", "Checkpoints"), Count(mission.Race?.Chp) + (secondary > 0 ? " · " + secondary + " sec." : ""), true));
-                tiles.Add((TranslateOr("rounds", "Rounds"), Count(mission.Race?.Lap), true));
+                tiles.Add((TranslateOr("checkpoints", "Checkpoints"), Count(mission.Race?.Chp) + (secondary > 0 ? " · " + secondary + " sec." : ""), ThemeBrush("CheckpointBrush")));
+                tiles.Add((TranslateOr("rounds", "Rounds"), Count(mission.Race?.Lap), null));
             }
             else
             {
-                tiles.Add(("Actors", Count(mission.Ene?.No), true));
-                tiles.Add((TranslateOr("teams", "Teams"), Count(mission.Gen?.Tnum), true));
+                tiles.Add(("Actors", Count(mission.Ene?.No), ThemeBrush("ActorBrush")));
+                tiles.Add((TranslateOr("teams", "Teams"), Count(mission.Gen?.Tnum), null));
             }
             string players = mission.Gen?.Min != null && mission.Gen?.Num != null ? mission.Gen.Min + "–" + mission.Gen.Num : "–";
-            tiles.Add((TranslateOr("copy_players", "Players"), players, false));
-            tiles.Add(("Weather", weather, false));
-            tiles.Add(("Time of Day", timeOfDay, false));
+            tiles.Add((TranslateOr("copy_players", "Players"), players, null));
+            tiles.Add(("Weather", weather, null));
+            tiles.Add(("Time of Day", timeOfDay, null));
 
             CopyStats.Children.Clear();
-            foreach (var (label, value, typeSpecific) in tiles)
+            foreach (var (label, value, dot) in tiles)
             {
+                var head = new StackPanel { Orientation = Orientation.Horizontal };
+                if (dot != null)
+                    head.Children.Add(new System.Windows.Shapes.Ellipse { Width = 8, Height = 8, Fill = dot, Margin = new Thickness(0, 0, 5, 0), VerticalAlignment = VerticalAlignment.Center });
+                head.Children.Add(new TextBlock { Text = label, FontSize = 11, Foreground = (Brush)FindResource("NavMutedBrush") });
                 CopyStats.Children.Add(new Border
                 {
                     CornerRadius = new CornerRadius(4),
@@ -362,7 +382,7 @@ namespace Xenvious
                     {
                         Children =
                         {
-                            new TextBlock { Text = label, FontSize = 11, Foreground = typeSpecific ? CopyTypeLabelBrush : (Brush)FindResource("NavMutedBrush") },
+                            head,
                             new TextBlock { Text = value, FontSize = 15, FontWeight = FontWeights.Bold, Foreground = (Brush)FindResource("TextColor"), TextTrimming = TextTrimming.CharacterEllipsis },
                         }
                     }
@@ -430,19 +450,19 @@ namespace Xenvious
                 }
             }
 
-            Add(mission.Prop?.Loc, CopyPropBrush, 4);
-            Add(mission.Dprop?.Loc, CopyDynamicBrush, 4);
+            Add(mission.Prop?.Loc, ThemeBrush("PropBrush"), 4);
+            Add(mission.Dprop?.Loc, ThemeBrush("DynamicPropBrush"), 4);
             bool race = IsRace(mission);
             if (race)
-                Add(mission.Race?.Chl, CopyCheckpointBrush, 6);
+                Add(mission.Race?.Chl, ThemeBrush("CheckpointBrush"), 6);
             else if (mission.Gen != null)
-                Add(new[] { mission.Gen.Start }, CopyStartBrush, 7);
+                Add(new[] { mission.Gen.Start }, ThemeBrush("StartPointBrush"), 7);
             CopyJobMap.SetMarkers(markers);
 
             CopyMapLegend.Children.Clear();
-            AddLegend("Props", CopyPropBrush);
-            AddLegend("Dynamic", CopyDynamicBrush);
-            AddLegend(race ? TranslateOr("checkpoints", "Checkpoints") : TranslateOr("copy_start", "Start"), race ? CopyCheckpointBrush : CopyStartBrush);
+            AddLegend("Props", ThemeBrush("PropBrush"));
+            AddLegend("Dynamic", ThemeBrush("DynamicPropBrush"));
+            AddLegend(race ? TranslateOr("checkpoints", "Checkpoints") : TranslateOr("copy_start", "Start"), race ? ThemeBrush("CheckpointBrush") : ThemeBrush("StartPointBrush"));
         }
 
         private void AddLegend(string text, Brush brush)

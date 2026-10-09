@@ -47,6 +47,17 @@
             <SolidColorBrush x:Key="BadBrush" Color="#F04747" />
             <SolidColorBrush x:Key="AccentBrush" Color="#5B9BE6" />
             <SolidColorBrush x:Key="AccentSoftBrush" Color="#705B9BE6" />
+            <!-- What is placed in a job, the same colour everywhere (dashboard, Copy Jobs, maps):
+                 props purple, actors red, vehicles blue, weapons grey like the creator's blips. -->
+            <SolidColorBrush x:Key="PropBrush" Color="#FF6C5CE7"/>
+            <SolidColorBrush x:Key="DynamicPropBrush" Color="#FFC08BFF"/>
+            <SolidColorBrush x:Key="FixtureBrush" Color="#FFC2570C"/>
+            <SolidColorBrush x:Key="ActorBrush" Color="#FFE03232"/>
+            <SolidColorBrush x:Key="VehicleBrush" Color="#FF2F5C73"/>
+            <SolidColorBrush x:Key="WeaponBrush" Color="#FF8A8A8A"/>
+            <SolidColorBrush x:Key="ZoneBrush" Color="#FF2EA37F"/>
+            <SolidColorBrush x:Key="CheckpointBrush" Color="#FFFAC828"/>
+            <SolidColorBrush x:Key="StartPointBrush" Color="#FFE3E5E8"/>
             <!-- The creator's default team colours (team 1 to 4). -->
             <SolidColorBrush x:Key="TeamBrush1" Color="#FF2AA6B9"/>
             <SolidColorBrush x:Key="TeamBrush2" Color="#FFFF8555"/>

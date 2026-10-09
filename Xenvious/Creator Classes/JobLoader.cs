@@ -58,7 +58,7 @@ namespace Xenvious
         private static readonly string[] FileLanguages =
             { "zh", "en", "fr", "de", "it", "ja", "ko", "pl", "pt-pt", "pt", "ru", "es", "es-mx", "zh-cn" };
 
-        private static long LoaderOffset(string creator)
+        internal static long LoaderOffset(string creator)
         {
             switch (creator)
             {

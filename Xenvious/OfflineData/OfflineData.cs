@@ -93,6 +93,12 @@ namespace Xenvious
         public static string MenuBits => LoadShared("menubits.json");
 
         /// <summary>
+        /// Key names of job files, one per line (the creators' DATADICT keys and the keys of real
+        /// job files). The game keeps only their hashes; JobDatafile names keys from this list.
+        /// </summary>
+        public static string JobKeys => LoadShared("jobkeys.txt");
+
+        /// <summary>
         /// The game's default objective texts (label -> language -> text), taken from the labels
         /// the Mission Controller shows when a rule has no own text (global.gxt2 of the game).
         /// </summary>

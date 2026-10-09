@@ -730,14 +730,6 @@
                                         </Setter.Value>
                                     </Setter>
                                 </Style>
-                                <SolidColorBrush x:Key="DashPropBrush" Color="#FF6C5CE7"/>
-                                <SolidColorBrush x:Key="DashDynamicBrush" Color="#FFC08BFF"/>
-                                <!-- Blip colours of the creator: actors red, vehicles blue, weapons grey. -->
-                                <SolidColorBrush x:Key="DashActorBrush" Color="#FFE03232"/>
-                                <SolidColorBrush x:Key="DashVehicleBrush" Color="#FF2F5C73"/>
-                                <SolidColorBrush x:Key="DashWeaponBrush" Color="#FF8A8A8A"/>
-                                <SolidColorBrush x:Key="DashFixtureBrush" Color="#FFC2570C"/>
-                                <SolidColorBrush x:Key="DashZoneBrush" Color="#FF2EA37F"/>
                                 <!-- Same shapes as Advanced Prop Placement: light main action, grey secondary ones. -->
                                 <Style x:Key="DashButton" TargetType="{x:Type Button}">
                                     <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
@@ -854,14 +846,14 @@
                                             <StackPanel VerticalAlignment="Center">
                                                 <TextBlock Style="{StaticResource DashTileLabel}" Text="{Binding Translation[dash_props_dynamic], FallbackValue='Props · Dynamic'}"/>
                                                 <StackPanel Orientation="Horizontal" Margin="0,1,0,4">
-                                                    <Ellipse Width="10" Height="10" Fill="{StaticResource DashPropBrush}" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                                    <Ellipse Width="10" Height="10" Fill="{StaticResource PropBrush}" Margin="0,0,6,0" VerticalAlignment="Center"/>
                                                     <TextBlock x:Name="DashStatusProps" Style="{StaticResource DashTileValue}" Margin="0,0,14,0"/>
-                                                    <Ellipse Width="10" Height="10" Fill="{StaticResource DashDynamicBrush}" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                                    <Ellipse Width="10" Height="10" Fill="{StaticResource DynamicPropBrush}" Margin="0,0,6,0" VerticalAlignment="Center"/>
                                                     <TextBlock x:Name="DashStatusDynamic" Style="{StaticResource DashTileValue}"/>
                                                 </StackPanel>
                                                 <!-- Props against the prop limit; dynamic props are counted on their own. -->
                                                 <Border Width="170" Height="6" CornerRadius="3" Background="{DynamicResource TextBoxBackground}" HorizontalAlignment="Left" ClipToBounds="True">
-                                                    <Rectangle x:Name="DashPropsBar" Fill="{StaticResource DashPropBrush}" Width="0" HorizontalAlignment="Left"/>
+                                                    <Rectangle x:Name="DashPropsBar" Fill="{StaticResource PropBrush}" Width="0" HorizontalAlignment="Left"/>
                                                 </Border>
                                             </StackPanel>
                                         </Border>
@@ -10725,68 +10717,28 @@
                                         </TabItem>
 
                                         <TabItem x:Name="PageInnerModMapBackup" Header="Map Backup">
+                                            <!-- Map backups as JSON; the list and the dialog for putting a backup into the job are built in MainWindow.MapBackup.cs. -->
                                             <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                            <StackPanel Margin="14" MaxWidth="760" HorizontalAlignment="Left">
+                                            <StackPanel Margin="22,18" MaxWidth="900" HorizontalAlignment="Left">
                                                 <TextBlock FontSize="20" FontWeight="Bold" Foreground="{DynamicResource TextColor}" Text="{Binding Translation[map_backup], FallbackValue='Map Backup'}"/>
-                                                <TextBlock FontSize="13" Foreground="{DynamicResource MutedTextBrush}" Margin="0,4,0,0" TextWrapping="Wrap" Text="{Binding Translation[map_backup_help], FallbackValue='Speichert Props, Dynamic Props, Checkpoints und Templates des aktuellen Jobs und stellt sie wieder her. Eine Sicherung passt nur zur gleichen Spielversion und zum gleichen Build.'}"/>
+                                                <TextBlock FontSize="13" Foreground="{DynamicResource MutedTextBrush}" Margin="0,4,0,0" MaxWidth="560" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Translation[map_backup_help], FallbackValue='Sichert Props, Dynamic Props, Checkpoints und Templates als JSON. Übersteht GTA-Updates und passt zu Legacy und Enhanced. Beim Einspielen wählst du, was ersetzt oder angehängt wird.'}"/>
                                                 <WrapPanel Margin="0,14,0,0">
-                                                    <Border CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Height="34" MinWidth="170" Margin="0,0,10,8">
-                                                        <Border.Effect><DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/></Border.Effect>
-                                                        <Button x:Name="BtnMapSave" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" FontSize="15" Foreground="{DynamicResource TextColor}" Click="BtnMapSave_Click" Content="{Binding Translation[map_save], FallbackValue='Aktuelle Map sichern'}"/>
-                                                    </Border>
-                                                    <Border CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Height="34" MinWidth="170" Margin="0,0,10,8">
-                                                        <Border.Effect><DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/></Border.Effect>
-                                                        <Button x:Name="BtnMapOpen" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" FontSize="15" Foreground="{DynamicResource TextColor}" Click="BtnMapOpen_Click" Content="{Binding Translation[map_open], FallbackValue='Aus Datei laden …'}"/>
-                                                    </Border>
-                                                    <Border CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Height="34" MinWidth="120" Margin="0,0,10,8">
-                                                        <Border.Effect><DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/></Border.Effect>
-                                                        <Button x:Name="BtnMapFolder" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" FontSize="15" Foreground="{DynamicResource TextColor}" Click="BtnMapFolder_Click" Content="{Binding Translation[map_folder], FallbackValue='Ordner öffnen'}"/>
-                                                    </Border>
-                                                    <Border x:Name="BtnMapUndoContainer" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Height="34" MinWidth="120" Margin="0,0,10,8" Visibility="Collapsed">
-                                                        <Border.Effect><DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/></Border.Effect>
-                                                        <Button x:Name="BtnMapUndo" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" FontSize="15" Foreground="{DynamicResource HighlightBrush}" Click="BtnMapUndo_Click" Content="{Binding Translation[map_undo], FallbackValue='Rückgängig'}"/>
-                                                    </Border>
+                                                    <Button x:Name="BtnJobExport" Style="{StaticResource FormButton}" FontSize="15" MinWidth="120" Margin="0,0,10,10" Padding="16,0"
+                                                            Background="{DynamicResource HighlightBrush}" Foreground="{DynamicResource HighlightForeground}"
+                                                            Click="BtnJobExport_Click" Content="{Binding Translation[job_file_export], FallbackValue='Ganzen Job sichern …'}"/>
+                                                    <Button x:Name="BtnMapSave" Style="{StaticResource FormButton}" FontSize="15" MinWidth="120" Margin="0,0,10,10" Padding="16,0"
+                                                            Click="BtnMapSave_Click" Content="{Binding Translation[map_save], FallbackValue='Teile sichern …'}"/>
+                                                    <Button x:Name="BtnMapOpen" Style="{StaticResource FormButton}" FontSize="15" MinWidth="120" Margin="0,0,10,10" Padding="16,0"
+                                                            Click="BtnMapOpen_Click" Content="{Binding Translation[map_open], FallbackValue='Datei laden …'}"/>
+                                                    <Button x:Name="BtnMapFolder" Style="{StaticResource FormButton}" FontSize="15" MinWidth="120" Margin="0,0,10,10" Padding="16,0"
+                                                            Click="BtnMapFolder_Click" Content="{Binding Translation[map_folder], FallbackValue='Ordner öffnen'}"/>
+                                                    <Button x:Name="BtnMapUndo" Style="{StaticResource FormButton}" FontSize="15" MinWidth="120" Margin="0,0,10,10" Padding="16,0" Visibility="Collapsed"
+                                                            Click="BtnMapUndo_Click" Content="{Binding Translation[map_undo], FallbackValue='Rückgängig'}"/>
                                                 </WrapPanel>
-                                                <TextBlock FontSize="13" Foreground="{DynamicResource TextColor}" Margin="0,8,0,4" Text="{Binding Translation[map_restore_what], FallbackValue='Beim Laden ersetzen:'}"/>
-                                                <WrapPanel>
-                                                    <CheckBox x:Name="cbMapProps" IsChecked="True" VerticalAlignment="Center"/><TextBlock Margin="6,0,18,0" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" Text="Props"/>
-                                                    <CheckBox x:Name="cbMapDProps" IsChecked="True" VerticalAlignment="Center"/><TextBlock Margin="6,0,18,0" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" Text="Dynamic Props"/>
-                                                    <CheckBox x:Name="cbMapCheckpoints" IsChecked="True" VerticalAlignment="Center"/><TextBlock Margin="6,0,18,0" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" Text="Checkpoints"/>
-                                                    <CheckBox x:Name="cbMapTemplates" IsChecked="True" VerticalAlignment="Center"/><TextBlock Margin="6,0,18,0" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" Text="Templates"/>
-                                                </WrapPanel>
-                                                <TextBlock x:Name="tbMapStatus" FontSize="13" Foreground="{DynamicResource HighlightBrush}" Margin="0,10,0,0" TextWrapping="Wrap"/>
-                                                <TextBlock FontSize="15" FontWeight="Bold" Foreground="{DynamicResource TextColor}" Margin="0,18,0,8" Text="{Binding Translation[map_saved_list], FallbackValue='Gesicherte Maps'}"/>
-                                                <ItemsControl x:Name="mapBackupList">
-                                                    <ItemsControl.ItemTemplate>
-                                                        <DataTemplate>
-                                                            <Border CornerRadius="5" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Padding="14,10" Margin="0,0,0,8">
-                                                                <Border.Effect><DropShadowEffect BlurRadius="5" ShadowDepth="2" Opacity="0.6" Color="{DynamicResource ShadowColor}"/></Border.Effect>
-                                                                <Grid>
-                                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                                                                    <StackPanel>
-                                                                        <TextBlock FontSize="15" FontWeight="Bold" Foreground="{DynamicResource TextColor}" TextTrimming="CharacterEllipsis" Text="{Binding Title}"/>
-                                                                        <TextBlock FontSize="12" Foreground="{DynamicResource MutedTextBrush}" Margin="0,2,0,0" TextWrapping="Wrap" Text="{Binding Subtitle}"/>
-                                                                    </StackPanel>
-                                                                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                                                                        <Border CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Height="30" MinWidth="90" Margin="10,0,6,0">
-                                                                            <Button Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" FontSize="14" Foreground="{DynamicResource TextColor}" Tag="{Binding}" Click="BtnMapRestoreEntry_Click" Content="{Binding DataContext.Translation[map_load], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Laden'}"/>
-                                                                        </Border>
-                                                                        <Button Cursor="Hand" Tag="{Binding}" Click="BtnMapDeleteEntry_Click" ToolTip="{Binding DataContext.Translation[map_delete], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Löschen'}">
-                                                                            <Button.Template>
-                                                                                <ControlTemplate TargetType="Button">
-                                                                                    <TextBlock x:Name="x" Text="✕" FontSize="13" Foreground="{DynamicResource FaintTextBrush}" Padding="6,4"/>
-                                                                                    <ControlTemplate.Triggers>
-                                                                                        <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="x" Property="Foreground" Value="{DynamicResource BadBrush}"/></Trigger>
-                                                                                    </ControlTemplate.Triggers>
-                                                                                </ControlTemplate>
-                                                                            </Button.Template>
-                                                                        </Button>
-                                                                    </StackPanel>
-                                                                </Grid>
-                                                            </Border>
-                                                        </DataTemplate>
-                                                    </ItemsControl.ItemTemplate>
-                                                </ItemsControl>
+                                                <TextBlock x:Name="tbMapStatus" FontSize="13" Foreground="{DynamicResource HighlightBrush}" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                                                <TextBlock FontSize="15" FontWeight="Bold" Foreground="{DynamicResource TextColor}" Margin="0,22,0,8" Text="{Binding Translation[map_saved_list], FallbackValue='Gesicherte Maps'}"/>
+                                                <StackPanel x:Name="mapBackupList"/>
+                                                <TextBlock x:Name="tbMapEmpty" FontSize="13" Foreground="{DynamicResource FaintTextBrush}" Visibility="Collapsed" Text="{Binding Translation[map_list_empty], FallbackValue='Noch keine Sicherung. „Map sichern …“ legt die erste an.'}"/>
                                             </StackPanel>
                                             </ScrollViewer>
                                         </TabItem>
@@ -11139,7 +11091,25 @@
                                         <StackPanel x:Name="CopyRoute" Orientation="Horizontal" Margin="0,8,0,0" Visibility="Collapsed">
                                             <Ellipse x:Name="CopyRouteDot" Width="9" Height="9" Margin="0,4,9,0" VerticalAlignment="Top"/>
                                             <StackPanel>
-                                                <TextBlock x:Name="tbCopyRoute" FontSize="13" Foreground="{DynamicResource TextColor}" TextWrapping="Wrap"/>
+                                                <WrapPanel>
+                                                    <TextBlock x:Name="tbCopyRoute" FontSize="13" Foreground="{DynamicResource TextColor}" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                                                    <!-- The job file as downloaded from Rockstar; saved to the jobs folder, Map Backup lists it. -->
+                                                    <Button x:Name="BtnCopySaveJson" Margin="10,0,0,0" VerticalAlignment="Center" Cursor="Hand" FontSize="12" Focusable="False"
+                                                            Click="BtnCopySaveJson_Click" Content="{Binding Translation[copy_save_json], FallbackValue='JSON speichern …'}"
+                                                            ToolTip="{Binding Translation[copy_save_json_tip], FallbackValue='Speichert die Job-Datei, wie Rockstar sie liefert. Unter Map Backup kannst du sie komplett laden.'}">
+                                                        <Button.Template>
+                                                            <ControlTemplate TargetType="Button">
+                                                                <Border x:Name="b" CornerRadius="10" Padding="10,2" Background="{DynamicResource SelectedTileBrush}">
+                                                                    <TextBlock Text="{TemplateBinding Content}" FontSize="12" Foreground="{DynamicResource TextColor}"/>
+                                                                </Border>
+                                                                <ControlTemplate.Triggers>
+                                                                    <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="b" Property="Opacity" Value="0.8"/></Trigger>
+                                                                    <Trigger Property="IsEnabled" Value="False"><Setter TargetName="b" Property="Opacity" Value="0.4"/></Trigger>
+                                                                </ControlTemplate.Triggers>
+                                                            </ControlTemplate>
+                                                        </Button.Template>
+                                                    </Button>
+                                                </WrapPanel>
                                                 <TextBlock x:Name="tbCopyRouteSub" FontSize="12" Foreground="{DynamicResource MutedTextBrush}" TextWrapping="Wrap"/>
                                             </StackPanel>
                                         </StackPanel>
@@ -11793,7 +11763,7 @@
             <local:ModelCatalog x:Name="ModelCatalogOverlay" Grid.Row="0" Grid.RowSpan="2"/>
 
             <Grid x:Name="DialogOverlay" Grid.Row="0" Grid.RowSpan="2" Visibility="Collapsed" Background="#99000000" Focusable="True" KeyDown="DialogOverlay_KeyDown">
-                <Border CornerRadius="8" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Padding="26,22" MinWidth="380" MaxWidth="560" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Border x:Name="DialogBox" CornerRadius="8" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Padding="26,22" MinWidth="380" MaxWidth="560" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Border.Effect><DropShadowEffect BlurRadius="18" ShadowDepth="4" Opacity="0.75" Color="{DynamicResource ShadowColor}"/></Border.Effect>
                     <StackPanel>
                         <TextBlock x:Name="DialogTitle" FontSize="19" FontWeight="Bold" Foreground="{DynamicResource TextColor}" TextWrapping="Wrap"/>
@@ -11809,6 +11779,8 @@
                                 <Image x:Name="DialogImage" Stretch="Uniform"/>
                             </Grid>
                         </Border>
+                        <!-- A page's own controls in the dialog (Map Backup: what to put into the job). -->
+                        <ContentControl x:Name="DialogContent" Margin="0,14,0,0" Visibility="Collapsed" Focusable="False"/>
                         <ProgressBar x:Name="DialogProgress" Height="6" Margin="0,18,0,0" Minimum="0" Maximum="1" Visibility="Collapsed" Foreground="{DynamicResource HighlightBrush}" Background="#33FFFFFF" BorderThickness="0"/>
                         <StackPanel x:Name="DialogButtons" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,22,0,0">
                             <Border x:Name="DialogCancelContainer" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Height="34" MinWidth="110" Margin="0,0,10,0" MouseEnter="DialogButton_MouseEnter" MouseLeave="DialogButton_MouseLeave" PreviewMouseLeftButtonDown="DialogButton_MouseDown" PreviewMouseLeftButtonUp="DialogButton_MouseEnter">

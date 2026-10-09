@@ -57,7 +57,7 @@ namespace Xenvious
             UpdateCopyRoute();
         }
 
-        private static readonly System.Windows.Media.Brush RouteMuted = Frozen(0x8A, 0x8F, 0x98);
+        private static System.Windows.Media.Brush RouteMuted => ThemeBrush("MutedTextBrush");
 
         /// <summary>
         /// Shows how the loaded job gets into the creator: GTA fetching the job file itself
@@ -128,8 +128,8 @@ namespace Xenvious
                 {
                     try
                     {
-                        var snap = SaveCurrentMap();
-                        Log.Info($"copy job: open map saved first ({DescribeSnapshot(snap)})", source: "copyjob");
+                        string saved = await SaveCurrentMapAsync(null);
+                        Log.Info($"copy job: open map saved first ({saved})", source: "copyjob");
                     }
                     catch (System.Exception ex)
                     {

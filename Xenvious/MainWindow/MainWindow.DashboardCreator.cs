@@ -172,8 +172,8 @@ namespace Xenvious
             DashCounts.Children.Clear();
             // Outside a creator the tiles stay with "–", so the card keeps its layout.
 
-            var propBrush = (Brush)DashTileProps.FindResource("DashPropBrush");
-            var dynamicBrush = (Brush)DashTileProps.FindResource("DashDynamicBrush");
+            var propBrush = ThemeBrush("PropBrush");
+            var dynamicBrush = ThemeBrush("DynamicPropBrush");
 
             _dashCounts.Add(new DashCount
             {
@@ -189,11 +189,11 @@ namespace Xenvious
             });
 
             // Actors, vehicles and weapons in the colours of their blips in the creator.
-            var actors = new DashCount { Label = TranslateOr("dash_actors", "Actors"), Dot = DashBrush("DashActorBrush"), Read = () => CountOf(GTA.Offsets.Editor.Actor.number, CreatorLimits.Actors(creator)), Open = () => OpenEditPage(PageActor) };
-            var vehicles = new DashCount { Label = TranslateOr("vehicles", "Vehicles"), Dot = DashBrush("DashVehicleBrush"), Read = () => CountOf(GTA.Offsets.Editor.Vehicle.number, CreatorLimits.Vehicles), Open = () => OpenEditPage(PageVehicle) };
-            var weapons = new DashCount { Label = TranslateOr("weapons", "Weapons"), Dot = DashBrush("DashWeaponBrush"), Icon = TryFindResource("EditIconWeapon") as Geometry, Read = () => CountOf(GTA.Offsets.Editor.Weapon.number, CreatorLimits.Weapons), Open = () => OpenEditPage(PageWeapon) };
-            var zones = new DashCount { Label = TranslateOr("zones", "Zones"), Dot = DashBrush("DashZoneBrush"), Read = () => CountOf(GTA.Offsets.Editor.Zones.number, CreatorLimits.Zones), Open = () => OpenEditPage(PageZone) };
-            var fixtures = new DashCount { Label = TranslateOr("editnav_fixtures", "Fixtures"), Dot = DashBrush("DashFixtureBrush"), Read = () => CountOf(GTA.Offsets.Editor.DHProp.number, CreatorLimits.Fixtures), Open = () => OpenEditPage(Pagecentity) };
+            var actors = new DashCount { Label = TranslateOr("dash_actors", "Actors"), Dot = ThemeBrush("ActorBrush"), Read = () => CountOf(GTA.Offsets.Editor.Actor.number, CreatorLimits.Actors(creator)), Open = () => OpenEditPage(PageActor) };
+            var vehicles = new DashCount { Label = TranslateOr("vehicles", "Vehicles"), Dot = ThemeBrush("VehicleBrush"), Read = () => CountOf(GTA.Offsets.Editor.Vehicle.number, CreatorLimits.Vehicles), Open = () => OpenEditPage(PageVehicle) };
+            var weapons = new DashCount { Label = TranslateOr("weapons", "Weapons"), Dot = ThemeBrush("WeaponBrush"), Icon = TryFindResource("EditIconWeapon") as Geometry, Read = () => CountOf(GTA.Offsets.Editor.Weapon.number, CreatorLimits.Weapons), Open = () => OpenEditPage(PageWeapon) };
+            var zones = new DashCount { Label = TranslateOr("zones", "Zones"), Dot = ThemeBrush("ZoneBrush"), Read = () => CountOf(GTA.Offsets.Editor.Zones.number, CreatorLimits.Zones), Open = () => OpenEditPage(PageZone) };
+            var fixtures = new DashCount { Label = TranslateOr("editnav_fixtures", "Fixtures"), Dot = ThemeBrush("FixtureBrush"), Read = () => CountOf(GTA.Offsets.Editor.DHProp.number, CreatorLimits.Fixtures), Open = () => OpenEditPage(Pagecentity) };
 
             switch (creator)
             {
@@ -209,8 +209,6 @@ namespace Xenvious
             foreach (var count in _dashCounts)
                 DashCounts.Children.Add(CountTile(count));
         }
-
-        private Brush DashBrush(string key) => (Brush)DashTileProps.FindResource(key);
 
         private Border CountTile(DashCount count)
         {
@@ -340,9 +338,8 @@ namespace Xenvious
 
         private void BtnDashBackupMap_Click(object sender, RoutedEventArgs e)
         {
-            // Saves on the Map Backup page, which shows the result and the list.
+            // Opens the Map Backup page; what to back up is chosen there.
             MainPages.SelectedItem = PageMod;
-            BtnMapSave_Click(sender, e);
             BtnModMapBackup_Click(sender, e);
         }
 

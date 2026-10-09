@@ -595,6 +595,19 @@ namespace Xenvious
                     public static long milliSecsToExpiryOffset = 0x0;
                 }
 
+                // Module offsets of the game's datafile array and its node vtables ([DATAFILE]).
+                public class Datafile
+                {
+                    public static long files = 0x0;
+                    public static long vt_bool = 0x0;
+                    public static long vt_int = 0x0;
+                    public static long vt_float = 0x0;
+                    public static long vt_string = 0x0;
+                    public static long vt_vec3 = 0x0;
+                    public static long vt_dict = 0x0;
+                    public static long vt_array = 0x0;
+                }
+
                 public class Props
                 {
                     public static long loc = 0;
@@ -1560,6 +1573,16 @@ namespace Xenvious
                 public static long load_job_loader_survival = 0;
                 public static long load_job_loader_version = 0;
                 public static long load_job_loader_language = 0;
+                public static long load_job_loader_state = 0;
+                public static long load_job_loader_read_stage = 0;
+                public static long job_save_race = 0;
+                public static long job_save_lts = 0;
+                public static long job_save_capture = 0;
+                public static long job_save_dm = 0;
+                public static long job_save_survival = 0;
+                public static long job_save_stage = 0;
+                public static long job_save_upload_state = 0;
+                public static long job_save_uploaded = 0;
                 public static long creator_quit_flag = 0;
                 public static long OFFSET_current_creator_worker_offset_menu = 0x0;
                 public static long OFFSET_current_creator_worker_offset_test_state = 0x0;
