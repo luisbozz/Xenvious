@@ -42,10 +42,17 @@ namespace Xenvious
             }
         }
 
+        // A quoted value ends at its closing quote; what follows is a comment
+        // (OFFSET_x = "Global_1.f_2";compare to 1.67 Global_3). Kept, the comment's digits
+        // would be summed into the global index and the write would land elsewhere.
         private static string Unquote(string v)
         {
-            if (v.Length >= 2 && (v[0] == '"' || v[0] == '\'') && v[v.Length - 1] == v[0])
-                return v.Substring(1, v.Length - 2);
+            if (v.Length >= 2 && (v[0] == '"' || v[0] == '\''))
+            {
+                int close = v.IndexOf(v[0], 1);
+                if (close > 0)
+                    return v.Substring(1, close - 1);
+            }
             return v;
         }
 
