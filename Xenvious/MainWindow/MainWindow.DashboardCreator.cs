@@ -340,9 +340,8 @@ namespace Xenvious
 
         private void BtnDashBackupMap_Click(object sender, RoutedEventArgs e)
         {
-            // Saves on the Map Backup page, which shows the result and the list.
+            // Opens the Map Backup page; what to back up is chosen there.
             MainPages.SelectedItem = PageMod;
-            BtnMapSave_Click(sender, e);
             BtnModMapBackup_Click(sender, e);
         }
 

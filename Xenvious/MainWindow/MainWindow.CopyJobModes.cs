@@ -128,8 +128,8 @@ namespace Xenvious
                 {
                     try
                     {
-                        var snap = SaveCurrentMap();
-                        Log.Info($"copy job: open map saved first ({DescribeSnapshot(snap)})", source: "copyjob");
+                        string saved = await SaveCurrentMapAsync(null);
+                        Log.Info($"copy job: open map saved first ({saved})", source: "copyjob");
                     }
                     catch (System.Exception ex)
                     {

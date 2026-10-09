@@ -26,6 +26,16 @@ namespace Xenvious
             //image
             GTA.Offsets.Editor.Image.img = ini.ReadInteger("IMAGE", "OFFSET_image");
 
+            //datafile
+            GTA.Offsets.Editor.Datafile.files = ini.ReadInteger("DATAFILE", "files");
+            GTA.Offsets.Editor.Datafile.vt_bool = ini.ReadInteger("DATAFILE", "vt_bool");
+            GTA.Offsets.Editor.Datafile.vt_int = ini.ReadInteger("DATAFILE", "vt_int");
+            GTA.Offsets.Editor.Datafile.vt_float = ini.ReadInteger("DATAFILE", "vt_float");
+            GTA.Offsets.Editor.Datafile.vt_string = ini.ReadInteger("DATAFILE", "vt_string");
+            GTA.Offsets.Editor.Datafile.vt_vec3 = ini.ReadInteger("DATAFILE", "vt_vec3");
+            GTA.Offsets.Editor.Datafile.vt_dict = ini.ReadInteger("DATAFILE", "vt_dict");
+            GTA.Offsets.Editor.Datafile.vt_array = ini.ReadInteger("DATAFILE", "vt_array");
+
             //session
             GTA.Offsets.Editor.Session.pointer_steam = ini.ReadInteger("SESSION", "pointer_steam");
             GTA.Offsets.Editor.Session.pointer_rstar = ini.ReadInteger("SESSION", "pointer_rstar");
@@ -82,6 +92,16 @@ namespace Xenvious
             GTA.Offsets.Editor.load_job_loader_survival = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_load_job_loader_survival"), 0);
             GTA.Offsets.Editor.load_job_loader_version = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_load_job_loader_version"), 0);
             GTA.Offsets.Editor.load_job_loader_language = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_load_job_loader_language"), 0);
+            GTA.Offsets.Editor.load_job_loader_state = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_load_job_loader_state"), 0);
+            GTA.Offsets.Editor.load_job_loader_read_stage = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_load_job_loader_read_stage"), 0);
+            GTA.Offsets.Editor.job_save_race = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_job_save_race"), 0);
+            GTA.Offsets.Editor.job_save_lts = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_job_save_lts"), 0);
+            GTA.Offsets.Editor.job_save_capture = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_job_save_capture"), 0);
+            GTA.Offsets.Editor.job_save_dm = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_job_save_dm"), 0);
+            GTA.Offsets.Editor.job_save_survival = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_job_save_survival"), 0);
+            GTA.Offsets.Editor.job_save_stage = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_job_save_stage"), 0);
+            GTA.Offsets.Editor.job_save_upload_state = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_job_save_upload_state"), 0);
+            GTA.Offsets.Editor.job_save_uploaded = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_job_save_uploaded"), 0);
             GTA.Offsets.Editor.creator_quit_flag = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_creator_quit_flag"), 0);
             GTA.Offsets.Editor.OFFSET_current_creator_worker_offset_menu = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_worker_offset_menu"), 0);
             GTA.Offsets.Editor.OFFSET_current_creator_worker_offset_test_state = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_worker_offset_test_state"), 0);

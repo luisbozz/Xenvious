@@ -296,6 +296,15 @@ namespace Xenvious
             return snap;
         }
 
+        /// <summary>Entries of a section ("props", "dprops", ...) in the open job, from its count global.</summary>
+        public static int CurrentCount(string name)
+        {
+            var section = Sections().FirstOrDefault(s => s.Name == name);
+            if (section == null || section.CountGlobal == 0 || !section.AppliesTo(CurrentCreator()))
+                return 0;
+            return Math.Max(0, new Global(section.CountGlobal).Get<int>());
+        }
+
         /// <summary>Why a snapshot cannot go into the running creator, or null.</summary>
         public static string CheckCompatible(Snapshot snap)
         {

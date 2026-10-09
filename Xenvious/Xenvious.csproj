@@ -430,10 +430,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MainWindow\MainWindow.MapBackup.cs" />
+    <Compile Include="Creator Classes\JobParts.cs" />
     <Compile Include="MainWindow\MainWindow.Navigation.cs" />
     <Compile Include="MainWindow\MainWindow.AdvancedPropTest.cs" />
     <Compile Include="MainWindow\MainWindow.PropMove.cs" />
     <Compile Include="Creator Classes\JobLoader.cs" />
+    <Compile Include="Creator Classes\JobDatafile.cs" />
     <Compile Include="Helper Classes\ChangelogText.cs" />
     <Compile Include="Helper Classes\ConfigText.cs" />
     <Compile Include="Helper Classes\Updater.cs" />
@@ -552,6 +554,7 @@
     <EmbeddedResource Include="OfflineData\weapons.json" />
     <EmbeddedResource Include="OfflineData\actors.json" />
     <EmbeddedResource Include="OfflineData\menubits.json" />
+    <EmbeddedResource Include="OfflineData\jobkeys.txt" />
     <None Include=".manifest" />
     <Resource Include="Fonts\Nunito\Nunito-Black.ttf" />
     <Resource Include="Fonts\Nunito\Nunito-BlackItalic.ttf" />

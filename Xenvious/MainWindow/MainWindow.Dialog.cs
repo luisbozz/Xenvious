@@ -32,11 +32,14 @@ namespace Xenvious
             DialogButtons.Visibility = Visibility.Visible;
             DialogProgress.Visibility = Visibility.Collapsed;
             DialogImageBox.Visibility = Visibility.Collapsed;
-            DialogConfirm.IsEnabled = true;
+            SetDialogConfirmEnabled(true);
             _dialogAltAction = null;
             _dialogPaste = null;
             _dialogDrop = null;
             SetDialogDetails(details);
+            DialogContent.Content = null;
+            DialogContent.Visibility = Visibility.Collapsed;
+            DialogBox.MaxWidth = 560;
 
             DialogTitle.Text = title ?? "";
             DialogText.Text = message ?? "";
@@ -88,6 +91,26 @@ namespace Xenvious
             {
                 box.SetResourceReference(Border.BackgroundProperty, "SectionBackgroundBrush");
             }
+        }
+
+        /// <summary>
+        /// The dialog with a page's own controls under the text. The page keeps the confirm
+        /// button's state up to date through <see cref="SetDialogConfirmEnabled"/>.
+        /// </summary>
+        public Task<bool> ShowContentAsync(string title, string message, UIElement content, string confirmText, string cancelText,
+            double maxWidth = 640)
+        {
+            var closed = ConfirmAsync(title, message, confirmText, cancelText);
+            DialogContent.Content = content;
+            DialogContent.Visibility = Visibility.Visible;
+            DialogBox.MaxWidth = maxWidth;
+            return closed;
+        }
+
+        public void SetDialogConfirmEnabled(bool enabled)
+        {
+            DialogConfirm.IsEnabled = enabled;
+            DialogConfirmContainer.Opacity = enabled ? 1 : 0.4;
         }
 
         public enum DialogChoice { Cancel, Confirm, Alternative }
