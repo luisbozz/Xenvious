@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.73.4](https://github.com/luisbozz/Xenvious/compare/v1.73.3...v1.73.4) (2026-10-09)
+
+
+### Features
+
+* **copyjob:** copy complete deathmatch and survival jobs ([d29962a](https://github.com/luisbozz/Xenvious/commit/d29962aab7be79eb0dceb41fd2f69418e16ff497))
+* **copyjob:** save the downloaded job file as JSON ([f7d176a](https://github.com/luisbozz/Xenvious/commit/f7d176afd02c9bd810fbf57062d440d16fe488c4))
+* **creatormap:** rebuild in the deathmatch and survival creator ([d29962a](https://github.com/luisbozz/Xenvious/commit/d29962aab7be79eb0dceb41fd2f69418e16ff497))
+* **customfuncs:** Legacy custom funcs in a given up function ([8263659](https://github.com/luisbozz/Xenvious/commit/82636593ff9011b93cacb1082c0d4997767d95a1))
+* **dashboard:** make the job id selectable ([#25](https://github.com/luisbozz/Xenvious/issues/25)) ([26fbfb3](https://github.com/luisbozz/Xenvious/commit/26fbfb3b09247ff491b0c2568b905a79ae0ed35a))
+* **mapbackup:** back up job parts as JSON and load whole jobs ([f7d176a](https://github.com/luisbozz/Xenvious/commit/f7d176afd02c9bd810fbf57062d440d16fe488c4))
+* **placement:** place at cursor or after a prop, with heading ([eb510ef](https://github.com/luisbozz/Xenvious/commit/eb510ef220a3a1970e3f64b863f6fa2e7a44e502))
+* **scrpatches:** no limit per prop model ([#32](https://github.com/luisbozz/Xenvious/issues/32)) ([e582086](https://github.com/luisbozz/Xenvious/commit/e5820869a03aa62e9432453e7fd1b32d8d477446))
+* **scrpatches:** zone labels, team start points anywhere ([8263659](https://github.com/luisbozz/Xenvious/commit/82636593ff9011b93cacb1082c0d4997767d95a1))
+
+
+### Bug Fixes
+
+* **offsets:** ignore comments after quoted ini values ([#31](https://github.com/luisbozz/Xenvious/issues/31)) ([dd1dc2c](https://github.com/luisbozz/Xenvious/commit/dd1dc2cb0b44927d856d8cf39843cf952083a1a2))
+* **templates:** use IsInCreator after the lva removal ([#28](https://github.com/luisbozz/Xenvious/issues/28)) ([39947be](https://github.com/luisbozz/Xenvious/commit/39947be7c039d7e1f37dc93e853c6e0b20eb14d9))
+
 ## [1.73.3](https://github.com/luisbozz/Xenvious/compare/v1.73.2...v1.73.3) (2026-10-03)
 
 
