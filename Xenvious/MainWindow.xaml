@@ -11091,7 +11091,25 @@
                                         <StackPanel x:Name="CopyRoute" Orientation="Horizontal" Margin="0,8,0,0" Visibility="Collapsed">
                                             <Ellipse x:Name="CopyRouteDot" Width="9" Height="9" Margin="0,4,9,0" VerticalAlignment="Top"/>
                                             <StackPanel>
-                                                <TextBlock x:Name="tbCopyRoute" FontSize="13" Foreground="{DynamicResource TextColor}" TextWrapping="Wrap"/>
+                                                <WrapPanel>
+                                                    <TextBlock x:Name="tbCopyRoute" FontSize="13" Foreground="{DynamicResource TextColor}" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                                                    <!-- The job file as downloaded from Rockstar; saved to the jobs folder, Map Backup lists it. -->
+                                                    <Button x:Name="BtnCopySaveJson" Margin="10,0,0,0" VerticalAlignment="Center" Cursor="Hand" FontSize="12" Focusable="False"
+                                                            Click="BtnCopySaveJson_Click" Content="{Binding Translation[copy_save_json], FallbackValue='JSON speichern …'}"
+                                                            ToolTip="{Binding Translation[copy_save_json_tip], FallbackValue='Speichert die Job-Datei, wie Rockstar sie liefert. Unter Map Backup kannst du sie komplett laden.'}">
+                                                        <Button.Template>
+                                                            <ControlTemplate TargetType="Button">
+                                                                <Border x:Name="b" CornerRadius="10" Padding="10,2" Background="{DynamicResource SelectedTileBrush}">
+                                                                    <TextBlock Text="{TemplateBinding Content}" FontSize="12" Foreground="{DynamicResource TextColor}"/>
+                                                                </Border>
+                                                                <ControlTemplate.Triggers>
+                                                                    <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="b" Property="Opacity" Value="0.8"/></Trigger>
+                                                                    <Trigger Property="IsEnabled" Value="False"><Setter TargetName="b" Property="Opacity" Value="0.4"/></Trigger>
+                                                                </ControlTemplate.Triggers>
+                                                            </ControlTemplate>
+                                                        </Button.Template>
+                                                    </Button>
+                                                </WrapPanel>
                                                 <TextBlock x:Name="tbCopyRouteSub" FontSize="12" Foreground="{DynamicResource MutedTextBrush}" TextWrapping="Wrap"/>
                                             </StackPanel>
                                         </StackPanel>

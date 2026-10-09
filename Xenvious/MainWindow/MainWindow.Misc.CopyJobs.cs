@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -43,6 +44,33 @@ namespace Xenvious
             CopyNrcidPanel.Visibility = nrcid ? Visibility.Visible : Visibility.Collapsed;
             BtnCopyModeLink.Tag = nrcid ? null : "active";
             BtnCopyModeNrcid.Tag = nrcid ? "active" : null;
+        }
+
+        /// <summary>Saves the downloaded job file unchanged into the jobs folder, where Map Backup lists it.</summary>
+        private void BtnCopySaveJson_Click(object sender, RoutedEventArgs e)
+        {
+            if (jobjson == null || string.IsNullOrEmpty(jobdata))
+                return;
+            Directory.CreateDirectory(JobFileFolder);
+            var dialog = new Microsoft.Win32.SaveFileDialog
+            {
+                Filter = "Job file (*.json)|*.json",
+                InitialDirectory = JobFileFolder,
+                FileName = SafeFileName(tbCopyName.Text, copyJobContentId ?? "job") + ".json"
+            };
+            if (dialog.ShowDialog(this) != true)
+                return;
+            try
+            {
+                File.WriteAllText(dialog.FileName, jobdata, new UTF8Encoding(false));
+                SetCopyStatus(string.Format(TranslateOr("copy_json_saved", "Gespeichert: {0}"), dialog.FileName), false);
+                Log.Info($"copy job: job file saved to {dialog.FileName}", source: "copyjob");
+            }
+            catch (Exception ex)
+            {
+                SetCopyStatus(TranslateOr("job_file_failed", "Fehlgeschlagen.") + " " + ex.Message, true);
+                Log.Warn("copy job: saving the job file", ex, source: "copyjob");
+            }
         }
 
         string jobdata = "";
