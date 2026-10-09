@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Xenvious
@@ -117,5 +118,29 @@ namespace Xenvious
         };
 
         public static ZoneType Find(int id) => All.FirstOrDefault(t => t.Id == id);
+
+        /// <summary>
+        /// The types the zones of the job use, with their names in the language of Xenvious, for
+        /// the zone labels in game (ScriptDrawer.SetZoneNames). Types newer than the source have
+        /// no name; the label shows their number.
+        /// </summary>
+        public static List<KeyValuePair<int, string>> UsedNames()
+        {
+            var names = new List<KeyValuePair<int, string>>();
+            if (GTA.Offsets.Editor.Zones.zntp == 0 || GTA.Offsets.Editor.Zones.NEXT == 0 || GTA.Offsets.Editor.Zones.number == 0)
+                return names;
+            int count = new Global(GTA.Offsets.Editor.Zones.number).Get<int>();
+            var seen = new HashSet<int>();
+            for (int i = 0; i < Math.Min(count, 200); i++)
+            {
+                int id = new Global(GTA.Offsets.Editor.Zones.zntp + GTA.Offsets.Editor.Zones.NEXT * i).Get<int>();
+                var type = Find(id);
+                if (type == null || !seen.Add(id))
+                    continue;
+                string text = MainWindow.Instance?.Translation?["zt_name_" + id];
+                names.Add(new KeyValuePair<int, string>(id, string.IsNullOrEmpty(text) || text == "missing translation" ? type.Name : text));
+            }
+            return names;
+        }
     }
 }
