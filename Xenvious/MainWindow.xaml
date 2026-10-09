@@ -730,14 +730,6 @@
                                         </Setter.Value>
                                     </Setter>
                                 </Style>
-                                <SolidColorBrush x:Key="DashPropBrush" Color="#FF6C5CE7"/>
-                                <SolidColorBrush x:Key="DashDynamicBrush" Color="#FFC08BFF"/>
-                                <!-- Blip colours of the creator: actors red, vehicles blue, weapons grey. -->
-                                <SolidColorBrush x:Key="DashActorBrush" Color="#FFE03232"/>
-                                <SolidColorBrush x:Key="DashVehicleBrush" Color="#FF2F5C73"/>
-                                <SolidColorBrush x:Key="DashWeaponBrush" Color="#FF8A8A8A"/>
-                                <SolidColorBrush x:Key="DashFixtureBrush" Color="#FFC2570C"/>
-                                <SolidColorBrush x:Key="DashZoneBrush" Color="#FF2EA37F"/>
                                 <!-- Same shapes as Advanced Prop Placement: light main action, grey secondary ones. -->
                                 <Style x:Key="DashButton" TargetType="{x:Type Button}">
                                     <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
@@ -854,14 +846,14 @@
                                             <StackPanel VerticalAlignment="Center">
                                                 <TextBlock Style="{StaticResource DashTileLabel}" Text="{Binding Translation[dash_props_dynamic], FallbackValue='Props · Dynamic'}"/>
                                                 <StackPanel Orientation="Horizontal" Margin="0,1,0,4">
-                                                    <Ellipse Width="10" Height="10" Fill="{StaticResource DashPropBrush}" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                                    <Ellipse Width="10" Height="10" Fill="{StaticResource PropBrush}" Margin="0,0,6,0" VerticalAlignment="Center"/>
                                                     <TextBlock x:Name="DashStatusProps" Style="{StaticResource DashTileValue}" Margin="0,0,14,0"/>
-                                                    <Ellipse Width="10" Height="10" Fill="{StaticResource DashDynamicBrush}" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                                    <Ellipse Width="10" Height="10" Fill="{StaticResource DynamicPropBrush}" Margin="0,0,6,0" VerticalAlignment="Center"/>
                                                     <TextBlock x:Name="DashStatusDynamic" Style="{StaticResource DashTileValue}"/>
                                                 </StackPanel>
                                                 <!-- Props against the prop limit; dynamic props are counted on their own. -->
                                                 <Border Width="170" Height="6" CornerRadius="3" Background="{DynamicResource TextBoxBackground}" HorizontalAlignment="Left" ClipToBounds="True">
-                                                    <Rectangle x:Name="DashPropsBar" Fill="{StaticResource DashPropBrush}" Width="0" HorizontalAlignment="Left"/>
+                                                    <Rectangle x:Name="DashPropsBar" Fill="{StaticResource PropBrush}" Width="0" HorizontalAlignment="Left"/>
                                                 </Border>
                                             </StackPanel>
                                         </Border>

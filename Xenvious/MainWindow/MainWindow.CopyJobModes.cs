@@ -57,7 +57,7 @@ namespace Xenvious
             UpdateCopyRoute();
         }
 
-        private static readonly System.Windows.Media.Brush RouteMuted = Frozen(0x8A, 0x8F, 0x98);
+        private static System.Windows.Media.Brush RouteMuted => ThemeBrush("MutedTextBrush");
 
         /// <summary>
         /// Shows how the loaded job gets into the creator: GTA fetching the job file itself

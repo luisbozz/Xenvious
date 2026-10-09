@@ -161,7 +161,7 @@ namespace Xenvious
             if (!hit)
                 return;
             ConvHitKind.Text = TranslateOr("conv_kind_" + _convHit.ImageKind, _convHit.ImageKind).ToUpperInvariant();
-            ConvHitKind.Foreground = new SolidColorBrush(KindColor(_convHit.ImageKind));
+            ConvHitKind.Foreground = KindBrush(_convHit.ImageKind);
             ConvHitName.Text = _convHit.Name;
             // The picture loads by itself, a moment after typing stops (every key is a new hit).
             if (_convImageTimer == null)
@@ -175,15 +175,15 @@ namespace Xenvious
             ConvHitCategory.Text = _convHit.Category;
         }
 
-        // Same colours as the mockup, so the kind is readable at a glance.
-        private static Color KindColor(string kind)
+        // The colours props, vehicles, actors and weapons have everywhere (App.xaml).
+        private static Brush KindBrush(string kind)
         {
             switch (kind)
             {
-                case "vehicle": return Color.FromRgb(0x3B, 0xA5, 0x5D);
-                case "actor": return Color.FromRgb(0xF4, 0x7B, 0x67);
-                case "weapon": return Color.FromRgb(0xFA, 0xA6, 0x1A);
-                default: return Color.FromRgb(0x8C, 0x7E, 0xF0);
+                case "vehicle": return ThemeBrush("VehicleBrush");
+                case "actor": return ThemeBrush("ActorBrush");
+                case "weapon": return ThemeBrush("WeaponBrush");
+                default: return ThemeBrush("PropBrush");
             }
         }
 

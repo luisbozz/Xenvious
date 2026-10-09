@@ -24,22 +24,16 @@ namespace Xenvious
         private static readonly TimeSpan LaunchTimeout = TimeSpan.FromSeconds(120);
         private static readonly TimeSpan FailureShownFor = TimeSpan.FromSeconds(20);
 
-        private static readonly Brush DotOk = Frozen(0x43, 0xB5, 0x81);
-        private static readonly Brush DotWarn = Frozen(0xFA, 0xC8, 0x28);
-        private static readonly Brush DotBad = Frozen(0xD9, 0x53, 0x4F);
-        private static readonly Brush DotOff = Frozen(0x72, 0x76, 0x7D);
+        // Status dots in the theme's colours.
+        private static Brush DotOk => ThemeBrush("OkBrush");
+        private static Brush DotWarn => ThemeBrush("HighlightBrush");
+        private static Brush DotBad => ThemeBrush("BadBrush");
+        private static Brush DotOff => ThemeBrush("FaintTextBrush");
 
         private DispatcherTimer _dashboardTimer;
         private LaunchPhase _launchPhase = LaunchPhase.None;
         private DateTime _launchStarted;
         private DateTime _launchFailedAt;
-
-        private static Brush Frozen(byte r, byte g, byte b)
-        {
-            var brush = new SolidColorBrush(Color.FromRgb(r, g, b));
-            brush.Freeze();
-            return brush;
-        }
 
         private void StartDashboardStatus()
         {
@@ -163,7 +157,7 @@ namespace Xenvious
                 DashStatusProps.Text = string.Format(CultureInfo.CurrentCulture, "{0} / {1}", count, limit);
                 DashStatusDynamic.Text = new Global(GTA.Offsets.Editor.DProps.number).Get<int>().ToString(CultureInfo.CurrentCulture);
                 DashPropsBar.Width = 170.0 * Math.Max(0, Math.Min(count, limit)) / limit;
-                DashPropsBar.Fill = count >= limit ? DotBad : count >= limit * 0.9 ? DotWarn : (Brush)DashTileProps.FindResource("DashPropBrush");
+                DashPropsBar.Fill = count >= limit ? DotBad : count >= limit * 0.9 ? DotWarn : ThemeBrush("PropBrush");
                 UpdateDashboardCreatorCounts(creator);
             }
 
