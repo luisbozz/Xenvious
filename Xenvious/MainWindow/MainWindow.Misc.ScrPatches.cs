@@ -115,8 +115,6 @@ namespace Xenvious
                 case "precise_templates":
                 case "access_ch_planning_board_solo_gameplay_itself_re":
                     return "unlock";
-                case "show_placed_zones_brighter":
-                case "show_placed_angled_zones_brighter":
                 case "set_switch_camera_to_caps_lock":
                     return "display";
                 default:
@@ -390,6 +388,7 @@ namespace Xenvious
             ("patches_cf_f_drawer", "Play area drawer", null),
             ("patches_cf_f_hidden", "Hidden categories", new[] { "fm_lts_creator", "fm_capture_creator" }),
             ("patches_cf_f_race", "Race: tuning and garage", new[] { "fm_race_creator" }),
+            ("patches_cf_f_zones", "Zone labels", new[] { "fm_lts_creator", "fm_capture_creator", "fm_deathmatch_creator", "fm_race_creator" }),
             ("patches_cf_f_camera", "Camera with Caps Lock", null),
         };
 

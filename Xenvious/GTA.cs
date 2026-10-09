@@ -1531,15 +1531,6 @@ namespace Xenvious
                 public static long enable_murica = 0x0;
                 public static long jobid = 0x0;
                 public static long jobpublished = 0x0;
-                public static long custom_check = 0x0;
-                public static long custom_hovered_model = 0x0;
-                public static long custom_dimension_model = 0x0;
-                public static long custom_dimension_min = 0x0;
-                public static long custom_dimension_max = 0x0;
-                public static long custom_tune = 0x0;
-                public static long custom_pv_slot = 0x0;
-                public static long custom_pv_result = 0x0;
-                public static long custom_pv_list = 0x0;
                 public static long templates = 0x0;
                 public static long templates_count = 0x0;
                 public static long OFFSET_script_name = 0x0;
@@ -1552,6 +1543,8 @@ namespace Xenvious
                 public static long OFFSET_packfile_count = 0x0;
                 // Script name -> "<shipped virtual page flags>, <virtual page flags to load it with>" (ScriptSpace).
                 public static Dictionary<string, string> ScriptSpaceReservations = new Dictionary<string, string>();
+                // Script name -> "<function>, <payload>, <data page>, <string page array>" of the function given up for the custom funcs (Legacy, ScriptSpace).
+                public static Dictionary<string, string> ScriptVictims = new Dictionary<string, string>();
                 // Enhanced keeps no name in the thread, only the joaat hash of its script.
                 // 0 means "match by name" (Legacy).
                 public static long OFFSET_script_hash = 0x0;

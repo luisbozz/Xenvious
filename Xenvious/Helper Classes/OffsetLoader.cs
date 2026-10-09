@@ -68,11 +68,15 @@ namespace Xenvious
             GTA.Offsets.Editor.OFFSET_packfile_entries = ini.ReadInteger("OFFSETS", "OFFSET_packfile_entries");
             GTA.Offsets.Editor.OFFSET_packfile_count = ini.ReadInteger("OFFSETS", "OFFSET_packfile_count");
             GTA.Offsets.Editor.ScriptSpaceReservations.Clear();
+            GTA.Offsets.Editor.ScriptVictims.Clear();
             foreach (string script in new[] { "fm_lts_creator", "fm_capture_creator", "fm_deathmatch_creator", "fm_race_creator", "fm_survival_creator", "public_mission_creator" })
             {
                 string reservation = ini.ReadString("SCRIPTSPACE", script);
                 if (!string.IsNullOrWhiteSpace(reservation))
                     GTA.Offsets.Editor.ScriptSpaceReservations[script] = reservation;
+                string victim = ini.ReadString("SCRIPTVICTIM", script);
+                if (!string.IsNullOrWhiteSpace(victim))
+                    GTA.Offsets.Editor.ScriptVictims[script] = victim;
             }
             GTA.Offsets.Editor.OFFSET_script_local_start = ini.ReadInteger("OFFSETS", "OFFSET_script_local_start");
             GTA.Offsets.Editor.OFFSET_current_creator_worker_survival = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_current_creator_worker_survival"), 0);
@@ -181,15 +185,6 @@ namespace Xenvious
             GTA.Offsets.Editor.enable_murica = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_enable_murica"), 0);
             GTA.Offsets.Editor.jobid = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_jobid"), 0);
             GTA.Offsets.Editor.jobpublished = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_job_published"), 0);
-            GTA.Offsets.Editor.custom_check = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_custom_check"), 0);
-            GTA.Offsets.Editor.custom_hovered_model = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_custom_hovered_model"), 0);
-            GTA.Offsets.Editor.custom_dimension_model = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_custom_dimension_model"), 0);
-            GTA.Offsets.Editor.custom_dimension_min = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_custom_dimension_min"), 0);
-            GTA.Offsets.Editor.custom_dimension_max = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_custom_dimension_max"), 0);
-            GTA.Offsets.Editor.custom_tune = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_custom_tune"), 0);
-            GTA.Offsets.Editor.custom_pv_slot = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_custom_pv_slot"), 0);
-            GTA.Offsets.Editor.custom_pv_result = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_custom_pv_result"), 0);
-            GTA.Offsets.Editor.custom_pv_list = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_custom_pv_list"), 0);
             // Array base (its size word), and the number of templates in use.
             GTA.Offsets.Editor.templates = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_templates"), 0);
             GTA.Offsets.Editor.templates_count = GetGlobalOffset(ini.ReadString("OFFSETS", "OFFSET_templates_count"), 0);

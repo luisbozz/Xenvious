@@ -7,13 +7,12 @@ namespace Xenvious
     /// The variables Xenvious shares with the injected creator functions (customfuncs): the
     /// dispatch bits, model dimensions, the hovered model, the race test tuning and the garage.
     ///
-    /// A creator with a data page (ScriptSpace) keeps them there, variable n at 0x18 + n * 8, so
-    /// every creator script has its own set and nothing else in the game uses that memory. The
-    /// page starts empty whenever the game loads the script again. A creator without a data page
-    /// (Legacy) uses the custom globals from offsets.ini, which the game resets when it rebuilds
-    /// its globals. Either way the dispatch bits are put back every second by the worker.
-    /// The numbering follows the custom globals (Global_2884084 + n), so the payload sources
-    /// convert one to one (scrasm/customfuncs/page in ysc-global-updater).
+    /// They live in the creator's data page (ScriptSpace: an extra page on Enhanced, part of a
+    /// given up function on Legacy), variable n at 0x18 + n * 8, so every creator script has its
+    /// own set and nothing else in the game uses that memory. The page starts empty whenever the
+    /// game loads the script again; the worker puts the dispatch bits back every second. The
+    /// numbering follows the custom globals the payloads used before (Global_2884084 + n on
+    /// Legacy 1.73), see scrasm/customfuncs/page in ysc-global-updater.
     /// </summary>
     public static class ScriptVars
     {
@@ -47,10 +46,7 @@ namespace Xenvious
             if (script == "")
                 return 0;
             if (!ScriptSpace.Configured(script))
-            {
-                long global = CustomGlobal(var);
-                return global == 0 ? 0 : new Global(global + slot).GetAddress();
-            }
+                return 0;
             lock (Gate)
             {
                 if (script != pageScript || DateTime.UtcNow - pageAt > TimeSpan.FromSeconds(1))
@@ -60,24 +56,6 @@ namespace Xenvious
                     pageAt = DateTime.UtcNow;
                 }
                 return page == 0 ? 0 : page + VarsAt + (var + slot) * 8;
-            }
-        }
-
-        // The custom global of a variable; 0 when offsets.ini has none.
-        private static long CustomGlobal(int var)
-        {
-            switch (var)
-            {
-                case Check: return GTA.Offsets.Editor.custom_check;
-                case HoveredModel: return GTA.Offsets.Editor.custom_hovered_model;
-                case DimensionModel: return GTA.Offsets.Editor.custom_dimension_model;
-                case DimensionMin: return GTA.Offsets.Editor.custom_dimension_min;
-                case DimensionMax: return GTA.Offsets.Editor.custom_dimension_max;
-                case Tune: return GTA.Offsets.Editor.custom_tune;
-                case GarageSlot: return GTA.Offsets.Editor.custom_pv_slot;
-                case GarageResult: return GTA.Offsets.Editor.custom_pv_result;
-                case GarageList: return GTA.Offsets.Editor.custom_pv_list;
-                default: return 0;
             }
         }
 

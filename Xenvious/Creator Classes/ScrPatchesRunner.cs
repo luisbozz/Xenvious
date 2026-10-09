@@ -81,6 +81,8 @@ namespace Xenvious
                     {
                         try { PlayAreaOverlay.Tick(); }
                         catch (Exception ex) { Log.Debug("PlayAreaOverlay: " + ex.Message, source: "ScrPatchesRunner"); }
+                        try { ScriptDrawer.SetZoneNames(GTA.CurrentCreatorName(), ZoneTypes.UsedNames()); }
+                        catch (Exception ex) { Log.Debug("SetZoneNames: " + ex.Message, source: "ScrPatchesRunner"); }
                     }
                 }
                 tick++;

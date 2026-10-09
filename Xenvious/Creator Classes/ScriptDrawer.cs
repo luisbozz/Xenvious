@@ -1,5 +1,6 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Windows.Media;
@@ -15,15 +16,18 @@ namespace Xenvious
     ///
     /// Data page (byte offsets): 0x00 "STRING" (the text label BEGIN_TEXT_COMMAND_DISPLAY_TEXT
     /// needs), 0x08 entry count, 0x10 a heartbeat the drawer counts up every frame, 0x18 the
-    /// customfuncs variables (ScriptVars), 0x800 the entries, 0x100 bytes each. An entry is 8 byte slots with the value in the low 4 bytes:
+    /// customfuncs variables (ScriptVars), 0x800 the entries, 0x100 bytes each, 0x3800 the zone type
+    /// names for the zone labels (SetZoneNames). An entry is 8 byte slots with the value in the low 4 bytes:
     /// 0 kind, 1 parts, 2..9 prism corners (x, y) or marker type, position and scale, 10/11 prism
     /// bottom and top, 12..16 r, g, b, fill alpha, line alpha, 17..19 label position, 20 label
     /// scale, 21..24 label r, g, b, a, 25..31 the label (56 bytes, NUL terminated).
     /// </summary>
     public static class ScriptDrawer
     {
-        public const int MaxShapes = 56;
+        public const int MaxShapes = 48;
         private const int CountAt = 0x08, BeatAt = 0x10, EntriesAt = 0x800, EntrySize = 0x100;
+        // Zone type names (zonelabel in customfuncs): a count, then entries of a type and its name.
+        private const int NamesAt = 0x3800, NameEntry = 0x40, MaxNames = 31;
         private const int TextAt = 25 * 8, TextBytes = 56;
         private static readonly byte[] Header = Encoding.ASCII.GetBytes("STRING\0\0");
 
@@ -46,7 +50,7 @@ namespace Xenvious
             public byte FillAlpha = 60, LineAlpha = 200;
             public string Text;
             public Vector3 TextPosition;
-            public float TextScale = 0.35f;
+            public float TextScale = 0.3f;
             public Color TextColour = Colors.White;
 
             /// <summary>
@@ -146,6 +150,7 @@ namespace Xenvious
         private static long page;
         private static byte[][] written = new byte[MaxShapes][];
         private static int writtenCount;
+        private static byte[] writtenNames;
         private static bool warnedFull;
         private static int lastBeat;
         private static DateTime beatSeen;
@@ -173,6 +178,7 @@ namespace Xenvious
                     page = space.Data;
                     written = new byte[MaxShapes][];
                     writtenCount = 0;
+                    writtenNames = null;
                     lastBeat = 0;
                     Write(page, Header);
                     Write(page + CountAt, BitConverter.GetBytes(0));
@@ -219,6 +225,42 @@ namespace Xenvious
                 page = 0;
                 running = "";
                 return false;
+            }
+        }
+
+        /// <summary>
+        /// Gives the zone labels the names of these zone types (at most <see cref="MaxNames"/>);
+        /// the game itself has a name for six types only. Call after <see cref="Show"/>, which
+        /// sets up the page.
+        /// </summary>
+        public static void SetZoneNames(string script, IList<KeyValuePair<int, string>> names)
+        {
+            if (!MainWindow.m.IsProcOpen || page == 0 || ScriptSpace.Get(script)?.Data != page)
+                return;
+            int n = Math.Min(names.Count, MaxNames);
+            var table = new byte[8 + MaxNames * NameEntry];
+            Array.Copy(BitConverter.GetBytes((long)n), table, 8);
+            for (int i = 0; i < n; i++)
+            {
+                int at = 8 + i * NameEntry;
+                Array.Copy(BitConverter.GetBytes((long)names[i].Key), 0, table, at, 8);
+                byte[] text = TextBytesOf(names[i].Value);
+                Array.Copy(text, 0, table, at + 8, text.Length);
+            }
+            if (Same(writtenNames, table))
+                return;
+            try
+            {
+                // Count to 0 first, so the label never reads an entry being rewritten.
+                Write(page + NamesAt, BitConverter.GetBytes(0L));
+                Write(page + NamesAt + 8, table.Skip(8).ToArray());
+                Write(page + NamesAt, table.Take(8).ToArray());
+                writtenNames = table;
+            }
+            catch (Exception ex)
+            {
+                Log.Debug("SetZoneNames " + script + ": " + ex.Message, source: "ScriptDrawer");
+                writtenNames = null;
             }
         }
 

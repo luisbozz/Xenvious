@@ -69,9 +69,13 @@ On Enhanced the creators load with extra 16 KB pages behind their code
 (`Creator Classes/ScriptSpace.cs`, `[SCRIPTSPACE]` in `offsets.ini`). The
 custom functions and the shape drawer (`ScriptDrawer`) run from the first
 extra page; the last one is a data page the script reaches as string page 63,
-and it holds the variables. Legacy still injects into a sacrificial function
-and keeps the variables in the `custom_*` globals of its `offsets.ini`. The
-page payload sources and their builder are in ysc-global-updater
+and it holds the variables. Legacy resources cannot grow, so there the same
+payload lives in a creator function given up for it, the vehicle mod preset
+table (`[SCRIPTVICTIM]` in the legacy `offsets.ini`). The patch "give up the
+vehicle preset table" makes it return at once; one whole 16 KB page of it is
+the data page. Placed vehicles with a mod preset then look stock in the
+creator; jobs are not affected. The payload sources (custom functions,
+drawer, zone labels) and their builder are in ysc-global-updater
 (`scrpatches/scrasm/customfuncs/page/`).
 
 ## Opcode cheat sheet (GTA V YSC)
