@@ -10,6 +10,7 @@
 *.userosscache
 *.sln.docstates
 *.py
+!tools/**/*.py
 *.code-workspace
 
 # User-specific files (MonoDevelop/Xamarin Studio)

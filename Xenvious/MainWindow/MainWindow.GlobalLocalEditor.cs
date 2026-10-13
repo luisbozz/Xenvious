@@ -42,25 +42,25 @@ namespace Xenvious
             switch (ddgechangemode.SelectedIndex)
             {
                 case 0:
-                    tbgeglobalvalue.Text = new Global(OffsetLoader.GetGlobalOffset(OffsetLoader.PrepareGlobal(tbgeglobal.Text))).GetBytes(1)[0].ToString();
+                    tbgeglobalvalue.Text = new Global(GlobalPath.Evaluate(tbgeglobal.Text)).GetBytes(1)[0].ToString();
                     break;
                 case 1:
-                    tbgeglobalvalue.Text = new Global(OffsetLoader.GetGlobalOffset(OffsetLoader.PrepareGlobal(tbgeglobal.Text))).Get<short>().ToString();
+                    tbgeglobalvalue.Text = new Global(GlobalPath.Evaluate(tbgeglobal.Text)).Get<short>().ToString();
                     break;
                 case 2:
-                    tbgeglobalvalue.Text = new Global(OffsetLoader.GetGlobalOffset(OffsetLoader.PrepareGlobal(tbgeglobal.Text))).Get<int>().ToString();
+                    tbgeglobalvalue.Text = new Global(GlobalPath.Evaluate(tbgeglobal.Text)).Get<int>().ToString();
                     break;
                 case 3:
-                    tbgeglobalvalue.Text = new Global(OffsetLoader.GetGlobalOffset(OffsetLoader.PrepareGlobal(tbgeglobal.Text))).Get<long>().ToString();
+                    tbgeglobalvalue.Text = new Global(GlobalPath.Evaluate(tbgeglobal.Text)).Get<long>().ToString();
                     break;
                 case 4:
-                    tbgeglobalvalue.Text = new Global(OffsetLoader.GetGlobalOffset(OffsetLoader.PrepareGlobal(tbgeglobal.Text))).Get<float>().ToString();
+                    tbgeglobalvalue.Text = new Global(GlobalPath.Evaluate(tbgeglobal.Text)).Get<float>().ToString();
                     break;
                 case 5:
-                    tbgeglobalvalue.Text = new Global(OffsetLoader.GetGlobalOffset(OffsetLoader.PrepareGlobal(tbgeglobal.Text))).Get<double>().ToString();
+                    tbgeglobalvalue.Text = new Global(GlobalPath.Evaluate(tbgeglobal.Text)).Get<double>().ToString();
                     break;
                 case 6:
-                    tbgeglobalvalue.Text = new Global(OffsetLoader.GetGlobalOffset(OffsetLoader.PrepareGlobal(tbgeglobal.Text))).GetString();
+                    tbgeglobalvalue.Text = new Global(GlobalPath.Evaluate(tbgeglobal.Text)).GetString();
                     break;
                 default:
                     break;
@@ -74,7 +74,7 @@ namespace Xenvious
                 case 0:
                     try
                     {
-                        new Global(OffsetLoader.GetGlobalOffset(OffsetLoader.PrepareGlobal(tbgeglobal.Text))).SetBytes(new byte[] { byte.Parse(tbgeglobalvalue.Text) });
+                        new Global(GlobalPath.Evaluate(tbgeglobal.Text)).SetBytes(new byte[] { byte.Parse(tbgeglobalvalue.Text) });
                     }
                     catch (Exception)
                     {
@@ -82,22 +82,22 @@ namespace Xenvious
                     }
                     break;
                 case 1:
-                    new Global(OffsetLoader.GetGlobalOffset(OffsetLoader.PrepareGlobal(tbgeglobal.Text))).SetShort(tbgeglobalvalue.Text);
+                    new Global(GlobalPath.Evaluate(tbgeglobal.Text)).SetShort(tbgeglobalvalue.Text);
                     break;
                 case 2:
-                    new Global(OffsetLoader.GetGlobalOffset(OffsetLoader.PrepareGlobal(tbgeglobal.Text))).SetInt(tbgeglobalvalue.Text);
+                    new Global(GlobalPath.Evaluate(tbgeglobal.Text)).SetInt(tbgeglobalvalue.Text);
                     break;
                 case 3:
-                    new Global(OffsetLoader.GetGlobalOffset(OffsetLoader.PrepareGlobal(tbgeglobal.Text))).SetLong(tbgeglobalvalue.Text);
+                    new Global(GlobalPath.Evaluate(tbgeglobal.Text)).SetLong(tbgeglobalvalue.Text);
                     break;
                 case 4:
-                    new Global(OffsetLoader.GetGlobalOffset(OffsetLoader.PrepareGlobal(tbgeglobal.Text))).SetFloat(tbgeglobalvalue.Text);
+                    new Global(GlobalPath.Evaluate(tbgeglobal.Text)).SetFloat(tbgeglobalvalue.Text);
                     break;
                 case 5:
-                    new Global(OffsetLoader.GetGlobalOffset(OffsetLoader.PrepareGlobal(tbgeglobal.Text))).SetDouble(tbgeglobalvalue.Text);
+                    new Global(GlobalPath.Evaluate(tbgeglobal.Text)).SetDouble(tbgeglobalvalue.Text);
                     break;
                 case 6:
-                    new Global(OffsetLoader.GetGlobalOffset(OffsetLoader.PrepareGlobal(tbgeglobal.Text))).SetString(tbgeglobalvalue.Text);
+                    new Global(GlobalPath.Evaluate(tbgeglobal.Text)).SetString(tbgeglobalvalue.Text);
                     break;
                 default:
                     break;
@@ -106,7 +106,7 @@ namespace Xenvious
 
         private void Btngecopyaddy_Click(object sender, RoutedEventArgs e)
         {
-            Clipboard.SetDataObject(new Global(OffsetLoader.GetGlobalOffset(OffsetLoader.PrepareGlobal(tbgeglobal.Text))).GetAddress().ToString("X"));
+            Clipboard.SetDataObject(new Global(GlobalPath.Evaluate(tbgeglobal.Text)).GetAddress().ToString("X"));
         }
 
         private void Btngeadd2f_Click(object sender, RoutedEventArgs e)
@@ -310,7 +310,7 @@ namespace Xenvious
                 displayScreenMessage("Couldnt find Script.");
                 return;
             }
-            long convertedlocal = OffsetLoader.GetGlobalOffset(tblelocal.Text);
+            long convertedlocal = GlobalPath.Evaluate(tblelocal.Text);
             mry.mem.Memory lem = m.memory(scriptptr[0], new long[] { scriptptr[1], GTA.Offsets.Editor.OFFSET_script_local_start, convertedlocal * 8 });
 
             switch (ddlechangemode.SelectedIndex)
@@ -364,7 +364,7 @@ namespace Xenvious
                 displayScreenMessage("Couldnt find Script.");
                 return;
             }
-            long convertedlocal = OffsetLoader.GetGlobalOffset(tblelocal.Text);
+            long convertedlocal = GlobalPath.Evaluate(tblelocal.Text);
             mry.mem.Memory lem = m.memory(scriptptr[0], new long[] { scriptptr[1], GTA.Offsets.Editor.OFFSET_script_local_start, convertedlocal * 8 });
 
             try
@@ -420,7 +420,7 @@ namespace Xenvious
                 displayScreenMessage("Couldnt find Script.");
                 return;
             }
-            long convertedlocal = OffsetLoader.GetGlobalOffset(tblelocal.Text);
+            long convertedlocal = GlobalPath.Evaluate(tblelocal.Text);
             Clipboard.SetText(m.memory(scriptptr[0], new long[] { scriptptr[1], GTA.Offsets.Editor.OFFSET_script_local_start, convertedlocal * 8 }).GetAddress().ToString("X"));
         }
 

@@ -32,7 +32,7 @@ namespace Xenvious
             LocalName = local;
 
             // Falls dein Local-Offset anders ermittelt wird, hier ggf. anpassen:
-            LocalValue = OffsetLoader.GetGlobalOffset(OffsetLoader.PrepareGlobal(local));
+            LocalValue = GlobalPath.Evaluate(local);
 
             val = value;
             _type = value.GetType();

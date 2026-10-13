@@ -55,19 +55,21 @@ new Global(GTA.Offsets.Editor.Props.loc + i * GTA.Offsets.Editor.Props.NEXT).Wri
 
 Arrays start with a **size slot**: element 0 begins one slot after the
 array's base. Never overwrite that size slot; the creator misbehaves
-(flickering menus, jobs that will not load). That is why `OffsetLoader` passes `add = 1` for array fields
-(`GetGlobalOffset(..., 1)`), and why `CreatorMap` treats the slot before
+(flickering menus, jobs that will not load). That is why every `[..]` in an
+offsets.ini path counts one slot, and why `CreatorMap` treats the slot before
 `FirstElement` as the array header.
 
-`OffsetLoader.GetGlobalOffset` strips everything in `[...]` and adds up the
-remaining numbers, so the stride in the comment is **not** used at runtime. Strides come
-from separate `*_NEXT` keys in `offsets.ini` (`OFFSET_props_next = 170`), and
-code computes an element as `base + index * NEXT + field`.
+`tools/builddata/gen.py` (and `GlobalPath` for paths typed into the editor)
+read a path the way the decompiler means it: the numbers add up, each `[..]`
+adds the size slot, and a number as index adds its elements too
+(`[2 /*11*/]` = 1 + 22). A named index (`i`, `j`) is chosen at runtime: strides
+come from separate `*_NEXT` keys in `offsets.ini` (`OFFSET_props_next = 170`),
+and code computes an element as `base + index * NEXT + field`.
 
 Example, the rotation of placed prop `i`:
 
 ```text
-OFFSET_props_vrot = "Global_5242880.f_1[i /*170*/].f_3"   ->  5242880 + 1 + 3 (+1 array header)
+OFFSET_props_vrot = "Global_5242880.f_1[i /*170*/].f_3"   ->  5242880 + 1 + 1 (array header) + 3
 OFFSET_props_next = 170
 address slot     = Props.vrot + i * Props.NEXT
 ```
@@ -121,7 +123,7 @@ bit index is **1-based** (`1 << index - 1`), unlike most decompiled code.
 2. Never assume an offset is valid: a missing ini key silently loads as `0`.
    Guard against `0` for anything you write to.
 3. Never mix editions. Everything edition-specific comes from
-   `OfflineData/<edition>/` through `OfflineData`/`OffsetLoader`.
+   `OfflineData/<edition>/` through `BuildData`/`OffsetLoader`.
 4. Writing the wrong slot corrupts unrelated script state and can crash the
    game or get a job rejected. Test on the edition you changed and say which.
 5. Changes that must become visible in the creator usually need a rebuild,

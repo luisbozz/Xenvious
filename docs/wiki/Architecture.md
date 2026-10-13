@@ -13,8 +13,8 @@
  +------+-------------------+       +----------+-----------+
         |                                      |
         v                                      v
- GTA.Offsets.Editor (static fields)  <-  OffsetLoader  <-  OfflineData/<edition>/offsets.ini
- GTA.Editor.ScrPatches               <-  OfflineData/<edition>/scrpatches.json
+ GTA.Offsets.Editor (static fields)  <-  OffsetLoader  <-  BuildData (Generated/, from offsets.ini)
+ GTA.Editor.ScrPatches               <-  BuildData (Generated/, from scrpatches.json)
  GTA.Editor.PropList/VehList/...     <-  OfflineData/*.json (shared)
 ```
 
@@ -37,7 +37,7 @@
 | One partial file per page or concern | `MainWindow/MainWindow.<Page>.cs` (Props, DynamicProps, Race.Checkpoints, Mission.TeamSettings, Misc.CopyJobs, ...) |
 | Game connection and polling | `MainWindow.GameConnection.cs`, `MainWindow.Worker.cs` |
 | Memory primitives | `Global.cs`, `Functions.cs`, `GTA.cs` (pointers, script threads), `mry` |
-| Offsets | `GTA.cs` (`GTA.Offsets.Editor.*`), `Helper Classes/OffsetLoader.cs`, `IniText.cs`, `AobCache.cs` |
+| Offsets | `GTA.cs` (`GTA.Offsets.Editor.*`), `Helper Classes/OffsetLoader.cs`, `BuildData.cs`, `GlobalPath.cs`, `Generated/`, `AobCache.cs` |
 | Edition | `GameVariant.cs` |
 | Embedded data | `OfflineData/OfflineData.cs`, `OfflineData/StaticData.cs` |
 | Creator logic without UI | `Creator Classes/` |

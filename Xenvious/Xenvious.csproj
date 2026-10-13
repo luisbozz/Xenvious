@@ -308,7 +308,13 @@
     <Compile Include="GameVariant.cs" />
     <Compile Include="GTA.cs" />
     <Compile Include="Helper Classes\ini_reader.cs" />
-    <Compile Include="Helper Classes\IniText.cs" />
+    <Compile Include="Helper Classes\BuildData.cs" />
+    <Compile Include="Helper Classes\GlobalPath.cs" />
+    <Compile Include="Generated\BuildData.g.cs" />
+    <Compile Include="Generated\BuildData.Legacy.g.cs" />
+    <Compile Include="Generated\BuildData.Enhanced.g.cs" />
+    <Compile Include="Generated\ScrPatches.Legacy.g.cs" />
+    <Compile Include="Generated\ScrPatches.Enhanced.g.cs" />
     <Compile Include="Helper Classes\AobCache.cs" />
     <Compile Include="Helper Classes\BattlEye.cs" />
     <Compile Include="JSON\Converters\JsonDecimalConverter.cs" />
@@ -539,14 +545,14 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="OfflineData\legacy\offsets.ini" />
-    <EmbeddedResource Include="OfflineData\legacy\scrpatches.json" />
-    <EmbeddedResource Include="OfflineData\legacy\scrpatchesdev.json" />
+    <None Include="OfflineData\legacy\offsets.ini" />
+    <None Include="OfflineData\legacy\scrpatches.json" />
+    <None Include="OfflineData\legacy\scrpatchesdev.json" />
     <EmbeddedResource Include="OfflineData\legacy\race_vehicles.json" />
     <EmbeddedResource Include="OfflineData\legacy\mprops.json" />
-    <EmbeddedResource Include="OfflineData\enhanced\offsets.ini" />
-    <EmbeddedResource Include="OfflineData\enhanced\scrpatches.json" />
-    <EmbeddedResource Include="OfflineData\enhanced\scrpatchesdev.json" />
+    <None Include="OfflineData\enhanced\offsets.ini" />
+    <None Include="OfflineData\enhanced\scrpatches.json" />
+    <None Include="OfflineData\enhanced\scrpatchesdev.json" />
     <EmbeddedResource Include="OfflineData\enhanced\race_vehicles.json" />
     <EmbeddedResource Include="OfflineData\enhanced\mprops.json" />
     <EmbeddedResource Include="OfflineData\props.json" />
