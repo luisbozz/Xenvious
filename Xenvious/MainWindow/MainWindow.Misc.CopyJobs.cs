@@ -63,6 +63,7 @@ namespace Xenvious
             try
             {
                 File.WriteAllText(dialog.FileName, jobdata, new UTF8Encoding(false));
+                UsageStats.Action("copyjob.save_json");
                 SetCopyStatus(string.Format(TranslateOr("copy_json_saved", "Gespeichert: {0}"), dialog.FileName), false);
                 Log.Info($"copy job: job file saved to {dialog.FileName}", source: "copyjob");
             }
@@ -295,6 +296,8 @@ namespace Xenvious
             CopyAnimation.Visibility = Visibility.Visible;
 
             bool worked = await GetJobInfo();
+            if (worked)
+                UsageStats.Action("copyjob.load");
 
             CopyAnimation.Visibility = Visibility.Collapsed;
             CopyAnimation.IsActive = false;
@@ -642,6 +645,7 @@ namespace Xenvious
                 SetCopyStatus(TranslateOr("copy_need_creator", "Öffne zuerst einen Creator in GTA."), true);
                 return;
             }
+            UsageStats.Action("copyjob.copy");
             if (CopyCompleteJob)
             {
                 _ = CopyCompleteJobAsync();

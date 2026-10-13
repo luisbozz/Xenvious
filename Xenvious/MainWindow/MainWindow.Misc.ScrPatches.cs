@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -345,6 +345,7 @@ namespace Xenvious
             {
                 group.Enabled = on;
                 RememberScrPatch(group.Name, on);
+                UsageStats.Patch(group.Name, on);
             }, ScrPatchChips(group, creator, false));
 
         // Per script: green = written into the running creator, yellow = on but not found in it
@@ -583,6 +584,7 @@ namespace Xenvious
             {
                 row.Set(box.IsChecked == true);
                 RememberGamePatch(row.Key, box.IsChecked == true);
+                UsageStats.Patch(row.Key, box.IsChecked == true);
                 _patchesShownKey = null;
                 RenderPatchesPage();
             };

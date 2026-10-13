@@ -207,6 +207,7 @@ namespace Xenvious
                     displayScreenMessage("couldnt parse value");
                 }
                 addItemToGEFreezeList(globalFreezeer);
+                UsageStats.Action("freeze.global");
                 ScreenMessageContainer.Children.Remove(tempgrid);
                 ScreenMessage.MouseLeftButtonUp += IMGBackground_MouseLeftButtonUp;
                 ScreenMessage.Visibility = Visibility.Collapsed;
@@ -527,6 +528,7 @@ namespace Xenvious
                     displayScreenMessage("couldnt parse value");
                 }
                 addItemToLEFreezeList(localFreezeer);
+                UsageStats.Action("freeze.local");
                 ScreenMessageContainer.Children.Remove(tempgrid);
                 ScreenMessage.MouseLeftButtonUp += IMGBackground_MouseLeftButtonUp;
                 ScreenMessage.Visibility = Visibility.Collapsed;

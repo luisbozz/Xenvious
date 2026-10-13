@@ -348,6 +348,7 @@ namespace Xenvious
             if (!m.IsProcOpen)
                 return;
             BtnDashReloadMap.IsEnabled = false;
+            UsageStats.Action("creator.rebuild");
             try
             {
                 await CreatorMap.RebuildAsync();

@@ -1365,6 +1365,9 @@ namespace Xenvious.ViewModels
                 int model = _modelId.Value;
                 _placement.PlaceProps(plan.Select(p => (model, p)).ToList(), _startPropSource);
                 _refreshCreator();
+                // The live preview places on every change; only a click counts.
+                if (!live)
+                    UsageStats.Action("prop.place_advanced");
 
                 _lastPlacementCount = plan.Count;
                 _lastPlacementWasLive = live;
