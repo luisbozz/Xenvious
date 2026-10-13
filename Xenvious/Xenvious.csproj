@@ -440,6 +440,8 @@
     <Compile Include="Helper Classes\ConfigText.cs" />
     <Compile Include="Helper Classes\Updater.cs" />
     <Compile Include="MainWindow\MainWindow.Updates.cs" />
+    <Compile Include="Helper Classes\UsageStats.cs" />
+    <Compile Include="MainWindow\MainWindow.UsageStats.cs" />
     <Compile Include="Creator Classes\PropMover.cs" />
     <Compile Include="MainWindow\MainWindow.CopyJobModes.cs" />
     <Compile Include="MainWindow\MainWindow.LoadedData.cs" />

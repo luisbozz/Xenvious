@@ -408,6 +408,7 @@ namespace Xenvious
             try
             {
                 tbMapStatus.Text = await SaveCurrentMapAsync(name);
+                UsageStats.Action("mapbackup.save");
             }
             catch (Exception ex)
             {
@@ -450,6 +451,7 @@ namespace Xenvious
                 tbMapStatus.Text = string.Format(CultureInfo.CurrentCulture,
                     TranslateOr("job_file_exported", "Exportiert: {0} ({1} KB)"), dialog.FileName, (size + 1023) / 1024);
                 Log.Info($"job file exported: {dialog.FileName}", source: "jobfile");
+                UsageStats.Action("mapbackup.export");
                 LoadMapBackupList();
             }
             catch (Exception ex)
@@ -555,6 +557,7 @@ namespace Xenvious
                 tbMapStatus.Text = string.Format(CultureInfo.CurrentCulture,
                     TranslateOr("map_loaded_whole", "Geladen: {0}. Speichern legt einen neuen Job an."), entry.Name);
                 Log.Info($"whole job loaded: {entry.File}", source: "mapbackup");
+                UsageStats.Action("mapbackup.load");
             }
             catch (Exception ex)
             {
@@ -921,6 +924,7 @@ namespace Xenvious
                 PartLabel(c.Part.Key))));
             tbMapStatus.Text = string.Format(CultureInfo.CurrentCulture, TranslateOr("map_put_in_done", "Eingespielt aus „{0}“: {1}. Job neu geladen."), entry.Name, done);
             Log.Info($"map put in: {entry.File} ({string.Join(", ", chosen.Select(c => $"{c.Part.Key} {c.Mode}"))}, links {(resetLinks ? "reset" : "kept")}, id {identity.Id ?? "new"})", source: "mapbackup");
+            UsageStats.Action("mapbackup.load");
         }
 
         private async Task PutInOldAsync(MapEntry entry, List<PutInChoice> chosen)
@@ -936,6 +940,7 @@ namespace Xenvious
                 ? string.Format(CultureInfo.CurrentCulture, TranslateOr("map_restored", "Geladen: {0}"), entry.Name)
                 : TranslateOr("map_restored_norebuild", "Daten geladen, aber der Creator hat die Map nicht neu aufgebaut (nur im Bearbeiten-Modus von Race, LTS und Capture möglich). Einmal testen oder den Job neu laden zeigt sie an.");
             Log.Info($"map restored: {entry.File} (rebuild {(rebuilt ? "ok" : "not done")})", source: "mapbackup");
+            UsageStats.Action("mapbackup.load");
         }
 
         /// <summary>

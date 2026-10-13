@@ -24,6 +24,7 @@ namespace Xenvious
         {
             if (MainWindow.m.IsProcOpen)
             {
+                UsageStats.Action("teleport.go");
                 long addr = MainWindow.m.memory(GTA.Offsets.Editor.WORLDversion, GTA.Offsets.Editor.OFFSET_player_loc).GetAddress();
                 long addr2 = MainWindow.m.memory(GTA.Offsets.Editor.WORLDversion, GTA.Offsets.Editor.OFFSET_cam_loc).GetAddress();
                 long addr3 = MainWindow.m.memory(GTA.Offsets.Editor.WORLDversion, GTA.Offsets.Editor.OFFSET_playerveh_loc).GetAddress();

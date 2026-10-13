@@ -92,6 +92,7 @@ namespace Xenvious
             try
             {
                 Log.Error($"Unhandled exception via {source}. StackTrace: {ex.StackTrace}", ex, source);
+                UsageStats.Crash(ex);
             }
             catch
             {

@@ -55,8 +55,17 @@ it covers commit messages, code style and how to test in the game.
 
 ## Privacy
 
-Xenvious collects no personal data and sends nothing about you anywhere. It
-only connects to the internet for these features:
+Xenvious collects no personal data. It connects to the internet for these
+features:
+
+- **Usage statistics** (on by default, can be turned off in Settings): a few
+  times a day, a summary per day goes to xenvious.com: a random install ID,
+  the Xenvious version, game edition and app language, how many minutes
+  Xenvious and each creator were open, how often each page and feature was
+  used, and the type of an unexpected error. No job IDs or contents, no names,
+  no paths, no times of day; the server does not store IP addresses. Turning it
+  off stops sending and deletes the counts not sent yet. Details:
+  [xenvious.com/privacy](https://xenvious.com/privacy).
 
 - **Update check** (on start, can be turned off in Settings): asks the GitHub
   API for the latest release of this repository and downloads it if you choose

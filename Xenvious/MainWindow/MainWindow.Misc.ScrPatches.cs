@@ -54,6 +54,7 @@ namespace Xenvious
                     TranslateOr, OnScrPatchToggled))
                 .OrderBy(g => ScrPatchName(g.Name), StringComparer.CurrentCultureIgnoreCase)
                 .ToList();
+            RestoreScrPatches();
             _patchesShownKey = null;
             RenderPatchesPage();
         }
@@ -340,7 +341,12 @@ namespace Xenvious
         }
 
         private Border ScrPatchCard(ScrPatchGroup group, string creator)
-            => PatchCard(ScrPatchName(group.Name), group.Description, group.Enabled, true, on => group.Enabled = on, ScrPatchChips(group, creator, false));
+            => PatchCard(ScrPatchName(group.Name), group.Description, group.Enabled, true, on =>
+            {
+                group.Enabled = on;
+                RememberScrPatch(group.Name, on);
+                UsageStats.Patch(group.Name, on);
+            }, ScrPatchChips(group, creator, false));
 
         // Per script: green = written into the running creator, yellow = on but not found in it
         // (pattern no longer matches), grey = that creator is not open (applied when opened).
@@ -578,6 +584,7 @@ namespace Xenvious
             {
                 row.Set(box.IsChecked == true);
                 RememberGamePatch(row.Key, box.IsChecked == true);
+                UsageStats.Patch(row.Key, box.IsChecked == true);
                 _patchesShownKey = null;
                 RenderPatchesPage();
             };
@@ -624,6 +631,46 @@ namespace Xenvious
             catch (Exception e)
             {
                 Log.Error("Saving game patch " + key + " failed", e, "scrpatches");
+            }
+        }
+
+        private const string ScrPatchSection = "ScrPatches";
+
+        /// <summary>
+        /// Remembers a script patch switched by hand, by its name. All are on by default, so
+        /// mostly this keeps the ones switched off off, also after a restart and after the
+        /// patch list is loaded again (which brings every entry back on).
+        /// </summary>
+        private static void RememberScrPatch(string name, bool on)
+        {
+            try
+            {
+                new ini_reader(Functions.getRoamingConfigFilePath()).Write(ScrPatchSection, name, on);
+            }
+            catch (Exception e)
+            {
+                Log.Error("Saving script patch " + name + " failed", e, "scrpatches");
+            }
+        }
+
+        // Custom funcs groups are left out: patches that call them must not run without them,
+        // and their own switches (experimental features) already decide.
+        private void RestoreScrPatches()
+        {
+            try
+            {
+                var ini = new ini_reader(Functions.getRoamingConfigFilePath());
+                foreach (var group in _scrPatchGroups.Where(g => !IsCustomFuncGroup(g)))
+                {
+                    if (!bool.TryParse(ini.ReadString(ScrPatchSection, group.Name), out bool on) || on == group.Enabled)
+                        continue;
+                    group.Enabled = on;
+                    Log.Info($"Script patch {group.Name} {(on ? "on" : "off")} (remembered)", source: "scrpatches");
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error("Restoring script patches failed", e, "scrpatches");
             }
         }
 

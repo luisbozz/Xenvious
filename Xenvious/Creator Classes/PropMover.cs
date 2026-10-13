@@ -90,6 +90,7 @@ namespace Xenvious
         {
             if (Check(toDynamic, index) != null)
                 return false;
+            UsageStats.Action("prop.move");
             var from = toDynamic ? StaticList() : DynamicList();
             var to = toDynamic ? DynamicList() : StaticList();
 

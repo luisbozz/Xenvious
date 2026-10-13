@@ -10220,6 +10220,47 @@
                                     </DockPanel>
                                 </Border>
 
+                                <!-- Anonymous usage statistics: on by default, off stops sending at once. -->
+                                <Border Style="{StaticResource DashCard}">
+                                    <DockPanel>
+                                        <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
+                                            <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[usage_header], FallbackValue=Nutzungsstatistik}"/>
+                                        </Border>
+                                        <StackPanel Margin="14,10,14,12">
+                                            <Grid Style="{StaticResource FormRow}">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="46"/>
+                                                </Grid.ColumnDefinitions>
+                                                <StackPanel>
+                                                    <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[usage_send], FallbackValue=Anonyme Nutzungsstatistik senden}"/>
+                                                    <TextBlock FontSize="12" Foreground="{DynamicResource NavMutedBrush}" TextWrapping="Wrap" Margin="0,2,0,0"
+                                                               Text="{Binding Translation[usage_send_hint], FallbackValue='Welche Seiten und Funktionen wie oft genutzt werden, ohne Job-Inhalte, Namen oder IP. Hilft, Xenvious zu verbessern.'}"/>
+                                                </StackPanel>
+                                                <CheckBox x:Name="cbsettingsusage" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbsettingsusage_Checked" Unchecked="cbsettingsusage_Checked"/>
+                                            </Grid>
+                                            <DockPanel Margin="0,6,0,0">
+                                                <Button x:Name="BtnUsageCopyId" DockPanel.Dock="Right" Style="{StaticResource FormButton}" Height="30" Padding="12,0" Click="BtnUsageCopyId_Click"
+                                                        Content="{Binding Translation[usage_copy_id], FallbackValue=Kopieren}"/>
+                                                <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" FontSize="13" Foreground="{DynamicResource NavMutedBrush}" Margin="0,0,8,0"
+                                                           Text="{Binding Translation[usage_install_id], FallbackValue=Install-ID}"/>
+                                                <TextBox x:Name="tbUsageInstallId" IsReadOnly="True" BorderThickness="0" Background="Transparent" VerticalAlignment="Center"
+                                                         FontFamily="Consolas" FontSize="12" Foreground="{DynamicResource NavMutedBrush}" Margin="0,0,10,0"/>
+                                            </DockPanel>
+                                            <TextBlock Style="{StaticResource SettingsLinkRow}" Margin="0,8,0,0">
+                                                <Hyperlink Style="{StaticResource SettingsLink}" NavigateUri="https://xenvious.com/privacy" RequestNavigate="OpenLinkSettings">
+                                                    <InlineUIContainer BaselineAlignment="Center">
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock Style="{StaticResource SettingsLinkText}" Text="{Binding Translation[usage_privacy], FallbackValue=Datenschutz ansehen}"/>
+                                                            <Path Margin="8,0,0,0" Data="M9,1 L13,1 L13,5 M13,1 L7,7 M11,9 L11,13 L1,13 L1,3 L5,3" Stroke="{DynamicResource NavMutedBrush}" StrokeThickness="1.6" Width="14" Height="14" VerticalAlignment="Center"/>
+                                                        </StackPanel>
+                                                    </InlineUIContainer>
+                                                </Hyperlink>
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </DockPanel>
+                                </Border>
+
                                 <!-- Pictures of the model catalog: kept on disk after the first view. -->
                                 <Border Style="{StaticResource DashCard}">
                                     <DockPanel>

@@ -462,6 +462,9 @@ namespace Xenvious
             OffsetLoader.Load();
             BindLoadedData();
 
+            // Before the first page opens, so the dashboard counts too.
+            UsageStats.Start();
+            ShowUsageSettings();
             MainPages.SelectedItem = PageDashboard;
 
             timercheckgta.Start();
@@ -569,6 +572,7 @@ namespace Xenvious
         private void Window_Closed(object sender, EventArgs e)
         {
             SafeConfig();
+            UsageStats.SaveAndSend();
         }
         string full_link = "";
         CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();

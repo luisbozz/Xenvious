@@ -434,6 +434,7 @@ namespace Xenvious
             _editNavEntry = entry;
             _editNavOpen.Add(entry);
             _editNavSub = sub ?? entry.Subs.FirstOrDefault(s => s.Button != null && s.Button.Visibility == Visibility.Visible);
+            CountEditNav(entry, _editNavSub);
             _openingFromNav = true;
             try
             {
@@ -488,6 +489,7 @@ namespace Xenvious
             _editNavOpen.Add(entry);
             _editNavSub = entry.Subs.FirstOrDefault(s => s.Page == page)
                 ?? entry.Subs.FirstOrDefault(s => s.Button != null && s.Button.Visibility == Visibility.Visible);
+            CountEditNav(entry, _editNavSub);
             _editNavBack = null;
             UpdateEditHeader();
             RenderEditNav();

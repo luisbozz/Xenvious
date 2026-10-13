@@ -48,6 +48,9 @@ namespace Xenvious
             };
             foreach (var (button, page) in pages)
                 button.Tag = MainPages.SelectedItem == page ? "active" : null;
+            // Only the main pages themselves: inner tab controls bubble this event up too.
+            if (e.OriginalSource == MainPages)
+                CountMainPage(MainPages.SelectedItem);
             // Not while the window is being built: the Settings controls may not exist yet.
             if (MainPages.SelectedItem == PageSettings && IsLoaded)
                 UpdateModelCacheSettings();

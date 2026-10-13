@@ -98,6 +98,8 @@ namespace Xenvious
                     null);
                 var progress = new Progress<double>(SetDialogProgress);
                 string download = await Updater.DownloadAsync(update, progress, CancellationToken.None);
+                UsageStats.Action("update.installed");
+                UsageStats.Save();
                 Updater.SwapAndRestart(download);
                 Application.Current.Shutdown();
             }

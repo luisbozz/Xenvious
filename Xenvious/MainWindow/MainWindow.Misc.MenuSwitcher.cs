@@ -36,6 +36,7 @@ namespace Xenvious
 
                 if (IsValidInt(tbmsprev.Text, false)) m.memory((addy + GTA.Offsets.Editor.OFFSET_current_creator_pre_previous_menu * 8).ToString("X")).SetInt(tbmsprev.Text);
                 if (IsValidInt(tbmscurr.Text, false)) m.memory((addy + GTA.Offsets.Editor.OFFSET_current_creator_pre_current_menu * 8).ToString("X")).SetInt(tbmscurr.Text);
+                UsageStats.Action("menuswitcher.apply");
             }
         }
 
