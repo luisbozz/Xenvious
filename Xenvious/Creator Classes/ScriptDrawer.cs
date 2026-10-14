@@ -17,7 +17,8 @@ namespace Xenvious
     /// Data page (byte offsets): 0x00 "STRING" (the text label BEGIN_TEXT_COMMAND_DISPLAY_TEXT
     /// needs), 0x08 entry count, 0x10 a heartbeat the drawer counts up every frame, 0x18 the
     /// customfuncs variables (ScriptVars), 0x800 the entries, 0x100 bytes each, 0x3800 the zone type
-    /// names for the zone labels (SetZoneNames). An entry is 8 byte slots with the value in the low 4 bytes:
+    /// names for the zone labels (SetZoneNames), 0x3F88 the teleport request (GTA.Teleport), 0x3FC8
+    /// the datafile probe (JobDatafile). An entry is 8 byte slots with the value in the low 4 bytes:
     /// 0 kind, 1 parts, 2..9 prism corners (x, y) or marker type, position and scale, 10/11 prism
     /// bottom and top, 12..16 r, g, b, fill alpha, line alpha, 17..19 label position, 20 label
     /// scale, 21..24 label r, g, b, a, 25..31 the label (56 bytes, NUL terminated).
@@ -27,7 +28,7 @@ namespace Xenvious
         public const int MaxShapes = 48;
         private const int CountAt = 0x08, BeatAt = 0x10, EntriesAt = 0x800, EntrySize = 0x100;
         // Zone type names (zonelabel in customfuncs): a count, then entries of a type and its name.
-        private const int NamesAt = 0x3800, NameEntry = 0x40, MaxNames = 31;
+        private const int NamesAt = 0x3800, NameEntry = 0x40, MaxNames = 30;
         private const int TextAt = 25 * 8, TextBytes = 56;
         private static readonly byte[] Header = Encoding.ASCII.GetBytes("STRING\0\0");
 

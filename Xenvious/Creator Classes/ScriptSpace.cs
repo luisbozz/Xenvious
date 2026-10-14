@@ -85,6 +85,12 @@ namespace Xenvious
             public List<long> Pages = new List<long>();
             /// <summary>Address of the data page (string page <see cref="DataStringPage"/>).</summary>
             public long Data;
+            /// <summary>
+            /// Whether this Xenvious process set the space up for the loaded program. When not, an
+            /// earlier session did, and its payload and the hooks that CALL into it may be of
+            /// another version: a new payload over it would move the labels under the old hooks.
+            /// </summary>
+            public bool OwnSetup;
             // A given up function: the script's own code pages, and where the payload has to end.
             internal long[] CodePages;
             internal int End;
@@ -154,6 +160,8 @@ namespace Xenvious
         public static void Reset()
         {
             scriptPack = 0;
+            lock (Gate)
+                setUp.Clear();
             if (reservations == null)
                 return;
             foreach (var r in reservations)
@@ -272,6 +280,7 @@ namespace Xenvious
                 // returns, so it never runs with the script's own string array.
                 if (!SwitchStrings(script, prog, array + StringArray, space.Data))
                     return null;
+                space.OwnSetup = setUp.Contains(prog);
 
                 long blocks = Read<long>(prog + ProgramCodeBlocks);
                 if (blocks != array)
@@ -318,7 +327,10 @@ namespace Xenvious
                     return null;
 
                 var space = new Space { Base = v.Code, End = v.Strings, Data = At(v.Data), CodePages = codePages };
-                return SwitchStrings(v.Script, prog, At(v.Strings), space.Data) ? space : null;
+                if (!SwitchStrings(v.Script, prog, At(v.Strings), space.Data))
+                    return null;
+                space.OwnSetup = setUp.Contains(prog);
+                return space;
             }
             catch (Exception ex)
             {
@@ -330,11 +342,15 @@ namespace Xenvious
         // Points the program at a string page array of our own at `array`: the script's string
         // pages, then the data page for every index up to DataStringPage. The data page starts
         // empty. Nothing to do when the program already uses that array.
+        // The programs whose string page array this process switched (and whose data page it cleared).
+        private static readonly HashSet<long> setUp = new HashSet<long>();
+
         private static bool SwitchStrings(string script, long prog, long array, long data)
         {
             long strings = Read<long>(prog + ProgramStrings);
             if (strings == array)
                 return true;
+            setUp.Add(prog);
             int stringPages = (Read<int>(prog + ProgramStringsSize) + PageSize - 1) / PageSize;
             if (stringPages >= DataStringPage)
                 return false;

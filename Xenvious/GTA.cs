@@ -20,16 +20,34 @@ namespace Xenvious
 {
     public static class GTA
     {
+        // The teleport request in the creator's data page (teleport.py in ysc-global-updater):
+        // state (1 = move), then x, y, z in one 8 byte slot each.
+        private const int TeleportState = 0x3F88, TeleportPos = 0x3F90;
+
+        /// <summary>
+        /// Moves the player (or the vehicle the player sits in) and the creator camera.
+        ///
+        /// Written into the ped's matrices, a position only holds while the creator camera keeps
+        /// the ped frozen; in a test the physics put it back. So where the customfuncs payload runs,
+        /// the script moves it with SET_ENTITY_COORDS_NO_OFFSET, as YimMenuV2 does, and only
+        /// the creator camera is written here.
+        /// </summary>
         public static void Teleport(XenVector3 vector3)
         {
             if (MainWindow.m.IsProcOpen)
             {
                 UsageStats.Action("teleport.go");
+                long addr5 = MainWindow.m.memory(GTA.Offsets.Editor.creator_camptr, GTA.Offsets.Editor.OFFSET_creator_cam_loc).GetAddress();
+                MainWindow.m.memory(addr5.ToString("X")).SetFloat(vector3.X);
+                MainWindow.m.memory((addr5 + 4).ToString("X")).SetFloat(vector3.Y);
+                MainWindow.m.memory((addr5 + 8).ToString("X")).SetFloat(vector3.Z);
+                if (RequestScriptTeleport(vector3))
+                    return;
+
                 long addr = MainWindow.m.memory(GTA.Offsets.Editor.WORLDversion, GTA.Offsets.Editor.OFFSET_player_loc).GetAddress();
                 long addr2 = MainWindow.m.memory(GTA.Offsets.Editor.WORLDversion, GTA.Offsets.Editor.OFFSET_cam_loc).GetAddress();
                 long addr3 = MainWindow.m.memory(GTA.Offsets.Editor.WORLDversion, GTA.Offsets.Editor.OFFSET_playerveh_loc).GetAddress();
                 long addr4 = MainWindow.m.memory(GTA.Offsets.Editor.WORLDversion, GTA.Offsets.Editor.OFFSET_playervehcam_loc).GetAddress();
-                long addr5 = MainWindow.m.memory(GTA.Offsets.Editor.creator_camptr, GTA.Offsets.Editor.OFFSET_creator_cam_loc).GetAddress();
 
                 MainWindow.m.memory(addr.ToString("X")).SetFloat(vector3.X);
                 MainWindow.m.memory((addr + 4).ToString("X")).SetFloat(vector3.Y);
@@ -37,9 +55,6 @@ namespace Xenvious
                 MainWindow.m.memory(addr2.ToString("X")).SetFloat(vector3.X);
                 MainWindow.m.memory((addr2 + 4).ToString("X")).SetFloat(vector3.Y);
                 MainWindow.m.memory((addr2 + 8).ToString("X")).SetFloat(vector3.Z);
-                MainWindow.m.memory(addr5.ToString("X")).SetFloat(vector3.X);
-                MainWindow.m.memory((addr5 + 4).ToString("X")).SetFloat(vector3.Y);
-                MainWindow.m.memory((addr5 + 8).ToString("X")).SetFloat(vector3.Z);
                 if (IsPlayerInVehicle())
                 {
                     MainWindow.m.memory(addr3.ToString("X")).SetFloat(vector3.X);
@@ -50,6 +65,25 @@ namespace Xenvious
                     MainWindow.m.memory((addr4 + 8).ToString("X")).SetFloat(vector3.Z);
                 }
             }
+        }
+
+        // Hands the move to the payload; false where it does not run (no creator, script
+        // features off, script loaded without its extra space or with an earlier session's payload).
+        private static bool RequestScriptTeleport(XenVector3 v)
+        {
+            string script = CurrentCreatorName();
+            if (script == "" || !ScriptVars.FeaturesOn || !ScriptSpace.Configured(script))
+                return false;
+            long page = ScrPatchesRunner.PageReady(script) ? ScriptSpace.Get(script)?.Data ?? 0 : 0;
+            if (page == 0)
+                return false;
+            var pos = new byte[24];
+            BitConverter.GetBytes(v.X).CopyTo(pos, 0);
+            BitConverter.GetBytes(v.Y).CopyTo(pos, 8);
+            BitConverter.GetBytes(v.Z).CopyTo(pos, 16);
+            MainWindow.m.memory((page + TeleportPos).ToString("X")).SetBytes(pos);
+            MainWindow.m.memory((page + TeleportState).ToString("X")).SetBytes(BitConverter.GetBytes(1L));
+            return true;
         }
 
         public static XenVector3 GetLocation()
@@ -578,35 +612,18 @@ namespace Xenvious
             {
                 public class Image
                 {
-                    public static long img = 0x0;
+                    // The JPEG's offset in the creator's photo buffer, the same in both editions
+                    // since the buffer exists; it never moved with a game update.
+                    public const long img = 0x1C;
                 }
 
                 public class Session
                 {
-                    public static long pointer = 0x0;
                     // Resolved from AOB session_ptr. Finds the struct the running binary
                     // actually uses, whichever launcher started it; 0 = pattern missing.
                     public static long patternPointer = 0x0;
-                    public static long pointer_steam = 0x0;
-                    public static long pointer_rstar = 0x0;
-                    public static long username = 0x0;
-                    public static long ticket = 0x0;
-                    public static long sessionTicketOffset = 0x0;
-                    public static long sessionKeyOffset = 0x0;
-                    public static long milliSecsToExpiryOffset = 0x0;
-                }
-
-                // Module offsets of the game's datafile array and its node vtables ([DATAFILE]).
-                public class Datafile
-                {
-                    public static long files = 0x0;
-                    public static long vt_bool = 0x0;
-                    public static long vt_int = 0x0;
-                    public static long vt_float = 0x0;
-                    public static long vt_string = 0x0;
-                    public static long vt_vec3 = 0x0;
-                    public static long vt_dict = 0x0;
-                    public static long vt_array = 0x0;
+                    // Offset of the Social Club name in that struct, the same in both editions.
+                    public const long username = 0x3CF;
                 }
 
                 public class Props
@@ -684,7 +701,6 @@ namespace Xenvious
                     public static long prpscr1_ = 0;
                     public static long prpscr2_ = 0;
                     public static long prpscr3_ = 0;
-                    public static long pror_ = 0;
                     public static long number = 0;
                     public static long NEXT = 0;
                 }
@@ -723,7 +739,6 @@ namespace Xenvious
                     public static long dptrpx = 0;
                     public static long dpsl = 0;
                     public static long dpcl = 0;
-                    public static long dptrrs = 0;
                     public static long dyipho = 0;
                     public static long dyipbtt = 0;
                     public static long dcoid = 0;
@@ -734,7 +749,6 @@ namespace Xenvious
                     public static long dynblhd = 0;
                     public static long dynblsc = 0;
                     public static long dynblpr = 0;
-                    public static long Dror_ = 0;
                     public static long number = 0;
                     public static long NEXT = 0;
                 }
@@ -766,9 +780,6 @@ namespace Xenvious
                     public static long vbs6 = 0;
                     public static long vbs7 = 0;
                     public static long vbs8 = 0;
-                    public static long vbs9 = 0;
-                    public static long vbs10 = 0;
-                    public static long vbs11 = 0;
                     public static long vbs12 = 0;   // bit 14 + team: mission critical "Auto"
                     public static long vebs = 0;
                     public static long enghp = 0;
@@ -1033,14 +1044,6 @@ namespace Xenvious
                     public static long pbs13 = 0;
                     public static long pbs14 = 0;
                     public static long pbs15 = 0;
-                    public static long pbs16 = 0;
-                    public static long pbs17 = 0;
-                    public static long pbs18 = 0;
-                    public static long pbs19 = 0;
-                    public static long pbs20 = 0;
-                    public static long pbs21 = 0;
-                    public static long pbs22 = 0;
-                    public static long pbs23 = 0;
                     public static long pbs25 = 0;   // bit 13 + team: mission critical "Auto"
                     public static long psort = 0;
                     public static long pcash = 0;
@@ -1093,15 +1096,6 @@ namespace Xenvious
                 public class PlayArea
                 {
                     public static long outbt = 0;
-                    public static long outbx = 0;
-                    public static long outby = 0;
-                    public static long outbz = 0;
-                    public static long outb1vx = 0;
-                    public static long outb1vy = 0;
-                    public static long outb1vz = 0;
-                    public static long outb2vx = 0;
-                    public static long outb2vy = 0;
-                    public static long outb2vz = 0;
                     public static long outw = 0;
                     public static long outr = 0;
                     public static long outmm = 0;
@@ -1117,37 +1111,20 @@ namespace Xenvious
                     public static long leavebs = 0;
                     public static long playbs = 0;
                     public static long spawnbs = 0;
-                    public static long spawnwhilebs = 0;
                     public static long spawnbs2 = 0;
-                    public static long spawnwhilebs2 = 0;
                     public static long wantedbs = 0;
                     public static long leavebs2 = 0;
                     public static long playbs2 = 0;
                     public static long timer2 = 0;
                     public static long wantedbs2 = 0;
-                    public static long bd2t = 0;
-                    public static long bd2vx = 0;
-                    public static long bd2vy = 0;
-                    public static long bd2vz = 0;
-                    public static long bd2v2x = 0;
-                    public static long bd2v2y = 0;
-                    public static long bd2v2z = 0;
-                    public static long bd2v1x = 0;
-                    public static long bd2v1y = 0;
-                    public static long bd2v1z = 0;
                     public static long bd2r = 0;
-                    public static long bd2w = 0;
                     public static long out2bs = 0;
-                    public static long out2mm = 0;
                     public static long out2wg = 0;
                     public static long out2iv = 0;
                     public static long out2io = 0;
                     public static long out2fp = 0;
                     public static long out2sg = 0;
                     public static long out2bh = 0;
-                    public static long out2ilv = 0;
-                    public static long out2onfv = 0;
-                    public static long out2hc = 0;
                     public static long out2et = 0;
                     public static long out2id = 0;
                     public static long NEXT = 0;
@@ -1224,8 +1201,6 @@ namespace Xenvious
                         public static long cptfrms = 0;
                         public static long chttu = 0;
                         public static long chttr = 0;
-                        public static long chtd = 0;
-                        public static long chtds = 0;
                         public static long cpwwt = 0;
                         public static long rdis = 0;
                         public static long trfmvm = 0;
@@ -1265,24 +1240,9 @@ namespace Xenvious
                 {
                     public static long published_number = 0;
                     public static long published_link = 0;
-                    public static long published_owner = 0;
                     public static long published_name = 0;
-                    public static long published_year = 0;
-                    public static long published_month = 0;
-                    public static long published_day = 0;
-                    public static long published_type = 0;
-                    public static long published_subtype = 0;
-                    public static long published_rating = 0;
-                    public static long saved_number = 0;
                     public static long saved_link = 0;
-                    public static long saved_owner = 0;
                     public static long saved_name = 0;
-                    public static long saved_year = 0;
-                    public static long saved_month = 0;
-                    public static long saved_day = 0;
-                    public static long saved_type = 0;
-                    public static long saved_subtype = 0;
-                    public static long saved_rating = 0;
                     public static long jobs_NEXT = 0;
                 }
 
@@ -1302,18 +1262,8 @@ namespace Xenvious
                     public static long WM = 0;
                     public static long WN = 0;
                     public static long WO = 0;
-                    public static long WX = 0;
-                    public static long WP = 0;
-                    public static long WQ = 0;
-                    public static long WT = 0;
-                    public static long WU = 0;
-                    public static long WAb = 0;
-                    public static long WAC = 0;
-                    public static long WAe = 0;
-                    public static long WAg = 0;
                     public static long WAj = 0;
                     public static long WAk = 0;
-                    public static long alvpor = 0;
                     public static long NEXT = 0;
                 }
 
@@ -1331,16 +1281,12 @@ namespace Xenvious
                     public static long entt = 0;
                     public static long enti = 0;
                     public static long sbr = 0;
-                    public static long sbhr = 0;
                     public static long hbr = 0;
                     public static long dbnm = 0;
                     public static long frul = 0;
                     public static long trul = 0;
-                    public static long dumsg = 0;
-                    public static long dumssg = 0;
                     public static long number = 0;
                     public static long NEXT = 0;
-                    public static long NEXT_rul = 0;
                 }
 
                 public class Doors
@@ -1380,10 +1326,6 @@ namespace Xenvious
                 {
                     public static long wave = 0;
                     public static long sbits = 0;
-                    public static long sbndsr = 0;
-                    public static long sbndsh = 0;
-                    public static long sbndsbo = 0;
-                    public static long sbndst = 0;
                 }
 
                 public class Kill
@@ -1399,7 +1341,6 @@ namespace Xenvious
                     public static long number = 0;
                     public static long NEXT = 0;
                     public static long cutscene = 0;
-                    public static long cutscene_number = 0;
                     public static long cutscene_NEXT = 0;
                 }
 
@@ -1417,9 +1358,6 @@ namespace Xenvious
 
                 public class PwrUp
                 {
-                    public static long pwrBS = 0;
-                    public static long pwrMH = 0;
-                    public static long pwrRC_ = 0;
                 }
 
                 public static long menubs = 0;
@@ -1505,9 +1443,6 @@ namespace Xenvious
                 public static string checksum_steam = "";
 
                 public static long skiptest = 0x0;
-                public static long templatefix = 0x0;
-                public static long cam_zoom = 0x0;
-                public static long cam_mode = 0x0;
                 public static long dev_steam = 0x0;
                 public static long dev_rstar = 0x0;
                 public static long dev_epic = 0x0;
@@ -1526,9 +1461,6 @@ namespace Xenvious
                 public static int[] OFFSET_playerinveh_loc;
                 public static int[] OFFSET_cam_loc;
                 public static long OFFSET_creator_cam_loc = 0x0;
-                public static long steam_accname = 0x0;
-                public static long rstar_accname = 0x0;
-                public static long epic_accname = 0x0;
                 public static long enable_murica = 0x0;
                 public static long jobid = 0x0;
                 public static long jobpublished = 0x0;
@@ -1580,7 +1512,6 @@ namespace Xenvious
                 public static long creator_quit_flag = 0;
                 public static long OFFSET_current_creator_worker_offset_menu = 0x0;
                 public static long OFFSET_current_creator_worker_offset_test_state = 0x0;
-                public static long OFFSET_current_creator_worker_heading = 0x0;
                 public static long OFFSET_current_creator_worker_pos = 0x0;
                 public static long OFFSET_current_creator_cam_heading_survival = 0x0;
                 public static long OFFSET_current_creator_cam_heading_race = 0x0;
@@ -1595,10 +1526,8 @@ namespace Xenvious
                 public static long OFFSET_current_creator_pre_capture = 0x0;
                 public static long OFFSET_current_creator_pre_lts = 0x0;
                 public static long OFFSET_current_creator_pre_mission = 0x0;
-                public static long OFFSET_current_creator_pre_menu_gm = 0x0;
                 public static long OFFSET_current_creator_pre_test1 = 0x0;
                 public static long OFFSET_current_creator_pre_test2 = 0x0;
-                public static long OFFSET_current_creator_pre_color = 0x0;
                 public static long OFFSET_current_creator_pre_category_num = 0x0;
                 public static long OFFSET_current_creator_pre_alignment = 0x0;
                 public static long OFFSET_current_creator_placement_race = 0x0;
@@ -1613,15 +1542,11 @@ namespace Xenvious
                 public static long OFFSET_precise_menu_advanced = 0x0;
                 public static long OFFSET_precise_menu_position = 0x0;
                 public static long OFFSET_precise_menu_rotation = 0x0;
-                public static long OFFSET_current_creator_pre_prop_num = 0x0;
-                public static long OFFSET_current_creator_pre_publish = 0x0;
                 public static long OFFSET_current_creator_pre_previous_menu = 0x0;
                 public static long OFFSET_current_creator_pre_current_menu = 0x0;
                 public static long OFFSET_current_creator_pre_visgroups = 0x0;
-                public static long OFFSET_current_creator_pre_idk = 0x0;
                 public static long OFFSET_current_creator_test_survival = 0x0;
                 public static long OFFSET_current_creator_test_race = 0x0;
-                public static long OFFSET_current_creator_test_dm = 0x0;
                 public static long OFFSET_current_creator_test_capture = 0x0;
                 public static long OFFSET_current_creator_test_lts = 0x0;
                 // fm_lts_creator's camera struct: f_2 is where the fly camera is rebuilt after a test.
@@ -1650,7 +1575,6 @@ namespace Xenvious
                 public static long endtest = 0;
                 public static long dec = 0;
                 public static long nm = 0;
-                public static long sztag = 0;
                 public static long start = 0;
                 public static long cordmbs = 0;
                 public static long turammo = 0;
@@ -1671,10 +1595,7 @@ namespace Xenvious
                 public static long irbs12 = 0;
                 public static long irbs13 = 0;
                 public static long irbs14 = 0;
-                public static long irbs15 = 0;
-                public static long irbs16 = 0;
                 public static long irbs_NEXT = 0;
-                public static long irfbs = 0;
                 public static long tmbts = 0;
                 public static long tmbt2 = 0;
                 public static long tmbt3 = 0;
@@ -1738,7 +1659,6 @@ namespace Xenvious
                 public static long minv2 = 0;
                 public static long minv3 = 0;
                 public static long minv4 = 0;
-                public static long mpaumxscr = 0;
                 public static long teambal = 0;
                 public static long clrovr = 0;
                 public static long nrl = 0;
@@ -1787,7 +1707,6 @@ namespace Xenvious
                 public static long weth = 0;
                 public static long tod = 0;
                 public static long traf = 0;
-                public static long trafpb = 0;
                 public static long inumbnc = 0;
                 public static long casCol = 0;
                 public static long casPat = 0;
@@ -1795,14 +1714,12 @@ namespace Xenvious
                 public static long arnTh = 0;
                 public static long arnTy = 0;
                 public static long arnLi = 0;
-                public static long anfMBS = 0;
                 public static long newausc = 0;
                 public static long ausc = 0;
                 public static long musx = 0;
                 public static long apeds = 0;
                 public static long vdm = 0;
                 public static long geard = 0;
-                public static long ofovr = 0;
                 public static long itsms = 0;
                 public static long dtn = 0;
                 public static long disar = 0;
@@ -1816,10 +1733,7 @@ namespace Xenvious
                 public static long mspdlp = 0;
                 public static long mspdsv = 0;
                 public static long fsdtmr = 0;
-                public static long frndf = 0;
                 public static long mspdmx = 0;
-                public static long vehdmro = 0;
-                public static long vehdmri = 0;
                 public static long teamrvp = 0;
                 public static long inpts = 0;
                 public static long player_number = 0;
@@ -1829,7 +1743,6 @@ namespace Xenvious
                 public static long player_veh = 0;
                 public static long player_seat = 0;
                 public static long player_team = 0;
-                public static long player_vehid = 0;
                 public static long player_ttm = 0;
                 public static long player_tspr = 0;
                 public static long player_lcet = 0;
@@ -1847,16 +1760,13 @@ namespace Xenvious
                 public static long bmspm = 0;
                 public static long bmsjd = 0;
                 public static long bmstd = 0;
-                public static long bmmph = 0;
                 public static long bmhrgn = 0;
-                public static long bmhok = 0;
                 public static long bmmdm = 0;
                 public static long beast_next = 0;
                 public static long tmvhp = 0;
                 public static long teamrvbh = 0;
                 public static long tmvds = 0;
                 public static long bdprt = 0;
-                public static long bdpst = 0;
                 public static long txt0 = 0;
                 public static long txt_NEXT = 0;
                 public static long NEXT_txt = 0;
@@ -1888,7 +1798,6 @@ namespace Xenvious
                 public static long dozn_NEXT = 0;
                 public static long dpos2 = 0;
                 public static long dpost = 0;
-                public static long dost = 0;
                 public static long drpr = 0;
                 public static long drph = 0;
                 public static long dlcrel = 0;
@@ -1905,37 +1814,20 @@ namespace Xenvious
                 public static long nrmtt = 0;
                 public static long chksfx = 0;
                 public static long alrtLocal = 0;
-                public static long dtspk = 0;
-                public static long dtspP = 0;
-                public static long entCont_Num = 0;
                 public static long creator_end = 0;
                 public static long armr = 0;
                 public static long gbtp = 0;
-                public static long gbtpm = 0;
-                public static long gbtpi = 0;
-                public static long gbtpp = 0;
-                public static long gbtp_next = 0;
-                public static long gbtp_size = 0;
                 public static long gbnum = 0;
-                public static long gbngn = 0;
-                public static long gblgn = 0;
                 public static long gbcol = 0;
                 public static long gbdel = 0;
                 public static long gbmax = 0;
-                public static long gbngm = 0;
-                public static long gbaie = 0;
                 public static long gbfnr = 0;
-                public static long gbvhl = 0;
                 public static long gacc = 0;
-                public static long gfld = 0;
                 public static long gbat = 0;
                 public static long gbv1 = 0;
                 public static long gbv2 = 0;
                 public static long gbaw = 0;
-                public static long rsgmx = 0;
                 public static long rsgng = 0;
-                public static long rsgbs = 0;
-                public static long otxsgo = 0;
                 public static long ppk = 0;
                 public static long current_team_test = 0;
                 public static long eoid = 0;
@@ -1943,12 +1835,6 @@ namespace Xenvious
                 public static long eoir = 0;
                 public static long eoep = 0;
                 public static long optbs = 0;
-                public static long musmustr = 0;
-                public static long trsrl = 0;
-                public static long trstf = 0;
-                public static long trcmn = 0;
-                public static long trsth = 0;
-                public static long trstp = 0;
                 public static long mcpbs1 = 0;
                 public static long mcpbs2 = 0;
                 public static long mcpbs3 = 0;
@@ -1961,9 +1847,6 @@ namespace Xenvious
                 public static long mcgbs1 = 0;
                 public static long mcgbs2 = 0;
                 public static long mcgbs3 = 0;
-                public static long cspnm = 0;
-                public static long csvnm = 0;
-                public static long csonm = 0;
                 public static long stpos = 0;
                 public static long pol = 0;
             }

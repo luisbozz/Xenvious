@@ -126,10 +126,26 @@ namespace Xenvious
                 && !string.IsNullOrEmpty(patch.script_name) && !string.IsNullOrEmpty(patch.bytes_to_patch);
         }
 
+        // Scripts already warned about an older payload in their space, by program.
+        private static readonly HashSet<ulong> foreignPages = new HashSet<ulong>();
+
+        // The scripts whose space holds this build's payload, from the last patch pass.
+        private static volatile HashSet<string> pagesReady = new HashSet<string>();
+
+        /// <summary>
+        /// Whether the script runs this build's customfuncs payload, so requests in its data page
+        /// (teleport, datafile probe) are answered.
+        /// </summary>
+        public static bool PageReady(string script) => pagesReady.Contains(script);
+
         /// <summary>
         /// Writes the payloads for the extra code pages and returns the scripts whose payloads are
-        /// all in. The pages are code nobody else runs, so a payload is simply written again
-        /// whenever its bytes are not there (a freshly loaded script) and never taken out.
+        /// all in. The pages are code nobody else runs, so a payload is written whenever its bytes
+        /// are not there in a space this process set up (a freshly loaded script) and never taken
+        /// out. A space an earlier Xenvious set up keeps what it has: its hooks CALL into labels of
+        /// that payload, and a new payload of another size moved them (GTA crashed in the race
+        /// creator when Xenvious started with a changed payload). Then the script runs without the
+        /// new payload until it is loaded again.
         /// </summary>
         private static HashSet<string> ApplyPagePatches(List<ScrPatches> patches)
         {
@@ -142,6 +158,14 @@ namespace Xenvious
                 int length = patch.bytes_to_patch.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Length;
                 // The payload must not run past its page's end into the next page, which is elsewhere in memory.
                 bool fits = address != 0 && space.Address(patch.page_base + patch.offset + length - 1) == address + length - 1;
+                if (fits && !space.OwnSetup && !HasBytes((ulong)address, patch.bytes_to_patch))
+                {
+                    ulong prog = ScrProgramScanner.GetScrProgramByName(patch.script_name);
+                    if (foreignPages.Add(prog))
+                        Log.Warn($"{patch.script_name}: an earlier Xenvious put another payload in; it stays until the script is loaded again (leave the creator or restart GTA)", source: "ScrPatchesRunner");
+                    missing.Add(patch.script_name);
+                    continue;
+                }
                 if (!fits || (!HasBytes((ulong)address, patch.bytes_to_patch) && !PatchScrProgramBytecode((ulong)address, patch.bytes_to_patch)))
                 {
                     missing.Add(patch.script_name);
@@ -150,6 +174,9 @@ namespace Xenvious
                 ready.Add(patch.script_name);
             }
             ready.ExceptWith(missing);
+            // The dev list has no page entries; only the list with them says which are in.
+            if (patches.Any(p => p.page))
+                pagesReady = ready;
             return ready;
         }
 
@@ -157,7 +184,7 @@ namespace Xenvious
         {
             if (patches != null && patches.Count > 0)
             {
-                var pagesReady = ApplyPagePatches(patches);
+                var ready = ApplyPagePatches(patches);
                 foreach (var patch in patches)
                 {
                     if (patch.page || !Wanted(patch))
@@ -165,7 +192,7 @@ namespace Xenvious
                         continue;
                     }
 
-                    if (patch.needs_page && !pagesReady.Contains(patch.script_name))
+                    if (patch.needs_page && !ready.Contains(patch.script_name))
                     {
                         continue;
                     }

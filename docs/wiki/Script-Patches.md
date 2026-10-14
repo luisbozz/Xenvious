@@ -75,8 +75,14 @@ payload lives in a creator function given up for it, the vehicle mod preset
 table (`[SCRIPTVICTIM]` in the legacy `offsets.ini`). The patch "give up the
 vehicle preset table" makes it return at once; one whole 16 KB page of it is
 the data page. Placed vehicles with a mod preset then look stock in the
-creator; jobs are not affected. The payload sources (custom functions,
-drawer, zone labels) and their builder are in ysc-global-updater
+creator; jobs are not affected. The payload also answers the job file export
+and import (`JobDatafile`): on request it hands over datafile 0 and a node of
+every type, so those need no addresses from the game's exe, but they need the
+experimental script features on. Xenvious only writes a payload into a space
+it set up itself: a creator still loaded with an earlier session's payload keeps
+it (its hooks CALL into that payload's labels, and a payload of another size
+moved them, which crashed GTA) until it is loaded again. The payload sources (custom functions,
+drawer, zone labels, datafile probe) and their builder are in ysc-global-updater
 (`scrpatches/scrasm/customfuncs/page/`).
 
 ## Opcode cheat sheet (GTA V YSC)
