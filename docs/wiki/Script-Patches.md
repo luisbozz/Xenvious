@@ -95,9 +95,11 @@ assembler in ysc-global-updater.
 ## When a patch breaks
 
 A pattern stops matching when Rockstar changes the instruction sequence of
-that function, not just its operands. The updater's `check_patches.py` shows
-which patches no longer match on a new build, and `repair_scrpatches.py`
-re-derives them where it can. See [Updating for a new GTA build](Game-Updates.md).
+that function, not just its operands. On an update the updater finds every
+patch again through its function (fingerprint, then instruction alignment),
+rebuilds the pattern there and carries the operands in the patch bytes; what
+changed is shown for review. `check_patches.py` and `doctor.py` remain for a
+closer look. See [Updating for a new GTA build](Game-Updates.md).
 
 A patch that matches **more than once** is as bad as none: it may write into
 the wrong function. Make patterns long enough to be unique.

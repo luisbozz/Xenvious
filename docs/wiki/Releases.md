@@ -75,8 +75,8 @@ for GTA 1.74:
 Release-As: 1.74.0
 ```
 
-1. `python3 update_xenvious.py --variant both --new <build>` in
-   ysc-global-updater refreshes `OfflineData`.
+1. `./xupdate.sh <build>` and `./xupdate.sh enhanced-<build>` in
+   ysc-global-updater refresh `OfflineData` and `Generated/`.
 2. Build and test in the game.
 3. Push `fix(offsets): support GTA build <build>`.
 4. Merge the release pull request. Users get the update on their next start.
