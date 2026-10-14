@@ -8,7 +8,7 @@ using System.Windows.Shapes;
 
 namespace Xenvious
 {
-    // Part of MainWindow: Player Settings layout (start point list, heading slider, start in a vehicle with its seat).
+    // Part of MainWindow: Player Settings layout (start point list, heading slider, start in a vehicle with its seat, spawn points tab).
     public partial class MainWindow
     {
         private ToggleButton _spFoot, _spVehicle;
@@ -68,6 +68,58 @@ namespace Xenvious
 
             HeadingSlider.Attach(tbplyrhead, () => RefreshAfterEdit(tbplyrhead));
             BuildStartChoice();
+            BuildSpawnPointsTab();
+        }
+
+        /// <summary>
+        /// "Start points | Spawn points" tabs at the front of the entry bar. The spawn points have
+        /// their own view in place of the page's cards; the team and point boxes of the bar belong
+        /// to the start points and hide with them.
+        /// </summary>
+        private void BuildSpawnPointsTab()
+        {
+            if (!(ddplyrno.Parent is FrameworkElement inner && inner.Parent is Border indexBox && indexBox.Parent is Panel right
+                && right.Parent is DockPanel barDock && barDock.Parent is Border entryBar && entryBar.Parent is DockPanel page))
+                return;
+            // Both views share the space that fills the page (the DockPanel's last child).
+            var cards = new System.Collections.Generic.List<UIElement>();
+            foreach (UIElement child in page.Children)
+                if (child != entryBar)
+                    cards.Add(child);
+            var area = new Grid();
+            foreach (var c in cards)
+            {
+                page.Children.Remove(c);
+                area.Children.Add(c);
+            }
+            var spawn = new ScrollViewer { VerticalScrollBarVisibility = ScrollBarVisibility.Auto, HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled,
+                Content = new SpawnPointsView(creatorRefresh), Visibility = Visibility.Collapsed };
+            area.Children.Add(spawn);
+            page.Children.Add(area);
+
+            var startTab = new ToggleButton { Content = TranslateOr("sp_points", "Start points"), IsChecked = true };
+            var spawnTab = new ToggleButton { Content = TranslateOr("spn_points", "Spawn points") };
+            void Show(bool spawnPoints)
+            {
+                startTab.IsChecked = !spawnPoints;
+                spawnTab.IsChecked = spawnPoints;
+                foreach (var c in cards)
+                    c.Visibility = spawnPoints ? Visibility.Collapsed : Visibility.Visible;
+                spawn.Visibility = spawnPoints ? Visibility.Visible : Visibility.Collapsed;
+                right.Visibility = spawnPoints ? Visibility.Collapsed : Visibility.Visible;
+            }
+            startTab.Click += (_, __) => Show(false);
+            spawnTab.Click += (_, __) => Show(true);
+            var tabs = new StackPanel { Orientation = Orientation.Horizontal };
+            foreach (var tab in new[] { startTab, spawnTab })
+            {
+                tab.SetResourceReference(StyleProperty, "NavTab");
+                tabs.Children.Add(tab);
+            }
+            var group = new Border { Child = tabs, VerticalAlignment = VerticalAlignment.Center };
+            group.SetResourceReference(StyleProperty, "NavGroup");
+            DockPanel.SetDock(group, Dock.Left);
+            barDock.Children.Insert(0, group);
         }
 
         private Border FindCard(FrameworkElement inside)

@@ -196,6 +196,8 @@
     <Compile Include="Controls\GroupCard.cs" />
     <Compile Include="Controls\PlayerRulesView.cs" />
     <Compile Include="Controls\StartPointsView.cs" />
+    <Compile Include="Controls\SpawnPointsView.cs" />
+    <Compile Include="Creator Classes\SpawnPoints.cs" />
     <Compile Include="Controls\InventoryView.cs" />
     <Compile Include="Controls\DummyBlipsView.cs" />
     <Compile Include="Controls\StartPointPropsView.cs" />
