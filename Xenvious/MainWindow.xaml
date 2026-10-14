@@ -2936,7 +2936,7 @@
                                                                 <Rectangle Height="1" Fill="{DynamicResource LineBrush}" VerticalAlignment="Center"/>
                                                             </DockPanel>
                                                             <local:MasonryPanel MinColumnWidth="320" Spacing="14">
-                                                                <local:SectionCard x:Name="VehLookCard" Title="{Binding Translation[card_look], FallbackValue=Look}" IsExpanded="False"
+                                                                <local:SectionCard x:Name="VehLookCard" Title="{Binding Translation[card_look], FallbackValue=Look}" IsExpanded="True"
                                                                                    Icon="M14,4 L20,10 L12,18 L6,18 L6,12 Z M4,20 L6,18">
                                                                     <StackPanel>
                                                                         <Grid>
@@ -3061,10 +3061,21 @@
                                                                             <CheckBox x:Name="cb_veh_explodeinwater" Checked="cb_veh_explodeinwater_Checked" Unchecked="cb_veh_explodeinwater_Checked" IsEnabled="False" Style="{StaticResource ChipToggle}" Content="{Binding Translation[veheiw], FallbackValue=Explode in Water}"/>
                                                                             <CheckBox x:Name="cb_veh_nottargetable" Checked="cb_veh_nottargetable_Checked" Unchecked="cb_veh_nottargetable_Checked" IsEnabled="False" Style="{StaticResource ChipToggle}" Content="{Binding Translation[nottargetable], FallbackValue=Not Targetable}"/>
                                                                             <CheckBox x:Name="cb_veh_mark" Checked="cb_veh_mark_Checked" Unchecked="cb_veh_mark_Checked" IsEnabled="False" Style="{StaticResource ChipToggle}" Content="{Binding Translation[markveh], FallbackValue=Mark Vehicle}"/>
+                                                                            <!-- Vehicle bitset (drbs, iVehBitSet) bits 16, 22, 25: MainWindow.Vehicles.cs. -->
+                                                                            <CheckBox x:Name="cb_veh_stolen" Click="cb_veh_drbs_Click" Tag="16" IsEnabled="False" Style="{StaticResource ChipToggle}" Content="{Binding Translation[veh_stolen], FallbackValue=Stolen}" ToolTip="{Binding Translation[veh_stolen_tip], FallbackValue='Behaves as a stolen vehicle when entered: wanted level.'}"/>
+                                                                            <CheckBox x:Name="cb_veh_easyexplode" Click="cb_veh_drbs_Click" Tag="22" IsEnabled="False" Style="{StaticResource ChipToggle}" Content="{Binding Translation[veh_easyexplode], FallbackValue=Explodes easily}"/>
+                                                                            <CheckBox x:Name="cb_veh_keepdeliver" Click="cb_veh_drbs_Click" Tag="25" IsEnabled="False" Style="{StaticResource ChipToggle}" Content="{Binding Translation[veh_keepdeliver], FallbackValue=Keep after delivery}" ToolTip="{Binding Translation[veh_keepdeliver_tip], FallbackValue='The vehicle is not cleaned up when it is delivered.'}"/>
                                                                         </WrapPanel>
+                                                                        <TextBlock Style="{StaticResource FieldLabel}" Margin="0,10,0,4" Text="{Binding Translation[veh_reqplayers], FallbackValue='Required players'}"/>
+                                                                        <ComboBox x:Name="ddvehreqplayers" Height="30" IsEnabled="False" SelectionChanged="ddvehreqplayers_SelectionChanged" ToolTip="{Binding Translation[veh_reqplayers_tip], FallbackValue='How many players have to be in or near the vehicle to complete a go to or leave objective.'}">
+                                                                            <ComboBoxItem Tag="0" Content="{Binding Translation[veh_req_one], FallbackValue='1 player'}"/>
+                                                                            <ComboBoxItem Tag="20" Content="{Binding Translation[veh_req_team], FallbackValue='Entire team'}"/>
+                                                                            <ComboBoxItem Tag="24" Content="{Binding Translation[veh_req_all], FallbackValue='All players'}"/>
+                                                                            <ComboBoxItem Tag="31" Content="{Binding Translation[veh_req_rule], FallbackValue='Use objective settings'}"/>
+                                                                        </ComboBox>
                                                                     </StackPanel>
                                                                 </local:SectionCard>
-                                                                <local:SectionCard x:Name="VehLocksCard" Title="{Binding Translation[card_locks], FallbackValue=Locks}" IsExpanded="False"
+                                                                <local:SectionCard x:Name="VehLocksCard" Title="{Binding Translation[card_locks], FallbackValue=Locks}" IsExpanded="True"
                                                                                    Icon="M5,11 L19,11 L19,20 L5,20 Z M8,11 L8,8 A4,4 0 0 1 16,8 L16,11">
                                                                     <StackPanel>
                                                                         <WrapPanel>
@@ -3079,7 +3090,7 @@
                                                                         <TextBlock FontSize="12" Foreground="{DynamicResource FaintTextBrush}" TextWrapping="Wrap" Margin="0,4,0,0" Text="{Binding Translation[locks_hint], FallbackValue='Marked team = locked for that team.'}"/>
                                                                     </StackPanel>
                                                                 </local:SectionCard>
-                                                                <local:SectionCard x:Name="VehDoorsCard" Title="{Binding Translation[card_doors], FallbackValue=Doors}" IsExpanded="False"
+                                                                <local:SectionCard x:Name="VehDoorsCard" Title="{Binding Translation[card_doors], FallbackValue=Doors}" IsExpanded="True"
                                                                                    Icon="M6,21 L6,4 L16,4 L18,6 L18,21 M6,21 L20,21 M13,13 L15,13">
                                                                     <StackPanel>
                                                                         <Grid Margin="0,0,0,8">

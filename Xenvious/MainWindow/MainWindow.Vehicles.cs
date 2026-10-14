@@ -176,6 +176,10 @@ namespace Xenvious
             cb_veh_nottargetable.IsEnabled = index < 0 ? false : true;
             cb_veh_box.IsEnabled = index < 0 ? false : true;
             cb_veh_blipoff.IsEnabled = index < 0 ? false : true;
+            cb_veh_stolen.IsEnabled = index >= 0;
+            cb_veh_easyexplode.IsEnabled = index >= 0;
+            cb_veh_keepdeliver.IsEnabled = index >= 0;
+            ddvehreqplayers.IsEnabled = index >= 0;
             cb_veh_explodeinwater.IsEnabled = index < 0 ? false : true;
             cb_veh_lockteam1.IsEnabled = index < 0 ? false : true;
             cb_veh_lockteam2.IsEnabled = index < 0 ? false : true;
@@ -340,6 +344,15 @@ namespace Xenvious
                 Functions.Read.checkbinary(17, GTA.Offsets.Editor.Vehicle.vbs6 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_mark);
                 Functions.Read.checkbinary(9, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_box);
                 Functions.Read.checkbinary(15, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_blipoff);
+                long drbs = GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT;
+                foreach (var box in new[] { cb_veh_stolen, cb_veh_easyexplode, cb_veh_keepdeliver })
+                    Functions.Read.checkbinary(int.Parse((string)box.Tag), drbs, box);
+                if (!ddvehreqplayers.IsDropDownOpen)
+                {
+                    _vehReqSync = true;
+                    ddvehreqplayers.SelectedIndex = Functions.Read.checkbinary(20, drbs) ? 1 : Functions.Read.checkbinary(24, drbs) ? 2 : Functions.Read.checkbinary(31, drbs) ? 3 : 0;
+                    _vehReqSync = false;
+                }
                 Functions.Read.checkbinary(6, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_lights);
                 Functions.Read.checkbinary(7, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_locveh);
                 Functions.Read.checkbinary(13, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_locvehforp);
@@ -527,6 +540,29 @@ namespace Xenvious
         private void cb_veh_box_Checked(object sender, RoutedEventArgs e)
         {
             Functions.Write.writebinary(9, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_box);
+        }
+
+        // Vehicle bitset switches whose bit is in Tag: 16 stolen, 22 easy exploder, 25 no clean up on
+        // delivery (ciFMMC_VEHICLE_STOLEN / _EASYEXPLODER / _DONTCLEANUPONDELIVER).
+        private void cb_veh_drbs_Click(object sender, RoutedEventArgs e)
+        {
+            var box = (CheckBox)sender;
+            if (ddvehno.SelectedIndex >= 0)
+                Functions.Write.writebinary(int.Parse((string)box.Tag), GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, box);
+        }
+
+        private bool _vehReqSync;
+
+        // "Required Players" of the Mission Creator's Go To & Leave menu (PMCT_ENT_TAL): one of the
+        // vehicle bits 20 (entire team), 24 (all players), 31 (objective settings), none = 1 player.
+        private void ddvehreqplayers_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_vehReqSync || ddvehno.SelectedIndex < 0 || !(ddvehreqplayers.SelectedItem is ComboBoxItem item))
+                return;
+            int bit = int.Parse((string)item.Tag);
+            long drbs = GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT;
+            foreach (int option in new[] { 20, 24, 31 })
+                Functions.Write.writebinary(option, drbs, option == bit);
         }
 
         // "Blip off" of the creator's vehicle blip menu: bit 15 of the vehicle bitset (FMMC_BLIPOFF).
