@@ -526,8 +526,8 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="auto" MaxWidth="200"/>
                         <ColumnDefinition Width="auto" MaxWidth="200"/>
-                        <ColumnDefinition Width="50"/>
-                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="46"/>
+                        <ColumnDefinition Width="46"/>
                     </Grid.ColumnDefinitions>
 
                     <Grid>
@@ -631,12 +631,12 @@
                     </Grid>
 
 
-                    <Button x:Name="BtnMinimize" Grid.Column="4" Style="{DynamicResource TitleBarButton}" Click="BtnMinimize_Click" WindowChrome.IsHitTestVisibleInChrome="True" >
-                        <Path x:Name="minimizepath"  Data="M 0 0 L 6 6 L 12 0 Z" Stretch="Uniform" Stroke="{DynamicResource TextColor}" Margin="7"/>
+                    <Button x:Name="BtnMinimize" Grid.Column="4" Style="{StaticResource WindowCaptionButton}" Click="BtnMinimize_Click" WindowChrome.IsHitTestVisibleInChrome="True">
+                        <Path Data="M0,0.5 L10,0.5" Width="10" Height="1" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1"/>
                     </Button>
 
-                    <Button x:Name="BtnClose" Grid.Column="5" Style="{DynamicResource TitleBarButton}" Click="BtnClose_Click" WindowChrome.IsHitTestVisibleInChrome="True">
-                        <Path x:Name="closepath" Data="M0,0 L1,1 M0,1 L1,0" Stretch="Uniform" Stroke="{DynamicResource TextColor}" Margin="7"/>
+                    <Button x:Name="BtnClose" Grid.Column="5" Tag="close" Style="{StaticResource WindowCaptionButton}" Click="BtnClose_Click" WindowChrome.IsHitTestVisibleInChrome="True">
+                        <Path Data="M0.5,0.5 L9.5,9.5 M0.5,9.5 L9.5,0.5" Width="10" Height="10" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1"/>
                     </Button>
 
 

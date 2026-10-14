@@ -55,4 +55,50 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <!-- Minimize and close of the window, Windows 11 look: full-height fields at the window edge,
+         thin line icons, hover fills the whole field. The hover tint is the text colour at low opacity,
+         so it shows on light and dark themes. Close turns red so it is not hit by mistake. -->
+    <Style x:Key="WindowCaptionButton" TargetType="{x:Type Button}">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid Background="Transparent">
+                        <Border x:Name="tint" Background="{DynamicResource TextColor}" Opacity="0"/>
+                        <Border x:Name="red" Background="#E5484D" Opacity="0"/>
+                        <ContentPresenter x:Name="content" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.75"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="tint" Property="Opacity" Value="0.08"/>
+                            <Setter TargetName="content" Property="Opacity" Value="1"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="tint" Property="Opacity" Value="0.14"/>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Tag" Value="close"/>
+                                <Condition Property="IsMouseOver" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="tint" Property="Opacity" Value="0"/>
+                            <Setter TargetName="red" Property="Opacity" Value="1"/>
+                            <Setter Property="Foreground" Value="White"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Tag" Value="close"/>
+                                <Condition Property="IsPressed" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="red" Property="Opacity" Value="0.8"/>
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>
