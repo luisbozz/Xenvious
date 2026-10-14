@@ -315,7 +315,7 @@ namespace Xenvious
             if (type != null)
                 lblzonetypeinfo.Text = TranslateOr("zt_desc_" + type.Id, type.Description);
             else if (known)
-                lblzonetypeinfo.Text = string.Format(TranslateOr("zt_unknown", "Type {0} is newer than Rockstar's source (types 0 to 78); its name and effect are unknown."), id);
+                lblzonetypeinfo.Text = string.Format(TranslateOr("zt_unknown", "Type {0} has no name in Rockstar's source or the Mission Creator; what it does is not known yet."), id);
             else
                 lblzonetypeinfo.Text = TranslateOr("zt_pick", "Pick a zone type to see what it does.");
 
