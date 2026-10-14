@@ -74,7 +74,7 @@ namespace Xenvious
                     int width = rect.Right - rect.Left, height = rect.Bottom - rect.Top;
                     if (width <= 0 || height <= 0)
                         return null;
-                    FocusGame();
+                    FocusGame(window);
                     // The game needs a few frames to draw again after it got the focus back.
                     await Task.Delay(600);
                     BitmapSource shot;
@@ -106,6 +106,28 @@ namespace Xenvious
 
         [DllImport("gdi32.dll")]
         private static extern bool DeleteObject(IntPtr handle);
+
+        [DllImport("user32.dll")]
+        private static extern bool SetForegroundWindow(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        [DllImport("user32.dll")]
+        private static extern bool IsIconic(IntPtr hWnd);
+
+        private const int SW_RESTORE = 9;
+
+        /// <summary>
+        /// Brings the game window to the front. Windows only allows this to the process
+        /// that has the focus, which Xenvious has right after its button was clicked.
+        /// </summary>
+        private static void FocusGame(IntPtr window)
+        {
+            if (IsIconic(window))
+                ShowWindow(window, SW_RESTORE);
+            SetForegroundWindow(window);
+        }
 
         /// <summary>Starts the race creator's test like its menu does (primary or secondary checkpoints).</summary>
         public void StartRaceTest(bool secondary)
