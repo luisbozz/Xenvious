@@ -377,9 +377,13 @@ namespace Xenvious
             body.Children.Add(VectorRow("CP", _pos, IconButton(T("cp_tocursor", "Set to the creator cursor"), CursorIcon, () => ToCursor(_pos))));
             _heading[0] = Box(v => RaceCheckpoints.SetFloat(RaceCheckpoints.HeadingField(Secondary), Index, v));
             body.Children.Add(Field("heading", "Heading", _heading[0]));
-            // Slider 0-360° beside the box, like the other heading fields; the creator shows the
-            // new heading after its refresh.
-            HeadingSlider.Attach(_heading[0], () => MainWindow.Instance?.creatorRefresh());
+            // Slider 0-360° beside the box, like the other heading fields. Every write redraws the
+            // point (RaceCheckpoints.Changed); a rebuild only when the creator's list is unknown.
+            HeadingSlider.Attach(_heading[0], () =>
+            {
+                if (!EntityMover.RefreshCheckpoints(new[] { Index }))
+                    MainWindow.Instance?.creatorRefresh();
+            });
             return Card("cp_position", "Position", body);
         }
 

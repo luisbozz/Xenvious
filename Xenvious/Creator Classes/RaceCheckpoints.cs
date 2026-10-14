@@ -91,9 +91,41 @@ namespace Xenvious
         private static long At(long field, int index) => field + index * Checkpoints.NEXT;
 
         public static float GetFloat(long field, int index) => new Global(At(field, index)).Get<float>();
-        public static void SetFloat(long field, int index, float value) { if (Ready && field != 0) new Global(At(field, index)).SetFloat(value); }
+        public static void SetFloat(long field, int index, float value) { if (Ready && field != 0) { new Global(At(field, index)).SetFloat(value); Changed(index); } }
         public static int GetInt(long field, int index) => new Global(At(field, index)).Get<int>();
-        public static void SetInt(long field, int index, int value) { if (Ready && field != 0) new Global(At(field, index)).SetInt(value); }
+        public static void SetInt(long field, int index, int value) { if (Ready && field != 0) { new Global(At(field, index)).SetInt(value); Changed(index); } }
+
+        // Points written since the last redraw. The creator draws a changed position by itself;
+        // size, type, heading and flags only show once its marker is made again (EntityMover).
+        private static readonly HashSet<int> Pending = new HashSet<int>();
+        private static System.Windows.Threading.DispatcherTimer _redraw;
+
+        private static void Changed(int index)
+        {
+            var ui = System.Windows.Application.Current?.Dispatcher;
+            if (ui == null)
+                return;
+            if (!ui.CheckAccess())
+            {
+                ui.BeginInvoke(new Action(() => Changed(index)));
+                return;
+            }
+            Pending.Add(index);
+            if (_redraw == null)
+            {
+                // One redraw for a burst of writes (a position is three, a slider many).
+                _redraw = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromMilliseconds(40) };
+                _redraw.Tick += (_, __) =>
+                {
+                    _redraw.Stop();
+                    var points = new List<int>(Pending);
+                    Pending.Clear();
+                    EntityMover.RefreshCheckpoints(points);
+                };
+            }
+            _redraw.Stop();
+            _redraw.Start();
+        }
 
         // ----- fields of one point -----
 
