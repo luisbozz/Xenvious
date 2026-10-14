@@ -84,9 +84,11 @@ namespace Xenvious
                     return;
                 }
 
+                var previous = _Translation;
                 _Translation = value;
                 OnPropertyChanged();
                 AdvancedPropPlacementVm?.RefreshTexts();
+                RetranslateCodeTexts(previous, value);
             }
         }
 

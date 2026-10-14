@@ -479,6 +479,7 @@
     <Compile Include="MainWindow\MainWindow.Misc.ScrPatches.cs" />
     <Compile Include="MainWindow\MainWindow.GameConnection.cs" />
     <Compile Include="MainWindow\MainWindow.Misc.cs" />
+    <Compile Include="MainWindow\MainWindow.LanguageRefresh.cs" />
     <Compile Include="MainWindow\MainWindow.Mission.Blips.cs" />
     <Compile Include="MainWindow\MainWindow.Mission.Extras.cs" />
     <Compile Include="MainWindow\MainWindow.Mission.Gang.cs" />

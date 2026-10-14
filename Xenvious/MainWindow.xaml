@@ -10152,12 +10152,12 @@
                                                 </Grid.ColumnDefinitions>
                                                 <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[settingsloglevel], FallbackValue=Log Level}"/>
                                                 <ComboBox x:Name="ddsettingsloglevel" Grid.Column="1" Height="30" SelectionChanged="ddsettingsloglevel_SelectionChanged">
-                                                    <ComboBoxItem Content="Trace"/>
-                                                    <ComboBoxItem Content="Debug"/>
-                                                    <ComboBoxItem Content="Info"/>
-                                                    <ComboBoxItem Content="Warn" Selector.IsSelected="True"/>
-                                                    <ComboBoxItem Content="Error"/>
-                                                    <ComboBoxItem Content="Fatal"/>
+                                                    <ComboBoxItem Tag="Trace" Content="{Binding Translation[loglevel_trace], FallbackValue=Trace}"/>
+                                                    <ComboBoxItem Tag="Debug" Content="{Binding Translation[loglevel_debug], FallbackValue=Debug}"/>
+                                                    <ComboBoxItem Tag="Info" Content="{Binding Translation[loglevel_info], FallbackValue=Info}"/>
+                                                    <ComboBoxItem Tag="Warn" Content="{Binding Translation[loglevel_warn], FallbackValue=Warn}" Selector.IsSelected="True"/>
+                                                    <ComboBoxItem Tag="Error" Content="{Binding Translation[loglevel_error], FallbackValue=Error}"/>
+                                                    <ComboBoxItem Tag="Fatal" Content="{Binding Translation[loglevel_fatal], FallbackValue=Fatal}"/>
                                                 </ComboBox>
                                             </Grid>
                                             <Grid Style="{StaticResource FormRow}">
