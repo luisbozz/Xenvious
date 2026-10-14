@@ -66,7 +66,8 @@ active**; otherwise the creator calls into bytecode that is not there and GTA
 crashes.
 
 On Enhanced the creators load with extra 16 KB pages behind their code
-(`Creator Classes/ScriptSpace.cs`, `[SCRIPTSPACE]` in `offsets.ini`). The
+(`Creator Classes/ScriptSpace.cs`, `[SCRIPTSPACE]` in `offsets.ini`, which
+the updater computes from the page flags of the build's `.ysc`). The
 custom functions and the shape drawer (`ScriptDrawer`) run from the first
 extra page; the last one is a data page the script reaches as string page 63,
 and it holds the variables. Legacy resources cannot grow, so there the same
