@@ -9,6 +9,8 @@ namespace Xenvious
     public partial class MainWindow
     {
         // Written by the WSL build script (xrebuild); "close" or "later" is the answer it waits for.
+        // "xrebuild --force" writes "force": Xenvious closes without asking, as nobody may be at the
+        // PC, and the script cannot end it itself (Xenvious runs elevated).
         private static readonly string RebuildRequestFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Xenvious", "rebuild.request");
         private static readonly string RebuildAnswerFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Xenvious", "rebuild.answer");
 
@@ -38,7 +40,16 @@ namespace Xenvious
 
         private async void AskForRebuild()
         {
-            if (_rebuildAsking || !File.Exists(RebuildRequestFile))
+            if (!File.Exists(RebuildRequestFile))
+                return;
+            if (RebuildForced())
+            {
+                AnswerRebuild(true);
+                Log.Info("rebuild with --force: closing", source: "startup");
+                Close();
+                return;
+            }
+            if (_rebuildAsking)
                 return;
             _rebuildAsking = true;
             try
@@ -53,21 +64,39 @@ namespace Xenvious
                 bool close = await ConfirmAsync(TranslateOr("rebuild_title", "New build"),
                     TranslateOr("rebuild_msg", "A rebuild is waiting. Close Xenvious now? Start the new version afterwards."),
                     TranslateOr("rebuild_close", "Close"), TranslateOr("rebuild_later", "Later"));
-                try
-                {
-                    File.Delete(RebuildRequestFile);
-                    File.WriteAllText(RebuildAnswerFile, close ? "close" : "later");
-                }
-                catch (IOException)
-                {
-                    // The script times out on its own if the answer cannot be written.
-                }
+                AnswerRebuild(close);
                 if (close)
                     Close();
             }
             finally
             {
                 _rebuildAsking = false;
+            }
+        }
+
+        private static bool RebuildForced()
+        {
+            try
+            {
+                return File.ReadAllText(RebuildRequestFile).Contains("force");
+            }
+            catch (IOException)
+            {
+                // Still being written; the watcher fires again when it is done.
+                return false;
+            }
+        }
+
+        private static void AnswerRebuild(bool close)
+        {
+            try
+            {
+                File.Delete(RebuildRequestFile);
+                File.WriteAllText(RebuildAnswerFile, close ? "close" : "later");
+            }
+            catch (IOException)
+            {
+                // The script times out on its own if the answer cannot be written.
             }
         }
     }
