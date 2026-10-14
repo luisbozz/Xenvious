@@ -182,7 +182,7 @@ namespace Xenvious
                 {
                     ddActorweap.SelectedIndex = -1;
                 }
-                Functions.Read.checkbinary(13, GTA.Offsets.Editor.Actor.pbs6 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactortacticlelight);
+                Functions.Read.checkbinary(12, GTA.Offsets.Editor.Actor.pbs6 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactortacticlelight);
                 ddActoridle.SelectedIndex = new Global((GTA.Offsets.Editor.Actor.iaim + GTA.Offsets.Editor.Actor.NEXT * index)).Get<int>();
                 ddActorrsp.SelectedIndex = new Global((GTA.Offsets.Editor.Actor.rsp + GTA.Offsets.Editor.Actor.NEXT * index)).Get<int>();
                 ddActoraccu.SelectedIndex = SwitchActorAccuracy2();
@@ -218,25 +218,25 @@ namespace Xenvious
                     }
                 }
 
-                Functions.Read.checkbinary(21, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactordiw);
-                Functions.Read.checkbinary(1, GTA.Offsets.Editor.Actor.whost + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorwh);
-                Functions.Read.checkbinary(4, GTA.Offsets.Editor.Actor.pbs5 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorie);
-                Functions.Read.checkbinary(7, GTA.Offsets.Editor.Actor.pbs5 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorddb);
-                Functions.Read.checkbinary(17, GTA.Offsets.Editor.Actor.pbs4 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactords);
-                Functions.Read.checkbinary(32, GTA.Offsets.Editor.Actor.pbs4 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorfgf);
-                Functions.Read.checkbinary(1, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorstationary);
-                Functions.Read.checkbinary(2, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorfmdc);
-                Functions.Read.checkbinary(3, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorroav);
-                Functions.Read.checkbinary(28, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorantifall);
-                Functions.Read.checkbinary(8, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorblipoff);
-                Functions.Read.checkbinary(13, GTA.Offsets.Editor.Actor.pbs5 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorcantleaveveh);
-                Functions.Read.checkbinary(14, GTA.Offsets.Editor.Actor.pbs14 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorcanttarget);
-                Functions.Read.checkbinary(32, GTA.Offsets.Editor.Actor.pbs8 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactordiswd);
-                Functions.Read.checkbinary(23, GTA.Offsets.Editor.Actor.pbs8 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorremarmor);
-                Functions.Read.checkbinary(7, GTA.Offsets.Editor.Actor.pbs15 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorspd);
-                Functions.Read.checkbinary(13, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorivc);
-                Functions.Read.checkbinary(12, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorspwnrlivc);
-                Functions.Read.checkbinary(27, GTA.Offsets.Editor.Actor.pbs8 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorrespawnrlivc);
+                Functions.Read.checkbinary(20, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactordiw);
+                Functions.Read.checkbinary(0, GTA.Offsets.Editor.Actor.whost + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorwh);
+                Functions.Read.checkbinary(3, GTA.Offsets.Editor.Actor.pbs5 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorie);
+                Functions.Read.checkbinary(6, GTA.Offsets.Editor.Actor.pbs5 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorddb);
+                Functions.Read.checkbinary(16, GTA.Offsets.Editor.Actor.pbs4 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactords);
+                Functions.Read.checkbinary(31, GTA.Offsets.Editor.Actor.pbs4 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorfgf);
+                Functions.Read.checkbinary(0, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorstationary);
+                Functions.Read.checkbinary(1, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorfmdc);
+                Functions.Read.checkbinary(2, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorroav);
+                Functions.Read.checkbinary(27, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorantifall);
+                Functions.Read.checkbinary(7, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorblipoff);
+                Functions.Read.checkbinary(12, GTA.Offsets.Editor.Actor.pbs5 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorcantleaveveh);
+                Functions.Read.checkbinary(13, GTA.Offsets.Editor.Actor.pbs14 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorcanttarget);
+                Functions.Read.checkbinary(31, GTA.Offsets.Editor.Actor.pbs8 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactordiswd);
+                Functions.Read.checkbinary(22, GTA.Offsets.Editor.Actor.pbs8 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorremarmor);
+                Functions.Read.checkbinary(6, GTA.Offsets.Editor.Actor.pbs15 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorspd);
+                Functions.Read.checkbinary(12, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorivc);
+                Functions.Read.checkbinary(11, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorspwnrlivc);
+                Functions.Read.checkbinary(26, GTA.Offsets.Editor.Actor.pbs8 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorrespawnrlivc);
 
 
                 if (new Global((GTA.Offsets.Editor.Actor.weapon_model + GTA.Offsets.Editor.Actor.NEXT * index)).Get<int>() == -1569615261)
@@ -252,17 +252,17 @@ namespace Xenvious
                     }
                 }
 
-                Functions.Read.checkbinary(16, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactoractvloop);
-                Functions.Read.checkbinary(14, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactoractvhadest);
-                Functions.Read.checkbinary(15, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactoractvradest);
-                Functions.Read.checkbinary(10, GTA.Offsets.Editor.Actor.pbs13 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactoractvrpadest);
-                Functions.Read.checkbinary(24, GTA.Offsets.Editor.Actor.pbs4 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorbulletproof);
-                Functions.Read.checkbinary(25, GTA.Offsets.Editor.Actor.pbs4 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorfireproof);
-                Functions.Read.checkbinary(26, GTA.Offsets.Editor.Actor.pbs4 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorexplosionproof);
-                Functions.Read.checkbinary(27, GTA.Offsets.Editor.Actor.pbs4 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorcollisionproof);
-                Functions.Read.checkbinary(28, GTA.Offsets.Editor.Actor.pbs4 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactormeeleproof);
-                Functions.Read.checkbinary(29, GTA.Offsets.Editor.Actor.pbs4 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorsteamproof);
-                Functions.Read.checkbinary(30, GTA.Offsets.Editor.Actor.pbs4 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactordrowningproof);
+                Functions.Read.checkbinary(15, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactoractvloop);
+                Functions.Read.checkbinary(13, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactoractvhadest);
+                Functions.Read.checkbinary(14, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactoractvradest);
+                Functions.Read.checkbinary(9, GTA.Offsets.Editor.Actor.pbs13 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactoractvrpadest);
+                Functions.Read.checkbinary(23, GTA.Offsets.Editor.Actor.pbs4 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorbulletproof);
+                Functions.Read.checkbinary(24, GTA.Offsets.Editor.Actor.pbs4 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorfireproof);
+                Functions.Read.checkbinary(25, GTA.Offsets.Editor.Actor.pbs4 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorexplosionproof);
+                Functions.Read.checkbinary(26, GTA.Offsets.Editor.Actor.pbs4 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorcollisionproof);
+                Functions.Read.checkbinary(27, GTA.Offsets.Editor.Actor.pbs4 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactormeeleproof);
+                Functions.Read.checkbinary(28, GTA.Offsets.Editor.Actor.pbs4 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorsteamproof);
+                Functions.Read.checkbinary(29, GTA.Offsets.Editor.Actor.pbs4 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactordrowningproof);
 
                 if (ddactorteamrlprio.SelectedIndex > -1)
                 {
@@ -571,57 +571,57 @@ namespace Xenvious
         // "Blip off" of the creator's actor blip menu: bit 7 of the actor bitset (FMMC_BLIPOFF).
         private void cbactorblipoff_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(8, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorblipoff);
+            Functions.Write.writebinary(7, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorblipoff);
         }
 
         private void cbactorantifall_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(28, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorantifall);
+            Functions.Write.writebinary(27, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorantifall);
         }
 
         private void cbactorddb_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(7, GTA.Offsets.Editor.Actor.pbs5 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorddb);
+            Functions.Write.writebinary(6, GTA.Offsets.Editor.Actor.pbs5 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorddb);
         }
 
         private void cbactordiw_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(21, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactordiw);
+            Functions.Write.writebinary(20, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactordiw);
         }
 
         private void cbactords_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(17, GTA.Offsets.Editor.Actor.pbs4 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactords);
+            Functions.Write.writebinary(16, GTA.Offsets.Editor.Actor.pbs4 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactords);
         }
 
         private void cbactorfgf_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(32, GTA.Offsets.Editor.Actor.pbs4 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorfgf);
+            Functions.Write.writebinary(31, GTA.Offsets.Editor.Actor.pbs4 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorfgf);
         }
 
         private void cbactorie_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(19, GTA.Offsets.Editor.Actor.pbs5 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorie);
+            Functions.Write.writebinary(18, GTA.Offsets.Editor.Actor.pbs5 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorie);
         }
 
         private void cbactorfmdc_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(2, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorfmdc);
+            Functions.Write.writebinary(1, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorfmdc);
         }
 
         private void cbactorroav_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(3, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorroav);
+            Functions.Write.writebinary(2, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorroav);
         }
 
         private void cbactorstationary_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(1, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorstationary);
+            Functions.Write.writebinary(0, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorstationary);
         }
 
         private void cbactorwh_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(1, GTA.Offsets.Editor.Actor.whost + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorwh);
+            Functions.Write.writebinary(0, GTA.Offsets.Editor.Actor.whost + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorwh);
         }
 
         private void Btnactorgetlocgoto_Click(object sender, RoutedEventArgs e)
@@ -839,52 +839,52 @@ namespace Xenvious
 
         private void cbactorcentleaveveh_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(13, GTA.Offsets.Editor.Actor.pbs5 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorcantleaveveh);
+            Functions.Write.writebinary(12, GTA.Offsets.Editor.Actor.pbs5 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorcantleaveveh);
         }
 
         private void cbactorbulletproof_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(24, GTA.Offsets.Editor.Actor.pbs4 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorbulletproof);
+            Functions.Write.writebinary(23, GTA.Offsets.Editor.Actor.pbs4 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorbulletproof);
         }
 
         private void cbactorfireproof_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(25, GTA.Offsets.Editor.Actor.pbs4 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorfireproof);
+            Functions.Write.writebinary(24, GTA.Offsets.Editor.Actor.pbs4 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorfireproof);
         }
 
         private void cbactorexplosionproof_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(26, GTA.Offsets.Editor.Actor.pbs4 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorexplosionproof);
+            Functions.Write.writebinary(25, GTA.Offsets.Editor.Actor.pbs4 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorexplosionproof);
         }
 
         private void cbactorcollisionproof_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(27, GTA.Offsets.Editor.Actor.pbs4 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorcollisionproof);
+            Functions.Write.writebinary(26, GTA.Offsets.Editor.Actor.pbs4 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorcollisionproof);
         }
 
         private void cbactormeeleproof_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(28, GTA.Offsets.Editor.Actor.pbs4 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactormeeleproof);
+            Functions.Write.writebinary(27, GTA.Offsets.Editor.Actor.pbs4 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactormeeleproof);
         }
 
         private void cbactorsteamproof_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(29, GTA.Offsets.Editor.Actor.pbs4 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorsteamproof);
+            Functions.Write.writebinary(28, GTA.Offsets.Editor.Actor.pbs4 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorsteamproof);
         }
 
         private void cbactordrowningproof_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(30, GTA.Offsets.Editor.Actor.pbs4 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactordrowningproof);
+            Functions.Write.writebinary(29, GTA.Offsets.Editor.Actor.pbs4 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactordrowningproof);
         }
 
         private void cbactorcanttarget_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(14, GTA.Offsets.Editor.Actor.pbs14 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorcanttarget);
+            Functions.Write.writebinary(13, GTA.Offsets.Editor.Actor.pbs14 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorcanttarget);
         }
 
         private void cbactortacticlelight_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(13, GTA.Offsets.Editor.Actor.pbs6 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactortacticlelight);
+            Functions.Write.writebinary(12, GTA.Offsets.Editor.Actor.pbs6 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactortacticlelight);
         }
 
 
@@ -936,7 +936,7 @@ namespace Xenvious
 
         private void cbactoractvloop_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(16, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactoractvloop);
+            Functions.Write.writebinary(15, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactoractvloop);
         }
 
         private void tbactorjtof_TextChanged(object sender, TextChangedEventArgs e)
@@ -1166,17 +1166,17 @@ namespace Xenvious
 
         private void cbactordiswd_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(32, GTA.Offsets.Editor.Actor.pbs8 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactordiswd);
+            Functions.Write.writebinary(31, GTA.Offsets.Editor.Actor.pbs8 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactordiswd);
         }
 
         private void cbactorremarmor_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(23, GTA.Offsets.Editor.Actor.pbs8 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorremarmor);
+            Functions.Write.writebinary(22, GTA.Offsets.Editor.Actor.pbs8 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorremarmor);
         }
 
         private void cbactorspd_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(7, GTA.Offsets.Editor.Actor.pbs15 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorspd);
+            Functions.Write.writebinary(6, GTA.Offsets.Editor.Actor.pbs15 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorspd);
         }
 
         private void tbactorpedcr_TextChanged(object sender, TextChangedEventArgs e)
@@ -1197,22 +1197,22 @@ namespace Xenvious
 
         private void cbactorivc_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(13, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorivc);
+            Functions.Write.writebinary(12, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorivc);
         }
 
         private void cbactoractvhadest_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(14, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactoractvhadest);
+            Functions.Write.writebinary(13, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactoractvhadest);
         }
 
         private void cbactoractvradest_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(15, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactoractvradest);
+            Functions.Write.writebinary(14, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactoractvradest);
         }
 
         private void cbactoractvrpadest_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(10, GTA.Offsets.Editor.Actor.pbs13 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactoractvrpadest);
+            Functions.Write.writebinary(9, GTA.Offsets.Editor.Actor.pbs13 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactoractvrpadest);
         }
 
         private void tbactoractvvehspeed_TextChanged(object sender, TextChangedEventArgs e)
@@ -1230,12 +1230,12 @@ namespace Xenvious
 
         private void cbactorrespawnrlivc_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(27, GTA.Offsets.Editor.Actor.pbs8 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorrespawnrlivc);
+            Functions.Write.writebinary(26, GTA.Offsets.Editor.Actor.pbs8 + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorrespawnrlivc);
         }
 
         private void cbactorspwnrlivc_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(12, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorspwnrlivc);
+            Functions.Write.writebinary(11, GTA.Offsets.Editor.Actor.pedbs + ddactorno.SelectedIndex * GTA.Offsets.Editor.Actor.NEXT, cbactorspwnrlivc);
         }
 
         private void tbactorspawnrule_TextChanged(object sender, TextChangedEventArgs e)

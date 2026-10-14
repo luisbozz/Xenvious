@@ -287,57 +287,57 @@ namespace Xenvious
 
         private void cbraceololockcatchup_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(31, GTA.Offsets.Editor.menubs8, cbraceololockcatchup);
+            Functions.Write.writebinary(30, GTA.Offsets.Editor.menubs8, cbraceololockcatchup);
         }
 
         private void cbraceolohidetod_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(16, GTA.Offsets.Editor.menubs2, cbraceolohidetod);
+            Functions.Write.writebinary(15, GTA.Offsets.Editor.menubs2, cbraceolohidetod);
         }
 
         private void cbraceolohideag_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(3, GTA.Offsets.Editor.menubs9, cbraceolohideag);
+            Functions.Write.writebinary(2, GTA.Offsets.Editor.menubs9, cbraceolohideag);
         }
 
         private void cbraceololocktod_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(12, GTA.Offsets.Editor.menubs17, cbraceololocktod);
+            Functions.Write.writebinary(11, GTA.Offsets.Editor.menubs17, cbraceololocktod);
         }
 
         private void cbraceoloosnc_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(19, GTA.Offsets.Editor.menubs18, cbraceoloosnc);
+            Functions.Write.writebinary(18, GTA.Offsets.Editor.menubs18, cbraceoloosnc);
         }
 
         private void cbraceolohidetraffic_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(10, GTA.Offsets.Editor.menubs20, cbraceolohidetraffic);
+            Functions.Write.writebinary(9, GTA.Offsets.Editor.menubs20, cbraceolohidetraffic);
         }
 
         private void cbraceolohidedlp_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(20, GTA.Offsets.Editor.menubs20, cbraceolohidedlp);
+            Functions.Write.writebinary(19, GTA.Offsets.Editor.menubs20, cbraceolohidedlp);
         }
 
         private void cbraceolohidenol_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(18, GTA.Offsets.Editor.menubs20, cbraceolohidenol);
+            Functions.Write.writebinary(17, GTA.Offsets.Editor.menubs20, cbraceolohidenol);
         }
 
         private void cbraceolohidewl_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(19, GTA.Offsets.Editor.menubs20, cbraceolohidewl);
+            Functions.Write.writebinary(18, GTA.Offsets.Editor.menubs20, cbraceolohidewl);
         }
 
         private void cbraceolohiderally_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(31, GTA.Offsets.Editor.menubs21, cbraceolohiderally);
+            Functions.Write.writebinary(30, GTA.Offsets.Editor.menubs21, cbraceolohiderally);
         }
 
         private void cbraceolomaxwl_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(31, GTA.Offsets.Editor.menubs28, cbraceolomaxwl);
+            Functions.Write.writebinary(30, GTA.Offsets.Editor.menubs28, cbraceolomaxwl);
         }
 
         private void cbraceolohidecstveh_Checked(object sender, RoutedEventArgs e)
@@ -347,7 +347,7 @@ namespace Xenvious
 
         private void cbraceolohideweth_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(31, GTA.Offsets.Editor.menubs22, cbraceolohideweth);
+            Functions.Write.writebinary(30, GTA.Offsets.Editor.menubs22, cbraceolohideweth);
         }
     }
 }

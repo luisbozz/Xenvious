@@ -90,7 +90,7 @@ namespace Xenvious
             InventoryExplosive.ChangeTeam = teamindex;
 
             //check if spawn weapon is set to unarmed
-            ddinvsw.IsEnabled = Functions.Read.checkbinary(28, GTA.Offsets.Editor.menubs2) || Functions.Read.checkbinary(21, GTA.Offsets.Editor.menubs25) ? false : true;
+            ddinvsw.IsEnabled = Functions.Read.checkbinary(27, GTA.Offsets.Editor.menubs2) || Functions.Read.checkbinary(20, GTA.Offsets.Editor.menubs25) ? false : true;
 
             if (!ddinvgsw.IsFocused || ignore_focus)
             {
@@ -106,11 +106,11 @@ namespace Xenvious
             }
             if (!ddinvglw.IsFocused || ignore_focus)
             {
-                if (Functions.Read.checkbinary(19, GTA.Offsets.Editor.menubs))
+                if (Functions.Read.checkbinary(18, GTA.Offsets.Editor.menubs))
                 {
                     ddinvglw.SelectedIndex = 2;
                 }
-                else if (Functions.Read.checkbinary(20, GTA.Offsets.Editor.menubs))
+                else if (Functions.Read.checkbinary(19, GTA.Offsets.Editor.menubs))
                 {
                     ddinvglw.SelectedIndex = 1;
                 }
@@ -741,18 +741,18 @@ namespace Xenvious
             int index = ddinvglw.SelectedIndex;
             if (index == 1)
             {
-                Functions.Write.writebinary(20, GTA.Offsets.Editor.menubs, true);
-                Functions.Write.writebinary(19, GTA.Offsets.Editor.menubs, false);
+                Functions.Write.writebinary(19, GTA.Offsets.Editor.menubs, true);
+                Functions.Write.writebinary(18, GTA.Offsets.Editor.menubs, false);
             }
             else if (index == 2)
             {
-                Functions.Write.writebinary(20, GTA.Offsets.Editor.menubs, false);
-                Functions.Write.writebinary(19, GTA.Offsets.Editor.menubs, true);
+                Functions.Write.writebinary(19, GTA.Offsets.Editor.menubs, false);
+                Functions.Write.writebinary(18, GTA.Offsets.Editor.menubs, true);
             }
             else
             {
-                Functions.Write.writebinary(20, GTA.Offsets.Editor.menubs, false);
                 Functions.Write.writebinary(19, GTA.Offsets.Editor.menubs, false);
+                Functions.Write.writebinary(18, GTA.Offsets.Editor.menubs, false);
             }
         }
     }

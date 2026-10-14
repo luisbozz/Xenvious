@@ -2093,75 +2093,75 @@ namespace Xenvious
         {
             public static IPLEntry YachtH = new IPLEntry("Dignity Heist Yacht", GTA.Location.Other.YACHT_H, new List<IPLEntry.IPLEntryBit>
             {
-                new IPLEntry.IPLEntryBit(13, GTA.Offsets.Editor.iplop)
+                new IPLEntry.IPLEntryBit(12, GTA.Offsets.Editor.iplop)
             });
             public static IPLEntry YachtP = new IPLEntry("Dignity Party Yacht", GTA.Location.Other.YACHT_P, new List<IPLEntry.IPLEntryBit>
             {
-                new IPLEntry.IPLEntryBit(3, GTA.Offsets.Editor.iplop)
+                new IPLEntry.IPLEntryBit(2, GTA.Offsets.Editor.iplop)
             });
             public static IPLEntry Carrier = new IPLEntry("Aircraft Carrier", GTA.Location.Other.CARRIER, new List<IPLEntry.IPLEntryBit>
             {
-                new IPLEntry.IPLEntryBit(2, GTA.Offsets.Editor.iplop)
+                new IPLEntry.IPLEntryBit(1, GTA.Offsets.Editor.iplop)
             });
             public static IPLEntry Morgue = new IPLEntry("Morgue", GTA.Location.Other.MORGUE, new List<IPLEntry.IPLEntryBit>
             {
-                new IPLEntry.IPLEntryBit(1, GTA.Offsets.Editor.intop),
-                new IPLEntry.IPLEntryBit(5, GTA.Offsets.Editor.intop)
+                new IPLEntry.IPLEntryBit(0, GTA.Offsets.Editor.intop),
+                new IPLEntry.IPLEntryBit(4, GTA.Offsets.Editor.intop)
             });
             public static IPLEntry Franklin = new IPLEntry("Franklins House", GTA.Location.Other.FRANKLIN, new List<IPLEntry.IPLEntryBit>
             {
-                new IPLEntry.IPLEntryBit(7, GTA.Offsets.Editor.intop)
+                new IPLEntry.IPLEntryBit(6, GTA.Offsets.Editor.intop)
             });
             public static IPLEntry Michael = new IPLEntry("Michaels House", GTA.Location.Other.MICHEAL, new List<IPLEntry.IPLEntryBit>
             {
-                new IPLEntry.IPLEntryBit(6, GTA.Offsets.Editor.intop)
+                new IPLEntry.IPLEntryBit(5, GTA.Offsets.Editor.intop)
             });
             public static IPLEntry RockClub = new IPLEntry("Rockclub", GTA.Location.Other.ROCKCLUB, new List<IPLEntry.IPLEntryBit>
             {
-                new IPLEntry.IPLEntryBit(9, GTA.Offsets.Editor.iplop)
+                new IPLEntry.IPLEntryBit(8, GTA.Offsets.Editor.iplop)
             });
             public static IPLEntry StripClub = new IPLEntry("Stripclub", GTA.Location.Other.STRIPCLUB, new List<IPLEntry.IPLEntryBit>
             {
-                new IPLEntry.IPLEntryBit(10, GTA.Offsets.Editor.iplop)
+                new IPLEntry.IPLEntryBit(9, GTA.Offsets.Editor.iplop)
             });
             public static IPLEntry ONeil = new IPLEntry("O-Neil Farm", GTA.Location.Other.ONEIL, new List<IPLEntry.IPLEntryBit>
             {
-                new IPLEntry.IPLEntryBit(4, GTA.Offsets.Editor.intop)
+                new IPLEntry.IPLEntryBit(3, GTA.Offsets.Editor.intop)
             });
             public static IPLEntry Liveinvader = new IPLEntry("Liveinvader Office", GTA.Location.Other.LIVE_INVADER_OFFICE, new List<IPLEntry.IPLEntryBit>
             {
-                new IPLEntry.IPLEntryBit(10, GTA.Offsets.Editor.intop)
+                new IPLEntry.IPLEntryBit(9, GTA.Offsets.Editor.intop)
             });
             public static IPLEntry Slaughter = new IPLEntry("Race Slaughterhouse", GTA.Location.Other.SLAUGHTER, new List<IPLEntry.IPLEntryBit>
             {
-                new IPLEntry.IPLEntryBit(3, GTA.Offsets.Editor.intop)
+                new IPLEntry.IPLEntryBit(2, GTA.Offsets.Editor.intop)
             });
             public static IPLEntry vrecycle = new IPLEntry("vrecycle", GTA.Location.Other.RECYCLE, new List<IPLEntry.IPLEntryBit>
             {
-                new IPLEntry.IPLEntryBit(2, GTA.Offsets.Editor.intop)
+                new IPLEntry.IPLEntryBit(1, GTA.Offsets.Editor.intop)
             });
             public static IPLEntry Foundry = new IPLEntry("Foundry", GTA.Location.Other.FOUNDRY, new List<IPLEntry.IPLEntryBit>
             {
-                new IPLEntry.IPLEntryBit(11, GTA.Offsets.Editor.intop)
+                new IPLEntry.IPLEntryBit(10, GTA.Offsets.Editor.intop)
             });
             public static IPLEntry ServerFarm = new IPLEntry("Server Farm", GTA.Location.Other.FARM, new List<IPLEntry.IPLEntryBit>
             {
-                new IPLEntry.IPLEntryBit(15, GTA.Offsets.Editor.intop)
+                new IPLEntry.IPLEntryBit(14, GTA.Offsets.Editor.intop)
             });
             public static IPLEntry IAA = new IPLEntry("IAA Base", GTA.Location.Other.IAA_OFFICE, new List<IPLEntry.IPLEntryBit>
             {
-                new IPLEntry.IPLEntryBit(15, GTA.Offsets.Editor.iplop),
-                new IPLEntry.IPLEntryBit(12, GTA.Offsets.Editor.intop),
-                new IPLEntry.IPLEntryBit(9, GTA.Offsets.Editor.intop)
+                new IPLEntry.IPLEntryBit(14, GTA.Offsets.Editor.iplop),
+                new IPLEntry.IPLEntryBit(11, GTA.Offsets.Editor.intop),
+                new IPLEntry.IPLEntryBit(8, GTA.Offsets.Editor.intop)
             });
             public static IPLEntry FIB = new IPLEntry("FIB", GTA.Location.Other.FIB_Floor_Top, new List<IPLEntry.IPLEntryBit>
             {
-                new IPLEntry.IPLEntryBit(31, GTA.Offsets.Editor.intop),
-                new IPLEntry.IPLEntryBit(32, GTA.Offsets.Editor.intop)
+                new IPLEntry.IPLEntryBit(30, GTA.Offsets.Editor.intop),
+                new IPLEntry.IPLEntryBit(31, GTA.Offsets.Editor.intop)
             });
             public static IPLEntry CayoPerico = new IPLEntry("Cayo Perico", GTA.Location.Other.CAYOPREICO, new List<IPLEntry.IPLEntryBit>
             {
-                new IPLEntry.IPLEntryBit(20, GTA.Offsets.Editor.iplop)
+                new IPLEntry.IPLEntryBit(19, GTA.Offsets.Editor.iplop)
             });
 
 

@@ -387,8 +387,8 @@ namespace Xenvious
                 if (!tbobjhead.IsFocused || ignore_focus) tbobjhead.Text = new Global((GTA.Offsets.Editor.Objects.head + GTA.Offsets.Editor.Objects.NEXT * index)).Get<float>().ToString();
 
                 if (!tbobjrender.IsFocused || ignore_focus) tbobjrender.Text = new Global((GTA.Offsets.Editor.Objects.objLOD + GTA.Offsets.Editor.Objects.NEXT * index)).Get<int>().ToString();
-                Functions.Read.checkbinary(28, GTA.Offsets.Editor.Objects.bits1 + ddobjno.SelectedIndex * GTA.Offsets.Editor.Objects.NEXT, cb_obj_arrow);
-                Functions.Read.checkbinary(1, GTA.Offsets.Editor.Objects.bits1 + 1 + ddobjno.SelectedIndex * GTA.Offsets.Editor.Objects.NEXT, cb_obj_invisible);
+                Functions.Read.checkbinary(27, GTA.Offsets.Editor.Objects.bits1 + ddobjno.SelectedIndex * GTA.Offsets.Editor.Objects.NEXT, cb_obj_arrow);
+                Functions.Read.checkbinary(0, GTA.Offsets.Editor.Objects.bits1 + 1 + ddobjno.SelectedIndex * GTA.Offsets.Editor.Objects.NEXT, cb_obj_invisible);
 
                 if (!tbobjrule.IsFocused || ignore_focus) tbobjrule.Text = new Global((GTA.Offsets.Editor.Objects.rule + ddobjteam.SelectedIndex + GTA.Offsets.Editor.Objects.NEXT * index)).Get<int>().ToString();
                 if (!tbobjpriority.IsFocused || ignore_focus) tbobjpriority.Text = new Global((GTA.Offsets.Editor.Objects.pri + ddobjteam.SelectedIndex + GTA.Offsets.Editor.Objects.NEXT * index)).Get<int>().ToString();
@@ -485,7 +485,7 @@ namespace Xenvious
 
         private void cb_obj_arrow_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(28, GTA.Offsets.Editor.Objects.bits1 + ddobjno.SelectedIndex * GTA.Offsets.Editor.Objects.NEXT, cb_obj_arrow);
+            Functions.Write.writebinary(27, GTA.Offsets.Editor.Objects.bits1 + ddobjno.SelectedIndex * GTA.Offsets.Editor.Objects.NEXT, cb_obj_arrow);
         }
 
         private void tbobjrender_TextChanged(object sender, TextChangedEventArgs e)
@@ -534,7 +534,7 @@ namespace Xenvious
                 new Global(GTA.Offsets.Editor.txt0 + 3 * GTA.Offsets.Editor.NEXT_txt + 3 * GTA.Offsets.Editor.team_NEXT).SetString(capturetext[3][2]);
                 new Global(GTA.Offsets.Editor.txt0 + 4 * GTA.Offsets.Editor.NEXT_txt + 3 * GTA.Offsets.Editor.team_NEXT).SetString(capturetext[4][2]);
                 new Global(GTA.Offsets.Editor.txt0 + 5 * GTA.Offsets.Editor.NEXT_txt + 3 * GTA.Offsets.Editor.team_NEXT).SetString(capturetext[5][2]);
-                //Functions.Write.writebinarytoaddy(4, addr);
+                //Functions.Write.writebinarytoaddy(3, addr);
             }
         }
 
@@ -679,7 +679,7 @@ namespace Xenvious
 
         private void cb_obj_invisible_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(1, GTA.Offsets.Editor.Objects.bits1 + 1 + ddobjno.SelectedIndex * GTA.Offsets.Editor.Objects.NEXT, cb_obj_invisible);
+            Functions.Write.writebinary(0, GTA.Offsets.Editor.Objects.bits1 + 1 + ddobjno.SelectedIndex * GTA.Offsets.Editor.Objects.NEXT, cb_obj_invisible);
         }
 
         private void cbcapturetextforce_Checked(object sender, RoutedEventArgs e)

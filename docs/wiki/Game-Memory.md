@@ -101,8 +101,8 @@ A creator's UI state (menus, camera, the "worker" state machine) lives in the
 ## Bit fields
 
 Many creator settings are bits in one int. Use the helpers in
-`Functions.cs` (`checkbinary`, `writebinary`, `is_bit_set`). Careful: their
-bit index is **1-based** (`1 << index - 1`), unlike most decompiled code.
+`Functions.cs` (`checkbinary`, `writebinary`, `is_bit_set`). Their bit index is
+0-based, the same number as in the decompiled scripts (`BitTest(x, 5)` is bit 5).
 
 ## Threads
 

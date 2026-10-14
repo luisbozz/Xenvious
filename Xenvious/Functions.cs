@@ -103,7 +103,7 @@ namespace Xenvious
             /// <summary>
             /// Check if a specific Bit is set
             /// </summary>
-            /// <param name="index">Bit Index</param>
+            /// <param name="index">Bit index, 0-based as in the decompiled scripts</param>
             /// <param name="offset">Offsets</param>
             /// <param name="control">CheckBox that will get checked or unchecked depending on the Bit state.</param>
             /// <returns>Returns bool.</returns>
@@ -117,7 +117,7 @@ namespace Xenvious
                     if (control != null)
                     {
 
-                        if ((value & (1 << index - 1)) != 0)
+                        if ((value & (1 << index)) != 0)
                         {
                             control.IsChecked = true;
                             return true;
@@ -130,7 +130,7 @@ namespace Xenvious
                     }
                     else
                     {
-                        if ((value & (1 << index - 1)) == 1)
+                        if ((value & (1 << index)) == 1)
                             return true;
                         else
                             return false;
@@ -141,7 +141,7 @@ namespace Xenvious
             /// <summary>
             /// Check if a specific Bit is set
             /// </summary>
-            /// <param name="index">Bit Index</param>
+            /// <param name="index">Bit index, 0-based as in the decompiled scripts</param>
             /// <param name="offset">Offsets</param>
             /// <returns>Returns bool.</returns>
             public static bool checkbinary(int index, long offset)
@@ -150,7 +150,7 @@ namespace Xenvious
                 {
                     int value = new Global(offset).Get<int>();
 
-                    if ((value & (1 << index - 1)) != 0)
+                    if ((value & (1 << index)) != 0)
                         return true;
                     else
                         return false;
@@ -299,26 +299,23 @@ namespace Xenvious
 
             public static bool is_bit_set(int value, int bit)
             {
-                bit = bit - 1;
                 return (value & (1 << bit)) != 0;
             }
 
             private static int clear_bit(int value, int bit)
             {
-                bit = bit - 1;
                 return value & ~(1 << bit);
             }
 
             private static int set_bit(int value, int bit)
             {
-                bit = bit - 1;
                 return value | 1 << bit;
             }
 
             /// <summary>
             /// Sets Bit on desired Memory Address
             /// </summary>
-            /// <param name="index">Bit that will get set</param>
+            /// <param name="index">Bit index (0-based) that will get set</param>
             /// <param name="offset">Offset</param>
             public static void writebinary(int index, long offset)
             {
@@ -334,7 +331,7 @@ namespace Xenvious
             /// <summary>
             /// Sets Bit on desired Memory Address
             /// </summary>
-            /// <param name="index">Bit that will get set</param>
+            /// <param name="index">Bit index (0-based) that will get set</param>
             /// <param name="offset">Offset</param>
             /// <param name="control">Will use the CheckBox Checked State to set or clear</param>
             public static void writebinary(int index, long offset, CheckBox control)
@@ -358,7 +355,7 @@ namespace Xenvious
             /// <summary>
             /// Sets Bit on desired Memory Address
             /// </summary>
-            /// <param name="index">Bit that will get set</param>
+            /// <param name="index">Bit index (0-based) that will get set</param>
             /// <param name="offset">Offset</param>
             /// <param name="enable">Set or Clear the desired Bit</param>
             public static void writebinary(int index, long offset, bool enable)
@@ -383,7 +380,7 @@ namespace Xenvious
             /// <summary>
             /// Sets Bit on desired Memory Address
             /// </summary>
-            /// <param name="index">Bit that will get set</param>
+            /// <param name="index">Bit index (0-based) that will get set</param>
             /// <param name="offset">Offset</param>
             /// <param name="amount">Amount of jumps to other Memory Addresses</param>
             /// <param name="offset_next">Offset to the next Memory Address</param>
@@ -413,7 +410,7 @@ namespace Xenvious
             /// <summary>
             /// Sets Bit on desired Memory Address
             /// </summary>
-            /// <param name="index">Bit that will get set</param>
+            /// <param name="index">Bit index (0-based) that will get set</param>
             /// <param name="offset">Offset</param>
             /// <param name="amount">Amount of jumps to other Memory Addresses</param>
             /// <param name="offset_next">Offset to the next Memory Address</param>
@@ -444,7 +441,7 @@ namespace Xenvious
             /// <summary>
             /// Sets Bit on desired Memory Address
             /// </summary>
-            /// <param name="index">Bit that will get set</param>
+            /// <param name="index">Bit index (0-based) that will get set</param>
             /// <param name="offset">Offset</param>
             /// <param name="amount">Amount of jumps to other Memory Addresses</param>
             /// <param name="offset_next">Offset to the next Memory Address</param>
@@ -481,7 +478,7 @@ namespace Xenvious
             /// <summary>
             /// Sets Bit on desired Memory Address
             /// </summary>
-            /// <param name="index">Bit that will get set</param>
+            /// <param name="index">Bit index (0-based) that will get set</param>
             /// <param name="offset">Offset</param>
             /// <param name="amount">Amount of jumps to other Memory Addresses</param>
             /// <param name="offset_next">Offset to the next Memory Address</param>
@@ -518,7 +515,7 @@ namespace Xenvious
             /// <summary>
             /// Sets Bit on desired Memory Address
             /// </summary>
-            /// <param name="index">Bit that will get set</param>
+            /// <param name="index">Bit index (0-based) that will get set</param>
             /// <param name="offset">Offset</param>
             /// <param name="amount">Amount of jumps to other Memory Addresses</param>
             /// <param name="offset_next">Offset to the next Memory Address</param>
@@ -555,7 +552,7 @@ namespace Xenvious
             /// <summary>
             /// Sets Bit on desired Memory Address
             /// </summary>
-            /// <param name="index">Bit that will get set</param>
+            /// <param name="index">Bit index (0-based) that will get set</param>
             /// <param name="offset">Offset</param>
             /// <param name="amount">Amount of jumps to other Memory Addresses</param>
             /// <param name="offset_next">Offset to the next Memory Address</param>
@@ -592,7 +589,7 @@ namespace Xenvious
             /// <summary>
             /// Sets Bit on desired Memory Address
             /// </summary>
-            /// <param name="index">Bit that will get set</param>
+            /// <param name="index">Bit index (0-based) that will get set</param>
             /// <param name="offset">Offset</param>
             public static void writebinarytoaddy(int index, long address)
             {

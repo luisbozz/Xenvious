@@ -40,6 +40,7 @@ namespace Xenvious
 
         private void ShowCopyMode(bool nrcid)
         {
+            bool nrcid = CopyNrcidPanel.Visibility != Visibility.Visible;
             CopyLinkPanel.Visibility = nrcid ? Visibility.Collapsed : Visibility.Visible;
             CopyNrcidPanel.Visibility = nrcid ? Visibility.Visible : Visibility.Collapsed;
             BtnCopyModeLink.Tag = nrcid ? null : "active";
@@ -627,7 +628,7 @@ namespace Xenvious
 
                 m.memory(addy.ToString("X")).SetBytes(temparray);
 
-                Functions.Write.writebinary(1, GTA.Offsets.Editor.photo, true);   // "photo": bit 0
+                Functions.Write.writebinary(0, GTA.Offsets.Editor.photo, true);   // "photo": bit 0
                 new Global(GTA.Offsets.Editor.phpo).SetFloat(jobjson.Mission.Gen.Phpo.X);
                 new Global(GTA.Offsets.Editor.phpo + 1).SetFloat(jobjson.Mission.Gen.Phpo.Y);
                 new Global(GTA.Offsets.Editor.phpo + 2).SetFloat(jobjson.Mission.Gen.Phpo.Z);
@@ -1689,7 +1690,7 @@ namespace Xenvious
                     if (jobjson.Mission.Gen.Ltm != null) new Global(GTA.Offsets.Editor.ltm).SetInt((int)jobjson.Mission.Gen.Ltm);
                     if (jobjson.Mission.Gen.Mrd != null) new Global(GTA.Offsets.Editor.mrd).SetInt((int)jobjson.Mission.Gen.Mrd);
                     if (jobjson.Mission.Gen.NumRounds != null) new Global(GTA.Offsets.Editor.numRounds).SetInt((int)jobjson.Mission.Gen.NumRounds);
-                    if (jobjson.Mission.Gen.Photo != null) Functions.Write.writebinary(1, GTA.Offsets.Editor.photo, jobjson.Mission.Gen.Photo == true);
+                    if (jobjson.Mission.Gen.Photo != null) Functions.Write.writebinary(0, GTA.Offsets.Editor.photo, jobjson.Mission.Gen.Photo == true);
                     if (jobjson.Mission.Gen.Phpo != null) new Global(GTA.Offsets.Editor.phpo + 0).SetFloat(jobjson.Mission.Gen.Phpo.X);
                     if (jobjson.Mission.Gen.Phpo != null) new Global(GTA.Offsets.Editor.phpo + 1).SetFloat(jobjson.Mission.Gen.Phpo.Y);
                     if (jobjson.Mission.Gen.Phpo != null) new Global(GTA.Offsets.Editor.phpo + 2).SetFloat(jobjson.Mission.Gen.Phpo.Z);

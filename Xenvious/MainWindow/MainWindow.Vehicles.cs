@@ -29,11 +29,11 @@ namespace Xenvious
 
         private void cb_veh_freeze_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(25, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_freeze);
+            Functions.Write.writebinary(24, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_freeze);
         }
         private void cb_veh_remove_windows_Checked(object sender, RoutedEventArgs e)
         {
-            for (int i = 20; i < 29; i++)
+            for (int i = 19; i < 28; i++)
             {
                 Functions.Write.writebinary(i, GTA.Offsets.Editor.Vehicle.vbs3 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_remove_windows);
             }
@@ -319,8 +319,8 @@ namespace Xenvious
                 else
                     ddvehicon.SelectedIndex = (new Global((GTA.Offsets.Editor.Vehicle.vehbso + GTA.Offsets.Editor.Vehicle.NEXT * index)).Get<int>());
 
-                Functions.Read.checkbinary(22, GTA.Offsets.Editor.Vehicle.vbs7 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_bptires);
-                Functions.Read.checkbinary(6, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_godmode);
+                Functions.Read.checkbinary(21, GTA.Offsets.Editor.Vehicle.vbs7 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_bptires);
+                Functions.Read.checkbinary(5, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_godmode);
                 if (cb_veh_godmode.IsChecked == false)
                 {
                     tbvehenghp.IsEnabled = true;
@@ -335,38 +335,38 @@ namespace Xenvious
                     tbvehbdyhp.IsEnabled = false;
                     tbvehhlth.IsEnabled = false;
                 }
-                //Functions.Read.checkbinary(7, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cbvehdisableptdmg);
-                Functions.Read.checkbinary(14, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_sirens);
-                Functions.Read.checkbinary(18, GTA.Offsets.Editor.Vehicle.vbs6 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_mark);
-                Functions.Read.checkbinary(10, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_box);
-                Functions.Read.checkbinary(16, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_blipoff);
-                Functions.Read.checkbinary(7, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_lights);
-                Functions.Read.checkbinary(8, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_locveh);
-                Functions.Read.checkbinary(14, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_locvehforp);
-                Functions.Read.checkbinary(20, GTA.Offsets.Editor.Vehicle.vbs3 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_remove_windows);
-                Functions.Read.checkbinary(1, GTA.Offsets.Editor.Vehicle.vbs2 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_engine);
-                Functions.Read.checkbinary(25, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_freeze);
-                //Functions.Read.checkbinary(26, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cbveharrow);
-                Functions.Read.checkbinary(32, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_nottargetable);
-                Functions.Read.checkbinary(4, GTA.Offsets.Editor.Vehicle.vbs8 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_explodeinwater);
-                Functions.Read.checkbinary(3, GTA.Offsets.Editor.Vehicle.vbs2 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_lockteam1);
-                Functions.Read.checkbinary(4, GTA.Offsets.Editor.Vehicle.vbs2 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_lockteam2);
-                Functions.Read.checkbinary(5, GTA.Offsets.Editor.Vehicle.vbs2 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_lockteam3);
-                Functions.Read.checkbinary(6, GTA.Offsets.Editor.Vehicle.vbs2 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_lockteam4);
+                //Functions.Read.checkbinary(6, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cbvehdisableptdmg);
+                Functions.Read.checkbinary(13, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_sirens);
+                Functions.Read.checkbinary(17, GTA.Offsets.Editor.Vehicle.vbs6 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_mark);
+                Functions.Read.checkbinary(9, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_box);
+                Functions.Read.checkbinary(15, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_blipoff);
+                Functions.Read.checkbinary(6, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_lights);
+                Functions.Read.checkbinary(7, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_locveh);
+                Functions.Read.checkbinary(13, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_locvehforp);
+                Functions.Read.checkbinary(19, GTA.Offsets.Editor.Vehicle.vbs3 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_remove_windows);
+                Functions.Read.checkbinary(0, GTA.Offsets.Editor.Vehicle.vbs2 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_engine);
+                Functions.Read.checkbinary(24, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_freeze);
+                //Functions.Read.checkbinary(25, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cbveharrow);
+                Functions.Read.checkbinary(31, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_nottargetable);
+                Functions.Read.checkbinary(3, GTA.Offsets.Editor.Vehicle.vbs8 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_explodeinwater);
+                Functions.Read.checkbinary(2, GTA.Offsets.Editor.Vehicle.vbs2 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_lockteam1);
+                Functions.Read.checkbinary(3, GTA.Offsets.Editor.Vehicle.vbs2 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_lockteam2);
+                Functions.Read.checkbinary(4, GTA.Offsets.Editor.Vehicle.vbs2 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_lockteam3);
+                Functions.Read.checkbinary(5, GTA.Offsets.Editor.Vehicle.vbs2 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_lockteam4);
 
 
-                Functions.Read.checkbinary(1, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_open_fl);
-                Functions.Read.checkbinary(2, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_open_fr);
-                Functions.Read.checkbinary(3, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_open_rl);
-                Functions.Read.checkbinary(4, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_open_rr);
-                Functions.Read.checkbinary(5, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_open_hood);
-                Functions.Read.checkbinary(6, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_open_trunk);
-                Functions.Read.checkbinary(10, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_close_fl);
-                Functions.Read.checkbinary(11, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_close_fr);
-                Functions.Read.checkbinary(12, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_close_rl);
-                Functions.Read.checkbinary(13, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_close_rr);
-                Functions.Read.checkbinary(14, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_close_hood);
-                Functions.Read.checkbinary(15, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_close_trunk);
+                Functions.Read.checkbinary(0, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_open_fl);
+                Functions.Read.checkbinary(1, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_open_fr);
+                Functions.Read.checkbinary(2, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_open_rl);
+                Functions.Read.checkbinary(3, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_open_rr);
+                Functions.Read.checkbinary(4, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_open_hood);
+                Functions.Read.checkbinary(5, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_open_trunk);
+                Functions.Read.checkbinary(9, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_close_fl);
+                Functions.Read.checkbinary(10, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_close_fr);
+                Functions.Read.checkbinary(11, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_close_rl);
+                Functions.Read.checkbinary(12, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_close_rr);
+                Functions.Read.checkbinary(13, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_close_hood);
+                Functions.Read.checkbinary(14, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_close_trunk);
 
                 cb_veh_neon.IsChecked = new Global((GTA.Offsets.Editor.Vehicle.ncol + GTA.Offsets.Editor.Vehicle.NEXT * index)).Get<int>() > -1 ? true : false;
 
@@ -386,8 +386,8 @@ namespace Xenvious
                 if (!tbvehclearrule.IsFocused || ignore_focus) tbvehclearrule.Text = clrrule.ToString();
                 ddvehteamclear.SelectedIndex = clrteam + 1;
 
-                Functions.Read.checkbinary(20, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_clrlivc);
-                Functions.Read.checkbinary(19, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_spwnrlivc);
+                Functions.Read.checkbinary(19, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_clrlivc);
+                Functions.Read.checkbinary(18, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_spwnrlivc);
 
                 ddvehrsp.SelectedIndex = new Global((GTA.Offsets.Editor.Vehicle.rsp + GTA.Offsets.Editor.Vehicle.NEXT * index)).Get<int>();
                 tbvehvrr.Text = new Global((GTA.Offsets.Editor.Vehicle.vrr + GTA.Offsets.Editor.Vehicle.NEXT * index)).Get<float>().ToString();
@@ -453,43 +453,43 @@ namespace Xenvious
 
         private void cb_veh_mark_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(18, GTA.Offsets.Editor.Vehicle.vbs6 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_mark);
+            Functions.Write.writebinary(17, GTA.Offsets.Editor.Vehicle.vbs6 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_mark);
         }
 
         private void cb_veh_locveh_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(8, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_locveh);
+            Functions.Write.writebinary(7, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_locveh);
         }
 
         private void cb_veh_locvehforp_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(14, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_locvehforp);
+            Functions.Write.writebinary(13, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_locvehforp);
         }
 
         private void cb_veh_lights_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(7, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_lights);
+            Functions.Write.writebinary(6, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_lights);
         }
 
         private void cb_veh_sirens_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(14, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_sirens);
+            Functions.Write.writebinary(13, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_sirens);
         }
 
         private void cb_veh_sirens_audio_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(15, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_sirens_audio);
+            Functions.Write.writebinary(14, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_sirens_audio);
         }
 
         private void cb_veh_bptires_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(22, GTA.Offsets.Editor.Vehicle.vbs7 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_bptires);
+            Functions.Write.writebinary(21, GTA.Offsets.Editor.Vehicle.vbs7 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_bptires);
         }
 
 
         private void cb_veh_godmode_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(6, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_godmode);
+            Functions.Write.writebinary(5, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_godmode);
             tbvehenghp.IsEnabled = cb_veh_godmode.IsChecked == false;
             tbvehptrhp.IsEnabled = cb_veh_godmode.IsChecked == false;
             tbvehbdyhp.IsEnabled = cb_veh_godmode.IsChecked == false;
@@ -498,7 +498,7 @@ namespace Xenvious
 
         private void cb_veh_engine_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(1, GTA.Offsets.Editor.Vehicle.vbs2 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_engine);
+            Functions.Write.writebinary(0, GTA.Offsets.Editor.Vehicle.vbs2 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_engine);
         }
 
         // vbs2 bits 3..6: the mission controller locks the vehicle's doors for
@@ -511,7 +511,7 @@ namespace Xenvious
             CheckBox[] boxes = { cb_veh_lockteam1, cb_veh_lockteam2, cb_veh_lockteam3, cb_veh_lockteam4 };
             int team = Array.IndexOf(boxes, sender);
             if (team > -1)
-                Functions.Write.writebinary(3 + team, GTA.Offsets.Editor.Vehicle.vbs2 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, boxes[team]);
+                Functions.Write.writebinary(2 + team, GTA.Offsets.Editor.Vehicle.vbs2 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, boxes[team]);
         }
 
         private void cb_veh_neon_Checked(object sender, RoutedEventArgs e)
@@ -521,78 +521,78 @@ namespace Xenvious
 
         private void cb_veh_nottargetable_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(32, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_nottargetable);
+            Functions.Write.writebinary(31, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_nottargetable);
         }
 
         private void cb_veh_box_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(10, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_box);
+            Functions.Write.writebinary(9, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_box);
         }
 
         // "Blip off" of the creator's vehicle blip menu: bit 15 of the vehicle bitset (FMMC_BLIPOFF).
         private void cb_veh_blipoff_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(16, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_blipoff);
+            Functions.Write.writebinary(15, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_blipoff);
         }
 
         private void cb_veh_door_open_lf_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(1, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_open_fl);
+            Functions.Write.writebinary(0, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_open_fl);
         }
 
         private void cb_veh_door_open_lr_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(2, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_open_fr);
+            Functions.Write.writebinary(1, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_open_fr);
         }
 
         private void cb_veh_door_open_rf_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(3, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_open_rl);
+            Functions.Write.writebinary(2, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_open_rl);
         }
 
         private void cb_veh_door_open_rr_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(4, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_open_rr);
+            Functions.Write.writebinary(3, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_open_rr);
         }
 
         private void cb_veh_door_open_hood_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(5, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_open_hood);
+            Functions.Write.writebinary(4, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_open_hood);
         }
 
         private void cb_veh_door_open_trunk_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(6, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_open_trunk);
+            Functions.Write.writebinary(5, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_open_trunk);
         }
 
         private void cb_veh_door_close_lf_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(10, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_close_fl);
+            Functions.Write.writebinary(9, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_close_fl);
         }
 
         private void cb_veh_door_close_lr_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(11, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_close_fr);
+            Functions.Write.writebinary(10, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_close_fr);
         }
 
         private void cb_veh_door_close_rf_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(12, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_close_rl);
+            Functions.Write.writebinary(11, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_close_rl);
         }
 
         private void cb_veh_door_close_rr_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(13, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_close_rr);
+            Functions.Write.writebinary(12, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_close_rr);
         }
 
         private void cb_veh_door_close_hood_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(14, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_close_hood);
+            Functions.Write.writebinary(13, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_close_hood);
         }
 
         private void cb_veh_door_close_trunk_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(15, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_close_trunk);
+            Functions.Write.writebinary(14, GTA.Offsets.Editor.Vehicle.vbs4 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_door_close_trunk);
         }
 
         private void vehModelList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -686,7 +686,7 @@ namespace Xenvious
 
         private void cb_veh_explodeinwater_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(4, GTA.Offsets.Editor.Vehicle.vbs8 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_explodeinwater);
+            Functions.Write.writebinary(3, GTA.Offsets.Editor.Vehicle.vbs8 + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_explodeinwater);
         }
 
 
@@ -903,12 +903,12 @@ namespace Xenvious
 
         private void cb_veh_clrlivc_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(20, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_clrlivc);
+            Functions.Write.writebinary(19, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_clrlivc);
         }
 
         private void cb_veh_spwnrlivc_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(19, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_spwnrlivc);
+            Functions.Write.writebinary(18, GTA.Offsets.Editor.Vehicle.drbs + ddvehno.SelectedIndex * GTA.Offsets.Editor.Vehicle.NEXT, cb_veh_spwnrlivc);
         }
 
         private void ddvehspawnon_SelectionChanged(object sender, SelectionChangedEventArgs e)

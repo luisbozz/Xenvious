@@ -103,7 +103,7 @@ namespace Xenvious
             if (!m.IsProcOpen || reading_image)
                 return;
             // The job has a photo when bit 0 of the flags field is set (saved as "photo").
-            if (!Functions.Read.checkbinary(1, GTA.Offsets.Editor.photo) && !IsInCreator())
+            if (!Functions.Read.checkbinary(0, GTA.Offsets.Editor.photo) && !IsInCreator())
                 return;
 
             reading_image = true;

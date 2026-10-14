@@ -206,18 +206,18 @@ namespace Xenvious
                 if (!tbmissiontpwo.IsFocused || ignore_focus) tbmissiontpwo.Text = new Global(GTA.Offsets.Editor.Teleport_Marker.WO + index * GTA.Offsets.Editor.Teleport_Marker.NEXT).Get<float>().ToString();
 
                 //if (!cbmissiontpenable.IsFocused || ignore_focus) cbmissiontpenable.IsChecked = new Global(GTA.Offsets.Editor.Teleport_Marker.WAz + index * GTA.Offsets.Editor.Teleport_Marker.NEXT).Get<int>() == 0 ? true : false;
-                if (!cbmissiontpmarkonmap.IsFocused || ignore_focus) Functions.Read.checkbinary(4, GTA.Offsets.Editor.Teleport_Marker.WE + index * GTA.Offsets.Editor.Teleport_Marker.NEXT, cbmissiontpmarkonmap);
-                if (!cbmissiontphidetpatp.IsFocused || ignore_focus) Functions.Read.checkbinary(5, GTA.Offsets.Editor.Teleport_Marker.WE + index * GTA.Offsets.Editor.Teleport_Marker.NEXT, cbmissiontphidetpatp);
-                if (!cbmissiontpdtphin.IsFocused || ignore_focus) Functions.Read.checkbinary(10, GTA.Offsets.Editor.Teleport_Marker.WE + index * GTA.Offsets.Editor.Teleport_Marker.NEXT, cbmissiontpdtphin);
-                if (!cbmissiontpdtphin2.IsFocused || ignore_focus) Functions.Read.checkbinary(12, GTA.Offsets.Editor.Teleport_Marker.WE + index * GTA.Offsets.Editor.Teleport_Marker.NEXT, cbmissiontpdtphin2);
-                if (!cbmissiontphidetp1.IsFocused || ignore_focus) Functions.Read.checkbinary(15, GTA.Offsets.Editor.Teleport_Marker.WE + index * GTA.Offsets.Editor.Teleport_Marker.NEXT, cbmissiontphidetp1);
-                if (!cbmissiontpe2e.IsFocused || ignore_focus) Functions.Read.checkbinary(9, GTA.Offsets.Editor.Teleport_Marker.WE + index * GTA.Offsets.Editor.Teleport_Marker.NEXT, cbmissiontpe2e);
-                if (!cbmissiontpcamanimleft.IsFocused || ignore_focus) Functions.Read.checkbinary(20, GTA.Offsets.Editor.Teleport_Marker.WE + index * GTA.Offsets.Editor.Teleport_Marker.NEXT, cbmissiontpcamanimleft);
-                if (!cbmissiontpls.IsFocused || ignore_focus) Functions.Read.checkbinary(1, GTA.Offsets.Editor.Teleport_Marker.WE + index * GTA.Offsets.Editor.Teleport_Marker.NEXT, cbmissiontpls);
+                if (!cbmissiontpmarkonmap.IsFocused || ignore_focus) Functions.Read.checkbinary(3, GTA.Offsets.Editor.Teleport_Marker.WE + index * GTA.Offsets.Editor.Teleport_Marker.NEXT, cbmissiontpmarkonmap);
+                if (!cbmissiontphidetpatp.IsFocused || ignore_focus) Functions.Read.checkbinary(4, GTA.Offsets.Editor.Teleport_Marker.WE + index * GTA.Offsets.Editor.Teleport_Marker.NEXT, cbmissiontphidetpatp);
+                if (!cbmissiontpdtphin.IsFocused || ignore_focus) Functions.Read.checkbinary(9, GTA.Offsets.Editor.Teleport_Marker.WE + index * GTA.Offsets.Editor.Teleport_Marker.NEXT, cbmissiontpdtphin);
+                if (!cbmissiontpdtphin2.IsFocused || ignore_focus) Functions.Read.checkbinary(11, GTA.Offsets.Editor.Teleport_Marker.WE + index * GTA.Offsets.Editor.Teleport_Marker.NEXT, cbmissiontpdtphin2);
+                if (!cbmissiontphidetp1.IsFocused || ignore_focus) Functions.Read.checkbinary(14, GTA.Offsets.Editor.Teleport_Marker.WE + index * GTA.Offsets.Editor.Teleport_Marker.NEXT, cbmissiontphidetp1);
+                if (!cbmissiontpe2e.IsFocused || ignore_focus) Functions.Read.checkbinary(8, GTA.Offsets.Editor.Teleport_Marker.WE + index * GTA.Offsets.Editor.Teleport_Marker.NEXT, cbmissiontpe2e);
+                if (!cbmissiontpcamanimleft.IsFocused || ignore_focus) Functions.Read.checkbinary(19, GTA.Offsets.Editor.Teleport_Marker.WE + index * GTA.Offsets.Editor.Teleport_Marker.NEXT, cbmissiontpcamanimleft);
+                if (!cbmissiontpls.IsFocused || ignore_focus) Functions.Read.checkbinary(0, GTA.Offsets.Editor.Teleport_Marker.WE + index * GTA.Offsets.Editor.Teleport_Marker.NEXT, cbmissiontpls);
 
 
-                bool purpleblur = Functions.Read.checkbinary(2, GTA.Offsets.Editor.Teleport_Marker.WE + index * GTA.Offsets.Editor.Teleport_Marker.NEXT);
-                bool fade = Functions.Read.checkbinary(26, GTA.Offsets.Editor.Teleport_Marker.WE + index * GTA.Offsets.Editor.Teleport_Marker.NEXT);
+                bool purpleblur = Functions.Read.checkbinary(1, GTA.Offsets.Editor.Teleport_Marker.WE + index * GTA.Offsets.Editor.Teleport_Marker.NEXT);
+                bool fade = Functions.Read.checkbinary(25, GTA.Offsets.Editor.Teleport_Marker.WE + index * GTA.Offsets.Editor.Teleport_Marker.NEXT);
                 if (!purpleblur && fade) //if purple blue is enabled the fade animation wont work - thats why we dont need to check if its even enabled bitwise
                 {
                     cbmissiontpfade.IsEnabled = true;
@@ -238,7 +238,7 @@ namespace Xenvious
                     cbmissiontpfade.IsEnabled = false;
                     cbmissiontpfade.IsChecked = false;
                 }
-                if (!cbmissiontpwv.IsFocused || ignore_focus) Functions.Read.checkbinary(6, GTA.Offsets.Editor.Teleport_Marker.WE + index * GTA.Offsets.Editor.Teleport_Marker.NEXT, cbmissiontpwv);
+                if (!cbmissiontpwv.IsFocused || ignore_focus) Functions.Read.checkbinary(5, GTA.Offsets.Editor.Teleport_Marker.WE + index * GTA.Offsets.Editor.Teleport_Marker.NEXT, cbmissiontpwv);
             }
         }
 
@@ -250,36 +250,36 @@ namespace Xenvious
 
         private void cbmissiontpmarkonmap_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(4, GTA.Offsets.Editor.Teleport_Marker.WE + ddmissiontpno.SelectedIndex * GTA.Offsets.Editor.Teleport_Marker.NEXT, cbmissiontpmarkonmap);
+            Functions.Write.writebinary(3, GTA.Offsets.Editor.Teleport_Marker.WE + ddmissiontpno.SelectedIndex * GTA.Offsets.Editor.Teleport_Marker.NEXT, cbmissiontpmarkonmap);
         }
 
         private void cbmissiontphidetpatp_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(5, GTA.Offsets.Editor.Teleport_Marker.WE + ddmissiontpno.SelectedIndex * GTA.Offsets.Editor.Teleport_Marker.NEXT, cbmissiontphidetpatp);
+            Functions.Write.writebinary(4, GTA.Offsets.Editor.Teleport_Marker.WE + ddmissiontpno.SelectedIndex * GTA.Offsets.Editor.Teleport_Marker.NEXT, cbmissiontphidetpatp);
         }
 
         private void cbmissiontphidetp1_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(15, GTA.Offsets.Editor.Teleport_Marker.WE + ddmissiontpno.SelectedIndex * GTA.Offsets.Editor.Teleport_Marker.NEXT, cbmissiontphidetp1);
+            Functions.Write.writebinary(14, GTA.Offsets.Editor.Teleport_Marker.WE + ddmissiontpno.SelectedIndex * GTA.Offsets.Editor.Teleport_Marker.NEXT, cbmissiontphidetp1);
         }
 
         private void cbmissiontpe2e_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(9, GTA.Offsets.Editor.Teleport_Marker.WE + ddmissiontpno.SelectedIndex * GTA.Offsets.Editor.Teleport_Marker.NEXT, cbmissiontpe2e);
+            Functions.Write.writebinary(8, GTA.Offsets.Editor.Teleport_Marker.WE + ddmissiontpno.SelectedIndex * GTA.Offsets.Editor.Teleport_Marker.NEXT, cbmissiontpe2e);
         }
 
         private void cbmissiontpdtphin_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(10, GTA.Offsets.Editor.Teleport_Marker.WE + ddmissiontpno.SelectedIndex * GTA.Offsets.Editor.Teleport_Marker.NEXT, cbmissiontpdtphin);
+            Functions.Write.writebinary(9, GTA.Offsets.Editor.Teleport_Marker.WE + ddmissiontpno.SelectedIndex * GTA.Offsets.Editor.Teleport_Marker.NEXT, cbmissiontpdtphin);
         }
 
         private void cbmissiontpdtphin2_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(12, GTA.Offsets.Editor.Teleport_Marker.WE + ddmissiontpno.SelectedIndex * GTA.Offsets.Editor.Teleport_Marker.NEXT, cbmissiontpdtphin2);
+            Functions.Write.writebinary(11, GTA.Offsets.Editor.Teleport_Marker.WE + ddmissiontpno.SelectedIndex * GTA.Offsets.Editor.Teleport_Marker.NEXT, cbmissiontpdtphin2);
         }
 
-        // Switches for single bits of iWarpPortalBS (ciWARP_PORTAL_*); Tag = 1-based bit (checkbinary).
-        private CheckBox[] TpBitBoxes => new[] { cbtpbit3, cbtpbit28, cbtpbit24, cbtpbit30, cbtpbit17, cbtpbit14, cbtpbit8, cbtpbit22, cbtpbit19 };
+        // Switches for single bits of iWarpPortalBS (ciWARP_PORTAL_*); Tag = bit index.
+        private CheckBox[] TpBitBoxes => new[] { cbtpbit2, cbtpbit27, cbtpbit23, cbtpbit29, cbtpbit16, cbtpbit13, cbtpbit7, cbtpbit21, cbtpbit18 };
 
         private void TpBit_Checked(object sender, RoutedEventArgs e)
         {
@@ -375,17 +375,17 @@ namespace Xenvious
 
         private void cbmissiontpcamanimleft_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(20, GTA.Offsets.Editor.Teleport_Marker.WE + ddmissiontpno.SelectedIndex * GTA.Offsets.Editor.Teleport_Marker.NEXT, cbmissiontpcamanimleft);
+            Functions.Write.writebinary(19, GTA.Offsets.Editor.Teleport_Marker.WE + ddmissiontpno.SelectedIndex * GTA.Offsets.Editor.Teleport_Marker.NEXT, cbmissiontpcamanimleft);
         }
 
         private void cbmissiontpls_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(1, GTA.Offsets.Editor.Teleport_Marker.WE + ddmissiontpno.SelectedIndex * GTA.Offsets.Editor.Teleport_Marker.NEXT, cbmissiontpls);
+            Functions.Write.writebinary(0, GTA.Offsets.Editor.Teleport_Marker.WE + ddmissiontpno.SelectedIndex * GTA.Offsets.Editor.Teleport_Marker.NEXT, cbmissiontpls);
         }
 
         private void cbmissiontppb_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(2, GTA.Offsets.Editor.Teleport_Marker.WE + ddmissiontpno.SelectedIndex * GTA.Offsets.Editor.Teleport_Marker.NEXT, cbmissiontppb);
+            Functions.Write.writebinary(1, GTA.Offsets.Editor.Teleport_Marker.WE + ddmissiontpno.SelectedIndex * GTA.Offsets.Editor.Teleport_Marker.NEXT, cbmissiontppb);
             try
             {
                 if (cbmissiontppb.IsChecked == true)
@@ -410,12 +410,12 @@ namespace Xenvious
 
         private void cbmissiontpwv_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(6, GTA.Offsets.Editor.Teleport_Marker.WE + ddmissiontpno.SelectedIndex * GTA.Offsets.Editor.Teleport_Marker.NEXT, cbmissiontpwv);
+            Functions.Write.writebinary(5, GTA.Offsets.Editor.Teleport_Marker.WE + ddmissiontpno.SelectedIndex * GTA.Offsets.Editor.Teleport_Marker.NEXT, cbmissiontpwv);
         }
 
         private void cbmissiontpfade_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(26, GTA.Offsets.Editor.Teleport_Marker.WE + ddmissiontpno.SelectedIndex * GTA.Offsets.Editor.Teleport_Marker.NEXT, cbmissiontpfade);
+            Functions.Write.writebinary(25, GTA.Offsets.Editor.Teleport_Marker.WE + ddmissiontpno.SelectedIndex * GTA.Offsets.Editor.Teleport_Marker.NEXT, cbmissiontpfade);
             try
             {
                 if (cbmissiontpfade.IsChecked == true)

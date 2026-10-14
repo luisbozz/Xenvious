@@ -171,29 +171,29 @@ namespace Xenvious
         private void cbmissionenableprisonalarms_Checked(object sender, RoutedEventArgs e)
         {
             if (cbmissionenableprisonalarms.IsChecked == true)
-                Functions.Write.writebinary(32, GTA.Offsets.Editor.menubs7, false);
-            Functions.Write.writebinary(28, GTA.Offsets.Editor.menubs, cbmissionenableprisonalarms);
+                Functions.Write.writebinary(31, GTA.Offsets.Editor.menubs7, false);
+            Functions.Write.writebinary(27, GTA.Offsets.Editor.menubs, cbmissionenableprisonalarms);
         }
 
         private void cbmissionremweap_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(20, GTA.Offsets.Editor.menubs, cbmissionremweap);
+            Functions.Write.writebinary(19, GTA.Offsets.Editor.menubs, cbmissionremweap);
         }
 
         private void cbmissionspawnunarmed_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(28, GTA.Offsets.Editor.menubs2, cbmissionspawnunarmed);
-            Functions.Write.writebinary(21, GTA.Offsets.Editor.menubs25, cbmissionspawnunarmed);
+            Functions.Write.writebinary(27, GTA.Offsets.Editor.menubs2, cbmissionspawnunarmed);
+            Functions.Write.writebinary(20, GTA.Offsets.Editor.menubs25, cbmissionspawnunarmed);
         }
 
         private void cbmissionbulletproofplayers_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(19, GTA.Offsets.Editor.menubs11, cbmissionbulletproofplayers);
+            Functions.Write.writebinary(18, GTA.Offsets.Editor.menubs11, cbmissionbulletproofplayers);
         }
 
         private void cbmissionwlad_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(10, GTA.Offsets.Editor.menubs, cbmissionwlad);
+            Functions.Write.writebinary(9, GTA.Offsets.Editor.menubs, cbmissionwlad);
         }
 
         private void tbMissionfsr_TextChanged(object sender, TextChangedEventArgs e)
@@ -219,87 +219,87 @@ namespace Xenvious
 
         private void cboloarmor_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(31, GTA.Offsets.Editor.menubs3, cboloarmor);
+            Functions.Write.writebinary(30, GTA.Offsets.Editor.menubs3, cboloarmor);
         }
 
         private void cboloweapon_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(1, GTA.Offsets.Editor.menubs2, cboloweapon);
+            Functions.Write.writebinary(0, GTA.Offsets.Editor.menubs2, cboloweapon);
         }
 
         private void cbolohideweth_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(16, GTA.Offsets.Editor.menubs4, cbolohideweth);
+            Functions.Write.writebinary(15, GTA.Offsets.Editor.menubs4, cbolohideweth);
         }
 
         private void cboloroundtime_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(23, GTA.Offsets.Editor.menubs8, cboloroundtime);
+            Functions.Write.writebinary(22, GTA.Offsets.Editor.menubs8, cboloroundtime);
         }
 
         private void cbologametype_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(13, GTA.Offsets.Editor.menubs9, cbologametype);
+            Functions.Write.writebinary(12, GTA.Offsets.Editor.menubs9, cbologametype);
         }
 
         private void cbolosuddendeath_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(19, GTA.Offsets.Editor.menubs3, cbolosuddendeath);
+            Functions.Write.writebinary(18, GTA.Offsets.Editor.menubs3, cbolosuddendeath);
         }
 
         private void cbolohidetod_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(15, GTA.Offsets.Editor.menubs4, cbolohidetod);
+            Functions.Write.writebinary(14, GTA.Offsets.Editor.menubs4, cbolohidetod);
         }
 
         private void cbololockvehicleclass_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(2, GTA.Offsets.Editor.menubs5, cbololockvehicleclass);
+            Functions.Write.writebinary(1, GTA.Offsets.Editor.menubs5, cbololockvehicleclass);
         }
 
         private void cbolonumberofteams_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(15, GTA.Offsets.Editor.menubs5, cbolonumberofteams);
+            Functions.Write.writebinary(14, GTA.Offsets.Editor.menubs5, cbolonumberofteams);
         }
 
         private void cboloci_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(21, GTA.Offsets.Editor.menubs6, cboloci);
+            Functions.Write.writebinary(20, GTA.Offsets.Editor.menubs6, cboloci);
         }
 
         private void cbolotargetscore_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(9, GTA.Offsets.Editor.menubs8, cbolotargetscore);
+            Functions.Write.writebinary(8, GTA.Offsets.Editor.menubs8, cbolotargetscore);
         }
 
         private void cbolorounds_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(10, GTA.Offsets.Editor.menubs10, cbolorounds);
+            Functions.Write.writebinary(9, GTA.Offsets.Editor.menubs10, cbolorounds);
         }
 
         private void cbolokm_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(1, GTA.Offsets.Editor.menubs10, cbolokm);
+            Functions.Write.writebinary(0, GTA.Offsets.Editor.menubs10, cbolokm);
         }
 
         private void cbologametype2_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(2, GTA.Offsets.Editor.menubs10, cbologametype2);
+            Functions.Write.writebinary(1, GTA.Offsets.Editor.menubs10, cbologametype2);
         }
 
         private void cbolopu_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(1, GTA.Offsets.Editor.menubs13, cbolopu);
+            Functions.Write.writebinary(0, GTA.Offsets.Editor.menubs13, cbolopu);
         }
 
         private void cbolovehlist_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(4, GTA.Offsets.Editor.menubs18, cbolovehlist);
+            Functions.Write.writebinary(3, GTA.Offsets.Editor.menubs18, cbolovehlist);
         }
 
         private void cbolodisableblips_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(26, GTA.Offsets.Editor.menubs2, cbolodisableblips);
+            Functions.Write.writebinary(25, GTA.Offsets.Editor.menubs2, cbolodisableblips);
         }
 
         private void tbMissiondlcrel_TextChanged(object sender, TextChangedEventArgs e)
@@ -313,7 +313,7 @@ namespace Xenvious
 
         private void cbmissionteambalancing_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(11, GTA.Offsets.Editor.menubs2, cbmissionteambalancing);
+            Functions.Write.writebinary(10, GTA.Offsets.Editor.menubs2, cbmissionteambalancing);
         }
 
         private void tbMissiondtmp_TextChanged(object sender, TextChangedEventArgs e)
@@ -336,7 +336,7 @@ namespace Xenvious
 
         private void cbmissionaddflash_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(10, GTA.Offsets.Editor.menubs27, cbmissionaddflash);
+            Functions.Write.writebinary(9, GTA.Offsets.Editor.menubs27, cbmissionaddflash);
         }
 
         private void tbMissionchksfx_TextChanged(object sender, TextChangedEventArgs e)
@@ -405,27 +405,27 @@ namespace Xenvious
 
         private void cbmissiondisspeccam_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(30, GTA.Offsets.Editor.menubs3, cbmissiondisspeccam);
+            Functions.Write.writebinary(29, GTA.Offsets.Editor.menubs3, cbmissiondisspeccam);
         }
 
         private void cbmissiondisjipspec_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(5, GTA.Offsets.Editor.menubs26, cbmissiondisjipspec);
+            Functions.Write.writebinary(4, GTA.Offsets.Editor.menubs26, cbmissiondisjipspec);
         }
 
         private void cbmissiondislsc_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(27, GTA.Offsets.Editor.menubs3, cbmissiondislsc);
+            Functions.Write.writebinary(26, GTA.Offsets.Editor.menubs3, cbmissiondislsc);
         }
 
         private void cbmissionptod_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(21, GTA.Offsets.Editor.menubs2, cbmissionptod);
+            Functions.Write.writebinary(20, GTA.Offsets.Editor.menubs2, cbmissionptod);
         }
 
         private void cbmissionplaycm_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(3, GTA.Offsets.Editor.menubs2, cbmissionplaycm);
+            Functions.Write.writebinary(2, GTA.Offsets.Editor.menubs2, cbmissionplaycm);
         }
 
         // pol: 0 = normal police, 1 = no police, 2..6 = at most 1..5 stars. The
@@ -472,42 +472,42 @@ namespace Xenvious
 
         private void cbmissiondispwd_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(6, GTA.Offsets.Editor.twrst, cbmissiondispwd);
+            Functions.Write.writebinary(5, GTA.Offsets.Editor.twrst, cbmissiondispwd);
         }
 
         private void cbmissionactorremarmor_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(19, GTA.Offsets.Editor.menubs12, cbmissionactorremarmor);
+            Functions.Write.writebinary(18, GTA.Offsets.Editor.menubs12, cbmissionactorremarmor);
         }
 
         private void cbmissionjlwnp_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(17, GTA.Offsets.Editor.trel, cbmissionjlwnp);
+            Functions.Write.writebinary(16, GTA.Offsets.Editor.trel, cbmissionjlwnp);
         }
 
         private void cbmissiontrel12_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(21, GTA.Offsets.Editor.trel, cbmissiontrel12);
+            Functions.Write.writebinary(20, GTA.Offsets.Editor.trel, cbmissiontrel12);
         }
         private void cbmissiontrel13_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(22, GTA.Offsets.Editor.trel, cbmissiontrel13);
+            Functions.Write.writebinary(21, GTA.Offsets.Editor.trel, cbmissiontrel13);
         }
         private void cbmissiontrel14_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(23, GTA.Offsets.Editor.trel, cbmissiontrel14);
+            Functions.Write.writebinary(22, GTA.Offsets.Editor.trel, cbmissiontrel14);
         }
         private void cbmissiontrel23_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(24, GTA.Offsets.Editor.trel, cbmissiontrel23);
+            Functions.Write.writebinary(23, GTA.Offsets.Editor.trel, cbmissiontrel23);
         }
         private void cbmissiontrel24_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(25, GTA.Offsets.Editor.trel, cbmissiontrel24);
+            Functions.Write.writebinary(24, GTA.Offsets.Editor.trel, cbmissiontrel24);
         }
         private void cbmissiontrel34_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(26, GTA.Offsets.Editor.trel, cbmissiontrel34);
+            Functions.Write.writebinary(25, GTA.Offsets.Editor.trel, cbmissiontrel34);
         }
 
         private void ddmissionplyrlm_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -516,60 +516,60 @@ namespace Xenvious
             {
                 if (ddmissionplyrlm.SelectedIndex == 0)
                 {
-                    Functions.Write.writebinary(1, GTA.Offsets.Editor.menubs, false);
-                    Functions.Write.writebinary(6, GTA.Offsets.Editor.menubs, false);
+                    Functions.Write.writebinary(0, GTA.Offsets.Editor.menubs, false);
+                    Functions.Write.writebinary(5, GTA.Offsets.Editor.menubs, false);
                 }
                 else if (ddmissionplyrlm.SelectedIndex == 1)
                 {
-                    Functions.Write.writebinary(1, GTA.Offsets.Editor.menubs, true);
-                    Functions.Write.writebinary(6, GTA.Offsets.Editor.menubs, false);
+                    Functions.Write.writebinary(0, GTA.Offsets.Editor.menubs, true);
+                    Functions.Write.writebinary(5, GTA.Offsets.Editor.menubs, false);
                 }
                 else if (ddmissionplyrlm.SelectedIndex == 2)
                 {
-                    Functions.Write.writebinary(1, GTA.Offsets.Editor.menubs, false);
-                    Functions.Write.writebinary(6, GTA.Offsets.Editor.menubs, true);
+                    Functions.Write.writebinary(0, GTA.Offsets.Editor.menubs, false);
+                    Functions.Write.writebinary(5, GTA.Offsets.Editor.menubs, true);
                 }
             }
         }
 
         private void cbmissiondwd_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(1, GTA.Offsets.Editor.twrst, cbmissiondwd);
+            Functions.Write.writebinary(0, GTA.Offsets.Editor.twrst, cbmissiondwd);
         }
 
         private void cbmissionrwbs1_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(2, GTA.Offsets.Editor.twrst, cbmissionrwbs1);
+            Functions.Write.writebinary(1, GTA.Offsets.Editor.twrst, cbmissionrwbs1);
         }
 
         private void cbmissionrwbs2_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(3, GTA.Offsets.Editor.twrst, cbmissionrwbs2);
+            Functions.Write.writebinary(2, GTA.Offsets.Editor.twrst, cbmissionrwbs2);
         }
 
         private void cbmissionrwbs3_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(4, GTA.Offsets.Editor.twrst, cbmissionrwbs3);
+            Functions.Write.writebinary(3, GTA.Offsets.Editor.twrst, cbmissionrwbs3);
         }
 
         private void cbmissionrwbs4_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(5, GTA.Offsets.Editor.twrst, cbmissionrwbs4);
+            Functions.Write.writebinary(4, GTA.Offsets.Editor.twrst, cbmissionrwbs4);
         }
 
         private void cbmissionedw_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(6, GTA.Offsets.Editor.menubs9, cbmissionedw);
+            Functions.Write.writebinary(5, GTA.Offsets.Editor.menubs9, cbmissionedw);
         }
 
         private void cbmissionemp_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(25, GTA.Offsets.Editor.menubs24, cbmissionemp);
+            Functions.Write.writebinary(24, GTA.Offsets.Editor.menubs24, cbmissionemp);
         }
 
         private void cbmissionempnm_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(9, GTA.Offsets.Editor.menubs25, cbmissionempnm);
+            Functions.Write.writebinary(8, GTA.Offsets.Editor.menubs25, cbmissionempnm);
         }
 
         private void tbmissionempdura_TextChanged(object sender, TextChangedEventArgs e)

@@ -79,7 +79,7 @@ When bumping a NuGet package, update `Xenvious/packages.config` **and** the
   `python3 tools/builddata/gen.py` and commit the files it writes. CI fails
   when they are stale. A key one edition lacks is `0`/`""` there; guard
   against `0` before writing.
-- Bit helpers in `Functions.cs` (`checkbinary`, `writebinary`) use **1-based**
+- Bit helpers in `Functions.cs` (`checkbinary`, `writebinary`) use **0-based**
   bit indices.
 - Never mix editions. Edition-specific data only comes through
   `BuildData.Current` / `OfflineData` for `GameVariant.Current`.

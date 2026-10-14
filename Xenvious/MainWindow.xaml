@@ -6214,12 +6214,12 @@
                                                                                                 <Grid Style="{StaticResource FormRow}">
                                                                                                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                                                                                                     <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[tp_objblock], FallbackValue='Off while the objective is blocked'}"/>
-                                                                                                    <CheckBox x:Name="cbtpbit3" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Tag="3" Checked="TpBit_Checked" Unchecked="TpBit_Checked"/>
+                                                                                                    <CheckBox x:Name="cbtpbit2" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Tag="2" Checked="TpBit_Checked" Unchecked="TpBit_Checked"/>
                                                                                                 </Grid>
                                                                                                 <Grid Style="{StaticResource FormRow}">
                                                                                                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                                                                                                     <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[tp_midpoint], FallbackValue='Needs the rule midpoint'}"/>
-                                                                                                    <CheckBox x:Name="cbtpbit28" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Tag="28" Checked="TpBit_Checked" Unchecked="TpBit_Checked"/>
+                                                                                                    <CheckBox x:Name="cbtpbit27" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Tag="27" Checked="TpBit_Checked" Unchecked="TpBit_Checked"/>
                                                                                                 </Grid>
                                                                                             </StackPanel>
                                                                                         </DockPanel>
@@ -6240,7 +6240,7 @@
                                                                                                 <Grid Style="{StaticResource FormRow}">
                                                                                                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                                                                                                     <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[tp_press_new], FallbackValue='Press a button to enter (new)'}"/>
-                                                                                                    <CheckBox x:Name="cbtpbit24" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Tag="24" Checked="TpBit_Checked" Unchecked="TpBit_Checked"/>
+                                                                                                    <CheckBox x:Name="cbtpbit23" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Tag="23" Checked="TpBit_Checked" Unchecked="TpBit_Checked"/>
                                                                                                 </Grid>
                                                                                                 <Grid Style="{StaticResource FormRow}">
                                                                                                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
@@ -6265,12 +6265,12 @@
                                                                                                 <Grid Style="{StaticResource FormRow}">
                                                                                                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                                                                                                     <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[tp_companions], FallbackValue='Bring companions'}"/>
-                                                                                                    <CheckBox x:Name="cbtpbit30" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Tag="30" Checked="TpBit_Checked" Unchecked="TpBit_Checked"/>
+                                                                                                    <CheckBox x:Name="cbtpbit29" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Tag="29" Checked="TpBit_Checked" Unchecked="TpBit_Checked"/>
                                                                                                 </Grid>
                                                                                                 <Grid Style="{StaticResource FormRow}">
                                                                                                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                                                                                                     <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[tp_dialogue], FallbackValue='Wait for dialogue to finish'}"/>
-                                                                                                    <CheckBox x:Name="cbtpbit17" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Tag="17" Checked="TpBit_Checked" Unchecked="TpBit_Checked"/>
+                                                                                                    <CheckBox x:Name="cbtpbit16" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Tag="16" Checked="TpBit_Checked" Unchecked="TpBit_Checked"/>
                                                                                                 </Grid>
                                                                                             </StackPanel>
                                                                                         </DockPanel>
@@ -6296,7 +6296,7 @@
                                                                                                 <Grid Style="{StaticResource FormRow}">
                                                                                                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                                                                                                     <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[tp_nofadein], FallbackValue='Do not fade back in'}"/>
-                                                                                                    <CheckBox x:Name="cbtpbit14" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Tag="14" Checked="TpBit_Checked" Unchecked="TpBit_Checked"/>
+                                                                                                    <CheckBox x:Name="cbtpbit13" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Tag="13" Checked="TpBit_Checked" Unchecked="TpBit_Checked"/>
                                                                                                 </Grid>
                                                                                                 <Grid Style="{StaticResource FormRow}" ToolTip="{Binding Translation[tp_fadeold_tip], FallbackValue='FadeOutBeforeWarpLegacy: Rockstar keeps it only for old jobs.'}">
                                                                                                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
@@ -6327,12 +6327,12 @@
                                                                                                 <Grid Style="{StaticResource FormRow}">
                                                                                                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                                                                                                     <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[tp_ptfx], FallbackValue='Portal effect (particles)'}"/>
-                                                                                                    <CheckBox x:Name="cbtpbit8" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Tag="8" Checked="TpBit_Checked" Unchecked="TpBit_Checked"/>
+                                                                                                    <CheckBox x:Name="cbtpbit7" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Tag="7" Checked="TpBit_Checked" Unchecked="TpBit_Checked"/>
                                                                                                 </Grid>
                                                                                                 <Grid Style="{StaticResource FormRow}">
                                                                                                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                                                                                                     <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[tp_floor], FallbackValue='Put the marker on the floor'}"/>
-                                                                                                    <CheckBox x:Name="cbtpbit22" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Tag="22" Checked="TpBit_Checked" Unchecked="TpBit_Checked"/>
+                                                                                                    <CheckBox x:Name="cbtpbit21" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Tag="21" Checked="TpBit_Checked" Unchecked="TpBit_Checked"/>
                                                                                                 </Grid>
                                                                                                 <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[tpcolor], FallbackValue='Blip Color'}"/>
                                                                                                 <ComboBox x:Name="ddmissiontpcolor" Height="30" Margin="0,0,0,10" IsEnabled="False" SelectionChanged="ddmissiontpcolor_SelectionChanged">
@@ -6387,7 +6387,7 @@
                                                                                                 <Grid Style="{StaticResource FormRow}">
                                                                                                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                                                                                                     <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[tp_forcecam], FallbackValue='Always use the animated camera'}"/>
-                                                                                                    <CheckBox x:Name="cbtpbit19" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Tag="19" Checked="TpBit_Checked" Unchecked="TpBit_Checked"/>
+                                                                                                    <CheckBox x:Name="cbtpbit18" Grid.Column="1" Style="{StaticResource FormToggle}" IsEnabled="False" Tag="18" Checked="TpBit_Checked" Unchecked="TpBit_Checked"/>
                                                                                                 </Grid>
                                                                                                 <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[tpcamloc1], FallbackValue='Player start position'}"/>
                                                                                                 <Grid Margin="0,0,0,10">
@@ -11292,9 +11292,9 @@
                                             <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[conv_bits], FallbackValue=Bits}"/>
                                         </Border>
                                         <StackPanel Margin="14,12,14,10">
-                                            <!-- Four bytes of eight tiles, filled in code: big Xenvious bit (1-32), small script bit (0-31). -->
+                                            <!-- Four bytes of eight tiles, filled in code, numbered by bit index (0-31). -->
                                             <UniformGrid x:Name="ConvBitsPanel" Columns="4"/>
-                                            <TextBlock FontSize="12" Foreground="{DynamicResource FaintTextBrush}" Margin="2,8,0,0" TextWrapping="Wrap" Text="{Binding Translation[conv_bits_hint], FallbackValue='Big: Xenvious bit (1-32), small: script bit (0-31). A click switches the bit.'}"/>
+                                            <TextBlock FontSize="12" Foreground="{DynamicResource FaintTextBrush}" Margin="2,8,0,0" TextWrapping="Wrap" Text="{Binding Translation[conv_bits_hint], FallbackValue='Bit number 0-31 as in the scripts. A click switches the bit.'}"/>
                                             <Label x:Name="Lblconvbinarynums" Padding="2,6,0,0" FontSize="13" Foreground="{DynamicResource TextColor}"/>
                                         </StackPanel>
                                     </DockPanel>

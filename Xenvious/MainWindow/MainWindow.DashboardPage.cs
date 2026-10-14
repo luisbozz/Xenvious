@@ -82,7 +82,7 @@ namespace Xenvious
         {
             if (m.IsProcOpen)
             {
-                Functions.Write.writebinary(16, GTA.Offsets.Editor.menubs2, true);
+                Functions.Write.writebinary(15, GTA.Offsets.Editor.menubs2, true);
 
                 tb_cdth.IsEnabled = true;
                 tb_cdtm.IsEnabled = true;
@@ -96,7 +96,7 @@ namespace Xenvious
         {
             if (m.IsProcOpen)
             {
-                Functions.Write.writebinary(16, GTA.Offsets.Editor.menubs2, false);
+                Functions.Write.writebinary(15, GTA.Offsets.Editor.menubs2, false);
 
                 tb_cdth.IsEnabled = false;
                 tb_cdtm.IsEnabled = false;
@@ -175,22 +175,22 @@ namespace Xenvious
 
         private void cb_hdvision_Unchecked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(7, GTA.Offsets.Editor.menubs10, false);
+            Functions.Write.writebinary(6, GTA.Offsets.Editor.menubs10, false);
         }
 
         private void cb_hdvision_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(7, GTA.Offsets.Editor.menubs10, true);
+            Functions.Write.writebinary(6, GTA.Offsets.Editor.menubs10, true);
         }
 
         private void cb_blackout_Unchecked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(28, GTA.Offsets.Editor.menubs14, false);
+            Functions.Write.writebinary(27, GTA.Offsets.Editor.menubs14, false);
         }
 
         private void cb_blackout_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(28, GTA.Offsets.Editor.menubs14, true);
+            Functions.Write.writebinary(27, GTA.Offsets.Editor.menubs14, true);
         }
 
         private void tb_Rounds_TextChanged(object sender, TextChangedEventArgs e)
@@ -580,30 +580,30 @@ namespace Xenvious
 
         public void SetArenaWarValues(bool enable)
         {
-            Functions.Write.writebinary(19, GTA.Offsets.Editor.menubs5, enable);
-            Functions.Write.writebinary(27, GTA.Offsets.Editor.menubs9, enable);
-            Functions.Write.writebinary(22, GTA.Offsets.Editor.menubs11, enable);
+            Functions.Write.writebinary(18, GTA.Offsets.Editor.menubs5, enable);
+            Functions.Write.writebinary(26, GTA.Offsets.Editor.menubs9, enable);
+            Functions.Write.writebinary(21, GTA.Offsets.Editor.menubs11, enable);
+            Functions.Write.writebinary(11, GTA.Offsets.Editor.menubs20, enable);
             Functions.Write.writebinary(12, GTA.Offsets.Editor.menubs20, enable);
-            Functions.Write.writebinary(13, GTA.Offsets.Editor.menubs20, enable);
-            Functions.Write.writebinary(24, GTA.Offsets.Editor.menubs20, enable);
-            Functions.Write.writebinary(2, GTA.Offsets.Editor.menubs21, enable);
+            Functions.Write.writebinary(23, GTA.Offsets.Editor.menubs20, enable);
+            Functions.Write.writebinary(1, GTA.Offsets.Editor.menubs21, enable);
+            Functions.Write.writebinary(8, GTA.Offsets.Editor.menubs21, enable);
             Functions.Write.writebinary(9, GTA.Offsets.Editor.menubs21, enable);
-            Functions.Write.writebinary(10, GTA.Offsets.Editor.menubs21, enable);
+            Functions.Write.writebinary(21, GTA.Offsets.Editor.menubs21, enable);
             Functions.Write.writebinary(22, GTA.Offsets.Editor.menubs21, enable);
             Functions.Write.writebinary(23, GTA.Offsets.Editor.menubs21, enable);
             Functions.Write.writebinary(24, GTA.Offsets.Editor.menubs21, enable);
             Functions.Write.writebinary(25, GTA.Offsets.Editor.menubs21, enable);
-            Functions.Write.writebinary(26, GTA.Offsets.Editor.menubs21, enable);
-            Functions.Write.writebinary(17, GTA.Offsets.Editor.menubs22, enable);
-            Functions.Write.writebinary(21, GTA.Offsets.Editor.menubs22, enable);
+            Functions.Write.writebinary(16, GTA.Offsets.Editor.menubs22, enable);
+            Functions.Write.writebinary(20, GTA.Offsets.Editor.menubs22, enable);
+            Functions.Write.writebinary(28, GTA.Offsets.Editor.menubs22, enable);
             Functions.Write.writebinary(29, GTA.Offsets.Editor.menubs22, enable);
             Functions.Write.writebinary(30, GTA.Offsets.Editor.menubs22, enable);
-            Functions.Write.writebinary(31, GTA.Offsets.Editor.menubs22, enable);
+            Functions.Write.writebinary(9, GTA.Offsets.Editor.menubs23, enable);
             Functions.Write.writebinary(10, GTA.Offsets.Editor.menubs23, enable);
-            Functions.Write.writebinary(11, GTA.Offsets.Editor.menubs23, enable);
 
-            Functions.Write.writebinary(13, GTA.Offsets.Editor.intop2, enable);
-            Functions.Write.writebinary(18, GTA.Offsets.Editor.tmbts, 4, GTA.Offsets.Editor.team_NEXT, enable);
+            Functions.Write.writebinary(12, GTA.Offsets.Editor.intop2, enable);
+            Functions.Write.writebinary(17, GTA.Offsets.Editor.tmbts, 4, GTA.Offsets.Editor.team_NEXT, enable);
 
             if (enable)
             {
@@ -872,27 +872,27 @@ namespace Xenvious
                         case "fm_survival_creator":
                             new Global(GTA.Offsets.Editor.current_team_test).SetInt(index);
                             // Like the creator's own Test entry: bit 18 first, then bit 25 (see public_mission_creator).
-                            Functions.Write.writebinarytoaddy(19, m.memory(GTA.Offsets.Editor.localptr[0], new long[] { GTA.Offsets.Editor.localptr[1], GTA.Offsets.Editor.OFFSET_script_local_start, GTA.Offsets.Editor.OFFSET_current_creator_test_survival * 8 }).GetAddress());
-                            Functions.Write.writebinarytoaddy(26, m.memory(GTA.Offsets.Editor.localptr[0], new long[] { GTA.Offsets.Editor.localptr[1], GTA.Offsets.Editor.OFFSET_script_local_start, GTA.Offsets.Editor.OFFSET_current_creator_test_survival * 8 }).GetAddress());
+                            Functions.Write.writebinarytoaddy(18, m.memory(GTA.Offsets.Editor.localptr[0], new long[] { GTA.Offsets.Editor.localptr[1], GTA.Offsets.Editor.OFFSET_script_local_start, GTA.Offsets.Editor.OFFSET_current_creator_test_survival * 8 }).GetAddress());
+                            Functions.Write.writebinarytoaddy(25, m.memory(GTA.Offsets.Editor.localptr[0], new long[] { GTA.Offsets.Editor.localptr[1], GTA.Offsets.Editor.OFFSET_script_local_start, GTA.Offsets.Editor.OFFSET_current_creator_test_survival * 8 }).GetAddress());
                             break;
                         case "fm_capture_creator":
                             new Global(GTA.Offsets.Editor.current_team_test).SetInt(index);
                             // Like the creator's own Test entry: bit 18 first, then bit 25 (see public_mission_creator).
-                            Functions.Write.writebinarytoaddy(19, m.memory(GTA.Offsets.Editor.localptr[0], new long[] { GTA.Offsets.Editor.localptr[1], GTA.Offsets.Editor.OFFSET_script_local_start, GTA.Offsets.Editor.OFFSET_current_creator_test_capture * 8 }).GetAddress());
-                            Functions.Write.writebinarytoaddy(26, m.memory(GTA.Offsets.Editor.localptr[0], new long[] { GTA.Offsets.Editor.localptr[1], GTA.Offsets.Editor.OFFSET_script_local_start, GTA.Offsets.Editor.OFFSET_current_creator_test_capture * 8 }).GetAddress());
+                            Functions.Write.writebinarytoaddy(18, m.memory(GTA.Offsets.Editor.localptr[0], new long[] { GTA.Offsets.Editor.localptr[1], GTA.Offsets.Editor.OFFSET_script_local_start, GTA.Offsets.Editor.OFFSET_current_creator_test_capture * 8 }).GetAddress());
+                            Functions.Write.writebinarytoaddy(25, m.memory(GTA.Offsets.Editor.localptr[0], new long[] { GTA.Offsets.Editor.localptr[1], GTA.Offsets.Editor.OFFSET_script_local_start, GTA.Offsets.Editor.OFFSET_current_creator_test_capture * 8 }).GetAddress());
                             break;
                         case "fm_lts_creator":
                             new Global(GTA.Offsets.Editor.current_team_test).SetInt(index);
                             // Like the creator's own Test entry: bit 18 first, then bit 25 (see public_mission_creator).
-                            Functions.Write.writebinarytoaddy(19, m.memory(GTA.Offsets.Editor.localptr[0], new long[] { GTA.Offsets.Editor.localptr[1], GTA.Offsets.Editor.OFFSET_script_local_start, GTA.Offsets.Editor.OFFSET_current_creator_test_lts * 8 }).GetAddress());
-                            Functions.Write.writebinarytoaddy(26, m.memory(GTA.Offsets.Editor.localptr[0], new long[] { GTA.Offsets.Editor.localptr[1], GTA.Offsets.Editor.OFFSET_script_local_start, GTA.Offsets.Editor.OFFSET_current_creator_test_lts * 8 }).GetAddress());
+                            Functions.Write.writebinarytoaddy(18, m.memory(GTA.Offsets.Editor.localptr[0], new long[] { GTA.Offsets.Editor.localptr[1], GTA.Offsets.Editor.OFFSET_script_local_start, GTA.Offsets.Editor.OFFSET_current_creator_test_lts * 8 }).GetAddress());
+                            Functions.Write.writebinarytoaddy(25, m.memory(GTA.Offsets.Editor.localptr[0], new long[] { GTA.Offsets.Editor.localptr[1], GTA.Offsets.Editor.OFFSET_script_local_start, GTA.Offsets.Editor.OFFSET_current_creator_test_lts * 8 }).GetAddress());
                             break;
                         case "public_mission_creator":
                             new Global(GTA.Offsets.Editor.current_team_test).SetInt(index);
                             // Like the creator's own Test entry: bit 18 first (test running, so camera and map
                             // stop following the cursor during the fade), then bit 25 starts the test.
-                            Functions.Write.writebinarytoaddy(19, m.memory(GTA.Offsets.Editor.localptr[0], new long[] { GTA.Offsets.Editor.localptr[1], GTA.Offsets.Editor.OFFSET_script_local_start, GTA.Offsets.Editor.OFFSET_current_creator_test_mission * 8 }).GetAddress());
-                            Functions.Write.writebinarytoaddy(26, m.memory(GTA.Offsets.Editor.localptr[0], new long[] { GTA.Offsets.Editor.localptr[1], GTA.Offsets.Editor.OFFSET_script_local_start, GTA.Offsets.Editor.OFFSET_current_creator_test_mission * 8 }).GetAddress());
+                            Functions.Write.writebinarytoaddy(18, m.memory(GTA.Offsets.Editor.localptr[0], new long[] { GTA.Offsets.Editor.localptr[1], GTA.Offsets.Editor.OFFSET_script_local_start, GTA.Offsets.Editor.OFFSET_current_creator_test_mission * 8 }).GetAddress());
+                            Functions.Write.writebinarytoaddy(25, m.memory(GTA.Offsets.Editor.localptr[0], new long[] { GTA.Offsets.Editor.localptr[1], GTA.Offsets.Editor.OFFSET_script_local_start, GTA.Offsets.Editor.OFFSET_current_creator_test_mission * 8 }).GetAddress());
                             break;
                         case "fm_deathmatch_creator":
                             displayScreenMessage("currently not possible for deathmatch");

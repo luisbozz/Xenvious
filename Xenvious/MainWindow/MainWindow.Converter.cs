@@ -55,8 +55,7 @@ namespace Xenvious
         private readonly ToggleButton[] _convBits = new ToggleButton[32];
 
         // Four byte tiles, highest byte first like the binary text; inside a byte the highest bit
-        // is on the left. Big number: Xenvious bit (1-based, as checkbinary/writebinary use it),
-        // small number: the bit index the scripts use (0-based).
+        // is on the left. The number is the bit index, 0-based like the scripts and Xenvious.
         private void BuildConverterBits()
         {
             if (_convBits[0] != null)
@@ -66,17 +65,14 @@ namespace Xenvious
                 var cells = new UniformGrid { Columns = 8 };
                 for (int i = b * 8 + 7; i >= b * 8; i--)
                 {
-                    var text = new TextBlock { TextAlignment = TextAlignment.Center, LineHeight = 13 };
-                    text.Inlines.Add(new System.Windows.Documents.Run((i + 1).ToString()) { FontSize = 13, FontWeight = FontWeights.SemiBold });
-                    text.Inlines.Add(new System.Windows.Documents.LineBreak());
-                    text.Inlines.Add(new System.Windows.Documents.Run(i.ToString()) { FontSize = 10 });
-                    var bit = new ToggleButton { Style = (Style)ConverterMain.FindResource("ConvBit"), Content = text, Tag = i, ToolTip = $"Xenvious {i + 1} · Script {i}" };
+                    var text = new TextBlock { TextAlignment = TextAlignment.Center, Text = i.ToString(), FontSize = 13, FontWeight = FontWeights.SemiBold };
+                    var bit = new ToggleButton { Style = (Style)ConverterMain.FindResource("ConvBit"), Content = text, Tag = i, ToolTip = $"Bit {i}" };
                     bit.Click += ConvBit_Click;
                     _convBits[i] = bit;
                     cells.Children.Add(bit);
                 }
                 var tile = new StackPanel();
-                var caption = new TextBlock { Text = $"Byte {b} · {b * 8 + 1}-{b * 8 + 8}", FontSize = 11, FontWeight = FontWeights.Bold, Margin = new Thickness(2, 0, 0, 4) };
+                var caption = new TextBlock { Text = $"Byte {b} · {b * 8}-{b * 8 + 7}", FontSize = 11, FontWeight = FontWeights.Bold, Margin = new Thickness(2, 0, 0, 4) };
                 caption.SetResourceReference(TextBlock.ForegroundProperty, "NavMutedBrush");
                 tile.Children.Add(caption);
                 tile.Children.Add(cells);

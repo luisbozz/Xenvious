@@ -52,7 +52,7 @@ namespace Xenvious
                 if (!tbSMSsmsei.IsFocused || ignore_focus) tbSMSsmsei.Text = new Global((GTA.Offsets.Editor.SMS.ptsreq + GTA.Offsets.Editor.SMS.NEXT * ddsmsno.SelectedIndex)).Get<int>().ToString();
                 if (!tbSMSsmstl.IsFocused || ignore_focus) tbSMSsmstl.Text = new Global((GTA.Offsets.Editor.SMS.smstl + GTA.Offsets.Editor.SMS.NEXT * ddsmsno.SelectedIndex)).Get<int>().ToString();
                 if (!tbSMSsmspwo.IsFocused || ignore_focus) tbSMSsmspwo.Text = new Global((GTA.Offsets.Editor.SMS.smspwo + GTA.Offsets.Editor.SMS.NEXT * ddsmsno.SelectedIndex)).Get<int>().ToString();
-                Functions.Read.checkbinary(0, GTA.Offsets.Editor.SMS.sndall + GTA.Offsets.Editor.SMS.NEXT * ddsmsno.SelectedIndex, cbSMSsndall);
+                Functions.Read.checkbinary(31, GTA.Offsets.Editor.SMS.sndall + GTA.Offsets.Editor.SMS.NEXT * ddsmsno.SelectedIndex, cbSMSsndall);
             }
         }
 
@@ -76,7 +76,7 @@ namespace Xenvious
 
         private void cbSMSsndall_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(0, GTA.Offsets.Editor.SMS.sndall + GTA.Offsets.Editor.SMS.NEXT * ddsmsno.SelectedIndex, cbSMSsndall);
+            Functions.Write.writebinary(31, GTA.Offsets.Editor.SMS.sndall + GTA.Offsets.Editor.SMS.NEXT * ddsmsno.SelectedIndex, cbSMSsndall);
         }
 
         private void tbSMSmsg_TextChanged(object sender, TextChangedEventArgs e)
@@ -165,12 +165,12 @@ namespace Xenvious
 
         private void cbSMSuc_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(32, GTA.Offsets.Editor.menubs2, cbSMSuc);
+            Functions.Write.writebinary(31, GTA.Offsets.Editor.menubs2, cbSMSuc);
         }
 
         private void cbSMSrt_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(20, GTA.Offsets.Editor.menubs19, cbSMSrt);
+            Functions.Write.writebinary(19, GTA.Offsets.Editor.menubs19, cbSMSrt);
         }
 
         private void ddSMScontact_SelectionChanged(object sender, SelectionChangedEventArgs e)

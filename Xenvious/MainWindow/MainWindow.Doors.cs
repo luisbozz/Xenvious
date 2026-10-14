@@ -140,10 +140,10 @@ namespace Xenvious
                 if (!tbdoorslocz.IsFocused || ignore_focus) tbdoorslocz.Text = new Global(GTA.Offsets.Editor.Doors.loc + 2 + GTA.Offsets.Editor.Doors.NEXT * index).Get<float>().ToString();
                 if (!tbdoorsfcz.IsFocused || ignore_focus) tbdoorsfcz.Text = new Global(GTA.Offsets.Editor.Doors.fcz + GTA.Offsets.Editor.Doors.NEXT * index).Get<float>().ToString();
                 if (!tbdoorsfoz.IsFocused || ignore_focus) tbdoorsfoz.Text = new Global(GTA.Offsets.Editor.Doors.foz + GTA.Offsets.Editor.Doors.NEXT * index).Get<float>().ToString();
-                Functions.Read.checkbinary(1, GTA.Offsets.Editor.Doors._lock + GTA.Offsets.Editor.Doors.NEXT * index, cbdoorslock);
-                Functions.Read.checkbinary(1, GTA.Offsets.Editor.Doors.swing + GTA.Offsets.Editor.Doors.NEXT * index, cbdoorsswing);
-                Functions.Read.checkbinary(1, GTA.Offsets.Editor.Doors.swingu + GTA.Offsets.Editor.Doors.NEXT * index, cbdoorsswingu);
-                Functions.Read.checkbinary(1, GTA.Offsets.Editor.Doors.mid + GTA.Offsets.Editor.Doors.NEXT * index, cbdoorsmid);
+                Functions.Read.checkbinary(0, GTA.Offsets.Editor.Doors._lock + GTA.Offsets.Editor.Doors.NEXT * index, cbdoorslock);
+                Functions.Read.checkbinary(0, GTA.Offsets.Editor.Doors.swing + GTA.Offsets.Editor.Doors.NEXT * index, cbdoorsswing);
+                Functions.Read.checkbinary(0, GTA.Offsets.Editor.Doors.swingu + GTA.Offsets.Editor.Doors.NEXT * index, cbdoorsswingu);
+                Functions.Read.checkbinary(0, GTA.Offsets.Editor.Doors.mid + GTA.Offsets.Editor.Doors.NEXT * index, cbdoorsmid);
 
                 if (!tbdoorsaurt.IsFocused || ignore_focus) tbdoorsaurt.Text = new Global(GTA.Offsets.Editor.Doors.aurt + GTA.Offsets.Editor.Doors.NEXT * index).Get<float>().ToString();
                 if (!tbdoorsaudst.IsFocused || ignore_focus) tbdoorsaudst.Text = new Global(GTA.Offsets.Editor.Doors.audst + GTA.Offsets.Editor.Doors.NEXT * index).Get<float>().ToString();
@@ -162,7 +162,7 @@ namespace Xenvious
                 if (!tbdoorsorg.IsFocused || ignore_focus) tbdoorsorg.Text = new Global(GTA.Offsets.Editor.Doors.org + GTA.Offsets.Editor.Doors.NEXT * index).Get<float>().ToString();
                 if (!tbdoorsdcoid.IsFocused || ignore_focus) tbdoorsdcoid.Text = new Global(GTA.Offsets.Editor.Doors.dcoid + GTA.Offsets.Editor.Doors.NEXT * index).Get<int>().ToString();
                 if (!tbdoorsdtime.IsFocused || ignore_focus) tbdoorsdtime.Text = new Global(GTA.Offsets.Editor.Doors.dtime + GTA.Offsets.Editor.Doors.NEXT * index).Get<int>().ToString();
-                Functions.Read.checkbinary(1, GTA.Offsets.Editor.Doors.lfp + GTA.Offsets.Editor.Doors.NEXT * index, cbdoorslfp);
+                Functions.Read.checkbinary(0, GTA.Offsets.Editor.Doors.lfp + GTA.Offsets.Editor.Doors.NEXT * index, cbdoorslfp);
                 if (!tbdoorsornlo.IsFocused || ignore_focus) tbdoorsornlo.Text = new Global(GTA.Offsets.Editor.Doors.ORNLO + GTA.Offsets.Editor.Doors.NEXT * index).Get<float>().ToString();
                 if (!tbdoorsdle.IsFocused || ignore_focus) tbdoorsdle.Text = new Global(GTA.Offsets.Editor.Doors.dle + GTA.Offsets.Editor.Doors.NEXT * index).Get<int>().ToString();
             }
@@ -213,17 +213,17 @@ namespace Xenvious
 
         private void cbdoorsswing_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(1, GTA.Offsets.Editor.Doors.swing + GTA.Offsets.Editor.Doors.NEXT * dddoorsno.SelectedIndex, cbdoorsswing);
+            Functions.Write.writebinary(0, GTA.Offsets.Editor.Doors.swing + GTA.Offsets.Editor.Doors.NEXT * dddoorsno.SelectedIndex, cbdoorsswing);
         }
 
         private void cbdoorslock_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(1, GTA.Offsets.Editor.Doors._lock + GTA.Offsets.Editor.Doors.NEXT * dddoorsno.SelectedIndex, cbdoorslock);
+            Functions.Write.writebinary(0, GTA.Offsets.Editor.Doors._lock + GTA.Offsets.Editor.Doors.NEXT * dddoorsno.SelectedIndex, cbdoorslock);
         }
 
         private void cbdoorsswingu_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(1, GTA.Offsets.Editor.Doors.swingu + GTA.Offsets.Editor.Doors.NEXT * dddoorsno.SelectedIndex, cbdoorsswingu);
+            Functions.Write.writebinary(0, GTA.Offsets.Editor.Doors.swingu + GTA.Offsets.Editor.Doors.NEXT * dddoorsno.SelectedIndex, cbdoorsswingu);
         }
 
         private void tbdoorsudrat_TextChanged(object sender, TextChangedEventArgs e)
@@ -255,7 +255,7 @@ namespace Xenvious
 
         private void cbdoorsmid_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(1, GTA.Offsets.Editor.Doors.mid + GTA.Offsets.Editor.Doors.NEXT * dddoorsno.SelectedIndex, cbdoorsmid);
+            Functions.Write.writebinary(0, GTA.Offsets.Editor.Doors.mid + GTA.Offsets.Editor.Doors.NEXT * dddoorsno.SelectedIndex, cbdoorsmid);
         }
 
         private void tbdoorsaurt_TextChanged(object sender, TextChangedEventArgs e)
@@ -368,7 +368,7 @@ namespace Xenvious
 
         private void cbdoorslfp_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(1, GTA.Offsets.Editor.Doors.lfp + GTA.Offsets.Editor.Doors.NEXT * dddoorsno.SelectedIndex, cbdoorslfp);
+            Functions.Write.writebinary(0, GTA.Offsets.Editor.Doors.lfp + GTA.Offsets.Editor.Doors.NEXT * dddoorsno.SelectedIndex, cbdoorslfp);
         }
     }
 }

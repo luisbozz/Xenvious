@@ -125,13 +125,13 @@ namespace Xenvious
                 if (!tbweapheading.IsFocused || ignore_focus) tbweapheading.Text = new Global((GTA.Offsets.Editor.Weapon.head + GTA.Offsets.Editor.Weapon.NEXT * index)).Get<float>().ToString();
 
                 if (!tbweapdmgmlt.IsFocused || ignore_focus) tbweapdmgmlt.Text = new Global((GTA.Offsets.Editor.Weapon.dmgmult + GTA.Offsets.Editor.Weapon.NEXT * index)).Get<float>().ToString();
-                Functions.Read.checkbinary(7, GTA.Offsets.Editor.Weapon.bits + ddweapno.SelectedIndex * GTA.Offsets.Editor.Weapon.NEXT, cb_weap_invisible);
-                Functions.Read.checkbinary(11, GTA.Offsets.Editor.Weapon.bits + ddweapno.SelectedIndex * GTA.Offsets.Editor.Weapon.NEXT, cb_weap_civ);
-                Functions.Read.checkbinary(1, GTA.Offsets.Editor.Weapon.brest + 0 + ddweapno.SelectedIndex * GTA.Offsets.Editor.Weapon.NEXT, cb_weap_brest1);
-                Functions.Read.checkbinary(1, GTA.Offsets.Editor.Weapon.brest + 1 + ddweapno.SelectedIndex * GTA.Offsets.Editor.Weapon.NEXT, cb_weap_brest2);
-                Functions.Read.checkbinary(1, GTA.Offsets.Editor.Weapon.brest + 2 + ddweapno.SelectedIndex * GTA.Offsets.Editor.Weapon.NEXT, cb_weap_brest3);
-                Functions.Read.checkbinary(1, GTA.Offsets.Editor.Weapon.brest + 3 + ddweapno.SelectedIndex * GTA.Offsets.Editor.Weapon.NEXT, cb_weap_brest4);
-                if (Functions.Read.checkbinary(10, GTA.Offsets.Editor.Weapon.bits + ddweapno.SelectedIndex * GTA.Offsets.Editor.Weapon.NEXT, cbweapenablerot))
+                Functions.Read.checkbinary(6, GTA.Offsets.Editor.Weapon.bits + ddweapno.SelectedIndex * GTA.Offsets.Editor.Weapon.NEXT, cb_weap_invisible);
+                Functions.Read.checkbinary(10, GTA.Offsets.Editor.Weapon.bits + ddweapno.SelectedIndex * GTA.Offsets.Editor.Weapon.NEXT, cb_weap_civ);
+                Functions.Read.checkbinary(0, GTA.Offsets.Editor.Weapon.brest + 0 + ddweapno.SelectedIndex * GTA.Offsets.Editor.Weapon.NEXT, cb_weap_brest1);
+                Functions.Read.checkbinary(0, GTA.Offsets.Editor.Weapon.brest + 1 + ddweapno.SelectedIndex * GTA.Offsets.Editor.Weapon.NEXT, cb_weap_brest2);
+                Functions.Read.checkbinary(0, GTA.Offsets.Editor.Weapon.brest + 2 + ddweapno.SelectedIndex * GTA.Offsets.Editor.Weapon.NEXT, cb_weap_brest3);
+                Functions.Read.checkbinary(0, GTA.Offsets.Editor.Weapon.brest + 3 + ddweapno.SelectedIndex * GTA.Offsets.Editor.Weapon.NEXT, cb_weap_brest4);
+                if (Functions.Read.checkbinary(9, GTA.Offsets.Editor.Weapon.bits + ddweapno.SelectedIndex * GTA.Offsets.Editor.Weapon.NEXT, cbweapenablerot))
                 {
                     if (!tbweaprotx.IsFocused || ignore_focus) tbweaprotx.Text = new Global((GTA.Offsets.Editor.Weapon.rotx + GTA.Offsets.Editor.Weapon.NEXT * index)).Get<float>().ToString();
                     if (!tbweaproty.IsFocused || ignore_focus) tbweaproty.Text = new Global((GTA.Offsets.Editor.Weapon.roty + GTA.Offsets.Editor.Weapon.NEXT * index)).Get<float>().ToString();
@@ -244,11 +244,11 @@ namespace Xenvious
 
         private void cb_weap_invisible_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(7, GTA.Offsets.Editor.Weapon.bits + ddweapno.SelectedIndex * GTA.Offsets.Editor.Weapon.NEXT, cb_weap_invisible);
+            Functions.Write.writebinary(6, GTA.Offsets.Editor.Weapon.bits + ddweapno.SelectedIndex * GTA.Offsets.Editor.Weapon.NEXT, cb_weap_invisible);
         }
         private void cb_weap_civ_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(11, GTA.Offsets.Editor.Weapon.bits + ddweapno.SelectedIndex * GTA.Offsets.Editor.Weapon.NEXT, cb_weap_civ);
+            Functions.Write.writebinary(10, GTA.Offsets.Editor.Weapon.bits + ddweapno.SelectedIndex * GTA.Offsets.Editor.Weapon.NEXT, cb_weap_civ);
         }
 
         private void tbweapvput_TextChanged(object sender, TextChangedEventArgs e)
@@ -480,7 +480,7 @@ namespace Xenvious
 
         private void cbweapenablerot_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(10, GTA.Offsets.Editor.Weapon.bits + ddweapno.SelectedIndex * GTA.Offsets.Editor.Weapon.NEXT, cbweapenablerot);
+            Functions.Write.writebinary(9, GTA.Offsets.Editor.Weapon.bits + ddweapno.SelectedIndex * GTA.Offsets.Editor.Weapon.NEXT, cbweapenablerot);
         }
 
         private void ddweapteamclear_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -570,22 +570,22 @@ namespace Xenvious
 
         private void cb_weap_brest1_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(1, GTA.Offsets.Editor.Weapon.brest + 0 + ddweapno.SelectedIndex * GTA.Offsets.Editor.Weapon.NEXT, cb_weap_brest1);
+            Functions.Write.writebinary(0, GTA.Offsets.Editor.Weapon.brest + 0 + ddweapno.SelectedIndex * GTA.Offsets.Editor.Weapon.NEXT, cb_weap_brest1);
         }
 
         private void cb_weap_brest2_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(1, GTA.Offsets.Editor.Weapon.brest + 1 + ddweapno.SelectedIndex * GTA.Offsets.Editor.Weapon.NEXT, cb_weap_brest2);
+            Functions.Write.writebinary(0, GTA.Offsets.Editor.Weapon.brest + 1 + ddweapno.SelectedIndex * GTA.Offsets.Editor.Weapon.NEXT, cb_weap_brest2);
         }
 
         private void cb_weap_brest3_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(1, GTA.Offsets.Editor.Weapon.brest + 2 + ddweapno.SelectedIndex * GTA.Offsets.Editor.Weapon.NEXT, cb_weap_brest3);
+            Functions.Write.writebinary(0, GTA.Offsets.Editor.Weapon.brest + 2 + ddweapno.SelectedIndex * GTA.Offsets.Editor.Weapon.NEXT, cb_weap_brest3);
         }
 
         private void cb_weap_brest4_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(1, GTA.Offsets.Editor.Weapon.brest + 3 + ddweapno.SelectedIndex * GTA.Offsets.Editor.Weapon.NEXT, cb_weap_brest4);
+            Functions.Write.writebinary(0, GTA.Offsets.Editor.Weapon.brest + 3 + ddweapno.SelectedIndex * GTA.Offsets.Editor.Weapon.NEXT, cb_weap_brest4);
         }
     }
 }
