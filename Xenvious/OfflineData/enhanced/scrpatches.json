@@ -40,6 +40,15 @@
         "dev": false
     },
     {
+        "patch_name": "keep minigame capture objects",
+        "script_name": "fm_capture_creator",
+        "pattern": "72 08 2A 06 56 ? ? 38 ? 38 00 61 ? ? ? 46 ? ? 49 ? ? 40 ? 35 01 25 0B 08 20",
+        "offset": 0,
+        "bytes_to_patch": "72 02 2A 25 0A 02 43 FD FF 1F 03 71 08 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00",
+        "dev": false,
+        "enabled": true
+    },
+    {
         "patch_name": "blue fence props fix",
         "script_name": "fm_capture_creator",
         "pattern": "39 03 38 03 70 58 ? ? 72",

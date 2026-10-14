@@ -108,6 +108,7 @@ namespace Xenvious
                 case "dont_force_round_pa_with_dev_mode":
                 case "nrl_fix":
                 case "blue_fence_props_fix":
+                case "keep_minigame_capture_objects":
                 case "selected_spawn_veicle_stays_after_testing_ends":
                     return "fixes";
                 case "dev_mode":
