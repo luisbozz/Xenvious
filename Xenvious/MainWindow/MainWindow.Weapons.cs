@@ -42,7 +42,6 @@ namespace Xenvious
             tbweaplocx.IsEnabled = index < 0 ? false : true;
             tbweaplocy.IsEnabled = index < 0 ? false : true;
             tbweaplocz.IsEnabled = index < 0 ? false : true;
-            tbweapheading.IsEnabled = index < 0 ? false : true;
             tbweapdmgmlt.IsEnabled = index < 0 ? false : true;
             tbweapbits.IsEnabled = index < 0 ? false : true;
             tbweapvput.IsEnabled = index < 0 ? false : true;

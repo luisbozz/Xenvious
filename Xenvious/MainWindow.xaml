@@ -3430,20 +3430,9 @@
                                                                                 </Button>
                                                                             </Border>
                                                                         </Grid>
-                                                                        <Grid>
-                                                                            <Grid.ColumnDefinitions>
-                                                                                <ColumnDefinition Width="*"/>
-                                                                                <ColumnDefinition Width="10"/>
-                                                                                <ColumnDefinition Width="*"/>
-                                                                            </Grid.ColumnDefinitions>
-                                                                            <StackPanel Grid.Column="0">
-                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[heading], FallbackValue=Heading}"/>
-                                                                            <TextBox x:Name="tbweapheading" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbweapheading_TextChanged" KeyDown="FormatTextForFloat" Height="30" Margin="0,0,0,10"/>
-                                                                            </StackPanel>
-                                                                            <StackPanel Grid.Column="2">
-
-                                                                            </StackPanel>
-                                                                        </Grid>
+                                                                        <!-- Rotation and heading together: in the creator the heading only takes effect while "Enable Rotation" is on. -->
+                                                                        <Border BorderBrush="{DynamicResource LineBrush}" BorderThickness="1" CornerRadius="6" Padding="10,8,10,0" Margin="0,0,0,10">
+                                                                        <StackPanel>
                                                                         <Grid Style="{StaticResource FormRow}">
                                                                             <Grid.ColumnDefinitions>
                                                                                 <ColumnDefinition Width="*"/>
@@ -3489,6 +3478,33 @@
                                                                             </TextBox>
                                                                             </StackPanel>
                                                                         </Grid>
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="10"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[heading], FallbackValue=Heading}"/>
+                                                                            <TextBox x:Name="tbweapheading" TextChanged="tbweapheading_TextChanged" KeyDown="FormatTextForFloat" Height="30" Margin="0,0,0,10">
+                                                                            <TextBox.Style>
+                                                                                <Style TargetType="TextBox" BasedOn="{StaticResource Watermark}">
+                                                                                    <Setter Property="IsEnabled" Value="False" />
+                                                                                    <Style.Triggers>
+                                                                                        <DataTrigger Binding="{Binding ElementName=cbweapenablerot, Path=IsChecked}" Value="True">
+                                                                                            <Setter Property="IsEnabled" Value="True"/>
+                                                                                        </DataTrigger>
+                                                                                    </Style.Triggers>
+                                                                                </Style>
+                                                                            </TextBox.Style>
+                                                                            </TextBox>
+                                                                            </StackPanel>
+                                                                            <StackPanel Grid.Column="2">
+
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                        </StackPanel>
+                                                                        </Border>
                                                                         </StackPanel>
                                                                     </DockPanel>
                                                                 </Border>
