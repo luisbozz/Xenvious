@@ -135,6 +135,10 @@ namespace Xenvious
                 new GTA.ScrPatches { patch_name = "no prop model limit", script_name = "fm_deathmatch_creator", pattern = "2D 02 06 00 00 70 39 05 71 39 04 38 04 25 C7 5C ? ? 38 04 61 ? ? ? 35 02 38 00 57", offset = 5, bytes_to_patch = "71 2E 02 01", dev = false },
                 new GTA.ScrPatches { patch_name = "no prop model limit", script_name = "fm_survival_creator", pattern = "2D 02 06 00 00 70 39 05 71 39 04 38 04 25 C7 5C ? ? 38 04 61 ? ? ? 35 02 38 00 57", offset = 5, bytes_to_patch = "71 2E 02 01", dev = false },
                 new GTA.ScrPatches { patch_name = "no prop model limit", script_name = "public_mission_creator", pattern = "2D 02 06 00 00 70 39 05 71 39 04 38 04 25 C7 5C ? ? 38 04 61 ? ? ? 35 02 38 00 57", offset = 5, bytes_to_patch = "71 2E 02 01", dev = false },
+                new GTA.ScrPatches { patch_name = "unlock all creator menu entries", script_name = "creator", pattern = "2D 00 02 00 00 5D ? ? ? 56 04 00 72 2E 00 01 61 ? ? ? 64 ? ? ? 3F 2F 71 82 2E 00 01", offset = 5, bytes_to_patch = "72 2E 00 01", dev = false },
+                new GTA.ScrPatches { patch_name = "unlock all creator menu entries", script_name = "creator", pattern = "2D 00 02 00 00 2C 01 00 ? 72 5D ? ? ? 72 5D ? ? ? 74 5D ? ? ? 0B 2E 00 01", offset = 5, bytes_to_patch = "72 2E 00 01", dev = false },
+                new GTA.ScrPatches { patch_name = "unlock all creator menu entries", script_name = "creator", pattern = "2D 00 02 00 00 2C 01 00 ? 5D ? ? ? 06 56 04 00 71 2E 00 01 61 ? ? ? 47 ? ? 71 82 56 04 00 72 2E 00 01 71 2E 00 01", offset = 5, bytes_to_patch = "72 2E 00 01", dev = false },
+                new GTA.ScrPatches { patch_name = "unlock all creator menu entries", script_name = "creator", pattern = "2D 00 02 00 00 2C 01 00 ? 5D ? ? ? 06 56 04 00 71 2E 00 01 61 ? ? ? 47 ? ? 72 82 56 04 00 72 2E 00 01 71 2E 00 01", offset = 5, bytes_to_patch = "72 2E 00 01", dev = false },
             };
         }
 
