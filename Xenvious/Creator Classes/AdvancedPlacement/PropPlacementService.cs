@@ -59,21 +59,30 @@ namespace Xenvious.AdvancedPlacement
         /// </summary>
         public void PlaceProps(IReadOnlyList<(int Model, PropPose Pose)> props, int templateIndex = -1)
         {
-            int current = GetCurrentPropCount();
-            if (current + props.Count > PropLimit)
+            WriteProps(GetCurrentPropCount(), props, templateIndex);
+        }
+
+        /// <summary>
+        /// Writes props from slot <paramref name="at"/> on and makes the job end after them (the
+        /// preview rewrites its block on every change). Slots copy <paramref name="templateIndex"/>
+        /// first like <see cref="PlaceProps"/>; with none given the prop before the block.
+        /// </summary>
+        public void WriteProps(int at, IReadOnlyList<(int Model, PropPose Pose)> props, int templateIndex = -1)
+        {
+            if (at < 0 || at + props.Count > PropLimit)
             {
                 throw new InvalidOperationException("Prop limit reached.");
             }
-            if (templateIndex < 0 && current > 0)
+            if (templateIndex < 0 && at > 0)
             {
-                templateIndex = current - 1;
+                templateIndex = at - 1;
             }
 
             byte[] block = templateIndex >= 0 ? ReadBlock(templateIndex) : null;
 
             for (int i = 0; i < props.Count; i++)
             {
-                int index = current + i;
+                int index = at + i;
                 if (block != null)
                 {
                     WriteBlock(index, block);
@@ -82,7 +91,30 @@ namespace Xenvious.AdvancedPlacement
                 }
                 WritePose(index, props[i].Model, props[i].Pose);
             }
-            new Global(GTA.Offsets.Editor.Props.number).SetInt(current + props.Count);
+            new Global(GTA.Offsets.Editor.Props.number).SetInt(at + props.Count);
+        }
+
+        /// <summary>The job data of props first .. first+count-1, to put back with <see cref="Restore"/>.</summary>
+        public List<byte[]> Snapshot(int first, int count)
+        {
+            var list = new List<byte[]>(count);
+            for (int i = 0; i < count; i++)
+                list.Add(ReadBlock(first + i));
+            return list;
+        }
+
+        /// <summary>Writes a <see cref="Snapshot"/> back from <paramref name="first"/> on and ends the job after it.</summary>
+        public void Restore(int first, IReadOnlyList<byte[]> blocks)
+        {
+            for (int i = 0; i < blocks.Count; i++)
+                WriteBlock(first + i, blocks[i]);
+            new Global(GTA.Offsets.Editor.Props.number).SetInt(first + blocks.Count);
+        }
+
+        /// <summary>Ends the job's prop list after <paramref name="count"/> props.</summary>
+        public void SetCount(int count)
+        {
+            new Global(GTA.Offsets.Editor.Props.number).SetInt(Math.Max(0, Math.Min(count, PropLimit)));
         }
 
         private static void WritePose(int index, int model, in PropPose pose)
@@ -129,18 +161,6 @@ namespace Xenvious.AdvancedPlacement
             {
                 new Global(first + k).SetLong(BitConverter.ToInt64(block, k * 8));
             }
-        }
-
-        public void UndoPlacement(int amount)
-        {
-            if (amount <= 0)
-            {
-                return;
-            }
-
-            var current = GetCurrentPropCount();
-            var target = Math.Max(0, current - amount);
-            new Global(GTA.Offsets.Editor.Props.number).SetInt(target);
         }
 
         public IReadOnlyList<PlacedPropInfo> GetPlacedProps()

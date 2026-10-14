@@ -34,6 +34,26 @@ namespace Xenvious.ViewModels
     }
 
     /// <summary>One line of the expert result table.</summary>
+    /// <summary>One placement Undo can take back: props Start .. Start+Count-1 of the job.</summary>
+    public sealed class PlacementStep : ObservableObject
+    {
+        public int Start { get; set; }
+        public int Count { get; set; }
+        public int Model { get; set; }
+        public DateTime At { get; set; }
+
+        private string _title = "", _detail = "";
+        public string Title { get => _title; private set => SetProperty(ref _title, value); }
+        public string Detail { get => _detail; private set => SetProperty(ref _detail, value); }
+        public string Time => At.ToString("HH:mm", CultureInfo.CurrentCulture);
+
+        public void Refresh(Func<string, string, string> t, string model)
+        {
+            Title = string.Format(CultureInfo.CurrentCulture, "{0} × {1}", Count, model);
+            Detail = string.Format(CultureInfo.CurrentCulture, t("adv_history_props", "Props {0}–{1}"), Start, Start + Count - 1);
+        }
+    }
+
     public sealed class PlanRow
     {
         public int Index { get; set; }
@@ -104,13 +124,10 @@ namespace Xenvious.ViewModels
         private readonly SemaphoreSlim _placementSemaphore = new SemaphoreSlim(1, 1);
         private readonly DispatcherTimer _pollTimer;
 
-        private CancellationTokenSource _liveCts;
         private CancellationTokenSource _dimensionCts;
         private V3 _boxMin = DefaultBoxMin;
         private V3 _boxMax = DefaultBoxMax;
         private int? _modelId;
-        private int _lastPlacementCount;
-        private bool _lastPlacementWasLive;
         private bool _applyingQuick;
         private bool _checking;
         private DateTime _lastCheck = DateTime.MinValue;
@@ -146,6 +163,9 @@ namespace Xenvious.ViewModels
             LoadDimensionsCommand = new AsyncRelayCommand(LoadDimensionsAsync, () => _modelId.HasValue && FeaturesReady);
             PlaceCommand = new AsyncRelayCommand(PlaceClickedAsync, () => CanPlace);
             UndoCommand = new RelayCommand(UndoPlacement, () => CanUndo);
+            UndoToCommand = new RelayCommand<PlacementStep>(UndoTo);
+            DiscardPreviewCommand = new AsyncRelayCommand(DiscardPreviewAsync);
+            ResetFineCommand = new RelayCommand(() => { FineX = 0; FineY = 0; FineZ = 0; });
             UseCursorCommand = new RelayCommand(UseCursor);
             ReadStartPropCommand = new RelayCommand(ReadStartProp);
             UseHoveredCommand = new RelayCommand(() => ModelIdText = HoveredModel.ToString(CultureInfo.InvariantCulture), () => HoveredModel != 0);
@@ -158,7 +178,6 @@ namespace Xenvious.ViewModels
             ConfirmTemplatesCommand = new RelayCommand(WriteTemplates);
             CancelTemplatesCommand = new RelayCommand(() => IsTemplateDialogOpen = false);
             SelectTemplateSlotCommand = new RelayCommand<TemplateSlotRow>(row => { if (row != null) TemplateStartSlot = row.Index; });
-            OpenInExpertCommand = new RelayCommand(() => ModeIndex = 1);
 
             _pollTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(700) };
             _pollTimer.Tick += async (_, __) => await PollAsync().ConfigureAwait(true);
@@ -179,6 +198,9 @@ namespace Xenvious.ViewModels
         public IAsyncRelayCommand LoadDimensionsCommand { get; }
         public IAsyncRelayCommand PlaceCommand { get; }
         public IRelayCommand UndoCommand { get; }
+        public IRelayCommand<PlacementStep> UndoToCommand { get; }
+        public IAsyncRelayCommand DiscardPreviewCommand { get; }
+        public IRelayCommand ResetFineCommand { get; }
         public IRelayCommand UseCursorCommand { get; }
         public IRelayCommand ReadStartPropCommand { get; }
         public IRelayCommand UseHoveredCommand { get; }
@@ -191,7 +213,6 @@ namespace Xenvious.ViewModels
         public IRelayCommand ConfirmTemplatesCommand { get; }
         public IRelayCommand CancelTemplatesCommand { get; }
         public IRelayCommand<TemplateSlotRow> SelectTemplateSlotCommand { get; }
-        public IRelayCommand OpenInExpertCommand { get; }
 
         public IReadOnlyList<QuickShape> ShapeOptions { get; }
         public IReadOnlyList<StepAxis> AxisOptions { get; }
@@ -287,6 +308,11 @@ namespace Xenvious.ViewModels
             HoveredModel = hovered;
             OnPropertyChanged(nameof(QuickStepTitle));
             OnPropertyChanged(nameof(PlaceButtonText));
+            OnPropertyChanged(nameof(UndoButtonText));
+            foreach (PlacementStep step in History)
+                step.Refresh(_t, ModelLabel(step.Model));
+            if (IsPreviewActive)
+                UpdatePreviewText();
             OnPropertyChanged(nameof(RiseLabel));
             OnPropertyChanged(nameof(DirectionALabel));
             OnPropertyChanged(nameof(DirectionBLabel));
@@ -452,7 +478,9 @@ namespace Xenvious.ViewModels
                 {
                     OnPropertyChanged(nameof(CanPlace));
                     OnPropertyChanged(nameof(CanUseTemplates));
+                    OnPropertyChanged(nameof(CanUndo));
                     PlaceCommand.NotifyCanExecuteChanged();
+                    UndoCommand.NotifyCanExecuteChanged();
                 }
             }
         }
@@ -572,7 +600,7 @@ namespace Xenvious.ViewModels
             }
         }
 
-        public const int QuickStepCount = 5;
+        public const int QuickStepCount = 4;
 
         private int _quickStep;
         public int QuickStep
@@ -650,7 +678,7 @@ namespace Xenvious.ViewModels
 
         public int PieceCount { get => _pieceCount; set => SetProperty(ref _pieceCount, Math.Max(1, Math.Min(PropPlacementService.PropLimit, value))); }
 
-        private static readonly string[] StepTitles = { "Preset oder Prop", "Form wählen", "Größe und Anschluss", "Start und Ausrichtung", "Fertig" };
+        private static readonly string[] StepTitles = { "Preset oder Prop", "Form wählen", "Größe und Anschluss", "Start und Ausrichtung" };
 
         public string QuickStepTitle => string.Format(CultureInfo.CurrentCulture, _t("adv_qs_step_of", "Schritt {0} von {1}"), QuickStep + 1, QuickStepCount)
             + " · " + _t("adv_qs_step" + QuickStep, StepTitles[Math.Max(0, Math.Min(StepTitles.Length - 1, QuickStep))]);
@@ -1122,10 +1150,13 @@ namespace Xenvious.ViewModels
             {
                 Invalidate();
             }
-            if (name == nameof(LiveChanges))
+            if (name == nameof(PreviewInGta))
             {
-                if (LiveChanges) TriggerLivePlacement();
-                else { _liveCts?.Cancel(); _liveCts = null; }
+                PreviewToggled();
+            }
+            if ((name == nameof(FineX) || name == nameof(FineY) || name == nameof(FineZ)) && !_applyingQuick)
+            {
+                TriggerLivePlacement();
             }
         }
 
@@ -1262,47 +1293,307 @@ namespace Xenvious.ViewModels
             }
         }
 
-        private bool _canUndo;
-        public bool CanUndo { get => _canUndo; private set { if (SetProperty(ref _canUndo, value)) UndoCommand.NotifyCanExecuteChanged(); } }
+        public bool CanUndo => History.Count > 0 && !IsPreviewActive && !IsPlacing;
 
-        private bool _liveChanges;
-        public bool LiveChanges { get => _liveChanges; set => SetProperty(ref _liveChanges, value); }
+        /// <summary>Placements that can be taken back, newest first.</summary>
+        public ObservableCollection<PlacementStep> History { get; } = new ObservableCollection<PlacementStep>();
+        private const int HistoryLimit = 20;
+
+        public string UndoButtonText => History.Count > 0
+            ? string.Format(CultureInfo.CurrentCulture, _t("adv_undo_count", "Rückgängig ({0})"), History.Count)
+            : _t("adv_undo", "Rückgängig");
+
+        private bool _isHistoryOpen;
+        public bool IsHistoryOpen { get => _isHistoryOpen; set => SetProperty(ref _isHistoryOpen, value); }
 
         private string _status = "";
         public string Status { get => _status; set => SetProperty(ref _status, value); }
 
         public bool CanPlace => FeaturesReady && HasDimensions && _modelId.HasValue && !IsPlacing;
-        public bool CanUseTemplates => CanPlace && _templates.IsAvailable;
+        public bool CanUseTemplates => CanPlace && _templates.IsAvailable && !IsPreviewActive;
+
+        // ------------------------------------------------------------------
+        // Preview in GTA: the plan stands in the job as a block at the end of the prop list and
+        // follows every change at once. EntityMover.SyncPropsAsync creates, moves and deletes only
+        // the entities of that block; without the payload the creator is rebuilt instead.
+        // ------------------------------------------------------------------
+        private bool _previewInGta;
+        /// <summary>The toggle. Switching it off throws the preview away, like "Discard".</summary>
+        public bool PreviewInGta { get => _previewInGta; set => SetProperty(ref _previewInGta, value); }
+
+        private int _previewStart = -1;
+        private int _previewCount;
+        // When the preview took over the last placement: that step and its props as placed.
+        private PlacementStep _previewAdopted;
+        private List<byte[]> _adoptedSnapshot;
+        private bool _previewBusy, _previewPending;
+        private bool _closingPreview;
+
+        public bool IsPreviewActive => _previewStart >= 0;
+
+        private string _previewText = "";
+        public string PreviewText { get => _previewText; private set => SetProperty(ref _previewText, value); }
+
+        private double _fineX, _fineY, _fineZ;
+        /// <summary>Moves the whole block sideways, forwards and up, in the direction of the start (m).</summary>
+        public double FineX { get => _fineX; set => SetProperty(ref _fineX, value); }
+        public double FineY { get => _fineY; set => SetProperty(ref _fineY, value); }
+        public double FineZ { get => _fineZ; set => SetProperty(ref _fineZ, value); }
+
+        private void ResetFine()
+        {
+            _applyingQuick = true;
+            FineX = FineY = FineZ = 0;
+            _applyingQuick = false;
+        }
+
+        private void PreviewStateChanged()
+        {
+            OnPropertyChanged(nameof(IsPreviewActive));
+            OnPropertyChanged(nameof(PlaceButtonText));
+            OnPropertyChanged(nameof(CanUndo));
+            OnPropertyChanged(nameof(CanUseTemplates));
+            UndoCommand.NotifyCanExecuteChanged();
+        }
+
+        private void HistoryChanged()
+        {
+            OnPropertyChanged(nameof(CanUndo));
+            OnPropertyChanged(nameof(UndoButtonText));
+            UndoCommand.NotifyCanExecuteChanged();
+        }
 
         private void TriggerLivePlacement()
         {
-            if (!LiveChanges || !CanPlace || _applyingQuick)
+            if (!IsPreviewActive || _applyingQuick)
             {
                 return;
             }
-            ScheduleLivePlacement();
+            SchedulePreview();
         }
 
-        private async void ScheduleLivePlacement()
+        // A slider sends many values. While one sync runs, only the newest value waits; it goes
+        // out right after, so the preview follows a drag instead of waiting for a pause.
+        private async void SchedulePreview()
         {
-            _liveCts?.Cancel();
-            var cts = new CancellationTokenSource();
-            _liveCts = cts;
+            if (_previewBusy)
+            {
+                _previewPending = true;
+                return;
+            }
+            _previewBusy = true;
             try
             {
-                await Task.Delay(250, cts.Token).ConfigureAwait(true);
-                if (!cts.IsCancellationRequested)
+                do
                 {
-                    await PlaceAsync(true).ConfigureAwait(true);
+                    _previewPending = false;
+                    await ApplyPreviewAsync().ConfigureAwait(true);
                 }
-            }
-            catch (TaskCanceledException)
-            {
+                while (_previewPending && IsPreviewActive);
             }
             catch (Exception ex)
             {
                 Status = ex.Message;
             }
+            finally
+            {
+                _previewBusy = false;
+            }
+        }
+
+        private async Task StartPreviewAsync()
+        {
+            if (!CanPlace)
+            {
+                SetPreviewToggle(false);
+                return;
+            }
+            int count = _placement.GetCurrentPropCount();
+            PlacementStep top = History.FirstOrDefault();
+            if (top != null && top.Start + top.Count == count && top.Model == _modelId)
+            {
+                // Right after "Place": the preview takes that block over instead of adding another.
+                _previewAdopted = top;
+                _adoptedSnapshot = _placement.Snapshot(top.Start, top.Count);
+                _previewStart = top.Start;
+                _previewCount = top.Count;
+            }
+            else
+            {
+                if (PlacesAtCursor && !ReadCursor(false))
+                {
+                    SetPreviewToggle(false);
+                    return;
+                }
+                _previewAdopted = null;
+                _adoptedSnapshot = null;
+                _previewStart = count;
+                _previewCount = 0;
+            }
+            PreviewStateChanged();
+            await ApplyPreviewAsync().ConfigureAwait(true);
+        }
+
+        private void SetPreviewToggle(bool on)
+        {
+            _closingPreview = true;
+            PreviewInGta = on;
+            _closingPreview = false;
+        }
+
+        // The plan with the fine offsets: in the start's heading, so "forward" is along the build.
+        private List<PropPose> PreviewPlan()
+        {
+            List<PropPose> plan = BuildPlan();
+            if (FineX == 0 && FineY == 0 && FineZ == 0)
+                return plan;
+            V3 shift = PropPose.FromGta(V3.Zero, new V3(0, 0, StartYaw)).ToWorld(new V3(FineX, FineY, FineZ));
+            return plan.Select(p => new PropPose(p.Position + shift, p.Rotation)).ToList();
+        }
+
+        private async Task ApplyPreviewAsync()
+        {
+            if (!IsPreviewActive || _modelId == null)
+            {
+                return;
+            }
+            await _placementSemaphore.WaitAsync().ConfigureAwait(true);
+            try
+            {
+                List<PropPose> plan = PreviewPlan();
+                if (_previewStart + plan.Count > PropPlacementService.PropLimit)
+                {
+                    Status = string.Format(CultureInfo.CurrentCulture, _t("adv_status_limit", "Prop-Limit: {0} im Job + {1} neu > {2}."), _previewStart, plan.Count, PropPlacementService.PropLimit);
+                    return;
+                }
+                int model = _modelId.Value;
+                int before = _previewCount;
+                _placement.WriteProps(_previewStart, plan.Select(p => (model, p)).ToList(), _startPropSource);
+                _previewCount = plan.Count;
+                if (!await EntityMover.SyncPropsAsync(_previewStart, plan.Count, Math.Max(0, before - plan.Count)).ConfigureAwait(true))
+                {
+                    _refreshCreator();
+                }
+                UpdatePreviewText();
+                PlanInfoText = string.Format(CultureInfo.CurrentCulture,
+                    _t("adv_plan_info", "{0} neue Props · im Job: {1} / {2}"), plan.Count, SafePropCount(), PropPlacementService.PropLimit);
+            }
+            catch (Exception ex)
+            {
+                Status = ex.Message;
+            }
+            finally
+            {
+                _placementSemaphore.Release();
+            }
+        }
+
+        private void UpdatePreviewText()
+        {
+            PreviewText = _previewCount == 0
+                ? _t("adv_preview_empty", "Vorschau in GTA: nichts zu platzieren.")
+                : string.Format(CultureInfo.CurrentCulture,
+                    _t("adv_preview_banner", "Vorschau in GTA: {0} × {1} (Props {2}–{3}). Jede Änderung erscheint sofort, ohne Neuaufbau. Noch nicht fest."),
+                    _previewCount, ModelLabel(_modelId ?? 0), _previewStart, _previewStart + _previewCount - 1);
+        }
+
+        private string ModelLabel(int model)
+        {
+            string name = _modelName(model);
+            return string.IsNullOrEmpty(name) ? model.ToString(CultureInfo.InvariantCulture) : name;
+        }
+
+        private void EndPreview()
+        {
+            _previewPending = false;
+            _previewStart = -1;
+            _previewCount = 0;
+            _previewAdopted = null;
+            _adoptedSnapshot = null;
+            PreviewText = "";
+            SetPreviewToggle(false);
+            ResetFine();
+            PreviewStateChanged();
+        }
+
+        /// <summary>"Place it like this": the preview block stays, the creator is rebuilt once so
+        /// every prop gets what the creator sets when it builds them (blips, LOD, collision).</summary>
+        private async Task CommitPreviewAsync()
+        {
+            await _placementSemaphore.WaitAsync().ConfigureAwait(true);
+            try
+            {
+                if (_previewCount == 0)
+                {
+                    if (_previewAdopted != null)
+                        RemoveStep(_previewAdopted);
+                }
+                else if (_previewAdopted != null)
+                {
+                    _previewAdopted.Count = _previewCount;
+                    _previewAdopted.Refresh(_t, ModelLabel(_previewAdopted.Model));
+                }
+                else
+                {
+                    PushStep(_previewStart, _previewCount, _modelId ?? 0);
+                    UsageStats.Action("prop.place_advanced");
+                }
+                Status = string.Format(CultureInfo.CurrentCulture, _t("adv_status_placed", "{0} Props platziert."), _previewCount);
+            }
+            finally
+            {
+                _placementSemaphore.Release();
+            }
+            EndPreview();
+            _refreshCreator();
+        }
+
+        /// <summary>Takes the preview out again: a taken-over placement goes back to how it was placed.</summary>
+        private async Task DiscardPreviewAsync()
+        {
+            if (!IsPreviewActive)
+            {
+                return;
+            }
+            _previewPending = false;
+            await _placementSemaphore.WaitAsync().ConfigureAwait(true);
+            try
+            {
+                int start = _previewStart, shown = _previewCount;
+                bool ok;
+                if (_previewAdopted != null && _adoptedSnapshot != null)
+                {
+                    _placement.Restore(start, _adoptedSnapshot);
+                    ok = await EntityMover.SyncPropsAsync(start, _adoptedSnapshot.Count, Math.Max(0, shown - _adoptedSnapshot.Count)).ConfigureAwait(true);
+                }
+                else
+                {
+                    _placement.SetCount(start);
+                    ok = await EntityMover.SyncPropsAsync(start, 0, shown).ConfigureAwait(true);
+                }
+                if (!ok)
+                    _refreshCreator();
+                Status = _t("adv_status_preview_discarded", "Vorschau verworfen.");
+            }
+            catch (Exception ex)
+            {
+                Status = ex.Message;
+            }
+            finally
+            {
+                _placementSemaphore.Release();
+            }
+            EndPreview();
+        }
+
+        private async void PreviewToggled()
+        {
+            if (_closingPreview)
+                return;
+            if (PreviewInGta && !IsPreviewActive)
+                await StartPreviewAsync().ConfigureAwait(true);
+            else if (!PreviewInGta && IsPreviewActive)
+                await DiscardPreviewAsync().ConfigureAwait(true);
         }
 
         /// <summary>The quick start places where the creator cursor is now; the expert view keeps its typed start.</summary>
@@ -1312,6 +1603,8 @@ namespace Xenvious.ViewModels
         {
             get
             {
+                if (IsPreviewActive)
+                    return _t("adv_place_preview", "So platzieren");
                 if (ModeIndex != 0)
                     return _t("adv_place", "Platzieren");
                 switch (StartSource)
@@ -1328,14 +1621,19 @@ namespace Xenvious.ViewModels
 
         private async Task PlaceClickedAsync()
         {
+            if (IsPreviewActive)
+            {
+                await CommitPreviewAsync().ConfigureAwait(true);
+                return;
+            }
             if (PlacesAtCursor && !ReadCursor(false))
             {
                 return;
             }
-            await PlaceAsync(false).ConfigureAwait(true);
+            await PlaceAsync().ConfigureAwait(true);
         }
 
-        private async Task PlaceAsync(bool live)
+        private async Task PlaceAsync()
         {
             if (!CanPlace)
             {
@@ -1345,33 +1643,23 @@ namespace Xenvious.ViewModels
             IsPlacing = true;
             try
             {
-                List<PropPose> plan = BuildPlan();
+                List<PropPose> plan = PreviewPlan();
                 if (plan.Count == 0)
                 {
                     Status = _t("adv_status_empty", "Nichts zu platzieren.");
                     return;
                 }
-                int replace = live && _lastPlacementWasLive ? _lastPlacementCount : 0;
-                int current = _placement.GetCurrentPropCount() - replace;
+                int current = _placement.GetCurrentPropCount();
                 if (current + plan.Count > PropPlacementService.PropLimit)
                 {
                     Status = string.Format(CultureInfo.CurrentCulture, _t("adv_status_limit", "Prop-Limit: {0} im Job + {1} neu > {2}."), current, plan.Count, PropPlacementService.PropLimit);
                     return;
                 }
-                if (replace > 0)
-                {
-                    _placement.UndoPlacement(replace);
-                }
                 int model = _modelId.Value;
                 _placement.PlaceProps(plan.Select(p => (model, p)).ToList(), _startPropSource);
                 _refreshCreator();
-                // The live preview places on every change; only a click counts.
-                if (!live)
-                    UsageStats.Action("prop.place_advanced");
-
-                _lastPlacementCount = plan.Count;
-                _lastPlacementWasLive = live;
-                CanUndo = true;
+                UsageStats.Action("prop.place_advanced");
+                PushStep(current, plan.Count, model);
                 Status = string.Format(CultureInfo.CurrentCulture, _t("adv_status_placed", "{0} Props platziert."), plan.Count);
                 PlanInfoText = string.Format(CultureInfo.CurrentCulture,
                     _t("adv_plan_info", "{0} neue Props · im Job: {1} / {2}"), plan.Count, SafePropCount(), PropPlacementService.PropLimit);
@@ -1387,18 +1675,77 @@ namespace Xenvious.ViewModels
             }
         }
 
-        private void UndoPlacement()
+        private void PushStep(int start, int count, int model)
         {
-            if (_lastPlacementCount <= 0)
+            var step = new PlacementStep { Start = start, Count = count, Model = model, At = DateTime.Now };
+            step.Refresh(_t, ModelLabel(model));
+            History.Insert(0, step);
+            while (History.Count > HistoryLimit)
+                History.RemoveAt(History.Count - 1);
+            HistoryChanged();
+        }
+
+        private void RemoveStep(PlacementStep step)
+        {
+            History.Remove(step);
+            HistoryChanged();
+        }
+
+        private void UndoPlacement() => UndoTo(History.FirstOrDefault());
+
+        /// <summary>
+        /// Takes back the placements from the newest one down to <paramref name="target"/>. Each
+        /// one only while its props are still the last ones of the job; when props were deleted or
+        /// added in the creator since, the numbers would hit other props, so it stops there.
+        /// </summary>
+        private async void UndoTo(PlacementStep target)
+        {
+            IsHistoryOpen = false;
+            if (target == null || IsPreviewActive || !History.Contains(target))
             {
                 return;
             }
-            _placement.UndoPlacement(_lastPlacementCount);
-            _refreshCreator();
-            Status = string.Format(CultureInfo.CurrentCulture, _t("adv_status_undone", "{0} Props entfernt."), _lastPlacementCount);
-            _lastPlacementCount = 0;
-            _lastPlacementWasLive = false;
-            CanUndo = false;
+            await _placementSemaphore.WaitAsync().ConfigureAwait(true);
+            IsPlacing = true;
+            try
+            {
+                int removed = 0, first = -1, shown = 0;
+                while (History.Count > 0)
+                {
+                    PlacementStep step = History[0];
+                    int count = _placement.GetCurrentPropCount();
+                    if (step.Start + step.Count != count)
+                    {
+                        Status = string.Format(CultureInfo.CurrentCulture,
+                            _t("adv_undo_changed", "Die Props ab {0} wurden seit dem Platzieren im Creator verändert. Rückgängig hätte andere Props entfernt und hört hier auf."), step.Start);
+                        History.Clear();
+                        break;
+                    }
+                    _placement.SetCount(step.Start);
+                    History.RemoveAt(0);
+                    removed += step.Count;
+                    first = step.Start;
+                    shown = count - step.Start + shown;
+                    if (step == target)
+                        break;
+                }
+                if (removed > 0)
+                {
+                    if (!await EntityMover.SyncPropsAsync(first, 0, shown).ConfigureAwait(true))
+                        _refreshCreator();
+                    Status = string.Format(CultureInfo.CurrentCulture, _t("adv_status_undone", "{0} Props entfernt."), removed);
+                }
+            }
+            catch (Exception ex)
+            {
+                Status = ex.Message;
+            }
+            finally
+            {
+                IsPlacing = false;
+                _placementSemaphore.Release();
+                HistoryChanged();
+            }
         }
 
         // ------------------------------------------------------------------
