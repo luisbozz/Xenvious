@@ -72,6 +72,23 @@ namespace Xenvious
             }
         }
 
+        /// <summary>Copies the URL of the downloaded job file to the clipboard.</summary>
+        private void BtnCopyJsonUrl_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(full_link))
+                return;
+            try
+            {
+                Clipboard.SetText(full_link);
+                SetCopyStatus(TranslateOr("copy_json_url_copied", "JSON-URL kopiert."), false);
+            }
+            catch (Exception ex)
+            {
+                // The clipboard can be locked by another program.
+                SetCopyStatus(TranslateOr("job_file_failed", "Fehlgeschlagen.") + " " + ex.Message, true);
+            }
+        }
+
         string jobdata = "";
         string copyJobContentId;
         JSON.Json jobjson = null;

@@ -33,6 +33,24 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+            <!-- Round icon button next to the pill buttons; the tooltip names it, e.g. "copy JSON URL" on Copy Jobs. -->
+            <Style x:Key="PillIconButton" TargetType="Button">
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="Focusable" Value="False"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="b" CornerRadius="10" Width="28" Height="20" Background="{DynamicResource SelectedTileBrush}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="b" Property="Opacity" Value="0.8"/></Trigger>
+                                <Trigger Property="IsEnabled" Value="False"><Setter TargetName="b" Property="Opacity" Value="0.4"/></Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
             <!-- Dialog buttons: the container Border around each button takes the hover colour
                  (DialogButton_MouseEnter) and press colour (DialogButton_MouseDown), so the whole button
                  changes, not an inset part of it. The buttons stretch over the whole container, so all
@@ -11180,6 +11198,10 @@
                                                     <Button x:Name="BtnCopySaveJson" Style="{StaticResource PillButton}" Margin="10,0,0,0" VerticalAlignment="Center"
                                                             Click="BtnCopySaveJson_Click" Content="{Binding Translation[copy_save_json], FallbackValue='JSON speichern …'}"
                                                             ToolTip="{Binding Translation[copy_save_json_tip], FallbackValue='Speichert die Job-Datei, wie Rockstar sie liefert. Unter Map Backup kannst du sie komplett laden.'}">
+                                                    </Button>
+                                                    <Button x:Name="BtnCopyJsonUrl" Style="{StaticResource PillIconButton}" Margin="6,0,0,0" VerticalAlignment="Center"
+                                                            Click="BtnCopyJsonUrl_Click" ToolTip="{Binding Translation[copy_json_url_tip], FallbackValue='JSON-URL kopieren'}">
+                                                        <Path Width="14" Height="14" Stretch="Uniform" Fill="{DynamicResource TextColor}" Data="M3.9,12C3.9,10.29 5.29,8.9 7,8.9H11V7H7A5,5 0 0,0 2,12A5,5 0 0,0 7,17H11V15.1H7C5.29,15.1 3.9,13.71 3.9,12M8,13H16V11H8V13M17,7H13V8.9H17C18.71,8.9 20.1,10.29 20.1,12C20.1,13.71 18.71,15.1 17,15.1H13V17H17A5,5 0 0,0 22,12A5,5 0 0,0 17,7Z"/>
                                                     </Button>
                                                 </WrapPanel>
                                                 <TextBlock x:Name="tbCopyRouteSub" FontSize="12" Foreground="{DynamicResource MutedTextBrush}" TextWrapping="Wrap"/>
