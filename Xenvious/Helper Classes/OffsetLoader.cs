@@ -897,6 +897,10 @@ namespace Xenvious
             GTA.Offsets.Editor.musx = d.OFFSETS.musx;
             GTA.Offsets.Editor.apeds = d.OFFSETS.apeds;
             GTA.Offsets.Editor.vdm = d.OFFSETS.vdm;
+            GTA.Offsets.Editor.time = d.OFFSETS.time;
+            GTA.Offsets.Editor.score = d.OFFSETS.score;
+            GTA.Offsets.Editor.fxc = d.OFFSETS.fxc;
+            GTA.Offsets.Editor.mam = d.OFFSETS.mam;
             GTA.Offsets.Editor.geard = d.OFFSETS.geard;
             GTA.Offsets.Editor.itsms = d.OFFSETS.itsms;
             GTA.Offsets.Editor.dtn = d.OFFSETS.dtn;

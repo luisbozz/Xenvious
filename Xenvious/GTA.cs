@@ -1719,6 +1719,10 @@ namespace Xenvious
                 public static long musx = 0;
                 public static long apeds = 0;
                 public static long vdm = 0;
+                public static long time = 0;    // time limit, LOB_DURATION_ index (5 ... 60 minutes)
+                public static long score = 0;   // target score, LOB_TARG_KIL_ index in deathmatch
+                public static long fxc = 0;     // forced camera: 0 none, 1 first person, 2 third person
+                public static long mam = 0;     // aim mode, FMMC_MAM_ index
                 public static long geard = 0;
                 public static long itsms = 0;
                 public static long dtn = 0;

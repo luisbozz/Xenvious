@@ -839,6 +839,10 @@ namespace Xenvious
             d.OFFSETS.pol = 4851370;
             d.OFFSETS.vdm = 4722397;
             d.OFFSETS.traf = 4847052;
+            d.OFFSETS.time = 4722385;
+            d.OFFSETS.score = 4722388;
+            d.OFFSETS.fxc = 4888120;
+            d.OFFSETS.mam = 4858497;
             d.OFFSETS.casCol = 4914820;
             d.OFFSETS.casPat = 4914821;
             d.OFFSETS.casArc = 4914822;

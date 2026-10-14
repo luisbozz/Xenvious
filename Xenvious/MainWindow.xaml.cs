@@ -315,6 +315,8 @@ namespace Xenvious
             PageInnerMission.ItemContainerStyle = s;
             PageInnerMod.ItemContainerStyle = s;
             PageInnerCapture.ItemContainerStyle = s;
+            PageInnerDM.ItemContainerStyle = s;
+            PageInnerSurvival.ItemContainerStyle = s;
 
             //panelTopSwitcher.Visibility = Visibility.Hidden;
             BtnOnlineEnabler.Visibility = Visibility.Collapsed;

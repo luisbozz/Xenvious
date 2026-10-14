@@ -204,6 +204,7 @@
     <Compile Include="Controls\ComboViews.cs" />
     <Compile Include="Controls\RuleStrip.cs" />
     <Compile Include="Controls\MenuBitsView.cs" />
+    <Compile Include="Controls\MatchSettingsCard.cs" />
     <Compile Include="Controls\VisibilityCard.cs" />
     <Compile Include="Controls\ModelCard.xaml.cs">
       <DependentUpon>ModelCard.xaml</DependentUpon>

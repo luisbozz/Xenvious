@@ -923,6 +923,10 @@ namespace Xenvious
             public long pol;
             public long vdm;
             public long traf;
+            public long time;
+            public long score;
+            public long fxc;
+            public long mam;
             public long casCol;
             public long casPat;
             public long casArc;
@@ -1998,6 +2002,10 @@ namespace Xenvious
                     case "pol": return pol;
                     case "vdm": return vdm;
                     case "traf": return traf;
+                    case "time": return time;
+                    case "score": return score;
+                    case "fxc": return fxc;
+                    case "mam": return mam;
                     case "cascol": return casCol;
                     case "caspat": return casPat;
                     case "casarc": return casArc;
