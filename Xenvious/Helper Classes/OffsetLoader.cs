@@ -921,6 +921,13 @@ namespace Xenvious
             GTA.Offsets.Editor.inpts = d.OFFSETS.inpts;
 
             GTA.Offsets.Editor.player_number = d.OFFSETS.player_number;
+            GTA.Offsets.Editor.SpawnPoints.number = d.OFFSETS.spawn_number;
+            GTA.Offsets.Editor.SpawnPoints.loc = d.OFFSETS.spawn_loc;
+            GTA.Offsets.Editor.SpawnPoints.head = d.OFFSETS.spawn_head;
+            GTA.Offsets.Editor.SpawnPoints.team = d.OFFSETS.spawn_team;
+            GTA.Offsets.Editor.SpawnPoints.teams = d.OFFSETS.spawn_teams;
+            GTA.Offsets.Editor.SpawnPoints.spmr = d.OFFSETS.spawn_spmr;
+            GTA.Offsets.Editor.SpawnPoints.NEXT = d.OFFSETS.spawn_NEXT;
             GTA.Offsets.Editor.player_loc = d.OFFSETS.player_loc;
             GTA.Offsets.Editor.player_head = d.OFFSETS.player_head;
             GTA.Offsets.Editor.player_bit = d.OFFSETS.player_bit;

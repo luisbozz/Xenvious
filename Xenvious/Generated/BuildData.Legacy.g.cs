@@ -877,6 +877,13 @@ namespace Xenvious
             d.OFFSETS.mspdmx = 4741765;
             d.OFFSETS.inpts = 4830400;
             d.OFFSETS.player_number = 5177758;
+            d.OFFSETS.spawn_number = 5177756;
+            d.OFFSETS.spawn_loc = 5177764;
+            d.OFFSETS.spawn_head = 5177767;
+            d.OFFSETS.spawn_team = 5177768;
+            d.OFFSETS.spawn_teams = 5177787;
+            d.OFFSETS.spawn_spmr = 5177788;
+            d.OFFSETS.spawn_NEXT = 71;
             d.OFFSETS.player_loc = 5182026;
             d.OFFSETS.player_head = 5182029;
             d.OFFSETS.player_bit = 5182031;

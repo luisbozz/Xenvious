@@ -956,6 +956,13 @@ namespace Xenvious
             public long mspdmx;
             public long inpts;
             public long player_number;
+            public long spawn_number;
+            public long spawn_loc;
+            public long spawn_head;
+            public long spawn_team;
+            public long spawn_teams;
+            public long spawn_spmr;
+            public long spawn_NEXT;
             public long player_loc;
             public long player_head;
             public long player_bit;
@@ -2036,6 +2043,13 @@ namespace Xenvious
                     case "mspdmx": return mspdmx;
                     case "inpts": return inpts;
                     case "player_number": return player_number;
+                    case "spawn_number": return spawn_number;
+                    case "spawn_loc": return spawn_loc;
+                    case "spawn_head": return spawn_head;
+                    case "spawn_team": return spawn_team;
+                    case "spawn_teams": return spawn_teams;
+                    case "spawn_spmr": return spawn_spmr;
+                    case "spawn_next": return spawn_NEXT;
                     case "player_loc": return player_loc;
                     case "player_head": return player_head;
                     case "player_bit": return player_bit;

@@ -1742,6 +1742,17 @@ namespace Xenvious
                 public static long teamrvp = 0;
                 public static long inpts = 0;
                 public static long player_number = 0;
+                // Spawn points (JSON "ene"), SpawnPoints.cs.
+                public static class SpawnPoints
+                {
+                    public static long number = 0;
+                    public static long loc = 0;
+                    public static long head = 0;
+                    public static long team = 0;
+                    public static long teams = 0;
+                    public static long spmr = 0;
+                    public static long NEXT = 0;
+                }
                 public static long player_loc = 0;
                 public static long player_head = 0;
                 public static long player_bit = 0;
