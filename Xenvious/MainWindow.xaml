@@ -5945,7 +5945,7 @@
                                                                                             </CheckBox>
                                                                                         </Grid>
                                                                                         <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[time], FallbackValue=Time}"/>
-                                                                                        <ComboBox x:Name="ddtime" FontFamily="{DynamicResource Volte}" SelectionChanged="ddtime_SelectionChanged" ToolTip="{Binding Translation[time], FallbackValue=time}" ItemsSource="{x:Static local:GTA+Editor.JobTime}" Height="30" Margin="0,0,0,10"/>
+                                                                                        <ComboBox x:Name="ddtime" FontFamily="{DynamicResource Volte}" SelectionChanged="ddtime_SelectionChanged" DisplayMemberPath="Time" ToolTip="{Binding Translation[time], FallbackValue=time}" ItemsSource="{x:Static local:GTA+Editor.JobTime}" Height="30" Margin="0,0,0,10"/>
                                                                                         <Grid Style="{StaticResource FormRow}">
                                                                                             <Grid.ColumnDefinitions>
                                                                                                 <ColumnDefinition Width="*"/>
