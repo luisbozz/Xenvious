@@ -34,6 +34,13 @@ namespace Xenvious
         public static List<GTA.ScrPatches> CurrentScrPatchesDev() =>
             GameVariant.IsEnhanced ? ScrPatchesDevEnhanced() : ScrPatchesDevLegacy();
 
+        private static readonly Lazy<RuleFields> ruleFieldsLegacy = new Lazy<RuleFields>(RuleFieldsLegacy);
+        private static readonly Lazy<RuleFields> ruleFieldsEnhanced = new Lazy<RuleFields>(RuleFieldsEnhanced);
+
+        /// <summary>What moves with a rule in the current edition (rule_fields.json, RuleMover).</summary>
+        public static RuleFields CurrentRuleFields() =>
+            GameVariant.IsEnhanced ? ruleFieldsEnhanced.Value : ruleFieldsLegacy.Value;
+
         /// <summary>The model hash lists of the current edition (prop_lists.json), a new object on every call.</summary>
         public static PropLists CurrentPropLists() =>
             GameVariant.IsEnhanced ? PropListsEnhanced() : PropListsLegacy();

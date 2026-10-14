@@ -19,6 +19,7 @@ namespace Xenvious
         private const double LaneWidth = 16, Indent = 46, RowGap = 22;
 
         private RuleFlow _flow;
+        private RowDragger _dragger;
         private bool _flowWired;
         private readonly Grid _flowGrid = new Grid();
         private readonly StackPanel _rows = new StackPanel();
@@ -34,6 +35,12 @@ namespace Xenvious
                 _flowGrid.Children.Add(_arrows);
                 // Rows wrap and grow with the window; the arrows follow them.
                 _rows.SizeChanged += (_, __) => DrawArrows();
+            }
+            if (_dragger == null)
+            {
+                _dragger = new RowDragger(_rows, () => _rules.Count, MoveRule);
+                // The jump arrows are drawn for the rows where they were; they come back with the redraw.
+                _dragger.Dragging += on => _arrows.Visibility = on ? Visibility.Hidden : Visibility.Visible;
             }
             _flow = RuleFlow.Build(_rules, l => Rules.FailJumpBlocked(l, _team, out _));
             _rows.Children.Clear();

@@ -36,6 +36,7 @@ namespace Xenvious
         private readonly StackPanel _track = new StackPanel { Margin = new Thickness(0, 8, 0, 0) };
         private readonly StackPanel _footer = new StackPanel();
         private readonly DispatcherTimer _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(2) };
+        private readonly RowDragger _dragger;
 
         /// <summary>Opens the explanation (on the rules page).</summary>
         public event EventHandler HelpRequested;
@@ -65,8 +66,32 @@ namespace Xenvious
                 if (IsVisible) { Refresh(); _timer.Start(); }
                 else _timer.Stop();
             };
-            // Picks up changes made in the creator; skipped while something here has the keyboard.
-            _timer.Tick += (_, __) => { if (!IsKeyboardFocusWithin) Redraw(false); };
+            // Picks up changes made in the creator; skipped while something here has the keyboard
+            // or a rule is being dragged.
+            _timer.Tick += (_, __) => { if (!IsKeyboardFocusWithin && !_dragging) Redraw(false); };
+            _dragger = new RowDragger(_track, () => RuleCount, MoveRule);
+            _dragger.Dragging += on => _dragging = on;
+        }
+
+        private bool _dragging;
+
+        // Moves a rule of the shown team (RuleMover) and rebuilds the creator to show the new order.
+        private void MoveRule(int from, int to)
+        {
+            int team = _team;
+            System.Threading.Tasks.Task.Run(() =>
+            {
+                string error = null;
+                try { RuleMover.Move(team, from, to); }
+                catch (Exception ex) { error = ex.Message; Xenvious.Logging.Log.Error("move rule: " + ex); }
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    if (error != null)
+                        MainWindow.Instance?.displayScreenMessage(error);
+                    MainWindow.Instance?.creatorRefresh();
+                    Redraw(true);
+                }));
+            });
         }
 
         public void Attach(ComboBox entries, int entityType)
@@ -397,6 +422,10 @@ namespace Xenvious
             dock.Children.Add(num);
             if (rule != null)
             {
+                var grip = _dragger.Grip(r, RuleMover.Available, RulesView.MoveTip());
+                grip.Margin = new Thickness(4, 0, 0, 0);
+                DockPanel.SetDock(grip, Dock.Right);
+                dock.Children.Add(grip);
                 var open = ShowInRules(r);
                 DockPanel.SetDock(open, Dock.Right);
                 dock.Children.Add(open);

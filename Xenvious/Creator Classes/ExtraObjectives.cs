@@ -54,6 +54,23 @@ namespace Xenvious
         private const int InnerStride = 1 + Teams;                         // [4] with size slot
         private const int EntityStride = 1 + RulesPerEntity * InnerStride; // [13][4] with size slots
 
+        /// <summary>Every (slot, rule) cell of the extra objectives that is in use.</summary>
+        public static IEnumerable<(int Slot, int N)> PriorityCells()
+        {
+            if (!Ready)
+                yield break;
+            for (int s = 0; s < Slots; s++)
+            {
+                if (EntityId(s) < 0)
+                    continue;
+                for (int n = 0; n < RulesPerEntity; n++)
+                    yield return (s, n);
+            }
+        }
+
+        /// <summary>Where the rule (priority) of an extra objective is kept for a team.</summary>
+        public static long PriorityAddress(int slot, int n, int team) => Ready ? RuleAddr(GTA.Offsets.Editor.eoep, slot, n, team) : 0;
+
         private static long RuleAddr(long baseOffset, int slot, int n, int team)
             => baseOffset + slot * EntityStride + 1 + n * InnerStride + 1 + team;
 

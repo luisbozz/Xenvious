@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Generates Xenvious/Generated/*.g.cs from the build data in Xenvious/OfflineData/<edition>/.
 
-offsets.ini, scrpatches.json and prop_lists.json stay the files people and ysc-global-updater edit. Xenvious
+offsets.ini, scrpatches.json, prop_lists.json and rule_fields.json stay the files people and ysc-global-updater edit. Xenvious
 does not read them at runtime any more: this turns them into C# with every value already a
 number (paths resolved with their array size slots, see builddata.py), so the start does no
 parsing and a key the code names but the files lack is a compile error instead of a silent 0.
@@ -16,11 +16,12 @@ from __future__ import annotations
 import argparse
 import json
 import pathlib
+import re
 import sys
 
 HERE = pathlib.Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
-from builddata import number, parse_ini, section_kinds  # noqa: E402
+from builddata import _INDEX, eval_path, number, parse_ini, section_kinds  # noqa: E402
 
 ROOT = HERE.parents[1]
 DATA = ROOT / "Xenvious" / "OfflineData"
@@ -220,14 +221,85 @@ def gen_prop_lists(lists, ed: str, Ed: str) -> str:
     return "\n".join(lines)
 
 
+def load_rule_fields() -> dict:
+    out = {}
+    for ed, _ in EDITIONS:
+        path = DATA / ed / "rule_fields.json"
+        out[ed] = json.loads(path.read_text(encoding="utf-8-sig")) if path.is_file() else {}
+    return out
+
+
+def cs_index(path: str) -> str:
+    """A path with named indices as RuleIndex: the fixed part, then each name with its stride."""
+    names, strides = [], []
+    for m in _INDEX.finditer(path):
+        if not re.fullmatch(r"-?\d+", m.group(1)):
+            names.append(m.group(1))
+            strides.append(int(m.group(2) or 1))
+    return (f"new RuleIndex({eval_path(path)}, new[] {{ {', '.join(cs_string(n) for n in names)} }}, "
+            f"new long[] {{ {', '.join(map(str, strides))} }})" if names else f"new RuleIndex({eval_path(path)})")
+
+
+def cs_count(value: str) -> str:
+    if re.fullmatch(r"\d+", value):
+        return f"RuleCount.Fixed({int(value)})"
+    if value.startswith("rules:"):
+        return f"RuleCount.Rules({cs_string(value[6:])})"
+    return f"RuleCount.At({cs_index(value)})"
+
+
+def cs_rule_field(e, kind: str) -> str:
+    if isinstance(e, str):
+        e = {"path": e}
+    parts = [f"Kind = {cs_string(e.get('kind', kind))}", f"Field = {cs_index(e['path'])}"]
+    if "size" in e:
+        parts.append(f"Size = {int(e['size'])}")
+    loops = e.get("loops", {})
+    if loops:
+        parts.append("LoopVars = new[] { " + ", ".join(cs_string(v) for v in loops) + " }")
+        parts.append("LoopCounts = new[] { " + ", ".join(cs_count(c) for c in loops.values()) + " }")
+    team = e.get("team")
+    if team is not None:
+        if team in loops or team == "t":
+            parts.append(f"TeamVar = {cs_string(team)}")
+        elif re.fullmatch(r"-?\d+", team):
+            parts.append(f"TeamFixed = {int(team)}")
+        else:
+            parts.append(f"Team = {cs_index(team)}")
+    conds = e.get("if", [])
+    if conds:
+        parsed = [re.fullmatch(r"(.+) (==|!=) (-?\d+)", c) for c in conds]
+        parts.append("If = new[] { " + ", ".join(cs_index(m.group(1)) for m in parsed) + " }")
+        parts.append("IfEqual = new[] { " + ", ".join("true" if m.group(2) == "==" else "false" for m in parsed) + " }")
+        parts.append("IfValue = new[] { " + ", ".join(m.group(3) for m in parsed) + " }")
+    return "new RuleField { " + ", ".join(parts) + " }"
+
+
+def gen_rule_fields(fields, ed: str, Ed: str) -> str:
+    data = fields[ed]
+    lines = [HEADER, "namespace Xenvious", "{", "    public sealed partial class BuildData", "    {",
+             f"        /// <summary>OfflineData/{ed}/rule_fields.json: what moves with a rule (RuleMover).</summary>",
+             f"        private static RuleFields RuleFields{Ed}()", "        {", "            return new RuleFields", "            {"]
+    for key, kind in (("bits", "bits"), ("data", "data"), ("prio", "prio"), ("refs", "val")):
+        lines.append(f"                {key.capitalize()} = new[]")
+        lines.append("                {")
+        for e in data.get(key, []):
+            lines.append("                    " + cs_rule_field(e, kind) + ",")
+        lines.append("                },")
+    lines += ["            };", "        }", "    }", "}", ""]
+    return "\n".join(lines)
+
+
 def outputs() -> dict:
     inis = load_inis()
     lists = load_prop_lists()
+    rules = load_rule_fields()
     out = {"BuildData.g.cs": gen_shape(inis), "PropLists.g.cs": gen_prop_lists_shape(lists)}
     for ed, Ed in EDITIONS:
         out[f"BuildData.{Ed}.g.cs"] = gen_edition(inis, ed, Ed)
         out[f"ScrPatches.{Ed}.g.cs"] = gen_patches(ed, Ed)
         out[f"PropLists.{Ed}.g.cs"] = gen_prop_lists(lists, ed, Ed)
+        out[f"RuleFields.{Ed}.g.cs"] = gen_rule_fields(rules, ed, Ed)
     return out
 
 
