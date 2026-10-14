@@ -43,6 +43,9 @@ namespace Xenvious
 
         private List<EditNavEntry> _editNav;
         private string _editNavCreator;
+
+        /// <summary>Script name of the creator the player is in ("fm_lts_creator" ...), null outside.</summary>
+        internal string CurrentCreatorScript => _editNavCreator;
         private EditNavEntry _editNavEntry;
         private EditNavSub _editNavSub;
         private (EditNavEntry Entry, EditNavSub Sub)? _editNavBack;

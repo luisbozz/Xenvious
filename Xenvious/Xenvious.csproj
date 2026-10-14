@@ -205,6 +205,7 @@
     <Compile Include="Controls\RuleStrip.cs" />
     <Compile Include="Controls\MenuBitsView.cs" />
     <Compile Include="Controls\MatchSettingsCard.cs" />
+    <Compile Include="Controls\SoloTestCard.cs" />
     <Compile Include="Controls\VisibilityCard.cs" />
     <Compile Include="Controls\ZoneTypeSettingsCard.cs" />
     <Compile Include="Controls\ModelCard.xaml.cs">

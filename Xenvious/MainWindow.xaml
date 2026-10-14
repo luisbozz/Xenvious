@@ -4153,6 +4153,8 @@
                                                                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                                                                         <local:MasonryPanel Margin="0,12,0,12">
                                                                             <StackPanel>
+                                                                                <!-- Solo start and controller choice for LTS / Capture, for testing combinations. -->
+                                                                                <local:SoloTestCard x:Name="SoloTestCard"/>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <DockPanel>
                                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
