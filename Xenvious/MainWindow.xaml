@@ -8602,6 +8602,14 @@
                                                                         <Border Background="{DynamicResource SeactionHeaderBackgroundBrush}" CornerRadius="4" Padding="10,8" Margin="0,0,0,12">
                                                                             <TextBlock x:Name="lblzonetypeinfo" TextWrapping="Wrap" FontSize="13" Foreground="{DynamicResource NavMutedBrush}" Text="{Binding Translation[zt_pick], FallbackValue=Pick a zone type to see what it does.}"/>
                                                                         </Border>
+                                                                        <!-- Mission Creator only: the zone's ID (zcid), MainWindow.Zones.cs. -->
+                                                                        <StackPanel x:Name="ZoneIdPanel" Visibility="Collapsed" Margin="0,0,0,4">
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[zone_id], FallbackValue='Zone ID'}"/>
+                                                                            <ComboBox x:Name="ddzoneid" Height="30" Margin="0,0,0,6" SelectionChanged="ddzoneid_SelectionChanged"/>
+                                                                            <Border Background="{DynamicResource SeactionHeaderBackgroundBrush}" CornerRadius="4" Padding="10,8" Margin="0,0,0,12">
+                                                                                <TextBlock TextWrapping="Wrap" FontSize="12.5" Foreground="{DynamicResource NavMutedBrush}" Text="{Binding Translation[zone_id_hint], FallbackValue='The creator links drop-offs and play area bounds to this ID, not to the place in the list.'}"/>
+                                                                            </Border>
+                                                                        </StackPanel>
                                                                         <Grid>
                                                                             <Grid.ColumnDefinitions>
                                                                                 <ColumnDefinition Width="*"/>
