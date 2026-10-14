@@ -40,9 +40,8 @@ is in `MainWindow.Mission.Extras.cs`.
 
 To add one, find `BitTest(Global_4718592.f_N, b)` in the controller and read
 what the code does when it is set. `menubsN` is `f_(11+N)`, and script bit `b`
-is Xenvious bit `b + 1` (`writebinary` counts from 1). Per-entity bitsets
-count the same way; for example `vbs2` bits 3 to 6 lock a vehicle for team 1
-to 4.
+is the same `b` in `writebinary` / `checkbinary`. Per-entity bitsets count the
+same way; for example `vbs2` bits 2 to 5 lock a vehicle for team 1 to 4.
 
 ## Rebuild: making changes visible
 

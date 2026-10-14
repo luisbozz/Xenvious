@@ -31,16 +31,18 @@ namespace Xenvious
     ///
     /// Race, Deathmatch, LTS, Capture and Survival creator, the ones <see cref="JobLoader"/>
     /// loads jobs in.
+    ///
+    /// Where the file is and which vtables its nodes have, the creator script tells: the
+    /// datafile probe of the customfuncs payload (datafile.py in ysc-global-updater) hands over
+    /// DATAFILE_GET_FILE_DICT(0) and a dict "xv" it builds in the file with one node of every
+    /// type. So nothing here depends on addresses in the game's exe, and it works in every
+    /// build the payload works in.
     /// </summary>
     public static class JobDatafile
     {
         public enum Result { Done, Unsupported, NotEditing, NoTitle, WrongCreator, NoJob, TimedOut, Failed }
 
         private enum NodeType { Bool = 1, Int = 2, Float = 3, String = 4, Vec3 = 5, Dict = 6, Array = 7 }
-
-        // Datafile object: vtable, list node (16), the file (root dict) at +0x18, request id at +0x20.
-        private const int FileStride = 40;
-        private const int FileRoot = 0x18;
 
         private const int CreatorStateLoad = 0;
         private const int CreatorStateSave = 5;
@@ -72,74 +74,125 @@ namespace Xenvious
             && SaveOffset(creator) != 0
             && GTA.Offsets.Editor.job_save_upload_state != 0
             && GTA.Offsets.Editor.job_save_uploaded != 0
-            && FilesAddress() != 0;
+            && ProbeAvailable(creator);
 
         public static bool CanImport(string creator) =>
             JobLoader.CanLoad(creator)
             && JobLoader.LoaderOffset(creator) != 0
             && GTA.Offsets.Editor.load_job_loader_state != 0
             && GTA.Offsets.Editor.load_job_loader_read_stage != 0
-            && FilesAddress() != 0
-            && Vtables() != null;
+            && ProbeAvailable(creator);
 
-        private static long ModuleBase => (long)MainWindow.m.getBaseAddress();
+        // ---- the datafile probe ---------------------------------------------------------
 
-        /// <summary>
-        /// Address of the game's datafile array, or 0 when the configured offset does not
-        /// point at five datafile objects (another build).
-        /// </summary>
-        private static long FilesAddress()
+        // In the creator's data page, see datafile.py: state (1 request, 2 done),
+        // the file's root, the probe dict, the array in it, then the key strings.
+        private const int ProbeState = 0x3FC8, ProbeRoot = 0x3FD0, ProbeDict = 0x3FD8, ProbeArray = 0x3FE0, ProbeKeys = 0x3FE8;
+        private const string ProbeKey = "xv";
+        private static readonly byte[] ProbeKeyBytes = Encoding.ASCII.GetBytes("xv\0b\0i\0f\0s\0v\0a\0");
+        private static readonly TimeSpan ProbeTimeout = TimeSpan.FromSeconds(3);
+
+        private sealed class Probed
         {
-            long rva = GTA.Offsets.Editor.Datafile.files;
-            if (rva <= 0 || !MainWindow.m.IsProcOpen)
-                return 0;
-            long files = ModuleBase + rva;
-            byte[] raw = Read(files, 5 * FileStride);
-            long vtable = BitConverter.ToInt64(raw, 0);
-            if (!InModule(vtable))
-                return 0;
-            for (int i = 1; i < 5; i++)
-            {
-                if (BitConverter.ToInt64(raw, i * FileStride) != vtable)
-                    return 0;
-            }
-            return files;
+            public long Root;
+            public Dictionary<NodeType, long> Vtables;
         }
 
-        private static bool InModule(long address)
-        {
-            long size = MainWindow.m.getMainModule()?.ModuleMemorySize ?? 0;
-            return address > ModuleBase && address < ModuleBase + size;
-        }
+        // The probe is part of the customfuncs payload, a dev patch: it only runs with the
+        // experimental script features on.
+        private static bool ProbeAvailable(string creator) =>
+            ScriptVars.FeaturesOn && ScriptSpace.Configured(creator);
 
         /// <summary>
-        /// The node vtables by type, or null when the configured offsets do not look like
-        /// them. All node types share the parser's virtual functions at the start of their
-        /// vtables; another build's offsets point somewhere else.
+        /// Asks the creator script for datafile 0 and the node vtables; null when the payload
+        /// does not answer (patches off, script loaded without its extra space) or the nodes do
+        /// not look like the parser's.
         /// </summary>
-        private static Dictionary<NodeType, long> Vtables()
+        private static async Task<Probed> ProbeAsync(string creator)
         {
-            var rvas = new Dictionary<NodeType, long>
+            long page = ScrPatchesRunner.PageReady(creator) ? ScriptSpace.Get(creator)?.Data ?? 0 : 0;
+            if (page == 0)
             {
-                [NodeType.Bool] = GTA.Offsets.Editor.Datafile.vt_bool,
-                [NodeType.Int] = GTA.Offsets.Editor.Datafile.vt_int,
-                [NodeType.Float] = GTA.Offsets.Editor.Datafile.vt_float,
-                [NodeType.String] = GTA.Offsets.Editor.Datafile.vt_string,
-                [NodeType.Vec3] = GTA.Offsets.Editor.Datafile.vt_vec3,
-                [NodeType.Dict] = GTA.Offsets.Editor.Datafile.vt_dict,
-                [NodeType.Array] = GTA.Offsets.Editor.Datafile.vt_array,
-            };
-            if (rvas.Values.Any(v => v <= 0) || !MainWindow.m.IsProcOpen)
+                Log.Warn($"job file: {creator} does not run this build's payload (restart GTA after an update of Xenvious)", source: "jobfile");
                 return null;
-            var result = rvas.ToDictionary(p => p.Key, p => ModuleBase + p.Value);
-            byte[] shared = Read(result[NodeType.Dict], 6 * 8);
-            foreach (long vtable in result.Values)
-            {
-                byte[] head = Read(vtable, 6 * 8);
-                if (!head.SequenceEqual(shared) || !InModule(BitConverter.ToInt64(head, 0)))
-                    return null;
             }
-            return result;
+            Write(page + ProbeKeys, ProbeKeyBytes);
+            Write(page + ProbeRoot, new byte[24]);
+            Write(page + ProbeState, BitConverter.GetBytes(1L));
+            var started = DateTime.UtcNow;
+            int state = 1;
+            while (state == 1 && DateTime.UtcNow - started < ProbeTimeout)
+            {
+                await Task.Delay(50).ConfigureAwait(true);
+                if (!MainWindow.m.IsProcOpen)
+                    return null;
+                // The script stores the int into an 8 byte slot; its upper half is stack garbage.
+                state = (int)ReadPtr(page + ProbeState);
+            }
+            if (state != 2)
+            {
+                // 1: the payload did not answer (not running, or datafile 0 could not be created).
+                Log.Warn($"job file: the datafile probe did not answer (state {state}, file {ReadPtr(page + ProbeRoot):X})", source: "jobfile");
+                Write(page + ProbeState, new byte[8]);
+                return null;
+            }
+            long root = ReadPtr(page + ProbeRoot), dict = ReadPtr(page + ProbeDict), array = ReadPtr(page + ProbeArray);
+            var vtables = new Dictionary<NodeType, long> { [NodeType.Dict] = ReadPtr(dict), [NodeType.Array] = ReadPtr(array) };
+            var byKey = new Dictionary<uint, NodeType>
+            {
+                [KeyHash("b")] = NodeType.Bool, [KeyHash("i")] = NodeType.Int, [KeyHash("f")] = NodeType.Float,
+                [KeyHash("s")] = NodeType.String, [KeyHash("v")] = NodeType.Vec3,
+            };
+            foreach (var (hash, node) in Entries(dict))
+            {
+                if (byKey.TryGetValue(hash, out NodeType type))
+                    vtables[type] = ReadPtr(node);
+            }
+            if (vtables.Count != 7 || !LookLikeNodes(vtables))
+            {
+                Log.Warn($"job file: the probe nodes do not look like datafile nodes ({vtables.Count} types)", source: "jobfile");
+                return null;
+            }
+            return new Probed { Root = root, Vtables = vtables };
+        }
+
+        /// <summary>(key hash, node) of every entry of a dict node.</summary>
+        private static IEnumerable<(uint Hash, long Node)> Entries(long dict)
+        {
+            byte[] raw = Read(dict, 24);
+            long buckets = BitConverter.ToInt64(raw, 8);
+            int slots = BitConverter.ToUInt16(raw, 16);
+            if (buckets == 0 || slots == 0)
+                yield break;
+            byte[] heads = Read(buckets, slots * 8);
+            for (int i = 0; i < slots; i++)
+            {
+                long entry = BitConverter.ToInt64(heads, i * 8);
+                for (int guard = 0; entry != 0 && guard < 0x10000; guard++)
+                {
+                    byte[] e = Read(entry, 24);
+                    yield return (BitConverter.ToUInt32(e, 0), BitConverter.ToInt64(e, 8));
+                    entry = BitConverter.ToInt64(e, 16);
+                }
+            }
+        }
+
+        // All node types share the parser's virtual functions at the start of their vtables.
+        private static bool LookLikeNodes(Dictionary<NodeType, long> vtables)
+        {
+            long module = (long)MainWindow.m.getBaseAddress();
+            long size = MainWindow.m.getMainModule()?.ModuleMemorySize ?? 0;
+            byte[] shared = Read(vtables[NodeType.Dict], 6 * 8);
+            foreach (long vtable in vtables.Values)
+            {
+                if (vtable <= module || vtable >= module + size)
+                    return false;
+                byte[] head = Read(vtable, 6 * 8);
+                long first = BitConverter.ToInt64(head, 0);
+                if (!head.SequenceEqual(shared) || first <= module || first >= module + size)
+                    return false;
+            }
+            return true;
         }
 
         // ---- export ---------------------------------------------------------------------
@@ -173,14 +226,11 @@ namespace Xenvious
                 return (Result.TimedOut, null);
             }
 
-            long root = ReadPtr(FilesAddress() + FileRoot);
-            if (root == 0)
-            {
-                Log.Warn("job file export: datafile 0 is empty", source: "jobfile");
-                return (Result.NoJob, null);
-            }
-            var reader = new TreeReader(Vtables());
-            var job = reader.ReadNode(root) as JObject;
+            var probed = await ProbeAsync(creator).ConfigureAwait(true);
+            if (probed == null)
+                return (Result.Unsupported, null);
+            var reader = new TreeReader(probed.Vtables);
+            var job = reader.ReadNode(probed.Root) as JObject;
             if (job?["mission"] == null)
             {
                 Log.Warn($"job file export: datafile 0 holds no job, keys: {string.Join(", ", job?.Properties().Select(p => p.Name) ?? new string[0])}", source: "jobfile");
@@ -210,7 +260,7 @@ namespace Xenvious
                 {
                     int stage = CreatorMap.ReadLocal(save + GTA.Offsets.Editor.job_save_stage);
                     string trace = $"state {now}, stage {stage}, upload {CreatorMap.ReadLocal(save + GTA.Offsets.Editor.job_save_upload_state)}, "
-                        + $"uploaded {CreatorMap.ReadLocal(save + GTA.Offsets.Editor.job_save_uploaded)}, datafile {ReadPtr(FilesAddress() + FileRoot):X}";
+                        + $"uploaded {CreatorMap.ReadLocal(save + GTA.Offsets.Editor.job_save_uploaded)}";
                     if (trace != last)
                         Log.Info($"job file export: {trace} after {(DateTime.UtcNow - started).TotalMilliseconds:0} ms", source: "jobfile");
                     last = trace;
@@ -288,24 +338,30 @@ namespace Xenvious
 
             string keptId = string.IsNullOrEmpty(identity.Id) ? null : identity.Id;
             bool updates = keptId != null && identity.Updates;
-            var builder = new TreeBuilder(Vtables());
+            var probed = await ProbeAsync(creator).ConfigureAwait(true);
+            if (probed == null)
+                return Result.Unsupported;
+            var builder = new TreeBuilder(probed.Vtables);
             builder.Add(job);
             long memory = Allocate(builder.Size);
             if (memory == 0)
                 return Result.Failed;
-            long root = memory;   // the root is laid out first
-            long slot = FilesAddress() + FileRoot;
-            long original = ReadPtr(slot);
+            // The game's root keeps its object; only its table (buckets at +8, slot and entry
+            // count at +16) is pointed at ours, which is laid out first, and put back afterwards.
+            long root = probed.Root;
+            byte[] built = builder.Build(memory);
+            byte[] table = built.Skip(8).Take(12).ToArray();
+            byte[] original = Read(root + 8, 12);
             bool hung = false;
             try
             {
-                Write(memory, builder.Build(memory));
+                Write(memory, built);
 
                 long loader = JobLoader.LoaderOffset(creator);
                 CreatorMap.WriteLocal(loader + GTA.Offsets.Editor.load_job_loader_read_stage, 0);
                 CreatorMap.WriteLocal(loader + GTA.Offsets.Editor.load_job_loader_state, LoaderStateFromDatafile);
                 new Global(GTA.Offsets.Editor.load_job_id).SetBytes(Encoding.ASCII.GetBytes((keptId ?? ImportedContentId) + "\0"));
-                WritePtr(slot, root);
+                Write(root + 8, table);
                 hung = true;
                 new Global(GTA.Offsets.Editor.load_job_flag).SetInt(1);
                 CreatorMap.WriteLocal(state, CreatorStateLoad);
@@ -327,9 +383,9 @@ namespace Xenvious
                 {
                     // Left set, the creator loads the job again on its next start.
                     new Global(GTA.Offsets.Editor.load_job_flag).SetInt(0);
-                    bool ours = !hung || ReadPtr(slot) == root;
+                    bool ours = !hung || Read(root + 8, 12).SequenceEqual(table);
                     if (hung && ours)
-                        WritePtr(slot, original);
+                        Write(root + 8, original);
                     // Only freed once the game can no longer reach it.
                     if (ours)
                         Free(memory);
@@ -470,8 +526,10 @@ namespace Xenvious
                                 for (int guard = 0; entry != 0 && guard < 0x10000; guard++)
                                 {
                                     byte[] e = Read(entry, 24);
-                                    string key = KeyName(BitConverter.ToUInt32(e, 0), ref UnknownKeys);
-                                    dict[key] = ReadNode(BitConverter.ToInt64(e, 8), depth + 1);
+                                    uint hash = BitConverter.ToUInt32(e, 0);
+                                    // The probe's dict is ours, not part of the job.
+                                    if (depth > 0 || hash != KeyHash(ProbeKey))
+                                        dict[KeyName(hash, ref UnknownKeys)] = ReadNode(BitConverter.ToInt64(e, 8), depth + 1);
                                     entry = BitConverter.ToInt64(e, 16);
                                 }
                             }
@@ -664,8 +722,6 @@ namespace Xenvious
 
         private static void Write(long address, byte[] bytes) =>
             MainWindow.m.memory(address.ToString("X")).SetBytes(bytes);
-
-        private static void WritePtr(long address, long value) => Write(address, BitConverter.GetBytes(value));
 
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern IntPtr VirtualAllocEx(IntPtr process, IntPtr address, UIntPtr size, uint type, uint protect);

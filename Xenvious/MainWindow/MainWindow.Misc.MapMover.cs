@@ -170,42 +170,42 @@ namespace Xenvious
 
             var f = new List<MoveFamily>
             {
-                new MoveFamily { Label = "Props",
+                new MoveFamily { Label = TranslateOr("map_part_prop", "Props"),
                     CountIndex = () => GTA.Offsets.Editor.Props.number,
                     Slots = a => new[] { new MoveSlot(GTA.Offsets.Editor.Props.loc + a, GTA.Offsets.Editor.Props.NEXT, GTA.Offsets.Editor.Props.number) } },
-                new MoveFamily { Label = "Dynamic Props",
+                new MoveFamily { Label = TranslateOr("dash_dynprops", "Dynamic Props"),
                     CountIndex = () => GTA.Offsets.Editor.DProps.number,
                     Slots = a => new[] { new MoveSlot(GTA.Offsets.Editor.DProps.loc + a, GTA.Offsets.Editor.DProps.NEXT, GTA.Offsets.Editor.DProps.number) } },
-                new MoveFamily { Label = "Vehicles",
+                new MoveFamily { Label = TranslateOr("rl_m_vehs", "Vehicles"),
                     CountIndex = () => GTA.Offsets.Editor.Vehicle.number,
                     Slots = a => new[] { new MoveSlot(GTA.Offsets.Editor.Vehicle.loc + a, GTA.Offsets.Editor.Vehicle.NEXT, GTA.Offsets.Editor.Vehicle.number) } },
-                new MoveFamily { Label = "Objects",
+                new MoveFamily { Label = TranslateOr("rl_m_objs", "Objects"),
                     CountIndex = () => GTA.Offsets.Editor.Objects.number,
                     Slots = a => new[] { new MoveSlot(GTA.Offsets.Editor.Objects.loc + a, GTA.Offsets.Editor.Objects.NEXT, GTA.Offsets.Editor.Objects.number) } },
-                new MoveFamily { Label = "Actors",
+                new MoveFamily { Label = TranslateOr("dash_actors", "Actors"),
                     CountIndex = () => GTA.Offsets.Editor.Actor.number,
                     Slots = a => new[] { new MoveSlot(AxisOf(GTA.Offsets.Editor.Actor.locx, GTA.Offsets.Editor.Actor.locy, GTA.Offsets.Editor.Actor.locz, a),
                                                      GTA.Offsets.Editor.Actor.NEXT, GTA.Offsets.Editor.Actor.number) } },
-                new MoveFamily { Label = "Weapons",
+                new MoveFamily { Label = TranslateOr("missionrspweapons", "Weapons"),
                     CountIndex = () => GTA.Offsets.Editor.Weapon.number,
                     Slots = a => new[] { new MoveSlot(AxisOf(GTA.Offsets.Editor.Weapon.locx, GTA.Offsets.Editor.Weapon.locy, GTA.Offsets.Editor.Weapon.locz, a),
                                                      GTA.Offsets.Editor.Weapon.NEXT, GTA.Offsets.Editor.Weapon.number) } },
-                new MoveFamily { Label = "Locations",
+                new MoveFamily { Label = TranslateOr("rl_m_locs", "Locations"),
                     CountIndex = () => GTA.Offsets.Editor.Locations.number,
                     Slots = a => new[] { new MoveSlot(AxisOf(GTA.Offsets.Editor.Locations.locx, GTA.Offsets.Editor.Locations.locy, GTA.Offsets.Editor.Locations.locz, a),
                                                      GTA.Offsets.Editor.Locations.NEXT, GTA.Offsets.Editor.Locations.number) } },
-                new MoveFamily { Label = "Locations 2",
+                new MoveFamily { Label = TranslateOr("mm_locations2", "Locations 2"),
                     CountIndex = () => GTA.Offsets.Editor.Locations.number,
                     Slots = a => new[] { new MoveSlot(AxisOf(GTA.Offsets.Editor.Locations.locaa1x, GTA.Offsets.Editor.Locations.locaa1y, GTA.Offsets.Editor.Locations.locaa1z, a),
                                                      GTA.Offsets.Editor.Locations.NEXT, GTA.Offsets.Editor.Locations.number) } },
-                new MoveFamily { Label = "Zones",
+                new MoveFamily { Label = TranslateOr("vis_zones", "Zones"),
                     CountIndex = () => GTA.Offsets.Editor.Zones.number,
                     Slots = a => new[] { new MoveSlot(AxisOf(GTA.Offsets.Editor.Zones.vtox, GTA.Offsets.Editor.Zones.vtoy, GTA.Offsets.Editor.Zones.vtoz, a),
                                                      GTA.Offsets.Editor.Zones.NEXT, GTA.Offsets.Editor.Zones.number) } },
                 // A race checkpoint carries three vehicle spawn positions that have to travel
                 // with it, otherwise the starting grid stays behind. vspn holds them as nine
                 // consecutive floats: three x, then three y, then three z.
-                new MoveFamily { Label = "Race Checkpoints",
+                new MoveFamily { Label = TranslateOr("mm_race_cps", "Race checkpoints"),
                     CountIndex = () => GTA.Offsets.Editor.Race.Checkpoints.number,
                     Slots = a => new[]
                     {
@@ -353,7 +353,7 @@ namespace Xenvious
             Point p = e.GetPosition(gridMapMoverCanvas);
             Point w = MapToWorld(p.X, p.Y);
             tbmapmoverhover.Text = _mapCalibStep > 0
-                ? $"Kalibrieren {_mapCalibStep}/2 -- hier klicken   (X {w.X:0}  Y {w.Y:0})"
+                ? string.Format(TranslateOr("mm_calib_hover", "Calibrate {0}/2: click here"), _mapCalibStep) + $"   (X {w.X:0}  Y {w.Y:0})"
                 : $"X {w.X:0}   Y {w.Y:0}   ({mapMoverZoom.ScaleX:0.#}x)";
         }
 
@@ -379,12 +379,12 @@ namespace Xenvious
         // the player ped along with the camera.
         private Vector3? ReadGamePosition(out string source)
         {
-            source = "Kamera";
+            source = TranslateOr("mm_src_camera", "camera");
             Vector3? cam = ReadCreatorCam();
             if (cam != null)
                 return cam;
 
-            source = "Spieler";
+            source = TranslateOr("mm_src_player", "player");
             if (!m.IsProcOpen)
                 return null;
             try
@@ -406,12 +406,12 @@ namespace Xenvious
             Vector3? v = ReadGamePosition(out source);
             if (v == null)
             {
-                tbmapmoverstatus.Text = "Position nicht lesbar. Laeuft GTA und ist der Creator offen?";
+                tbmapmoverstatus.Text = TranslateOr("mm_pos_unreadable", "Cannot read the position. Is GTA running and the creator open?");
                 return;
             }
             _mapMoverTo = v;
             RefreshMapMover(true);
-            tbmapmoverstatus.Text = $"Ziel aus {source}-Position uebernommen.";
+            tbmapmoverstatus.Text = string.Format(TranslateOr("mm_pos_taken", "Target taken ({0})."), source);
         }
 
         // --- Diagnose ------------------------------------------------------------
@@ -924,13 +924,11 @@ namespace Xenvious
             if (_mapCalibStep > 0)
             {
                 _mapCalibStep = 0;
-                tbmapmoverstatus.Text = "Kalibrierung abgebrochen.";
+                tbmapmoverstatus.Text = TranslateOr("mm_calib_cancelled", "Calibration cancelled.");
                 return;
             }
             _mapCalibStep = 1;
-            tbmapmoverstatus.Text = "Kalibrierung 1 von 2: mit der Creator-Kamera an eine gut erkennbare Stelle fliegen, "
-                                  + "dann genau diese Stelle auf der Karte anklicken. Je weiter die zwei Punkte auseinander "
-                                  + "liegen, desto genauer wird es.";
+            tbmapmoverstatus.Text = TranslateOr("mm_calib_1", "Calibration 1 of 2: fly the creator camera to an easy to spot place, then click exactly that place on the map.");
         }
 
         private void HandleCalibrationClick(Point pixel)
@@ -939,7 +937,7 @@ namespace Xenvious
             Vector3? cam = ReadGamePosition(out src);
             if (cam == null)
             {
-                tbmapmoverstatus.Text = "Position nicht lesbar -- Kalibrierung abgebrochen.";
+                tbmapmoverstatus.Text = TranslateOr("mm_calib_unreadable", "Cannot read the position, calibration cancelled.");
                 _mapCalibStep = 0;
                 return;
             }
@@ -949,8 +947,8 @@ namespace Xenvious
                 _calibWorldA = new Point(cam.Value.X, cam.Value.Y);
                 _calibPixelA = pixel;
                 _mapCalibStep = 2;
-                tbmapmoverstatus.Text = $"Punkt 1 gesetzt (X {cam.Value.X:0}, Y {cam.Value.Y:0}). "
-                                      + "Jetzt an eine zweite, weit entfernte Stelle fliegen und dort auf die Karte klicken.";
+                tbmapmoverstatus.Text = string.Format(CultureInfo.InvariantCulture, TranslateOr("mm_calib_2", "Point 1 set (X {0}, Y {1}). Now fly to a second place far away and click it on the map."),
+                    cam.Value.X.ToString("0", CultureInfo.InvariantCulture), cam.Value.Y.ToString("0", CultureInfo.InvariantCulture));
                 return;
             }
 
@@ -958,7 +956,7 @@ namespace Xenvious
             double dpy = pixel.Y - _calibPixelA.Y;
             if (Math.Abs(dpx) < 20 || Math.Abs(dpy) < 20)
             {
-                tbmapmoverstatus.Text = "Die zwei Punkte liegen zu dicht beieinander. Nimm einen deutlich weiter entfernten.";
+                tbmapmoverstatus.Text = TranslateOr("mm_calib_close", "The two points are too close together. Pick one much further away.");
                 return;
             }
 
@@ -967,8 +965,7 @@ namespace Xenvious
             if (!IsUsableScale(uppX) || !IsUsableScale(uppY))
             {
                 _mapCalibStep = 0;
-                tbmapmoverstatus.Text = "Die zwei Kamera-Positionen liegen zu dicht beieinander "
-                                      + "oder sind identisch. Kalibrierung verworfen.";
+                tbmapmoverstatus.Text = TranslateOr("mm_calib_same", "The two camera positions are too close or the same. Calibration discarded.");
                 return;
             }
 
@@ -980,7 +977,8 @@ namespace Xenvious
             _mapCalibStep = 0;
             SaveMapCalibration();
             RefreshMapMover(false);
-            tbmapmoverstatus.Text = $"Kalibriert: {_mapUnitsPerPxX:0.##} Einheiten je Pixel in X, {_mapUnitsPerPxY:0.##} in Y. Gespeichert.";
+            tbmapmoverstatus.Text = string.Format(TranslateOr("mm_calib_done", "Calibrated: {0} units per pixel in X, {1} in Y. Saved."),
+                _mapUnitsPerPxX.ToString("0.##", CultureInfo.InvariantCulture), _mapUnitsPerPxY.ToString("0.##", CultureInfo.InvariantCulture));
             Log.Info($"Map Mover kalibriert: originX={_mapOriginX:0.##} uppX={_mapUnitsPerPxX:0.####} originY={_mapOriginY:0.##} uppY={_mapUnitsPerPxY:0.####}");
         }
 
@@ -993,10 +991,10 @@ namespace Xenvious
             Vector3? from = CurrentJobCentre();
             tbmapmoverfrom.Text = from.HasValue
                 ? $"X {from.Value.X:0.0}   Y {from.Value.Y:0.0}   Z {from.Value.Z:0.0}"
-                : "nichts geladen";
+                : TranslateOr("mm_nothing_loaded", "nothing loaded");
             tbmapmoverto.Text = _mapMoverTo.HasValue
                 ? $"X {_mapMoverTo.Value.X:0.0}   Y {_mapMoverTo.Value.Y:0.0}   Z {_mapMoverTo.Value.Z:0.0}"
-                : "noch nicht gesetzt";
+                : TranslateOr("mm_not_set", "not set yet");
 
             if (recomputeDelta && from.HasValue && _mapMoverTo.HasValue)
             {
@@ -1065,19 +1063,19 @@ namespace Xenvious
 
         private void BtnMapMoverApply_Click(object sender, RoutedEventArgs e)
         {
-            if (!m.IsProcOpen) { tbmapmoverstatus.Text = "GTA laeuft nicht."; return; }
+            if (!m.IsProcOpen) { tbmapmoverstatus.Text = TranslateOr("mm_gta_off", "GTA is not running."); return; }
 
             Vector3 delta = ReadMapMoverDelta();
             if (delta.X == 0f && delta.Y == 0f && delta.Z == 0f)
             {
-                tbmapmoverstatus.Text = "Versatz ist 0 -- nichts zu tun.";
+                tbmapmoverstatus.Text = TranslateOr("mm_zero", "Offset is 0, nothing to do.");
                 return;
             }
 
             int moved = ApplyMapMove(delta);
             if (moved == 0)
             {
-                tbmapmoverstatus.Text = "Nichts verschoben. Ist etwas angehakt und ein Job geladen?";
+                tbmapmoverstatus.Text = TranslateOr("mm_nothing_moved", "Nothing moved. Is something ticked and a job loaded?");
                 return;
             }
 
@@ -1091,21 +1089,21 @@ namespace Xenvious
             _mapMoverUpdating = false;
             RefreshMapMover(false);
 
-            tbmapmoverstatus.Text = $"{moved} Werte verschoben  (X {delta.X:+0.#;-0.#;0}  Y {delta.Y:+0.#;-0.#;0}  Z {delta.Z:+0.#;-0.#;0}).";
+            tbmapmoverstatus.Text = string.Format(TranslateOr("mm_moved", "{0} values moved"), moved) + $"  (X {delta.X:+0.#;-0.#;0}  Y {delta.Y:+0.#;-0.#;0}  Z {delta.Z:+0.#;-0.#;0}).";
             Log.Info($"Map Mover: {moved} Werte  dX={delta.X} dY={delta.Y} dZ={delta.Z}");
         }
 
         private void BtnMapMoverUndo_Click(object sender, RoutedEventArgs e)
         {
             if (!_mapMoverHasUndo) return;
-            if (!m.IsProcOpen) { tbmapmoverstatus.Text = "GTA laeuft nicht."; return; }
+            if (!m.IsProcOpen) { tbmapmoverstatus.Text = TranslateOr("mm_gta_off", "GTA is not running."); return; }
 
             int moved = ApplyMapMove(new Vector3(-_mapMoverLastDelta.X, -_mapMoverLastDelta.Y, -_mapMoverLastDelta.Z));
             _mapMoverHasUndo = false;
             BtnMapMoverUndo.IsEnabled = false;
             BtnMapMoverUndo.Background = (SolidColorBrush)Resources["SectionBackgroundBrush"];
             RefreshMapMover(false);
-            tbmapmoverstatus.Text = $"{moved} Werte zurueckgesetzt.";
+            tbmapmoverstatus.Text = string.Format(TranslateOr("mm_undone", "{0} values reset."), moved);
         }
 
         private void SetMapMoverChecks(bool state)

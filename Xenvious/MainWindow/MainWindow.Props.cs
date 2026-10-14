@@ -127,7 +127,7 @@ namespace Xenvious
             if (e.Key == Key.Enter)
             {
                 e.Handled = false;
-                creatorRefresh();
+                RefreshAfterEdit(sender);
             }
         }
 
@@ -199,7 +199,7 @@ namespace Xenvious
                 tbpropslocx.Text = loc[0];
                 tbpropslocy.Text = loc[1];
                 tbpropslocz.Text = loc[2];
-                creatorRefresh();
+                RefreshAfterEdit(tbpropslocx);
             }
         }
 
@@ -312,12 +312,12 @@ namespace Xenvious
                 if (!tbpropssettings1.IsFocused || ignore_focus) tbpropssettings1.Text = new Global((GTA.Offsets.Editor.Props.prpbs + GTA.Offsets.Editor.Props.NEXT * index)).Get<int>().ToString();
                 if (!tbpropssettings2.IsFocused || ignore_focus) tbpropssettings2.Text = new Global((GTA.Offsets.Editor.Props.prpbs2 + GTA.Offsets.Editor.Props.NEXT * index)).Get<int>().ToString();
 
-                Functions.Read.checkbinary(9, GTA.Offsets.Editor.Props.prpbs2 + GTA.Offsets.Editor.Props.NEXT * index, cb_props_nocollision);
+                Functions.Read.checkbinary(8, GTA.Offsets.Editor.Props.prpbs2 + GTA.Offsets.Editor.Props.NEXT * index, cb_props_nocollision);
                 ShowPropUfoOptions(model, index);
-                Functions.Read.checkbinary(10, GTA.Offsets.Editor.Props.prpbs + GTA.Offsets.Editor.Props.NEXT * index, cb_props_invisible);
-                Functions.Read.checkbinary(2, GTA.Offsets.Editor.Props.prpbs + GTA.Offsets.Editor.Props.NEXT * index, cb_props_ignorevscheck);
-                Functions.Read.checkbinary(4, GTA.Offsets.Editor.Props.prpbs + GTA.Offsets.Editor.Props.NEXT * index, cb_props_lockpos);
-                Functions.Read.checkbinary(5, GTA.Offsets.Editor.Props.prpbs + GTA.Offsets.Editor.Props.NEXT * index, cb_props_lockrot);
+                Functions.Read.checkbinary(9, GTA.Offsets.Editor.Props.prpbs + GTA.Offsets.Editor.Props.NEXT * index, cb_props_invisible);
+                Functions.Read.checkbinary(1, GTA.Offsets.Editor.Props.prpbs + GTA.Offsets.Editor.Props.NEXT * index, cb_props_ignorevscheck);
+                Functions.Read.checkbinary(3, GTA.Offsets.Editor.Props.prpbs + GTA.Offsets.Editor.Props.NEXT * index, cb_props_lockpos);
+                Functions.Read.checkbinary(4, GTA.Offsets.Editor.Props.prpbs + GTA.Offsets.Editor.Props.NEXT * index, cb_props_lockrot);
 
 
                 if (Functions.Read.isStuntPropWithColorOption(model))
@@ -722,17 +722,17 @@ namespace Xenvious
 
         private void cb_props_ignorevscheck_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(2, GTA.Offsets.Editor.Props.prpbs + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex, cb_props_ignorevscheck);
+            Functions.Write.writebinary(1, GTA.Offsets.Editor.Props.prpbs + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex, cb_props_ignorevscheck);
         }
 
         private void cb_props_lockpos_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(4, GTA.Offsets.Editor.Props.prpbs + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex, cb_props_lockpos);
+            Functions.Write.writebinary(3, GTA.Offsets.Editor.Props.prpbs + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex, cb_props_lockpos);
         }
 
         private void cb_props_lockrot_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(5, GTA.Offsets.Editor.Props.prpbs + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex, cb_props_lockrot);
+            Functions.Write.writebinary(4, GTA.Offsets.Editor.Props.prpbs + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex, cb_props_lockrot);
         }
 
         private void tbpropsprpcr_TextChanged(object sender, TextChangedEventArgs e)
@@ -753,12 +753,12 @@ namespace Xenvious
 
         private void cb_props_invisible_Unchecked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(10, GTA.Offsets.Editor.Props.prpbs + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex, false);
+            Functions.Write.writebinary(9, GTA.Offsets.Editor.Props.prpbs + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex, false);
         }
 
         private void cb_props_invisible_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(10, GTA.Offsets.Editor.Props.prpbs + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex, true);
+            Functions.Write.writebinary(9, GTA.Offsets.Editor.Props.prpbs + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex, true);
         }
 
         // UFO props: prpbs2 bit 14 turns the ship, bit 15 lets it shine a beam now and then
@@ -773,31 +773,31 @@ namespace Xenvious
             if (!ufo)
                 return;
             _ufoSync = true;
-            Functions.Read.checkbinary(15, GTA.Offsets.Editor.Props.prpbs2 + GTA.Offsets.Editor.Props.NEXT * index, cb_props_ufospin);
-            Functions.Read.checkbinary(16, GTA.Offsets.Editor.Props.prpbs2 + GTA.Offsets.Editor.Props.NEXT * index, cb_props_ufolight);
+            Functions.Read.checkbinary(14, GTA.Offsets.Editor.Props.prpbs2 + GTA.Offsets.Editor.Props.NEXT * index, cb_props_ufospin);
+            Functions.Read.checkbinary(15, GTA.Offsets.Editor.Props.prpbs2 + GTA.Offsets.Editor.Props.NEXT * index, cb_props_ufolight);
             _ufoSync = false;
         }
 
         private void cb_props_ufospin_Checked(object sender, RoutedEventArgs e)
         {
             if (!_ufoSync && m.IsProcOpen && ddpropno.SelectedIndex > -1)
-                Functions.Write.writebinary(15, GTA.Offsets.Editor.Props.prpbs2 + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex, cb_props_ufospin);
+                Functions.Write.writebinary(14, GTA.Offsets.Editor.Props.prpbs2 + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex, cb_props_ufospin);
         }
 
         private void cb_props_ufolight_Checked(object sender, RoutedEventArgs e)
         {
             if (!_ufoSync && m.IsProcOpen && ddpropno.SelectedIndex > -1)
-                Functions.Write.writebinary(16, GTA.Offsets.Editor.Props.prpbs2 + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex, cb_props_ufolight);
+                Functions.Write.writebinary(15, GTA.Offsets.Editor.Props.prpbs2 + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex, cb_props_ufolight);
         }
 
         private void cb_props_nocollision_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(9, GTA.Offsets.Editor.Props.prpbs2 + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex, true);
+            Functions.Write.writebinary(8, GTA.Offsets.Editor.Props.prpbs2 + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex, true);
         }
 
         private void cb_props_nocollision_Unchecked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(9, GTA.Offsets.Editor.Props.prpbs2 + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex, false);
+            Functions.Write.writebinary(8, GTA.Offsets.Editor.Props.prpbs2 + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex, false);
         }
 
         bool propsrotchainactive = false;
@@ -1015,7 +1015,7 @@ namespace Xenvious
 
             Button tempbtncancel = new Button();
             tempbtncancel.Style = (Style)FindResource("CustomButton");
-            tempbtncancel.Content = "Cancel";
+            tempbtncancel.Content = TranslateOr("dialog_cancel", "Cancel");
             tempbtncancel.SetValue(CornerRadiusSetter.CornerRadiusProperty, new CornerRadius(5));
             tempbtncancel.Click += delegate
             {

@@ -15,9 +15,10 @@ namespace Xenvious
     ///
     /// * Game content -- props, vehicles, weapons, actors. The same in both GTA V
     ///   builds, so it is stored once at the root of OfflineData.
-    /// * Build-specific data -- offsets and script patches. Legacy and Enhanced are
-    ///   compiled separately, so every address and every byte pattern differs.
-    ///   These live in a folder per build and are selected by <see cref="GameVariant"/>.
+    /// * Build-specific data -- race vehicles and prop menu originals. Legacy and Enhanced
+    ///   are compiled separately, so these live in a folder per build and are selected by
+    ///   <see cref="GameVariant"/>. offsets.ini and scrpatches.json are compiled in as code
+    ///   instead (<see cref="BuildData"/>).
     ///
     /// Build-specific data is never substituted across builds. Loading Legacy
     /// offsets into an Enhanced process would resolve to unrelated memory and
@@ -58,21 +59,8 @@ namespace Xenvious
         private static string LoadCurrent(string fileName) =>
             LoadForEdition(GameVariant.Current, fileName);
 
-        /// <summary>Raw INI content that populates all GTA editor offsets.</summary>
-        public static string Offsets => LoadCurrent("offsets.ini");
-
-        /// <summary>Script patch definitions (JSON array).</summary>
-        public static string ScrPatches => LoadCurrent("scrpatches.json");
-
-        /// <summary>Developer script patch definitions (JSON array).</summary>
-        public static string ScrPatchesDev => LoadCurrent("scrpatchesdev.json");
-
         /// <summary>The Race Creator's vehicles per class (JSON array), in the script's bit order.</summary>
         public static string RaceVehicles => LoadCurrent("race_vehicles.json");
-
-        /// <summary>Offsets for one specific build, regardless of what is detected.</summary>
-        public static string OffsetsFor(GameEdition edition) =>
-            LoadForEdition(edition, "offsets.ini");
 
         /// <summary>Prop detail list (JSON array).</summary>
         public static string Props => LoadShared("props.json");

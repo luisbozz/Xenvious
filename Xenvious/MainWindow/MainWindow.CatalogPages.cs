@@ -35,7 +35,7 @@ namespace Xenvious
                     at++;
                 to.Children.Insert(at, card);
             }
-            HeadingSlider.Attach(heading, creatorRefresh);
+            HeadingSlider.Attach(heading, () => RefreshAfterEdit(heading));
         }
 
         /// <summary>

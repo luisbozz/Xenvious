@@ -69,9 +69,9 @@ namespace Xenvious
                 if (!tbcdefbits.IsFocused || ignore_focus) tbcdefbits.Text = new Global(index * GTA.Offsets.Editor.DHProp.NEXT + GTA.Offsets.Editor.DHProp.bits).Get<int>().ToString();
                 if (!tbcdefmnswap.IsFocused || ignore_focus) tbcdefmnswap.Text = new Global(index * GTA.Offsets.Editor.DHProp.NEXT + GTA.Offsets.Editor.DHProp.mnswap).Get<int>().ToString();
                 if (!tbcdefwprad.IsFocused || ignore_focus) tbcdefwprad.Text = new Global(index * GTA.Offsets.Editor.DHProp.NEXT + GTA.Offsets.Editor.DHProp.wprad).Get<int>().ToString();
-                Functions.Read.checkbinary(1, index * GTA.Offsets.Editor.DHProp.NEXT + GTA.Offsets.Editor.DHProp.bits, cbcdefhide);
-                Functions.Read.checkbinary(2, index * GTA.Offsets.Editor.DHProp.NEXT + GTA.Offsets.Editor.DHProp.bits, cbcdeffreeze);
-                Functions.Read.checkbinary(3, index * GTA.Offsets.Editor.DHProp.NEXT + GTA.Offsets.Editor.DHProp.bits, cbcdefmissionent);
+                Functions.Read.checkbinary(0, index * GTA.Offsets.Editor.DHProp.NEXT + GTA.Offsets.Editor.DHProp.bits, cbcdefhide);
+                Functions.Read.checkbinary(1, index * GTA.Offsets.Editor.DHProp.NEXT + GTA.Offsets.Editor.DHProp.bits, cbcdeffreeze);
+                Functions.Read.checkbinary(2, index * GTA.Offsets.Editor.DHProp.NEXT + GTA.Offsets.Editor.DHProp.bits, cbcdefmissionent);
             }
         }
 
@@ -99,19 +99,19 @@ namespace Xenvious
 
         private void cbcdefhide_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(1, ddcentityno.SelectedIndex * GTA.Offsets.Editor.DHProp.NEXT + GTA.Offsets.Editor.DHProp.bits, cbcdefhide);
+            Functions.Write.writebinary(0, ddcentityno.SelectedIndex * GTA.Offsets.Editor.DHProp.NEXT + GTA.Offsets.Editor.DHProp.bits, cbcdefhide);
         }
 
 
         private void cbcdeffreeze_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(2, ddcentityno.SelectedIndex * GTA.Offsets.Editor.DHProp.NEXT + GTA.Offsets.Editor.DHProp.bits, cbcdeffreeze);
+            Functions.Write.writebinary(1, ddcentityno.SelectedIndex * GTA.Offsets.Editor.DHProp.NEXT + GTA.Offsets.Editor.DHProp.bits, cbcdeffreeze);
         }
 
 
         private void cbcdefmissionent_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(3, ddcentityno.SelectedIndex * GTA.Offsets.Editor.DHProp.NEXT + GTA.Offsets.Editor.DHProp.bits, cbcdefmissionent);
+            Functions.Write.writebinary(2, ddcentityno.SelectedIndex * GTA.Offsets.Editor.DHProp.NEXT + GTA.Offsets.Editor.DHProp.bits, cbcdefmissionent);
         }
 
         private void cbcdefadvanced_Checked(object sender, RoutedEventArgs e)

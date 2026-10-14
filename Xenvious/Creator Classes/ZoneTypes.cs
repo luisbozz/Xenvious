@@ -106,7 +106,7 @@ namespace Xenvious
             T(67, "obj", "Clear entities", "Removes entities from the zone."), // CLEAR_ENTITY
             T(68, "mission", "Prerequisite zone", "Entering the zone completes a prerequisite."), // PREREQ_ZONE
             T(69, "obj", "Petrol pool", "Puts a pool of petrol in the zone."), // PETROL_POOL
-            T(70, "player", "Walk style", "Changes how players walk in the zone. The style is value 3, which Xenvious does not show."), // CHANGE_WALK_STYLE
+            T(70, "player", "Walk style", "Changes how players walk in the zone."), // CHANGE_WALK_STYLE
             T(71, "npc", "Gang chase flees", "Gang chase units flee from the zone."), // GANG_CHASE_FLEE
             T(72, "mission", "Lose lives", "Players lose lives in the zone. Value 1: 1 to 120, value 2: 0.5 to 30.", "zt_value_value", "Value 1", "zt_value_value2", "Value 2"), // LIVES_DEPLETION_ZONE
             T(73, "mission", "Aggro check", "Checks the aggro prerequisites while a player is in the zone."), // CHECK_AGGRO_PREREQS
@@ -115,6 +115,25 @@ namespace Xenvious
             T(76, "player", "No ladders", "Players cannot climb ladders in the zone."), // BLOCK_LADDER_CLIMBING
             T(77, "air", "Remove parachute", "Takes the parachute away and blocks it in the zone."), // REMOVE_AND_BLOCK_PARACHUTE
             T(78, "npc", "Roads on", "Switches the roads in the zone on."), // ENABLE_ROAD_NODES
+            // Types after the source: names from the Mission Creator's labels (PMC_ZN_TY<n>) where it
+            // offers them, otherwise from what fm_mission_controller does with them (1.73).
+            T(79, "other", "Particle override", "Swaps a particle effect while a player is in the zone; value 3 = 1 turns wind debris into chemical vapour."),
+            T(81, "player", "Apply screen filter", "Applies a screen filter to players in the zone. Value 1 is the transition time (0 = instant)."),
+            T(83, "veh", "Clear vehicles", "Removes vehicles from the zone."),
+            T(86, "veh", "Block personal vehicles", "Players cannot use or call in their personal vehicles in the zone."),
+            T(87, "npc", "Team aggro zone", "Actors with this zone in their team aggro options turn hostile when players enter it."),
+            T(88, "player", "Teleport", "Moves players who enter the zone to the place linked in value 3."),
+            T(91, "player", "Radar zoom", "Zooms the radar out while a player is in the zone.", "zt_value_zoom", "Zoom (%)"),
+            T(95, "npc", "Combat mobility zone", "Actors stay in this zone while they fight; link it in the actor's combat options."),
+            T(96, "npc", "Block ambient population", "Blocks ambient peds, traffic and animals from spawning in the zone (bits 5, 6, 7 of znbs3)."),
+            T(97, "player", "Wanted when shooting", "Players who fire an unsilenced weapon or cause an explosion in the zone get a wanted level.", "zt_value_stars", "Wanted stars"),
+            T(98, "player", "Wanted once when shooting", "Like type 97; after the first time the wanted level comes again whenever a player is in the zone.", "zt_value_stars", "Wanted stars"),
+            T(99, "player", "Disarm on entry", "Players put their weapon away the first time they enter the zone."),
+            T(102, "npc", "Actor task activation", "When triggered, actors that check this zone start their tasks."),
+            T(103, "player", "Hidden wanted level", "Gives a wanted level in which the police search but have not seen the player yet.", "zt_value_stars", "Wanted stars"),
+            T(106, "player", "Modify player mobility", "Changes what players can do in the zone: sprint, roll, enter or leave vehicles, climb, ladders, jump, move speed.", "zt_value_movescale", "Move speed (0.5-1.5)"),
+            T(107, "veh", "Bikes land easily", "Bikes ridden in the zone land jumps more easily."),
+            T(111, "player", "Ragdoll players", "Players in the zone fall over every 5 seconds."),
         };
 
         public static ZoneType Find(int id) => All.FirstOrDefault(t => t.Id == id);

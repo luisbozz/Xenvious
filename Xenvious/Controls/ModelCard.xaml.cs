@@ -52,6 +52,29 @@ namespace Xenvious
                 InfoChips.Children.Add(chip);
         }
 
+        /// <summary>
+        /// A warning under the model with models to switch to (clicking one picks it); null
+        /// text hides it.
+        /// </summary>
+        public void SetWarning(string text, IEnumerable<uint> suggestions = null)
+        {
+            WarnPanel.Visibility = text == null ? Visibility.Collapsed : Visibility.Visible;
+            WarnText.Text = text ?? "";
+            WarnChips.Children.Clear();
+            if (text == null || suggestions == null)
+                return;
+            var items = Items?.Invoke();
+            foreach (uint hash in suggestions)
+            {
+                var item = items?.FirstOrDefault(i => i.Hash == hash);
+                if (item == null)
+                    continue;
+                var chip = new Button { Style = (Style)FindResource("Chip"), Content = item.Name, ToolTip = item.Detail };
+                chip.Click += (_, __) => Picked?.Invoke(this, item);
+                WarnChips.Children.Add(chip);
+            }
+        }
+
         /// <summary>The list the card looks models up in ("prop" or "actor" items).</summary>
         public Func<IReadOnlyList<CatalogItem>> Items { get; set; }
 

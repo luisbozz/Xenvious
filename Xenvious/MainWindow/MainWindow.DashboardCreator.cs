@@ -29,18 +29,18 @@ namespace Xenvious
         }
 
         // Race lobby options shown under Ambient: the same bits as Race > Online Lobby
-        // Options (1-based like writebinary). Offsets are read when used, because
+        // Options (0-based like the scripts). Offsets are read when used, because
         // OffsetLoader can load them again for the other edition.
         private (CheckBox Box, Func<long> Bitset, int Bit)[] dashRaceLobbyBits;
 
         private (CheckBox Box, Func<long> Bitset, int Bit)[] DashRaceLobbyBits =>
             dashRaceLobbyBits ?? (dashRaceLobbyBits = new (CheckBox, Func<long>, int)[]
             {
-                (cbdashlocktod, () => GTA.Offsets.Editor.menubs17, 12),
-                (cbdashhidetod, () => GTA.Offsets.Editor.menubs2, 16),
-                (cbdashhideweather, () => GTA.Offsets.Editor.menubs22, 31),
-                (cbdashhidetraffic, () => GTA.Offsets.Editor.menubs20, 10),
-                (cbdashmaxwl, () => GTA.Offsets.Editor.menubs28, 31),
+                (cbdashlocktod, () => GTA.Offsets.Editor.menubs17, 11),
+                (cbdashhidetod, () => GTA.Offsets.Editor.menubs2, 15),
+                (cbdashhideweather, () => GTA.Offsets.Editor.menubs22, 30),
+                (cbdashhidetraffic, () => GTA.Offsets.Editor.menubs20, 9),
+                (cbdashmaxwl, () => GTA.Offsets.Editor.menubs28, 30),
             });
 
         private string _dashCreator;   // creator script the creator-specific parts were built for; null builds the default tiles on start
@@ -370,7 +370,7 @@ namespace Xenvious
             }
             GetMissionDensity(dddashtraffic, GTA.Offsets.Editor.traf);
             GetMissionDensity(dddashpeds, GTA.Offsets.Editor.apeds);
-            Functions.Read.checkbinary(21, GTA.Offsets.Editor.menubs2, cbdashptod);
+            Functions.Read.checkbinary(20, GTA.Offsets.Editor.menubs2, cbdashptod);
             GetMissionExtraValues();
         }
 
@@ -423,7 +423,7 @@ namespace Xenvious
 
         private void cbdashptod_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(21, GTA.Offsets.Editor.menubs2, cbdashptod);
+            Functions.Write.writebinary(20, GTA.Offsets.Editor.menubs2, cbdashptod);
         }
     }
 }

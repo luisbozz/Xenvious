@@ -655,8 +655,8 @@ namespace Xenvious
             body.Children.Add(BitToggle(6, "pzvisible", "Visible in game"));
             // "Hide after entering" is a rule bit (iRuleBitsetEight), not a bounds bit.
             body.Children.Add(Toggle("pzvisibleinside", "Hide after entering",
-                () => GTA.Offsets.Editor.irbs8 != 0 && Functions.Read.checkbinary(15, GTA.Offsets.Editor.irbs8 + _team * GTA.Offsets.Editor.team_NEXT + _rule),
-                on => ForTargets((t, r) => Functions.Write.writebinary(15, GTA.Offsets.Editor.irbs8 + t * GTA.Offsets.Editor.team_NEXT + r, on))));
+                () => GTA.Offsets.Editor.irbs8 != 0 && Functions.Read.checkbinary(14, GTA.Offsets.Editor.irbs8 + _team * GTA.Offsets.Editor.team_NEXT + _rule),
+                on => ForTargets((t, r) => Functions.Write.writebinary(14, GTA.Offsets.Editor.irbs8 + t * GTA.Offsets.Editor.team_NEXT + r, on))));
             body.Children.Add(BitToggle(10, "pa_gps", "GPS route to the blip"));
             body.Children.Add(IntField("pa_colour", "Colour (HUD colour number)", PlayAreas.Colour));
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -324,6 +325,7 @@ namespace Xenvious
             tbobjlocx.Text = loc.X.ToString();
             tbobjlocy.Text = loc.Y.ToString();
             tbobjlocz.Text = loc.Z.ToString();
+            RefreshAfterEdit(tbobjlocx);
         }
 
         public void GetCaptureObj(bool ignore_focus = false)
@@ -378,6 +380,7 @@ namespace Xenvious
 
                 if (!tbobjmodel.IsFocused || ignore_focus) tbobjmodel.Text = model.ToString();
                 ObjModelCard.SetModel(unchecked((uint)model));
+                UpdateObjModelWarning(model);
                 if (!tbobjlocx.IsFocused || ignore_focus) tbobjlocx.Text = new Global((GTA.Offsets.Editor.Objects.loc + 0 + GTA.Offsets.Editor.Objects.NEXT * index)).Get<float>().ToString();
                 if (!tbobjlocy.IsFocused || ignore_focus) tbobjlocy.Text = new Global((GTA.Offsets.Editor.Objects.loc + 1 + GTA.Offsets.Editor.Objects.NEXT * index)).Get<float>().ToString();
                 if (!tbobjlocz.IsFocused || ignore_focus) tbobjlocz.Text = new Global((GTA.Offsets.Editor.Objects.loc + 2 + GTA.Offsets.Editor.Objects.NEXT * index)).Get<float>().ToString();
@@ -387,8 +390,8 @@ namespace Xenvious
                 if (!tbobjhead.IsFocused || ignore_focus) tbobjhead.Text = new Global((GTA.Offsets.Editor.Objects.head + GTA.Offsets.Editor.Objects.NEXT * index)).Get<float>().ToString();
 
                 if (!tbobjrender.IsFocused || ignore_focus) tbobjrender.Text = new Global((GTA.Offsets.Editor.Objects.objLOD + GTA.Offsets.Editor.Objects.NEXT * index)).Get<int>().ToString();
-                Functions.Read.checkbinary(28, GTA.Offsets.Editor.Objects.bits1 + ddobjno.SelectedIndex * GTA.Offsets.Editor.Objects.NEXT, cb_obj_arrow);
-                Functions.Read.checkbinary(1, GTA.Offsets.Editor.Objects.bits1 + 1 + ddobjno.SelectedIndex * GTA.Offsets.Editor.Objects.NEXT, cb_obj_invisible);
+                Functions.Read.checkbinary(27, GTA.Offsets.Editor.Objects.bits1 + ddobjno.SelectedIndex * GTA.Offsets.Editor.Objects.NEXT, cb_obj_arrow);
+                Functions.Read.checkbinary(0, GTA.Offsets.Editor.Objects.bits1 + 1 + ddobjno.SelectedIndex * GTA.Offsets.Editor.Objects.NEXT, cb_obj_invisible);
 
                 if (!tbobjrule.IsFocused || ignore_focus) tbobjrule.Text = new Global((GTA.Offsets.Editor.Objects.rule + ddobjteam.SelectedIndex + GTA.Offsets.Editor.Objects.NEXT * index)).Get<int>().ToString();
                 if (!tbobjpriority.IsFocused || ignore_focus) tbobjpriority.Text = new Global((GTA.Offsets.Editor.Objects.pri + ddobjteam.SelectedIndex + GTA.Offsets.Editor.Objects.NEXT * index)).Get<int>().ToString();
@@ -465,6 +468,33 @@ namespace Xenvious
             objrotchainactive = !objrotchainactive;
         }
 
+        // Allowed models to offer instead: hacking props and a bag.
+        private static readonly string[] ObjModelSuggestions =
+        {
+            "hei_prop_hei_keypad_01", "as_prop_as_laptop_01a", "sf_prop_sf_laptop_01a",
+            "ch_prop_fingerprint_scanner_01a", "prop_money_bag_01",
+        };
+
+        /// <summary>
+        /// When a job loads, the creator and the launcher give every object whose model is not on
+        /// their list prop_security_case_01 (fm_capture_creator func_5451, fmmc_launcher func_7255).
+        /// The model stays until then, so the page says so before it happens.
+        /// </summary>
+        private void UpdateObjModelWarning(int model)
+        {
+            var allowed = GTA.Editor.capture_object_models;
+            if (allowed.Count == 0 || allowed.Contains(model.ToString(CultureInfo.InvariantCulture)))
+            {
+                ObjModelCard.SetWarning(null);
+                return;
+            }
+            var suggestions = ObjModelSuggestions.Select(Joaat)
+                .Where(h => allowed.Contains(unchecked((int)h).ToString(CultureInfo.InvariantCulture)));
+            ObjModelCard.SetWarning(TranslateOr("obj_case_warn",
+                "Dieses Modell steht nicht auf der Liste der Capture-Objekte. Lädt der Job (im Creator oder beim Start), macht das Spiel daraus einen Security Case. Erlaubt sind zum Beispiel:"),
+                suggestions);
+        }
+
         private void tbobjmodel_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (IsValidInt(tbobjmodel.Text))
@@ -485,7 +515,7 @@ namespace Xenvious
 
         private void cb_obj_arrow_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(28, GTA.Offsets.Editor.Objects.bits1 + ddobjno.SelectedIndex * GTA.Offsets.Editor.Objects.NEXT, cb_obj_arrow);
+            Functions.Write.writebinary(27, GTA.Offsets.Editor.Objects.bits1 + ddobjno.SelectedIndex * GTA.Offsets.Editor.Objects.NEXT, cb_obj_arrow);
         }
 
         private void tbobjrender_TextChanged(object sender, TextChangedEventArgs e)
@@ -534,7 +564,7 @@ namespace Xenvious
                 new Global(GTA.Offsets.Editor.txt0 + 3 * GTA.Offsets.Editor.NEXT_txt + 3 * GTA.Offsets.Editor.team_NEXT).SetString(capturetext[3][2]);
                 new Global(GTA.Offsets.Editor.txt0 + 4 * GTA.Offsets.Editor.NEXT_txt + 3 * GTA.Offsets.Editor.team_NEXT).SetString(capturetext[4][2]);
                 new Global(GTA.Offsets.Editor.txt0 + 5 * GTA.Offsets.Editor.NEXT_txt + 3 * GTA.Offsets.Editor.team_NEXT).SetString(capturetext[5][2]);
-                //Functions.Write.writebinarytoaddy(4, addr);
+                //Functions.Write.writebinarytoaddy(3, addr);
             }
         }
 
@@ -679,7 +709,7 @@ namespace Xenvious
 
         private void cb_obj_invisible_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(1, GTA.Offsets.Editor.Objects.bits1 + 1 + ddobjno.SelectedIndex * GTA.Offsets.Editor.Objects.NEXT, cb_obj_invisible);
+            Functions.Write.writebinary(0, GTA.Offsets.Editor.Objects.bits1 + 1 + ddobjno.SelectedIndex * GTA.Offsets.Editor.Objects.NEXT, cb_obj_invisible);
         }
 
         private void cbcapturetextforce_Checked(object sender, RoutedEventArgs e)

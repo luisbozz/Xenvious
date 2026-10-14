@@ -70,7 +70,7 @@ namespace Xenvious
 
         private static readonly string[] ScrPatchScriptOrder =
         {
-            "fm_race_creator", "fm_lts_creator", "fm_capture_creator", "public_mission_creator", "fm_deathmatch_creator", "fm_survival_creator", "fmmc_launcher"
+            "creator", "fm_race_creator", "fm_lts_creator", "fm_capture_creator", "public_mission_creator", "fm_deathmatch_creator", "fm_survival_creator", "fmmc_launcher"
         };
 
         private static string ScrPatchScriptLabel(string script)
@@ -83,6 +83,7 @@ namespace Xenvious
                 case "public_mission_creator": return "Mission";
                 case "fm_deathmatch_creator": return "Deathmatch";
                 case "fm_survival_creator": return "Survival";
+                case "creator": return "Hub";
                 case "fmmc_launcher": return "Launcher";
                 default: return script;
             }
@@ -107,6 +108,7 @@ namespace Xenvious
                 case "dont_force_round_pa_with_dev_mode":
                 case "nrl_fix":
                 case "blue_fence_props_fix":
+                case "keep_minigame_capture_objects":
                 case "selected_spawn_veicle_stays_after_testing_ends":
                     return "fixes";
                 case "dev_mode":
@@ -116,6 +118,7 @@ namespace Xenvious
                 case "no_prop_model_limit":
                 case "precise_templates":
                 case "access_ch_planning_board_solo_gameplay_itself_re":
+                case "unlock_all_creator_menu_entries":
                     return "unlock";
                 case "set_switch_camera_to_caps_lock":
                     return "display";

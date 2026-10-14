@@ -94,7 +94,7 @@ namespace Xenvious
             switch (result)
             {
                 case JobDatafile.Result.Unsupported:
-                    return TranslateOr("job_file_unsupported", "Geht nur im Race-, Deathmatch-, LTS-, Capture- und Survival-Creator dieser Spielversion.");
+                    return TranslateOr("job_file_unsupported", "Geht nur im Race-, Deathmatch-, LTS-, Capture- und Survival-Creator, mit eingeschalteten experimentellen Skriptfunktionen.");
                 case JobDatafile.Result.NotEditing:
                     return TranslateOr("job_file_not_editing", "Der Creator muss im Bearbeiten-Modus sein (kein Menü offen, kein Test).");
                 case JobDatafile.Result.NoTitle:
@@ -302,7 +302,8 @@ namespace Xenvious
             left.Children.Add(metaText);
             left.Children.Add(chips);
 
-            var actions = new WrapPanel { HorizontalAlignment = HorizontalAlignment.Right, VerticalAlignment = VerticalAlignment.Center };
+            // MaxWidth on the panel, not on its Auto column: the column would cut the buttons off, the panel wraps them.
+            var actions = new WrapPanel { HorizontalAlignment = HorizontalAlignment.Right, VerticalAlignment = VerticalAlignment.Center, MaxWidth = 420 };
             if (entry.Kind == MapEntryKind.Job)
                 actions.Children.Add(MapButton(TranslateOr("map_load_whole", "Komplett laden …"), true, (s, e) => LoadWholeJob(entry, true)));
             var putIn = MapButton(TranslateOr("map_put_in", "Einspielen …"), entry.Kind != MapEntryKind.Job, (s, e) => PutInMapEntry(entry));
@@ -328,7 +329,7 @@ namespace Xenvious
 
             var grid = new Grid();
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto, MaxWidth = 420 });
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
             grid.Children.Add(left);
             Grid.SetColumn(actions, 1);
             grid.Children.Add(actions);
@@ -429,7 +430,7 @@ namespace Xenvious
             Directory.CreateDirectory(JobFileFolder);
             var dialog = new SaveFileDialog
             {
-                Filter = "Job file (*.json)|*.json",
+                Filter = TranslateOr("cj_file_filter", "Job file (*.json)|*.json"),
                 InitialDirectory = JobFileFolder,
                 FileName = SafeFileName(title, "job") + ".json"
             };
@@ -465,15 +466,22 @@ namespace Xenvious
             }
         }
 
+        // Folder of the last file opened with "load file". Exported job files are what users open
+        // most, so it starts in their folder; backups in the map folder are in the list anyway.
+        private string mapOpenFolder;
+
         private async void BtnMapOpen_Click(object sender, RoutedEventArgs e)
         {
+            string folder = new[] { mapOpenFolder, JobFileFolder, CreatorMap.MapFolder }
+                .FirstOrDefault(f => f != null && Directory.Exists(f));
             var dialog = new OpenFileDialog
             {
                 Filter = "Xenvious (*.json;*.xvmap)|*.json;*.xvmap",
-                InitialDirectory = Directory.Exists(CreatorMap.MapFolder) ? CreatorMap.MapFolder : null
+                InitialDirectory = folder
             };
             if (dialog.ShowDialog(this) != true)
                 return;
+            mapOpenFolder = Path.GetDirectoryName(dialog.FileName);
             MapEntry entry = null;
             try
             {

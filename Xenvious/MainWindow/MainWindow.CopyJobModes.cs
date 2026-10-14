@@ -161,7 +161,7 @@ namespace Xenvious
                 if (cbCopyImage.IsChecked == true)
                     CopyJobImage();
                 else
-                    Functions.Write.writebinary(1, GTA.Offsets.Editor.photo, false);
+                    Functions.Write.writebinary(0, GTA.Offsets.Editor.photo, false);
 
                 await FinishCopyJobAsync(rebuild: false);
             }

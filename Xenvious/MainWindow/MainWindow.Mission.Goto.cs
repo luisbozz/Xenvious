@@ -77,29 +77,25 @@ namespace Xenvious
                 //tbgotoheight.Text = (new Global(GTA.Offsets.Editor.Locations.locaa1z + GTA.Offsets.Editor.Locations.NEXT * index).Get<float>() - new Global(GTA.Offsets.Editor.Locations.locaa2z + GTA.Offsets.Editor.Locations.NEXT * index).Get<float>()).ToString();
                 ddgotovariation.SelectedIndex = new Global(GTA.Offsets.Editor.Locations.locart + GTA.Offsets.Editor.Locations.NEXT * index).Get<int>();
 
-                Functions.Read.checkbinary(10, GTA.Offsets.Editor.Locations.lcbs2 + GTA.Offsets.Editor.Locations.NEXT * index, cbgotosdt1);
-                Functions.Read.checkbinary(11, GTA.Offsets.Editor.Locations.lcbs2 + GTA.Offsets.Editor.Locations.NEXT * index, cbgotosdt2);
-                Functions.Read.checkbinary(12, GTA.Offsets.Editor.Locations.lcbs2 + GTA.Offsets.Editor.Locations.NEXT * index, cbgotosdt3);
-                Functions.Read.checkbinary(13, GTA.Offsets.Editor.Locations.lcbs2 + GTA.Offsets.Editor.Locations.NEXT * index, cbgotosdt4);
-                Functions.Read.checkbinary(12, GTA.Offsets.Editor.Locations.lbs + GTA.Offsets.Editor.Locations.NEXT * index, cbgotoexitveh);
-                Functions.Read.checkbinary(4, GTA.Offsets.Editor.Locations.lbs + GTA.Offsets.Editor.Locations.NEXT * index, cbgotostopveh);
-                Functions.Read.checkbinary(6, GTA.Offsets.Editor.Locations.lcbs2 + GTA.Offsets.Editor.Locations.NEXT * index, cbgotosncp);
-                Functions.Read.checkbinary(19, GTA.Offsets.Editor.Locations.lcbs2 + GTA.Offsets.Editor.Locations.NEXT * index, cbgotobf);
-                Functions.Read.checkbinary(2, GTA.Offsets.Editor.Locations.lbs + GTA.Offsets.Editor.Locations.NEXT * index, cbgotocf);
+                Functions.Read.checkbinary(9, GTA.Offsets.Editor.Locations.lcbs2 + GTA.Offsets.Editor.Locations.NEXT * index, cbgotosdt1);
+                Functions.Read.checkbinary(10, GTA.Offsets.Editor.Locations.lcbs2 + GTA.Offsets.Editor.Locations.NEXT * index, cbgotosdt2);
+                Functions.Read.checkbinary(11, GTA.Offsets.Editor.Locations.lcbs2 + GTA.Offsets.Editor.Locations.NEXT * index, cbgotosdt3);
+                Functions.Read.checkbinary(12, GTA.Offsets.Editor.Locations.lcbs2 + GTA.Offsets.Editor.Locations.NEXT * index, cbgotosdt4);
+                Functions.Read.checkbinary(11, GTA.Offsets.Editor.Locations.lbs + GTA.Offsets.Editor.Locations.NEXT * index, cbgotoexitveh);
+                Functions.Read.checkbinary(3, GTA.Offsets.Editor.Locations.lbs + GTA.Offsets.Editor.Locations.NEXT * index, cbgotostopveh);
+                Functions.Read.checkbinary(5, GTA.Offsets.Editor.Locations.lcbs2 + GTA.Offsets.Editor.Locations.NEXT * index, cbgotosncp);
+                Functions.Read.checkbinary(18, GTA.Offsets.Editor.Locations.lcbs2 + GTA.Offsets.Editor.Locations.NEXT * index, cbgotobf);
+                Functions.Read.checkbinary(1, GTA.Offsets.Editor.Locations.lbs + GTA.Offsets.Editor.Locations.NEXT * index, cbgotocf);
 
-                int iVar0 = 0;
-                while (iVar0 < 6)
+                // Checkpoint look: bits 0-4 of lcbs2 (1 arrow ... finish marker); none set = "None".
+                ddgotocpvariation.SelectedIndex = 0;
+                for (int bit = 0; bit < 5; bit++)
                 {
-                    if (Functions.Read.checkbinary(iVar0, GTA.Offsets.Editor.Locations.lcbs2 + GTA.Offsets.Editor.Locations.NEXT * index))
+                    if (Functions.Read.checkbinary(bit, GTA.Offsets.Editor.Locations.lcbs2 + GTA.Offsets.Editor.Locations.NEXT * index))
                     {
-                        ddgotocpvariation.SelectedIndex = iVar0;
+                        ddgotocpvariation.SelectedIndex = bit + 1;
                         break;
                     }
-                    iVar0++;
-                }
-                if (iVar0 == 6)
-                {
-                    ddgotocpvariation.SelectedIndex = -1;
                 }
 
                 tbgotolocaaw.Text = new Global(GTA.Offsets.Editor.Locations.locaaw + GTA.Offsets.Editor.Locations.NEXT * index).Get<float>().ToString();
@@ -427,53 +423,57 @@ namespace Xenvious
 
         private void cbgotosdt1_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(10, GTA.Offsets.Editor.Locations.lcbs2 + GTA.Offsets.Editor.Locations.NEXT * ddgotono.SelectedIndex, cbgotosdt1);
+            Functions.Write.writebinary(9, GTA.Offsets.Editor.Locations.lcbs2 + GTA.Offsets.Editor.Locations.NEXT * ddgotono.SelectedIndex, cbgotosdt1);
         }
 
         private void cbgotosdt2_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(11, GTA.Offsets.Editor.Locations.lcbs2 + GTA.Offsets.Editor.Locations.NEXT * ddgotono.SelectedIndex, cbgotosdt2);
+            Functions.Write.writebinary(10, GTA.Offsets.Editor.Locations.lcbs2 + GTA.Offsets.Editor.Locations.NEXT * ddgotono.SelectedIndex, cbgotosdt2);
         }
 
         private void cbgotosdt3_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(12, GTA.Offsets.Editor.Locations.lcbs2 + GTA.Offsets.Editor.Locations.NEXT * ddgotono.SelectedIndex, cbgotosdt3);
+            Functions.Write.writebinary(11, GTA.Offsets.Editor.Locations.lcbs2 + GTA.Offsets.Editor.Locations.NEXT * ddgotono.SelectedIndex, cbgotosdt3);
         }
 
         private void cbgotosdt4_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(13, GTA.Offsets.Editor.Locations.lcbs2 + GTA.Offsets.Editor.Locations.NEXT * ddgotono.SelectedIndex, cbgotosdt4);
+            Functions.Write.writebinary(12, GTA.Offsets.Editor.Locations.lcbs2 + GTA.Offsets.Editor.Locations.NEXT * ddgotono.SelectedIndex, cbgotosdt4);
         }
 
         private void cbgotoexitveh_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(12, GTA.Offsets.Editor.Locations.lbs + GTA.Offsets.Editor.Locations.NEXT * ddgotono.SelectedIndex, cbgotoexitveh);
+            Functions.Write.writebinary(11, GTA.Offsets.Editor.Locations.lbs + GTA.Offsets.Editor.Locations.NEXT * ddgotono.SelectedIndex, cbgotoexitveh);
         }
 
         private void cbgotostopveh_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(4, GTA.Offsets.Editor.Locations.lbs + GTA.Offsets.Editor.Locations.NEXT * ddgotono.SelectedIndex, cbgotostopveh);
+            Functions.Write.writebinary(3, GTA.Offsets.Editor.Locations.lbs + GTA.Offsets.Editor.Locations.NEXT * ddgotono.SelectedIndex, cbgotostopveh);
         }
 
         private void cbgotosncp_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(6, GTA.Offsets.Editor.Locations.lcbs2 + GTA.Offsets.Editor.Locations.NEXT * ddgotono.SelectedIndex, cbgotosncp);
+            Functions.Write.writebinary(5, GTA.Offsets.Editor.Locations.lcbs2 + GTA.Offsets.Editor.Locations.NEXT * ddgotono.SelectedIndex, cbgotosncp);
         }
 
         private void cbgotobf_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(19, GTA.Offsets.Editor.Locations.lcbs2 + GTA.Offsets.Editor.Locations.NEXT * ddgotono.SelectedIndex, cbgotobf);
+            Functions.Write.writebinary(18, GTA.Offsets.Editor.Locations.lcbs2 + GTA.Offsets.Editor.Locations.NEXT * ddgotono.SelectedIndex, cbgotobf);
         }
 
         private void cbgotocf_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(2, GTA.Offsets.Editor.Locations.lbs + GTA.Offsets.Editor.Locations.NEXT * ddgotono.SelectedIndex, cbgotocf);
+            Functions.Write.writebinary(1, GTA.Offsets.Editor.Locations.lbs + GTA.Offsets.Editor.Locations.NEXT * ddgotono.SelectedIndex, cbgotocf);
         }
 
         private void ddgotocpvariation_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (ddgotocpvariation.SelectedIndex != -1)
-                Functions.Write.writebinary(ddgotocpvariation.SelectedIndex, GTA.Offsets.Editor.Locations.lcbs2 + GTA.Offsets.Editor.Locations.NEXT * ddgotono.SelectedIndex);
+            if (ddgotocpvariation.SelectedIndex == -1)
+                return;
+            // One look at a time: clear bits 0-4, then set the picked one (item 0 is "None").
+            long field = GTA.Offsets.Editor.Locations.lcbs2 + GTA.Offsets.Editor.Locations.NEXT * ddgotono.SelectedIndex;
+            for (int bit = 0; bit < 5; bit++)
+                Functions.Write.writebinary(bit, field, bit == ddgotocpvariation.SelectedIndex - 1);
         }
     }
 }

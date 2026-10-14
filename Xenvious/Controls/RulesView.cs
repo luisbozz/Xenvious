@@ -16,8 +16,8 @@ namespace Xenvious
     /// <summary>
     /// A team's rules as a list (mockup variant A: https://claude.ai/artifact/KQX7zDCkNu1m71utNs6dMF):
     /// every rule with its text, what points at it, jumps and limits; the selected rule's settings on
-    /// the right. Moving, adding and deleting rules is not here yet (every pointer would have to be
-    /// renumbered). Memory: Rules.
+    /// the right. Rules move by their grip (RowDragger, RuleMover); adding and deleting rules is not
+    /// here yet. Memory: Rules.
     /// </summary>
     public partial class RulesView : DockPanel
     {
@@ -236,6 +236,7 @@ namespace Xenvious
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(48) });
             grid.ColumnDefinitions.Add(new ColumnDefinition());
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
 
             var num = new Border { Width = 36, Height = 36, CornerRadius = new CornerRadius(18), BorderThickness = new Thickness(1), VerticalAlignment = VerticalAlignment.Top };
             num.SetResourceReference(Border.BackgroundProperty, selected ? "AccentBrush" : "DeepBrush");
@@ -305,12 +306,53 @@ namespace Xenvious
                 Side(T("rl_chip_fail", "fail = mission over"), "BadBrush");
             Grid.SetColumn(side, 2);
             grid.Children.Add(side);
+            if (_dragger != null)
+            {
+                var grip = _dragger.Grip(rule.Index, RuleMover.Available, MoveTip());
+                grip.Margin = new Thickness(8, 0, -4, 0);
+                grip.VerticalAlignment = VerticalAlignment.Top;
+                Grid.SetColumn(grip, 3);
+                grid.Children.Add(grip);
+            }
             // A rule the team never reaches is greyed out; the note why stays readable.
             if (reach == RuleFlow.Reach.Never && !selected)
                 foreach (var part in new UIElement[] { num, middle.Children[0], chips, side })
                     part.Opacity = 0.5;
             row.Child = grid;
             return Indented(row, reach, selected);
+        }
+
+        /// <summary>What the move grip says: how to use it, or why it is greyed out.</summary>
+        public static string MoveTip()
+        {
+            if (RuleMover.Available)
+                return T("rl_move_tip", "Drag to move the rule. Everything that points at it moves along: entities, player rules, extra objectives, jumps and the rule's settings.");
+            if (Rules.Ready && Rules.PublicCreator)
+                return T("rl_move_pmc", "In the Mission Creator the creator moves rules itself (its rule list, Move Rule).");
+            return T("rl_move_na", "Moving rules works in the LTS and Capture Creator.");
+        }
+
+        /// <summary>
+        /// Moves a rule of the shown team and rebuilds the creator so it shows the new order. The
+        /// game data changes in many places; the selection follows the moved rule.
+        /// </summary>
+        private void MoveRule(int from, int to)
+        {
+            int team = _team;
+            _selected = to;
+            System.Threading.Tasks.Task.Run(() =>
+            {
+                string error = null;
+                try { RuleMover.Move(team, from, to); }
+                catch (Exception ex) { error = ex.Message; Xenvious.Logging.Log.Error("move rule: " + ex); }
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    if (error != null)
+                        MainWindow.Instance?.displayScreenMessage(error);
+                    MainWindow.Instance?.creatorRefresh();
+                    Reload(true);
+                }));
+            });
         }
 
         private enum ChipKind { Plain, Type, Warn }

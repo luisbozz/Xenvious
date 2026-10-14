@@ -103,7 +103,7 @@ namespace Xenvious
             if (!m.IsProcOpen || reading_image)
                 return;
             // The job has a photo when bit 0 of the flags field is set (saved as "photo").
-            if (!Functions.Read.checkbinary(1, GTA.Offsets.Editor.photo) && !IsInCreator())
+            if (!Functions.Read.checkbinary(0, GTA.Offsets.Editor.photo) && !IsInCreator())
                 return;
 
             reading_image = true;
@@ -197,7 +197,7 @@ namespace Xenvious
         {
             var ofd = new OpenFileDialog
             {
-                Title = "Select any Image file",
+                Title = Instance.TranslateOr("img_select", "Select an image file"),
                 Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png, *.gif) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png; *.gif",
                 InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures),
                 Multiselect = false

@@ -63,6 +63,60 @@ namespace Xenvious
                 if (!tbzonerule.IsFocused) tbzonerule.Text = new Global(GTA.Offsets.Editor.Zones.znpr + 1 * ddzoneteam.SelectedIndex + GTA.Offsets.Editor.Zones.NEXT * index).Get<int>().ToString();
                 if (!tbzonepriority.IsFocused) tbzonepriority.Text = new Global(GTA.Offsets.Editor.Zones.znepr + 1 * ddzoneteam.SelectedIndex + GTA.Offsets.Editor.Zones.NEXT * index).Get<int>().ToString();
             }
+            ShowZoneId(index);
+            int type = index > -1 && m.IsProcOpen && GTA.Offsets.Editor.Zones.zntp != 0
+                ? new Global(GTA.Offsets.Editor.Zones.zntp + GTA.Offsets.Editor.Zones.NEXT * index).Get<int>() : -1;
+            ZoneTypeSettingsCard.Show(index, type);
+        }
+
+        private bool _zoneIdSync;
+        private string _zoneIdShown;   // zone, its ID and the taken IDs the list was filled for
+
+        // The Mission Creator gives every zone a fixed ID (zcid, 0-31): drop-off zones (PMCT_OJT_DOZ)
+        // and play area bounds (PMCT_BNDS_INDEX) store it, not the zone's place in the list, so
+        // deleting a zone does not shift them. The menu shows it as "Zone ID + 1". The creator looks
+        // zones up through its own table of IDs, which it fills when the job loads.
+        private void ShowZoneId(int index)
+        {
+            bool shown = index > -1 && m.IsProcOpen && Rules.PublicCreator && GTA.Offsets.Editor.Zones.zcid != 0;
+            ZoneIdPanel.Visibility = shown ? Visibility.Visible : Visibility.Collapsed;
+            if (!shown || ddzoneid.IsDropDownOpen)
+                return;
+
+            int count = new Global(GTA.Offsets.Editor.Zones.number).Get<int>();
+            var owner = new Dictionary<int, int>();
+            for (int zone = 0; zone < count; zone++)
+            {
+                int id = new Global(GTA.Offsets.Editor.Zones.zcid + zone * GTA.Offsets.Editor.Zones.NEXT).Get<int>();
+                if (id >= 0 && id < 32 && !owner.ContainsKey(id))
+                    owner[id] = zone;
+            }
+            int own = new Global(GTA.Offsets.Editor.Zones.zcid + index * GTA.Offsets.Editor.Zones.NEXT).Get<int>();
+            string shownKey = index + ":" + own + ":" + string.Join(",", owner.Select(p => p.Key + "=" + p.Value)) + ":" + LanguageCode;
+            if (shownKey == _zoneIdShown)
+                return;
+            _zoneIdShown = shownKey;
+
+            _zoneIdSync = true;
+            ddzoneid.Items.Clear();
+            for (int id = 0; id < 32; id++)
+            {
+                bool taken = owner.TryGetValue(id, out int zone) && zone != index;
+                string text = string.Format(TranslateOr("zone_id_item", "{0} (creator: Zone {1})"), id, id + 1);
+                if (taken)
+                    text += " · " + string.Format(TranslateOr("zone_id_taken", "taken by zone {0}"), zone + 1);
+                ddzoneid.Items.Add(new ComboBoxItem { Content = text, Tag = id, IsEnabled = !taken });
+            }
+            ddzoneid.SelectedIndex = own >= 0 && own < 32 ? own : -1;
+            _zoneIdSync = false;
+        }
+
+        private void ddzoneid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int index = ddzoneno.SelectedIndex;
+            if (_zoneIdSync || index < 0 || !m.IsProcOpen || GTA.Offsets.Editor.Zones.zcid == 0 || !(ddzoneid.SelectedItem is ComboBoxItem item))
+                return;
+            new Global(GTA.Offsets.Editor.Zones.zcid + index * GTA.Offsets.Editor.Zones.NEXT).SetInt((int)item.Tag);
         }
 
         private void Btnzonegetstart_Click(object sender, RoutedEventArgs e)
@@ -264,7 +318,7 @@ namespace Xenvious
             if (type != null)
                 lblzonetypeinfo.Text = TranslateOr("zt_desc_" + type.Id, type.Description);
             else if (known)
-                lblzonetypeinfo.Text = string.Format(TranslateOr("zt_unknown", "Type {0} is newer than Rockstar's source (types 0 to 78); its name and effect are unknown."), id);
+                lblzonetypeinfo.Text = string.Format(TranslateOr("zt_unknown", "Type {0} has no name in Rockstar's source or the Mission Creator; what it does is not known yet."), id);
             else
                 lblzonetypeinfo.Text = TranslateOr("zt_pick", "Pick a zone type to see what it does.");
 

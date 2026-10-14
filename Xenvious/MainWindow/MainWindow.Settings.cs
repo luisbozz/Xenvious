@@ -35,7 +35,7 @@ namespace Xenvious
 
         private void ddcolor_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (ddcolor.SelectedIndex < 0 || ddcolor.SelectedIndex >= Themes.All.Count)
+            if (_refreshingThemeNames || ddcolor.SelectedIndex < 0 || ddcolor.SelectedIndex >= Themes.All.Count)
                 return;
             var theme = Themes.All[ddcolor.SelectedIndex];
             new ini_reader(Functions.getRoamingConfigFilePath()).Write("Settings", "color", theme.Key);
@@ -656,7 +656,7 @@ namespace Xenvious
             var item = ddsettingsloglevel.SelectedItem as ComboBoxItem;
             if (item == null) return;
 
-            var text = (item.Content ?? "").ToString();
+            var text = (item.Tag ?? "").ToString();
             LogLevel level;
             if (Enum.TryParse(text, ignoreCase: true, out level))
             {

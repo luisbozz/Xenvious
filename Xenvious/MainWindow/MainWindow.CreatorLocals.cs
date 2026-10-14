@@ -289,7 +289,7 @@ namespace Xenvious
         {
             if (new Global(GTA.Offsets.Editor.type).Get<int>() == 2 &&
                 new Global(GTA.Offsets.Editor.adverm).Get<int>() == 999 &&
-                Functions.Read.checkbinary(13, GTA.Offsets.Editor.intop2))
+                Functions.Read.checkbinary(12, GTA.Offsets.Editor.intop2))
             {
                 return true;
             }

@@ -85,7 +85,7 @@ namespace Xenvious
 
         private void cbmissionrspdeluxohover_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(28, GTA.Offsets.Editor.tmbt3 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT, cbmissionrspdeluxohover);
+            Functions.Write.writebinary(27, GTA.Offsets.Editor.tmbt3 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT, cbmissionrspdeluxohover);
         }
 
         private void tbmissionrsphealth_TextChanged(object sender, TextChangedEventArgs e)
@@ -96,7 +96,7 @@ namespace Xenvious
 
         private void cbmissionrspbptires_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(15, GTA.Offsets.Editor.tmbts + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT, cbmissionrspbptires);
+            Functions.Write.writebinary(14, GTA.Offsets.Editor.tmbts + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT, cbmissionrspbptires);
         }
 
         private void ddmissionrspvehcol1_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -145,7 +145,7 @@ namespace Xenvious
                 try
                 {
                     //Personal Vehicle
-                    if (!cbmissionrsppersonal.IsFocused || ignore_focus) Functions.Read.checkbinary(11, GTA.Offsets.Editor.rlopt, cbmissionrsppersonal);
+                    if (!cbmissionrsppersonal.IsFocused || ignore_focus) Functions.Read.checkbinary(10, GTA.Offsets.Editor.rlopt, cbmissionrsppersonal);
 
                     //Model
                     if (!ddmissionrspmodel.IsFocused || ignore_focus)
@@ -173,10 +173,10 @@ namespace Xenvious
                     if (!tbmissionrspdmgm.IsFocused || ignore_focus) tbmissionrspdmgm.Text = new Global(GTA.Offsets.Editor.tmvds + ddmissionteamno.SelectedIndex).Get<float>().ToString();
 
                     //Bulletproof Tires
-                    if (!cbmissionrspbptires.IsFocused || ignore_focus) Functions.Read.checkbinary(15, GTA.Offsets.Editor.tmbts + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT, cbmissionrspbptires);
+                    if (!cbmissionrspbptires.IsFocused || ignore_focus) Functions.Read.checkbinary(14, GTA.Offsets.Editor.tmbts + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT, cbmissionrspbptires);
 
                     //Deluxo Hover
-                    if (!cbmissionrspdeluxohover.IsFocused || ignore_focus) Functions.Read.checkbinary(28, GTA.Offsets.Editor.tmbt3 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT, cbmissionrspdeluxohover);
+                    if (!cbmissionrspdeluxohover.IsFocused || ignore_focus) Functions.Read.checkbinary(27, GTA.Offsets.Editor.tmbt3 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT, cbmissionrspdeluxohover);
 
                     //Spoiler
                     if (!tbmissionrspspoiler.IsFocused || ignore_focus) tbmissionrspspoiler.Text = new Global(GTA.Offsets.Editor.tvmspoil + ddmissionteamno.SelectedIndex).Get<int>().ToString();
@@ -211,42 +211,42 @@ namespace Xenvious
                 try
                 {
                     //MarkPlayzone
-                    if (!cbmissionmarkpz.IsFocused || ignore_focus) Functions.Read.checkbinary(18, GTA.Offsets.Editor.irbs4 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionmarkpz);
+                    if (!cbmissionmarkpz.IsFocused || ignore_focus) Functions.Read.checkbinary(17, GTA.Offsets.Editor.irbs4 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionmarkpz);
 
                     //CantLeaveVehicle
-                    if (!cbmissionclv.IsFocused || ignore_focus) Functions.Read.checkbinary(9, GTA.Offsets.Editor.irbs + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionclv);
+                    if (!cbmissionclv.IsFocused || ignore_focus) Functions.Read.checkbinary(8, GTA.Offsets.Editor.irbs + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionclv);
 
                     //SlowMovement
                     if (!cbmissionslowm.IsFocused || ignore_focus)
                     {
                         cbmissionslowm.IsChecked =
-                        (Functions.Read.checkbinary(19, GTA.Offsets.Editor.tmbt2 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT, cbmissionslowm) &&
-                        Functions.Read.checkbinary(31, GTA.Offsets.Editor.menubs13, cbmissionslowm)) ? true : false;
+                        (Functions.Read.checkbinary(18, GTA.Offsets.Editor.tmbt2 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT, cbmissionslowm) &&
+                        Functions.Read.checkbinary(30, GTA.Offsets.Editor.menubs13, cbmissionslowm)) ? true : false;
                     }
 
                     //disable veh weapon
-                    if (!cbmissiondisablevehweap.IsFocused || ignore_focus) Functions.Read.checkbinary(24, GTA.Offsets.Editor.irbs4 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissiondisablevehweap);
+                    if (!cbmissiondisablevehweap.IsFocused || ignore_focus) Functions.Read.checkbinary(23, GTA.Offsets.Editor.irbs4 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissiondisablevehweap);
 
                     //veh special ability bar
-                    if (!cbmissionvehsabar.IsFocused || ignore_focus) Functions.Read.checkbinary(1, GTA.Offsets.Editor.irbs14 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionvehsabar);
+                    if (!cbmissionvehsabar.IsFocused || ignore_focus) Functions.Read.checkbinary(0, GTA.Offsets.Editor.irbs14 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionvehsabar);
 
                     //Explode
                     if (!cbmissionexplodearea.IsFocused || ignore_focus)
                     {
                         cbmissionexplodearea.IsChecked =
-                        (Functions.Read.checkbinary(9, GTA.Offsets.Editor.irbs4 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionexplodearea) &&
-                        Functions.Read.checkbinary(8, GTA.Offsets.Editor.irbs4 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionexplodearea)) ? true : false;
+                        (Functions.Read.checkbinary(8, GTA.Offsets.Editor.irbs4 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionexplodearea) &&
+                        Functions.Read.checkbinary(7, GTA.Offsets.Editor.irbs4 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionexplodearea)) ? true : false;
                     }
                     if (!tbmissionexplodeareatimer.IsFocused || ignore_focus) tbmissionexplodeareatimer.Text = new Global(GTA.Offsets.Editor.bdprt + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex).Get<int>().ToString();
 
                     //nightvision, heatvision
-                    if (!cbmissionnv.IsFocused || ignore_focus) Functions.Read.checkbinary(25, GTA.Offsets.Editor.irbs5 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionnv);
-                    if (!cbmissionnv.IsFocused || ignore_focus) Functions.Read.checkbinary(10, GTA.Offsets.Editor.irbs5 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionhv);
-                    if (!cbmissionhvalways.IsFocused || ignore_focus) Functions.Read.checkbinary(18, GTA.Offsets.Editor.irbs5 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionhvalways);
+                    if (!cbmissionnv.IsFocused || ignore_focus) Functions.Read.checkbinary(24, GTA.Offsets.Editor.irbs5 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionnv);
+                    if (!cbmissionnv.IsFocused || ignore_focus) Functions.Read.checkbinary(9, GTA.Offsets.Editor.irbs5 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionhv);
+                    if (!cbmissionhvalways.IsFocused || ignore_focus) Functions.Read.checkbinary(17, GTA.Offsets.Editor.irbs5 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionhvalways);
                     if (!tbmissionhvstart.IsFocused || ignore_focus) tbmissionhvstart.Text = new Global(GTA.Offsets.Editor.itvsd + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex).Get<int>().ToString();
                     if (!tbmissionhvend.IsFocused || ignore_focus) tbmissionhvend.Text = new Global(GTA.Offsets.Editor.itved + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex).Get<int>().ToString();
-                    if (!cbmissionlosehealth.IsFocused || ignore_focus) Functions.Read.checkbinary(15, GTA.Offsets.Editor.irbs6 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionlosehealth);
-                    if (!cbmissionlosehealthoopa.IsFocused || ignore_focus) Functions.Read.checkbinary(32, GTA.Offsets.Editor.irbs9 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionlosehealthoopa);
+                    if (!cbmissionlosehealth.IsFocused || ignore_focus) Functions.Read.checkbinary(14, GTA.Offsets.Editor.irbs6 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionlosehealth);
+                    if (!cbmissionlosehealthoopa.IsFocused || ignore_focus) Functions.Read.checkbinary(31, GTA.Offsets.Editor.irbs9 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionlosehealthoopa);
 
                     //Gear
                     Gear tmp_Gear = new Gear(new Global(GTA.Offsets.Editor.gear + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.gear_NEXT).Get<int>(),
@@ -331,17 +331,17 @@ namespace Xenvious
                     }
 
                     //hide wanted level
-                    if (!cbmissionhidewantedlevel.IsFocused || ignore_focus) Functions.Read.checkbinary(2, GTA.Offsets.Editor.irbs4 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionhidewantedlevel);
+                    if (!cbmissionhidewantedlevel.IsFocused || ignore_focus) Functions.Read.checkbinary(1, GTA.Offsets.Editor.irbs4 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionhidewantedlevel);
 
 
                     //hide time
                     if (!tbmissionnrl.IsFocused || ignore_focus) tbmissionnrl.Text = new Global(GTA.Offsets.Editor.nrl + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT).Get<int>().ToString();
-                    if (!cbmissionhidetime.IsFocused || ignore_focus) Functions.Read.checkbinary(22, GTA.Offsets.Editor.irbs8 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionhidetime);
-                    if (!cbmissionsinv.IsFocused || ignore_focus) Functions.Read.checkbinary(12, GTA.Offsets.Editor.irbs10 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionsinv);
-                    if (!cbmissiondob.IsFocused || ignore_focus) Functions.Read.checkbinary(20, GTA.Offsets.Editor.irbs10 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissiondob);
-                    if (!cbmissionflare.IsFocused || ignore_focus) Functions.Read.checkbinary(18, GTA.Offsets.Editor.irbs14 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionflare);
-                    if (!cbmissionhidemap.IsFocused || ignore_focus) Functions.Read.checkbinary(32, GTA.Offsets.Editor.irbs + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionhidemap);
-                    if (!cbmissionspawninaction.IsFocused || ignore_focus) Functions.Read.checkbinary(25, GTA.Offsets.Editor.irbs2 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionspawninaction);
+                    if (!cbmissionhidetime.IsFocused || ignore_focus) Functions.Read.checkbinary(21, GTA.Offsets.Editor.irbs8 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionhidetime);
+                    if (!cbmissionsinv.IsFocused || ignore_focus) Functions.Read.checkbinary(11, GTA.Offsets.Editor.irbs10 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionsinv);
+                    if (!cbmissiondob.IsFocused || ignore_focus) Functions.Read.checkbinary(19, GTA.Offsets.Editor.irbs10 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissiondob);
+                    if (!cbmissionflare.IsFocused || ignore_focus) Functions.Read.checkbinary(17, GTA.Offsets.Editor.irbs14 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionflare);
+                    if (!cbmissionhidemap.IsFocused || ignore_focus) Functions.Read.checkbinary(31, GTA.Offsets.Editor.irbs + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionhidemap);
+                    if (!cbmissionspawninaction.IsFocused || ignore_focus) Functions.Read.checkbinary(24, GTA.Offsets.Editor.irbs2 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionspawninaction);
                     if (!tbmissionminspd.IsFocused || ignore_focus) tbmissionminspd.Text = new Global(GTA.Offsets.Editor.minspd + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex).Get<int>().ToString();
                     if (!tbmissionmspdlp.IsFocused || ignore_focus) tbmissionmspdlp.Text = new Global(GTA.Offsets.Editor.mspdlp + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex).Get<int>().ToString();
                     if (!tbmissionmspdsv.IsFocused || ignore_focus) tbmissionmspdsv.Text = new Global(GTA.Offsets.Editor.mspdsv + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex).Get<int>().ToString();
@@ -359,8 +359,8 @@ namespace Xenvious
                     if (!tbmissionarmor.IsFocused || ignore_focus) tbmissionarmor.Text = new Global(GTA.Offsets.Editor.armr + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex).Get<int>().ToString();
                     if (!tbmissionfail_txt.IsFocused || ignore_focus) tbmissionfail_txt.Text = Encoding.UTF8.GetString(new Global(GTA.Offsets.Editor.fail_txt + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex * GTA.Offsets.Editor.txt_NEXT).GetBytes(80));
                     if (!tbmissionvss.IsFocused || ignore_focus) tbmissionvss.Text = Encoding.UTF8.GetString(new Global(GTA.Offsets.Editor.vss + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex * GTA.Offsets.Editor.txt_NEXT).GetBytes(80));
-                    if (!cbmissionvehrsp.IsFocused || ignore_focus) Functions.Read.checkbinary(ddmissionnrlno.SelectedIndex + 1, GTA.Offsets.Editor.vehrsp, cbmissionvehrsp);
-                    if (!cbmissionb2pa.IsFocused || ignore_focus) Functions.Read.checkbinary(ddmissionnrlno.SelectedIndex + 1, GTA.Offsets.Editor.boud, cbmissionb2pa);
+                    if (!cbmissionvehrsp.IsFocused || ignore_focus) Functions.Read.checkbinary(ddmissionnrlno.SelectedIndex, GTA.Offsets.Editor.vehrsp, cbmissionvehrsp);
+                    if (!cbmissionb2pa.IsFocused || ignore_focus) Functions.Read.checkbinary(ddmissionnrlno.SelectedIndex, GTA.Offsets.Editor.boud, cbmissionb2pa);
                     if (!tbmissionmrtl.IsFocused || ignore_focus) tbmissionmrtl.Text = new Global(GTA.Offsets.Editor.mrtl + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex).Get<int>().ToString();
 
 
@@ -415,7 +415,7 @@ namespace Xenvious
                         ddtime.SelectedIndex = -1;
                     }
 
-                    if (!cbmissionequippara.IsFocused || ignore_focus) Functions.Read.checkbinary(22, GTA.Offsets.Editor.menubs3, cbmissionequippara);
+                    if (!cbmissionequippara.IsFocused || ignore_focus) Functions.Read.checkbinary(21, GTA.Offsets.Editor.menubs3, cbmissionequippara);
 
                     if (!ddmissionparacolor.IsFocused || ignore_focus)
                     {
@@ -434,31 +434,31 @@ namespace Xenvious
 
                     if (ddmissionteamno.SelectedIndex == 0)
                     {
-                        Functions.Read.checkbinary(ddmissionnrlno.SelectedIndex + 1, GTA.Offsets.Editor.tblpv1 + 0 * GTA.Offsets.Editor.team_NEXT, cbmissionhft1);
-                        Functions.Read.checkbinary(ddmissionnrlno.SelectedIndex + 1, GTA.Offsets.Editor.tblpv1 + 1 * GTA.Offsets.Editor.team_NEXT, cbmissionhft2);
-                        Functions.Read.checkbinary(ddmissionnrlno.SelectedIndex + 1, GTA.Offsets.Editor.tblpv1 + 2 * GTA.Offsets.Editor.team_NEXT, cbmissionhft3);
-                        Functions.Read.checkbinary(ddmissionnrlno.SelectedIndex + 1, GTA.Offsets.Editor.tblpv1 + 3 * GTA.Offsets.Editor.team_NEXT, cbmissionhft4);
+                        Functions.Read.checkbinary(ddmissionnrlno.SelectedIndex, GTA.Offsets.Editor.tblpv1 + 0 * GTA.Offsets.Editor.team_NEXT, cbmissionhft1);
+                        Functions.Read.checkbinary(ddmissionnrlno.SelectedIndex, GTA.Offsets.Editor.tblpv1 + 1 * GTA.Offsets.Editor.team_NEXT, cbmissionhft2);
+                        Functions.Read.checkbinary(ddmissionnrlno.SelectedIndex, GTA.Offsets.Editor.tblpv1 + 2 * GTA.Offsets.Editor.team_NEXT, cbmissionhft3);
+                        Functions.Read.checkbinary(ddmissionnrlno.SelectedIndex, GTA.Offsets.Editor.tblpv1 + 3 * GTA.Offsets.Editor.team_NEXT, cbmissionhft4);
                     }
                     else if (ddmissionteamno.SelectedIndex == 1)
                     {
-                        Functions.Read.checkbinary(ddmissionnrlno.SelectedIndex + 1, GTA.Offsets.Editor.tblpv2 + 0 * GTA.Offsets.Editor.team_NEXT, cbmissionhft1);
-                        Functions.Read.checkbinary(ddmissionnrlno.SelectedIndex + 1, GTA.Offsets.Editor.tblpv2 + 1 * GTA.Offsets.Editor.team_NEXT, cbmissionhft2);
-                        Functions.Read.checkbinary(ddmissionnrlno.SelectedIndex + 1, GTA.Offsets.Editor.tblpv2 + 2 * GTA.Offsets.Editor.team_NEXT, cbmissionhft3);
-                        Functions.Read.checkbinary(ddmissionnrlno.SelectedIndex + 1, GTA.Offsets.Editor.tblpv2 + 3 * GTA.Offsets.Editor.team_NEXT, cbmissionhft4);
+                        Functions.Read.checkbinary(ddmissionnrlno.SelectedIndex, GTA.Offsets.Editor.tblpv2 + 0 * GTA.Offsets.Editor.team_NEXT, cbmissionhft1);
+                        Functions.Read.checkbinary(ddmissionnrlno.SelectedIndex, GTA.Offsets.Editor.tblpv2 + 1 * GTA.Offsets.Editor.team_NEXT, cbmissionhft2);
+                        Functions.Read.checkbinary(ddmissionnrlno.SelectedIndex, GTA.Offsets.Editor.tblpv2 + 2 * GTA.Offsets.Editor.team_NEXT, cbmissionhft3);
+                        Functions.Read.checkbinary(ddmissionnrlno.SelectedIndex, GTA.Offsets.Editor.tblpv2 + 3 * GTA.Offsets.Editor.team_NEXT, cbmissionhft4);
                     }
                     else if (ddmissionteamno.SelectedIndex == 2)
                     {
-                        Functions.Read.checkbinary(ddmissionnrlno.SelectedIndex + 1, GTA.Offsets.Editor.tblpv3 + 0 * GTA.Offsets.Editor.team_NEXT, cbmissionhft1);
-                        Functions.Read.checkbinary(ddmissionnrlno.SelectedIndex + 1, GTA.Offsets.Editor.tblpv3 + 1 * GTA.Offsets.Editor.team_NEXT, cbmissionhft2);
-                        Functions.Read.checkbinary(ddmissionnrlno.SelectedIndex + 1, GTA.Offsets.Editor.tblpv3 + 2 * GTA.Offsets.Editor.team_NEXT, cbmissionhft3);
-                        Functions.Read.checkbinary(ddmissionnrlno.SelectedIndex + 1, GTA.Offsets.Editor.tblpv3 + 3 * GTA.Offsets.Editor.team_NEXT, cbmissionhft4);
+                        Functions.Read.checkbinary(ddmissionnrlno.SelectedIndex, GTA.Offsets.Editor.tblpv3 + 0 * GTA.Offsets.Editor.team_NEXT, cbmissionhft1);
+                        Functions.Read.checkbinary(ddmissionnrlno.SelectedIndex, GTA.Offsets.Editor.tblpv3 + 1 * GTA.Offsets.Editor.team_NEXT, cbmissionhft2);
+                        Functions.Read.checkbinary(ddmissionnrlno.SelectedIndex, GTA.Offsets.Editor.tblpv3 + 2 * GTA.Offsets.Editor.team_NEXT, cbmissionhft3);
+                        Functions.Read.checkbinary(ddmissionnrlno.SelectedIndex, GTA.Offsets.Editor.tblpv3 + 3 * GTA.Offsets.Editor.team_NEXT, cbmissionhft4);
                     }
                     else if (ddmissionteamno.SelectedIndex == 4)
                     {
-                        Functions.Read.checkbinary(ddmissionnrlno.SelectedIndex + 1, GTA.Offsets.Editor.tblpv4 + 0 * GTA.Offsets.Editor.team_NEXT, cbmissionhft1);
-                        Functions.Read.checkbinary(ddmissionnrlno.SelectedIndex + 1, GTA.Offsets.Editor.tblpv4 + 1 * GTA.Offsets.Editor.team_NEXT, cbmissionhft2);
-                        Functions.Read.checkbinary(ddmissionnrlno.SelectedIndex + 1, GTA.Offsets.Editor.tblpv4 + 2 * GTA.Offsets.Editor.team_NEXT, cbmissionhft3);
-                        Functions.Read.checkbinary(ddmissionnrlno.SelectedIndex + 1, GTA.Offsets.Editor.tblpv4 + 3 * GTA.Offsets.Editor.team_NEXT, cbmissionhft4);
+                        Functions.Read.checkbinary(ddmissionnrlno.SelectedIndex, GTA.Offsets.Editor.tblpv4 + 0 * GTA.Offsets.Editor.team_NEXT, cbmissionhft1);
+                        Functions.Read.checkbinary(ddmissionnrlno.SelectedIndex, GTA.Offsets.Editor.tblpv4 + 1 * GTA.Offsets.Editor.team_NEXT, cbmissionhft2);
+                        Functions.Read.checkbinary(ddmissionnrlno.SelectedIndex, GTA.Offsets.Editor.tblpv4 + 2 * GTA.Offsets.Editor.team_NEXT, cbmissionhft3);
+                        Functions.Read.checkbinary(ddmissionnrlno.SelectedIndex, GTA.Offsets.Editor.tblpv4 + 3 * GTA.Offsets.Editor.team_NEXT, cbmissionhft4);
                     }
 
 
@@ -466,8 +466,8 @@ namespace Xenvious
                     // beast mode
                     if (!cbmissionbeastenable.IsFocused || ignore_focus)
                     {
-                        if (Functions.Read.checkbinary(12, GTA.Offsets.Editor.irbs5 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex)
-                            && Functions.Read.checkbinary(8, GTA.Offsets.Editor.irbs5 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex))
+                        if (Functions.Read.checkbinary(11, GTA.Offsets.Editor.irbs5 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex)
+                            && Functions.Read.checkbinary(7, GTA.Offsets.Editor.irbs5 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex))
                         {
                             cbmissionbeastenable.IsChecked = true;
                         }
@@ -478,10 +478,10 @@ namespace Xenvious
                     }
                     if (!cbmissionbeastenablembs.IsFocused || ignore_focus)
                     {
-                        if (Functions.Read.checkbinary(27, GTA.Offsets.Editor.menubs5) &&
-                            Functions.Read.checkbinary(24, GTA.Offsets.Editor.menubs5) &&
-                            Functions.Read.checkbinary(20, GTA.Offsets.Editor.menubs5) &&
-                            Functions.Read.checkbinary(3, GTA.Offsets.Editor.menubs5))
+                        if (Functions.Read.checkbinary(26, GTA.Offsets.Editor.menubs5) &&
+                            Functions.Read.checkbinary(23, GTA.Offsets.Editor.menubs5) &&
+                            Functions.Read.checkbinary(19, GTA.Offsets.Editor.menubs5) &&
+                            Functions.Read.checkbinary(2, GTA.Offsets.Editor.menubs5))
                         {
                             cbmissionbeastenablembs.IsChecked = true;
                         }
@@ -491,10 +491,10 @@ namespace Xenvious
                         }
                     }
 
-                    if (!cbmissionbeastjump.IsFocused || ignore_focus) Functions.Read.checkbinary(14, GTA.Offsets.Editor.irbs5 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionbeastjump);
-                    if (!cbmissionbeastinv.IsFocused || ignore_focus) Functions.Read.checkbinary(15, GTA.Offsets.Editor.irbs5 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionbeastinv);
-                    if (!cbmissionbeastcrit.IsFocused || ignore_focus) Functions.Read.checkbinary(20, GTA.Offsets.Editor.irbs5 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionbeastcrit);
-                    if (!cbmissionbeastrunspd.IsFocused || ignore_focus) Functions.Read.checkbinary(13, GTA.Offsets.Editor.irbs5 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionbeastrunspd);
+                    if (!cbmissionbeastjump.IsFocused || ignore_focus) Functions.Read.checkbinary(13, GTA.Offsets.Editor.irbs5 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionbeastjump);
+                    if (!cbmissionbeastinv.IsFocused || ignore_focus) Functions.Read.checkbinary(14, GTA.Offsets.Editor.irbs5 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionbeastinv);
+                    if (!cbmissionbeastcrit.IsFocused || ignore_focus) Functions.Read.checkbinary(19, GTA.Offsets.Editor.irbs5 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionbeastcrit);
+                    if (!cbmissionbeastrunspd.IsFocused || ignore_focus) Functions.Read.checkbinary(12, GTA.Offsets.Editor.irbs5 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionbeastrunspd);
 
                     if (!tbmissionbeasthealth.IsFocused || ignore_focus) tbmissionbeasthealth.Text = new Global((GTA.Offsets.Editor.bmmxh + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex * GTA.Offsets.Editor.beast_next)).Get<int>().ToString();
                     if (!tbmissionbeastjmpdmg.IsFocused || ignore_focus) tbmissionbeastjmpdmg.Text = new Global((GTA.Offsets.Editor.bmsjd + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex * GTA.Offsets.Editor.beast_next)).Get<int>().ToString();
@@ -511,24 +511,24 @@ namespace Xenvious
 
         private void cbmissionmarkpz_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(18, GTA.Offsets.Editor.irbs4 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionmarkpz);
+            Functions.Write.writebinary(17, GTA.Offsets.Editor.irbs4 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionmarkpz);
         }
 
         private void cbmissionclv_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(9, GTA.Offsets.Editor.irbs + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionclv);
+            Functions.Write.writebinary(8, GTA.Offsets.Editor.irbs + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionclv);
         }
 
         private void cbmissionslowm_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(19, GTA.Offsets.Editor.tmbt2 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT, cbmissionslowm);
-            Functions.Write.writebinary(31, GTA.Offsets.Editor.menubs13, cbmissionslowm);
+            Functions.Write.writebinary(18, GTA.Offsets.Editor.tmbt2 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT, cbmissionslowm);
+            Functions.Write.writebinary(30, GTA.Offsets.Editor.menubs13, cbmissionslowm);
         }
 
         private void cbmissionexplodearea_Checked(object sender, RoutedEventArgs e)
         {
+            Functions.Write.writebinary(7, GTA.Offsets.Editor.irbs4 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionexplodearea);
             Functions.Write.writebinary(8, GTA.Offsets.Editor.irbs4 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionexplodearea);
-            Functions.Write.writebinary(9, GTA.Offsets.Editor.irbs4 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionexplodearea);
         }
 
         private void missionexplodeareatimer_TextChanged(object sender, TextChangedEventArgs e)
@@ -539,7 +539,7 @@ namespace Xenvious
 
         private void cbmissionrspspawninveh_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(31, GTA.Offsets.Editor.menubs, cbmissionrspspawninveh);
+            Functions.Write.writebinary(30, GTA.Offsets.Editor.menubs, cbmissionrspspawninveh);
         }
 
         private void ddmissiongear_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -560,7 +560,7 @@ namespace Xenvious
             ddmissionrspmodel.IsEnabled = !enabled;
             ddmissionrspvehcol1.IsEnabled = !enabled;
             ddmissionrspvehcol2.IsEnabled = !enabled;
-            Functions.Write.writebinary(11, GTA.Offsets.Editor.rlopt, cbmissionrsppersonal);
+            Functions.Write.writebinary(10, GTA.Offsets.Editor.rlopt, cbmissionrsppersonal);
         }
 
         private void ddmissionoutfit_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -636,17 +636,17 @@ namespace Xenvious
 
         private void cbmissiondisablevehweap_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(24, GTA.Offsets.Editor.irbs4 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissiondisablevehweap);
+            Functions.Write.writebinary(23, GTA.Offsets.Editor.irbs4 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissiondisablevehweap);
         }
 
         private void cbmissionvehsabar_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(1, GTA.Offsets.Editor.irbs14 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionvehsabar);
+            Functions.Write.writebinary(0, GTA.Offsets.Editor.irbs14 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionvehsabar);
         }
 
         private void cbmissionequippara_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(22, GTA.Offsets.Editor.menubs3, cbmissionequippara);
+            Functions.Write.writebinary(21, GTA.Offsets.Editor.menubs3, cbmissionequippara);
         }
 
         private void tbmissionparastyle_TextChanged(object sender, TextChangedEventArgs e)
@@ -676,33 +676,33 @@ namespace Xenvious
 
         private void cbmissionbeastenable_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(12, GTA.Offsets.Editor.irbs5 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionbeastenable);
-            Functions.Write.writebinary(8, GTA.Offsets.Editor.irbs5 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionbeastenable);
+            Functions.Write.writebinary(11, GTA.Offsets.Editor.irbs5 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionbeastenable);
+            Functions.Write.writebinary(7, GTA.Offsets.Editor.irbs5 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionbeastenable);
 
-            Functions.Write.writebinary(27, GTA.Offsets.Editor.menubs5, cbmissionbeastenable);
-            Functions.Write.writebinary(24, GTA.Offsets.Editor.menubs5, cbmissionbeastenable);
-            Functions.Write.writebinary(20, GTA.Offsets.Editor.menubs5, cbmissionbeastenable);
-            Functions.Write.writebinary(3, GTA.Offsets.Editor.menubs5, cbmissionbeastenable);
+            Functions.Write.writebinary(26, GTA.Offsets.Editor.menubs5, cbmissionbeastenable);
+            Functions.Write.writebinary(23, GTA.Offsets.Editor.menubs5, cbmissionbeastenable);
+            Functions.Write.writebinary(19, GTA.Offsets.Editor.menubs5, cbmissionbeastenable);
+            Functions.Write.writebinary(2, GTA.Offsets.Editor.menubs5, cbmissionbeastenable);
         }
 
         private void cbmissionbeastjump_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(14, GTA.Offsets.Editor.irbs5 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionbeastjump);
+            Functions.Write.writebinary(13, GTA.Offsets.Editor.irbs5 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionbeastjump);
         }
 
         private void cbmissionbeastinv_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(15, GTA.Offsets.Editor.irbs5 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionbeastinv);
+            Functions.Write.writebinary(14, GTA.Offsets.Editor.irbs5 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionbeastinv);
         }
 
         private void cbmissionbeastcrit_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(20, GTA.Offsets.Editor.irbs5 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionbeastcrit);
+            Functions.Write.writebinary(19, GTA.Offsets.Editor.irbs5 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionbeastcrit);
         }
 
         private void cbmissionbeastrunspd_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(13, GTA.Offsets.Editor.irbs5 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionbeastrunspd);
+            Functions.Write.writebinary(12, GTA.Offsets.Editor.irbs5 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionbeastrunspd);
         }
 
         private void tbmissionbeasthealth_TextChanged(object sender, TextChangedEventArgs e)
@@ -779,7 +779,7 @@ namespace Xenvious
 
         private void cbmissionhidewantedlevel_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(2, GTA.Offsets.Editor.irbs4 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionhidewantedlevel);
+            Functions.Write.writebinary(1, GTA.Offsets.Editor.irbs4 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionhidewantedlevel);
         }
 
         private void tbmissionminspd_TextChanged(object sender, TextChangedEventArgs e)
@@ -814,7 +814,7 @@ namespace Xenvious
 
         private void cbmissionnv_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(25, GTA.Offsets.Editor.irbs5 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionnv);
+            Functions.Write.writebinary(24, GTA.Offsets.Editor.irbs5 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionnv);
         }
 
         private void tbmissiontmbts_TextChanged(object sender, TextChangedEventArgs e)
@@ -843,12 +843,12 @@ namespace Xenvious
 
         private void cbmissionhvalways_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(18, GTA.Offsets.Editor.irbs5 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionhvalways);
+            Functions.Write.writebinary(17, GTA.Offsets.Editor.irbs5 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionhvalways);
         }
 
         private void cbmissionhv_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(10, GTA.Offsets.Editor.irbs5 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionhv);
+            Functions.Write.writebinary(9, GTA.Offsets.Editor.irbs5 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionhv);
         }
 
         private void tbmissionhvend_TextChanged(object sender, TextChangedEventArgs e)
@@ -863,12 +863,12 @@ namespace Xenvious
 
         private void cbmissionlosehealth_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(15, GTA.Offsets.Editor.irbs6 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionlosehealth);
+            Functions.Write.writebinary(14, GTA.Offsets.Editor.irbs6 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionlosehealth);
         }
 
         private void cbmissionlosehealthoopa_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(32, GTA.Offsets.Editor.irbs9 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionlosehealthoopa);
+            Functions.Write.writebinary(31, GTA.Offsets.Editor.irbs9 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionlosehealthoopa);
         }
 
         private void tbmissionrloft_TextChanged(object sender, TextChangedEventArgs e)
@@ -903,7 +903,7 @@ namespace Xenvious
 
         private void cbmissionhidetime_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(22, GTA.Offsets.Editor.irbs8 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionhidetime);
+            Functions.Write.writebinary(21, GTA.Offsets.Editor.irbs8 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionhidetime);
         }
 
         private void tbmissionmnumpt_TextChanged(object sender, TextChangedEventArgs e)
@@ -926,12 +926,12 @@ namespace Xenvious
 
         private void cbmissionsinv_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(12, GTA.Offsets.Editor.irbs10 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionsinv);
+            Functions.Write.writebinary(11, GTA.Offsets.Editor.irbs10 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionsinv);
         }
 
         private void cbmissiondob_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(20, GTA.Offsets.Editor.irbs10 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissiondob);
+            Functions.Write.writebinary(19, GTA.Offsets.Editor.irbs10 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissiondob);
         }
 
         private void tbmissionnrl_TextChanged(object sender, TextChangedEventArgs e)
@@ -942,17 +942,17 @@ namespace Xenvious
 
         private void cbmissionflare_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(18, GTA.Offsets.Editor.irbs14 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionflare);
+            Functions.Write.writebinary(17, GTA.Offsets.Editor.irbs14 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionflare);
         }
 
         private void cbmissionhidemap_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(32, GTA.Offsets.Editor.irbs + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionhidemap);
+            Functions.Write.writebinary(31, GTA.Offsets.Editor.irbs + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionhidemap);
         }
 
         private void cbmissionspawninaction_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(25, GTA.Offsets.Editor.irbs2 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionspawninaction);
+            Functions.Write.writebinary(24, GTA.Offsets.Editor.irbs2 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT + ddmissionnrlno.SelectedIndex, cbmissionspawninaction);
         }
 
         private void cb_nrl_freeze_Checked(object sender, RoutedEventArgs e)
@@ -1081,52 +1081,52 @@ namespace Xenvious
         private void cbmissionhft1_Checked(object sender, RoutedEventArgs e)
         {
             if (ddmissionteamno.SelectedIndex == 0)
-                Functions.Write.writebinary(ddmissionnrlno.SelectedIndex + 1, GTA.Offsets.Editor.tblpv1 + 0 * GTA.Offsets.Editor.team_NEXT, cbmissionhft1);
+                Functions.Write.writebinary(ddmissionnrlno.SelectedIndex, GTA.Offsets.Editor.tblpv1 + 0 * GTA.Offsets.Editor.team_NEXT, cbmissionhft1);
             else if (ddmissionteamno.SelectedIndex == 1)
-                Functions.Write.writebinary(ddmissionnrlno.SelectedIndex + 1, GTA.Offsets.Editor.tblpv2 + 0 * GTA.Offsets.Editor.team_NEXT, cbmissionhft1);
+                Functions.Write.writebinary(ddmissionnrlno.SelectedIndex, GTA.Offsets.Editor.tblpv2 + 0 * GTA.Offsets.Editor.team_NEXT, cbmissionhft1);
             else if (ddmissionteamno.SelectedIndex == 2)
-                Functions.Write.writebinary(ddmissionnrlno.SelectedIndex + 1, GTA.Offsets.Editor.tblpv3 + 0 * GTA.Offsets.Editor.team_NEXT, cbmissionhft1);
+                Functions.Write.writebinary(ddmissionnrlno.SelectedIndex, GTA.Offsets.Editor.tblpv3 + 0 * GTA.Offsets.Editor.team_NEXT, cbmissionhft1);
             else if (ddmissionteamno.SelectedIndex == 3)
-                Functions.Write.writebinary(ddmissionnrlno.SelectedIndex + 1, GTA.Offsets.Editor.tblpv4 + 0 * GTA.Offsets.Editor.team_NEXT, cbmissionhft1);
+                Functions.Write.writebinary(ddmissionnrlno.SelectedIndex, GTA.Offsets.Editor.tblpv4 + 0 * GTA.Offsets.Editor.team_NEXT, cbmissionhft1);
         }
 
         private void cbmissionhft2_Checked(object sender, RoutedEventArgs e)
         {
 
             if (ddmissionteamno.SelectedIndex == 0)
-                Functions.Write.writebinary(ddmissionnrlno.SelectedIndex + 1, GTA.Offsets.Editor.tblpv1 + 1 * GTA.Offsets.Editor.team_NEXT, cbmissionhft2);
+                Functions.Write.writebinary(ddmissionnrlno.SelectedIndex, GTA.Offsets.Editor.tblpv1 + 1 * GTA.Offsets.Editor.team_NEXT, cbmissionhft2);
             else if (ddmissionteamno.SelectedIndex == 1)
-                Functions.Write.writebinary(ddmissionnrlno.SelectedIndex + 1, GTA.Offsets.Editor.tblpv2 + 1 * GTA.Offsets.Editor.team_NEXT, cbmissionhft2);
+                Functions.Write.writebinary(ddmissionnrlno.SelectedIndex, GTA.Offsets.Editor.tblpv2 + 1 * GTA.Offsets.Editor.team_NEXT, cbmissionhft2);
             else if (ddmissionteamno.SelectedIndex == 2)
-                Functions.Write.writebinary(ddmissionnrlno.SelectedIndex + 1, GTA.Offsets.Editor.tblpv3 + 1 * GTA.Offsets.Editor.team_NEXT, cbmissionhft2);
+                Functions.Write.writebinary(ddmissionnrlno.SelectedIndex, GTA.Offsets.Editor.tblpv3 + 1 * GTA.Offsets.Editor.team_NEXT, cbmissionhft2);
             else if (ddmissionteamno.SelectedIndex == 3)
-                Functions.Write.writebinary(ddmissionnrlno.SelectedIndex + 1, GTA.Offsets.Editor.tblpv4 + 1 * GTA.Offsets.Editor.team_NEXT, cbmissionhft2);
+                Functions.Write.writebinary(ddmissionnrlno.SelectedIndex, GTA.Offsets.Editor.tblpv4 + 1 * GTA.Offsets.Editor.team_NEXT, cbmissionhft2);
         }
 
         private void cbmissionhft3_Checked(object sender, RoutedEventArgs e)
         {
 
             if (ddmissionteamno.SelectedIndex == 0)
-                Functions.Write.writebinary(ddmissionnrlno.SelectedIndex + 1, GTA.Offsets.Editor.tblpv1 + 2 * GTA.Offsets.Editor.team_NEXT, cbmissionhft3);
+                Functions.Write.writebinary(ddmissionnrlno.SelectedIndex, GTA.Offsets.Editor.tblpv1 + 2 * GTA.Offsets.Editor.team_NEXT, cbmissionhft3);
             else if (ddmissionteamno.SelectedIndex == 1)
-                Functions.Write.writebinary(ddmissionnrlno.SelectedIndex + 1, GTA.Offsets.Editor.tblpv2 + 2 * GTA.Offsets.Editor.team_NEXT, cbmissionhft3);
+                Functions.Write.writebinary(ddmissionnrlno.SelectedIndex, GTA.Offsets.Editor.tblpv2 + 2 * GTA.Offsets.Editor.team_NEXT, cbmissionhft3);
             else if (ddmissionteamno.SelectedIndex == 2)
-                Functions.Write.writebinary(ddmissionnrlno.SelectedIndex + 1, GTA.Offsets.Editor.tblpv3 + 2 * GTA.Offsets.Editor.team_NEXT, cbmissionhft3);
+                Functions.Write.writebinary(ddmissionnrlno.SelectedIndex, GTA.Offsets.Editor.tblpv3 + 2 * GTA.Offsets.Editor.team_NEXT, cbmissionhft3);
             else if (ddmissionteamno.SelectedIndex == 3)
-                Functions.Write.writebinary(ddmissionnrlno.SelectedIndex + 1, GTA.Offsets.Editor.tblpv4 + 2 * GTA.Offsets.Editor.team_NEXT, cbmissionhft3);
+                Functions.Write.writebinary(ddmissionnrlno.SelectedIndex, GTA.Offsets.Editor.tblpv4 + 2 * GTA.Offsets.Editor.team_NEXT, cbmissionhft3);
         }
 
         private void cbmissionhft4_Checked(object sender, RoutedEventArgs e)
         {
 
             if (ddmissionteamno.SelectedIndex == 0)
-                Functions.Write.writebinary(ddmissionnrlno.SelectedIndex + 1, GTA.Offsets.Editor.tblpv1 + 3 * GTA.Offsets.Editor.team_NEXT, cbmissionhft4);
+                Functions.Write.writebinary(ddmissionnrlno.SelectedIndex, GTA.Offsets.Editor.tblpv1 + 3 * GTA.Offsets.Editor.team_NEXT, cbmissionhft4);
             else if (ddmissionteamno.SelectedIndex == 1)
-                Functions.Write.writebinary(ddmissionnrlno.SelectedIndex + 1, GTA.Offsets.Editor.tblpv2 + 3 * GTA.Offsets.Editor.team_NEXT, cbmissionhft4);
+                Functions.Write.writebinary(ddmissionnrlno.SelectedIndex, GTA.Offsets.Editor.tblpv2 + 3 * GTA.Offsets.Editor.team_NEXT, cbmissionhft4);
             else if (ddmissionteamno.SelectedIndex == 2)
-                Functions.Write.writebinary(ddmissionnrlno.SelectedIndex + 1, GTA.Offsets.Editor.tblpv3 + 3 * GTA.Offsets.Editor.team_NEXT, cbmissionhft4);
+                Functions.Write.writebinary(ddmissionnrlno.SelectedIndex, GTA.Offsets.Editor.tblpv3 + 3 * GTA.Offsets.Editor.team_NEXT, cbmissionhft4);
             else if (ddmissionteamno.SelectedIndex == 3)
-                Functions.Write.writebinary(ddmissionnrlno.SelectedIndex + 1, GTA.Offsets.Editor.tblpv4 + 3 * GTA.Offsets.Editor.team_NEXT, cbmissionhft4);
+                Functions.Write.writebinary(ddmissionnrlno.SelectedIndex, GTA.Offsets.Editor.tblpv4 + 3 * GTA.Offsets.Editor.team_NEXT, cbmissionhft4);
         }
 
         private void tbmissiontblpv1_TextChanged(object sender, TextChangedEventArgs e)
@@ -1216,12 +1216,12 @@ namespace Xenvious
         {
             if (ddmissionrspbombs.SelectedIndex > -1)
             {
-                Functions.Write.writebinary(28, GTA.Offsets.Editor.tmbt2 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT, true);
+                Functions.Write.writebinary(27, GTA.Offsets.Editor.tmbt2 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT, true);
                 new Global(GTA.Offsets.Editor.tvBomb + ddmissionteamno.SelectedIndex).SetInt(ddmissionrspbombs.SelectedIndex - 1);
             }
             else
             {
-                Functions.Write.writebinary(28, GTA.Offsets.Editor.tmbt2 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT, false);
+                Functions.Write.writebinary(27, GTA.Offsets.Editor.tmbt2 + ddmissionteamno.SelectedIndex * GTA.Offsets.Editor.team_NEXT, false);
             }
         }
 
@@ -1354,12 +1354,12 @@ namespace Xenvious
 
         private void cbmissionvehrsp_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(ddmissionnrlno.SelectedIndex + 1, GTA.Offsets.Editor.vehrsp, cbmissionvehrsp);
+            Functions.Write.writebinary(ddmissionnrlno.SelectedIndex, GTA.Offsets.Editor.vehrsp, cbmissionvehrsp);
         }
 
         private void cbmissionb2pa_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(ddmissionnrlno.SelectedIndex + 1, GTA.Offsets.Editor.boud, cbmissionb2pa);
+            Functions.Write.writebinary(ddmissionnrlno.SelectedIndex, GTA.Offsets.Editor.boud, cbmissionb2pa);
         }
 
         private void tbmissionshdtxt_TextChanged(object sender, TextChangedEventArgs e)
@@ -1370,10 +1370,10 @@ namespace Xenvious
 
         private void cbmissionbeastenablembs_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Read.checkbinary(27, GTA.Offsets.Editor.menubs5, cbmissionbeastenablembs);
-            Functions.Read.checkbinary(24, GTA.Offsets.Editor.menubs5, cbmissionbeastenablembs);
-            Functions.Read.checkbinary(20, GTA.Offsets.Editor.menubs5, cbmissionbeastenablembs);
-            Functions.Read.checkbinary(3, GTA.Offsets.Editor.menubs5, cbmissionbeastenablembs);
+            Functions.Read.checkbinary(26, GTA.Offsets.Editor.menubs5, cbmissionbeastenablembs);
+            Functions.Read.checkbinary(23, GTA.Offsets.Editor.menubs5, cbmissionbeastenablembs);
+            Functions.Read.checkbinary(19, GTA.Offsets.Editor.menubs5, cbmissionbeastenablembs);
+            Functions.Read.checkbinary(2, GTA.Offsets.Editor.menubs5, cbmissionbeastenablembs);
         }
 
         private void tbmissionmrtl_TextChanged(object sender, TextChangedEventArgs e)

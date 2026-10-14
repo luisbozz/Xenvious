@@ -25,7 +25,7 @@ namespace Xenvious
                 tbdpropslocx.Text = loc[0];
                 tbdpropslocy.Text = loc[1];
                 tbdpropslocz.Text = loc[2];
-                creatorRefresh();
+                RefreshAfterEdit(tbdpropslocx);
             }
         }
 
@@ -289,7 +289,7 @@ namespace Xenvious
                     ddpropscolor.IsEnabled = false;
                 }
 
-                Functions.Read.checkbinary(2, GTA.Offsets.Editor.DProps.prpbs + GTA.Offsets.Editor.DProps.NEXT * index, cb_dprops_ignorevscheck);
+                Functions.Read.checkbinary(1, GTA.Offsets.Editor.DProps.prpbs + GTA.Offsets.Editor.DProps.NEXT * index, cb_dprops_ignorevscheck);
 
                 if (Functions.Read.isDPropActivationTimer(model))
                 {
@@ -491,7 +491,7 @@ namespace Xenvious
 
         private void cb_dprops_ignorevscheck_Checked(object sender, RoutedEventArgs e)
         {
-            Functions.Write.writebinary(2, GTA.Offsets.Editor.DProps.prpbs + GTA.Offsets.Editor.DProps.NEXT * dddpropno.SelectedIndex, cb_dprops_ignorevscheck);
+            Functions.Write.writebinary(1, GTA.Offsets.Editor.DProps.prpbs + GTA.Offsets.Editor.DProps.NEXT * dddpropno.SelectedIndex, cb_dprops_ignorevscheck);
         }
 
         private void tbdpropsdptrpx_TextChanged(object sender, TextChangedEventArgs e)

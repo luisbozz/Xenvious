@@ -34,6 +34,11 @@ jobs:
           path: mry
           persist-credentials: false
 
+      # Generated/*.g.cs come from OfflineData/<edition>/offsets.ini and scrpatches.json.
+      # A changed source without a regenerated file would ship the old values.
+      - name: Check the generated build data
+        run: python -m unittest discover -s Xenvious/tools/builddata
+
       - uses: microsoft/setup-msbuild@v3
 
       - name: Restore mry packages

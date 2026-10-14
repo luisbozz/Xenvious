@@ -196,6 +196,8 @@
     <Compile Include="Controls\GroupCard.cs" />
     <Compile Include="Controls\PlayerRulesView.cs" />
     <Compile Include="Controls\StartPointsView.cs" />
+    <Compile Include="Controls\SpawnPointsView.cs" />
+    <Compile Include="Creator Classes\SpawnPoints.cs" />
     <Compile Include="Controls\InventoryView.cs" />
     <Compile Include="Controls\DummyBlipsView.cs" />
     <Compile Include="Controls\StartPointPropsView.cs" />
@@ -204,7 +206,11 @@
     <Compile Include="Controls\ComboViews.cs" />
     <Compile Include="Controls\RuleStrip.cs" />
     <Compile Include="Controls\MenuBitsView.cs" />
+    <Compile Include="Controls\MatchSettingsCard.cs" />
+    <Compile Include="Controls\SoloTestCard.cs" />
+    <Compile Include="Controls\RowDragger.cs" />
     <Compile Include="Controls\VisibilityCard.cs" />
+    <Compile Include="Controls\ZoneTypeSettingsCard.cs" />
     <Compile Include="Controls\ModelCard.xaml.cs">
       <DependentUpon>ModelCard.xaml</DependentUpon>
     </Compile>
@@ -215,6 +221,7 @@
     <Compile Include="Creator Classes\ModelImageCache.cs" />
     <Compile Include="Creator Classes\ActorCategories.cs" />
     <Compile Include="Creator Classes\ZoneTypes.cs" />
+    <Compile Include="Creator Classes\ZoneTypeSettings.cs" />
     <Compile Include="MainWindow\MainWindow.ModelCatalog.cs" />
     <Compile Include="Controls\CustomPanel.xaml.cs">
       <DependentUpon>CustomPanel.xaml</DependentUpon>
@@ -254,7 +261,9 @@
     <Compile Include="Creator Classes\TestReturn.cs" />
     <Compile Include="Creator Classes\SatelliteTiles.cs" />
     <Compile Include="Creator Classes\Rules.cs" />
+    <Compile Include="Creator Classes\EntityMover.cs" />
     <Compile Include="Creator Classes\EntityRules.cs" />
+    <Compile Include="Creator Classes\RuleMover.cs" />
     <Compile Include="Creator Classes\RuleFlow.cs" />
     <Compile Include="Creator Classes\VisibilityGroups.cs" />
     <Compile Include="Creator Classes\ScriptThreadLog.cs" />
@@ -308,7 +317,18 @@
     <Compile Include="GameVariant.cs" />
     <Compile Include="GTA.cs" />
     <Compile Include="Helper Classes\ini_reader.cs" />
-    <Compile Include="Helper Classes\IniText.cs" />
+    <Compile Include="Helper Classes\BuildData.cs" />
+    <Compile Include="Helper Classes\GlobalPath.cs" />
+    <Compile Include="Generated\BuildData.g.cs" />
+    <Compile Include="Generated\BuildData.Legacy.g.cs" />
+    <Compile Include="Generated\BuildData.Enhanced.g.cs" />
+    <Compile Include="Generated\ScrPatches.Legacy.g.cs" />
+    <Compile Include="Generated\ScrPatches.Enhanced.g.cs" />
+    <Compile Include="Generated\PropLists.g.cs" />
+    <Compile Include="Generated\PropLists.Legacy.g.cs" />
+    <Compile Include="Generated\PropLists.Enhanced.g.cs" />
+    <Compile Include="Generated\RuleFields.Legacy.g.cs" />
+    <Compile Include="Generated\RuleFields.Enhanced.g.cs" />
     <Compile Include="Helper Classes\AobCache.cs" />
     <Compile Include="Helper Classes\BattlEye.cs" />
     <Compile Include="JSON\Converters\JsonDecimalConverter.cs" />
@@ -455,6 +475,7 @@
     <Compile Include="MainWindow\MainWindow.DashboardPage.cs" />
     <Compile Include="MainWindow\MainWindow.DeleteItems.cs" />
     <Compile Include="MainWindow\MainWindow.Doors.cs" />
+    <Compile Include="MainWindow\MainWindow.EntityMove.cs" />
     <Compile Include="MainWindow\MainWindow.DynamicProps.cs" />
     <Compile Include="MainWindow\MainWindow.Edit.cs" />
     <Compile Include="MainWindow\MainWindow.Fixtures.cs" />
@@ -470,6 +491,7 @@
     <Compile Include="MainWindow\MainWindow.Misc.ScrPatches.cs" />
     <Compile Include="MainWindow\MainWindow.GameConnection.cs" />
     <Compile Include="MainWindow\MainWindow.Misc.cs" />
+    <Compile Include="MainWindow\MainWindow.LanguageRefresh.cs" />
     <Compile Include="MainWindow\MainWindow.Mission.Blips.cs" />
     <Compile Include="MainWindow\MainWindow.Mission.Extras.cs" />
     <Compile Include="MainWindow\MainWindow.Mission.Gang.cs" />
@@ -539,14 +561,16 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="OfflineData\legacy\offsets.ini" />
-    <EmbeddedResource Include="OfflineData\legacy\scrpatches.json" />
-    <EmbeddedResource Include="OfflineData\legacy\scrpatchesdev.json" />
+    <None Include="OfflineData\legacy\offsets.ini" />
+    <None Include="OfflineData\legacy\scrpatches.json" />
+    <None Include="OfflineData\legacy\scrpatchesdev.json" />
+    <None Include="OfflineData\legacy\prop_lists.json" />
     <EmbeddedResource Include="OfflineData\legacy\race_vehicles.json" />
     <EmbeddedResource Include="OfflineData\legacy\mprops.json" />
-    <EmbeddedResource Include="OfflineData\enhanced\offsets.ini" />
-    <EmbeddedResource Include="OfflineData\enhanced\scrpatches.json" />
-    <EmbeddedResource Include="OfflineData\enhanced\scrpatchesdev.json" />
+    <None Include="OfflineData\enhanced\offsets.ini" />
+    <None Include="OfflineData\enhanced\scrpatches.json" />
+    <None Include="OfflineData\enhanced\scrpatchesdev.json" />
+    <None Include="OfflineData\enhanced\prop_lists.json" />
     <EmbeddedResource Include="OfflineData\enhanced\race_vehicles.json" />
     <EmbeddedResource Include="OfflineData\enhanced\mprops.json" />
     <EmbeddedResource Include="OfflineData\props.json" />

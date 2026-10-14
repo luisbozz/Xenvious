@@ -87,16 +87,16 @@ namespace Xenvious
                                 }
                                 if (!tb_Rounds.IsFocused) tb_Rounds.Text = (Functions.Read.isMission()) ? (new Global(GTA.Offsets.Editor.numRounds).Get<int>()).ToString() : (new Global(GTA.Offsets.Editor.Race.Checkpoints.lap).Get<int>() + 1).ToString();
 
-                                if (Functions.Read.checkbinary(16, GTA.Offsets.Editor.menubs2, cb_customdaytime))
+                                if (Functions.Read.checkbinary(15, GTA.Offsets.Editor.menubs2, cb_customdaytime))
                                 {
                                     if (!tb_cdth.IsFocused) tb_cdth.Text = new Global(GTA.Offsets.Editor.todhr).Get<int>().ToString();
                                     if (!tb_cdtm.IsFocused) tb_cdtm.Text = new Global(GTA.Offsets.Editor.todmn).Get<int>().ToString();
                                 }
 
-                                Functions.Read.checkbinary(7, GTA.Offsets.Editor.menubs10, cb_hdvision);
-                                Functions.Read.checkbinary(28, GTA.Offsets.Editor.menubs14, cb_blackout);
-                                //Functions.Read.checkbinary(3, GTA.Offsets.Editor.menubs2, cbpcdmusic);
-                                //Functions.Read.checkbinary(21, GTA.Offsets.Editor.menubs2, cbprogtod);
+                                Functions.Read.checkbinary(6, GTA.Offsets.Editor.menubs10, cb_hdvision);
+                                Functions.Read.checkbinary(27, GTA.Offsets.Editor.menubs14, cb_blackout);
+                                //Functions.Read.checkbinary(2, GTA.Offsets.Editor.menubs2, cbpcdmusic);
+                                //Functions.Read.checkbinary(20, GTA.Offsets.Editor.menubs2, cbprogtod);
 
                                 if (!cb_dev.IsFocused) cb_dev.IsChecked = m.memory(GTA.Offsets.Editor.dev).Get<int>() == GTA.DevPatched;
 
@@ -151,7 +151,7 @@ namespace Xenvious
                                             }
                                             break;
                                         case (int)GTA.Editor.JobTypes.Deathmatch:
-                                            if (Functions.Read.checkbinary(13, GTA.Offsets.Editor.intop2))
+                                            if (Functions.Read.checkbinary(12, GTA.Offsets.Editor.intop2))
                                             {
                                                 ddjobsubtype.SelectedIndex = 2;
                                             }
@@ -346,18 +346,18 @@ namespace Xenvious
                                         if (!tbraceblimptext.IsFocused)
                                             tbraceblimptext.Text = new Global(GTA.Offsets.Editor.blmpmsg).GetString(60);
 
-                                        Functions.Read.checkbinary(31, GTA.Offsets.Editor.menubs8, cbraceololockcatchup);
-                                        Functions.Read.checkbinary(16, GTA.Offsets.Editor.menubs2, cbraceolohidetod);
-                                        Functions.Read.checkbinary(3, GTA.Offsets.Editor.menubs9, cbraceolohideag);
-                                        Functions.Read.checkbinary(12, GTA.Offsets.Editor.menubs17, cbraceololocktod);
-                                        Functions.Read.checkbinary(19, GTA.Offsets.Editor.menubs18, cbraceoloosnc);
-                                        Functions.Read.checkbinary(10, GTA.Offsets.Editor.menubs20, cbraceolohidetraffic);
-                                        Functions.Read.checkbinary(20, GTA.Offsets.Editor.menubs20, cbraceolohidedlp);
-                                        Functions.Read.checkbinary(18, GTA.Offsets.Editor.menubs20, cbraceolohidenol);
-                                        Functions.Read.checkbinary(19, GTA.Offsets.Editor.menubs20, cbraceolohidewl);
-                                        Functions.Read.checkbinary(31, GTA.Offsets.Editor.menubs21, cbraceolohiderally);
-                                        Functions.Read.checkbinary(31, GTA.Offsets.Editor.menubs28, cbraceolomaxwl);
-                                        Functions.Read.checkbinary(31, GTA.Offsets.Editor.menubs22, cbraceolohideweth);
+                                        Functions.Read.checkbinary(30, GTA.Offsets.Editor.menubs8, cbraceololockcatchup);
+                                        Functions.Read.checkbinary(15, GTA.Offsets.Editor.menubs2, cbraceolohidetod);
+                                        Functions.Read.checkbinary(2, GTA.Offsets.Editor.menubs9, cbraceolohideag);
+                                        Functions.Read.checkbinary(11, GTA.Offsets.Editor.menubs17, cbraceololocktod);
+                                        Functions.Read.checkbinary(18, GTA.Offsets.Editor.menubs18, cbraceoloosnc);
+                                        Functions.Read.checkbinary(9, GTA.Offsets.Editor.menubs20, cbraceolohidetraffic);
+                                        Functions.Read.checkbinary(19, GTA.Offsets.Editor.menubs20, cbraceolohidedlp);
+                                        Functions.Read.checkbinary(17, GTA.Offsets.Editor.menubs20, cbraceolohidenol);
+                                        Functions.Read.checkbinary(18, GTA.Offsets.Editor.menubs20, cbraceolohidewl);
+                                        Functions.Read.checkbinary(30, GTA.Offsets.Editor.menubs21, cbraceolohiderally);
+                                        Functions.Read.checkbinary(30, GTA.Offsets.Editor.menubs28, cbraceolomaxwl);
+                                        Functions.Read.checkbinary(30, GTA.Offsets.Editor.menubs22, cbraceolohideweth);
                                         cbraceolohidecstveh.IsChecked = new Global(GTA.Offsets.Editor.rcvs).Get<int>() == 2 ? true : false;
                                     }
                                 }
@@ -555,55 +555,55 @@ namespace Xenvious
                                         if (!tbcamflocy.IsFocused) tbcamflocy.Text = new Global(GTA.Offsets.Editor.camf + 1 * 1).Get<float>().ToString();
                                         if (!tbcamflocz.IsFocused) tbcamflocz.Text = new Global(GTA.Offsets.Editor.camf + 2 * 1).Get<float>().ToString();
 
-                                        Functions.Read.checkbinary(11, GTA.Offsets.Editor.menubs2, cbmissionteambalancing);
-                                        Functions.Read.checkbinary(28, GTA.Offsets.Editor.menubs2, cbmissionspawnunarmed);
-                                        Functions.Read.checkbinary(21, GTA.Offsets.Editor.menubs25, cbmissionspawnunarmed);
-                                        Functions.Read.checkbinary(10, GTA.Offsets.Editor.menubs27, cbmissionaddflash);
-                                        Functions.Read.checkbinary(20, GTA.Offsets.Editor.menubs, cbmissionremweap);
-                                        Functions.Read.checkbinary(19, GTA.Offsets.Editor.menubs11, cbmissionbulletproofplayers);
-                                        Functions.Read.checkbinary(10, GTA.Offsets.Editor.menubs, cbmissionwlad);
+                                        Functions.Read.checkbinary(10, GTA.Offsets.Editor.menubs2, cbmissionteambalancing);
+                                        Functions.Read.checkbinary(27, GTA.Offsets.Editor.menubs2, cbmissionspawnunarmed);
+                                        Functions.Read.checkbinary(20, GTA.Offsets.Editor.menubs25, cbmissionspawnunarmed);
+                                        Functions.Read.checkbinary(9, GTA.Offsets.Editor.menubs27, cbmissionaddflash);
+                                        Functions.Read.checkbinary(19, GTA.Offsets.Editor.menubs, cbmissionremweap);
+                                        Functions.Read.checkbinary(18, GTA.Offsets.Editor.menubs11, cbmissionbulletproofplayers);
+                                        Functions.Read.checkbinary(9, GTA.Offsets.Editor.menubs, cbmissionwlad);
                                         if (!tbMissionfsr.IsFocused) tbMissionfsr.Text = new Global(GTA.Offsets.Editor.fiispr).Get<float>().ToString();
                                         int weaponrsptime = new Global(GTA.Offsets.Editor.Weapon.time).Get<int>();
                                         if (!ddweaponrsptime.IsFocused) ddweaponrsptime.SelectedIndex = weaponrsptime == -1 ? 2 : weaponrsptime;
                                         // enable prison alarms
                                         // is true if menubs7 bit 32 is not set and menubs1 bit 28 is set 
-                                        if (!cbmissionenableprisonalarms.IsFocused) cbmissionenableprisonalarms.IsChecked = (!Functions.Read.checkbinary(32, GTA.Offsets.Editor.menubs7) && Functions.Read.checkbinary(28, GTA.Offsets.Editor.menubs));
-                                        Functions.Read.checkbinary(30, GTA.Offsets.Editor.menubs3, cbmissiondisspeccam);
-                                        Functions.Read.checkbinary(5, GTA.Offsets.Editor.menubs26, cbmissiondisjipspec);
-                                        Functions.Read.checkbinary(27, GTA.Offsets.Editor.menubs3, cbmissiondislsc);
-                                        Functions.Read.checkbinary(21, GTA.Offsets.Editor.menubs2, cbmissionptod);
-                                        Functions.Read.checkbinary(3, GTA.Offsets.Editor.menubs2, cbmissionplaycm);
+                                        if (!cbmissionenableprisonalarms.IsFocused) cbmissionenableprisonalarms.IsChecked = (!Functions.Read.checkbinary(31, GTA.Offsets.Editor.menubs7) && Functions.Read.checkbinary(27, GTA.Offsets.Editor.menubs));
+                                        Functions.Read.checkbinary(29, GTA.Offsets.Editor.menubs3, cbmissiondisspeccam);
+                                        Functions.Read.checkbinary(4, GTA.Offsets.Editor.menubs26, cbmissiondisjipspec);
+                                        Functions.Read.checkbinary(26, GTA.Offsets.Editor.menubs3, cbmissiondislsc);
+                                        Functions.Read.checkbinary(20, GTA.Offsets.Editor.menubs2, cbmissionptod);
+                                        Functions.Read.checkbinary(2, GTA.Offsets.Editor.menubs2, cbmissionplaycm);
                                         int polValue = new Global(GTA.Offsets.Editor.pol).Get<int>();
                                         ddmissionmaxwl.SelectedIndex = polValue >= 0 && polValue < ddmissionmaxwl.Items.Count ? polValue : -1;
                                         GetMissionDensity(ddmissiontraffic, GTA.Offsets.Editor.traf);
                                         GetMissionDensity(ddmissionpeds, GTA.Offsets.Editor.apeds);
-                                        Functions.Read.checkbinary(6, GTA.Offsets.Editor.twrst, cbmissiondispwd);
-                                        Functions.Read.checkbinary(19, GTA.Offsets.Editor.menubs12, cbmissionactorremarmor);
-                                        Functions.Read.checkbinary(17, GTA.Offsets.Editor.trel, cbmissionjlwnp);
-                                        Functions.Read.checkbinary(1, GTA.Offsets.Editor.twrst, cbmissiondwd);
-                                        Functions.Read.checkbinary(2, GTA.Offsets.Editor.twrst, cbmissionrwbs1);
-                                        Functions.Read.checkbinary(3, GTA.Offsets.Editor.twrst, cbmissionrwbs2);
-                                        Functions.Read.checkbinary(4, GTA.Offsets.Editor.twrst, cbmissionrwbs3);
-                                        Functions.Read.checkbinary(5, GTA.Offsets.Editor.twrst, cbmissionrwbs4);
-                                        Functions.Read.checkbinary(21, GTA.Offsets.Editor.trel, cbmissiontrel12);
-                                        Functions.Read.checkbinary(22, GTA.Offsets.Editor.trel, cbmissiontrel13);
-                                        Functions.Read.checkbinary(23, GTA.Offsets.Editor.trel, cbmissiontrel14);
-                                        Functions.Read.checkbinary(24, GTA.Offsets.Editor.trel, cbmissiontrel23);
-                                        Functions.Read.checkbinary(25, GTA.Offsets.Editor.trel, cbmissiontrel24);
-                                        Functions.Read.checkbinary(26, GTA.Offsets.Editor.trel, cbmissiontrel34);
-                                        Functions.Read.checkbinary(6, GTA.Offsets.Editor.menubs9, cbmissionedw);
-                                        Functions.Read.checkbinary(25, GTA.Offsets.Editor.menubs24, cbmissionemp);
-                                        Functions.Read.checkbinary(9, GTA.Offsets.Editor.menubs25, cbmissionempnm);
+                                        Functions.Read.checkbinary(5, GTA.Offsets.Editor.twrst, cbmissiondispwd);
+                                        Functions.Read.checkbinary(18, GTA.Offsets.Editor.menubs12, cbmissionactorremarmor);
+                                        Functions.Read.checkbinary(16, GTA.Offsets.Editor.trel, cbmissionjlwnp);
+                                        Functions.Read.checkbinary(0, GTA.Offsets.Editor.twrst, cbmissiondwd);
+                                        Functions.Read.checkbinary(1, GTA.Offsets.Editor.twrst, cbmissionrwbs1);
+                                        Functions.Read.checkbinary(2, GTA.Offsets.Editor.twrst, cbmissionrwbs2);
+                                        Functions.Read.checkbinary(3, GTA.Offsets.Editor.twrst, cbmissionrwbs3);
+                                        Functions.Read.checkbinary(4, GTA.Offsets.Editor.twrst, cbmissionrwbs4);
+                                        Functions.Read.checkbinary(20, GTA.Offsets.Editor.trel, cbmissiontrel12);
+                                        Functions.Read.checkbinary(21, GTA.Offsets.Editor.trel, cbmissiontrel13);
+                                        Functions.Read.checkbinary(22, GTA.Offsets.Editor.trel, cbmissiontrel14);
+                                        Functions.Read.checkbinary(23, GTA.Offsets.Editor.trel, cbmissiontrel23);
+                                        Functions.Read.checkbinary(24, GTA.Offsets.Editor.trel, cbmissiontrel24);
+                                        Functions.Read.checkbinary(25, GTA.Offsets.Editor.trel, cbmissiontrel34);
+                                        Functions.Read.checkbinary(5, GTA.Offsets.Editor.menubs9, cbmissionedw);
+                                        Functions.Read.checkbinary(24, GTA.Offsets.Editor.menubs24, cbmissionemp);
+                                        Functions.Read.checkbinary(8, GTA.Offsets.Editor.menubs25, cbmissionempnm);
                                         if (!tbmissionempdura.IsFocused) tbmissionempdura.Text = new Global(GTA.Offsets.Editor.pnEMPd).Get<int>().ToString();
                                         if (!tbmissionemppsr.IsFocused) tbmissionemppsr.Text = new Global(GTA.Offsets.Editor.pnEMPp).Get<int>().ToString();
                                         GetMissionExtraValues();
 
 
-                                        if (Functions.Read.checkbinary(1, GTA.Offsets.Editor.menubs))
+                                        if (Functions.Read.checkbinary(0, GTA.Offsets.Editor.menubs))
                                         {
                                             ddmissionplyrlm.SelectedIndex = 1;
                                         }
-                                        else if (Functions.Read.checkbinary(6, GTA.Offsets.Editor.menubs))
+                                        else if (Functions.Read.checkbinary(5, GTA.Offsets.Editor.menubs))
                                         {
                                             ddmissionplyrlm.SelectedIndex = 2;
                                         }
@@ -635,23 +635,23 @@ namespace Xenvious
                                         if (!tbMissionendtype.IsFocused) tbMissionendtype.Text = new Global(GTA.Offsets.Editor.endtype).Get<int>().ToString();
 
 
-                                        Functions.Read.checkbinary(31, GTA.Offsets.Editor.menubs3, cboloarmor);
-                                        Functions.Read.checkbinary(1, GTA.Offsets.Editor.menubs2, cboloweapon);
-                                        Functions.Read.checkbinary(16, GTA.Offsets.Editor.menubs4, cbolohideweth);
-                                        Functions.Read.checkbinary(23, GTA.Offsets.Editor.menubs8, cboloroundtime);
-                                        Functions.Read.checkbinary(13, GTA.Offsets.Editor.menubs9, cbologametype);
-                                        Functions.Read.checkbinary(19, GTA.Offsets.Editor.menubs3, cbolosuddendeath);
-                                        Functions.Read.checkbinary(15, GTA.Offsets.Editor.menubs4, cbolohidetod);
-                                        Functions.Read.checkbinary(2, GTA.Offsets.Editor.menubs5, cbololockvehicleclass);
-                                        Functions.Read.checkbinary(15, GTA.Offsets.Editor.menubs5, cbolonumberofteams);
-                                        Functions.Read.checkbinary(21, GTA.Offsets.Editor.menubs6, cboloci);
-                                        Functions.Read.checkbinary(9, GTA.Offsets.Editor.menubs8, cbolotargetscore);
-                                        Functions.Read.checkbinary(10, GTA.Offsets.Editor.menubs10, cbolorounds);
-                                        Functions.Read.checkbinary(1, GTA.Offsets.Editor.menubs10, cbolokm);
-                                        Functions.Read.checkbinary(2, GTA.Offsets.Editor.menubs10, cbologametype2);
-                                        Functions.Read.checkbinary(1, GTA.Offsets.Editor.menubs13, cbolopu);
-                                        Functions.Read.checkbinary(4, GTA.Offsets.Editor.menubs18, cbolovehlist);
-                                        Functions.Read.checkbinary(26, GTA.Offsets.Editor.menubs2, cbolodisableblips);
+                                        Functions.Read.checkbinary(30, GTA.Offsets.Editor.menubs3, cboloarmor);
+                                        Functions.Read.checkbinary(0, GTA.Offsets.Editor.menubs2, cboloweapon);
+                                        Functions.Read.checkbinary(15, GTA.Offsets.Editor.menubs4, cbolohideweth);
+                                        Functions.Read.checkbinary(22, GTA.Offsets.Editor.menubs8, cboloroundtime);
+                                        Functions.Read.checkbinary(12, GTA.Offsets.Editor.menubs9, cbologametype);
+                                        Functions.Read.checkbinary(18, GTA.Offsets.Editor.menubs3, cbolosuddendeath);
+                                        Functions.Read.checkbinary(14, GTA.Offsets.Editor.menubs4, cbolohidetod);
+                                        Functions.Read.checkbinary(1, GTA.Offsets.Editor.menubs5, cbololockvehicleclass);
+                                        Functions.Read.checkbinary(14, GTA.Offsets.Editor.menubs5, cbolonumberofteams);
+                                        Functions.Read.checkbinary(20, GTA.Offsets.Editor.menubs6, cboloci);
+                                        Functions.Read.checkbinary(8, GTA.Offsets.Editor.menubs8, cbolotargetscore);
+                                        Functions.Read.checkbinary(9, GTA.Offsets.Editor.menubs10, cbolorounds);
+                                        Functions.Read.checkbinary(0, GTA.Offsets.Editor.menubs10, cbolokm);
+                                        Functions.Read.checkbinary(1, GTA.Offsets.Editor.menubs10, cbologametype2);
+                                        Functions.Read.checkbinary(0, GTA.Offsets.Editor.menubs13, cbolopu);
+                                        Functions.Read.checkbinary(3, GTA.Offsets.Editor.menubs18, cbolovehlist);
+                                        Functions.Read.checkbinary(25, GTA.Offsets.Editor.menubs2, cbolodisableblips);
                                         getNRCIDValues(false);
                                     }
                                     else if (PageInnerMission.SelectedItem == PageInnerMissionPlayerSettings)
@@ -702,7 +702,7 @@ namespace Xenvious
                                     else if (PageInnerMission.SelectedItem == PageInnerMissionTeamSettings)
                                     {
                                         CheckTeamSettingSection();
-                                        Functions.Read.checkbinary(31, GTA.Offsets.Editor.menubs, cbmissionrspspawninveh);
+                                        Functions.Read.checkbinary(30, GTA.Offsets.Editor.menubs, cbmissionrspspawninveh);
                                     }
                                     else if (PageInnerMission.SelectedItem == PageInnerMissionIPL)
                                     {

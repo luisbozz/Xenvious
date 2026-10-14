@@ -472,8 +472,8 @@
                                     <StackPanel>
                                         <TextBlock Style="{StaticResource Lbl}" Text="{Binding RiseLabel}"/>
                                         <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="80"/></Grid.ColumnDefinitions>
-                                            <Slider Minimum="-50" Maximum="50" VerticalAlignment="Center" Value="{Binding Rise, Mode=TwoWay}"/>
-                                            <TextBox Grid.Column="1" Style="{StaticResource Field}" Margin="8,0,0,0" helpers:NumericNudge.Step="0.1" Text="{Binding Rise, Converter={StaticResource Num}, ConverterParameter=2, UpdateSourceTrigger=LostFocus}"/>
+                                            <Slider Minimum="-5" Maximum="5" SmallChange="0.01" LargeChange="0.25" TickFrequency="0.01" IsSnapToTickEnabled="True" VerticalAlignment="Center" Value="{Binding Rise, Mode=TwoWay}"/>
+                                            <TextBox Grid.Column="1" Style="{StaticResource Field}" Margin="8,0,0,0" helpers:NumericNudge.Step="0.01" Text="{Binding Rise, Converter={StaticResource Num}, ConverterParameter=2, UpdateSourceTrigger=LostFocus}"/>
                                         </Grid>
                                         <StackPanel Orientation="Horizontal" Margin="0,8,0,0" Visibility="{Binding ShapeSupportsAutoPitch, Converter={StaticResource BoolVis}}">
                                             <CheckBox VerticalAlignment="Center" IsChecked="{Binding AutoPitch}"/>
@@ -522,15 +522,32 @@
                                         <Slider Minimum="-180" Maximum="180" VerticalAlignment="Center" Value="{Binding StartYaw, Mode=TwoWay}"/>
                                         <TextBox Grid.Column="1" Style="{StaticResource Field}" Margin="8,0,0,0" helpers:NumericNudge.Step="1" Text="{Binding StartYaw, Converter={StaticResource Num}, ConverterParameter=2, UpdateSourceTrigger=LostFocus}"/>
                                     </Grid>
+                                    <!-- fine adjustment of the whole block, only while it stands in GTA as a preview -->
+                                    <StackPanel Margin="0,16,0,0" Visibility="{Binding IsPreviewActive, Converter={StaticResource BoolVis}}">
+                                        <TextBlock Style="{StaticResource Lbl}" FontWeight="Bold" Margin="0,0,0,2" Tag="{Binding DataContext.Translation[adv_fine_title], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Feinjustierung (ganzer Block)'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                        <TextBlock Style="{StaticResource Muted}" Tag="{Binding DataContext.Translation[adv_fine_help], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Verschiebt alle Teile zusammen, in Richtung des Starts. In GTA sofort sichtbar.'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                        <Grid Margin="0,4,0,0">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="96"/><ColumnDefinition Width="*"/><ColumnDefinition Width="80"/></Grid.ColumnDefinitions>
+                                            <TextBlock Style="{StaticResource Muted}" Margin="0" VerticalAlignment="Center" Tag="{Binding DataContext.Translation[adv_fine_x], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Links/Rechts'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                            <Slider Grid.Column="1" Minimum="-10" Maximum="10" SmallChange="0.01" LargeChange="0.5" VerticalAlignment="Center" Value="{Binding FineX, Mode=TwoWay}"/>
+                                            <TextBox Grid.Column="2" Style="{StaticResource Field}" Margin="8,0,0,0" helpers:NumericNudge.Step="0.05" Text="{Binding FineX, Converter={StaticResource Num}, ConverterParameter=2, UpdateSourceTrigger=LostFocus}"/>
+                                        </Grid>
+                                        <Grid Margin="0,4,0,0">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="96"/><ColumnDefinition Width="*"/><ColumnDefinition Width="80"/></Grid.ColumnDefinitions>
+                                            <TextBlock Style="{StaticResource Muted}" Margin="0" VerticalAlignment="Center" Tag="{Binding DataContext.Translation[adv_fine_y], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Vor/Zurück'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                            <Slider Grid.Column="1" Minimum="-10" Maximum="10" SmallChange="0.01" LargeChange="0.5" VerticalAlignment="Center" Value="{Binding FineY, Mode=TwoWay}"/>
+                                            <TextBox Grid.Column="2" Style="{StaticResource Field}" Margin="8,0,0,0" helpers:NumericNudge.Step="0.05" Text="{Binding FineY, Converter={StaticResource Num}, ConverterParameter=2, UpdateSourceTrigger=LostFocus}"/>
+                                        </Grid>
+                                        <Grid Margin="0,4,0,0">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="96"/><ColumnDefinition Width="*"/><ColumnDefinition Width="80"/></Grid.ColumnDefinitions>
+                                            <TextBlock Style="{StaticResource Muted}" Margin="0" VerticalAlignment="Center" Tag="{Binding DataContext.Translation[adv_fine_z], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Hoch/Runter'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                            <Slider Grid.Column="1" Minimum="-10" Maximum="10" SmallChange="0.01" LargeChange="0.5" VerticalAlignment="Center" Value="{Binding FineZ, Mode=TwoWay}"/>
+                                            <TextBox Grid.Column="2" Style="{StaticResource Field}" Margin="8,0,0,0" helpers:NumericNudge.Step="0.05" Text="{Binding FineZ, Converter={StaticResource Num}, ConverterParameter=2, UpdateSourceTrigger=LostFocus}"/>
+                                        </Grid>
+                                        <Button Style="{StaticResource Btn}" HorizontalAlignment="Left" Margin="0,8,0,0" Command="{Binding ResetFineCommand}" Tag="{Binding DataContext.Translation[adv_fine_reset], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Zurücksetzen'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                                    </StackPanel>
                                 </StackPanel>
 
-                                <!-- step 4: done -->
-                                <StackPanel Visibility="{Binding QuickStep, Converter={StaticResource EqVis}, ConverterParameter=4}">
-                                    <TextBlock Style="{StaticResource Lbl}" FontWeight="Bold" Text="{Binding QuickSummary}"/>
-                                    <TextBlock Style="{StaticResource Lbl}" Text="{Binding PlanInfoText}"/>
-                                    <TextBlock Style="{StaticResource Muted}" Margin="0,10,0,0" Tag="{Binding DataContext.Translation[adv_qs4_help], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Unter der Vorschau platzieren, live anpassen oder als Creator-Template speichern. Feinschliff Zahl für Zahl geht in der Experten-Ansicht – sie übernimmt alles von hier.'}" Text="{Binding Tag, RelativeSource={RelativeSource Self}}" />
-                                    <Button Style="{StaticResource Btn}" HorizontalAlignment="Left" Margin="0,10,0,0" Command="{Binding OpenInExpertCommand}" Tag="{Binding DataContext.Translation[adv_open_expert], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='In Experte öffnen'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
-                                </StackPanel>
                             </Grid>
                         </Border>
                     </ScrollViewer>
@@ -595,17 +612,6 @@
                                     <Style TargetType="Ellipse" BasedOn="{StaticResource StepDot}">
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding QuickStep, Converter={StaticResource AtLeast}, ConverterParameter=3}" Value="True">
-                                                <Setter Property="Fill" Value="{DynamicResource PrimaryButtonBackground}"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Ellipse.Style>
-                            </Ellipse>
-                            <Ellipse>
-                                <Ellipse.Style>
-                                    <Style TargetType="Ellipse" BasedOn="{StaticResource StepDot}">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding QuickStep, Converter={StaticResource AtLeast}, ConverterParameter=4}" Value="True">
                                                 <Setter Property="Fill" Value="{DynamicResource PrimaryButtonBackground}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
@@ -769,8 +775,10 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
@@ -778,15 +786,82 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <Button Grid.Column="0" Style="{StaticResource PrimaryBtn}" Command="{Binding PlaceCommand}" ToolTip="{Binding FeatureHintText}" Content="{Binding PlaceButtonText}" />
-                        <ToggleButton Grid.Column="1" Style="{StaticResource LivePill}" Margin="10,0,0,0" IsChecked="{Binding LiveChanges}" IsEnabled="{Binding CanPlace}"
-                                      ToolTip="{Binding DataContext.Translation[adv_live_tip], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Jede Änderung wird sofort in GTA gesetzt (die vorige Live-Platzierung wird dabei ersetzt).'}"
-                                      Tag="{Binding DataContext.Translation[adv_live], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Live'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
-                        <Button Grid.Column="2" Style="{StaticResource SecondaryBtn}" Margin="10,0,0,0" Command="{Binding UndoCommand}" Tag="{Binding DataContext.Translation[adv_undo], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Rückgängig'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
-                        <Button Grid.Column="4" Style="{StaticResource SecondaryBtn}" Margin="0,0,10,0" Command="{Binding SavePresetCommand}" Tag="{Binding DataContext.Translation[adv_save_preset], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Als Preset speichern'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
-                        <Button Grid.Column="5" Style="{StaticResource SecondaryBtn}" Command="{Binding OpenTemplatesCommand}" IsEnabled="{Binding CanUseTemplates}" ToolTip="{Binding FeatureHintText}" Tag="{Binding DataContext.Translation[adv_copy_templates], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='In Templates kopieren'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                        <!-- preview in GTA: what stands in the game but is not placed yet -->
+                        <Border Grid.Row="0" Grid.ColumnSpan="7" CornerRadius="5" Background="{DynamicResource DeepBrush}" BorderBrush="{DynamicResource OkBrush}" BorderThickness="3,0,0,0"
+                                Padding="12,8" Margin="0,0,0,12" Visibility="{Binding IsPreviewActive, Converter={StaticResource BoolVis}}">
+                            <StackPanel Orientation="Horizontal">
+                                <Ellipse Width="10" Height="10" Fill="{DynamicResource OkBrush}" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                <TextBlock Foreground="{DynamicResource TextColor}" FontSize="13" TextWrapping="Wrap" VerticalAlignment="Center" Text="{Binding PreviewText}"/>
+                            </StackPanel>
+                        </Border>
+                        <Button Grid.Row="1" Grid.Column="0" Style="{StaticResource PrimaryBtn}" Command="{Binding PlaceCommand}" ToolTip="{Binding FeatureHintText}" Content="{Binding PlaceButtonText}" />
+                        <ToggleButton Grid.Row="1" Grid.Column="1" Style="{StaticResource LivePill}" Margin="10,0,0,0" IsChecked="{Binding PreviewInGta}" IsEnabled="{Binding CanPlace}"
+                                      ToolTip="{Binding DataContext.Translation[adv_preview_tip], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Stellt den Plan sofort in GTA auf. Jede Änderung zeigt sich ohne Neuaufbau. „So platzieren“ übernimmt ihn, Ausschalten verwirft ihn.'}"
+                                      Tag="{Binding DataContext.Translation[adv_preview], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Vorschau in GTA'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                        <Button Grid.Row="1" Grid.Column="2" Style="{StaticResource SecondaryBtn}" Margin="10,0,0,0" Command="{Binding DiscardPreviewCommand}"
+                                Visibility="{Binding IsPreviewActive, Converter={StaticResource BoolVis}}" Tag="{Binding DataContext.Translation[adv_discard], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Verwerfen'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                        <!-- undo with its history: the arrow opens the list, a row takes back everything down to it -->
+                        <StackPanel Grid.Row="1" Grid.Column="3" Orientation="Horizontal" Margin="10,0,0,0">
+                            <Button Style="{StaticResource SecondaryBtn}" Command="{Binding UndoCommand}" Content="{Binding UndoButtonText}" Padding="18,0,12,0"/>
+                            <ToggleButton x:Name="HistoryToggle" Style="{StaticResource LivePill}" Margin="2,0,0,0" Padding="0" Width="30" IsChecked="{Binding IsHistoryOpen}" IsEnabled="{Binding CanUndo}"
+                                          ToolTip="{Binding DataContext.Translation[adv_history_tip], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Verlauf: ein Klick nimmt alles bis dort zurück'}">
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Border x:Name="b" CornerRadius="5" Background="{DynamicResource SeactionHeaderBackgroundBrush}">
+                                            <Border.Effect><DropShadowEffect BlurRadius="5" ShadowDepth="2" Opacity="0.6" Color="{DynamicResource ShadowColor}"/></Border.Effect>
+                                            <TextBlock Text="▾" FontSize="13" Foreground="{DynamicResource TextColor}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="b" Property="Background" Value="{DynamicResource ButtonHoverBackgroundBrush}"/>
+                                            </Trigger>
+                                            <Trigger Property="IsEnabled" Value="False">
+                                                <Setter TargetName="b" Property="Opacity" Value="0.35"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+                            <Popup IsOpen="{Binding IsHistoryOpen}" PlacementTarget="{Binding ElementName=HistoryToggle}" Placement="Top" StaysOpen="False" AllowsTransparency="True">
+                                <Border CornerRadius="5" Background="{DynamicResource DeepBrush}" BorderBrush="{DynamicResource LineBrush}" BorderThickness="1" Padding="0,4" Width="360" Margin="0,0,0,6">
+                                    <ItemsControl ItemsSource="{Binding History}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate DataType="{x:Type vm:PlacementStep}">
+                                                <Button Command="{Binding DataContext.UndoToCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}" Cursor="Hand" HorizontalContentAlignment="Stretch">
+                                                    <Button.Template>
+                                                        <ControlTemplate TargetType="Button">
+                                                            <Border x:Name="b" Background="Transparent" Padding="12,7">
+                                                                <ContentPresenter/>
+                                                            </Border>
+                                                            <ControlTemplate.Triggers>
+                                                                <Trigger Property="IsMouseOver" Value="True">
+                                                                    <Setter TargetName="b" Property="Background" Value="{DynamicResource ButtonHoverBackgroundBrush}"/>
+                                                                </Trigger>
+                                                            </ControlTemplate.Triggers>
+                                                        </ControlTemplate>
+                                                    </Button.Template>
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock Foreground="{DynamicResource TextColor}" FontSize="13" TextTrimming="CharacterEllipsis" MaxWidth="220" Text="{Binding Title}"/>
+                                                            <TextBlock Foreground="{DynamicResource FaintTextBrush}" FontSize="12" Margin="8,0,0,0" VerticalAlignment="Center" Text="{Binding Detail}"/>
+                                                        </StackPanel>
+                                                        <TextBlock Grid.Column="1" Foreground="{DynamicResource FaintTextBrush}" FontSize="12" VerticalAlignment="Center" Text="{Binding Time}"/>
+                                                    </Grid>
+                                                </Button>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </Border>
+                            </Popup>
+                        </StackPanel>
+                        <Button Grid.Row="1" Grid.Column="5" Style="{StaticResource SecondaryBtn}" Margin="0,0,10,0" Command="{Binding SavePresetCommand}" Tag="{Binding DataContext.Translation[adv_save_preset], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Als Preset speichern'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
+                        <Button Grid.Row="1" Grid.Column="6" Style="{StaticResource SecondaryBtn}" Command="{Binding OpenTemplatesCommand}" IsEnabled="{Binding CanUseTemplates}" ToolTip="{Binding FeatureHintText}" Tag="{Binding DataContext.Translation[adv_copy_templates], RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='In Templates kopieren'}" Content="{Binding Tag, RelativeSource={RelativeSource Self}}" />
                         <!-- heading: the last thing to adjust after a preset, same value as yaw in step 4 -->
-                        <Grid Grid.Row="1" Grid.ColumnSpan="6" Margin="2,12,0,0">
+                        <Grid Grid.Row="2" Grid.ColumnSpan="7" Margin="2,12,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
@@ -796,7 +871,7 @@
                             <Slider Grid.Column="1" Minimum="-180" Maximum="180" VerticalAlignment="Center" Value="{Binding StartYaw, Mode=TwoWay}"/>
                             <TextBox Grid.Column="2" Style="{StaticResource Field}" Margin="8,0,0,0" helpers:NumericNudge.Step="1" Text="{Binding StartYaw, Converter={StaticResource Num}, ConverterParameter=2, UpdateSourceTrigger=LostFocus}"/>
                         </Grid>
-                        <StackPanel Grid.Row="2" Grid.ColumnSpan="6" Margin="2,10,0,0">
+                        <StackPanel Grid.Row="3" Grid.ColumnSpan="7" Margin="2,10,0,0">
                             <TextBlock Foreground="{DynamicResource MutedTextBrush}" FontSize="12" Text="{Binding PlanInfoText}"/>
                             <TextBlock Foreground="{DynamicResource TextColor}" FontSize="13" Margin="0,3,0,0" TextWrapping="Wrap" Text="{Binding Status}"/>
                         </StackPanel>

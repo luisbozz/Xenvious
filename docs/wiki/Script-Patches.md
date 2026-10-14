@@ -66,7 +66,8 @@ active**; otherwise the creator calls into bytecode that is not there and GTA
 crashes.
 
 On Enhanced the creators load with extra 16 KB pages behind their code
-(`Creator Classes/ScriptSpace.cs`, `[SCRIPTSPACE]` in `offsets.ini`). The
+(`Creator Classes/ScriptSpace.cs`, `[SCRIPTSPACE]` in `offsets.ini`, which
+the updater computes from the page flags of the build's `.ysc`). The
 custom functions and the shape drawer (`ScriptDrawer`) run from the first
 extra page; the last one is a data page the script reaches as string page 63,
 and it holds the variables. Legacy resources cannot grow, so there the same
@@ -74,8 +75,14 @@ payload lives in a creator function given up for it, the vehicle mod preset
 table (`[SCRIPTVICTIM]` in the legacy `offsets.ini`). The patch "give up the
 vehicle preset table" makes it return at once; one whole 16 KB page of it is
 the data page. Placed vehicles with a mod preset then look stock in the
-creator; jobs are not affected. The payload sources (custom functions,
-drawer, zone labels) and their builder are in ysc-global-updater
+creator; jobs are not affected. The payload also answers the job file export
+and import (`JobDatafile`): on request it hands over datafile 0 and a node of
+every type, so those need no addresses from the game's exe, but they need the
+experimental script features on. Xenvious only writes a payload into a space
+it set up itself: a creator still loaded with an earlier session's payload keeps
+it (its hooks CALL into that payload's labels, and a payload of another size
+moved them, which crashed GTA) until it is loaded again. The payload sources (custom functions,
+drawer, zone labels, datafile probe) and their builder are in ysc-global-updater
 (`scrpatches/scrasm/customfuncs/page/`).
 
 ## Opcode cheat sheet (GTA V YSC)
@@ -95,9 +102,11 @@ assembler in ysc-global-updater.
 ## When a patch breaks
 
 A pattern stops matching when Rockstar changes the instruction sequence of
-that function, not just its operands. The updater's `check_patches.py` shows
-which patches no longer match on a new build, and `repair_scrpatches.py`
-re-derives them where it can. See [Updating for a new GTA build](Game-Updates.md).
+that function, not just its operands. On an update the updater finds every
+patch again through its function (fingerprint, then instruction alignment),
+rebuilds the pattern there and carries the operands in the patch bytes; what
+changed is shown for review. `check_patches.py` and `doctor.py` remain for a
+closer look. See [Updating for a new GTA build](Game-Updates.md).
 
 A patch that matches **more than once** is as bad as none: it may write into
 the wrong function. Make patterns long enough to be unique.

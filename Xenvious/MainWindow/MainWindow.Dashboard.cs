@@ -19,7 +19,7 @@ namespace Xenvious
     /// </summary>
     public partial class MainWindow
     {
-        private enum LaunchPhase { None, WaitingForFocus, Requested, ScriptLoaded, Failed }
+        private enum LaunchPhase { None, Requested, ScriptLoaded, Failed }
 
         private static readonly TimeSpan LaunchTimeout = TimeSpan.FromSeconds(120);
         private static readonly TimeSpan FailureShownFor = TimeSpan.FromSeconds(20);
@@ -265,152 +265,21 @@ namespace Xenvious
 
             bool start = await ConfirmAsync(
                 TranslateOr("launch_story_title", "Story Mode erkannt"),
-                TranslateOr("launch_story_text2", "Soll Xenvious den Creator direkt starten? Xenvious holt dazu GTA nach vorne und meldet sich, sobald der Creator läuft."),
+                TranslateOr("launch_story_text3", "Soll Xenvious den Creator direkt starten? Xenvious meldet sich, sobald der Creator läuft."),
                 TranslateOr("launch_button", "Creator starten"),
                 TranslateOr("launch_not_now", "Nicht jetzt"));
             if (start)
                 StartLaunch();
         }
 
-        [DllImport("user32.dll")]
-        private static extern IntPtr GetForegroundWindow();
-
-        [DllImport("user32.dll")]
-        private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
-
-        [DllImport("user32.dll")]
-        private static extern bool SetForegroundWindow(IntPtr hWnd);
-
-        [DllImport("user32.dll")]
-        private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-
-        [DllImport("user32.dll")]
-        private static extern bool IsIconic(IntPtr hWnd);
-
-        private const int SW_RESTORE = 9;
-
-        private static readonly TimeSpan FocusWait = TimeSpan.FromSeconds(60);
-        private static readonly TimeSpan AutoFocusWait = TimeSpan.FromSeconds(3);
-        private DispatcherTimer _focusTimer;
-
         /// <summary>
-        /// Brings the game window to the front. Windows only allows this to the process
-        /// that has the focus, which Xenvious has right after its button was clicked.
-        /// </summary>
-        private static bool FocusGame()
-        {
-            try
-            {
-                foreach (var process in Process.GetProcessesByName(GameVariant.ProcessName))
-                {
-                    IntPtr window = process.MainWindowHandle;
-                    if (window == IntPtr.Zero)
-                        continue;
-                    if (IsIconic(window))
-                        ShowWindow(window, SW_RESTORE);
-                    return SetForegroundWindow(window);
-                }
-            }
-            catch (Exception ex)
-            {
-                Log.Debug("focus game: " + ex.Message, source: "dashboard");
-            }
-            return false;
-        }
-
-        private static bool GameHasFocus()
-        {
-            try
-            {
-                GetWindowThreadProcessId(GetForegroundWindow(), out uint pid);
-                return pid != 0 && Process.GetProcessById((int)pid).ProcessName
-                    .Equals(GameVariant.ProcessName, StringComparison.OrdinalIgnoreCase);
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Enhanced only takes the launch reliably while GTA has window focus (without it
-        /// the transition ends up in GTA Online), so there Xenvious brings the game to the
-        /// front first and starts once it has the focus. Only if Windows refuses that does
-        /// a dialog ask the player to switch. Legacy starts right away.
+        /// The player is usually in GTA while the creator starts, so Xenvious tells them what
+        /// happened when they come back: one dialog per launch.
         /// </summary>
         private void StartLaunch()
         {
             if (!m.IsProcOpen)
                 return;
-            _launchStarted = DateTime.UtcNow;
-            if (!GameVariant.IsEnhanced || GameHasFocus())
-            {
-                FireLaunch();
-                return;
-            }
-
-            _launchPhase = LaunchPhase.WaitingForFocus;
-            bool focused = FocusGame();
-            Log.Info($"Launch creator: bringing GTA to the front ({(focused ? "ok" : "refused")})", source: "dashboard");
-            bool asked = false;
-            _focusTimer?.Stop();
-            _focusTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(100) };
-            _focusTimer.Tick += (_, __) =>
-            {
-                if (_launchPhase != LaunchPhase.WaitingForFocus)
-                {
-                    _focusTimer.Stop();
-                }
-                else if (GameHasFocus())
-                {
-                    _focusTimer.Stop();
-                    if (asked)
-                        CloseDialog(false);
-                    FireLaunch();
-                }
-                else if (!asked && DateTime.UtcNow - _launchStarted > AutoFocusWait)
-                {
-                    // Windows did not hand over the focus; ask the player instead.
-                    asked = true;
-                    Log.Info("Launch creator: waiting for the player to switch to GTA", source: "dashboard");
-                    ShowFocusDialog();
-                }
-                else if (DateTime.UtcNow - _launchStarted > FocusWait || !m.IsProcOpen)
-                {
-                    _focusTimer.Stop();
-                    if (asked)
-                        CloseDialog(false);
-                    _launchPhase = LaunchPhase.None;
-                    Log.Info("Launch creator: GTA never got focus, cancelled", source: "dashboard");
-                    UpdateDashboardStatus();
-                }
-            };
-            _focusTimer.Start();
-            UpdateDashboardStatus();
-        }
-
-        // The dialog's only button cancels; it closes by itself once GTA has focus.
-        private async void ShowFocusDialog()
-        {
-            bool cancel = await ConfirmAsync(
-                TranslateOr("launch_focus_title", "Zu GTA wechseln"),
-                TranslateOr("launch_focus_text", "In GTA V Enhanced startet der Creator nur, wenn das Spiel im Vordergrund ist. Wechsle jetzt zu GTA – der Start läuft dann automatisch."),
-                TranslateOr("dialog_cancel", "Abbrechen"), null);
-            if (cancel && _launchPhase == LaunchPhase.WaitingForFocus)
-            {
-                _focusTimer?.Stop();
-                _launchPhase = LaunchPhase.None;
-                Log.Info("Launch creator: cancelled", source: "dashboard");
-                UpdateDashboardStatus();
-            }
-        }
-
-        /// <summary>
-        /// GTA has the focus while the creator starts, so Xenvious tells the player what
-        /// happened when they come back: one dialog per launch.
-        /// </summary>
-        private void FireLaunch()
-        {
             LaunchCreator();
             _launchPhase = LaunchPhase.Requested;
             _launchStarted = DateTime.UtcNow;

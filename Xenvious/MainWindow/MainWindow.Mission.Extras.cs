@@ -10,8 +10,8 @@ namespace Xenvious
         // Bits in the job's option bitsets that fm_mission_controller acts on but the
         // LTS and Capture creators never offer. The General page shows them next to
         // the related creator options. The creator saves each bitset as a whole, so a bit
-        // set here stays in the published job. Bit indices are 1-based like
-        // writebinary. The bitset offsets are read when used, because OffsetLoader
+        // set here stays in the published job. Bit indices are 0-based like
+        // the scripts. The bitset offsets are read when used, because OffsetLoader
         // can load them again for the other edition.
         private (CheckBox Box, Func<long> Bitset, int Bit)[] missionExtraBits;
 
@@ -23,29 +23,29 @@ namespace Xenvious
                 {
                     missionExtraBits = new (CheckBox, Func<long>, int)[]
                     {
-                        (cbmissionextstartcover, () => GTA.Offsets.Editor.menubs2, 13),
-                        (cbmissionextnopv, () => GTA.Offsets.Editor.menubs2, 19),
-                        (cbmissionextbestweap, () => GTA.Offsets.Editor.menubs4, 5),
-                        (cbmissionextnodropweap, () => GTA.Offsets.Editor.menubs4, 7),
-                        (cbmissionextnodropammo, () => GTA.Offsets.Editor.menubs4, 28),
-                        (cbmissionextteamheal, () => GTA.Offsets.Editor.menubs5, 23),
-                        (cbmissionextteamvehexproof, () => GTA.Offsets.Editor.menubs6, 2),
-                        (cbmissionextdelvehdeath, () => GTA.Offsets.Editor.menubs7, 27),
-                        (cbmissionextnoarmour, () => GTA.Offsets.Editor.menubs8, 27),
-                        (cbmissionexthidelives, () => GTA.Offsets.Editor.menubs12, 15),
-                        (cbmissionexthidereticle, () => GTA.Offsets.Editor.menubs12, 22),
-                        (cbmissionextruinernorockets, () => GTA.Offsets.Editor.menubs12, 32),
-                        (cbmissionextnoregionvfx, () => GTA.Offsets.Editor.menubs13, 14),
-                        (cbmissionextindoorsprint, () => GTA.Offsets.Editor.menubs13, 29),
-                        (cbmissionextmuteambience, () => GTA.Offsets.Editor.menubs15, 7),
-                        (cbmissionextconvroofdown, () => GTA.Offsets.Editor.menubs19, 17),
-                        (cbmissionextnoheadlights, () => GTA.Offsets.Editor.menubs19, 21),
-                        (cbmissionextnovehexpdmg, () => GTA.Offsets.Editor.menubs21, 13),
-                        (cbmissionextnostuckdestroy, () => GTA.Offsets.Editor.menubs23, 16),
-                        (cbmissionextnothrowweap, () => GTA.Offsets.Editor.menubs31, 26),
+                        (cbmissionextstartcover, () => GTA.Offsets.Editor.menubs2, 12),
+                        (cbmissionextnopv, () => GTA.Offsets.Editor.menubs2, 18),
+                        (cbmissionextbestweap, () => GTA.Offsets.Editor.menubs4, 4),
+                        (cbmissionextnodropweap, () => GTA.Offsets.Editor.menubs4, 6),
+                        (cbmissionextnodropammo, () => GTA.Offsets.Editor.menubs4, 27),
+                        (cbmissionextteamheal, () => GTA.Offsets.Editor.menubs5, 22),
+                        (cbmissionextteamvehexproof, () => GTA.Offsets.Editor.menubs6, 1),
+                        (cbmissionextdelvehdeath, () => GTA.Offsets.Editor.menubs7, 26),
+                        (cbmissionextnoarmour, () => GTA.Offsets.Editor.menubs8, 26),
+                        (cbmissionexthidelives, () => GTA.Offsets.Editor.menubs12, 14),
+                        (cbmissionexthidereticle, () => GTA.Offsets.Editor.menubs12, 21),
+                        (cbmissionextruinernorockets, () => GTA.Offsets.Editor.menubs12, 31),
+                        (cbmissionextnoregionvfx, () => GTA.Offsets.Editor.menubs13, 13),
+                        (cbmissionextindoorsprint, () => GTA.Offsets.Editor.menubs13, 28),
+                        (cbmissionextmuteambience, () => GTA.Offsets.Editor.menubs15, 6),
+                        (cbmissionextconvroofdown, () => GTA.Offsets.Editor.menubs19, 16),
+                        (cbmissionextnoheadlights, () => GTA.Offsets.Editor.menubs19, 20),
+                        (cbmissionextnovehexpdmg, () => GTA.Offsets.Editor.menubs21, 12),
+                        (cbmissionextnostuckdestroy, () => GTA.Offsets.Editor.menubs23, 15),
+                        (cbmissionextnothrowweap, () => GTA.Offsets.Editor.menubs31, 25),
                         // The same two world options on the dashboard.
-                        (cbdashmuteambience, () => GTA.Offsets.Editor.menubs15, 7),
-                        (cbdashnoregionvfx, () => GTA.Offsets.Editor.menubs13, 14),
+                        (cbdashmuteambience, () => GTA.Offsets.Editor.menubs15, 6),
+                        (cbdashnoregionvfx, () => GTA.Offsets.Editor.menubs13, 13),
                     };
                 }
                 return missionExtraBits;

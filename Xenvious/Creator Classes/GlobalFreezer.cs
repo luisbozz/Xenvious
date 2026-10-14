@@ -27,7 +27,7 @@ namespace Xenvious
         {
             Name = name;
             GlobalName = global;
-            GlobalValue = OffsetLoader.GetGlobalOffset(OffsetLoader.PrepareGlobal(global));
+            GlobalValue = GlobalPath.Evaluate(global);
             val = value;
             _type = value.GetType();
             ChangeValueFunc(value);
