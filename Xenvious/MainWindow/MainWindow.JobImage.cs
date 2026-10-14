@@ -197,7 +197,7 @@ namespace Xenvious
         {
             var ofd = new OpenFileDialog
             {
-                Title = "Select any Image file",
+                Title = Instance.TranslateOr("img_select", "Select an image file"),
                 Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png, *.gif) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png; *.gif",
                 InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures),
                 Multiselect = false

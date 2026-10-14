@@ -429,7 +429,7 @@ namespace Xenvious
             Directory.CreateDirectory(JobFileFolder);
             var dialog = new SaveFileDialog
             {
-                Filter = "Job file (*.json)|*.json",
+                Filter = TranslateOr("cj_file_filter", "Job file (*.json)|*.json"),
                 InitialDirectory = JobFileFolder,
                 FileName = SafeFileName(title, "job") + ".json"
             };

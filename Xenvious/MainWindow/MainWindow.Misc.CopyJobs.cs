@@ -55,7 +55,7 @@ namespace Xenvious
             Directory.CreateDirectory(JobFileFolder);
             var dialog = new Microsoft.Win32.SaveFileDialog
             {
-                Filter = "Job file (*.json)|*.json",
+                Filter = TranslateOr("cj_file_filter", "Job file (*.json)|*.json"),
                 InitialDirectory = JobFileFolder,
                 FileName = SafeFileName(tbCopyName.Text, copyJobContentId ?? "job") + ".json"
             };
@@ -170,7 +170,7 @@ namespace Xenvious
                     }
                     else if (int.Parse(jobjson.Mission.Gen.Type.ToString()) == 0 && int.Parse(jobjson.Mission.Gen.Subtype.ToString()) == 5)
                     {
-                        tbCopyJobType.Content = "Last Tean Standing";
+                        tbCopyJobType.Content = TranslateOr("cj_type_lts", "Last Team Standing");
                     }
                     else if (int.Parse(jobjson.Mission.Gen.Type.ToString()) == 0)
                     {
@@ -178,52 +178,52 @@ namespace Xenvious
                     }
                     else if (int.Parse(jobjson.Mission.Gen.Type.ToString()) == 2 && (int.Parse(jobjson.Mission.Gen.Subtype.ToString()) == 0 || int.Parse(jobjson.Mission.Gen.Subtype.ToString()) == 1))
                     {
-                        tbCopyJobType.Content = "Land Race";
+                        tbCopyJobType.Content = TranslateOr("rv_type_land", "Land Race");
                     }
                     else if (int.Parse(jobjson.Mission.Gen.Type.ToString()) == 2 && (int.Parse(jobjson.Mission.Gen.Subtype.ToString()) == 2 || int.Parse(jobjson.Mission.Gen.Subtype.ToString()) == 3))
                     {
-                        tbCopyJobType.Content = "Water Race";
+                        tbCopyJobType.Content = TranslateOr("cj_type_water", "Water race");
                     }
                     else if (int.Parse(jobjson.Mission.Gen.Type.ToString()) == 2 && (int.Parse(jobjson.Mission.Gen.Subtype.ToString()) == 4 || int.Parse(jobjson.Mission.Gen.Subtype.ToString()) == 5))
                     {
-                        tbCopyJobType.Content = "Air Race";
+                        tbCopyJobType.Content = TranslateOr("rv_type_air", "Air Race");
                     }
                     else if (int.Parse(jobjson.Mission.Gen.Type.ToString()) == 2 && int.Parse(jobjson.Mission.Gen.Subtype.ToString()) == 0
                         && (int.Parse(jobjson.Mission.Gen.Subtype.ToString()) == 6 || int.Parse(jobjson.Mission.Gen.Subtype.ToString()) == 7))
                     {
-                        tbCopyJobType.Content = "Stunt Race";
+                        tbCopyJobType.Content = TranslateOr("rv_type_stunt", "Stunt Race");
                     }
                     else if (int.Parse(jobjson.Mission.Gen.Type.ToString()) == 2 && int.Parse(jobjson.Mission.Gen.Subtype.ToString()) == 0
                         && (int.Parse(jobjson.Mission.Gen.Subtype.ToString()) == 8 || int.Parse(jobjson.Mission.Gen.Subtype.ToString()) == 9))
                     {
-                        tbCopyJobType.Content = "Parachuting";
+                        tbCopyJobType.Content = TranslateOr("cj_type_para", "Parachuting");
                     }
                     else if (int.Parse(jobjson.Mission.Gen.Type.ToString()) == 2 && int.Parse(jobjson.Mission.Gen.Subtype.ToString()) == 0
                         && (int.Parse(jobjson.Mission.Gen.Subtype.ToString()) == 10 || int.Parse(jobjson.Mission.Gen.Subtype.ToString()) == 11))
                     {
-                        tbCopyJobType.Content = "Foot Race";
+                        tbCopyJobType.Content = TranslateOr("cj_type_foot", "Foot race");
                     }
                     else if (int.Parse(jobjson.Mission.Gen.Type.ToString()) == 2 && (int.Parse(jobjson.Mission.Gen.Subtype.ToString()) == 18 || int.Parse(jobjson.Mission.Gen.Subtype.ToString()) == 19)
                         && (int.Parse(jobjson.Mission.Gen.Subtype.ToString()) == 0 || int.Parse(jobjson.Mission.Gen.Subtype.ToString()) == 1))
                     {
-                        tbCopyJobType.Content = "Target Assault Race";
+                        tbCopyJobType.Content = TranslateOr("cj_type_target", "Target Assault Race");
                     }
                     else if (int.Parse(jobjson.Mission.Gen.Type.ToString()) == 2 && (int.Parse(jobjson.Mission.Gen.Subtype.ToString()) == 6 || int.Parse(jobjson.Mission.Gen.Subtype.ToString()) == 7)
                         && (int.Parse(jobjson.Mission.Gen.Subtype.ToString()) == 20 || int.Parse(jobjson.Mission.Gen.Subtype.ToString()) == 21))
                     {
-                        tbCopyJobType.Content = "Transform Race";
+                        tbCopyJobType.Content = TranslateOr("cj_type_transform", "Transform Race");
                     }
                     else if (int.Parse(jobjson.Mission.Gen.Type.ToString()) == 1 && int.Parse(jobjson.Mission.Gen.Subtype.ToString()) == 0)
                     {
-                        tbCopyJobType.Content = "Deathmatch";
+                        tbCopyJobType.Content = TranslateOr("cj_type_dm", "Deathmatch");
                     }
                     else if (int.Parse(jobjson.Mission.Gen.Type.ToString()) == 1 && int.Parse(jobjson.Mission.Gen.Subtype.ToString()) == 1)
                     {
-                        tbCopyJobType.Content = "Team Deathmatch";
+                        tbCopyJobType.Content = TranslateOr("cj_type_tdm", "Team deathmatch");
                     }
                     else if (int.Parse(jobjson.Mission.Gen.Type.ToString()) == 1 && int.Parse(jobjson.Mission.Gen.Subtype.ToString()) == 2)
                     {
-                        tbCopyJobType.Content = "Vehicle Deathmatch";
+                        tbCopyJobType.Content = TranslateOr("cj_type_vdm", "Vehicle deathmatch");
                     }
                     else
                     {
@@ -231,8 +231,10 @@ namespace Xenvious
                     }
                 }
 
-                Array weth = new string[] { "Current", "EXTRASUNNY", "Rain", "Snow", "SMOG", "Halloween", "Halloween 2", "Clear", "Clouds", "Overcast", "Thunder", "Foggy" };
-                Array tod = new string[] { "Current", "Morning", "Noon", "Night", "Really Dark" };
+                string current = TranslateOr("cj_w_current", "Current");
+                Array weth = new string[] { current, "EXTRASUNNY", TranslateOr("cj_w_rain", "Rain"), TranslateOr("cj_w_snow", "Snow"), "SMOG", "Halloween", "Halloween 2",
+                    TranslateOr("cj_w_clear", "Clear"), TranslateOr("cj_w_clouds", "Clouds"), TranslateOr("cj_w_overcast", "Overcast"), TranslateOr("cj_w_thunder", "Thunder"), TranslateOr("cj_w_foggy", "Foggy") };
+                Array tod = new string[] { current, TranslateOr("cj_t_morning", "Morning"), TranslateOr("cj_t_noon", "Noon"), TranslateOr("cj_t_night", "Night"), TranslateOr("cj_t_dark", "Really dark") };
 
                 string weather = PickName(weth, jobjson.Mission.Rule?.Weth);
                 string timeOfDay = PickName(tod, jobjson.Mission.Rule?.Tod);
@@ -346,11 +348,11 @@ namespace Xenvious
         {
             var tiles = new List<(string Label, string Value, Brush Dot)>
             {
-                ("Props", Count(mission.Prop?.No), ThemeBrush("PropBrush")),
-                ("Dynamic Props", Count(mission.Dprop?.No), ThemeBrush("DynamicPropBrush")),
-                ("Fixtures", Count(mission.Dhprop?.No), ThemeBrush("FixtureBrush")),
-                ("Vehicles", Count(mission.Veh?.No), ThemeBrush("VehicleBrush")),
-                ("Weapons", Count(mission.Weap?.No), ThemeBrush("WeaponBrush")),
+                (TranslateOr("map_part_prop", "Props"), Count(mission.Prop?.No), ThemeBrush("PropBrush")),
+                (TranslateOr("dash_dynprops", "Dynamic Props"), Count(mission.Dprop?.No), ThemeBrush("DynamicPropBrush")),
+                (TranslateOr("editnav_fixtures", "Fixtures"), Count(mission.Dhprop?.No), ThemeBrush("FixtureBrush")),
+                (TranslateOr("rl_m_vehs", "Vehicles"), Count(mission.Veh?.No), ThemeBrush("VehicleBrush")),
+                (TranslateOr("missionrspweapons", "Weapons"), Count(mission.Weap?.No), ThemeBrush("WeaponBrush")),
             };
             if (IsRace(mission))
             {
@@ -360,13 +362,13 @@ namespace Xenvious
             }
             else
             {
-                tiles.Add(("Actors", Count(mission.Ene?.No), ThemeBrush("ActorBrush")));
+                tiles.Add((TranslateOr("dash_actors", "Actors"), Count(mission.Ene?.No), ThemeBrush("ActorBrush")));
                 tiles.Add((TranslateOr("teams", "Teams"), Count(mission.Gen?.Tnum), null));
             }
             string players = mission.Gen?.Min != null && mission.Gen?.Num != null ? mission.Gen.Min + "–" + mission.Gen.Num : "–";
             tiles.Add((TranslateOr("copy_players", "Players"), players, null));
-            tiles.Add(("Weather", weather, null));
-            tiles.Add(("Time of Day", timeOfDay, null));
+            tiles.Add((TranslateOr("cj_weather", "Weather"), weather, null));
+            tiles.Add((TranslateOr("cj_time", "Time of day"), timeOfDay, null));
 
             CopyStats.Children.Clear();
             foreach (var (label, value, dot) in tiles)
@@ -464,8 +466,8 @@ namespace Xenvious
             CopyJobMap.SetMarkers(markers);
 
             CopyMapLegend.Children.Clear();
-            AddLegend("Props", ThemeBrush("PropBrush"));
-            AddLegend("Dynamic", ThemeBrush("DynamicPropBrush"));
+            AddLegend(TranslateOr("map_part_prop", "Props"), ThemeBrush("PropBrush"));
+            AddLegend(TranslateOr("cj_dynamic", "Dynamic"), ThemeBrush("DynamicPropBrush"));
             AddLegend(race ? TranslateOr("checkpoints", "Checkpoints") : TranslateOr("copy_start", "Start"), race ? ThemeBrush("CheckpointBrush") : ThemeBrush("StartPointBrush"));
         }
 
@@ -635,7 +637,7 @@ namespace Xenvious
             }
             catch (Exception)
             {
-                displayScreenMessage("there was an error trying to copy the image");
+                displayScreenMessage(TranslateOr("cj_img_error", "There was an error trying to copy the image."));
             }
         }
 
@@ -736,7 +738,7 @@ namespace Xenvious
                     }
                     else
                     {
-                        displayScreenMessage("there were no props to copy");
+                        displayScreenMessage(TranslateOr("cj_none_props", "There were no props to copy."));
                     }
                 }
 
@@ -769,7 +771,7 @@ namespace Xenvious
                     }
                     else
                     {
-                        displayScreenMessage("there were no dynamic props to copy");
+                        displayScreenMessage(TranslateOr("cj_none_dprops", "There were no dynamic props to copy."));
                     }
                 }
 
@@ -1105,7 +1107,7 @@ namespace Xenvious
                     }
                     else
                     {
-                        displayScreenMessage("there were no checkpoints to copy");
+                        displayScreenMessage(TranslateOr("cj_none_cps", "There were no checkpoints to copy."));
                     }
                 }
 
@@ -1498,7 +1500,7 @@ namespace Xenvious
                     }
                     else
                     {
-                        displayScreenMessage("there were no templates to copy");
+                        displayScreenMessage(TranslateOr("cj_none_tpl", "There were no templates to copy."));
                     }
                 }
 
@@ -1519,7 +1521,7 @@ namespace Xenvious
                     }
                     else
                     {
-                        displayScreenMessage("there were no fixtures to copy");
+                        displayScreenMessage(TranslateOr("cj_none_fixtures", "There were no fixtures to copy."));
                     }
                 }
 

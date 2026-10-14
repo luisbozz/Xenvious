@@ -214,7 +214,7 @@ namespace Xenvious
             };
             Button tempbtncancel = new Button();
             tempbtncancel.Style = (Style)FindResource("CustomButton");
-            tempbtncancel.Content = "Cancel";
+            tempbtncancel.Content = TranslateOr("dialog_cancel", "Cancel");
             tempbtncancel.SetValue(CornerRadiusSetter.CornerRadiusProperty, new CornerRadius(5));
             tempbtncancel.Click += delegate
             {
@@ -535,7 +535,7 @@ namespace Xenvious
             };
             Button tempbtncancel = new Button();
             tempbtncancel.Style = (Style)FindResource("CustomButton");
-            tempbtncancel.Content = "Cancel";
+            tempbtncancel.Content = TranslateOr("dialog_cancel", "Cancel");
             tempbtncancel.SetValue(CornerRadiusSetter.CornerRadiusProperty, new CornerRadius(5));
             tempbtncancel.Click += delegate
             {

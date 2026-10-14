@@ -572,7 +572,7 @@
                                     <Button x:Name="BtnMod" Style="{StaticResource NavButton}" Click="BtnMod_Click">
                                         <StackPanel Orientation="Horizontal">
                                             <Viewbox Style="{StaticResource NavIconBox}"><Canvas Width="24" Height="24"><Path Style="{StaticResource NavIcon}" Data="{StaticResource NavIconMisc}"/></Canvas></Viewbox>
-                                            <TextBlock Text="Misc" Style="{StaticResource NavLabel}"/>
+                                            <TextBlock Text="{Binding Translation[nav_misc], FallbackValue=Misc}" Style="{StaticResource NavLabel}"/>
                                         </StackPanel>
                                     </Button>
                                     <Button x:Name="BtnSettings" Style="{StaticResource NavButton}" Click="BtnSettings_Click">
@@ -807,7 +807,7 @@
                                                 <TextBlock x:Name="DashSCInitial" FontSize="13" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}"/>
                                             </Grid>
                                             <StackPanel VerticalAlignment="Center" Margin="0,0,14,0">
-                                                <TextBlock Style="{StaticResource DashTileLabel}" Text="Social Club"/>
+                                                <TextBlock Style="{StaticResource DashTileLabel}" Text="{Binding Translation[social_club], FallbackValue=Social Club}"/>
                                                 <TextBlock x:Name="Lbl_SCName" Style="{StaticResource DashTileValue}" TextTrimming="CharacterEllipsis" MaxWidth="260"/>
                                             </StackPanel>
                                             <Path Style="{StaticResource DashLinkIcon}"/>
@@ -1626,7 +1626,7 @@
                                                                 <StackPanel DockPanel.Dock="Top" Visibility="Collapsed">
                                                                     <Border Visibility="Collapsed" x:Name="Lblpropmodel" Grid.Row="0" CornerRadius="5" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="8,5,8,0">
                                                                         <Viewbox VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                                                                            <Label Foreground="{DynamicResource TextColor}" FontFamily="{DynamicResource Volte}" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Content="{Binding Translation[model], FallbackValue=Model}"/>
+                                                                            <Label Foreground="{DynamicResource TextColor}" FontFamily="{DynamicResource Volte}" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Content="{Binding Translation[model_name], FallbackValue=Model}"/>
                                                                         </Viewbox>
                                                                     </Border>
                                                                     <Border Grid.Row="1" Visibility="Collapsed" CornerRadius="5" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="8">
@@ -1654,7 +1654,7 @@
                                                                                     <RowDefinition Height="12"/>
                                                                                     <RowDefinition Height="*"/>
                                                                                 </Grid.RowDefinitions>
-                                                                                <TextBox x:Name="tbpropsmodel" Grid.Row="0" VerticalAlignment="Top" Style="{StaticResource Watermark}" Tag="Model" ToolTip="Model" Height="30" Margin="3 0" IsEnabled="False" Visibility="Visible" KeyDown="FormatTextForModel" TextChanged="tbpropsmodel_TextChanged" />
+                                                                                <TextBox x:Name="tbpropsmodel" Grid.Row="0" VerticalAlignment="Top" Style="{StaticResource Watermark}" Tag="{Binding Translation[model_name], FallbackValue=Model}" ToolTip="{Binding Translation[model_name], FallbackValue=Model}" Height="30" Margin="3 0" IsEnabled="False" Visibility="Visible" KeyDown="FormatTextForModel" TextChanged="tbpropsmodel_TextChanged" />
 
                                                                                 <Rectangle Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="{DynamicResource FaintTextBrush}" Height="1" Margin="55,6,55,4" />
 
@@ -2235,7 +2235,7 @@
                                                                 <StackPanel DockPanel.Dock="Top" Visibility="Collapsed">
                                                                     <Border Visibility="Collapsed" x:Name="Lbldpropmodel" Grid.Row="0" CornerRadius="5" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="8,5,8,0">
                                                                         <Viewbox VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                                                                            <Label Foreground="{DynamicResource TextColor}" FontFamily="{DynamicResource Volte}" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Content="{Binding Translation[model], FallbackValue=Model}"/>
+                                                                            <Label Foreground="{DynamicResource TextColor}" FontFamily="{DynamicResource Volte}" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Content="{Binding Translation[model_name], FallbackValue=Model}"/>
                                                                         </Viewbox>
                                                                     </Border>
                                                                     <Border Grid.Row="1" Visibility="Collapsed" CornerRadius="5" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="8">
@@ -2257,7 +2257,7 @@
                                                                                 <ComboBox x:Name="dddpropcategory" FontFamily="{DynamicResource Volte}" SelectionChanged="dddpropcategory_SelectionChanged" IsEnabled="False" ToolTip="{Binding Translation[dpcategory], FallbackValue=Dynamic Prop Category}" Tag="{Binding Translation[dpcategory], FallbackValue=Dynamic Prop Category}" ItemsSource="{x:Static local:GTA+Editor.PropCategories}"/>
                                                                             </Border>
 
-                                                                            <TextBox x:Name="tbdpropsmodel" Grid.Row="2" VerticalAlignment="Top" Style="{StaticResource Watermark}" Tag="Model" ToolTip="Model" Height="30" Margin="3 0" IsEnabled="False" Visibility="Visible" KeyDown="FormatTextForModel" TextChanged="tbdpropsmodel_TextChanged"/>
+                                                                            <TextBox x:Name="tbdpropsmodel" Grid.Row="2" VerticalAlignment="Top" Style="{StaticResource Watermark}" Tag="{Binding Translation[model_name], FallbackValue=Model}" ToolTip="{Binding Translation[model_name], FallbackValue=Model}" Height="30" Margin="3 0" IsEnabled="False" Visibility="Visible" KeyDown="FormatTextForModel" TextChanged="tbdpropsmodel_TextChanged"/>
 
                                                                             <ListView x:Name="dpropModelList" Grid.Row="2" Margin="0 5 0 0" Visibility="Collapsed" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource TextColor}" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding .}" DisplayMemberPath="Name" SelectionChanged="dpropModelList_SelectionChanged"/>
 
@@ -2599,7 +2599,7 @@
                                                     <StackPanel DockPanel.Dock="Top" Visibility="Collapsed">
                                                         <Border x:Name="Lblvehmodel" Grid.Row="0" CornerRadius="5" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="8,5,8,0">
                                                             <Viewbox VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                                                                <Label Foreground="{DynamicResource TextColor}" FontFamily="{DynamicResource Volte}" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Content="{Binding Translation[model], FallbackValue=Model}"/>
+                                                                <Label Foreground="{DynamicResource TextColor}" FontFamily="{DynamicResource Volte}" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Content="{Binding Translation[model_name], FallbackValue=Model}"/>
                                                             </Viewbox>
                                                         </Border>
                                                         <Border Grid.Row="1" CornerRadius="5" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="8">
@@ -2620,7 +2620,7 @@
                                                                     <ComboBox x:Name="ddvehcategory" FontFamily="{DynamicResource Volte}" SelectionChanged="ddvehcategory_SelectionChanged" IsEnabled="False" ToolTip="{Binding Translation[vcategory], FallbackValue=Vehicle Category}" Tag="{Binding Translation[vcategory], FallbackValue=Vehicle Category}" ItemsSource="{x:Static local:GTA+Editor.VehCategories}"/>
                                                                 </Border>
 
-                                                                <TextBox x:Name="tbvehmodel" Grid.Row="2" VerticalAlignment="Top" Style="{StaticResource Watermark}" Tag="Model" ToolTip="Model" Height="30" Margin="3 0" IsEnabled="False" Visibility="Collapsed" KeyDown="FormatTextForModel" TextChanged="tbvehmodel_TextChanged" />
+                                                                <TextBox x:Name="tbvehmodel" Grid.Row="2" VerticalAlignment="Top" Style="{StaticResource Watermark}" Tag="{Binding Translation[model_name], FallbackValue=Model}" ToolTip="{Binding Translation[model_name], FallbackValue=Model}" Height="30" Margin="3 0" IsEnabled="False" Visibility="Collapsed" KeyDown="FormatTextForModel" TextChanged="tbvehmodel_TextChanged" />
 
                                                                 <ListView x:Name="vehModelList" Grid.Row="2" Margin="0 5 0 0" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource TextColor}" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding .}" DisplayMemberPath="Name" SelectionChanged="vehModelList_SelectionChanged"/>
 
@@ -3314,7 +3314,7 @@
                                                     <StackPanel DockPanel.Dock="Top" Visibility="Collapsed">
                                                         <Border x:Name="Lblweapmodel" Grid.Row="0" CornerRadius="5" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="8,5,8,0">
                                                             <Viewbox VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                                                                <Label Foreground="{DynamicResource TextColor}" FontFamily="{DynamicResource Volte}" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Content="{Binding Translation[model], FallbackValue=Model}"/>
+                                                                <Label Foreground="{DynamicResource TextColor}" FontFamily="{DynamicResource Volte}" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Content="{Binding Translation[model_name], FallbackValue=Model}"/>
                                                             </Viewbox>
                                                         </Border>
                                                         <Border Grid.Row="1" CornerRadius="5" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="8">
@@ -3335,7 +3335,7 @@
                                                                     <ComboBox x:Name="ddweapcategory" FontFamily="{DynamicResource Volte}" IsEnabled="False" SelectionChanged="ddweapcategory_SelectionChanged" ToolTip="{Binding Translation[vcategory], FallbackValue=Weapon Category}" Tag="{Binding Translation[vcategory], FallbackValue=Weapon Category}" ItemsSource="{x:Static local:GTA+Editor.WeaponCategories}"/>
                                                                 </Border>
 
-                                                                <TextBox x:Name="tbweapmodel" Grid.Row="2" VerticalAlignment="Top" Style="{StaticResource Watermark}" Tag="Model" ToolTip="Model" Height="30" Margin="3 0" IsEnabled="False" Visibility="Collapsed" TextChanged="tbweapmodel_TextChanged"  />
+                                                                <TextBox x:Name="tbweapmodel" Grid.Row="2" VerticalAlignment="Top" Style="{StaticResource Watermark}" Tag="{Binding Translation[model_name], FallbackValue=Model}" ToolTip="{Binding Translation[model_name], FallbackValue=Model}" Height="30" Margin="3 0" IsEnabled="False" Visibility="Collapsed" TextChanged="tbweapmodel_TextChanged"  />
 
                                                                 <ListView x:Name="weapModelList" Grid.Row="2" Margin="0 5 0 0" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource TextColor}" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding .}" DisplayMemberPath="Name" SelectionChanged="weapModelList_SelectionChanged"/>
 
@@ -3795,11 +3795,11 @@
                                                                                     <StackPanel Margin="14,12,14,4">
                                                                                     <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[racetype], FallbackValue=Race Type}"/>
                                                                                     <ComboBox x:Name="ddracetype" FontFamily="{DynamicResource Volte}" SelectionChanged="ddracetype_SelectionChanged" ToolTip="{Binding Translation[racetype], FallbackValue=Race Type}" Height="30" Margin="0,0,0,10">
-                                                                                        <ComboBoxItem Content="Standard"/>
-                                                                                        <ComboBoxItem Content="GTA"/>
-                                                                                        <ComboBoxItem Content="Rally"/>
-                                                                                        <ComboBoxItem Content="Non-Contact"/>
-                                                                                        <ComboBoxItem Content="Stunt"/>
+                                                                                        <ComboBoxItem Content="{Binding Translation[race_t_standard], FallbackValue=Standard}"/>
+                                                                                        <ComboBoxItem Content="{Binding Translation[race_t_gta], FallbackValue=GTA}"/>
+                                                                                        <ComboBoxItem Content="{Binding Translation[race_t_rally], FallbackValue=Rally}"/>
+                                                                                        <ComboBoxItem Content="{Binding Translation[race_t_noncontact], FallbackValue=Non-Contact}"/>
+                                                                                        <ComboBoxItem Content="{Binding Translation[race_t_stunt], FallbackValue=Stunt}"/>
                                                                                     </ComboBox>
                                                                                     <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[routetype], FallbackValue=Route Type}"/>
                                                                                     <ComboBox x:Name="ddroutetype" FontFamily="{DynamicResource Volte}" SelectionChanged="ddroutetype_SelectionChanged" ToolTip="{Binding Translation[routetype], FallbackValue=Route Type}" Height="30" Margin="0,0,0,10">
@@ -4200,7 +4200,7 @@
                                                                                             </Border>
                                                                                         </Grid>
                                                                                         <StackPanel Visibility="{Binding ElementName=ddmissionnrcidno, Path=Visibility}">
-                                                                                            <TextBlock Style="{StaticResource CardSub}" Text="Job Loader"/>
+                                                                                            <TextBlock Style="{StaticResource CardSub}" Text="{Binding Translation[job_loader], FallbackValue=Job Loader}"/>
                                                                                             <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[number], FallbackValue=Number}"/>
                                                                                             <ComboBox x:Name="ddmissionnrcidno" FontFamily="{DynamicResource Volte}" SelectionChanged="ddmissionnrcidno_SelectionChanged" Height="30" Margin="0,0,0,10">
                                                                                                 <ComboBoxItem Content="1"/>
@@ -4215,7 +4215,7 @@
                                                                                             <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[nrmtt], FallbackValue=nrmtt}"/>
                                                                                             <TextBox x:Name="tbmissionnrmtt" Style="{StaticResource Watermark}" TextChanged="tbmissionnrmtt_TextChanged" Height="30" Margin="0,0,0,10"/>
                                                                                         </StackPanel>
-                                                                                        <TextBlock Style="{StaticResource CardSub}" Text="Team Relationships"/>
+                                                                                        <TextBlock Style="{StaticResource CardSub}" Text="{Binding Translation[team_relationships], FallbackValue=Team Relationships}"/>
                                                                                         <Grid Style="{StaticResource FormRow}">
                                                                                             <Grid.ColumnDefinitions>
                                                                                                 <ColumnDefinition Width="*"/>
@@ -4469,7 +4469,7 @@
                                                                                             <TextBlock Style="{StaticResource FormLabel}"><Run Text="{Binding Translation[missionextmuteambience], FallbackValue='Mute City and Traffic Sounds', Mode=OneWay}"/></TextBlock>
                                                                                             <CheckBox x:Name="cbmissionextmuteambience" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" Grid.Column="1" Style="{StaticResource FormToggle}"/>
                                                                                         </Grid>
-                                                                                        <TextBlock Style="{StaticResource CardSub}" Text="Phone EMP App"/>
+                                                                                        <TextBlock Style="{StaticResource CardSub}" Text="{Binding Translation[phone_emp_app], FallbackValue=Phone EMP App}"/>
                                                                                         <Grid Style="{StaticResource FormRow}">
                                                                                             <Grid.ColumnDefinitions>
                                                                                                 <ColumnDefinition Width="*"/>
@@ -4834,11 +4834,11 @@
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <Expander Style="{StaticResource CardExpander}" IsExpanded="True" Header="{Binding Translation[advanced], FallbackValue=Advanced}">
                                                                                         <StackPanel Margin="14,12,14,4">
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="Launch Times Bit"/>
+                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[launch_times_bit], FallbackValue=Launch Times Bit}"/>
                                                                                         <TextBox x:Name="tbMissionltm" Style="{StaticResource Watermark}" ToolTip="ltm" TextChanged="tbMissionltm_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="Number Of Bounces"/>
+                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[number_of_bounces], FallbackValue=Number Of Bounces}"/>
                                                                                         <TextBox x:Name="tbMissioninumbnc" Style="{StaticResource Watermark}" ToolTip="inumbnc" TextChanged="tbMissioninumbnc_TextChanged" KeyDown="FormatTextForInteger" Height="30" Margin="0,0,0,10"/>
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="Manual Respawn Delay"/>
+                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[manual_respawn_delay], FallbackValue=Manual Respawn Delay}"/>
                                                                                         <TextBox x:Name="tbMissionmrd" Style="{StaticResource Watermark}" ToolTip="mrd" TextChanged="tbMissionmrd_TextChanged" KeyDown="FormatTextForInteger" Height="30" Margin="0,0,0,10"/>
                                                                                         <TextBlock Style="{StaticResource FieldLabelRaw}" Text="xpr"/>
                                                                                         <TextBox x:Name="tbMissionxpr" Style="{StaticResource Watermark}" TextChanged="tbMissionxpr_TextChanged" KeyDown="FormatTextForInteger" Height="30" Margin="0,0,0,10"/>
@@ -5388,7 +5388,7 @@
                                                                                                 <ColumnDefinition Width="*"/>
                                                                                                 <ColumnDefinition Width="46"/>
                                                                                             </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="Freeze Current Team"/>
+                                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[freeze_team], FallbackValue=Freeze Current Team}"/>
                                                                                             <CheckBox x:Name="cb_nrl_freeze" Checked="cb_nrl_freeze_Checked" Unchecked="cb_nrl_freeze_Checked" ToolTip="Freeze Current Team" Grid.Column="1" Style="{StaticResource FormToggle}"/>
                                                                                         </Grid>
                                                                                         <Grid Style="{StaticResource FormRow}">
@@ -5396,7 +5396,7 @@
                                                                                                 <ColumnDefinition Width="*"/>
                                                                                                 <ColumnDefinition Width="46"/>
                                                                                             </Grid.ColumnDefinitions>
-                                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="Freeze for all Teams"/>
+                                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[freeze_all_teams], FallbackValue=Freeze for all Teams}"/>
                                                                                             <CheckBox x:Name="cb_nrl_freeze_all" Checked="cb_nrl_freeze_all_Checked" Unchecked="cb_nrl_freeze_all_Checked" ToolTip="Freeze for all Teams" Grid.Column="1" Style="{StaticResource FormToggle}"/>
                                                                                         </Grid>
                                                                                         <TextBlock Style="{StaticResource FieldLabelRaw}" Text="irbs"/>
@@ -5501,8 +5501,8 @@
                                                                                             <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[missionrsppersonal], FallbackValue=Personal Vehicle}" ToolTip="{Binding Translation[missionrsppersonalinfo], FallbackValue='Activates the personal Vehicle selection and replaces the Respawn Vehicle.'}"/>
                                                                                             <CheckBox x:Name="cbmissionrsppersonal" Checked="cbmissionrsppersonal_Checked" Unchecked="cbmissionrsppersonal_Checked" Grid.Column="1" Style="{StaticResource FormToggle}"/>
                                                                                         </Grid>
-                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[model], FallbackValue=Model}"/>
-                                                                                        <ComboBox x:Name="ddmissionrspmodel" FontFamily="{DynamicResource Volte}" SelectionChanged="ddmissionrspmodel_SelectionChanged" ToolTip="{Binding Translation[model], FallbackValue=Model}" DisplayMemberPath="Name" Height="30" Margin="0,0,0,10"/>
+                                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[model_name], FallbackValue=Model}"/>
+                                                                                        <ComboBox x:Name="ddmissionrspmodel" FontFamily="{DynamicResource Volte}" SelectionChanged="ddmissionrspmodel_SelectionChanged" ToolTip="{Binding Translation[model_name], FallbackValue=Model}" DisplayMemberPath="Name" Height="30" Margin="0,0,0,10"/>
                                                                                         <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[missionrspcolprimary], FallbackValue=Primary Color}"/>
                                                                                         <ComboBox x:Name="ddmissionrspvehcol1" FontFamily="{DynamicResource Volte}" SelectionChanged="ddmissionrspvehcol1_SelectionChanged" ToolTip="{Binding Translation[missionrspcolprimary], FallbackValue=Primary Color}" ItemsSource="{x:Static local:GTA+Editor.rvc}" Height="30" Margin="0,0,0,10"/>
                                                                                         <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[missionrspcolsecondary], FallbackValue=Secondary Color}"/>
@@ -5584,10 +5584,10 @@
                                                                                         </Grid>
                                                                                         <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[missionparacolor], FallbackValue=Color}"/>
                                                                                         <ComboBox x:Name="ddmissionparacolor" FontFamily="{DynamicResource Volte}" SelectionChanged="ddmissionparacolor_SelectionChanged" ToolTip="{Binding Translation[missionparacolor], FallbackValue=Color}"  Height="30" Margin="0,0,0,10">
-                                                                                            <ComboBoxItem Content="Orange"/>
-                                                                                            <ComboBoxItem Content="Purple"/>
-                                                                                            <ComboBoxItem Content="Pink"/>
-                                                                                            <ComboBoxItem Content="Green"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[gt_orange], FallbackValue=Orange}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[gt_purple], FallbackValue=Purple}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[gt_pink], FallbackValue=Pink}"/>
+                                                                                            <ComboBoxItem Content="{Binding Translation[gt_green], FallbackValue=Green}"/>
                                                                                         </ComboBox>
                                                                                         <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[missionparastyle], FallbackValue=Pack Tint}"/>
                                                                                         <TextBox x:Name="tbmissionparastyle" Style="{StaticResource Watermark}" TextChanged="tbmissionparastyle_TextChanged" KeyDown="FormatTextForModel" Cursor="IBeam" Height="30" Margin="0,0,0,10"/>
@@ -7558,11 +7558,11 @@
                                                                 <Border Grid.Row="0" Margin="3,0,3,5" Background="Transparent">
                                                                     <ComboBox x:Name="ddactormodelswicther" FontFamily="{DynamicResource Volte}" IsEnabled="False" Tag="{Binding Translation[category], FallbackValue=Category}" ToolTip="{Binding Translation[inputmode], FallbackValue=Input Mode}" SelectionChanged="ddactormodelswicther_SelectionChanged">
                                                                         <ComboBoxItem Content="{Binding Translation[custom], FallbackValue=Custom}" />
-                                                                        <ComboBoxItem Content="Native" Selector.IsSelected="True" />
+                                                                        <ComboBoxItem Content="{Binding Translation[actor_input_native], FallbackValue=Native}" Selector.IsSelected="True" />
                                                                     </ComboBox>
                                                                 </Border>
 
-                                                                <TextBox x:Name="tbactormodel" Grid.Row="2" VerticalAlignment="Top" Style="{StaticResource Watermark}" Tag="Model" ToolTip="Model" Height="30" Margin="3 0" IsEnabled="False" Visibility="Collapsed" KeyDown="FormatTextForModel" TextChanged="tbactormodel_TextChanged" />
+                                                                <TextBox x:Name="tbactormodel" Grid.Row="2" VerticalAlignment="Top" Style="{StaticResource Watermark}" Tag="{Binding Translation[model_name], FallbackValue=Model}" ToolTip="{Binding Translation[model_name], FallbackValue=Model}" Height="30" Margin="3 0" IsEnabled="False" Visibility="Collapsed" KeyDown="FormatTextForModel" TextChanged="tbactormodel_TextChanged" />
 
                                                                 <ListView x:Name="actorModelList" IsEnabled="False" Grid.Row="2" Margin="0 5 0 0" Background="Black" BorderThickness="0" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  ItemsSource="{x:Static local:GTA+Editor.ActorList}" DisplayMemberPath="Name" SelectionChanged="actorModelList_SelectionChanged"/>
 
@@ -8994,7 +8994,7 @@
                                                                                     </Border>
                                                                                     <StackPanel Margin="14,12,14,4">
                                                                                     <TextBlock Style="{StaticResource FieldLabel}" Text="Model" Visibility="Collapsed"/>
-                                                                                    <TextBox x:Name="tbobjmodel" Visibility="Collapsed" Style="{StaticResource Watermark}" ToolTip="Model" IsEnabled="False" KeyDown="FormatTextForModel" TextChanged="tbobjmodel_TextChanged" Height="30" Margin="0,0,0,10"/>
+                                                                                    <TextBox x:Name="tbobjmodel" Visibility="Collapsed" Style="{StaticResource Watermark}" ToolTip="{Binding Translation[model_name], FallbackValue=Model}" IsEnabled="False" KeyDown="FormatTextForModel" TextChanged="tbobjmodel_TextChanged" Height="30" Margin="0,0,0,10"/>
                                                                                     <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[loc], FallbackValue=Location}"/>
                                                                                     <Grid Margin="0,0,0,10">
                                                                                         <Grid.ColumnDefinitions>
@@ -9388,7 +9388,7 @@
                                                                                 </Button>
                                                                             </Grid>
                                                                         </Border>
-                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[model], FallbackValue=Model}"/>
+                                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[model_name], FallbackValue=Model}"/>
                                                                         <TextBox x:Name="tbcdefmodel" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbcdefmodel_TextChanged"  KeyDown="FormatTextForModel" Height="30"/>
                                                                         <TextBlock x:Name="lblcdefmodelname" FontSize="12" Foreground="{DynamicResource FaintTextBrush}" Margin="2,3,0,10" TextTrimming="CharacterEllipsis"/>
                                                                         <StackPanel x:Name="cdefadvanced">
@@ -9582,7 +9582,7 @@
                                                                                 <ColumnDefinition Width="*"/>
                                                                             </Grid.ColumnDefinitions>
                                                                             <StackPanel Grid.Column="0">
-                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[model], FallbackValue=Model}"/>
+                                                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[model_name], FallbackValue=Model}"/>
                                                                             <TextBox x:Name="tbdoorsmodel" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbdoorsmodel_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
                                                                             </StackPanel>
                                                                             <StackPanel Grid.Column="2">
@@ -10375,7 +10375,7 @@
 
                                 <Border Margin="3" CornerRadius="15" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Grid.Row="0">
                                     <Viewbox VerticalAlignment="Center" HorizontalAlignment="Center">
-                                        <Label Foreground="{DynamicResource TextColor}" FontFamily="{DynamicResource Volte}" FontWeight="Bold" Content="Misc"/>
+                                        <Label Foreground="{DynamicResource TextColor}" FontFamily="{DynamicResource Volte}" FontWeight="Bold" Content="{Binding Translation[nav_misc], FallbackValue=Misc}"/>
                                     </Viewbox>
                                 </Border>
 
@@ -10463,9 +10463,9 @@
                                                                 <ColumnDefinition Width="Auto"/>
                                                             </Grid.ColumnDefinitions>
                                                             <TextBlock x:Name="tbmapmoverhover" Grid.Column="0" FontSize="13" Opacity="0.7"
-                                                                       VerticalAlignment="Center" Text="Klick setzt das Ziel, Mausrad zoomt"/>
+                                                                       VerticalAlignment="Center" Text="{Binding Translation[mm_map_hint], FallbackValue='Klick setzt das Ziel, Mausrad zoomt'}"/>
                                                             <Button x:Name="BtnMapMoverCalib" Grid.Column="1" Style="{DynamicResource CustomButton}"
-                                                                    Content="Kalibrieren" FontSize="13" Width="110" Height="26"
+                                                                    Content="{Binding Translation[mm_calibrate], FallbackValue=Kalibrieren}" FontSize="13" Width="110" Height="26"
                                                                     Background="{DynamicResource ButtonHoverBackgroundBrush}"
                                                                     local:CornerRadiusSetter.CornerRadius="5" Click="BtnMapMoverCalib_Click"/>
                                                         </Grid>
@@ -10483,20 +10483,20 @@
                                                                     <ColumnDefinition Width="Auto"/>
                                                                     <ColumnDefinition Width="*"/>
                                                                 </Grid.ColumnDefinitions>
-                                                                <TextBlock Grid.Column="0" FontSize="19" FontWeight="Bold" VerticalAlignment="Center" Text="Ziel"/>
+                                                                <TextBlock Grid.Column="0" FontSize="19" FontWeight="Bold" VerticalAlignment="Center" Text="{Binding Translation[mm_target], FallbackValue=Ziel}"/>
                                                                 <Button x:Name="BtnMapMoverToCam" Grid.Column="1" Style="{DynamicResource CustomButton}"
-                                                                        Content="Position aus GTA uebernehmen" FontSize="14" Height="32" Margin="15,0,0,0"
+                                                                        Content="{Binding Translation[mm_take_pos], FallbackValue=Position aus GTA uebernehmen}" FontSize="14" Height="32" Margin="15,0,0,0"
                                                                         HorizontalAlignment="Stretch" Background="{DynamicResource ButtonHoverBackgroundBrush}"
                                                                         local:CornerRadiusSetter.CornerRadius="5" Click="BtnMapMoverToCam_Click"/>
                                                             </Grid>
-                                                            <TextBlock x:Name="tbmapmoverto" FontSize="17" Opacity="0.85" Text="noch nicht gesetzt"/>
+                                                            <TextBlock x:Name="tbmapmoverto" FontSize="17" Opacity="0.85" Text="{Binding Translation[mm_not_set], FallbackValue=noch nicht gesetzt}"/>
                                                             <Rectangle Height="1" Fill="DimGray" Margin="0,10"/>
                                                             <Grid>
                                                                 <Grid.ColumnDefinitions>
                                                                     <ColumnDefinition Width="Auto"/>
                                                                     <ColumnDefinition Width="*"/>
                                                                 </Grid.ColumnDefinitions>
-                                                                <TextBlock Grid.Column="0" FontSize="15" VerticalAlignment="Center" Opacity="0.7" Text="Start (Mitte des Jobs)"/>
+                                                                <TextBlock Grid.Column="0" FontSize="15" VerticalAlignment="Center" Opacity="0.7" Text="{Binding Translation[mm_start], FallbackValue=Start (Mitte des Jobs)}"/>
                                                                 <TextBlock x:Name="tbmapmoverfrom" Grid.Column="1" FontSize="15" Opacity="0.7"
                                                                            HorizontalAlignment="Right" Text="--"/>
                                                             </Grid>
@@ -10507,7 +10507,7 @@
                                                     <Border CornerRadius="10" Padding="15,12" Margin="0,0,0,12"
                                                             Background="{DynamicResource SectionBackgroundBrush}">
                                                         <StackPanel>
-                                                            <TextBlock FontSize="19" FontWeight="Bold" Margin="0,0,0,8" Text="Versatz"/>
+                                                            <TextBlock FontSize="19" FontWeight="Bold" Margin="0,0,0,8" Text="{Binding Translation[mm_offset], FallbackValue=Versatz}"/>
                                                             <Grid>
                                                                 <Grid.ColumnDefinitions>
                                                                     <ColumnDefinition Width="*"/>
@@ -10536,12 +10536,12 @@
                                                                     <ColumnDefinition Width="*"/>
                                                                     <ColumnDefinition Width="Auto"/>
                                                                 </Grid.ColumnDefinitions>
-                                                                <TextBlock Grid.Column="0" FontSize="19" FontWeight="Bold" VerticalAlignment="Center" Text="Was mitkommt"/>
+                                                                <TextBlock Grid.Column="0" FontSize="19" FontWeight="Bold" VerticalAlignment="Center" Text="{Binding Translation[mm_what], FallbackValue=Was mitkommt}"/>
                                                                 <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                                                    <Button x:Name="BtnMapMoverAll" Style="{DynamicResource CustomButton}" Content="Alle" FontSize="13"
+                                                                    <Button x:Name="BtnMapMoverAll" Style="{DynamicResource CustomButton}" Content="{Binding Translation[mm_all], FallbackValue=Alle}" FontSize="13"
                                                                             Width="60" Height="26" Margin="0,0,5,0" Background="{DynamicResource ButtonHoverBackgroundBrush}"
                                                                             local:CornerRadiusSetter.CornerRadius="5" Click="BtnMapMoverAll_Click"/>
-                                                                    <Button x:Name="BtnMapMoverNone" Style="{DynamicResource CustomButton}" Content="Keine" FontSize="13"
+                                                                    <Button x:Name="BtnMapMoverNone" Style="{DynamicResource CustomButton}" Content="{Binding Translation[mm_none], FallbackValue=Keine}" FontSize="13"
                                                                             Width="60" Height="26" Background="{DynamicResource ButtonHoverBackgroundBrush}"
                                                                             local:CornerRadiusSetter.CornerRadius="5" Click="BtnMapMoverNone_Click"/>
                                                                 </StackPanel>
@@ -10563,18 +10563,18 @@
                                                             Background="{DynamicResource SectionBackgroundBrush}">
                                                         <StackPanel>
                                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                                                <Button x:Name="BtnMapMoverApply" Style="{DynamicResource CustomButton}" Content="Verschieben"
+                                                                <Button x:Name="BtnMapMoverApply" Style="{DynamicResource CustomButton}" Content="{Binding Translation[mm_move], FallbackValue=Verschieben}"
                                                                         FontSize="18" Width="170" Height="42" Margin="0,0,10,0"
                                                                         Background="{DynamicResource ButtonHoverBackgroundBrush}"
                                                                         local:CornerRadiusSetter.CornerRadius="6" Click="BtnMapMoverApply_Click"/>
-                                                                <Button x:Name="BtnMapMoverUndo" Style="{DynamicResource CustomButton}" Content="Rueckgaengig"
+                                                                <Button x:Name="BtnMapMoverUndo" Style="{DynamicResource CustomButton}" Content="{Binding Translation[mm_undo], FallbackValue=Rueckgaengig}"
                                                                         FontSize="16" Width="150" Height="42" IsEnabled="False"
                                                                         Background="{DynamicResource SectionBackgroundBrush}"
                                                                         local:CornerRadiusSetter.CornerRadius="6" Click="BtnMapMoverUndo_Click"/>
                                                                 <!-- Step for Ctrl+Shift and +/- in any position box (not the map mover itself). -->
                                                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="16,0,0,0"
-                                                                            ToolTip="Schrittweite fuer Strg+Umschalt und +/- in einem Positionsfeld.">
-                                                                    <TextBlock FontSize="13" Opacity="0.75" VerticalAlignment="Center" Margin="0,0,8,0" Text="Increment Size"/>
+                                                                            ToolTip="{Binding Translation[mm_step_tip], FallbackValue=Schrittweite fuer Strg+Umschalt und +/- in einem Positionsfeld.}">
+                                                                    <TextBlock FontSize="13" Opacity="0.75" VerticalAlignment="Center" Margin="0,0,8,0" Text="{Binding Translation[settingsincrementsize], FallbackValue=Increment Size}"/>
                                                                     <TextBox x:Name="tbsettingsincrementsize" Style="{StaticResource Watermark}" Width="70" Height="32" IsEnabled="True"
                                                                              VerticalContentAlignment="Center" TextAlignment="Center"
                                                                              TextChanged="tbsettingsincrementsize_TextChanged" KeyDown="FormatTextForFloat"/>
@@ -10587,10 +10587,10 @@
                                                     <!-- Kurzanleitung -->
                                                     <Border CornerRadius="10" Padding="15,12" Background="{DynamicResource SectionBackgroundBrush}">
                                                         <StackPanel>
-                                                            <TextBlock FontSize="17" FontWeight="Bold" Margin="0,0,0,6" Text="Kurz erklaert"/>
-                                                            <TextBlock FontSize="13" Opacity="0.75" TextWrapping="Wrap" LineHeight="19" Text="Der Map Mover verschiebt einen ganzen Job an eine andere Stelle. Start ist immer die Mitte dessen, was gerade geladen und angehakt ist -- das rechnet Xenvious selbst aus. Du legst nur das Ziel fest: auf die Karte klicken, oder in GTA mit der Creator-Kamera hinfliegen und die Position uebernehmen."/>
-                                                            <TextBlock FontSize="13" Opacity="0.75" TextWrapping="Wrap" LineHeight="19" Margin="0,8,0,0" Text="Z bleibt bei 0, solange du nichts eintraegst. Ein Kartenklick kennt keine Hoehe; die Kamera-Position schon, dann steht der Hoehenunterschied im Z-Feld. GTAs Gelaende ist nicht flach -- pruefe nach dem Verschieben, ob nichts im Hang steckt, und korrigiere Z von Hand."/>
-                                                            <TextBlock FontSize="13" Opacity="0.75" TextWrapping="Wrap" LineHeight="19" Margin="0,8,0,0" Text="Geschrieben wird direkt in den laufenden Job. Rueckgaengig macht genau den letzten Versatz wieder weg -- teste es erst an einem Job, den du nicht brauchst."/>
+                                                            <TextBlock FontSize="17" FontWeight="Bold" Margin="0,0,0,6" Text="{Binding Translation[mm_explain], FallbackValue=Kurz erklaert}"/>
+                                                            <TextBlock FontSize="13" Opacity="0.75" TextWrapping="Wrap" LineHeight="19" Text="{Binding Translation[mm_explain1], FallbackValue='Der Map Mover verschiebt einen ganzen Job an eine andere Stelle. Start ist immer die Mitte dessen, was gerade geladen und angehakt ist -- das rechnet Xenvious selbst aus. Du legst nur das Ziel fest: auf die Karte klicken, oder in GTA mit der Creator-Kamera hinfliegen und die Position uebernehmen.'}"/>
+                                                            <TextBlock FontSize="13" Opacity="0.75" TextWrapping="Wrap" LineHeight="19" Margin="0,8,0,0" Text="{Binding Translation[mm_explain2], FallbackValue='Z bleibt bei 0, solange du nichts eintraegst. Ein Kartenklick kennt keine Hoehe; die Kamera-Position schon, dann steht der Hoehenunterschied im Z-Feld. GTAs Gelaende ist nicht flach -- pruefe nach dem Verschieben, ob nichts im Hang steckt, und korrigiere Z von Hand.'}"/>
+                                                            <TextBlock FontSize="13" Opacity="0.75" TextWrapping="Wrap" LineHeight="19" Margin="0,8,0,0" Text="{Binding Translation[mm_explain3], FallbackValue='Geschrieben wird direkt in den laufenden Job. Rueckgaengig macht genau den letzten Versatz wieder weg -- teste es erst an einem Job, den du nicht brauchst.'}"/>
                                                         </StackPanel>
                                                     </Border>
 
@@ -10613,8 +10613,8 @@
                                                             <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>    
                                                         </Border.Effect>
                                                         <ComboBox x:Name="ddjoblinks" FontFamily="{DynamicResource Volte}" SelectionChanged="ddjoblinks_SelectionChanged">
-                                                            <ComboBoxItem Content="Published" Selector.IsSelected="True" />
-                                                            <ComboBoxItem Content="Saved"/>
+                                                            <ComboBoxItem Content="{Binding Translation[jl_published], FallbackValue=Published}" Selector.IsSelected="True" />
+                                                            <ComboBoxItem Content="{Binding Translation[jl_saved], FallbackValue=Saved}"/>
                                                         </ComboBox>
                                                     </Border>
 
@@ -10838,9 +10838,9 @@
                                     <Border Grid.Column="0" Background="{DynamicResource SectionBackgroundBrush}" CornerRadius="6" Padding="14,12" VerticalAlignment="Top">
                                         <StackPanel>
                                             <TextBlock FontSize="15" FontWeight="Bold" Foreground="{DynamicResource TextColor}" Margin="0,0,0,10" Text="{Binding Translation[ms_current], FallbackValue='Current menu'}"/>
-                                            <TextBlock FontSize="12" FontWeight="Bold" Foreground="{DynamicResource MutedTextBrush}" Margin="0,0,0,3" Text="Menu ID"/>
+                                            <TextBlock FontSize="12" FontWeight="Bold" Foreground="{DynamicResource MutedTextBrush}" Margin="0,0,0,3" Text="{Binding Translation[ms_menu_id], FallbackValue=Menu ID}"/>
                                             <TextBox x:Name="tbmscurr" Style="{StaticResource Watermark}" Height="32" ToolTip="f_267" Margin="0,0,0,8" KeyDown="FormatTextForInteger"/>
-                                            <TextBlock FontSize="12" FontWeight="Bold" Foreground="{DynamicResource MutedTextBrush}" Margin="0,0,0,3" Text="Return Menu ID"/>
+                                            <TextBlock FontSize="12" FontWeight="Bold" Foreground="{DynamicResource MutedTextBrush}" Margin="0,0,0,3" Text="{Binding Translation[ms_return_menu_id], FallbackValue=Return Menu ID}"/>
                                             <TextBox x:Name="tbmsprev" Style="{StaticResource Watermark}" Height="32" ToolTip="f_268" Margin="0,0,0,12" KeyDown="FormatTextForInteger"/>
                                             <UniformGrid Columns="2">
                                                 <Button x:Name="Btnmsread" Style="{StaticResource FormButton}" Margin="0,0,4,0" Click="Btnmsread_Click" Content="{Binding Translation[ms_read], FallbackValue=Read}"/>
@@ -10851,12 +10851,12 @@
 
                                     <Border Grid.Column="2" Background="{DynamicResource SectionBackgroundBrush}" CornerRadius="6" Padding="14,12" VerticalAlignment="Top">
                                         <StackPanel>
-                                            <TextBlock FontSize="15" FontWeight="Bold" Foreground="{DynamicResource TextColor}" Margin="0,0,0,10" Text="Presets"/>
+                                            <TextBlock FontSize="15" FontWeight="Bold" Foreground="{DynamicResource TextColor}" Margin="0,0,0,10" Text="{Binding Translation[tv_presets], FallbackValue=Presets}"/>
                                             <TextBlock FontSize="12" FontWeight="Bold" Foreground="{DynamicResource MutedTextBrush}" Margin="0,0,0,3" Text="{Binding Translation[ms_saved], FallbackValue='Saved presets'}"/>
                                             <ComboBox x:Name="cbmsPresets" Height="32" Margin="0,0,0,8"
                                                       ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=MenuSwitcherPresets}"
                                                       DisplayMemberPath="Name" SelectedValuePath="MenuId" SelectionChanged="cbmsPresets_SelectionChanged"/>
-                                            <TextBlock FontSize="12" FontWeight="Bold" Foreground="{DynamicResource MutedTextBrush}" Margin="0,0,0,3" Text="Name"/>
+                                            <TextBlock FontSize="12" FontWeight="Bold" Foreground="{DynamicResource MutedTextBrush}" Margin="0,0,0,3" Text="{Binding Translation[name], FallbackValue=Name}"/>
                                             <TextBox x:Name="tbmsPresetName" Style="{StaticResource Watermark}" Height="32" Margin="0,0,0,12"/>
                                             <UniformGrid Columns="3">
                                                 <Button x:Name="BtnmsAddPreset" Style="{StaticResource FormButton}" Margin="0,0,4,0" Click="BtnmsAddPreset_Click" Content="{Binding Translation[ms_add], FallbackValue=New}"/>
@@ -10905,8 +10905,8 @@
 
                                             <Label VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Content="{Binding Translation[step], FallbackValue=Step}" ContentStringFormat="{}{0} 1"  FontWeight="Bold" Height="35"/>
 
-                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="Please make sure you enter a Capture first before you continue." TextWrapping="Wrap" />
-                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="Set a Location for the Start Point that is close to the Start Point of the Job you want to Copy!" TextWrapping="Wrap" />
+                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="{Binding Translation[cjn_capture_first], FallbackValue=Please make sure you enter a Capture first before you continue.}" TextWrapping="Wrap" />
+                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="{Binding Translation[cjn_startloc], FallbackValue=Set a Location for the Start Point that is close to the Start Point of the Job you want to Copy!}" TextWrapping="Wrap" />
 
 
                                             <Grid Grid.Row="0">
@@ -10943,7 +10943,7 @@
 
                                             <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="{DynamicResource FaintTextBrush}" Height="1" Margin="20,8,20,8" />
 
-                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="Insert a Job Link here please that you want to Copy. Also Input how you want to load the Job in nrmtt. (1 = Loading Screen / 2 = Blackscreen)" TextWrapping="Wrap" />
+                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="{Binding Translation[cjn_link_hint], FallbackValue='Insert a Job Link here please that you want to Copy. Also Input how you want to load the Job in nrmtt. (1 = Loading Screen / 2 = Blackscreen)'}" TextWrapping="Wrap" />
 
 
                                             <Grid Grid.Row="3" Visibility="{Binding ElementName=ddmissionnrcidno, Path=Visibility}">
@@ -10974,16 +10974,16 @@
                                             
                                             <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="{DynamicResource FaintTextBrush}" Height="1" Margin="20,8,20,8" />
 
-                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="This will set some values for the Job so that Job Copy works. (You dont need to use this if youve done the steps yourself)" TextWrapping="Wrap" />
+                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="{Binding Translation[cjn_prep_hint], FallbackValue=This will set some values for the Job so that Job Copy works. (You dont need to use this if youve done the steps yourself)}" TextWrapping="Wrap" />
 
                                             <Border CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5" >
                                                 <Border.Effect>
                                                     <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>            
                                                 </Border.Effect>
-                                                <Button x:Name="Btnnrcidprep" Style="{DynamicResource CustomButton}" Content="Perpare Job" local:CornerRadiusSetter.CornerRadius="5" Click="Btnnrcidprep_Click" />
+                                                <Button x:Name="Btnnrcidprep" Style="{DynamicResource CustomButton}" Content="{Binding Translation[cjn_prep], FallbackValue=Perpare Job}" local:CornerRadiusSetter.CornerRadius="5" Click="Btnnrcidprep_Click" />
                                             </Border>
 
-                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="Now you can publish your job. If publishing does not start, use the Save/Publish function under Dashboard." TextWrapping="Wrap" />
+                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="{Binding Translation[cjn_publish], FallbackValue='Now you can publish your job. If publishing does not start, use the Save/Publish function under Dashboard.'}" TextWrapping="Wrap" />
 
 
                                         </StackPanel>
@@ -10994,29 +10994,29 @@
                                         <StackPanel>
                                             <Label VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Content="{Binding Translation[step], FallbackValue=Step}" ContentStringFormat="{}{0} 2"  FontWeight="Bold" Height="35"/>
 
-                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="Please start your job first before you continue!" TextWrapping="Wrap" />
+                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="{Binding Translation[cjn_start_first], FallbackValue=Please start your job first before you continue!}" TextWrapping="Wrap" />
                                             
                                             <TextBox x:Name="tbnrcidcopycs" Grid.Row="0" Style="{StaticResource Watermark}" Tag="Creator Start" Height="30" Margin="0,0,0,5"/>
                                             <TextBox x:Name="tbnrcidcopyce" Grid.Row="0" Style="{StaticResource Watermark}" Tag="Creator End" Height="30" Margin="0,0,0,5" />
                                             
-                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="Get the current address range of the Creator. Make sure you do this before you try to copy the values. (You can also define your own Range if you would like to only copy specific sections)" TextWrapping="Wrap" />
+                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="{Binding Translation[cjn_range_hint], FallbackValue=Get the current address range of the Creator. Make sure you do this before you try to copy the values. (You can also define your own Range if you would like to only copy specific sections)}" TextWrapping="Wrap" />
 
                                             <Border CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5" >
                                                 <Border.Effect>
                                                     <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>            
                                                 </Border.Effect>
-                                                <Button x:Name="Btnnrcidgetcvalues" Style="{DynamicResource CustomButton}" Content="Get Creator Start/End" local:CornerRadiusSetter.CornerRadius="5" Click="Btnnrcidgetcvalues_Click" />
+                                                <Button x:Name="Btnnrcidgetcvalues" Style="{DynamicResource CustomButton}" Content="{Binding Translation[cjn_getrange], FallbackValue=Get Creator Start/End}" local:CornerRadiusSetter.CornerRadius="5" Click="Btnnrcidgetcvalues_Click" />
                                             </Border>
                                             
                                             <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="{DynamicResource FaintTextBrush}" Height="1" Margin="20,8,20,8" />
 
-                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="Use this first if the new Job has loaded. This will Copy all bytes in the defined Range into Xenvious. Now you can leave the Job and continue with step 3." TextWrapping="Wrap" />
+                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="{Binding Translation[cjn_copy_hint], FallbackValue=Use this first if the new Job has loaded. This will Copy all bytes in the defined Range into Xenvious. Now you can leave the Job and continue with step 3.}" TextWrapping="Wrap" />
 
                                             <Border CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5" >
                                                 <Border.Effect>
                                                     <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>            
                                                 </Border.Effect>
-                                                <Button x:Name="Btnnrcidcopy" Style="{DynamicResource CustomButton}" Content="Copy Values" local:CornerRadiusSetter.CornerRadius="5" Click="Btnnrcidcopy_Click" />
+                                                <Button x:Name="Btnnrcidcopy" Style="{DynamicResource CustomButton}" Content="{Binding Translation[cjn_copy], FallbackValue=Copy Values}" local:CornerRadiusSetter.CornerRadius="5" Click="Btnnrcidcopy_Click" />
                                             </Border>
 
                                         </StackPanel>
@@ -11025,17 +11025,17 @@
                                     <Grid Width="290" Margin="10">
                                         <StackPanel>
                                             <Label VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Content="{Binding Translation[step], FallbackValue=Step}" ContentStringFormat="{}{0} 3"  FontWeight="Bold" Height="35"/>
-                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="Please enter Creator again and go into a empty job of the jobtype of the Job you wanted to copy to continue with restoring." TextWrapping="Wrap" />
+                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="{Binding Translation[cjn_restore_hint], FallbackValue=Please enter Creator again and go into a empty job of the jobtype of the Job you wanted to copy to continue with restoring.}" TextWrapping="Wrap" />
 
                                             <Border CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="5" >
                                                 <Border.Effect>
                                                     <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>            
                                                 </Border.Effect>
-                                                <Button x:Name="Btnnrcidrestore" Style="{DynamicResource CustomButton}" Content="Restore" local:CornerRadiusSetter.CornerRadius="5" Click="Btnnrcidrestore_Click" />
+                                                <Button x:Name="Btnnrcidrestore" Style="{DynamicResource CustomButton}" Content="{Binding Translation[cjn_restore], FallbackValue=Restore}" local:CornerRadiusSetter.CornerRadius="5" Click="Btnnrcidrestore_Click" />
                                             </Border>
 
-                                            <Label VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Content="Disclaimer" ContentStringFormat="{}{0} 3"  FontWeight="Bold" Height="35"/>
-                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="Please enter Creator again and go into a empty job of the jobtype of the Job you wanted to copy to continue with restoring." TextWrapping="Wrap" />
+                                            <Label VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" FontSize="22" Content="{Binding Translation[cjn_note], FallbackValue=Disclaimer}"  FontWeight="Bold" Height="35"/>
+                                            <TextBlock VerticalAlignment="Center" Foreground="Red" FontSize="13" Text="{Binding Translation[cjn_restore_hint], FallbackValue=Please enter Creator again and go into a empty job of the jobtype of the Job you wanted to copy to continue with restoring.}" TextWrapping="Wrap" />
 
                                         </StackPanel>
                                         
@@ -11051,10 +11051,10 @@
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBox x:Name="tbCopyJobLink" Height="38" Style="{StaticResource Watermark}" FontSize="15" Tag="Job Link" ToolTip="Social-Club-Link oder Job-ID, Enter lädt den Job." KeyDown="tbCopyJobLink_KeyDown" MouseDoubleClick="tbCopyJobLink_MouseDoubleClick"/>
+                                    <TextBox x:Name="tbCopyJobLink" Height="38" Style="{StaticResource Watermark}" FontSize="15" Tag="{Binding Translation[cj_link_tag], FallbackValue=Job Link}" ToolTip="{Binding Translation[cj_link_tip], FallbackValue='Social-Club-Link oder Job-ID, Enter lädt den Job.'}" KeyDown="tbCopyJobLink_KeyDown" MouseDoubleClick="tbCopyJobLink_MouseDoubleClick"/>
                                     <Border Grid.Column="1" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="10,0,0,0" Height="38" MinWidth="110">
                                         <Border.Effect><DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/></Border.Effect>
-                                        <Button x:Name="BtnCopyJobLoad" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" FontSize="15" Foreground="{DynamicResource TextColor}" Click="BtnCopyJobLoad_Click" Content="Laden"/>
+                                        <Button x:Name="BtnCopyJobLoad" Style="{DynamicResource CustomButton}" local:CornerRadiusSetter.CornerRadius="5" FontSize="15" Foreground="{DynamicResource TextColor}" Click="BtnCopyJobLoad_Click" Content="{Binding Translation[copy_load], FallbackValue=Laden}"/>
                                     </Border>
                                 </Grid>
                                 <TextBlock x:Name="tbCopyStatus" FontSize="13" Foreground="{DynamicResource HighlightBrush}" Margin="0,8,0,0" TextWrapping="Wrap" Visibility="Collapsed"/>
@@ -11166,11 +11166,11 @@
                                                     <Setter Property="Margin" Value="0,0,0,8"/>
                                                 </Style>
                                             </WrapPanel.Resources>
-                                            <StackPanel Orientation="Horizontal"><CheckBox x:Name="cbCopyProps" IsChecked="True"/><TextBlock Text="Props"/></StackPanel>
-                                            <StackPanel Orientation="Horizontal"><CheckBox x:Name="cbCopyDProps" IsChecked="True"/><TextBlock Text="Dynamic Props"/></StackPanel>
-                                            <StackPanel Orientation="Horizontal"><CheckBox x:Name="cbCopyCP" IsChecked="True"/><TextBlock Text="Checkpoints"/></StackPanel>
-                                            <StackPanel Orientation="Horizontal"><CheckBox x:Name="cbCopyTemplates" IsChecked="True"/><TextBlock Text="Templates"/></StackPanel>
-                                            <StackPanel Orientation="Horizontal"><CheckBox x:Name="cbCopyDHProps" IsChecked="True"/><TextBlock Text="Fixtures"/></StackPanel>
+                                            <StackPanel Orientation="Horizontal"><CheckBox x:Name="cbCopyProps" IsChecked="True"/><TextBlock Text="{Binding Translation[map_part_prop], FallbackValue=Props}"/></StackPanel>
+                                            <StackPanel Orientation="Horizontal"><CheckBox x:Name="cbCopyDProps" IsChecked="True"/><TextBlock Text="{Binding Translation[dash_dynprops], FallbackValue=Dynamic Props}"/></StackPanel>
+                                            <StackPanel Orientation="Horizontal"><CheckBox x:Name="cbCopyCP" IsChecked="True"/><TextBlock Text="{Binding Translation[map_part_cp], FallbackValue=Checkpoints}"/></StackPanel>
+                                            <StackPanel Orientation="Horizontal"><CheckBox x:Name="cbCopyTemplates" IsChecked="True"/><TextBlock Text="{Binding Translation[map_part_tpl], FallbackValue=Templates}"/></StackPanel>
+                                            <StackPanel Orientation="Horizontal"><CheckBox x:Name="cbCopyDHProps" IsChecked="True"/><TextBlock Text="{Binding Translation[editnav_fixtures], FallbackValue=Fixtures}"/></StackPanel>
                                             <StackPanel Orientation="Horizontal"><CheckBox x:Name="cbCopyImage" IsChecked="True"/><TextBlock Text="{Binding Translation[copy_opt_image], FallbackValue='Bild'}"/></StackPanel>
                                             <StackPanel Orientation="Horizontal"><CheckBox x:Name="cbCopyBasics"/><TextBlock Text="{Binding Translation[copy_opt_basics], FallbackValue='Grunddaten'}" ToolTip="Typ, Start, Kamera, Spielerzahl, Wetter, Uhrzeit, Verkehr"/></StackPanel>
                                             <StackPanel Orientation="Horizontal"><CheckBox x:Name="cbCopyGen"/><TextBlock Text="{Binding Translation[copy_opt_gen], FallbackValue='Name &amp; Beschreibung'}" ToolTip="Name, Beschreibung und weitere Angaben aus dem gen-Abschnitt"/></StackPanel>
@@ -11473,8 +11473,8 @@
                                             <Border Grid.Row="0" Style="{StaticResource DashCardHeader}">
                                                 <DockPanel>
                                                     <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
-                                                        <Button x:Name="BtnFreezeListGlobal" Style="{StaticResource FormButtonPrimary}" Content="Global" Height="28" Padding="12,0" Margin="0,0,6,0" Click="BtnFreezeListGlobal_Click"/>
-                                                        <Button x:Name="BtnFreezeListLocal" Style="{StaticResource FormButton}" Content="Local" Height="28" Padding="12,0" Click="BtnFreezeListLocal_Click"/>
+                                                        <Button x:Name="BtnFreezeListGlobal" Style="{StaticResource FormButtonPrimary}" Content="{Binding Translation[ge_global], FallbackValue=Global}" Height="28" Padding="12,0" Margin="0,0,6,0" Click="BtnFreezeListGlobal_Click"/>
+                                                        <Button x:Name="BtnFreezeListLocal" Style="{StaticResource FormButton}" Content="{Binding Translation[ge_local], FallbackValue=Local}" Height="28" Padding="12,0" Click="BtnFreezeListLocal_Click"/>
                                                     </StackPanel>
                                                     <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[ge_freeze], FallbackValue='Freeze list'}"/>
                                                 </DockPanel>
@@ -11492,9 +11492,9 @@
                                                         <ColumnDefinition Width="0.41*"/>
                                                         <ColumnDefinition Width="0.16*"/>
                                                     </Grid.ColumnDefinitions>
-                                                    <TextBlock Grid.Column="0" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource FaintTextBrush}" TextTrimming="CharacterEllipsis" Text="Name" />
-                                                    <TextBlock Grid.Column="1" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource FaintTextBrush}" TextTrimming="CharacterEllipsis" Text="Value" />
-                                                    <TextBlock Grid.Column="2" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource FaintTextBrush}" TextTrimming="CharacterEllipsis" Text="Freeze" HorizontalAlignment="Right" />
+                                                    <TextBlock Grid.Column="0" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource FaintTextBrush}" TextTrimming="CharacterEllipsis" Text="{Binding Translation[name], FallbackValue=Name}" />
+                                                    <TextBlock Grid.Column="1" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource FaintTextBrush}" TextTrimming="CharacterEllipsis" Text="{Binding Translation[ge_value], FallbackValue=Value}" />
+                                                    <TextBlock Grid.Column="2" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource FaintTextBrush}" TextTrimming="CharacterEllipsis" Text="{Binding Translation[cdeffreeze], FallbackValue=Freeze}" HorizontalAlignment="Right" />
                                                 </Grid>
                                                 <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" VerticalContentAlignment="Stretch">
                                                     <Grid VerticalAlignment="Stretch" Height="300">
@@ -11581,9 +11581,9 @@
                                                         <ColumnDefinition Width="0.41*"/>
                                                         <ColumnDefinition Width="0.20*"/>
                                                     </Grid.ColumnDefinitions>
-                                                    <TextBlock Grid.Column="0" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource FaintTextBrush}" TextTrimming="CharacterEllipsis" Text="Name/Script" />
-                                                    <TextBlock Grid.Column="1" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource FaintTextBrush}" TextTrimming="CharacterEllipsis" Text="Value" />
-                                                    <TextBlock Grid.Column="2" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource FaintTextBrush}" TextTrimming="CharacterEllipsis" Text="Freeze" HorizontalAlignment="Right" />
+                                                    <TextBlock Grid.Column="0" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource FaintTextBrush}" TextTrimming="CharacterEllipsis" Text="{Binding Translation[ge_name_script], FallbackValue=Name/Script}" />
+                                                    <TextBlock Grid.Column="1" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource FaintTextBrush}" TextTrimming="CharacterEllipsis" Text="{Binding Translation[ge_value], FallbackValue=Value}" />
+                                                    <TextBlock Grid.Column="2" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource FaintTextBrush}" TextTrimming="CharacterEllipsis" Text="{Binding Translation[cdeffreeze], FallbackValue=Freeze}" HorizontalAlignment="Right" />
                                                 </Grid>
                                                 <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" VerticalContentAlignment="Stretch">
                                                     <Grid VerticalAlignment="Stretch" Height="300">
@@ -11605,11 +11605,11 @@
                                                                                     <RowDefinition Height="20"/>
                                                                                 </Grid.RowDefinitions>
 
-                                                                                <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Foreground="{DynamicResource FaintTextBrush}" FontSize="10" Text="Name"/>
-                                                                                <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Foreground="{DynamicResource FaintTextBrush}" FontSize="10" Text="Scriptname"/>
-                                                                                <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Foreground="{DynamicResource FaintTextBrush}" FontSize="10" Text="Local value"/>
-                                                                                <TextBlock Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Foreground="{DynamicResource FaintTextBrush}" FontSize="10" Text="Calculated local value"/>
-                                                                                <TextBlock Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Foreground="{DynamicResource FaintTextBrush}" FontSize="10" Text="Value to write"/>
+                                                                                <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Foreground="{DynamicResource FaintTextBrush}" FontSize="10" Text="{Binding Translation[name], FallbackValue=Name}"/>
+                                                                                <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Foreground="{DynamicResource FaintTextBrush}" FontSize="10" Text="{Binding Translation[ge_scriptname], FallbackValue=Scriptname}"/>
+                                                                                <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Foreground="{DynamicResource FaintTextBrush}" FontSize="10" Text="{Binding Translation[ge_local_value], FallbackValue=Local value}"/>
+                                                                                <TextBlock Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Foreground="{DynamicResource FaintTextBrush}" FontSize="10" Text="{Binding Translation[ge_calc_local], FallbackValue=Calculated local value}"/>
+                                                                                <TextBlock Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Foreground="{DynamicResource FaintTextBrush}" FontSize="10" Text="{Binding Translation[ge_value_write], FallbackValue=Value to write}"/>
 
                                                                                 <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Foreground="{DynamicResource FaintTextBrush}" FontSize="10" Text="{Binding Path=Name}" TextAlignment="Right" TextTrimming="CharacterEllipsis"/>
                                                                                 <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Foreground="{DynamicResource FaintTextBrush}" FontSize="10" Text="{Binding Path=Script}" TextAlignment="Right" TextTrimming="CharacterEllipsis"/>
