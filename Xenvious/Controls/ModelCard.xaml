@@ -122,6 +122,15 @@
                     </StackPanel>
                 </DockPanel>
 
+                <!-- A warning about the model, e.g. a capture object the game turns into a security case; filled by the page. -->
+                <Border x:Name="WarnPanel" Visibility="Collapsed" Margin="0,12,0,0" Padding="10,8,10,2" CornerRadius="4"
+                        Background="{DynamicResource DeepBrush}" BorderBrush="{DynamicResource HighlightBrush}" BorderThickness="3,0,0,0">
+                    <StackPanel>
+                        <TextBlock x:Name="WarnText" FontSize="12" TextWrapping="Wrap" Foreground="{DynamicResource TextColor}" Margin="0,0,0,6"/>
+                        <WrapPanel x:Name="WarnChips"/>
+                    </StackPanel>
+                </Border>
+
                 <TextBlock x:Name="RecentLabel" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource FaintTextBrush}" Margin="0,14,0,6"
                            Text="{Binding Translation[catalog_recent], FallbackValue='Recently used'}"/>
                 <WrapPanel x:Name="RecentChips"/>

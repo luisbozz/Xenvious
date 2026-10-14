@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -379,6 +380,7 @@ namespace Xenvious
 
                 if (!tbobjmodel.IsFocused || ignore_focus) tbobjmodel.Text = model.ToString();
                 ObjModelCard.SetModel(unchecked((uint)model));
+                UpdateObjModelWarning(model);
                 if (!tbobjlocx.IsFocused || ignore_focus) tbobjlocx.Text = new Global((GTA.Offsets.Editor.Objects.loc + 0 + GTA.Offsets.Editor.Objects.NEXT * index)).Get<float>().ToString();
                 if (!tbobjlocy.IsFocused || ignore_focus) tbobjlocy.Text = new Global((GTA.Offsets.Editor.Objects.loc + 1 + GTA.Offsets.Editor.Objects.NEXT * index)).Get<float>().ToString();
                 if (!tbobjlocz.IsFocused || ignore_focus) tbobjlocz.Text = new Global((GTA.Offsets.Editor.Objects.loc + 2 + GTA.Offsets.Editor.Objects.NEXT * index)).Get<float>().ToString();
@@ -464,6 +466,33 @@ namespace Xenvious
             }
             Btnobjrotchain.SetBinding(Button.ToolTipProperty, b);
             objrotchainactive = !objrotchainactive;
+        }
+
+        // Allowed models to offer instead: hacking props and a bag.
+        private static readonly string[] ObjModelSuggestions =
+        {
+            "hei_prop_hei_keypad_01", "as_prop_as_laptop_01a", "sf_prop_sf_laptop_01a",
+            "ch_prop_fingerprint_scanner_01a", "prop_money_bag_01",
+        };
+
+        /// <summary>
+        /// When a job loads, the creator and the launcher give every object whose model is not on
+        /// their list prop_security_case_01 (fm_capture_creator func_5451, fmmc_launcher func_7255).
+        /// The model stays until then, so the page says so before it happens.
+        /// </summary>
+        private void UpdateObjModelWarning(int model)
+        {
+            var allowed = GTA.Editor.capture_object_models;
+            if (allowed.Count == 0 || allowed.Contains(model.ToString(CultureInfo.InvariantCulture)))
+            {
+                ObjModelCard.SetWarning(null);
+                return;
+            }
+            var suggestions = ObjModelSuggestions.Select(Joaat)
+                .Where(h => allowed.Contains(unchecked((int)h).ToString(CultureInfo.InvariantCulture)));
+            ObjModelCard.SetWarning(TranslateOr("obj_case_warn",
+                "Dieses Modell steht nicht auf der Liste der Capture-Objekte. Lädt der Job (im Creator oder beim Start), macht das Spiel daraus einen Security Case. Erlaubt sind zum Beispiel:"),
+                suggestions);
         }
 
         private void tbobjmodel_TextChanged(object sender, TextChangedEventArgs e)

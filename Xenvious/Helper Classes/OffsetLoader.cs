@@ -1201,6 +1201,7 @@ namespace Xenvious
             GTA.Editor.prop_model_centitydef_whitelist.AddRange(lists.prop_model_centitydef_whitelist);
             GTA.Editor.prop_model_stunt_with_color_option.AddRange(lists.prop_model_stunt_with_color_option);
             GTA.Editor.prop_model_blacklisted.AddRange(lists.prop_model_blacklisted);
+            GTA.Editor.capture_object_models.AddRange(lists.capture_object_models);
             GTA.Editor.prop_model_raceonly.AddRange(lists.prop_model_raceonly);
             GTA.Editor.dprop_model_activationtimer.AddRange(lists.dprop_model_activationtimer);
 
