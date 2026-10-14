@@ -27,6 +27,12 @@ namespace Xenvious
             d.AOB.creator_cam_nocollision = "08 86 88 03 00 00";
             d.AOB.creator_budget = "48 8B 05 ? ? ? ? 0F 57 C0 48 85 C0 74 ? 8B 00 85 C0 74 ? F3 0F 2A 0D";
             d.AOB.testmode = "E9 ? ? ? ? C7 85 8C 00 00 00 01 00 00 00 E9 ? ? ? ? 8B 45 00 89 45 30";
+            d.ENTITYHANDLES.fm_lts_creator = "props=7695:300, dprops=8646:32, obj=5877:32, veh=4024:32, actor=2067:80, weap=5204:60, team=2833:0+313, spawn=2408:80";
+            d.ENTITYHANDLES.fm_capture_creator = "props=7310:300, dprops=8261:32, obj=5492:32, veh=3639:32, actor=1682:80, weap=4819:60, team=2448:0+313, spawn=2023:80";
+            d.ENTITYHANDLES.fm_deathmatch_creator = "props=44364:300, dprops=45315:32, obj=33591:32, veh=31738:32, actor=29781:80, weap=32918:60, team=30547:0+313, spawn=30122:80";
+            d.ENTITYHANDLES.fm_survival_creator = "props=6040:300, dprops=6991:32, obj=4222:32, veh=2369:32, actor=412:80, weap=3549:60, team=1178:0+313, spawn=753:80";
+            d.ENTITYHANDLES.fm_race_creator = "props=42299:300, dprops=43250:32, obj=40481:32, veh=38628:32, actor=36597:80, weap=39808:60, spawn=36938:80, cps=53067:55/8";
+            d.ENTITYHANDLES.public_mission_creator = "props=6170:300, dprops=7121:32, obj=4222:32, veh=2369:32, actor=412:80, weap=3549:60, team=1178:0+313";
             d.OFFSETS.launch_creator_local_1 = 1574589;
             d.OFFSETS.launch_creator_local_2 = 1574591;
             d.OFFSETS.launch_creator_local_3 = 33833;

@@ -124,7 +124,7 @@ namespace Xenvious
             tbvehlocx.Text = loc[0];
             tbvehlocy.Text = loc[1];
             tbvehlocz.Text = loc[2];
-            creatorRefresh();
+            RefreshAfterEdit(tbvehlocx);
         }
 
         private void ddvehno_SelectionChanged(object sender, SelectionChangedEventArgs e)

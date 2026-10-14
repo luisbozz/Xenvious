@@ -20,7 +20,7 @@ namespace Xenvious
             tbactorlocx.Text = loc[0];
             tbactorlocy.Text = loc[1];
             tbactorlocz.Text = loc[2];
-            creatorRefresh();
+            RefreshAfterEdit(tbactorlocx);
         }
 
         private void tbactorlocx_TextChanged(object sender, TextChangedEventArgs e)

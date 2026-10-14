@@ -359,6 +359,7 @@ namespace Xenvious
             try { InitPlayerLayout(); }
             catch (Exception ex) { Log.Error("player layout: " + ex); }
             InitEntityPicker();
+            InitEntityMove();
         }
 
         public bool globalPtrSanityCheck(long value)

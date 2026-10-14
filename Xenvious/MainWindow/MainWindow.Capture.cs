@@ -324,6 +324,7 @@ namespace Xenvious
             tbobjlocx.Text = loc.X.ToString();
             tbobjlocy.Text = loc.Y.ToString();
             tbobjlocz.Text = loc.Z.ToString();
+            RefreshAfterEdit(tbobjlocx);
         }
 
         public void GetCaptureObj(bool ignore_focus = false)

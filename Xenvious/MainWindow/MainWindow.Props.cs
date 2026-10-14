@@ -127,7 +127,7 @@ namespace Xenvious
             if (e.Key == Key.Enter)
             {
                 e.Handled = false;
-                creatorRefresh();
+                RefreshAfterEdit(sender);
             }
         }
 
@@ -199,7 +199,7 @@ namespace Xenvious
                 tbpropslocx.Text = loc[0];
                 tbpropslocy.Text = loc[1];
                 tbpropslocz.Text = loc[2];
-                creatorRefresh();
+                RefreshAfterEdit(tbpropslocx);
             }
         }
 

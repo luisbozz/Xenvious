@@ -33,6 +33,12 @@ namespace Xenvious
             d.SCRIPTVICTIM.fm_survival_creator = "0A5BBD, 0A5BC5, 0A8000, 0A7E00";
             d.SCRIPTVICTIM.fm_race_creator = "066C35, 06C000, 068000, 06EF40";
             d.SCRIPTVICTIM.public_mission_creator = "0FBCDB, 100000, 0FC000, 103E00";
+            d.ENTITYHANDLES.fm_lts_creator = "props=7593:200, dprops=8344:32, obj=5775:32, veh=3922:32, actor=1965:80, weap=5102:60, team=2731:0+313, spawn=2306:80";
+            d.ENTITYHANDLES.fm_capture_creator = "props=7208:200, dprops=7959:32, obj=5390:32, veh=3537:32, actor=1580:80, weap=4717:60, team=2346:0+313, spawn=1921:80";
+            d.ENTITYHANDLES.fm_deathmatch_creator = "props=44262:200, dprops=45013:32, obj=33489:32, veh=31636:32, actor=29679:80, weap=32816:60, team=30445:0+313, spawn=30020:80";
+            d.ENTITYHANDLES.fm_survival_creator = "props=6038:200, dprops=6789:32, obj=4220:32, veh=2367:32, actor=410:80, weap=3547:60, team=1176:0+313, spawn=751:80";
+            d.ENTITYHANDLES.fm_race_creator = "props=42097:200, dprops=42848:32, obj=40279:32, veh=38426:32, actor=36395:80, weap=39606:60, spawn=36736:80, cps=52465:55/8";
+            d.ENTITYHANDLES.public_mission_creator = "props=6168:200, dprops=6919:32, obj=4220:32, veh=2367:32, actor=410:80, weap=3547:60, team=1176:0+313";
             d.OFFSETS.launch_creator_local_1 = 1574589;
             d.OFFSETS.launch_creator_local_2 = 1574591;
             d.OFFSETS.launch_creator_local_3 = 33816;

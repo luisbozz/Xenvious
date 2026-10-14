@@ -214,7 +214,7 @@ namespace Xenvious
             tbweaplocx.Text = loc[0];
             tbweaplocy.Text = loc[1];
             tbweaplocz.Text = loc[2];
-            creatorRefresh();
+            RefreshAfterEdit(tbweaplocx);
         }
 
         private void tbweaplocz_TextChanged(object sender, TextChangedEventArgs e)

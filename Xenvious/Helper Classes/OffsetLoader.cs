@@ -47,6 +47,7 @@ namespace Xenvious
             GTA.Offsets.Editor.OFFSET_packfile_count = d.OFFSETS.packfile_count;
             GTA.Offsets.Editor.ScriptSpaceReservations.Clear();
             GTA.Offsets.Editor.ScriptVictims.Clear();
+            GTA.Offsets.Editor.EntityHandles.Clear();
             foreach (string script in new[] { "fm_lts_creator", "fm_capture_creator", "fm_deathmatch_creator", "fm_race_creator", "fm_survival_creator", "public_mission_creator" })
             {
                 string reservation = d.SCRIPTSPACE.Get(script);
@@ -55,6 +56,9 @@ namespace Xenvious
                 string victim = d.SCRIPTVICTIM.Get(script);
                 if (!string.IsNullOrWhiteSpace(victim))
                     GTA.Offsets.Editor.ScriptVictims[script] = victim;
+                string handles = d.ENTITYHANDLES.Get(script);
+                if (!string.IsNullOrWhiteSpace(handles))
+                    GTA.Offsets.Editor.EntityHandles[script] = handles;
             }
             GTA.Offsets.Editor.OFFSET_script_local_start = d.OFFSETS.script_local_start;
             GTA.Offsets.Editor.OFFSET_current_creator_worker_survival = d.OFFSETS.current_creator_worker_survival;

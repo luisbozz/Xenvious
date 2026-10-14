@@ -25,7 +25,7 @@ namespace Xenvious
                 tbdpropslocx.Text = loc[0];
                 tbdpropslocy.Text = loc[1];
                 tbdpropslocz.Text = loc[2];
-                creatorRefresh();
+                RefreshAfterEdit(tbdpropslocx);
             }
         }
 

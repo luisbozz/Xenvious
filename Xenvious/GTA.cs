@@ -1479,6 +1479,8 @@ namespace Xenvious
                 public static Dictionary<string, string> ScriptSpaceReservations = new Dictionary<string, string>();
                 // Script name -> "<function>, <payload>, <data page>, <string page array>" of the function given up for the custom funcs (Legacy, ScriptSpace).
                 public static Dictionary<string, string> ScriptVictims = new Dictionary<string, string>();
+                // Script name -> where it keeps the handles of its placed entities, "props=7593:200, ..." (EntityMover).
+                public static Dictionary<string, string> EntityHandles = new Dictionary<string, string>();
                 // Enhanced keeps no name in the thread, only the joaat hash of its script.
                 // 0 means "match by name" (Legacy).
                 public static long OFFSET_script_hash = 0x0;

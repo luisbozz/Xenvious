@@ -17,6 +17,9 @@ namespace Xenvious
         private TextBox _box;
         private bool _sync;
 
+        /// <summary>True while a slider drag writes its box, so live moves can tell it from a page loading another entity.</summary>
+        public static bool Writing { get; private set; }
+
         /// <summary>
         /// Turns the heading field into "Heading · 135°" with a slider and the box beside it. The
         /// box moves into the slider row; its old label is hidden.
@@ -56,9 +59,9 @@ namespace Xenvious
 
         private readonly TextBlock _label = new TextBlock();
         private Action _refresh;
-        // The creator shows a new heading only after a refresh (a rebuild, what Enter in the box
-        // does). Refreshing on every slider step would rebuild constantly, so it waits until the
-        // slider rests for a moment or the thumb is let go.
+        // Pages whose entity Xenvious moves in place (EntityMover) show every step live; the
+        // refresh then only rebuilds when that did not work. A rebuild on every step would run
+        // constantly, so it waits until the slider rests for a moment or the thumb is let go.
         private readonly System.Windows.Threading.DispatcherTimer _settle = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromMilliseconds(400) };
 
         private void Build()
@@ -85,7 +88,11 @@ namespace Xenvious
                     return;
                 string text = Math.Round(_slider.Value, 1).ToString(CultureInfo.CurrentCulture);
                 if (_box.Text != text)
-                    _box.Text = text;
+                {
+                    Writing = true;
+                    try { _box.Text = text; }
+                    finally { Writing = false; }
+                }
                 _settle.Stop();
                 _settle.Start();
             };

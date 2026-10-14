@@ -66,7 +66,7 @@ namespace Xenvious
                 }
             }
 
-            HeadingSlider.Attach(tbplyrhead, creatorRefresh);
+            HeadingSlider.Attach(tbplyrhead, () => RefreshAfterEdit(tbplyrhead));
             BuildStartChoice();
         }
 

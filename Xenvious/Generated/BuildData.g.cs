@@ -107,6 +107,34 @@ namespace Xenvious
             }
         }
 
+        public readonly Section_ENTITYHANDLES ENTITYHANDLES = new Section_ENTITYHANDLES();
+
+        /// <summary>[ENTITYHANDLES]</summary>
+        public sealed class Section_ENTITYHANDLES
+        {
+            public string fm_lts_creator = "";
+            public string fm_capture_creator = "";
+            public string fm_deathmatch_creator = "";
+            public string fm_survival_creator = "";
+            public string fm_race_creator = "";
+            public string public_mission_creator = "";
+
+            /// <summary>A value by name (the ini key without OFFSET_, any case), "" when unknown.</summary>
+            public string Get(string name)
+            {
+                switch ((name ?? "").ToLowerInvariant())
+                {
+                    case "fm_lts_creator": return fm_lts_creator;
+                    case "fm_capture_creator": return fm_capture_creator;
+                    case "fm_deathmatch_creator": return fm_deathmatch_creator;
+                    case "fm_survival_creator": return fm_survival_creator;
+                    case "fm_race_creator": return fm_race_creator;
+                    case "public_mission_creator": return public_mission_creator;
+                    default: return "";
+                }
+            }
+        }
+
         public readonly Section_OFFSETS OFFSETS = new Section_OFFSETS();
 
         /// <summary>[OFFSETS]</summary>
