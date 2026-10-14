@@ -15,6 +15,24 @@
 
     <Window.Resources>
         <ResourceDictionary>
+            <!-- Small rounded text button, e.g. "Save JSON" and the copy mode switch on Copy Jobs. -->
+            <Style x:Key="PillButton" TargetType="Button">
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="Focusable" Value="False"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="b" CornerRadius="10" Padding="10,2" Background="{DynamicResource SelectedTileBrush}">
+                                <TextBlock Text="{TemplateBinding Content}" FontSize="12" Foreground="{DynamicResource TextColor}"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="b" Property="Opacity" Value="0.8"/></Trigger>
+                                <Trigger Property="IsEnabled" Value="False"><Setter TargetName="b" Property="Opacity" Value="0.4"/></Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
             <!-- Dialog buttons: the container Border around each button takes the hover colour
                  (DialogButton_MouseEnter) and press colour (DialogButton_MouseDown), so the whole button
                  changes, not an inset part of it. The buttons stretch over the whole container, so all
@@ -10880,21 +10898,14 @@
                     <TabItem x:Name="PageCopyJobs" Header="Copy Jobs">
                         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                             <StackPanel Margin="20,14" MaxWidth="1000">
-                                <TextBlock FontSize="20" FontWeight="Bold" Foreground="{DynamicResource TextColor}" Text="{Binding Translation[copyjobs], FallbackValue='Copy Jobs'}"/>
-                                <TextBlock FontSize="13" Foreground="{DynamicResource MutedTextBrush}" Margin="0,4,0,0" TextWrapping="Wrap" Text="{Binding Translation[copy_help], FallbackValue='Lädt einen Job über seinen Social-Club-Link und schreibt die ausgewählten Teile in den offenen Creator. Funktioniert auch mit Rockstar-Jobs und Jobs von der Konsole, kopieren lässt sich nur auf den PC.'}"/>
-
                                 <!-- Two ways to copy: through the Social Club link, or the older nrcid route
-                                     that goes through a published capture. -->
-                                <Border Style="{StaticResource NavGroup}" HorizontalAlignment="Left" Margin="0,14,0,0">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Button x:Name="BtnCopyModeLink" Style="{StaticResource NavButton}" Tag="active" Click="BtnCopyModeLink_Click">
-                                            <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[copy_mode_link], FallbackValue='Via link'}"/>
-                                        </Button>
-                                        <Button x:Name="BtnCopyModeNrcid" Style="{StaticResource NavButton}" Click="BtnCopyModeNrcid_Click">
-                                            <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[copy_mode_nrcid], FallbackValue='Via nrcid'}"/>
-                                        </Button>
-                                    </StackPanel>
-                                </Border>
+                                     that goes through a published capture. The switch sits next to the title. -->
+                                <DockPanel>
+                                    <Button x:Name="BtnCopyMode" DockPanel.Dock="Right" Style="{StaticResource PillButton}" VerticalAlignment="Center"
+                                            Click="BtnCopyMode_Click" Content="{Binding Translation[copy_mode_nrcid], FallbackValue='Via nrcid'}"/>
+                                    <TextBlock FontSize="20" FontWeight="Bold" Foreground="{DynamicResource TextColor}" Text="{Binding Translation[copyjobs], FallbackValue='Copy Jobs'}"/>
+                                </DockPanel>
+                                <TextBlock FontSize="13" Foreground="{DynamicResource MutedTextBrush}" Margin="0,4,0,0" TextWrapping="Wrap" Text="{Binding Translation[copy_help], FallbackValue='Lädt einen Job über seinen Social-Club-Link und schreibt die ausgewählten Teile in den offenen Creator. Funktioniert auch mit Rockstar-Jobs und Jobs von der Konsole, kopieren lässt sich nur auf den PC.'}"/>
 
                                 <StackPanel x:Name="CopyNrcidPanel" Visibility="Collapsed" Margin="0,8,0,0">
                                 <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -11135,20 +11146,9 @@
                                                 <WrapPanel>
                                                     <TextBlock x:Name="tbCopyRoute" FontSize="13" Foreground="{DynamicResource TextColor}" TextWrapping="Wrap" VerticalAlignment="Center"/>
                                                     <!-- The job file as downloaded from Rockstar; saved to the jobs folder, Map Backup lists it. -->
-                                                    <Button x:Name="BtnCopySaveJson" Margin="10,0,0,0" VerticalAlignment="Center" Cursor="Hand" FontSize="12" Focusable="False"
+                                                    <Button x:Name="BtnCopySaveJson" Style="{StaticResource PillButton}" Margin="10,0,0,0" VerticalAlignment="Center"
                                                             Click="BtnCopySaveJson_Click" Content="{Binding Translation[copy_save_json], FallbackValue='JSON speichern …'}"
                                                             ToolTip="{Binding Translation[copy_save_json_tip], FallbackValue='Speichert die Job-Datei, wie Rockstar sie liefert. Unter Map Backup kannst du sie komplett laden.'}">
-                                                        <Button.Template>
-                                                            <ControlTemplate TargetType="Button">
-                                                                <Border x:Name="b" CornerRadius="10" Padding="10,2" Background="{DynamicResource SelectedTileBrush}">
-                                                                    <TextBlock Text="{TemplateBinding Content}" FontSize="12" Foreground="{DynamicResource TextColor}"/>
-                                                                </Border>
-                                                                <ControlTemplate.Triggers>
-                                                                    <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="b" Property="Opacity" Value="0.8"/></Trigger>
-                                                                    <Trigger Property="IsEnabled" Value="False"><Setter TargetName="b" Property="Opacity" Value="0.4"/></Trigger>
-                                                                </ControlTemplate.Triggers>
-                                                            </ControlTemplate>
-                                                        </Button.Template>
                                                     </Button>
                                                 </WrapPanel>
                                                 <TextBlock x:Name="tbCopyRouteSub" FontSize="12" Foreground="{DynamicResource MutedTextBrush}" TextWrapping="Wrap"/>

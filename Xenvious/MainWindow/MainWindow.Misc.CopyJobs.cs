@@ -34,17 +34,14 @@ namespace Xenvious
                 Clipboard.SetText(full_link);
         }
 
-        private void BtnCopyModeLink_Click(object sender, RoutedEventArgs e) => ShowCopyMode(nrcid: false);
-
-        private void BtnCopyModeNrcid_Click(object sender, RoutedEventArgs e) => ShowCopyMode(nrcid: true);
-
-        private void ShowCopyMode(bool nrcid)
+        // The button names the other way to copy; a click switches to it.
+        private void BtnCopyMode_Click(object sender, RoutedEventArgs e)
         {
             bool nrcid = CopyNrcidPanel.Visibility != Visibility.Visible;
             CopyLinkPanel.Visibility = nrcid ? Visibility.Collapsed : Visibility.Visible;
             CopyNrcidPanel.Visibility = nrcid ? Visibility.Visible : Visibility.Collapsed;
-            BtnCopyModeLink.Tag = nrcid ? null : "active";
-            BtnCopyModeNrcid.Tag = nrcid ? "active" : null;
+            BtnCopyMode.SetBinding(Button.ContentProperty, new System.Windows.Data.Binding($"Translation[{(nrcid ? "copy_mode_link" : "copy_mode_nrcid")}]")
+                { FallbackValue = nrcid ? "Via link" : "Via nrcid" });
         }
 
         /// <summary>Saves the downloaded job file unchanged into the jobs folder, where Map Backup lists it.</summary>
