@@ -302,7 +302,8 @@ namespace Xenvious
             left.Children.Add(metaText);
             left.Children.Add(chips);
 
-            var actions = new WrapPanel { HorizontalAlignment = HorizontalAlignment.Right, VerticalAlignment = VerticalAlignment.Center };
+            // MaxWidth on the panel, not on its Auto column: the column would cut the buttons off, the panel wraps them.
+            var actions = new WrapPanel { HorizontalAlignment = HorizontalAlignment.Right, VerticalAlignment = VerticalAlignment.Center, MaxWidth = 420 };
             if (entry.Kind == MapEntryKind.Job)
                 actions.Children.Add(MapButton(TranslateOr("map_load_whole", "Komplett laden …"), true, (s, e) => LoadWholeJob(entry, true)));
             var putIn = MapButton(TranslateOr("map_put_in", "Einspielen …"), entry.Kind != MapEntryKind.Job, (s, e) => PutInMapEntry(entry));
@@ -328,7 +329,7 @@ namespace Xenvious
 
             var grid = new Grid();
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto, MaxWidth = 420 });
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
             grid.Children.Add(left);
             Grid.SetColumn(actions, 1);
             grid.Children.Add(actions);
