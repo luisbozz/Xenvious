@@ -403,6 +403,7 @@ namespace Xenvious
             GTA.Offsets.Editor.Zones.znatp = d.OFFSETS.zones_znatp;
             GTA.Offsets.Editor.Zones.znwd = d.OFFSETS.zones_znwd;
             GTA.Offsets.Editor.Zones.znwvd = d.OFFSETS.zones_znwvd;
+            GTA.Offsets.Editor.Zones.znVl3 = d.OFFSETS.zones_znVl3;
             GTA.Offsets.Editor.Zones.znepr = d.OFFSETS.zones_znepr;
             GTA.Offsets.Editor.Zones.znpr = d.OFFSETS.zones_znpr;
             GTA.Offsets.Editor.Zones.znhei = d.OFFSETS.zones_znhei;

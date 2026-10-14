@@ -455,6 +455,7 @@ namespace Xenvious
             public long zones_znatp;
             public long zones_znwd;
             public long zones_znwvd;
+            public long zones_znVl3;
             public long zones_znepr;
             public long zones_znpr;
             public long zones_znhei;
@@ -1534,6 +1535,7 @@ namespace Xenvious
                     case "zones_znatp": return zones_znatp;
                     case "zones_znwd": return zones_znwd;
                     case "zones_znwvd": return zones_znwvd;
+                    case "zones_znvl3": return zones_znVl3;
                     case "zones_znepr": return zones_znepr;
                     case "zones_znpr": return zones_znpr;
                     case "zones_znhei": return zones_znhei;

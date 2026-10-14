@@ -895,6 +895,7 @@ namespace Xenvious
                     public static long znatp = 0;
                     public static long znwd = 0;
                     public static long znwvd = 0;
+                    public static long znVl3 = 0;   // int value 3 of the zone type (walk style, filter, mobility bits, mission flag)
                     public static long znepr = 0;
                     public static long znpr = 0;
                     public static long znhei = 0;

@@ -371,6 +371,7 @@ namespace Xenvious
             d.OFFSETS.zones_znatp = 4948892;
             d.OFFSETS.zones_znwd = 4948910;
             d.OFFSETS.zones_znwvd = 4948911;
+            d.OFFSETS.zones_znVl3 = 4948912;
             d.OFFSETS.zones_znepr = 4948900;
             d.OFFSETS.zones_znpr = 4948895;
             d.OFFSETS.zones_znhei = 4948890;

@@ -64,6 +64,9 @@ namespace Xenvious
                 if (!tbzonepriority.IsFocused) tbzonepriority.Text = new Global(GTA.Offsets.Editor.Zones.znepr + 1 * ddzoneteam.SelectedIndex + GTA.Offsets.Editor.Zones.NEXT * index).Get<int>().ToString();
             }
             ShowZoneId(index);
+            int type = index > -1 && m.IsProcOpen && GTA.Offsets.Editor.Zones.zntp != 0
+                ? new Global(GTA.Offsets.Editor.Zones.zntp + GTA.Offsets.Editor.Zones.NEXT * index).Get<int>() : -1;
+            ZoneTypeSettingsCard.Show(index, type);
         }
 
         private bool _zoneIdSync;

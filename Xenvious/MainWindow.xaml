@@ -8640,6 +8640,8 @@
                                                                         </StackPanel>
                                                                     </DockPanel>
                                                                 </Border>
+                                                                <!-- Options of the picked type, ZoneTypeSettings / MainWindow.Zones.cs. -->
+                                                                <local:ZoneTypeSettingsCard x:Name="ZoneTypeSettingsCard" Margin="0,12,0,0"/>
                                                             </StackPanel>
                                                             <StackPanel>
                                                                 <Border Style="{StaticResource DashCard}">
