@@ -315,6 +315,9 @@
     <Compile Include="Generated\BuildData.Enhanced.g.cs" />
     <Compile Include="Generated\ScrPatches.Legacy.g.cs" />
     <Compile Include="Generated\ScrPatches.Enhanced.g.cs" />
+    <Compile Include="Generated\PropLists.g.cs" />
+    <Compile Include="Generated\PropLists.Legacy.g.cs" />
+    <Compile Include="Generated\PropLists.Enhanced.g.cs" />
     <Compile Include="Helper Classes\AobCache.cs" />
     <Compile Include="Helper Classes\BattlEye.cs" />
     <Compile Include="JSON\Converters\JsonDecimalConverter.cs" />
@@ -548,11 +551,13 @@
     <None Include="OfflineData\legacy\offsets.ini" />
     <None Include="OfflineData\legacy\scrpatches.json" />
     <None Include="OfflineData\legacy\scrpatchesdev.json" />
+    <None Include="OfflineData\legacy\prop_lists.json" />
     <EmbeddedResource Include="OfflineData\legacy\race_vehicles.json" />
     <EmbeddedResource Include="OfflineData\legacy\mprops.json" />
     <None Include="OfflineData\enhanced\offsets.ini" />
     <None Include="OfflineData\enhanced\scrpatches.json" />
     <None Include="OfflineData\enhanced\scrpatchesdev.json" />
+    <None Include="OfflineData\enhanced\prop_lists.json" />
     <EmbeddedResource Include="OfflineData\enhanced\race_vehicles.json" />
     <EmbeddedResource Include="OfflineData\enhanced\mprops.json" />
     <EmbeddedResource Include="OfflineData\props.json" />

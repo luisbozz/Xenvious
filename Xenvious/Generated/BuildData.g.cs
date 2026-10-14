@@ -79,84 +79,6 @@ namespace Xenvious
             }
         }
 
-        public readonly Section_OTHER OTHER = new Section_OTHER();
-
-        /// <summary>[OTHER]</summary>
-        public sealed class Section_OTHER
-        {
-            public string prop_model_booster = "";
-            public string prop_model_slowdown = "";
-            public string prop_model_centitydef_whitelist = "";
-            public string prop_model_stunt_with_color_option = "";
-            public string prop_model_blacklisted = "";
-            public string prop_model_raceonly = "";
-            public string dprop_model_activationtimer = "";
-
-            /// <summary>A value by name (the ini key without OFFSET_, any case), "" when unknown.</summary>
-            public string Get(string name)
-            {
-                switch ((name ?? "").ToLowerInvariant())
-                {
-                    case "prop_model_booster": return prop_model_booster;
-                    case "prop_model_slowdown": return prop_model_slowdown;
-                    case "prop_model_centitydef_whitelist": return prop_model_centitydef_whitelist;
-                    case "prop_model_stunt_with_color_option": return prop_model_stunt_with_color_option;
-                    case "prop_model_blacklisted": return prop_model_blacklisted;
-                    case "prop_model_raceonly": return prop_model_raceonly;
-                    case "dprop_model_activationtimer": return dprop_model_activationtimer;
-                    default: return "";
-                }
-            }
-        }
-
-        public readonly Section_IMAGE IMAGE = new Section_IMAGE();
-
-        /// <summary>[IMAGE]</summary>
-        public sealed class Section_IMAGE
-        {
-            public long image;
-
-            /// <summary>A number by name (the ini key without OFFSET_, any case), 0 when unknown.</summary>
-            public long Get(string name)
-            {
-                switch ((name ?? "").ToLowerInvariant())
-                {
-                    case "image": return image;
-                    default: return 0;
-                }
-            }
-        }
-
-        public readonly Section_SESSION SESSION = new Section_SESSION();
-
-        /// <summary>[SESSION]</summary>
-        public sealed class Section_SESSION
-        {
-            public long pointer_steam;
-            public long pointer_rstar;
-            public long username;
-            public long ticket;
-            public long sessionTicketOffset;
-            public long sessionKeyOffset;
-            public long milliSecsToExpiryOffset;
-
-            /// <summary>A number by name (the ini key without OFFSET_, any case), 0 when unknown.</summary>
-            public long Get(string name)
-            {
-                switch ((name ?? "").ToLowerInvariant())
-                {
-                    case "pointer_steam": return pointer_steam;
-                    case "pointer_rstar": return pointer_rstar;
-                    case "username": return username;
-                    case "ticket": return ticket;
-                    case "sessionticketoffset": return sessionTicketOffset;
-                    case "sessionkeyoffset": return sessionKeyOffset;
-                    case "millisecstoexpiryoffset": return milliSecsToExpiryOffset;
-                    default: return 0;
-                }
-            }
-        }
-
         public readonly Section_SCRIPTVICTIM SCRIPTVICTIM = new Section_SCRIPTVICTIM();
 
         /// <summary>[SCRIPTVICTIM]</summary>
@@ -185,38 +107,6 @@ namespace Xenvious
             }
         }
 
-        public readonly Section_DATAFILE DATAFILE = new Section_DATAFILE();
-
-        /// <summary>[DATAFILE]</summary>
-        public sealed class Section_DATAFILE
-        {
-            public long files;
-            public long vt_bool;
-            public long vt_int;
-            public long vt_float;
-            public long vt_string;
-            public long vt_vec3;
-            public long vt_dict;
-            public long vt_array;
-
-            /// <summary>A number by name (the ini key without OFFSET_, any case), 0 when unknown.</summary>
-            public long Get(string name)
-            {
-                switch ((name ?? "").ToLowerInvariant())
-                {
-                    case "files": return files;
-                    case "vt_bool": return vt_bool;
-                    case "vt_int": return vt_int;
-                    case "vt_float": return vt_float;
-                    case "vt_string": return vt_string;
-                    case "vt_vec3": return vt_vec3;
-                    case "vt_dict": return vt_dict;
-                    case "vt_array": return vt_array;
-                    default: return 0;
-                }
-            }
-        }
-
         public readonly Section_OFFSETS OFFSETS = new Section_OFFSETS();
 
         /// <summary>[OFFSETS]</summary>
@@ -228,7 +118,6 @@ namespace Xenvious
             public long launch_creator_local_4;
             public long launch_creator_local_5;
             public long transitionState;
-            public string creator_index = "";
             public string tp_player_loc = "";
             public string tp_playerveh_loc = "";
             public string tp_playervehcam_loc = "";
@@ -273,7 +162,6 @@ namespace Xenvious
             public long job_save_uploaded;
             public long current_creator_worker_offset_menu;
             public long current_creator_worker_offset_test_state;
-            public long current_creator_worker_heading;
             public long current_creator_worker_pos;
             public long current_creator_cam_heading_lts;
             public long current_creator_cam_heading_mission;
@@ -288,18 +176,12 @@ namespace Xenvious
             public long current_creator_pre_mission;
             public long current_creator_pre_dm;
             public long current_creator_pre_race;
-            public long current_creator_pre_menu_gm;
             public long current_creator_pre_test1;
             public long current_creator_pre_test2;
-            public long current_creator_pre_color;
             public long current_creator_pre_category_num;
-            public long current_creator_pre_prop_num;
-            public long current_creator_pre_publish;
             public long current_creator_pre_previous_menu;
             public long current_creator_pre_current_menu;
             public long current_creator_pre_visgroups;
-            public long current_creator_pre_idk;
-            public long current_creator_pre_place_object_type;
             public long current_creator_pre_alignment;
             public long current_creator_placement_race;
             public long current_creator_placement_lts;
@@ -322,7 +204,6 @@ namespace Xenvious
             public long creator_hub_stage;
             public long transition_menu_trigger;
             public long current_creator_test_mission;
-            public long current_creator_test_dm;
             public long current_creator_test_race;
             public long current_creator_refresh_lts;
             public long current_creator_refresh_mission;
@@ -330,19 +211,11 @@ namespace Xenvious
             public long current_creator_refresh_race;
             public long current_creator_refresh_survival;
             public long current_creator_refresh_dm;
-            public long templatefix;
-            public long cam_zoom;
-            public long cam_mode;
-            public long steam_accname;
-            public long rstar_accname;
-            public long epic_accname;
             public long templates;
             public long templates_count;
             public long check_creator;
             public long hide_creator_menu;
             public long enable_murica;
-            public long too_many_props;
-            public long random_transform;
             public long jobid;
             public long job_published;
             public long props_loc;
@@ -402,7 +275,6 @@ namespace Xenvious
             public long props_sndid;
             public long props_sndtri;
             public long props_sndlmt;
-            public long props_pror_;
             public long props_pdip;
             public long props_prpclcr;
             public long props_prpclc;
@@ -451,7 +323,6 @@ namespace Xenvious
             public long dprops_dptrpx;
             public long dprops_dpsl;
             public long dprops_dpcl;
-            public long dprops_dptrrs;
             public long dprops_dyipho;
             public long dprops_dyipbtt;
             public long dprops_dcoid;
@@ -462,7 +333,6 @@ namespace Xenvious
             public long dprops_dynblhd;
             public long dprops_dynblsc;
             public long dprops_dynblpr;
-            public long dprops_Dror_;
             public long dprops_number;
             public long dprops_next;
             public long veh_model;
@@ -491,9 +361,6 @@ namespace Xenvious
             public long veh_vbs6;
             public long veh_vbs7;
             public long veh_vbs8;
-            public long veh_vbs9;
-            public long veh_vbs10;
-            public long veh_vbs11;
             public long veh_vbs12;
             public long veh_vebs;
             public long veh_hlth;
@@ -540,7 +407,6 @@ namespace Xenvious
             public long obj_bits2;
             public long obj_bits3;
             public long obj_bits4;
-            public long obj_bits5;
             public long obj_bits6;
             public long obj_rule;
             public long obj_pri;
@@ -565,14 +431,6 @@ namespace Xenvious
             public long obj_nmfail;
             public long obj_obint;
             public long obj_objLOD;
-            public long obj_oAsAPR;
-            public long obj_o2AsAPR;
-            public long obj_o3AsAPR;
-            public long obj_o4AsAPR;
-            public long obj_oAsSc;
-            public long obj_o2AsSc;
-            public long obj_o3AsSc;
-            public long obj_o4AsSc;
             public long obj_number;
             public long obj_NEXT;
             public long dhprop_number;
@@ -695,7 +553,6 @@ namespace Xenvious
             public long actor_veh;
             public long actor_pedbc;
             public long actor_pdbps;
-            public long actor_pdbso;
             public long actor_gtds;
             public long actor_frr;
             public long actor_pspdl;
@@ -706,7 +563,6 @@ namespace Xenvious
             public long actor_whost;
             public long actor_cmsty;
             public long actor_rsp;
-            public long actor_rel;
             public long actor_accu;
             public long actor_hlt;
             public long actor_weapon_model;
@@ -766,14 +622,6 @@ namespace Xenvious
             public long actor_pbs13;
             public long actor_pbs14;
             public long actor_pbs15;
-            public long actor_pbs16;
-            public long actor_pbs17;
-            public long actor_pbs18;
-            public long actor_pbs19;
-            public long actor_pbs20;
-            public long actor_pbs21;
-            public long actor_pbs22;
-            public long actor_pbs23;
             public long actor_pbs25;
             public long actor_psort;
             public long actor_pcash;
@@ -794,10 +642,6 @@ namespace Xenvious
             public long irbs12;
             public long irbs13;
             public long irbs14;
-            public long irbs15;
-            public long irbs16;
-            public long irbs17;
-            public long irbs18;
             public long irbs_NEXT;
             public long weap_model;
             public long weap_loc;
@@ -836,15 +680,6 @@ namespace Xenvious
             public long weap_randtyp;
             public long weap_NEXT;
             public long pa_outbt;
-            public long pa_outbx;
-            public long pa_outby;
-            public long pa_outbz;
-            public long pa_outb1vx;
-            public long pa_outb1vy;
-            public long pa_outb1vz;
-            public long pa_outb2vx;
-            public long pa_outb2vy;
-            public long pa_outb2vz;
             public long pa_outw;
             public long pa_outbs;
             public long pa_outmm;
@@ -859,39 +694,22 @@ namespace Xenvious
             public long pa_leavebs;
             public long pa_playbs;
             public long pa_spawnbs;
-            public long pa_spawnwhilebs;
             public long pa2_spawnbs;
-            public long pa2_spawnwhilebs;
             public long pa_wantedbs;
             public long pa2_leavebs;
             public long pa2_playbs;
             public long pa2_timer;
             public long pa2_wantedbs;
             public long pa_out2bs;
-            public long pa_out2mm;
             public long pa_out2wg;
             public long pa_out2iv;
             public long pa_out2io;
             public long pa_out2fp;
             public long pa_out2sg;
             public long pa_out2bh;
-            public long pa_out2ilv;
-            public long pa_out2onfv;
-            public long pa_out2hc;
             public long pa_out2et;
             public long pa_out2id;
-            public long pa_bd2t;
-            public long pa_bd2vx;
-            public long pa_bd2vy;
-            public long pa_bd2vz;
-            public long pa_bd2v2x;
-            public long pa_bd2v2y;
-            public long pa_bd2v2z;
-            public long pa_bd2v1x;
-            public long pa_bd2v1y;
-            public long pa_bd2v1z;
             public long pa_bd2r;
-            public long pa_bd2w;
             public long pa_NEXT;
             public long SMS_team;
             public long SMS_smsdt;
@@ -934,9 +752,6 @@ namespace Xenvious
             public long cps_cptfrms;
             public long cps_chttu;
             public long cps_chttr;
-            public long cps_cpwwt;
-            public long cps_chtd;
-            public long cps_chtds;
             public long cps_chpp;
             public long cps_chpps;
             public long cps_chdlo;
@@ -982,24 +797,9 @@ namespace Xenvious
             public long adlc_NEXT;
             public long published_number;
             public long published_link;
-            public long published_owner;
             public long published_name;
-            public long published_year;
-            public long published_month;
-            public long published_day;
-            public long published_type;
-            public long published_subtype;
-            public long published_rating;
-            public long saved_number;
             public long saved_link;
-            public long saved_owner;
             public long saved_name;
-            public long saved_year;
-            public long saved_month;
-            public long saved_day;
-            public long saved_type;
-            public long saved_subtype;
-            public long saved_rating;
             public long jobs_NEXT;
             public long todhr;
             public long todmn;
@@ -1007,7 +807,6 @@ namespace Xenvious
             public long endtest;
             public long dec;
             public long nm;
-            public long sztag;
             public long start;
             public long cordmbs;
             public long iplyli;
@@ -1016,7 +815,6 @@ namespace Xenvious
             public long fiispr;
             public long turammo;
             public long turgudm;
-            public long irfbs;
             public long tmbts;
             public long tmbt2;
             public long tmbt3;
@@ -1077,14 +875,11 @@ namespace Xenvious
             public long inv2;
             public long inv3;
             public long inv4;
-            public long inv5;
             public long invsw;
             public long minv;
             public long minv2;
             public long minv3;
             public long minv4;
-            public long minv5;
-            public long mpaumxscr;
             public long nrl;
             public long plyl;
             public long plvrl;
@@ -1128,21 +923,18 @@ namespace Xenvious
             public long pol;
             public long vdm;
             public long traf;
-            public long trafpb;
             public long casCol;
             public long casPat;
             public long casArc;
             public long arnTh;
             public long arnTy;
             public long arnLi;
-            public long anfMBS;
             public long musx;
             public long newausc;
             public long ausc;
             public long ivm;
             public long apeds;
             public long geard;
-            public long ofovr;
             public long tmrph;
             public long tmtsr;
             public long dtn;
@@ -1156,10 +948,7 @@ namespace Xenvious
             public long mspdlp;
             public long mspdsv;
             public long fsdtmr;
-            public long frndf;
             public long mspdmx;
-            public long vehdmro;
-            public long vehdmri;
             public long inpts;
             public long player_number;
             public long player_loc;
@@ -1176,7 +965,6 @@ namespace Xenvious
             public long player_gg;
             public long player_ar;
             public long player_team;
-            public long player_vehid;
             public long player_ttm;
             public long player_tspr;
             public long player_lcet;
@@ -1186,16 +974,13 @@ namespace Xenvious
             public long bmspm;
             public long bmsjd;
             public long bmstd;
-            public long bmmph;
             public long bmhrgn;
-            public long bmhok;
             public long bmmdm;
             public long bm_NEXT;
             public long beast_next;
             public long tmvhp;
             public long tmvds;
             public long bdprt;
-            public long bdpst;
             public long txt0;
             public long txt_NEXT;
             public long NEXT_txt;
@@ -1221,7 +1006,6 @@ namespace Xenvious
             public long dpos2;
             public long drpr;
             public long drph;
-            public long dost;
             public long dlcrel;
             public long abits;
             public long sdobs;
@@ -1234,7 +1018,6 @@ namespace Xenvious
             public long tp_WAz;
             public long tp_WA;
             public long tp_WH;
-            public long tp_WB;
             public long tp_WC;
             public long tp_WE;
             public long tp_WF;
@@ -1245,18 +1028,8 @@ namespace Xenvious
             public long tp_WM;
             public long tp_WN;
             public long tp_WO;
-            public long tp_WX;
-            public long tp_WP;
-            public long tp_WQ;
-            public long tp_WT;
-            public long tp_WU;
-            public long tp_WAb;
-            public long tp_WAc;
-            public long tp_WAe;
-            public long tp_WAg;
             public long tp_WAj;
             public long tp_WAk;
-            public long tp_alvpor;
             public long tp_NEXT;
             public long kill_rule;
             public long kill_pri;
@@ -1269,7 +1042,6 @@ namespace Xenvious
             public long kill_number;
             public long kill_NEXT;
             public long kill_cutscene;
-            public long kill_cutscene_number;
             public long kill_cutscene_NEXT;
             public long rcvs;
             public long mts;
@@ -1279,50 +1051,25 @@ namespace Xenvious
             public long nrmtt;
             public long chksfx;
             public long alrtLocal;
-            public long dtspk;
-            public long dtspP;
-            public long entCont_Num;
             public long creator_end;
             public long armr;
             public long gbtp;
-            public long gbtpm;
-            public long gbtpi;
-            public long gbtpp;
-            public long gbtp_next;
-            public long gbtp_size;
             public long gbnum;
-            public long gbngn;
-            public long gblgn;
             public long gbcol;
             public long gbdel;
-            public long gbaie;
             public long gbmax;
-            public long gbngm;
-            public long gblgm;
-            public long gbvhl;
             public long gacc;
-            public long gfld;
             public long gbat;
             public long gbfnr;
             public long gbv1;
             public long gbv2;
             public long gbaw;
-            public long rsgmx;
-            public long rsgnu;
-            public long rsgbs;
-            public long otxsgo;
             public long ppk;
             public long eoid;
             public long eoet;
             public long eoir;
             public long eoep;
             public long optbs;
-            public long musmustr;
-            public long trsrl;
-            public long trstf;
-            public long trcmn;
-            public long trsth;
-            public long trstp;
             public long mcvbs;
             public long mcobs;
             public long mcpbs;
@@ -1336,9 +1083,6 @@ namespace Xenvious
             public long mcgbs1;
             public long mcgbs2;
             public long mcgbs3;
-            public long cspnm;
-            public long csvnm;
-            public long csonm;
             public long otzone_number;
             public long otzone_otvo;
             public long otzone_otvt;
@@ -1348,9 +1092,6 @@ namespace Xenvious
             public long otzone_otrw;
             public long otzone_NEXT;
             public long current_team_test;
-            public long PwrUp_pwrBS;
-            public long PwrUp_pwrMH;
-            public long PwrUp_pwrRC_;
             public long ddblip_pos;
             public long ddblip_rule;
             public long ddblip_team;
@@ -1363,22 +1104,14 @@ namespace Xenvious
             public long ddblip_entt;
             public long ddblip_enti;
             public long ddblip_sbr;
-            public long ddblip_sbhr;
             public long ddblip_hbr;
             public long ddblip_dbnm;
             public long ddblip_frul;
             public long ddblip_trul;
-            public long ddblip_dumsg;
-            public long ddblip_dumssg;
             public long ddblip_number;
             public long ddblip_NEXT;
-            public long ddblip_NEXT_rul;
             public long surv_wave;
             public long surv_sbits;
-            public long surv_sbndsr;
-            public long surv_sbndsh;
-            public long surv_sbndsbo;
-            public long surv_sbndst;
             public long doors_loc;
             public long doors_fopen;
             public long doors_model;
@@ -1504,7 +1237,6 @@ namespace Xenvious
                     case "job_save_uploaded": return job_save_uploaded;
                     case "current_creator_worker_offset_menu": return current_creator_worker_offset_menu;
                     case "current_creator_worker_offset_test_state": return current_creator_worker_offset_test_state;
-                    case "current_creator_worker_heading": return current_creator_worker_heading;
                     case "current_creator_worker_pos": return current_creator_worker_pos;
                     case "current_creator_cam_heading_lts": return current_creator_cam_heading_lts;
                     case "current_creator_cam_heading_mission": return current_creator_cam_heading_mission;
@@ -1519,18 +1251,12 @@ namespace Xenvious
                     case "current_creator_pre_mission": return current_creator_pre_mission;
                     case "current_creator_pre_dm": return current_creator_pre_dm;
                     case "current_creator_pre_race": return current_creator_pre_race;
-                    case "current_creator_pre_menu_gm": return current_creator_pre_menu_gm;
                     case "current_creator_pre_test1": return current_creator_pre_test1;
                     case "current_creator_pre_test2": return current_creator_pre_test2;
-                    case "current_creator_pre_color": return current_creator_pre_color;
                     case "current_creator_pre_category_num": return current_creator_pre_category_num;
-                    case "current_creator_pre_prop_num": return current_creator_pre_prop_num;
-                    case "current_creator_pre_publish": return current_creator_pre_publish;
                     case "current_creator_pre_previous_menu": return current_creator_pre_previous_menu;
                     case "current_creator_pre_current_menu": return current_creator_pre_current_menu;
                     case "current_creator_pre_visgroups": return current_creator_pre_visgroups;
-                    case "current_creator_pre_idk": return current_creator_pre_idk;
-                    case "current_creator_pre_place_object_type": return current_creator_pre_place_object_type;
                     case "current_creator_pre_alignment": return current_creator_pre_alignment;
                     case "current_creator_placement_race": return current_creator_placement_race;
                     case "current_creator_placement_lts": return current_creator_placement_lts;
@@ -1553,7 +1279,6 @@ namespace Xenvious
                     case "creator_hub_stage": return creator_hub_stage;
                     case "transition_menu_trigger": return transition_menu_trigger;
                     case "current_creator_test_mission": return current_creator_test_mission;
-                    case "current_creator_test_dm": return current_creator_test_dm;
                     case "current_creator_test_race": return current_creator_test_race;
                     case "current_creator_refresh_lts": return current_creator_refresh_lts;
                     case "current_creator_refresh_mission": return current_creator_refresh_mission;
@@ -1561,19 +1286,11 @@ namespace Xenvious
                     case "current_creator_refresh_race": return current_creator_refresh_race;
                     case "current_creator_refresh_survival": return current_creator_refresh_survival;
                     case "current_creator_refresh_dm": return current_creator_refresh_dm;
-                    case "templatefix": return templatefix;
-                    case "cam_zoom": return cam_zoom;
-                    case "cam_mode": return cam_mode;
-                    case "steam_accname": return steam_accname;
-                    case "rstar_accname": return rstar_accname;
-                    case "epic_accname": return epic_accname;
                     case "templates": return templates;
                     case "templates_count": return templates_count;
                     case "check_creator": return check_creator;
                     case "hide_creator_menu": return hide_creator_menu;
                     case "enable_murica": return enable_murica;
-                    case "too_many_props": return too_many_props;
-                    case "random_transform": return random_transform;
                     case "jobid": return jobid;
                     case "job_published": return job_published;
                     case "props_loc": return props_loc;
@@ -1633,7 +1350,6 @@ namespace Xenvious
                     case "props_sndid": return props_sndid;
                     case "props_sndtri": return props_sndtri;
                     case "props_sndlmt": return props_sndlmt;
-                    case "props_pror_": return props_pror_;
                     case "props_pdip": return props_pdip;
                     case "props_prpclcr": return props_prpclcr;
                     case "props_prpclc": return props_prpclc;
@@ -1682,7 +1398,6 @@ namespace Xenvious
                     case "dprops_dptrpx": return dprops_dptrpx;
                     case "dprops_dpsl": return dprops_dpsl;
                     case "dprops_dpcl": return dprops_dpcl;
-                    case "dprops_dptrrs": return dprops_dptrrs;
                     case "dprops_dyipho": return dprops_dyipho;
                     case "dprops_dyipbtt": return dprops_dyipbtt;
                     case "dprops_dcoid": return dprops_dcoid;
@@ -1693,7 +1408,6 @@ namespace Xenvious
                     case "dprops_dynblhd": return dprops_dynblhd;
                     case "dprops_dynblsc": return dprops_dynblsc;
                     case "dprops_dynblpr": return dprops_dynblpr;
-                    case "dprops_dror_": return dprops_Dror_;
                     case "dprops_number": return dprops_number;
                     case "dprops_next": return dprops_next;
                     case "veh_model": return veh_model;
@@ -1722,9 +1436,6 @@ namespace Xenvious
                     case "veh_vbs6": return veh_vbs6;
                     case "veh_vbs7": return veh_vbs7;
                     case "veh_vbs8": return veh_vbs8;
-                    case "veh_vbs9": return veh_vbs9;
-                    case "veh_vbs10": return veh_vbs10;
-                    case "veh_vbs11": return veh_vbs11;
                     case "veh_vbs12": return veh_vbs12;
                     case "veh_vebs": return veh_vebs;
                     case "veh_hlth": return veh_hlth;
@@ -1771,7 +1482,6 @@ namespace Xenvious
                     case "obj_bits2": return obj_bits2;
                     case "obj_bits3": return obj_bits3;
                     case "obj_bits4": return obj_bits4;
-                    case "obj_bits5": return obj_bits5;
                     case "obj_bits6": return obj_bits6;
                     case "obj_rule": return obj_rule;
                     case "obj_pri": return obj_pri;
@@ -1796,14 +1506,6 @@ namespace Xenvious
                     case "obj_nmfail": return obj_nmfail;
                     case "obj_obint": return obj_obint;
                     case "obj_objlod": return obj_objLOD;
-                    case "obj_oasapr": return obj_oAsAPR;
-                    case "obj_o2asapr": return obj_o2AsAPR;
-                    case "obj_o3asapr": return obj_o3AsAPR;
-                    case "obj_o4asapr": return obj_o4AsAPR;
-                    case "obj_oassc": return obj_oAsSc;
-                    case "obj_o2assc": return obj_o2AsSc;
-                    case "obj_o3assc": return obj_o3AsSc;
-                    case "obj_o4assc": return obj_o4AsSc;
                     case "obj_number": return obj_number;
                     case "obj_next": return obj_NEXT;
                     case "dhprop_number": return dhprop_number;
@@ -1926,7 +1628,6 @@ namespace Xenvious
                     case "actor_veh": return actor_veh;
                     case "actor_pedbc": return actor_pedbc;
                     case "actor_pdbps": return actor_pdbps;
-                    case "actor_pdbso": return actor_pdbso;
                     case "actor_gtds": return actor_gtds;
                     case "actor_frr": return actor_frr;
                     case "actor_pspdl": return actor_pspdl;
@@ -1937,7 +1638,6 @@ namespace Xenvious
                     case "actor_whost": return actor_whost;
                     case "actor_cmsty": return actor_cmsty;
                     case "actor_rsp": return actor_rsp;
-                    case "actor_rel": return actor_rel;
                     case "actor_accu": return actor_accu;
                     case "actor_hlt": return actor_hlt;
                     case "actor_weapon_model": return actor_weapon_model;
@@ -1997,14 +1697,6 @@ namespace Xenvious
                     case "actor_pbs13": return actor_pbs13;
                     case "actor_pbs14": return actor_pbs14;
                     case "actor_pbs15": return actor_pbs15;
-                    case "actor_pbs16": return actor_pbs16;
-                    case "actor_pbs17": return actor_pbs17;
-                    case "actor_pbs18": return actor_pbs18;
-                    case "actor_pbs19": return actor_pbs19;
-                    case "actor_pbs20": return actor_pbs20;
-                    case "actor_pbs21": return actor_pbs21;
-                    case "actor_pbs22": return actor_pbs22;
-                    case "actor_pbs23": return actor_pbs23;
                     case "actor_pbs25": return actor_pbs25;
                     case "actor_psort": return actor_psort;
                     case "actor_pcash": return actor_pcash;
@@ -2025,10 +1717,6 @@ namespace Xenvious
                     case "irbs12": return irbs12;
                     case "irbs13": return irbs13;
                     case "irbs14": return irbs14;
-                    case "irbs15": return irbs15;
-                    case "irbs16": return irbs16;
-                    case "irbs17": return irbs17;
-                    case "irbs18": return irbs18;
                     case "irbs_next": return irbs_NEXT;
                     case "weap_model": return weap_model;
                     case "weap_loc": return weap_loc;
@@ -2067,15 +1755,6 @@ namespace Xenvious
                     case "weap_randtyp": return weap_randtyp;
                     case "weap_next": return weap_NEXT;
                     case "pa_outbt": return pa_outbt;
-                    case "pa_outbx": return pa_outbx;
-                    case "pa_outby": return pa_outby;
-                    case "pa_outbz": return pa_outbz;
-                    case "pa_outb1vx": return pa_outb1vx;
-                    case "pa_outb1vy": return pa_outb1vy;
-                    case "pa_outb1vz": return pa_outb1vz;
-                    case "pa_outb2vx": return pa_outb2vx;
-                    case "pa_outb2vy": return pa_outb2vy;
-                    case "pa_outb2vz": return pa_outb2vz;
                     case "pa_outw": return pa_outw;
                     case "pa_outbs": return pa_outbs;
                     case "pa_outmm": return pa_outmm;
@@ -2090,39 +1769,22 @@ namespace Xenvious
                     case "pa_leavebs": return pa_leavebs;
                     case "pa_playbs": return pa_playbs;
                     case "pa_spawnbs": return pa_spawnbs;
-                    case "pa_spawnwhilebs": return pa_spawnwhilebs;
                     case "pa2_spawnbs": return pa2_spawnbs;
-                    case "pa2_spawnwhilebs": return pa2_spawnwhilebs;
                     case "pa_wantedbs": return pa_wantedbs;
                     case "pa2_leavebs": return pa2_leavebs;
                     case "pa2_playbs": return pa2_playbs;
                     case "pa2_timer": return pa2_timer;
                     case "pa2_wantedbs": return pa2_wantedbs;
                     case "pa_out2bs": return pa_out2bs;
-                    case "pa_out2mm": return pa_out2mm;
                     case "pa_out2wg": return pa_out2wg;
                     case "pa_out2iv": return pa_out2iv;
                     case "pa_out2io": return pa_out2io;
                     case "pa_out2fp": return pa_out2fp;
                     case "pa_out2sg": return pa_out2sg;
                     case "pa_out2bh": return pa_out2bh;
-                    case "pa_out2ilv": return pa_out2ilv;
-                    case "pa_out2onfv": return pa_out2onfv;
-                    case "pa_out2hc": return pa_out2hc;
                     case "pa_out2et": return pa_out2et;
                     case "pa_out2id": return pa_out2id;
-                    case "pa_bd2t": return pa_bd2t;
-                    case "pa_bd2vx": return pa_bd2vx;
-                    case "pa_bd2vy": return pa_bd2vy;
-                    case "pa_bd2vz": return pa_bd2vz;
-                    case "pa_bd2v2x": return pa_bd2v2x;
-                    case "pa_bd2v2y": return pa_bd2v2y;
-                    case "pa_bd2v2z": return pa_bd2v2z;
-                    case "pa_bd2v1x": return pa_bd2v1x;
-                    case "pa_bd2v1y": return pa_bd2v1y;
-                    case "pa_bd2v1z": return pa_bd2v1z;
                     case "pa_bd2r": return pa_bd2r;
-                    case "pa_bd2w": return pa_bd2w;
                     case "pa_next": return pa_NEXT;
                     case "sms_team": return SMS_team;
                     case "sms_smsdt": return SMS_smsdt;
@@ -2165,9 +1827,6 @@ namespace Xenvious
                     case "cps_cptfrms": return cps_cptfrms;
                     case "cps_chttu": return cps_chttu;
                     case "cps_chttr": return cps_chttr;
-                    case "cps_cpwwt": return cps_cpwwt;
-                    case "cps_chtd": return cps_chtd;
-                    case "cps_chtds": return cps_chtds;
                     case "cps_chpp": return cps_chpp;
                     case "cps_chpps": return cps_chpps;
                     case "cps_chdlo": return cps_chdlo;
@@ -2213,24 +1872,9 @@ namespace Xenvious
                     case "adlc_next": return adlc_NEXT;
                     case "published_number": return published_number;
                     case "published_link": return published_link;
-                    case "published_owner": return published_owner;
                     case "published_name": return published_name;
-                    case "published_year": return published_year;
-                    case "published_month": return published_month;
-                    case "published_day": return published_day;
-                    case "published_type": return published_type;
-                    case "published_subtype": return published_subtype;
-                    case "published_rating": return published_rating;
-                    case "saved_number": return saved_number;
                     case "saved_link": return saved_link;
-                    case "saved_owner": return saved_owner;
                     case "saved_name": return saved_name;
-                    case "saved_year": return saved_year;
-                    case "saved_month": return saved_month;
-                    case "saved_day": return saved_day;
-                    case "saved_type": return saved_type;
-                    case "saved_subtype": return saved_subtype;
-                    case "saved_rating": return saved_rating;
                     case "jobs_next": return jobs_NEXT;
                     case "todhr": return todhr;
                     case "todmn": return todmn;
@@ -2238,7 +1882,6 @@ namespace Xenvious
                     case "endtest": return endtest;
                     case "dec": return dec;
                     case "nm": return nm;
-                    case "sztag": return sztag;
                     case "start": return start;
                     case "cordmbs": return cordmbs;
                     case "iplyli": return iplyli;
@@ -2247,7 +1890,6 @@ namespace Xenvious
                     case "fiispr": return fiispr;
                     case "turammo": return turammo;
                     case "turgudm": return turgudm;
-                    case "irfbs": return irfbs;
                     case "tmbts": return tmbts;
                     case "tmbt2": return tmbt2;
                     case "tmbt3": return tmbt3;
@@ -2308,14 +1950,11 @@ namespace Xenvious
                     case "inv2": return inv2;
                     case "inv3": return inv3;
                     case "inv4": return inv4;
-                    case "inv5": return inv5;
                     case "invsw": return invsw;
                     case "minv": return minv;
                     case "minv2": return minv2;
                     case "minv3": return minv3;
                     case "minv4": return minv4;
-                    case "minv5": return minv5;
-                    case "mpaumxscr": return mpaumxscr;
                     case "nrl": return nrl;
                     case "plyl": return plyl;
                     case "plvrl": return plvrl;
@@ -2359,21 +1998,18 @@ namespace Xenvious
                     case "pol": return pol;
                     case "vdm": return vdm;
                     case "traf": return traf;
-                    case "trafpb": return trafpb;
                     case "cascol": return casCol;
                     case "caspat": return casPat;
                     case "casarc": return casArc;
                     case "arnth": return arnTh;
                     case "arnty": return arnTy;
                     case "arnli": return arnLi;
-                    case "anfmbs": return anfMBS;
                     case "musx": return musx;
                     case "newausc": return newausc;
                     case "ausc": return ausc;
                     case "ivm": return ivm;
                     case "apeds": return apeds;
                     case "geard": return geard;
-                    case "ofovr": return ofovr;
                     case "tmrph": return tmrph;
                     case "tmtsr": return tmtsr;
                     case "dtn": return dtn;
@@ -2387,10 +2023,7 @@ namespace Xenvious
                     case "mspdlp": return mspdlp;
                     case "mspdsv": return mspdsv;
                     case "fsdtmr": return fsdtmr;
-                    case "frndf": return frndf;
                     case "mspdmx": return mspdmx;
-                    case "vehdmro": return vehdmro;
-                    case "vehdmri": return vehdmri;
                     case "inpts": return inpts;
                     case "player_number": return player_number;
                     case "player_loc": return player_loc;
@@ -2407,7 +2040,6 @@ namespace Xenvious
                     case "player_gg": return player_gg;
                     case "player_ar": return player_ar;
                     case "player_team": return player_team;
-                    case "player_vehid": return player_vehid;
                     case "player_ttm": return player_ttm;
                     case "player_tspr": return player_tspr;
                     case "player_lcet": return player_lcet;
@@ -2417,16 +2049,13 @@ namespace Xenvious
                     case "bmspm": return bmspm;
                     case "bmsjd": return bmsjd;
                     case "bmstd": return bmstd;
-                    case "bmmph": return bmmph;
                     case "bmhrgn": return bmhrgn;
-                    case "bmhok": return bmhok;
                     case "bmmdm": return bmmdm;
                     case "bm_next": return bm_NEXT;
                     case "beast_next": return beast_next;
                     case "tmvhp": return tmvhp;
                     case "tmvds": return tmvds;
                     case "bdprt": return bdprt;
-                    case "bdpst": return bdpst;
                     case "txt0": return txt0;
                     case "txt_next": return txt_NEXT;
                     case "next_txt": return NEXT_txt;
@@ -2452,7 +2081,6 @@ namespace Xenvious
                     case "dpos2": return dpos2;
                     case "drpr": return drpr;
                     case "drph": return drph;
-                    case "dost": return dost;
                     case "dlcrel": return dlcrel;
                     case "abits": return abits;
                     case "sdobs": return sdobs;
@@ -2465,7 +2093,6 @@ namespace Xenvious
                     case "tp_waz": return tp_WAz;
                     case "tp_wa": return tp_WA;
                     case "tp_wh": return tp_WH;
-                    case "tp_wb": return tp_WB;
                     case "tp_wc": return tp_WC;
                     case "tp_we": return tp_WE;
                     case "tp_wf": return tp_WF;
@@ -2476,18 +2103,8 @@ namespace Xenvious
                     case "tp_wm": return tp_WM;
                     case "tp_wn": return tp_WN;
                     case "tp_wo": return tp_WO;
-                    case "tp_wx": return tp_WX;
-                    case "tp_wp": return tp_WP;
-                    case "tp_wq": return tp_WQ;
-                    case "tp_wt": return tp_WT;
-                    case "tp_wu": return tp_WU;
-                    case "tp_wab": return tp_WAb;
-                    case "tp_wac": return tp_WAc;
-                    case "tp_wae": return tp_WAe;
-                    case "tp_wag": return tp_WAg;
                     case "tp_waj": return tp_WAj;
                     case "tp_wak": return tp_WAk;
-                    case "tp_alvpor": return tp_alvpor;
                     case "tp_next": return tp_NEXT;
                     case "kill_rule": return kill_rule;
                     case "kill_pri": return kill_pri;
@@ -2500,7 +2117,6 @@ namespace Xenvious
                     case "kill_number": return kill_number;
                     case "kill_next": return kill_NEXT;
                     case "kill_cutscene": return kill_cutscene;
-                    case "kill_cutscene_number": return kill_cutscene_number;
                     case "kill_cutscene_next": return kill_cutscene_NEXT;
                     case "rcvs": return rcvs;
                     case "mts": return mts;
@@ -2510,50 +2126,25 @@ namespace Xenvious
                     case "nrmtt": return nrmtt;
                     case "chksfx": return chksfx;
                     case "alrtlocal": return alrtLocal;
-                    case "dtspk": return dtspk;
-                    case "dtspp": return dtspP;
-                    case "entcont_num": return entCont_Num;
                     case "creator_end": return creator_end;
                     case "armr": return armr;
                     case "gbtp": return gbtp;
-                    case "gbtpm": return gbtpm;
-                    case "gbtpi": return gbtpi;
-                    case "gbtpp": return gbtpp;
-                    case "gbtp_next": return gbtp_next;
-                    case "gbtp_size": return gbtp_size;
                     case "gbnum": return gbnum;
-                    case "gbngn": return gbngn;
-                    case "gblgn": return gblgn;
                     case "gbcol": return gbcol;
                     case "gbdel": return gbdel;
-                    case "gbaie": return gbaie;
                     case "gbmax": return gbmax;
-                    case "gbngm": return gbngm;
-                    case "gblgm": return gblgm;
-                    case "gbvhl": return gbvhl;
                     case "gacc": return gacc;
-                    case "gfld": return gfld;
                     case "gbat": return gbat;
                     case "gbfnr": return gbfnr;
                     case "gbv1": return gbv1;
                     case "gbv2": return gbv2;
                     case "gbaw": return gbaw;
-                    case "rsgmx": return rsgmx;
-                    case "rsgnu": return rsgnu;
-                    case "rsgbs": return rsgbs;
-                    case "otxsgo": return otxsgo;
                     case "ppk": return ppk;
                     case "eoid": return eoid;
                     case "eoet": return eoet;
                     case "eoir": return eoir;
                     case "eoep": return eoep;
                     case "optbs": return optbs;
-                    case "musmustr": return musmustr;
-                    case "trsrl": return trsrl;
-                    case "trstf": return trstf;
-                    case "trcmn": return trcmn;
-                    case "trsth": return trsth;
-                    case "trstp": return trstp;
                     case "mcvbs": return mcvbs;
                     case "mcobs": return mcobs;
                     case "mcpbs": return mcpbs;
@@ -2567,9 +2158,6 @@ namespace Xenvious
                     case "mcgbs1": return mcgbs1;
                     case "mcgbs2": return mcgbs2;
                     case "mcgbs3": return mcgbs3;
-                    case "cspnm": return cspnm;
-                    case "csvnm": return csvnm;
-                    case "csonm": return csonm;
                     case "otzone_number": return otzone_number;
                     case "otzone_otvo": return otzone_otvo;
                     case "otzone_otvt": return otzone_otvt;
@@ -2579,9 +2167,6 @@ namespace Xenvious
                     case "otzone_otrw": return otzone_otrw;
                     case "otzone_next": return otzone_NEXT;
                     case "current_team_test": return current_team_test;
-                    case "pwrup_pwrbs": return PwrUp_pwrBS;
-                    case "pwrup_pwrmh": return PwrUp_pwrMH;
-                    case "pwrup_pwrrc_": return PwrUp_pwrRC_;
                     case "ddblip_pos": return ddblip_pos;
                     case "ddblip_rule": return ddblip_rule;
                     case "ddblip_team": return ddblip_team;
@@ -2594,22 +2179,14 @@ namespace Xenvious
                     case "ddblip_entt": return ddblip_entt;
                     case "ddblip_enti": return ddblip_enti;
                     case "ddblip_sbr": return ddblip_sbr;
-                    case "ddblip_sbhr": return ddblip_sbhr;
                     case "ddblip_hbr": return ddblip_hbr;
                     case "ddblip_dbnm": return ddblip_dbnm;
                     case "ddblip_frul": return ddblip_frul;
                     case "ddblip_trul": return ddblip_trul;
-                    case "ddblip_dumsg": return ddblip_dumsg;
-                    case "ddblip_dumssg": return ddblip_dumssg;
                     case "ddblip_number": return ddblip_number;
                     case "ddblip_next": return ddblip_NEXT;
-                    case "ddblip_next_rul": return ddblip_NEXT_rul;
                     case "surv_wave": return surv_wave;
                     case "surv_sbits": return surv_sbits;
-                    case "surv_sbndsr": return surv_sbndsr;
-                    case "surv_sbndsh": return surv_sbndsh;
-                    case "surv_sbndsbo": return surv_sbndsbo;
-                    case "surv_sbndst": return surv_sbndst;
                     case "doors_loc": return doors_loc;
                     case "doors_fopen": return doors_fopen;
                     case "doors_model": return doors_model;

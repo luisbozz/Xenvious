@@ -168,34 +168,6 @@ namespace Xenvious
                     tbmodstuffc2s.Text = m.memory(GTA.Offsets.Editor.version2, 0x0).GetAddress().ToString("X");
                     tbmodstuffce.Text = new Global(GTA.Offsets.Editor.creator_end).GetAddress().ToString("X");
                     tbmodstuffjobs.Text = new Global(GTA.Offsets.Editor.Jobs.published_number).GetAddress().ToString("X");
-
-                    if (Functions.Read.IsEpicVersion())
-                    {
-                        isrstar = false;
-                        issteam = false;
-                        isepic = true;
-                        GTA.Offsets.Editor.Session.pointer = GTA.Offsets.Editor.Session.pointer_rstar;
-                    }
-                    else if (Functions.Read.IsSteamVersion())
-                    {
-                        isrstar = false;
-                        isepic = false;
-                        issteam = true;
-                        GTA.Offsets.Editor.Session.pointer = GTA.Offsets.Editor.Session.pointer_steam;
-                    }
-                    else
-                    {
-                        isrstar = true;
-                        isepic = false;
-                        issteam = false;
-                        GTA.Offsets.Editor.Session.pointer = GTA.Offsets.Editor.Session.pointer_rstar;
-                    }
-
-                    // The fixed RVAs above go stale with every game update. The pattern
-                    // resolves the struct in whichever binary is running.
-                    if (GTA.Offsets.Editor.Session.patternPointer != 0)
-                        GTA.Offsets.Editor.Session.pointer = GTA.Offsets.Editor.Session.patternPointer;
-
                 }
 
                 pid = p[0].Id;

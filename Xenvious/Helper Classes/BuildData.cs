@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Xenvious
 {
     /// <summary>
-    /// The build data of each game edition: offsets.ini and scrpatches.json of
+    /// The build data of each game edition: offsets.ini, scrpatches.json and prop_lists.json of
     /// OfflineData/&lt;edition&gt;, compiled in by tools/builddata/gen.py (Generated/*.g.cs).
     ///
     /// Nothing is parsed at start: the generator resolved every path already, with the
@@ -33,5 +33,9 @@ namespace Xenvious
         /// <summary>The developer script patches of the current edition, a new list on every call.</summary>
         public static List<GTA.ScrPatches> CurrentScrPatchesDev() =>
             GameVariant.IsEnhanced ? ScrPatchesDevEnhanced() : ScrPatchesDevLegacy();
+
+        /// <summary>The model hash lists of the current edition (prop_lists.json), a new object on every call.</summary>
+        public static PropLists CurrentPropLists() =>
+            GameVariant.IsEnhanced ? PropListsEnhanced() : PropListsLegacy();
     }
 }

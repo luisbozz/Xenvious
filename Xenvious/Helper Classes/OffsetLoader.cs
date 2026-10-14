@@ -23,28 +23,6 @@ namespace Xenvious
             // are numbers already, so nothing is parsed at start.
             BuildData d = BuildData.Current;
 
-            //image
-            GTA.Offsets.Editor.Image.img = d.IMAGE.image;
-
-            //datafile
-            GTA.Offsets.Editor.Datafile.files = d.DATAFILE.files;
-            GTA.Offsets.Editor.Datafile.vt_bool = d.DATAFILE.vt_bool;
-            GTA.Offsets.Editor.Datafile.vt_int = d.DATAFILE.vt_int;
-            GTA.Offsets.Editor.Datafile.vt_float = d.DATAFILE.vt_float;
-            GTA.Offsets.Editor.Datafile.vt_string = d.DATAFILE.vt_string;
-            GTA.Offsets.Editor.Datafile.vt_vec3 = d.DATAFILE.vt_vec3;
-            GTA.Offsets.Editor.Datafile.vt_dict = d.DATAFILE.vt_dict;
-            GTA.Offsets.Editor.Datafile.vt_array = d.DATAFILE.vt_array;
-
-            //session
-            GTA.Offsets.Editor.Session.pointer_steam = d.SESSION.pointer_steam;
-            GTA.Offsets.Editor.Session.pointer_rstar = d.SESSION.pointer_rstar;
-            GTA.Offsets.Editor.Session.username = d.SESSION.username;
-            GTA.Offsets.Editor.Session.ticket = d.SESSION.ticket;
-            GTA.Offsets.Editor.Session.sessionTicketOffset = d.SESSION.sessionTicketOffset;
-            GTA.Offsets.Editor.Session.sessionKeyOffset = d.SESSION.sessionKeyOffset;
-            GTA.Offsets.Editor.Session.milliSecsToExpiryOffset = d.SESSION.milliSecsToExpiryOffset;
-
             //tp offsets
             GTA.Offsets.Editor.launch_creator_local_1 = d.OFFSETS.launch_creator_local_1;
             GTA.Offsets.Editor.launch_creator_local_2 = d.OFFSETS.launch_creator_local_2;
@@ -109,7 +87,6 @@ namespace Xenvious
             GTA.Offsets.Editor.creator_quit_flag = d.OFFSETS.creator_quit_flag;
             GTA.Offsets.Editor.OFFSET_current_creator_worker_offset_menu = d.OFFSETS.current_creator_worker_offset_menu;
             GTA.Offsets.Editor.OFFSET_current_creator_worker_offset_test_state = d.OFFSETS.current_creator_worker_offset_test_state;
-            GTA.Offsets.Editor.OFFSET_current_creator_worker_heading = d.OFFSETS.current_creator_worker_heading;
             GTA.Offsets.Editor.OFFSET_current_creator_worker_pos = d.OFFSETS.current_creator_worker_pos;
             GTA.Offsets.Editor.OFFSET_current_creator_cam_heading_survival = d.OFFSETS.current_creator_cam_heading_survival;
             GTA.Offsets.Editor.OFFSET_current_creator_cam_heading_race = d.OFFSETS.current_creator_cam_heading_race;
@@ -124,10 +101,8 @@ namespace Xenvious
             GTA.Offsets.Editor.OFFSET_current_creator_pre_capture = d.OFFSETS.current_creator_pre_capture;
             GTA.Offsets.Editor.OFFSET_current_creator_pre_lts = d.OFFSETS.current_creator_pre_lts;
             GTA.Offsets.Editor.OFFSET_current_creator_pre_mission = d.OFFSETS.current_creator_pre_mission;
-            GTA.Offsets.Editor.OFFSET_current_creator_pre_menu_gm = d.OFFSETS.current_creator_pre_menu_gm;
             GTA.Offsets.Editor.OFFSET_current_creator_pre_test1 = d.OFFSETS.current_creator_pre_test1;
             GTA.Offsets.Editor.OFFSET_current_creator_pre_test2 = d.OFFSETS.current_creator_pre_test2;
-            GTA.Offsets.Editor.OFFSET_current_creator_pre_color = d.OFFSETS.current_creator_pre_color;
             GTA.Offsets.Editor.OFFSET_current_creator_pre_category_num = d.OFFSETS.current_creator_pre_category_num;
             // Precise templates (Advanced Options for creator templates), see PreciseTemplates.
             GTA.Offsets.Editor.OFFSET_current_creator_pre_alignment = d.OFFSETS.current_creator_pre_alignment;
@@ -143,15 +118,11 @@ namespace Xenvious
             GTA.Offsets.Editor.OFFSET_precise_menu_advanced = d.OFFSETS.precise_menu_advanced;
             GTA.Offsets.Editor.OFFSET_precise_menu_position = d.OFFSETS.precise_menu_position;
             GTA.Offsets.Editor.OFFSET_precise_menu_rotation = d.OFFSETS.precise_menu_rotation;
-            GTA.Offsets.Editor.OFFSET_current_creator_pre_prop_num = d.OFFSETS.current_creator_pre_prop_num;
-            GTA.Offsets.Editor.OFFSET_current_creator_pre_publish = d.OFFSETS.current_creator_pre_publish;
             GTA.Offsets.Editor.OFFSET_current_creator_pre_previous_menu = d.OFFSETS.current_creator_pre_previous_menu;
             GTA.Offsets.Editor.OFFSET_current_creator_pre_current_menu = d.OFFSETS.current_creator_pre_current_menu;
             GTA.Offsets.Editor.OFFSET_current_creator_pre_visgroups = d.OFFSETS.current_creator_pre_visgroups;
-            GTA.Offsets.Editor.OFFSET_current_creator_pre_idk = d.OFFSETS.current_creator_pre_idk;
             GTA.Offsets.Editor.OFFSET_current_creator_test_survival = d.OFFSETS.current_creator_test_survival;
             GTA.Offsets.Editor.OFFSET_current_creator_test_race = d.OFFSETS.current_creator_test_race;
-            GTA.Offsets.Editor.OFFSET_current_creator_test_dm = d.OFFSETS.current_creator_test_dm;
             GTA.Offsets.Editor.OFFSET_current_creator_test_capture = d.OFFSETS.current_creator_test_capture;
             GTA.Offsets.Editor.OFFSET_current_creator_test_lts = d.OFFSETS.current_creator_test_lts;
             GTA.Offsets.Editor.OFFSET_current_creator_cam_lts = d.OFFSETS.current_creator_cam_lts;
@@ -167,18 +138,12 @@ namespace Xenvious
             GTA.Offsets.Editor.OFFSET_current_creator_refresh_survival = d.OFFSETS.current_creator_refresh_survival;
             GTA.Offsets.Editor.OFFSET_current_creator_refresh_dm = d.OFFSETS.current_creator_refresh_dm;
 
-            GTA.Offsets.Editor.templatefix = d.OFFSETS.templatefix;
-            GTA.Offsets.Editor.cam_zoom = d.OFFSETS.cam_zoom;
-            GTA.Offsets.Editor.cam_mode = d.OFFSETS.cam_mode;
             GTA.Offsets.Editor.dev_steam = 0; // not in offsets.ini
             GTA.Offsets.Editor.dev_rstar = 0;
             GTA.Offsets.Editor.dev_epic = 0;
             GTA.Offsets.Editor.nextcp_steam = 0;
             GTA.Offsets.Editor.nextcp_rstar = 0;
             GTA.Offsets.Editor.nextcp_epic = 0;
-            GTA.Offsets.Editor.steam_accname = d.OFFSETS.steam_accname;
-            GTA.Offsets.Editor.rstar_accname = d.OFFSETS.rstar_accname;
-            GTA.Offsets.Editor.epic_accname = d.OFFSETS.epic_accname;
             GTA.Offsets.Editor.check_creator = d.OFFSETS.check_creator;
             GTA.Offsets.Editor.hide_creator_menu = d.OFFSETS.hide_creator_menu;
             GTA.Offsets.Editor.enable_murica = d.OFFSETS.enable_murica;
@@ -261,7 +226,6 @@ namespace Xenvious
             GTA.Offsets.Editor.Props.prpscr1_ = d.OFFSETS.props_prpscr1_;
             GTA.Offsets.Editor.Props.prpscr2_ = d.OFFSETS.props_prpscr2_;
             GTA.Offsets.Editor.Props.prpscr3_ = d.OFFSETS.props_prpscr3_;
-            GTA.Offsets.Editor.Props.pror_ = d.OFFSETS.props_pror_;
             GTA.Offsets.Editor.Props.number = d.OFFSETS.props_number;
             GTA.Offsets.Editor.Props.NEXT = d.OFFSETS.props_next;
 
@@ -297,7 +261,6 @@ namespace Xenvious
             GTA.Offsets.Editor.DProps.dptrpx = d.OFFSETS.dprops_dptrpx;
             GTA.Offsets.Editor.DProps.dpsl = d.OFFSETS.dprops_dpsl;
             GTA.Offsets.Editor.DProps.dpcl = d.OFFSETS.dprops_dpcl;
-            GTA.Offsets.Editor.DProps.dptrrs = d.OFFSETS.dprops_dptrrs;
             GTA.Offsets.Editor.DProps.dyipho = d.OFFSETS.dprops_dyipho;
             GTA.Offsets.Editor.DProps.dyipbtt = d.OFFSETS.dprops_dyipbtt;
             GTA.Offsets.Editor.DProps.dcoid = d.OFFSETS.dprops_dcoid;
@@ -308,7 +271,6 @@ namespace Xenvious
             GTA.Offsets.Editor.DProps.dynblhd = d.OFFSETS.dprops_dynblhd;
             GTA.Offsets.Editor.DProps.dynblsc = d.OFFSETS.dprops_dynblsc;
             GTA.Offsets.Editor.DProps.dynblpr = d.OFFSETS.dprops_dynblpr;
-            GTA.Offsets.Editor.DProps.Dror_ = d.OFFSETS.dprops_Dror_;
             GTA.Offsets.Editor.DProps.number = d.OFFSETS.dprops_number;
             GTA.Offsets.Editor.DProps.NEXT = d.OFFSETS.dprops_next;
 
@@ -338,9 +300,6 @@ namespace Xenvious
             GTA.Offsets.Editor.Vehicle.vbs6 = d.OFFSETS.veh_vbs6;
             GTA.Offsets.Editor.Vehicle.vbs7 = d.OFFSETS.veh_vbs7;
             GTA.Offsets.Editor.Vehicle.vbs8 = d.OFFSETS.veh_vbs8;
-            GTA.Offsets.Editor.Vehicle.vbs9 = d.OFFSETS.veh_vbs9;
-            GTA.Offsets.Editor.Vehicle.vbs10 = d.OFFSETS.veh_vbs10;
-            GTA.Offsets.Editor.Vehicle.vbs11 = d.OFFSETS.veh_vbs11;
             GTA.Offsets.Editor.Vehicle.vbs12 = d.OFFSETS.veh_vbs12;
             GTA.Offsets.Editor.Vehicle.vebs = d.OFFSETS.veh_vebs;
             GTA.Offsets.Editor.Vehicle.enghp = d.OFFSETS.veh_enghp;
@@ -585,14 +544,6 @@ namespace Xenvious
             GTA.Offsets.Editor.Actor.pbs13 = d.OFFSETS.actor_pbs13;
             GTA.Offsets.Editor.Actor.pbs14 = d.OFFSETS.actor_pbs14;
             GTA.Offsets.Editor.Actor.pbs15 = d.OFFSETS.actor_pbs15;
-            GTA.Offsets.Editor.Actor.pbs16 = d.OFFSETS.actor_pbs16;
-            GTA.Offsets.Editor.Actor.pbs17 = d.OFFSETS.actor_pbs17;
-            GTA.Offsets.Editor.Actor.pbs18 = d.OFFSETS.actor_pbs18;
-            GTA.Offsets.Editor.Actor.pbs19 = d.OFFSETS.actor_pbs19;
-            GTA.Offsets.Editor.Actor.pbs20 = d.OFFSETS.actor_pbs20;
-            GTA.Offsets.Editor.Actor.pbs21 = d.OFFSETS.actor_pbs21;
-            GTA.Offsets.Editor.Actor.pbs22 = d.OFFSETS.actor_pbs22;
-            GTA.Offsets.Editor.Actor.pbs23 = d.OFFSETS.actor_pbs23;
             GTA.Offsets.Editor.Actor.pbs25 = d.OFFSETS.actor_pbs25;
             GTA.Offsets.Editor.Actor.psort = d.OFFSETS.actor_psort;
             GTA.Offsets.Editor.Actor.pcash = d.OFFSETS.actor_pcash;
@@ -639,15 +590,6 @@ namespace Xenvious
             GTA.Offsets.Editor.Weapon.NEXT = d.OFFSETS.weap_NEXT;
 
             GTA.Offsets.Editor.PlayArea.outbt = d.OFFSETS.pa_outbt;
-            GTA.Offsets.Editor.PlayArea.outbx = d.OFFSETS.pa_outbx;
-            GTA.Offsets.Editor.PlayArea.outby = d.OFFSETS.pa_outby;
-            GTA.Offsets.Editor.PlayArea.outbz = d.OFFSETS.pa_outbz;
-            GTA.Offsets.Editor.PlayArea.outb1vx = d.OFFSETS.pa_outb1vx;
-            GTA.Offsets.Editor.PlayArea.outb1vy = d.OFFSETS.pa_outb1vy;
-            GTA.Offsets.Editor.PlayArea.outb1vz = d.OFFSETS.pa_outb1vz;
-            GTA.Offsets.Editor.PlayArea.outb2vx = d.OFFSETS.pa_outb2vx;
-            GTA.Offsets.Editor.PlayArea.outb2vy = d.OFFSETS.pa_outb2vy;
-            GTA.Offsets.Editor.PlayArea.outb2vz = d.OFFSETS.pa_outb2vz;
             GTA.Offsets.Editor.PlayArea.outw = d.OFFSETS.pa_outw;
             GTA.Offsets.Editor.PlayArea.outr = d.OFFSETS.pa_outr;
             GTA.Offsets.Editor.PlayArea.outmm = d.OFFSETS.pa_outmm;
@@ -662,38 +604,20 @@ namespace Xenvious
             GTA.Offsets.Editor.PlayArea.leavebs = d.OFFSETS.pa_leavebs;
             GTA.Offsets.Editor.PlayArea.playbs = d.OFFSETS.pa_playbs;
             GTA.Offsets.Editor.PlayArea.spawnbs = d.OFFSETS.pa_spawnbs;
-            GTA.Offsets.Editor.PlayArea.spawnwhilebs = d.OFFSETS.pa_spawnwhilebs;
             GTA.Offsets.Editor.PlayArea.spawnbs2 = d.OFFSETS.pa2_spawnbs;
-            GTA.Offsets.Editor.PlayArea.spawnwhilebs2 = d.OFFSETS.pa2_spawnwhilebs;
             GTA.Offsets.Editor.PlayArea.wantedbs = d.OFFSETS.pa_wantedbs;
             GTA.Offsets.Editor.PlayArea.leavebs2 = d.OFFSETS.pa2_leavebs;
             GTA.Offsets.Editor.PlayArea.playbs2 = d.OFFSETS.pa2_playbs;
             GTA.Offsets.Editor.PlayArea.timer2 = d.OFFSETS.pa2_timer;
             GTA.Offsets.Editor.PlayArea.wantedbs2 = d.OFFSETS.pa2_wantedbs;
-            GTA.Offsets.Editor.PlayArea.bd2t = d.OFFSETS.pa_bd2t;
-            GTA.Offsets.Editor.PlayArea.bd2vx = d.OFFSETS.pa_bd2vx;
-            GTA.Offsets.Editor.PlayArea.bd2vy = d.OFFSETS.pa_bd2vy;
-            GTA.Offsets.Editor.PlayArea.bd2vz = d.OFFSETS.pa_bd2vz;
-            GTA.Offsets.Editor.PlayArea.bd2v2x = d.OFFSETS.pa_bd2v2x;
-            GTA.Offsets.Editor.PlayArea.bd2v2y = d.OFFSETS.pa_bd2v2y;
-            GTA.Offsets.Editor.PlayArea.bd2v2z = d.OFFSETS.pa_bd2v2z;
-            GTA.Offsets.Editor.PlayArea.bd2v1x = d.OFFSETS.pa_bd2v1x;
-            GTA.Offsets.Editor.PlayArea.bd2v1y = d.OFFSETS.pa_bd2v1y;
-            GTA.Offsets.Editor.PlayArea.bd2v1z = d.OFFSETS.pa_bd2v1z;
             GTA.Offsets.Editor.PlayArea.bd2r = d.OFFSETS.pa_bd2r;
-            GTA.Offsets.Editor.PlayArea.bd2w = d.OFFSETS.pa_bd2w;
             GTA.Offsets.Editor.PlayArea.out2bs = d.OFFSETS.pa_out2bs;
-            GTA.Offsets.Editor.PlayArea.out2mm = d.OFFSETS.pa_out2mm;
-            GTA.Offsets.Editor.PlayArea.out2hc = d.OFFSETS.pa_out2hc;
             GTA.Offsets.Editor.PlayArea.out2wg = d.OFFSETS.pa_out2wg;
             GTA.Offsets.Editor.PlayArea.out2iv = d.OFFSETS.pa_out2iv;
             GTA.Offsets.Editor.PlayArea.out2io = d.OFFSETS.pa_out2io;
             GTA.Offsets.Editor.PlayArea.out2fp = d.OFFSETS.pa_out2fp;
             GTA.Offsets.Editor.PlayArea.out2sg = d.OFFSETS.pa_out2sg;
             GTA.Offsets.Editor.PlayArea.out2bh = d.OFFSETS.pa_out2bh;
-            GTA.Offsets.Editor.PlayArea.out2ilv = d.OFFSETS.pa_out2ilv;
-            GTA.Offsets.Editor.PlayArea.out2onfv = d.OFFSETS.pa_out2onfv;
-            GTA.Offsets.Editor.PlayArea.out2hc = d.OFFSETS.pa_out2hc;
             GTA.Offsets.Editor.PlayArea.out2et = d.OFFSETS.pa_out2et;
             GTA.Offsets.Editor.PlayArea.out2id = d.OFFSETS.pa_out2id;
             GTA.Offsets.Editor.PlayArea.NEXT = d.OFFSETS.pa_NEXT;
@@ -753,8 +677,6 @@ namespace Xenvious
             GTA.Offsets.Editor.Race.Checkpoints.cptfrms = d.OFFSETS.cps_cptfrms;
             GTA.Offsets.Editor.Race.Checkpoints.chttu = d.OFFSETS.cps_chttu;
             GTA.Offsets.Editor.Race.Checkpoints.chttr = d.OFFSETS.cps_chttr;
-            GTA.Offsets.Editor.Race.Checkpoints.chtd = d.OFFSETS.cps_chtd;
-            GTA.Offsets.Editor.Race.Checkpoints.chtds = d.OFFSETS.cps_chtds;
             GTA.Offsets.Editor.Race.Checkpoints.rdis = d.OFFSETS.cps_rdis;
             GTA.Offsets.Editor.Race.Checkpoints.trfmvm = d.OFFSETS.cps_trfmvm;
 
@@ -823,7 +745,6 @@ namespace Xenvious
             GTA.Offsets.Editor.endtest = d.OFFSETS.endtest;
             GTA.Offsets.Editor.dec = d.OFFSETS.dec;
             GTA.Offsets.Editor.nm = d.OFFSETS.nm;
-            GTA.Offsets.Editor.sztag = d.OFFSETS.sztag;
             GTA.Offsets.Editor.start = d.OFFSETS.start;
             GTA.Offsets.Editor.Race.aveh = d.OFFSETS.aveh;
             GTA.Offsets.Editor.Race.adlc = d.OFFSETS.adlc;
@@ -851,11 +772,7 @@ namespace Xenvious
             GTA.Offsets.Editor.irbs12 = d.OFFSETS.irbs12;
             GTA.Offsets.Editor.irbs13 = d.OFFSETS.irbs13;
             GTA.Offsets.Editor.irbs14 = d.OFFSETS.irbs14;
-            GTA.Offsets.Editor.irbs15 = d.OFFSETS.irbs15;
-            GTA.Offsets.Editor.irbs16 = d.OFFSETS.irbs16;
-            GTA.Offsets.Editor.irbs16 = d.OFFSETS.irbs16;
             GTA.Offsets.Editor.irbs_NEXT = d.OFFSETS.irbs_NEXT;
-            GTA.Offsets.Editor.irfbs = d.OFFSETS.irfbs;
             GTA.Offsets.Editor.tmbts = d.OFFSETS.tmbts;
             GTA.Offsets.Editor.tmbt2 = d.OFFSETS.tmbt2;
             GTA.Offsets.Editor.tmbt3 = d.OFFSETS.tmbt3;
@@ -920,7 +837,6 @@ namespace Xenvious
             GTA.Offsets.Editor.minv2 = d.OFFSETS.minv2;
             GTA.Offsets.Editor.minv3 = d.OFFSETS.minv3;
             GTA.Offsets.Editor.minv4 = d.OFFSETS.minv4;
-            GTA.Offsets.Editor.mpaumxscr = d.OFFSETS.mpaumxscr;
             GTA.Offsets.Editor.teambal = d.OFFSETS.teambal;
             GTA.Offsets.Editor.clrovr = d.OFFSETS.clrovr;
             GTA.Offsets.Editor.nrl = d.OFFSETS.nrl;
@@ -969,7 +885,6 @@ namespace Xenvious
             GTA.Offsets.Editor.weth = d.OFFSETS.weth;
             GTA.Offsets.Editor.tod = d.OFFSETS.tod;
             GTA.Offsets.Editor.traf = d.OFFSETS.traf;
-            GTA.Offsets.Editor.trafpb = d.OFFSETS.trafpb;
             GTA.Offsets.Editor.inumbnc = d.OFFSETS.inumbnc;
             GTA.Offsets.Editor.casCol = d.OFFSETS.casCol;
             GTA.Offsets.Editor.casPat = d.OFFSETS.casPat;
@@ -977,14 +892,12 @@ namespace Xenvious
             GTA.Offsets.Editor.arnTh = d.OFFSETS.arnTh;
             GTA.Offsets.Editor.arnTy = d.OFFSETS.arnTy;
             GTA.Offsets.Editor.arnLi = d.OFFSETS.arnLi;
-            GTA.Offsets.Editor.anfMBS = d.OFFSETS.anfMBS;
             GTA.Offsets.Editor.newausc = d.OFFSETS.newausc;
             GTA.Offsets.Editor.ausc = d.OFFSETS.ausc;
             GTA.Offsets.Editor.musx = d.OFFSETS.musx;
             GTA.Offsets.Editor.apeds = d.OFFSETS.apeds;
             GTA.Offsets.Editor.vdm = d.OFFSETS.vdm;
             GTA.Offsets.Editor.geard = d.OFFSETS.geard;
-            GTA.Offsets.Editor.ofovr = d.OFFSETS.ofovr;
             GTA.Offsets.Editor.itsms = d.OFFSETS.itsms;
             GTA.Offsets.Editor.dtn = d.OFFSETS.dtn;
             GTA.Offsets.Editor.disar = d.OFFSETS.disar;
@@ -998,10 +911,7 @@ namespace Xenvious
             GTA.Offsets.Editor.mspdlp = d.OFFSETS.mspdlp;
             GTA.Offsets.Editor.mspdsv = d.OFFSETS.mspdsv;
             GTA.Offsets.Editor.fsdtmr = d.OFFSETS.fsdtmr;
-            GTA.Offsets.Editor.frndf = d.OFFSETS.frndf;
             GTA.Offsets.Editor.mspdmx = d.OFFSETS.mspdmx;
-            GTA.Offsets.Editor.vehdmro = d.OFFSETS.vehdmro;
-            GTA.Offsets.Editor.vehdmri = d.OFFSETS.vehdmri;
             GTA.Offsets.Editor.teamrvp = d.OFFSETS.teamrvp;
             GTA.Offsets.Editor.inpts = d.OFFSETS.inpts;
 
@@ -1012,7 +922,6 @@ namespace Xenvious
             GTA.Offsets.Editor.player_veh = d.OFFSETS.player_veh;
             GTA.Offsets.Editor.player_seat = d.OFFSETS.player_seat;
             GTA.Offsets.Editor.player_team = d.OFFSETS.player_team;
-            GTA.Offsets.Editor.player_vehid = d.OFFSETS.player_vehid;
             GTA.Offsets.Editor.player_ttm = d.OFFSETS.player_ttm;
             GTA.Offsets.Editor.player_tspr = d.OFFSETS.player_tspr;
             GTA.Offsets.Editor.player_lcet = d.OFFSETS.player_lcet;
@@ -1030,16 +939,13 @@ namespace Xenvious
             GTA.Offsets.Editor.bmspm = d.OFFSETS.bmspm;
             GTA.Offsets.Editor.bmsjd = d.OFFSETS.bmsjd;
             GTA.Offsets.Editor.bmstd = d.OFFSETS.bmstd;
-            GTA.Offsets.Editor.bmmph = d.OFFSETS.bmmph;
             GTA.Offsets.Editor.bmhrgn = d.OFFSETS.bmhrgn;
-            GTA.Offsets.Editor.bmhok = d.OFFSETS.bmhok;
             GTA.Offsets.Editor.bmmdm = d.OFFSETS.bmmdm;
             GTA.Offsets.Editor.beast_next = d.OFFSETS.bm_NEXT;
             GTA.Offsets.Editor.tmvhp = d.OFFSETS.tmvhp;
             GTA.Offsets.Editor.teamrvbh = d.OFFSETS.teamrvbh;
             GTA.Offsets.Editor.tmvds = d.OFFSETS.tmvds;
             GTA.Offsets.Editor.bdprt = d.OFFSETS.bdprt;
-            GTA.Offsets.Editor.bdpst = d.OFFSETS.bdpst;
             GTA.Offsets.Editor.txt0 = d.OFFSETS.txt0;
             GTA.Offsets.Editor.txt_NEXT = d.OFFSETS.txt_NEXT;
             GTA.Offsets.Editor.NEXT_txt = d.OFFSETS.NEXT_txt;
@@ -1071,13 +977,13 @@ namespace Xenvious
             GTA.Offsets.Editor.fkwl = d.OFFSETS.fkwl;
             GTA.Offsets.Editor.fiispr = d.OFFSETS.fiispr;
             GTA.Offsets.Editor.itvsd = d.OFFSETS.itvsd;
+            GTA.Offsets.Editor.itved = d.OFFSETS.itved;
             GTA.Offsets.Editor.dpos = d.OFFSETS.dpos;
             // Team array, rule array and the rule's own int[3]: three size slots before bit word 0.
             GTA.Offsets.Editor.dozn = d.OFFSETS.dozn;
             GTA.Offsets.Editor.dozn_NEXT = d.OFFSETS.dozn_NEXT;
             GTA.Offsets.Editor.dpos2 = d.OFFSETS.dpos2;
             GTA.Offsets.Editor.dpost = d.OFFSETS.dpost;
-            GTA.Offsets.Editor.dost = d.OFFSETS.dost;
             GTA.Offsets.Editor.drpr = d.OFFSETS.drpr;
             GTA.Offsets.Editor.drph = d.OFFSETS.drph;
             GTA.Offsets.Editor.dlcrel = d.OFFSETS.dlcrel;
@@ -1094,50 +1000,27 @@ namespace Xenvious
             GTA.Offsets.Editor.nrmtt = d.OFFSETS.nrmtt;
             GTA.Offsets.Editor.chksfx = d.OFFSETS.chksfx;
             GTA.Offsets.Editor.alrtLocal = d.OFFSETS.alrtLocal;
-            GTA.Offsets.Editor.dtspk = d.OFFSETS.dtspk;
-            GTA.Offsets.Editor.dtspP = d.OFFSETS.dtspP;
-            GTA.Offsets.Editor.entCont_Num = d.OFFSETS.entCont_Num;
             GTA.Offsets.Editor.creator_end = d.OFFSETS.creator_end;
             GTA.Offsets.Editor.armr = d.OFFSETS.armr;
 
 
             GTA.Offsets.Editor.gbtp = d.OFFSETS.gbtp;
-            GTA.Offsets.Editor.gbtpm = d.OFFSETS.gbtpm;
-            GTA.Offsets.Editor.gbtpi = d.OFFSETS.gbtpi;
-            GTA.Offsets.Editor.gbtpp = d.OFFSETS.gbtpp;
-            GTA.Offsets.Editor.gbtp_next = d.OFFSETS.gbtp_next;
-            GTA.Offsets.Editor.gbtp_size = d.OFFSETS.gbtp_size;
             GTA.Offsets.Editor.gbnum = d.OFFSETS.gbnum;
-            GTA.Offsets.Editor.gbngn = d.OFFSETS.gbngn;
-            GTA.Offsets.Editor.gblgn = d.OFFSETS.gblgn;
             GTA.Offsets.Editor.gbcol = d.OFFSETS.gbcol;
             GTA.Offsets.Editor.gbdel = d.OFFSETS.gbdel;
             GTA.Offsets.Editor.gbmax = d.OFFSETS.gbmax;
-            GTA.Offsets.Editor.gbngm = d.OFFSETS.gbngm;
-            GTA.Offsets.Editor.gbaie = d.OFFSETS.gbaie;
             GTA.Offsets.Editor.gbfnr = d.OFFSETS.gbfnr;
-            GTA.Offsets.Editor.gbvhl = d.OFFSETS.gbvhl;
             GTA.Offsets.Editor.gacc = d.OFFSETS.gacc;
-            GTA.Offsets.Editor.gfld = d.OFFSETS.gfld;
             GTA.Offsets.Editor.gbat = d.OFFSETS.gbat;
             GTA.Offsets.Editor.gbv1 = d.OFFSETS.gbv1;
             GTA.Offsets.Editor.gbv2 = d.OFFSETS.gbv2;
             GTA.Offsets.Editor.gbaw = d.OFFSETS.gbaw;
-            GTA.Offsets.Editor.rsgmx = d.OFFSETS.rsgmx;
             GTA.Offsets.Editor.rsgng = 0; // not in offsets.ini
-            GTA.Offsets.Editor.rsgbs = d.OFFSETS.rsgbs;
-            GTA.Offsets.Editor.otxsgo = d.OFFSETS.otxsgo;
             GTA.Offsets.Editor.eoid = d.OFFSETS.eoid;
             GTA.Offsets.Editor.eoet = d.OFFSETS.eoet;
             GTA.Offsets.Editor.eoir = d.OFFSETS.eoir;
             GTA.Offsets.Editor.eoep = d.OFFSETS.eoep;
             GTA.Offsets.Editor.optbs = d.OFFSETS.optbs;
-            GTA.Offsets.Editor.musmustr = d.OFFSETS.musmustr;
-            GTA.Offsets.Editor.trsrl = d.OFFSETS.trsrl;
-            GTA.Offsets.Editor.trstf = d.OFFSETS.trstf;
-            GTA.Offsets.Editor.trcmn = d.OFFSETS.trcmn;
-            GTA.Offsets.Editor.trsth = d.OFFSETS.trsth;
-            GTA.Offsets.Editor.trstp = d.OFFSETS.trstp;
             GTA.Offsets.Editor.mcpbs1 = d.OFFSETS.mcpbs1;
             GTA.Offsets.Editor.mcpbs2 = d.OFFSETS.mcpbs2;
             GTA.Offsets.Editor.mcpbs3 = d.OFFSETS.mcpbs3;
@@ -1151,9 +1034,6 @@ namespace Xenvious
             GTA.Offsets.Editor.mcgbs1 = d.OFFSETS.mcgbs1;
             GTA.Offsets.Editor.mcgbs2 = d.OFFSETS.mcgbs2;
             GTA.Offsets.Editor.mcgbs3 = d.OFFSETS.mcgbs3;
-            GTA.Offsets.Editor.cspnm = d.OFFSETS.cspnm;
-            GTA.Offsets.Editor.csvnm = d.OFFSETS.csvnm;
-            GTA.Offsets.Editor.csonm = d.OFFSETS.csonm;
             GTA.Offsets.Editor.stpos = d.OFFSETS.stpos;
             GTA.Offsets.Editor.pol = d.OFFSETS.pol;
             GTA.Offsets.Editor.ppk = d.OFFSETS.ppk;
@@ -1172,18 +1052,8 @@ namespace Xenvious
             GTA.Offsets.Editor.Teleport_Marker.WM = d.OFFSETS.tp_WM;
             GTA.Offsets.Editor.Teleport_Marker.WN = d.OFFSETS.tp_WN;
             GTA.Offsets.Editor.Teleport_Marker.WO = d.OFFSETS.tp_WO;
-            GTA.Offsets.Editor.Teleport_Marker.WX = d.OFFSETS.tp_WX;
-            GTA.Offsets.Editor.Teleport_Marker.WP = d.OFFSETS.tp_WP;
-            GTA.Offsets.Editor.Teleport_Marker.WQ = d.OFFSETS.tp_WQ;
-            GTA.Offsets.Editor.Teleport_Marker.WT = d.OFFSETS.tp_WT;
-            GTA.Offsets.Editor.Teleport_Marker.WU = d.OFFSETS.tp_WU;
-            GTA.Offsets.Editor.Teleport_Marker.WAb = d.OFFSETS.tp_WAb;
-            GTA.Offsets.Editor.Teleport_Marker.WAC = d.OFFSETS.tp_WAc;
-            GTA.Offsets.Editor.Teleport_Marker.WAe = d.OFFSETS.tp_WAe;
-            GTA.Offsets.Editor.Teleport_Marker.WAg = d.OFFSETS.tp_WAg;
             GTA.Offsets.Editor.Teleport_Marker.WAj = d.OFFSETS.tp_WAj;
             GTA.Offsets.Editor.Teleport_Marker.WAk = d.OFFSETS.tp_WAk;
-            GTA.Offsets.Editor.Teleport_Marker.alvpor = d.OFFSETS.tp_alvpor;
             GTA.Offsets.Editor.Teleport_Marker.NEXT = d.OFFSETS.tp_NEXT;
 
             GTA.Offsets.Editor.ddblip.pos = d.OFFSETS.ddblip_pos;
@@ -1198,16 +1068,12 @@ namespace Xenvious
             GTA.Offsets.Editor.ddblip.entt = d.OFFSETS.ddblip_entt;
             GTA.Offsets.Editor.ddblip.enti = d.OFFSETS.ddblip_enti;
             GTA.Offsets.Editor.ddblip.sbr = d.OFFSETS.ddblip_sbr;
-            GTA.Offsets.Editor.ddblip.sbhr = d.OFFSETS.ddblip_sbhr;
             GTA.Offsets.Editor.ddblip.hbr = d.OFFSETS.ddblip_hbr;
             GTA.Offsets.Editor.ddblip.dbnm = d.OFFSETS.ddblip_dbnm;
             GTA.Offsets.Editor.ddblip.frul = d.OFFSETS.ddblip_frul;
             GTA.Offsets.Editor.ddblip.trul = d.OFFSETS.ddblip_trul;
-            GTA.Offsets.Editor.ddblip.dumsg = d.OFFSETS.ddblip_dumsg;
-            GTA.Offsets.Editor.ddblip.dumssg = d.OFFSETS.ddblip_dumssg;
             GTA.Offsets.Editor.ddblip.number = d.OFFSETS.ddblip_number;
             GTA.Offsets.Editor.ddblip.NEXT = d.OFFSETS.ddblip_NEXT;
-            GTA.Offsets.Editor.ddblip.NEXT_rul = d.OFFSETS.ddblip_NEXT_rul;
 
             GTA.Offsets.Editor.Doors.loc = d.OFFSETS.doors_loc;
             GTA.Offsets.Editor.Doors.fopen = d.OFFSETS.doors_fopen;
@@ -1244,10 +1110,6 @@ namespace Xenvious
 
             GTA.Offsets.Editor.Survival.wave = d.OFFSETS.surv_wave;
             GTA.Offsets.Editor.Survival.sbits = d.OFFSETS.surv_sbits;
-            GTA.Offsets.Editor.Survival.sbndsr = d.OFFSETS.surv_sbndsr;
-            GTA.Offsets.Editor.Survival.sbndsh = d.OFFSETS.surv_sbndsh;
-            GTA.Offsets.Editor.Survival.sbndsbo = d.OFFSETS.surv_sbndsbo;
-            GTA.Offsets.Editor.Survival.sbndst = d.OFFSETS.surv_sbndst;
 
             GTA.Offsets.Editor.Kill.rule = d.OFFSETS.kill_rule;
             GTA.Offsets.Editor.Kill.pri = d.OFFSETS.kill_pri;
@@ -1260,7 +1122,6 @@ namespace Xenvious
             GTA.Offsets.Editor.Kill.number = d.OFFSETS.kill_number;
             GTA.Offsets.Editor.Kill.NEXT = d.OFFSETS.kill_NEXT;
             GTA.Offsets.Editor.Kill.cutscene = d.OFFSETS.kill_cutscene;
-            GTA.Offsets.Editor.Kill.cutscene_number = d.OFFSETS.kill_cutscene_number;
             GTA.Offsets.Editor.Kill.cutscene_NEXT = d.OFFSETS.kill_cutscene_NEXT;
 
             GTA.Offsets.Editor.otzone.otvo = d.OFFSETS.otzone_otvo;
@@ -1272,30 +1133,12 @@ namespace Xenvious
             GTA.Offsets.Editor.otzone.number = d.OFFSETS.otzone_number;
             GTA.Offsets.Editor.otzone.NEXT = d.OFFSETS.otzone_NEXT;
 
-            GTA.Offsets.Editor.PwrUp.pwrBS = d.OFFSETS.PwrUp_pwrBS;
-            GTA.Offsets.Editor.PwrUp.pwrMH = d.OFFSETS.PwrUp_pwrMH;
-            GTA.Offsets.Editor.PwrUp.pwrRC_ = d.OFFSETS.PwrUp_pwrRC_;
 
             GTA.Offsets.Editor.Jobs.published_number = d.OFFSETS.published_number;
             GTA.Offsets.Editor.Jobs.published_link = d.OFFSETS.published_link;
-            GTA.Offsets.Editor.Jobs.published_owner = d.OFFSETS.published_owner;
             GTA.Offsets.Editor.Jobs.published_name = d.OFFSETS.published_name;
-            GTA.Offsets.Editor.Jobs.published_year = d.OFFSETS.published_year;
-            GTA.Offsets.Editor.Jobs.published_month = d.OFFSETS.published_month;
-            GTA.Offsets.Editor.Jobs.published_day = d.OFFSETS.published_day;
-            GTA.Offsets.Editor.Jobs.published_type = d.OFFSETS.published_type;
-            GTA.Offsets.Editor.Jobs.published_subtype = d.OFFSETS.published_subtype;
-            GTA.Offsets.Editor.Jobs.published_rating = d.OFFSETS.published_rating;
-            GTA.Offsets.Editor.Jobs.saved_number = d.OFFSETS.saved_number;
             GTA.Offsets.Editor.Jobs.saved_link = d.OFFSETS.saved_link;
-            GTA.Offsets.Editor.Jobs.saved_owner = d.OFFSETS.saved_owner;
             GTA.Offsets.Editor.Jobs.saved_name = d.OFFSETS.saved_name;
-            GTA.Offsets.Editor.Jobs.saved_year = d.OFFSETS.saved_year;
-            GTA.Offsets.Editor.Jobs.saved_month = d.OFFSETS.saved_month;
-            GTA.Offsets.Editor.Jobs.saved_day = d.OFFSETS.saved_day;
-            GTA.Offsets.Editor.Jobs.saved_type = d.OFFSETS.saved_type;
-            GTA.Offsets.Editor.Jobs.saved_subtype = d.OFFSETS.saved_subtype;
-            GTA.Offsets.Editor.Jobs.saved_rating = d.OFFSETS.saved_rating;
             GTA.Offsets.Editor.Jobs.jobs_NEXT = d.OFFSETS.jobs_NEXT;
 
 
@@ -1336,13 +1179,14 @@ namespace Xenvious
 
             //mprops
 
-            GTA.Editor.prop_model_booster.AddRange(d.OTHER.prop_model_booster.Split(','));
-            GTA.Editor.prop_model_slowdown.AddRange(d.OTHER.prop_model_slowdown.Split(','));
-            GTA.Editor.prop_model_centitydef_whitelist.AddRange(d.OTHER.prop_model_centitydef_whitelist.Split(','));
-            GTA.Editor.prop_model_stunt_with_color_option.AddRange(d.OTHER.prop_model_stunt_with_color_option.Split(','));
-            GTA.Editor.prop_model_blacklisted.AddRange(d.OTHER.prop_model_blacklisted.Split(','));
-            GTA.Editor.prop_model_raceonly.AddRange(d.OTHER.prop_model_raceonly.Split(','));
-            GTA.Editor.dprop_model_activationtimer.AddRange(d.OTHER.dprop_model_activationtimer.Split(','));
+            var lists = BuildData.CurrentPropLists();
+            GTA.Editor.prop_model_booster.AddRange(lists.prop_model_booster);
+            GTA.Editor.prop_model_slowdown.AddRange(lists.prop_model_slowdown);
+            GTA.Editor.prop_model_centitydef_whitelist.AddRange(lists.prop_model_centitydef_whitelist);
+            GTA.Editor.prop_model_stunt_with_color_option.AddRange(lists.prop_model_stunt_with_color_option);
+            GTA.Editor.prop_model_blacklisted.AddRange(lists.prop_model_blacklisted);
+            GTA.Editor.prop_model_raceonly.AddRange(lists.prop_model_raceonly);
+            GTA.Editor.dprop_model_activationtimer.AddRange(lists.dprop_model_activationtimer);
 
 
             GTA.Editor.country_codes = StaticData.CountryCodes;

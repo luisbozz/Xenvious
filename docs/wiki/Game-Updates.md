@@ -7,13 +7,14 @@ all of it to the new build:
 
 | File | What breaks |
 |---|---|
-| `offsets.ini` | globals, locals, strides move; `[SCRIPTVICTIM]` (Legacy) moves with the code; `[OTHER]` prop lists grow |
+| `offsets.ini` | globals, locals, strides move; `[SCRIPTVICTIM]` (Legacy) moves with the code; `[SCRIPTSPACE]` (Enhanced) follows the script size |
+| `prop_lists.json` | the model hash lists (boosters, blacklisted props, ...) grow |
 | `scrpatches.json`, `scrpatchesdev.json` | patterns stop matching, operands in the patch bytes move, the custom funcs payloads call into moved code |
 | `race_vehicles.json` | new (ADLC) vehicles in the race creator |
 | `mprops.json` | the prop menus change |
 
 `offsets.ini` says in `[BUILD] label` which build it is for; the updater migrates
-from there. offsets.ini and the patches reach the app as generated code
+from there. offsets.ini, the patches and the prop lists reach the app as generated code
 (`Generated/*.g.cs`, written by `tools/builddata/gen.py`), so the app parses no
 file at start.
 

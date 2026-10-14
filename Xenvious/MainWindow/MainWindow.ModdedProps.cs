@@ -1070,7 +1070,7 @@ namespace Xenvious
         }
 
         // "Barriers 3, Ramps 12": where a model already is in the loaded creator's menu.
-        // Models on the prop blacklist (offsets.ini [OTHER] prop_model_blacklisted, from the
+        // Models on the prop blacklist (prop_lists.json prop_model_blacklisted, from the
         // scripts' IS_PROP_A_DEV_ONLY_PLACEABLE_PROP, including the UFO ships that depend on a
         // tunable): a user-made job gets them replaced by PROP_CONST_FENCE02B when it loads. The
         // props pages mark the same list.

@@ -7,6 +7,11 @@ Xenvious/OfflineData/legacy/offsets.ini
 Xenvious/OfflineData/enhanced/offsets.ini
 ```
 
+The model hash lists (booster props, slowdown props, blacklisted props, ...)
+are in `prop_lists.json` next to them, also per edition. The struct offsets of
+the job image (`0x1C`) and the Social Club name (`0x3CF`) never moved and are
+constants in `GTA.cs`.
+
 They are the **sources** of the build data, not files the app reads.
 `tools/builddata/gen.py` turns them (and `scrpatches.json`) into C# under
 `Xenvious/Generated/`, with every path already resolved to a number, so the
@@ -20,8 +25,7 @@ files.
 |---|---|
 | `[BUILD]` | `label`: the game build the values are for (`1.73-3889`, `enhanced-1.73-1158`); the updater migrates from it |
 | `[AOB]` | Byte patterns (`?` = wildcard) for engine pointers: globals, script threads, script programs, camera, image, session, ... |
-| `[OTHER]` | Model hash lists (booster props, slowdown props, blacklisted props, ...) |
-| `[IMAGE]`, `[SESSION]` | Struct offsets for the job image and the Social Club session |
+| `[SCRIPTSPACE]`, `[SCRIPTVICTIM]` | Room for the custom funcs payload, see [Script patches](Script-Patches.md) |
 | `[OFFSETS]` | Globals, locals, struct fields and strides for everything the creator stores |
 
 ## Value formats

@@ -42,9 +42,6 @@ namespace Xenvious
         public static BackgroundWorker mWorker;
         public static DispatcherTimer timercheckgta = new DispatcherTimer();
         public static DispatcherTimer TimerGetJobImage = new DispatcherTimer();
-        public static bool isrstar = false;
-        public static bool issteam = false;
-        public static bool isepic = false;
         public static bool gamemodeWarning = false;
         public static float incrementsize = 1F;
 
@@ -658,14 +655,11 @@ namespace Xenvious
 
         public string getSCName()
         {
-            // Name from the session struct (+OFFSET_username) when the pattern resolved it;
-            // the per-launcher fixed addresses below are only the fallback.
-            if (GTA.Offsets.Editor.Session.patternPointer != 0)
-            {
-                long addr = (long)m.getBaseAddress() + GTA.Offsets.Editor.Session.patternPointer + GTA.Offsets.Editor.Session.username;
-                return m.memory(addr.ToString("X")).GetString(64).TrimEnd('\0');
-            }
-            return issteam ? m.memory(GTA.Offsets.Editor.steam_accname).GetString() : isrstar ? m.memory(GTA.Offsets.Editor.rstar_accname).GetString() : m.memory(GTA.Offsets.Editor.epic_accname).GetString();
+            // Name from the session struct; empty when the pattern session_ptr missed.
+            if (GTA.Offsets.Editor.Session.patternPointer == 0)
+                return "";
+            long addr = (long)m.getBaseAddress() + GTA.Offsets.Editor.Session.patternPointer + GTA.Offsets.Editor.Session.username;
+            return m.memory(addr.ToString("X")).GetString(64).TrimEnd('\0');
         }
 
         public static bool freeze = false;

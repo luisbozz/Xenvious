@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Generates Xenvious/Generated/*.g.cs from the build data in Xenvious/OfflineData/<edition>/.
 
-offsets.ini and scrpatches.json stay the files people and ysc-global-updater edit. Xenvious
+offsets.ini, scrpatches.json and prop_lists.json stay the files people and ysc-global-updater edit. Xenvious
 does not read them at runtime any more: this turns them into C# with every value already a
 number (paths resolved with their array size slots, see builddata.py), so the start does no
 parsing and a key the code names but the files lack is a compile error instead of a silent 0.
@@ -185,12 +185,49 @@ def gen_patches(ed: str, Ed: str) -> str:
     return "\n".join(lines)
 
 
+def load_prop_lists() -> dict:
+    return {ed: json.loads((DATA / ed / "prop_lists.json").read_text(encoding="utf-8-sig"))
+            for ed, _ in EDITIONS}
+
+
+def gen_prop_lists_shape(lists) -> str:
+    names = []
+    for data in lists.values():
+        names += [k for k in data if k not in names]
+    lines = [HEADER, "namespace Xenvious", "{",
+             "    /// <summary>Model hash lists of one edition (OfflineData/&lt;edition&gt;/prop_lists.json),",
+             "    /// spelled as the code compares them: hex for the first four, signed decimal for the rest.</summary>",
+             "    public sealed class PropLists", "    {"]
+    for k in names:
+        lines.append(f"        public string[] {k} = new string[0];")
+    lines += ["    }", "}", ""]
+    return "\n".join(lines)
+
+
+def gen_prop_lists(lists, ed: str, Ed: str) -> str:
+    lines = [HEADER, "namespace Xenvious", "{", "    public sealed partial class BuildData", "    {",
+             f"        /// <summary>OfflineData/{ed}/prop_lists.json, a new object on every call.</summary>",
+             f"        private static PropLists PropLists{Ed}()", "        {", "            return new PropLists", "            {"]
+    for k, values in lists[ed].items():
+        if not all(isinstance(v, str) for v in values):
+            raise SystemExit(f"OfflineData/{ed}/prop_lists.json: {k} must be a list of strings")
+        lines.append(f"                {k} = new[]")
+        lines.append("                {")
+        for i in range(0, len(values), 8):
+            lines.append("                    " + ", ".join(cs_string(v) for v in values[i:i + 8]) + ",")
+        lines.append("                },")
+    lines += ["            };", "        }", "    }", "}", ""]
+    return "\n".join(lines)
+
+
 def outputs() -> dict:
     inis = load_inis()
-    out = {"BuildData.g.cs": gen_shape(inis)}
+    lists = load_prop_lists()
+    out = {"BuildData.g.cs": gen_shape(inis), "PropLists.g.cs": gen_prop_lists_shape(lists)}
     for ed, Ed in EDITIONS:
         out[f"BuildData.{Ed}.g.cs"] = gen_edition(inis, ed, Ed)
         out[f"ScrPatches.{Ed}.g.cs"] = gen_patches(ed, Ed)
+        out[f"PropLists.{Ed}.g.cs"] = gen_prop_lists(lists, ed, Ed)
     return out
 
 
