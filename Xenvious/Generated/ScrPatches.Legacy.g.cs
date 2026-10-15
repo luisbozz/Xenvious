@@ -140,6 +140,10 @@ namespace Xenvious
                 new GTA.ScrPatches { patch_name = "unlock all creator menu entries", script_name = "creator", pattern = "2D 00 02 00 00 2C 01 00 ? 72 5D ? ? ? 72 5D ? ? ? 74 5D ? ? ? 0B 2E 00 01", offset = 5, bytes_to_patch = "72 2E 00 01", dev = false },
                 new GTA.ScrPatches { patch_name = "unlock all creator menu entries", script_name = "creator", pattern = "2D 00 02 00 00 2C 01 00 ? 5D ? ? ? 06 56 04 00 71 2E 00 01 61 ? ? ? 47 ? ? 71 82 56 04 00 72 2E 00 01 71 2E 00 01", offset = 5, bytes_to_patch = "72 2E 00 01", dev = false },
                 new GTA.ScrPatches { patch_name = "unlock all creator menu entries", script_name = "creator", pattern = "2D 00 02 00 00 2C 01 00 ? 5D ? ? ? 06 56 04 00 71 2E 00 01 61 ? ? ? 47 ? ? 72 82 56 04 00 72 2E 00 01 71 2E 00 01", offset = 5, bytes_to_patch = "72 2E 00 01", dev = false },
+                new GTA.ScrPatches { patch_name = "no vehicle model limit", script_name = "fm_lts_creator", pattern = "2D 01 1B 00 00 37 03 25 14 31 2B 71 39 18 38 18 38 03 5B ? ? 71 38 18", offset = 5, bytes_to_patch = "72 2E 01 01", dev = false },
+                new GTA.ScrPatches { patch_name = "no vehicle model limit", script_name = "fm_capture_creator", pattern = "2D 01 1B 00 00 37 03 25 14 31 2B 71 39 18 38 18 38 03 5B ? ? 71 38 18", offset = 5, bytes_to_patch = "72 2E 01 01", dev = false },
+                new GTA.ScrPatches { patch_name = "no vehicle model limit", script_name = "fm_deathmatch_creator", pattern = "2D 01 1B 00 00 37 03 25 14 31 2B 71 39 18 38 18 38 03 5B ? ? 71 38 18", offset = 5, bytes_to_patch = "72 2E 01 01", dev = false },
+                new GTA.ScrPatches { patch_name = "no vehicle model limit", script_name = "fm_survival_creator", pattern = "2D 01 1B 00 00 37 03 25 14 31 2B 71 39 18 38 18 38 03 5B ? ? 71 38 18", offset = 5, bytes_to_patch = "72 2E 01 01", dev = false },
             };
         }
 
