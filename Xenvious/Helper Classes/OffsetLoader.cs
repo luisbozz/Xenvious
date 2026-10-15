@@ -962,6 +962,7 @@ namespace Xenvious
             GTA.Offsets.Editor.teamrvbh = d.OFFSETS.teamrvbh;
             GTA.Offsets.Editor.tmvds = d.OFFSETS.tmvds;
             GTA.Offsets.Editor.bdprt = d.OFFSETS.bdprt;
+            GTA.Offsets.Editor.bdpst = d.OFFSETS.bdpst;
             GTA.Offsets.Editor.txt0 = d.OFFSETS.txt0;
             GTA.Offsets.Editor.txt_NEXT = d.OFFSETS.txt_NEXT;
             GTA.Offsets.Editor.NEXT_txt = d.OFFSETS.NEXT_txt;

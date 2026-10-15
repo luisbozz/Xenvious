@@ -436,18 +436,23 @@ namespace Xenvious
             body.Children.Add(tiles);
             body.Children.Add(hint);
 
-            // Return timer: one per team for each area, in ms (default 60000).
-            body.Children.Add(Label("pa_timer", "Time to get back (seconds, per team)"));
+            // Return timer per team and rule (bdprt / bdpst, ms, default 60000); the controller reads
+            // that one, not the team default patm.
+            body.Children.Add(Label("pa_timer", "Time to get back (seconds)"));
             var timer = Box();
             timer.Margin = new Thickness(0, 0, 0, 10);
             timer.TextChanged += (_, __) =>
             {
                 if (_loading || !Live || !double.TryParse(timer.Text.Replace(',', '.'), NumberStyles.Float, CultureInfo.InvariantCulture, out double sec)) return;
-                for (int t = 0; t < PlayAreas.Teams; t++)
-                    if (_teams.Contains(t))
-                        new Global(PlayAreas.Timer(_area, t)).SetInt((int)Math.Round(sec * 1000));
+                int ms = (int)Math.Round(sec * 1000);
+                ForTargets((t, r) => { long at = PlayAreas.RuleTimer(_area, t, r); if (at != 0) new Global(at).SetInt(ms); });
             };
-            _loaders.Add(() => { if (!timer.IsKeyboardFocused) timer.Text = (new Global(PlayAreas.Timer(_area, _team)).Get<int>() / 1000.0).ToString("0.#", CultureInfo.InvariantCulture); });
+            _loaders.Add(() =>
+            {
+                long at = PlayAreas.RuleTimer(_area, _team, _rule);
+                timer.IsEnabled = at != 0;
+                if (at != 0 && !timer.IsKeyboardFocused) timer.Text = (new Global(at).Get<int>() / 1000.0).ToString("0.#", CultureInfo.InvariantCulture);
+            });
             body.Children.Add(timer);
             body.Children.Add(Toggle("pa_spawnhere", "Respawn in this area", () => PlayAreas.GetSpawn(_area, _team, _rule), on => ForTargets((t, r) => PlayAreas.SetSpawn(_area, t, r, on))));
             body.Children.Add(Toggle("pa_wanted", "Wanted level for leaving", () => PlayAreas.GetWanted(_area, _team, _rule), on => ForTargets((t, r) => PlayAreas.SetWanted(_area, t, r, on))));

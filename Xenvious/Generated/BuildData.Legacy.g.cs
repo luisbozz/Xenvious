@@ -920,6 +920,7 @@ namespace Xenvious
             d.OFFSETS.tmvhp = 4844825;
             d.OFFSETS.tmvds = 4844830;
             d.OFFSETS.bdprt = 4736914;
+            d.OFFSETS.bdpst = 4736932;
             d.OFFSETS.txt0 = 4737141;
             d.OFFSETS.txt_NEXT = 16;
             d.OFFSETS.NEXT_txt = 273;

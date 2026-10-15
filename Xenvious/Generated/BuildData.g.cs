@@ -1021,6 +1021,7 @@ namespace Xenvious
             public long tmvhp;
             public long tmvds;
             public long bdprt;
+            public long bdpst;
             public long txt0;
             public long txt_NEXT;
             public long NEXT_txt;
@@ -2108,6 +2109,7 @@ namespace Xenvious
                     case "tmvhp": return tmvhp;
                     case "tmvds": return tmvds;
                     case "bdprt": return bdprt;
+                    case "bdpst": return bdpst;
                     case "txt0": return txt0;
                     case "txt_next": return txt_NEXT;
                     case "next_txt": return NEXT_txt;
