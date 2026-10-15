@@ -830,6 +830,9 @@ namespace Xenvious
                 public class Objects
                 {
                     public static long model = 0;
+                    // Vehicle the carrier turns into (objtvi: placed vehicle index, tl63vts: model name).
+                    public static long tvi = 0;
+                    public static long tvs = 0;
                     public static long loc = 0;
                     public static long head = 0;
                     public static long vrot = 0;

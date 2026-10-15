@@ -347,6 +347,8 @@ namespace Xenvious
             GTA.Offsets.Editor.Vehicle.NEXT = d.OFFSETS.veh_NEXT;
 
             GTA.Offsets.Editor.Objects.model = d.OFFSETS.obj_model;
+            GTA.Offsets.Editor.Objects.tvi = d.OFFSETS.obj_tvi;
+            GTA.Offsets.Editor.Objects.tvs = d.OFFSETS.obj_tvs;
             GTA.Offsets.Editor.Objects.loc = d.OFFSETS.obj_loc;
             GTA.Offsets.Editor.Objects.head = d.OFFSETS.obj_head;
             GTA.Offsets.Editor.Objects.vrot = d.OFFSETS.obj_vrot;

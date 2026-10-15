@@ -428,6 +428,8 @@ namespace Xenvious
             public long veh_number;
             public long veh_NEXT;
             public long obj_model;
+            public long obj_tvi;
+            public long obj_tvs;
             public long obj_loc;
             public long obj_head;
             public long obj_vrot;
@@ -1561,6 +1563,8 @@ namespace Xenvious
                     case "veh_number": return veh_number;
                     case "veh_next": return veh_NEXT;
                     case "obj_model": return obj_model;
+                    case "obj_tvi": return obj_tvi;
+                    case "obj_tvs": return obj_tvs;
                     case "obj_loc": return obj_loc;
                     case "obj_head": return obj_head;
                     case "obj_vrot": return obj_vrot;

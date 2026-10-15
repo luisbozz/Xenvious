@@ -327,6 +327,8 @@ namespace Xenvious
             d.OFFSETS.veh_number = 5051816;
             d.OFFSETS.veh_NEXT = 631;
             d.OFFSETS.obj_model = 4987881;
+            d.OFFSETS.obj_tvi = 4988282;
+            d.OFFSETS.obj_tvs = 4988266;
             d.OFFSETS.obj_loc = 4987865;
             d.OFFSETS.obj_head = 4987868;
             d.OFFSETS.obj_vrot = 4987869;

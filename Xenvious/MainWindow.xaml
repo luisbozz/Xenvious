@@ -9035,6 +9035,7 @@
                                                                     <local:MasonryPanel Margin="0,12,0,12">
                                                                         <StackPanel>
                                                                             <local:ModelCard x:Name="ObjModelCard" Margin="0,0,0,12"/>
+                                                                            <local:ObjectTransformCard x:Name="ObjTransformCard"/>
                                                                         </StackPanel>
                                                                         <local:EntityRulesCard x:Name="ObjExtraRules" VerticalAlignment="Top"/>
                                                                         <StackPanel>
