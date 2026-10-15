@@ -209,6 +209,7 @@
     <Compile Include="Controls\MenuBitsView.cs" />
     <Compile Include="Controls\MatchSettingsCard.cs" />
     <Compile Include="Controls\SoloTestCard.cs" />
+    <Compile Include="Controls\SmsOptionsCard.cs" />
     <Compile Include="Controls\OnlineTestView.cs" />
     <Compile Include="Controls\RowDragger.cs" />
     <Compile Include="Controls\VisibilityCard.cs" />

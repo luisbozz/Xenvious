@@ -7062,7 +7062,7 @@
                                                                                             <UniformGrid Columns="2">
                                                                                                 <StackPanel Margin="0,0,6,0"><TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[smsdestination], FallbackValue='Destination Team'}"/>
                                                                     <ComboBox x:Name="ddSMSteam" IsEnabled="False" SelectionChanged="ddSMSteam_SelectionChanged" Height="30" Margin="0,0,0,10">
-<ComboBoxItem Content="{Binding Translation[all], FallbackValue=All}"/>
+<ComboBoxItem Content="{Binding Translation[sms_team_none], FallbackValue=None (not sent)}"/>
 <ComboBoxItem Content="1" Selector.IsSelected="True"/>
 <ComboBoxItem Content="2"/>
 <ComboBoxItem Content="3"/>
@@ -7080,11 +7080,6 @@
                                                                                                 <StackPanel Margin="6,0,0,0"><TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[smsdelay], FallbackValue='Delay in Seconds'}"/>
                                                                     <TextBox x:Name="tbSMSdelay" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbSMSdelay_TextChanged" KeyDown="FormatTextForInteger" Height="30" Margin="0,0,0,10"/></StackPanel>
                                                                                             </UniformGrid>
-                                                                                            <Grid Style="{StaticResource FormRow}">
-                                                                        <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="46"/></Grid.ColumnDefinitions>
-                                                                        <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[sndall], FallbackValue='Send to All Teams'}"/>
-                                                                        <CheckBox x:Name="cbSMSsndall" Checked="cbSMSsndall_Checked" Unchecked="cb_props_ignorevscheck_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                    </Grid>
                                                                                             <ComboBox x:Name="ddSMScontact" IsEnabled="False" Visibility="Collapsed" SelectionChanged="ddSMScontact_SelectionChanged" Height="30" Margin="0,0,0,10">
 <ComboBoxItem Content="{Binding Translation[smscontact1], FallbackValue=Ms Baker}"/>
 <ComboBoxItem Content="{Binding Translation[smscontact2], FallbackValue=Cheng Jr.}"/>
@@ -7114,7 +7109,7 @@
                                                                                     </DockPanel>
                                                                                 </Border>
                                                                                 <Border Style="{StaticResource DashCard}">
-                                                                                    <Expander Style="{StaticResource CardExpander}" IsExpanded="True" Header="{Binding Translation[advanced], FallbackValue=Advanced}">
+                                                                                    <Expander Style="{StaticResource CardExpander}" IsExpanded="False" Header="{Binding Translation[gr_raw], FallbackValue=Raw values}">
                                                                                         <StackPanel Margin="14,12,14,4">
                                                                                             <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[smspreq], FallbackValue='Points Required'}"/>
                                                                     <TextBox x:Name="tbSMSpreq" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbSMSpreq_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
@@ -7128,17 +7123,20 @@
                                                                                     </Expander>
                                                                                 </Border>
                                                                             </StackPanel>
-                                                                            <Border Grid.Column="2" Style="{StaticResource DashCard}" VerticalAlignment="Top">
+                                                                            <StackPanel Grid.Column="2">
+                                                                            <Border Style="{StaticResource DashCard}" VerticalAlignment="Top">
                                                                                 <DockPanel>
                                                                                     <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
                                                                                         <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[smsmsg], FallbackValue='SMS Message'}"/>
                                                                                     </Border>
                                                                                     <StackPanel Margin="14,12,14,14">
-                                                                                        <TextBox x:Name="tbSMSmsg" FontSize="17" MinHeight="260" TextWrapping="Wrap" AcceptsReturn="False" Padding="10,8" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbSMSmsg_TextChanged" PreviewTextInput="tbSMSmsg_PreviewTextInput" VerticalContentAlignment="Top"/>
+                                                                                        <TextBox x:Name="tbSMSmsg" FontSize="17" MinHeight="120" TextWrapping="Wrap" AcceptsReturn="False" Padding="10,8" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbSMSmsg_TextChanged" PreviewTextInput="tbSMSmsg_PreviewTextInput" VerticalContentAlignment="Top"/>
                                                                                         <TextBlock FontSize="12" Margin="2,6,0,0" Foreground="{DynamicResource FaintTextBrush}" Text="{Binding Text.Length, ElementName=tbSMSmsg, StringFormat='{}{0} / 126', FallbackValue=''}"/>
                                                                                     </StackPanel>
                                                                                 </DockPanel>
                                                                             </Border>
+                                                                            <local:SmsOptionsCard x:Name="SmsOptions"/>
+                                                                            </StackPanel>
                                                                         </Grid>
                                                                     </ScrollViewer>
                                                                 </DockPanel>
