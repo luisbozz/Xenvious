@@ -696,12 +696,14 @@ namespace Xenvious
             public long weap_vasss4;
             public long weap_rput;
             public long weap_vput;
+            public long weap_vbmbl;
             public long weap_vbmbm;
             public long weap_vclnt;
             public long weap_vclnr;
             public long weap_vclnrl;
             public long weap_iptnp;
             public long weap_wcpm;
+            public long weap_comps;
             public long weap_number;
             public long weap_time;
             public long weap_pal;
@@ -1089,6 +1091,8 @@ namespace Xenvious
             public long drpr;
             public long drph;
             public long dlcrel;
+            public long vwp15;
+            public long vwp16;
             public long abits;
             public long sdobs;
             public long edobs;
@@ -1825,12 +1829,14 @@ namespace Xenvious
                     case "weap_vasss4": return weap_vasss4;
                     case "weap_rput": return weap_rput;
                     case "weap_vput": return weap_vput;
+                    case "weap_vbmbl": return weap_vbmbl;
                     case "weap_vbmbm": return weap_vbmbm;
                     case "weap_vclnt": return weap_vclnt;
                     case "weap_vclnr": return weap_vclnr;
                     case "weap_vclnrl": return weap_vclnrl;
                     case "weap_iptnp": return weap_iptnp;
                     case "weap_wcpm": return weap_wcpm;
+                    case "weap_comps": return weap_comps;
                     case "weap_number": return weap_number;
                     case "weap_time": return weap_time;
                     case "weap_pal": return weap_pal;
@@ -2218,6 +2224,8 @@ namespace Xenvious
                     case "drpr": return drpr;
                     case "drph": return drph;
                     case "dlcrel": return dlcrel;
+                    case "vwp15": return vwp15;
+                    case "vwp16": return vwp16;
                     case "abits": return abits;
                     case "sdobs": return sdobs;
                     case "edobs": return edobs;

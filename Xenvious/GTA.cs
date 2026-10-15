@@ -1086,6 +1086,9 @@ namespace Xenvious
                     public static long vclnrl = 0;
                     public static long iptnp = 0;
                     public static long wcpm = 0;
+                    // Six weapon components given with the pickup (comps0..5).
+                    public static long comps = 0;
+                    public static long vbmbl = 0;
                     public static long number = 0;
                     public static long time = 0;
                     public static long pal = 0;
@@ -1862,6 +1865,9 @@ namespace Xenvious
                 public static long drpr = 0;
                 public static long drph = 0;
                 public static long dlcrel = 0;
+                // Seconds as Ruiner 2000 / Ramp Buggy after a vehicle pickup (vwp15, vwp16); 0 turns back at once.
+                public static long vwp15 = 0;
+                public static long vwp16 = 0;
                 public static long abits = 0;
                 public static long sdobs = 0;
                 public static long edobs = 0;
@@ -1925,6 +1931,8 @@ namespace Xenvious
             public static List<string> prop_model_blacklisted = new List<string>();
             // Models a capture object keeps when a job loads; others become prop_security_case_01.
             public static List<string> capture_object_models = new List<string>();
+            // Pickup types a weapon keeps when a job loads; others become a pistol (marksman rifle: sniper rifle).
+            public static List<string> weapon_pickup_models = new List<string>();
             // IS_PROP_A_RACE_ONLY_PROP: outside races a loaded job gets these as the fence.
             public static List<string> prop_model_raceonly = new List<string>();
             public static List<string> dprop_model_activationtimer = new List<string>();

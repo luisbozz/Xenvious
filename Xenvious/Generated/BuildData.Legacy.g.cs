@@ -595,12 +595,14 @@ namespace Xenvious
             d.OFFSETS.weap_vasss4 = 5041122;
             d.OFFSETS.weap_rput = 5041103;
             d.OFFSETS.weap_vput = 5041105;
+            d.OFFSETS.weap_vbmbl = 5041126;
             d.OFFSETS.weap_vbmbm = 5041127;
             d.OFFSETS.weap_vclnt = 5041112;
             d.OFFSETS.weap_vclnr = 5041113;
             d.OFFSETS.weap_vclnrl = 5041111;
             d.OFFSETS.weap_iptnp = 5041125;
             d.OFFSETS.weap_wcpm = 5041104;
+            d.OFFSETS.weap_comps = 5041097;
             d.OFFSETS.weap_number = 5041069;
             d.OFFSETS.weap_time = 5041071;
             d.OFFSETS.weap_pal = 5041072;
@@ -988,6 +990,8 @@ namespace Xenvious
             d.OFFSETS.drpr = 4729720;
             d.OFFSETS.drph = 4729756;
             d.OFFSETS.dlcrel = 4915884;
+            d.OFFSETS.vwp15 = 4916137;
+            d.OFFSETS.vwp16 = 4916138;
             d.OFFSETS.abits = 4724816;
             d.OFFSETS.sdobs = 4724817;
             d.OFFSETS.edobs = 4724818;

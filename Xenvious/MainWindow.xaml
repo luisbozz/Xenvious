@@ -3393,6 +3393,7 @@
                                                         <local:MasonryPanel Margin="0,12,0,12">
                                                             <StackPanel>
                                                                 <local:ModelCard x:Name="WeapModelCard" Margin="0,0,0,12"/>
+                                                                <ContentControl x:Name="WeapKindHost"/>
                                                             </StackPanel>
                                                             <StackPanel>
                                                                 <Border Style="{StaticResource DashCard}">
@@ -3547,41 +3548,11 @@
                                                                             <CheckBox x:Name="cb_weap_civ" Checked="cb_weap_civ_Checked" Unchecked="cb_weap_civ_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
                                                                         </Grid>
                                                                         <Rectangle Height="1" Fill="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="0,4,0,12"/>
-                                                                        <Grid Style="{StaticResource FormRow}">
-                                                                            <Grid.ColumnDefinitions>
-                                                                                <ColumnDefinition Width="*"/>
-                                                                                <ColumnDefinition Width="46"/>
-                                                                            </Grid.ColumnDefinitions>
-                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[weapbrest1], FallbackValue=Hide for Team 1}" IsEnabled="{Binding ElementName=cb_weap_brest1, Path=IsEnabled}"/>
-                                                                            <CheckBox x:Name="cb_weap_brest1" Checked="cb_weap_brest1_Checked" Unchecked="cb_weap_brest1_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                        </Grid>
-                                                                        <Grid Style="{StaticResource FormRow}">
-                                                                            <Grid.ColumnDefinitions>
-                                                                                <ColumnDefinition Width="*"/>
-                                                                                <ColumnDefinition Width="46"/>
-                                                                            </Grid.ColumnDefinitions>
-                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[weapbrest2], FallbackValue=Hide for Team 2}" IsEnabled="{Binding ElementName=cb_weap_brest2, Path=IsEnabled}"/>
-                                                                            <CheckBox x:Name="cb_weap_brest2" Checked="cb_weap_brest2_Checked" Unchecked="cb_weap_brest2_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                        </Grid>
-                                                                        <Grid Style="{StaticResource FormRow}">
-                                                                            <Grid.ColumnDefinitions>
-                                                                                <ColumnDefinition Width="*"/>
-                                                                                <ColumnDefinition Width="46"/>
-                                                                            </Grid.ColumnDefinitions>
-                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[weapbrest3], FallbackValue=Hide for Team 3}" IsEnabled="{Binding ElementName=cb_weap_brest3, Path=IsEnabled}"/>
-                                                                            <CheckBox x:Name="cb_weap_brest3" Checked="cb_weap_brest3_Checked" Unchecked="cb_weap_brest3_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                        </Grid>
-                                                                        <Grid Style="{StaticResource FormRow}">
-                                                                            <Grid.ColumnDefinitions>
-                                                                                <ColumnDefinition Width="*"/>
-                                                                                <ColumnDefinition Width="46"/>
-                                                                            </Grid.ColumnDefinitions>
-                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[weapbrest4], FallbackValue=Hide for Team 4}" IsEnabled="{Binding ElementName=cb_weap_brest4, Path=IsEnabled}"/>
-                                                                            <CheckBox x:Name="cb_weap_brest4" Checked="cb_weap_brest4_Checked" Unchecked="cb_weap_brest4_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                        </Grid>
+                                                                        <ContentControl x:Name="WeapHideHost"/>
                                                                         </StackPanel>
                                                                     </DockPanel>
                                                                 </Border>
+                                                                <local:WeaponPickupCard x:Name="WeapPickupCard" Margin="0,12,0,0"/>
                                                             </StackPanel>
                                                             <StackPanel>
                                                                 <Border Style="{StaticResource DashCard}">

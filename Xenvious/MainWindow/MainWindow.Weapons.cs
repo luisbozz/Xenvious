@@ -34,6 +34,21 @@ namespace Xenvious
         {
             int index = ddweapno.SelectedIndex;
 
+            if (WeapKindHost.Content == null)
+            {
+                WeapKindHost.Content = WeapPickupCard.KindBar;
+                WeapHideHost.Content = WeapPickupCard.HideBar;
+                WeapPickupCard.Changed += (_, __) => GetWeapons(false, true);
+                // These raw fields now have names in the pickup card; they stay editable for odd cases.
+                foreach (var raw in new FrameworkElement[] { tbweaprput, tbweapvput, tbweapwcpm, tbweapclip })
+                {
+                    raw.Opacity = 0.5;
+                    raw.ToolTip = TranslateOr("wp_raw_tip", "Shown with names in the pickup card.");
+                }
+            }
+            if (index < 0)
+                WeapPickupCard.Show(-1);
+
             ddweapmodelswicther.IsEnabled = index < 0 ? false : true;
             ddweapcategory.IsEnabled = index < 0 ? false : true;
             weapModelList.IsEnabled = index < 0 ? false : true;
@@ -59,10 +74,6 @@ namespace Xenvious
             tbweapvasst.IsEnabled = index < 0 ? false : true;
             cb_weap_invisible.IsEnabled = index < 0 ? false : true;
             cb_weap_civ.IsEnabled = index < 0 ? false : true;
-            cb_weap_brest1.IsEnabled = index < 0 ? false : true;
-            cb_weap_brest2.IsEnabled = index < 0 ? false : true;
-            cb_weap_brest3.IsEnabled = index < 0 ? false : true;
-            cb_weap_brest4.IsEnabled = index < 0 ? false : true;
             cbweapenablerot.IsEnabled = index < 0 ? false : true;
             ddweapspawnon.IsEnabled = index < 0 ? false : true;
             tbweapclearrule.IsEnabled = index < 0 ? false : true;
@@ -118,6 +129,7 @@ namespace Xenvious
 
                 if (!tbweapmodel.IsFocused || ignore_focus) tbweapmodel.Text = model.ToString();
                 WeapModelCard.SetModel(unchecked((uint)model));
+                WeapModelCard.SetWarning(WeaponPickups.LoadWarning(model, TranslateOr));
                 if (!tbweaplocx.IsFocused || ignore_focus) tbweaplocx.Text = new Global((GTA.Offsets.Editor.Weapon.locx + GTA.Offsets.Editor.Weapon.NEXT * index)).Get<float>().ToString();
                 if (!tbweaplocy.IsFocused || ignore_focus) tbweaplocy.Text = new Global((GTA.Offsets.Editor.Weapon.locy + GTA.Offsets.Editor.Weapon.NEXT * index)).Get<float>().ToString();
                 if (!tbweaplocz.IsFocused || ignore_focus) tbweaplocz.Text = new Global((GTA.Offsets.Editor.Weapon.locz + GTA.Offsets.Editor.Weapon.NEXT * index)).Get<float>().ToString();
@@ -126,10 +138,6 @@ namespace Xenvious
                 if (!tbweapdmgmlt.IsFocused || ignore_focus) tbweapdmgmlt.Text = new Global((GTA.Offsets.Editor.Weapon.dmgmult + GTA.Offsets.Editor.Weapon.NEXT * index)).Get<float>().ToString();
                 Functions.Read.checkbinary(6, GTA.Offsets.Editor.Weapon.bits + ddweapno.SelectedIndex * GTA.Offsets.Editor.Weapon.NEXT, cb_weap_invisible);
                 Functions.Read.checkbinary(10, GTA.Offsets.Editor.Weapon.bits + ddweapno.SelectedIndex * GTA.Offsets.Editor.Weapon.NEXT, cb_weap_civ);
-                Functions.Read.checkbinary(0, GTA.Offsets.Editor.Weapon.brest + 0 + ddweapno.SelectedIndex * GTA.Offsets.Editor.Weapon.NEXT, cb_weap_brest1);
-                Functions.Read.checkbinary(0, GTA.Offsets.Editor.Weapon.brest + 1 + ddweapno.SelectedIndex * GTA.Offsets.Editor.Weapon.NEXT, cb_weap_brest2);
-                Functions.Read.checkbinary(0, GTA.Offsets.Editor.Weapon.brest + 2 + ddweapno.SelectedIndex * GTA.Offsets.Editor.Weapon.NEXT, cb_weap_brest3);
-                Functions.Read.checkbinary(0, GTA.Offsets.Editor.Weapon.brest + 3 + ddweapno.SelectedIndex * GTA.Offsets.Editor.Weapon.NEXT, cb_weap_brest4);
                 if (Functions.Read.checkbinary(9, GTA.Offsets.Editor.Weapon.bits + ddweapno.SelectedIndex * GTA.Offsets.Editor.Weapon.NEXT, cbweapenablerot))
                 {
                     if (!tbweaprotx.IsFocused || ignore_focus) tbweaprotx.Text = new Global((GTA.Offsets.Editor.Weapon.rotx + GTA.Offsets.Editor.Weapon.NEXT * index)).Get<float>().ToString();
@@ -149,6 +157,7 @@ namespace Xenvious
                 if (!ddweapteamclear.IsFocused || ignore_focus) ddweapteamclear.SelectedIndex = new Global((GTA.Offsets.Editor.Weapon.vclnt + GTA.Offsets.Editor.Weapon.NEXT * index)).Get<int>() + 1;
 
                 loadweapvass(ignore_focus);
+                WeapPickupCard.Show(index, ignore_focus);
             }
         }
 
@@ -567,24 +576,5 @@ namespace Xenvious
             }
         }
 
-        private void cb_weap_brest1_Checked(object sender, RoutedEventArgs e)
-        {
-            Functions.Write.writebinary(0, GTA.Offsets.Editor.Weapon.brest + 0 + ddweapno.SelectedIndex * GTA.Offsets.Editor.Weapon.NEXT, cb_weap_brest1);
-        }
-
-        private void cb_weap_brest2_Checked(object sender, RoutedEventArgs e)
-        {
-            Functions.Write.writebinary(0, GTA.Offsets.Editor.Weapon.brest + 1 + ddweapno.SelectedIndex * GTA.Offsets.Editor.Weapon.NEXT, cb_weap_brest2);
-        }
-
-        private void cb_weap_brest3_Checked(object sender, RoutedEventArgs e)
-        {
-            Functions.Write.writebinary(0, GTA.Offsets.Editor.Weapon.brest + 2 + ddweapno.SelectedIndex * GTA.Offsets.Editor.Weapon.NEXT, cb_weap_brest3);
-        }
-
-        private void cb_weap_brest4_Checked(object sender, RoutedEventArgs e)
-        {
-            Functions.Write.writebinary(0, GTA.Offsets.Editor.Weapon.brest + 3 + ddweapno.SelectedIndex * GTA.Offsets.Editor.Weapon.NEXT, cb_weap_brest4);
-        }
     }
 }

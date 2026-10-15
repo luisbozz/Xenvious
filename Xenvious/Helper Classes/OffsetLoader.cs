@@ -587,6 +587,8 @@ namespace Xenvious
             GTA.Offsets.Editor.Weapon.vclnrl = d.OFFSETS.weap_vclnrl;
             GTA.Offsets.Editor.Weapon.iptnp = d.OFFSETS.weap_iptnp;
             GTA.Offsets.Editor.Weapon.wcpm = d.OFFSETS.weap_wcpm;
+            GTA.Offsets.Editor.Weapon.comps = d.OFFSETS.weap_comps;
+            GTA.Offsets.Editor.Weapon.vbmbl = d.OFFSETS.weap_vbmbl;
             GTA.Offsets.Editor.Weapon.number = d.OFFSETS.weap_number;
             GTA.Offsets.Editor.Weapon.time = d.OFFSETS.weap_time;
             GTA.Offsets.Editor.Weapon.pal = d.OFFSETS.weap_pal;
@@ -1045,6 +1047,8 @@ namespace Xenvious
             GTA.Offsets.Editor.drpr = d.OFFSETS.drpr;
             GTA.Offsets.Editor.drph = d.OFFSETS.drph;
             GTA.Offsets.Editor.dlcrel = d.OFFSETS.dlcrel;
+            GTA.Offsets.Editor.vwp15 = d.OFFSETS.vwp15;
+            GTA.Offsets.Editor.vwp16 = d.OFFSETS.vwp16;
             GTA.Offsets.Editor.abits = d.OFFSETS.abits;
             GTA.Offsets.Editor.sdobs = d.OFFSETS.sdobs;
             GTA.Offsets.Editor.edobs = d.OFFSETS.edobs;
@@ -1244,6 +1248,7 @@ namespace Xenvious
             GTA.Editor.prop_model_stunt_with_color_option.AddRange(lists.prop_model_stunt_with_color_option);
             GTA.Editor.prop_model_blacklisted.AddRange(lists.prop_model_blacklisted);
             GTA.Editor.capture_object_models.AddRange(lists.capture_object_models);
+            GTA.Editor.weapon_pickup_models.AddRange(lists.weapon_pickup_models);
             GTA.Editor.prop_model_raceonly.AddRange(lists.prop_model_raceonly);
             GTA.Editor.dprop_model_activationtimer.AddRange(lists.dprop_model_activationtimer);
 

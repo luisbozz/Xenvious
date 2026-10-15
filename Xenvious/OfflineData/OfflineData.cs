@@ -71,6 +71,14 @@ namespace Xenvious
         /// <summary>Weapon detail list (JSON array).</summary>
         public static string Weapons => LoadShared("weapons.json");
 
+        /// <summary>Weapon components per weapon and their names (JSON), from the game's weapon metas
+        /// (ysc-global-updater tools/gamedata/weapon_components.py).</summary>
+        public static string WeaponComponents => LoadShared("weapon_components.json");
+
+        /// <summary>The Mission Creator's titles and help texts of the rule options (PMCT_*, PMCH_*)
+        /// in six languages, read from the game's text files (RuleOptions).</summary>
+        public static string RuleOptionTexts => LoadShared("rule_option_texts.json");
+
         /// <summary>Actor detail list (JSON array).</summary>
         public static string Actors => LoadShared("actors.json");
 

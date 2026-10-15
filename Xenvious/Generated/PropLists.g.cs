@@ -17,5 +17,6 @@ namespace Xenvious
         public string[] prop_model_raceonly = new string[0];
         public string[] dprop_model_activationtimer = new string[0];
         public string[] capture_object_models = new string[0];
+        public string[] weapon_pickup_models = new string[0];
     }
 }
