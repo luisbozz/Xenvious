@@ -1,0 +1,2154 @@
+{
+ "FMMC_SEL_NON": {
+  "en": "None",
+  "fr": "Aucun",
+  "de": "–",
+  "pl": "Brak",
+  "ru": "Нет",
+  "zh_cn": "无"
+ },
+ "PMCD_BNDS_ZNED": {
+  "en": "Bounds are disabled on this Objective.",
+  "zh_cn": "此目标已禁用边界。",
+  "fr": "Les limites sont désactivées sur cet objectif.",
+  "de": "Grenzen sind bei diesem Missionsziel deaktiviert.",
+  "pl": "Na tym celu granice są wyłączone.",
+  "ru": "Для данной задачи границы отключены."
+ },
+ "PMCH_BNDS": {
+  "en": "Set up the play area / bounds for this objective.",
+  "zh_cn": "设置此目标的游戏区域/边界。",
+  "fr": "Configurez la zone de jeu/les limites pour cet objectif.",
+  "de": "Richtet den Spielbereich bzw. die Grenzen für dieses Missionsziel ein.",
+  "pl": "Ustaw teren rozgrywki / granice dla tego celu.",
+  "ru": "Задать границы / игровую зону для этой задачи."
+ },
+ "PMCH_BNDS_CON": {
+  "en": "Set what happens to the player when they leave the bounds.",
+  "zh_cn": "设定玩家离开边界时会发生什么。",
+  "fr": "Déterminez ce qui arrive au joueur lorsqu'il sort des limites.",
+  "de": "Legt fest, was mit einem Spieler geschieht, der die Grenzen verlässt.",
+  "pl": "Ustaw, co się stanie z graczem, gdy znajdzie się on poza granicami terenu rozgrywki.",
+  "ru": "Позволяет указать, что произойдет с игроком, когда он выйдет за границы."
+ },
+ "PMCH_BNDS_CON0": {
+  "en": "Help text and blips will instruct the player to return to bounds. Set the Out of Bounds Text in this Objective's HUD menu to help guide the Team.",
+  "zh_cn": "帮助文本和标记点将引导玩家返回边界内。请在本目标的µHUDµ菜单中设置超出边界文本，以协助引导团队。",
+  "fr": "Les messages d'aide et les icônes radar informeront le joueur de revenir dans la zone. Définir le texte Hors-limites dans le menu ATH de l'objectif pour guider l'équipe.",
+  "de": "Hilfetext und Markierungen weisen den Spieler an zum Spielbereich zurückzukehren. Legt den Grenzüberschreitungstext im HUD-Menü dieses Missionsziels fest, um das Team zurück in die Grenzen zu führen.",
+  "pl": "Tekst pomocniczy i znaczniki poinstruują gracza, aby wrócił na teren rozgrywki. Ustaw treść informacji o przekroczeniu granic w menu interfejsu tego celu misji, aby drużyna wiedziała, gdzie znajdują się granice terenu rozgrywki.",
+  "ru": "Текстовые подсказки и метки будут требовать от игрока вернуться в границы зоны. Чтобы помочь команде, настройте \"Текст при выходе за границы\" в меню интерфейса текущей задачи."
+ },
+ "PMCH_BNDS_CON1": {
+  "en": "Player deaths from bounds will be disabled in test mode when invincibility is enabled!",
+  "zh_cn": "玩家因出边界而死亡将在测试模式中启用无敌时禁用！",
+  "fr": "En mode test, les joueurs ne mourront plus en sortant des limites si l'invincibilité est activée.",
+  "de": "Spielertode durch Grenzüberschreitungen werden im Testmodus deaktiviert, wenn Unbesiegbarkeit aktiviert ist!",
+  "pl": "Zgony gracza spowodowane przekroczeniem granic terenu rozgrywki zostaną w trybie testowym wyłączone, gdy włączona jest nietykalność!",
+  "ru": "В тестовом режиме смерть игроков, вышедших за границы, отключена при включенной неуязвимости."
+ },
+ "PMCH_BNDS_CON2": {
+  "en": "Players outside the bounds will fail the entire mission for their Team, regardless of Lives.",
+  "zh_cn": "玩家离开边界将导致其团队的整个任务失败，无论是否死亡。",
+  "fr": "Les joueurs qui sortent des limites feront échouer toute la mission pour leur équipe, quel que soit le nombre de vies restantes.",
+  "de": "Für das Team von Spielern außerhalb der Grenzen scheitert die gesamte Mission, unabhängig von der Anzahl der Leben.",
+  "pl": "Gracze poza granicami rozgrywki spowodują niezaliczenie całej misji dla ich drużyny, niezależnie od liczby żyć.",
+  "ru": "Игроки, вышедшие за границы, провалят задание для своей команды независимо от числа оставшихся жизней."
+ },
+ "PMCH_BNDS_INDEX": {
+  "en": "Use this zone as part of the Objective bounds.",
+  "zh_cn": "将此区域用作目标边界的一部分。",
+  "fr": "Utilisez cette zone dans le cadre des limites de l'objectif.",
+  "de": "Verwendet diese Zone als Teil der Missionszielgrenzen.",
+  "pl": "Wykorzystaj tę strefę jako część granicy dla celu.",
+  "ru": "Используйте эту зону в качестве границ задачи."
+ },
+ "PMCH_BNDS_NOZNE": {
+  "en": "Place a new Bounds Zone.",
+  "zh_cn": "放置一个新的边界区域。",
+  "fr": "Placez une nouvelle limite de zone.",
+  "de": "Platziert eine neue Grenzzone.",
+  "pl": "Umieść nową strefę graniczną.",
+  "ru": "Разместить новую граничную зону."
+ },
+ "PMCH_BNDS_TIME": {
+  "en": "Sets the amount of time players will be given to return to a valid play area.",
+  "zh_cn": "设置玩家离开有效游戏区域后可返回的时间限制。",
+  "fr": "Détermine le temps dont disposent les joueurs pour revenir dans une zone de jeu valide.",
+  "de": "Legt die Zeitdauer fest, die der Spieler hat, um in einen gültigen Spielbereich zurückzukehren.",
+  "pl": "Ustawia limit czasu, jaki dostają gracze na powrót do właściwego terenu rozgrywki.",
+  "ru": "Выбрать время, которое есть у игроков на то, чтобы вернуться в игровую зону."
+ },
+ "PMCH_BNDS_TYPE": {
+  "en": "Select bound type for this objective.",
+  "zh_cn": "为此目标选择边界类型。",
+  "fr": "Sélectionnez le type de limites pour cet objectif.",
+  "de": "Legt den Grenztyp für dieses Missionsziel fest.",
+  "pl": "Wybierz typ granicy dla tego celu.",
+  "ru": "Выбрать тип границ для данной задачи."
+ },
+ "PMCH_BNDS_ZNE": {
+  "en": "Select the Bounds Zone.",
+  "zh_cn": "选择边界区域。",
+  "fr": "Sélectionnez les limites de la zone.",
+  "de": "Legt die Grenzzone fest.",
+  "pl": "Wybierz strefę graniczną.",
+  "ru": "Выбрать граничную зону."
+ },
+ "PMCH_DBG_PRQ": {
+  "en": "View whether Mission Flags are currently set or cleared.",
+  "zh_cn": "查看任务标志当前是否已设置或已清除。",
+  "fr": "Voir si les conditions de mission sont définies ou effacées.",
+  "de": "Überprüfe, ob Missionsflags aktuell gesetzt oder gelöscht sind.",
+  "pl": "Sprawdź, czy flagi misji są obecnie ustawione, czy usunięte.",
+  "ru": "Проверить, установлены или сброшены флаги задания."
+ },
+ "PMCH_EPR_OO": {
+  "en": "Set this Mission Flag when any of this Entity's objectives are completed.~n~This can be blocked from triggering on a per-objective basis using 'Block On Objective Complete Mission Flags' in the Objectives tab.",
+  "zh_cn": "当此实体的任意目标完成时，设置此任务标志。~n~可通过目标标签中的\"完成目标时阻止设置任务标志\"选项，针对单个目标禁用此操作。",
+  "fr": "Définissez cette condition de mission quand l'un des objectifs de cette entité est atteint.~n~Vous pouvez empêcher le déclenchement par objectif en utilisant \"Bloquer les conditions de missionµ: objectif atteint\" dans l'onglet Objectifs.",
+  "de": "Legt diesen Missionsflag fest, wenn ein beliebiges Missionsziel dieser Entität abgeschlossen wird.~n~Das Auslösen kann pro Missionsziel durch die Verwendung von \"Missionsflag bei Missionszielabschluss blockieren\" im Missionszielreiter blockiert werden.",
+  "pl": "Ustaw tę flagę misji, gdy jakikolwiek cel misji tego obiektu został ukończony.~n~Można to zablokować dla każdego z celów misji, wykorzystując opcję \"Blokuj flagi misji ustawiane na ukończeniu celu\" w zakładce Cele misji.",
+  "ru": "Установить этот флаг задания, если выполнена любая задача, связанная с данным элементом.~n~Срабатывание этого условия можно заблокировать отдельно для каждой задачи с помощью функции \"Блокировать при флаге выполненной задачи\" на вкладке \"Задачи\"."
+ },
+ "PMCH_GC_AGGRO": {
+  "en": "Will prevent the chase units from deploying unless the team has had their Team Aggro triggered.",
+  "zh_cn": "除非团队的团队激怒被触发，否则将阻止追逐单位部署。",
+  "fr": "Empêchera les unités de poursuite d'être déployées à moins que l'équipe n'ait déclenché une attaque.",
+  "de": "Verhindert, dass die Verfolgungseinheiten bereitgestellt werden, sofern nicht das aggressive Verhalten gegenüber einem Team ausgelöst wurde.",
+  "pl": "Opcja ta blokuje rozlokowanie jednostek pościgowych do momentu, gdy u drużyny zostanie aktywowana Agresja wobec drużyny.",
+  "ru": "Преследователи будут появляться только в том случае, если команда спровоцирует агрессию."
+ },
+ "PMCH_GC_ALRTD": {
+  "en": "Will prevent the chase units from deploying until any Actor is Alerted.",
+  "zh_cn": "将阻止追逐单位部署，直至任意演员被惊动。",
+  "fr": "Empêchera les unités de poursuite d'être déployées tant qu'un acteur n'a pas été mis en état d'alerte.",
+  "de": "Verhindert, dass die Verfolgungseinheiten bereitgestellt werden, sofern nicht ein Akteur alarmiert wurde.",
+  "pl": "Opcja ta blokuje rozlokowanie jednostek pościgowych do momentu, gdy jakikolwiek aktor osiągnie stan zaalarmowania.",
+  "ru": "Преследователи будут появляться только в том случае, если персонаж будет встревожен."
+ },
+ "PMCH_GC_BLOCK": {
+  "en": "Will block chase unit deployment when this Mission Flag is set.",
+  "zh_cn": "当设置此任务标志时，将阻止追逐单位部署。",
+  "fr": "Bloquera le déploiement des unités de poursuite lorsque la condition de mission sera définie.",
+  "de": "Blockiert die Bereitstellung von Verfolgungseinheiten, solange dieser Missionsflag gesetzt ist.",
+  "pl": "Opcja ta blokuje rozlokowanie jednostek pościgowych, gdy ta flaga misji jest ustawiona.",
+  "ru": "Установка этого флага задания блокирует появление преследователей."
+ },
+ "PMCH_GC_DELAY": {
+  "en": "Set a delay in seconds before the chase units respond.",
+  "zh_cn": "设置追逐单位响应前的延迟时间（秒）。",
+  "fr": "Définissez un délai en secondes avant que les unités de poursuite ne répondent.",
+  "de": "Legt eine Verzögerung in Sekunden fest, bevor die Verfolgungseinheiten reagieren.",
+  "pl": "Ustaw opóźnienie w sekundach dla reakcji jednostek pościgowych.",
+  "ru": "Задержка реакции преследователей (в секундах)."
+ },
+ "PMCH_GC_FLEEOBJ": {
+  "en": "When enabled any remaining active chase units will flee their previous target when the current Objective ends, and the next begins.",
+  "zh_cn": "启用后，当前目标结束、下一个目标开始时，任何剩余的活跃追逐单位都将逃离其先前的目标。",
+  "fr": "Si cette option est activée, les unités de poursuite restantes et actives fuiront leur cible précédente à la fin de l'objectif actuel et lorsque le prochain objectif commence.",
+  "de": "Bei Aktivierung fliehen alle aktiven Verfolgungseinheiten von ihrem vorherigen Ziel, wenn das aktuelle Missionsziel endet und das nächste beginnt.",
+  "pl": "Po włączeniu tej opcji wszelkie pozostałe jednostki pościgowe zaczną uciekać przed swoim celem pościgu przy ukończeniu obecnego celu misji i rozpoczęciu nowego.",
+  "ru": "Указать будут ли в данный момент активные оставшиеся преследователи убегать от предыдущей цели в конце этой задачи и в начале следующей."
+ },
+ "PMCH_GC_I": {
+  "en": "Set the maximum number of units that can be active at once.",
+  "zh_cn": "设置可同时激活的单位最大数量。",
+  "fr": "Définissez le nombre maximal d'unités pouvant être actives simultanément.",
+  "de": "Legt die maximale Anzahl an Einheiten fest, die zur selben Zeit aktiv sein können.",
+  "pl": "Ustaw maksymalną liczbę jednocześnie aktywnych jednostek.",
+  "ru": "Максимальное число групп, которые могут быть активны одновременно."
+ },
+ "PMCH_GC_MID": {
+  "en": "Delays chase unit deployment until the current Objective's Midpoint has been reached.",
+  "zh_cn": "延迟追逐单位的部署，直至当前目标的中点被抵达。",
+  "fr": "Retarde le déploiement des unités de poursuite jusqu'à ce que l'objectif à mi-parcours soit atteint.",
+  "de": "Verzögert die Bereitstellung von Verfolgungseinheiten bis die Mitte des aktuellen Missionsziels erreicht wurde.",
+  "pl": "Opóźnia rozlokowanie jednostek pościgowych do momentu osiągnięcia środkowego punktu obecnego celu.",
+  "ru": "Позволяет отсрочить появление преследователей до тех пор, пока не будет достигнута середина текущей задачи."
+ },
+ "PMCH_GC_ODIST": {
+  "en": "When enabled no further chase units will be deployed to players near drop-off Objectives.",
+  "zh_cn": "启用后，在投放点目标附近的玩家将不会遭遇更多追逐单位。",
+  "fr": "Si cette option est activée, aucune autre unité de poursuite ne sera déployée auprès des joueurs se trouvant à proximité des objectifs de livraison.",
+  "de": "Falls aktiviert, werden keine weiteren Verfolgungseinheiten mehr für Spieler bereitgestellt, wenn die sich in der Nähe von Übergabeorten befinden.",
+  "pl": "Włączenie tej opcji spowoduje, że nie zostaną rozlokowane kolejne jednostki pościgowe wobec graczy znajdujących się w pobliżu celów dostawy.",
+  "ru": "Преследователи перестанут появляться, если игрок находится рядом с точкой сброса."
+ },
+ "PMCH_GC_RDELAY": {
+  "en": "Set a delay in seconds before the chase units will respawn between waves.",
+  "zh_cn": "设置追逐单位在攻击波次间重生的延迟时间（秒）。",
+  "fr": "Définissez un délai en secondes entre deux vagues avant que les unités de poursuite ne réapparaissent.",
+  "de": "Legt eine Verzögerung in Sekunden fest, bevor die Verfolgungseinheiten zwischen Wellen respawnen.",
+  "pl": "Ustaw opóźnienie w sekundach dla ponownego odradzania się jednostek pościgowych pomiędzy falami.",
+  "ru": "Задержка (в секундах) перед возрождением групп в промежутках между волнами."
+ },
+ "PMCH_GC_T": {
+  "en": "Set up how responding units will chase you during this objective.",
+  "zh_cn": "设置在此目标期间响应单位将如何追逐您。",
+  "fr": "Définissez la façon dont les unités vous poursuivront pendant cet objectif.",
+  "de": "Legt fest, wie reagierende Einheiten dich während dieses Missionsziels verfolgen werden.",
+  "pl": "Ustaw sposób pościgu jednostek interwencyjnych w trakcie tego celu.",
+  "ru": "Позволяет задать параметры того, как силы реагирования будут преследовать вас в ходе этой задачи."
+ },
+ "PMCH_GC_UT": {
+  "en": "Selects the Unit Config used. This controls the vehicle model, actor model, actor weapons, and number of actors that spawn for each unit spawned.",
+  "zh_cn": "选择使用的单位配置。这将控制每个生成的单位所生成的载具模型、演员模型、演员武器和演员数量。",
+  "fr": "Détermine la configuration d'unité à utiliser. Ceci contrôle le modèle de véhicule, le modèle d'acteur, les armes des acteurs et le nombre d'acteurs qui apparaissent pour chaque unité générée.",
+  "de": "Legt fest, welche Einheitskonfiguration verwendet wird. Dies kontrolliert das Fahrzeugmodell, das Modell des Akteurs, seine Waffe sowie die Anzahl an Akteuren, die für jede gespawnte Einheit spawnen.",
+  "pl": "Wybierz konfigurację jednostki, jaka ma zostać użyta. Opcja ta dotyczy modelu pojazdu, aktora, broni aktora oraz liczby aktorów odradzających się dla każdej jednostki.",
+  "ru": "Выбрать конфигурации группы, в которые входят модель транспорта, модель персонажа, оружие персонажа, а также число персонажей для каждой появляющейся группы."
+ },
+ "PMCH_GOTO_PRQ": {
+  "en": "Set this Mission Flag when the Follow Path Task has finished.",
+  "zh_cn": "当跟随路径待办事项完成时，设置此任务标志。",
+  "fr": "Définissez cette condition de mission lorsque la tâche Itinéraire à suivre est terminée.",
+  "de": "Setzt diesen Missionsflag, sobald die Aufgabe \"Route folgen\" abgeschlossen wurde.",
+  "pl": "Ustaw tę flagę misji, gdy zadanie podążania po ścieżce zostało zakończone.",
+  "ru": "Установить этот флаг задания после того, как действие \"Маршрут\" будет завершено."
+ },
+ "PMCH_HO": {
+  "en": "Set up the HUD for this objective.",
+  "zh_cn": "为该目标设置µHUD。",
+  "fr": "Configurez l'ATH pour cet objectif.",
+  "de": "Richtet das HUD für dieses Missionsziel ein.",
+  "pl": "Ustaw interfejs dla tego celu.",
+  "ru": "Настроить интерфейс для этой задачи."
+ },
+ "PMCH_HO_SC": {
+  "en": "Sets the color of the 'Score Required' HUD that shows when a 'Score Limit' is set.",
+  "zh_cn": "设置\"所需分数\"HUDµ的颜色，该µHUDµ会在设置\"分数限制\"时显示。",
+  "fr": "Définit la couleur du \"score requis\" dans l'ATH qui apparaît quand une \"limite de score\" a été définie.",
+  "de": "Legt die Farbe für \"Benötigte Punktzahl\" im HUD fest, wenn ein Punktelimit bestimmt wurde.",
+  "pl": "Ustawia kolor dla elementu interfejsu \"Wymagany wynik\", który pokazuje się przy ustawieniu opcji \"Limit punktów\".",
+  "ru": "Выбрать цвет строки \"Необходимый счет\", которая показывается при установленном лимите очков."
+ },
+ "PMCH_HO_TAS": {
+  "en": "Set whether the default bottom-right HUD elements will be disabled on this objective, such as capture time or number of entities delivered.~n~Also controls the visibility of the Timer and Score elements if the associated Objective Limits are set.",
+  "zh_cn": "设置是否禁用此目标的默认右下角µHUDµ元素，例如夺取时间或送达的实体数量。~n~如果设置了关联的目标限制，还可以控制计时器和分数元素的可见性。",
+  "fr": "Définissez si les éléments de l'ATH en bas à droite seront désactivés lors de cet objectif, comme le temps de capture ou le nombre d'entités livrées.~n~Cette option permet aussi de contrôler la visibilité du chrono et des éléments du score si les limites d'objectifs associées sont définies.",
+  "de": "Legt fest, ob die Standardelemente unten rechts im HUD für dieses Missionsziel deaktiviert werden sollen, wie etwa die Eroberungszeit oder die Anzahl der abgelieferten Entitäten.~n~Kontrolliert auch die Sichtbarkeit des Timers und der Punktzahlelemente, falls die entsprechenden Missionsziellimits eingestellt wurden.",
+  "pl": "Ustaw, czy domyślne elementy interfejsu w prawym dolnym rogu mają być wyłączone dla tego celu, np. czas do przechwycenia lub licznik obiektów do dostarczenia.~n~Kontroluje także widoczność Licznika czasu i Wyników, jeśli są częścią Limitów celów ustawionych dla danego celu.",
+  "ru": "Указать, будут ли компоненты (такие как время захвата или число доставленных элементов) в правой нижней части интерфейса игрока отключены для этой задачи.~n~Это также влияет на видимость таймера и количества очков при выборе соответствующих настроек задачи."
+ },
+ "PMCH_HUD_HB": {
+  "en": "If set, health bars set up on Objects, Vehicles, and Actors will be drawn. Disable if you want them to be hidden on this objective.",
+  "zh_cn": "如果设置，将在物品、载具和演员上显示设置的生命栏。如果想在此目标上隐藏它们，请禁用。",
+  "fr": "Si cette option est activée, les jauges de santé définies pour les objets, véhicules et acteurs seront affichées. Si l'option est désactivée, elles seront masquées pour cet objectif.",
+  "de": "Wenn aktiviert, werden Zustands- bzw. Gesundheitsbalken von Objekten, Fahrzeugen und Akteuren angezeigt, für die diese festgelegt wurden. Deaktivieren, falls du sie bei diesem Missionsziel ausblenden möchtest.",
+  "pl": "Po ustawieniu na obiektach, pojazdach i aktorach będą wyświetlane skonfigurowane paski zdrowia. Wyłącz, jeśli chcesz, aby dla tego celu były ukryte.",
+  "ru": "Если данная функция включена, для объектов, транспортных средств и персонажей появятся шкалы состояния. Отключите ее, если хотите, чтобы они были скрыты в данном задании."
+ },
+ "PMCH_LAW": {
+  "en": "Set up how the Wanted Level reacts during this objective.",
+  "zh_cn": "设置在此目标期间通缉等级的反应方式。",
+  "fr": "Définissez la façon dont l'indice de recherche réagit pendant cet objectif.",
+  "de": "Legt fest, wie sich der Fahndungslevel während dieses Missionsziels verhält.",
+  "pl": "Ustaw działanie poziomu pościgu w trakcie trwania tego celu.",
+  "ru": "Указать, как будут действовать уровни розыска во время выполнения этой задачи."
+ },
+ "PMCH_LAW_DELAY": {
+  "en": "Delay any Wanted Level change by the time set in seconds, unless already Wanted.",
+  "zh_cn": "延迟通缉等级的变化，延迟时间按秒计算；若玩家已被通缉则不会延迟。",
+  "fr": "Retardez tout changement d'indice de recherche du temps défini en secondes, sauf si un indice de recherche est déjà actif.",
+  "de": "Verzögert jegliche Änderung des Fahndungslevels um diese Anzahl von Sekunden, sofern noch kein Fahndungslevel existiert.",
+  "pl": "Opóźnij jakąkolwiek zmianę poziomu pościgu o czas podany w sekundach, o ile poziom ten nie jest już aktywny.",
+  "ru": "Задержать изменение уровня розыска на заданное в секундах время (если игрок уже не в розыске)."
+ },
+ "PMCH_LAW_HELI": {
+  "en": "When turned off, helicopter response units will be disabled, even when above 3 stars.",
+  "zh_cn": "关闭此选项后，即使通缉等级达到µ3µ星以上，也不会派出直升机增援单位。",
+  "fr": "Lorsque ce paramètre est désactivé, les unités en hélicoptères sont désactivées, même si l'indice de recherche dépasse les 3µétoiles.",
+  "de": "Wenn ausgeschaltet, werden Helikoptereinsatzeinheiten selbst bei mehr als 3 Sternen deaktiviert.",
+  "pl": "Gdy opcja ta będzie wyłączona, śmigłowce nie będą brały udziału w pościgu, nawet gdy jego poziom będzie powyżej 3 gwiazdek.",
+  "ru": "При отключении этого пункта преследователей на вертолетах не будет даже при уровне розыска более трех звезд."
+ },
+ "PMCH_LAW_LVL": {
+  "en": "The Wanted Level that will be applied once the 'Trigger Condition' has been met.",
+  "zh_cn": "当\"触发条件\"满足后，将应用的通缉等级。",
+  "fr": "L'indice de recherche appliqué lorsque la \"condition d'activation\" est remplie.",
+  "de": "Legt den Fahndungslevel fest, der bei Erfüllung der Auslöserbedingung angewandt wird.",
+  "pl": "Określa poziom pościgu, który zostanie zastosowany po spełnieniu \"Warunku aktywacji\".",
+  "ru": "Уровень розыска, активирующийся после выполнения условий триггера."
+ },
+ "PMCH_LAW_NOLOSE": {
+  "en": "For the duration of this objective the Wanted Level can't be lost.",
+  "zh_cn": "在此目标期间，无法摆脱通缉等级。",
+  "fr": "Pendant cet objectif, l'indice de recherche ne peut être perdu.",
+  "de": "Während dieses Missionsziels ist der Fahndungslevel permanent aktiv.",
+  "pl": "W trakcie trwania tego celu nie jest możliwe pozbycie się poziomu pościgu.",
+  "ru": "Во время выполнения этой задачи уровень розыска невозможно сбросить."
+ },
+ "PMCH_LAW_TRIG": {
+  "en": "When this condition is met a Wanted Level will be triggered.",
+  "zh_cn": "当满足此条件时，将触发通缉等级。",
+  "fr": "Lorsque cette condition est remplie, un indice de recherche est déclenché.",
+  "de": "Bei Erfüllung dieser Bedingung wird ein Fahndungslevel ausgelöst.",
+  "pl": "Spełnienie tego warunku wywoła poziom pościgu.",
+  "ru": "Уровень розыска активируется после выполнения этого условия."
+ },
+ "PMCH_OB": {
+  "en": "Select what circumstances result in the standard objective progression being blocked.",
+  "zh_cn": "选择何种情况下会阻碍标准目标进程的推进。",
+  "fr": "Sélectionnez les circonstances qui provoqueront le blocage de la progression de l'objectif standard.",
+  "de": "Legt fest, welche Umstände dazu führen, dass der standardmäßige Missionszielfortschritt blockiert wird.",
+  "pl": "Wybierz, w jakich okolicznościach blokowany jest standardowy postęp celu.",
+  "ru": "Выбрать, какие условия приведут к блокировке стандартного выполнения задачи."
+ },
+ "PMCH_OB_CHASE": {
+  "en": "Block this objective when chase units are active.",
+  "zh_cn": "当追逐单位处于激活状态时，阻止此目标推进。",
+  "fr": "Bloquez cet objectif lorsque des unités de poursuite sont actives.",
+  "de": "Blockiere dieses Missionsziel, während Verfolgungseinheiten aktiv sind.",
+  "pl": "Zablokuj ten cel, jeśli jednostki pościgowe są aktywne.",
+  "ru": "Заблокировать задачу, когда активны преследователи."
+ },
+ "PMCH_ODO": {
+  "en": "Disable various services or features for the mission on this Objective.",
+  "zh_cn": "为此目标禁用各种任务内的服务或功能。",
+  "fr": "Désactivez des services ou fonctionnalités pour la mission lors de cet objectif.",
+  "de": "Deaktiviert bei diesem Missionsziel verschiedene Dienste oder Funktionen für dieses Missionsziel.",
+  "pl": "Wyłącz różne usługi lub funkcje podczas misji dla tego celu.",
+  "ru": "Отключить различные сервисы или возможности в этой задаче."
+ },
+ "PMCH_ODO_MCH": {
+  "en": "Set whether the mechanic is usable on this Objective.",
+  "zh_cn": "设置此目标是否能使用技工。",
+  "fr": "Définissez si cette mécanique peut être utilisée lors de cet objectif.",
+  "de": "Legt fest, ob der Mechaniker bei diesem Missionsziel verfügbar ist.",
+  "pl": "Ustaw, czy gracze mają dostęp do mechanika podczas tego celu.",
+  "ru": "Указать, можно ли воспользоваться услугами механика в этой задаче."
+ },
+ "PMCH_ODO_MCH_D": {
+  "en": "The mechanic will not be available on this Objective.",
+  "zh_cn": "技工将在此目标不可用。",
+  "fr": "Cette mécanique ne sera disponible pour cet objectif.",
+  "de": "Der Mechaniker ist bei diesem Missionsziel nicht verfügbar.",
+  "pl": "Mechanik nie będzie dostępny podczas tego celu.",
+  "ru": "Механик будет недоступен при выполнении этой задачи."
+ },
+ "PMCH_ODO_MCH_E": {
+  "en": "The mechanic will be available on this Objective.",
+  "zh_cn": "技工将在此目标可用。",
+  "fr": "Cette mécanique sera disponible pour cet objectif.",
+  "de": "Der Mechaniker ist bei diesem Missionsziel verfügbar.",
+  "pl": "Mechanik będzie dostępny podczas tego celu.",
+  "ru": "Механик будет доступен при выполнении этой задачи."
+ },
+ "PMCH_ODO_NWEP": {
+  "en": "Set whether players on this Objective have access to their weapons.",
+  "zh_cn": "设置玩家在该目标是否可以使用他们的武器。",
+  "fr": "Définissez si les joueurs sur cet objectif ont accès à leurs armes.",
+  "de": "Legt fest, ob Spieler bei diesem Missionsziel ihre Waffen verwenden können.",
+  "pl": "Ustaw, czy gracze będą mieć dostęp do swojego uzbrojenia podczas tego celu.",
+  "ru": "Указать, будет ли игрок иметь доступ к своему оружию при выполнении этой задачи."
+ },
+ "PMCH_ODO_NWEP_D": {
+  "en": "Players will not have access to their weapons on this Objective.",
+  "zh_cn": "玩家不可以在此目标中使用他们的武器。",
+  "fr": "Les joueurs sur cet objectif n'auront pas accès à leurs armes.",
+  "de": "Spieler können bei diesem Missionsziel ihre Waffen nicht verwenden.",
+  "pl": "Gracze nie będą mieć dostępu do swojego uzbrojenia podczas tego celu.",
+  "ru": "Игрок не будет иметь доступ к своему оружию при выполнении этой задачи."
+ },
+ "PMCH_ODO_NWEP_E": {
+  "en": "Players will have access to their weapons on this Objective.",
+  "zh_cn": "玩家可以在此目标中使用他们的武器。",
+  "fr": "Les joueurs sur cet objectif auront accès à leurs armes.",
+  "de": "Spieler können bei diesem Missionsziel ihre Waffen verwenden.",
+  "pl": "Gracze będą mieć dostęp do swojego uzbrojenia podczas tego celu.",
+  "ru": "Игрок будет иметь доступ к своему оружию при выполнении этой задачи."
+ },
+ "PMCH_ODO_RDAR": {
+  "en": "Set whether players have access to their radar on this Objective.",
+  "zh_cn": "设置玩家是否能在此目标中使用雷达。",
+  "fr": "Définissez si les joueurs ont accès au radar sur cet objectif.",
+  "de": "Legt fest, ob Spieler bei diesem Missionsziel ihr Radar verwenden können.",
+  "pl": "Ustaw, czy gracze mogą korzystać z radaru podczas tego celu.",
+  "ru": "Указать, будет ли у игрока доступ к радару при выполнении этой задачи."
+ },
+ "PMCH_ODO_RDAR_D": {
+  "en": "Players will not have access to their radar on this Objective.",
+  "zh_cn": "玩家不可以在此目标中使用雷达。",
+  "fr": "Les joueurs n'auront pas accès au radar sur cet objectif.",
+  "de": "Spieler können bei diesem Missionsziel ihr Radar nicht verwenden.",
+  "pl": "Gracze nie mogą korzystać z radaru podczas tego celu.",
+  "ru": "Игрок не будет иметь доступ к радару при выполнении этой задачи."
+ },
+ "PMCH_ODO_RDAR_E": {
+  "en": "Players will have access to their radar on this Objective.",
+  "zh_cn": "玩家可以在此目标中使用雷达。",
+  "fr": "Les joueurs auront accès au radar sur cet objectif.",
+  "de": "Spieler können bei diesem Missionsziel ihr Radar verwenden.",
+  "pl": "Gracze mogą korzystać z radaru podczas tego celu.",
+  "ru": "Игрок будет иметь доступ к радару при выполнении этой задачи."
+ },
+ "PMCH_OJT_DOD": {
+  "en": "If set, all carried Objects will be dropped when delivering.",
+  "zh_cn": "如果设置，送达时将丢下所有携带的物品。",
+  "fr": "Si cette option est activée, tous les objets transportés seront lâchés au moment de la livraison.",
+  "de": "Wenn aktiviert, werden alle mitgeführten Objekte bei Ablieferung abgelegt.",
+  "pl": "Ustaw, aby wszystkie obiekty zostały upuszczone po dostarczeniu.",
+  "ru": "Если выбрана данная функция, все переносимые объекты будут выброшены при доставке."
+ },
+ "PMCH_OJT_L_OUT": {
+  "en": "When enabled, players will need to be outside of all assigned Locations to pass this objective.",
+  "zh_cn": "启用后，玩家需要离开所有已分配的地点才能通过目标。",
+  "fr": "Quand cette option est activée, les joueurs doivent être en dehors de tout lieu attribué pour réussir cet objectif.",
+  "de": "Ist diese Option aktiviert, müssen sich Spieler außerhalb von allen zugewiesenen Orte befinden, um dieses Missionsziel zu erfüllen.",
+  "pl": "Po włączeniu tej opcji gracze będą musieli znaleźć się poza wszystkimi przypisanymi lokalizacjami, by zaliczyć cel misji.",
+  "ru": "Если данная функция включена, то для того чтобы задача считалась выполненой, игроки должны находиться за пределами всех назначенных локаций."
+ },
+ "PMCH_OJT_L_REQ": {
+  "en": "When enabled, any Location assigned with its 'Required Players' value set to all can be used to continue.~n~Warning: Using this option with Locations with 'Required Players' set to '1 Player' will cause the objective to pass when a player completes that Location.",
+  "zh_cn": "启用后，任何将其\"所需玩家\"数设置为全部的已分配地点都可用于继续。~n~警告：如果将\"所需玩家\"设置为\"1µ名玩家\"，则使用此选项会导致当一名玩家完成该地点时，目标即告通过。",
+  "fr": "Quand cette option est activée, tout lieu attribué dont la valeur \"Joueurs requis\" est réglée sur Tous peut être utilisé pour continuer.~n~Attentionµ: utiliser cette options avec des Lieux où \"Joueurs requis\" est configuré sur \"1 joueur\" fera passer l'objectif lorsqu'un joueur termine ce lieu.",
+  "de": "Ist diese Option aktiviert, kann jeder Ort zum Fortsetzen verwendet werden, dessen Wert für \"Benötigte Spieler\" auf \"Alle\" steht.~n~Achtung: Wird diese Option bei Orten verwendet, bei denen \"Benötigte Spieler\" auf \"1 Spieler\" festgelegt ist, dann werden Missionsziele bereits als erfüllt angesehen wenn nur ein Spieler den Ort abschgeschlossen hat.",
+  "pl": "Po włączeniu tej opcji każda przypisana lokalizacja, której wartość \"Wymagani gracze\" ma ustawionych wszystkich graczy, może być użyta do kontynuacji.~n~Uwaga: Użycie tej opcji przy lokalizacjach z wartością \"1 gracz\" spowoduje zaliczenie celu, gdy gracz ukończy tą lokalizację.",
+  "ru": "Если данная функция включена, то для продолжения можно использовать любую задействованную локацию, для которой выбрано \"Требуемые игроки\" - \"Все\".~n~Внимание: при использовании этой опции в локациях с \"Требуемые игроки\" - \"1 игрок\" задача будет считаться выполненной, как только один игрок завершит прохождение в этой локации."
+ },
+ "PMCH_OJT_MOC": {
+  "en": "Set the maximum number of collectable Objects a player can carry on this objective.",
+  "zh_cn": "设置玩家在此目标中可以携带的可取得物品的最大数量。",
+  "fr": "Définissez le nombre maximal d'objets récupérables qu'un joueur peut porter pour cet objectif.",
+  "de": "Legt die maximale Anzahl an einsammelbaren Objekten fest, die ein Spieler bei diesem Missionsziel mitführen kann.",
+  "pl": "Ustaw maksymalną liczbę obiektów do zebrania, jaką może nieść gracz przy tym celu misji.",
+  "ru": "Максимальное число подбираемых предметов, которое игрок сможет переносить во время этой задачи."
+ },
+ "PMCH_OJT_OLP": {
+  "en": "If active, the objective will end early if all of these Mission Flags are set by any players on the mission.",
+  "zh_cn": "如果启用，并且任务中的任何玩家设置了所有这些任务标志，则目标将提前结束。",
+  "fr": "Si cette option est activée, l'objectif terminera en avance si toutes les conditions de mission sont définies par un des joueurs de la mission.",
+  "de": "Wenn aktiviert, endet das Missionsziel vorzeitig, wenn alle diese Missionsflags von beliebigen Spielern in der Mission gesetzt wurden.",
+  "pl": "Po aktywacji cel zostanie zakończony przedwcześnie, jeśli wszystkie flagi misji zostaną zaliczone przez dowolnego gracza podczas misji.",
+  "ru": "При выборе данного параметра, задача будет считаться досрочно выполненной, если любой игрок в этом задании установит эти флаги задания."
+ },
+ "PMCH_OJT_OPL": {
+  "en": "Set if the objective will pass when another team reaches a specific objective.",
+  "zh_cn": "设置当另一支团队达到特定目标时该目标是否会通过。",
+  "fr": "Définissez si cet objectif est réussi si une autre équipe atteint son objectif.",
+  "de": "Legt fest, ob das Missionsziel als erledigt gilt, wenn ein anderes Team ein bestimmtes Missionsziel erreicht.",
+  "pl": "Ustaw, czy cel ten dokona postępu, gdy inna drużyna ukończy konkretny cel.",
+  "ru": "Указать, будет ли эта задача засчитана как \"выполнена\", если другая команда выполнит конкретную задачу."
+ },
+ "PMCH_OJT_OVRNXT": {
+  "en": "Skips progressive objective order, and goes straight to the one set here. Useful for branching the next objective from a previous one.",
+  "zh_cn": "跳过渐进式目标顺序，直接跳转至此处设置的目标。适用于前一目标的下个目标分支。",
+  "fr": "Ne tient pas compte de l'ordre des objectifs et passe directement à l'objectif défini ici. Utile pour relier l'objectif suivant au précédent.",
+  "de": "Überspringt die laufende Missionszielreihenfolge, um direkt zum hier angegebenen Missionsziel zu springen. Nützlich, um das nächste Missionsziel von einem vorigen abzweigen zu lassen.",
+  "pl": "Ignoruje kolejność celów misji i dokonuje przeskoku do ustawionego tutaj celu. Przydatne do rozgałęzienia następujących po sobie celów misji.",
+  "ru": "Изменить последовательность задач и сразу перейти к той, которая указана здесь. Это поможет при ответвлении от предыдущей задачи к следующей."
+ },
+ "PMCH_OJT_TXC": {
+  "en": "Set whether the Other Team Progress Limit will pass when any of the set teams meet their condition, or only when all set teams meet their conditions.",
+  "zh_cn": "设置\"其他团队进度限制\"的通过条件：是当任一指定团队满足其条件时通过，还是仅当所有指定团队均满足其条件时通过。",
+  "fr": "Choisissez si la limite de progression de l'autre équipe est validée quand l'une des équipes définies remplit sa condition ou uniquement quand toutes les équipes définies remplissent leurs conditions.",
+  "de": "Legt fest, ob das Fortschrittslimit des anderen Teams erfüllt wird, wenn eins der festgelegten Teams dessen Bedingung erfüllt oder nur, wenn alle Teams ihre Bedingungen erfüllen.",
+  "pl": "Ustaw, czy Limit postępu innej drużyny zostanie zaliczony, gdy jakakolwiek z ustawionych drużyn spełni swój warunek, czy tylko gdy wszystkie ustawione drużyny spełnią swoje warunki.",
+  "ru": "Указать, сработает ли \"Лимит прогресса других команд\", если одна из выбранных команд выполнит свои условия, или только когда все выбранные команды выполнят свои условия."
+ },
+ "PMCH_OJT_TXP": {
+  "en": "Set if this objective will pass when this team reaches a specific objective.",
+  "zh_cn": "设置当此团队达到特定目标时，此目标是否通过。",
+  "fr": "Définissez si cet objectif est validé lorsque cette équipe atteint un objectif spécifique.",
+  "de": "Legt fest, ob dieses Missionsziel als erledigt gilt, wenn dieses Team ein bestimmtes Missionsziel erreicht.",
+  "pl": "Ustaw, czy cel ten dokona postępu, gdy ta drużyna ukończy konkretny cel.",
+  "ru": "Определяет, будет ли данная задача выполнена, если эта команда выполнит определенную задачу."
+ },
+ "PMCH_OL": {
+  "en": "Set up conditions for ending this objective early (before all marked entities have their objectives completed).",
+  "zh_cn": "设置提前结束此目标的条件（在所有标记的实体完成其目标之前）。",
+  "fr": "Définissez des conditions supplémentaires pour l'atteinte de cet objectif en avance (avant que les objectifs des entités marquées ne soient remplis).",
+  "de": "Legt zusätzliche Bedingungen für das vorzeitige Beenden des Missionsziels fest (bevor die Missionsziele aller markierten Entitäten erreicht wurden).",
+  "pl": "Ustaw warunki zakończenia tego celu przedwcześnie (zanim wszystkie zaznaczone jednostki ukończą swoje cele).",
+  "ru": "Выбрать условия для досрочного завершения задачи (до того, как все задачи отмеченных элементов будут выполнены)."
+ },
+ "PMCH_OL_MO": {
+  "en": "Set whether the team should continue or fail when the Mission Flag Limit is met.",
+  "zh_cn": "设置达到任务标志限制时，团队是应该继续还是失败。",
+  "fr": "Définissez si l'équipe doit continuer ou échouer lorsque la limite de condition de mission est respectée.",
+  "de": "Legt fest, ob das Team nach Erreichen des Missionsflag-Limits scheitert oder die Mission fortsetzen kann.",
+  "pl": "Ustaw, czy po osiągnięciu limitu flagi drużyna powinna kontynuować lub zakończyć misję niepowodzeniem.",
+  "ru": "Указать, будет ли задание провалено для этой команды по активации всех флагов задания или его выполнение продолжится."
+ },
+ "PMCH_OL_MTIME": {
+  "en": "A cross-objective mission fail timer, which when set will carry across objectives until cleared, changed, or complete.",
+  "zh_cn": "跨目标的任务失败计时器，启用后将在所有目标中生效，直到被清除、更改或任务完成。",
+  "fr": "Un chrono d'échec de mission multiobjectifs qui, une fois défini, sera appliqué à plusieurs objectifs jusqu'à ce qu'ils soient réinitialisés, modifiés ou atteints.",
+  "de": "Ein missionszielübergreifender Scheiterungs-Timer, der einmal festgelegt bis zu seiner Entfernung, Änderung oder seines Abschlusses übernommen wird.",
+  "pl": "Licznik czasu do niepowodzenia misji, który po ustawieniu odmierza wspólny czas dla różnych celów do momentu wyzerowania, zmiany lub ukończenia.",
+  "ru": "Таймер до провала задания, который будет действовать на протяжении нескольких задач, пока не будет сброшен, изменен, или до завершения отсчета."
+ },
+ "PMCH_OL_POINTS": {
+  "en": "Set the amount of score to be awarded when each marked entity on the objective is completed.~n~For example, killing each marked Actor on a Kill objective will award this score.~n~Use 'Score Limit' to end this objective early when a score threshold is met.",
+  "zh_cn": "设置完成目标中每个标记实体时可获得的分数。~n~例如：在击杀目标中击杀每个标记的演员即可获得此分数。~n~使用\"分数限制\"可在达到分数阈值时提前结束此目标。",
+  "fr": "Définissez les points attribués à chaque fois qu'un objectif est validé sur une entité marquée.~n~Par exemple, chaque fois qu'un acteur marqué dans un objectif Tuer est tué, ces points seront attribués.~n~Utilisez \"Limite de score\" pour mettre fin à cet objectif en avance quand un seuil de score est atteint.",
+  "de": "Legt die Punktzahl fest, die verliehen wird, wenn eine markierte Entität des Missionsziels abgeschlossen wird.~n~Zum Beispiel wird diese Punktzahl für den Tod von markierten Akteuren eines Missionsziels des Typs \"Töten\" verliehen.~n~Verwende \"Punktelimit\", um dieses Missionsziel vorzeitig zu beenden, wenn ein Punktegrenzwert erreicht wird.",
+  "pl": "Ustaw wartość zdobywanych punktów, gdy ukończony zostanie każdy oznaczony obiekt na celu misji.~n~Przykładowo zabicie każdego oznaczonego aktora przy celu typu Zabij sprawi, że punkty te zostaną naliczone.~n~Użyj \"Limitu punktów\", aby zakończyć ten cel misji wcześniej, gdy tylko zostanie osiągnięty pułap punktowy.",
+  "ru": "Выбрать количество очков, которые присуждаются за прохождение каждого отмеченного элемента данной задачи.~n~Например, вы получите столько-то очков, если убьете всех отмеченных персонажей в задаче \"Убийство\".~n~Чтобы завершить эту задачу досрочно, если набрано нужное число очков, используйте функцию \"Лимит очков\"."
+ },
+ "PMCH_OL_SCORE": {
+  "en": "Set the number of points scored on this objective to end this objective early.~n~Ending the objective with a score always counts as the objective being passed.~n~If this is your primary way of ending this objective, ensure scoring enough points on this objective is possible.",
+  "zh_cn": "设置此目标所获得的分数，以提前结束此目标。~n~以得分结束目标始终视作目标已通过。~n~如果这是您结束此目标的主要方式，请确保能够获得足够的分数。",
+  "fr": "Définissez le nombre de points à obtenir pour cet objectif afin de terminer l'objectif en avance.~n~Terminer l'objectif grâce à un score valide toujours l'objectif.~n~Si configurée comme principale façon de terminer cet objectif, vérifiez qu'il est possible d'obtenir assez de points dans cet objectif.",
+  "de": "Legt die Punktzahl für dieses Missionsziel fest, die zum vorzeitigen Beenden des Missionsziels benötigt wird.~n~Wird das Missionsziel mit dieser Punktzahl beendet, gilt es als erfüllt.~n~Falls dies als vorrangige Methode zum Erfüllen dieses Missionziels festgelegt wurde, stelle sicher, dass es im Verlauf der Mission möglich ist, genügend Punkte zu erreichen.",
+  "pl": "Ustaw ilość punktów zdobywaną przy tym celu potrzebną do wcześniejszego zakończenia celu.~n~Zakończenie celu z jakimkolwiek wynikiem zawsze liczy się jako zaliczenie celu.~n~Jeśli to główny sposób zakończenia tego celu, upewnij się, że zdobycie wystarczającej liczby punktów podczas tego celu jest możliwe.",
+  "ru": "Указать достаточное количество очков для досрочного выполнения этой задачи.~n~Эта задача всегда будет считаться выполненой при достижении какого-либо счета.~n~Если это ваш основной способ выполнения этой задачи, убедитесь, что вы можете набрать достаточное количество очков для её выполнения."
+ },
+ "PMCH_OL_SCRT": {
+  "en": "Set the total number of points scored by this team to end this objective early.~n~Ending the objective with a score always counts as the objective being passed.~n~If this is your primary way of ending this objective, ensure scoring enough points up to and including this objective is possible.",
+  "zh_cn": "设置团队所获得的总分数，以提前结束此目标。~n~以得分结束目标始终视作目标已通过。~n~如果这是您结束此目标的主要方式，请确保能够获得足够的分数。",
+  "fr": "Définissez le nombre total de points à obtenir par cette équipe afin de terminer l'objectif en avance.~n~Terminer l'objectif grâce à un score valide toujours l'objectif.~n~Si configurée comme principale façon de terminer cet objectif, vérifiez qu'il est possible d'obtenir assez de points jusqu'à et y compris cet objectif.",
+  "de": "Legt die Gesamtpunktzahl für das gesamte Team fest, die zum vorzeitigen Beenden des Missionsziels benötigt wird.~n~Wird das Missionsziel mit dieser Punktzahl beendet, gilt es als erfüllt.~n~Falls dies als vorrangige Methode zum Erfüllen dieses Missionziels festgelegt wurde, stelle sicher, dass es im Verlauf der Mission möglich ist, genügend Punkte zu erreichen.",
+  "pl": "Ustaw całkowitą ilość punktów tej drużyny potrzebną do wcześniejszego zakończenia celu.~n~Zakończenie celu z jakimkolwiek wynikiem zawsze liczy się jako zaliczenie celu.~n~Jeśli to główny sposób zakończenia tego celu, upewnij się, że zdobycie wystarczającej liczby punktów do czasu i podczas tego celu jest możliwe.",
+  "ru": "Указать общее достаточное количество очков для досрочного выполнения этой задачи командой.~n~Эта задача всегда будет считаться выполненой при достижении какого-либо счета.~n~Если это ваш основной способ выполнения этой задачи, убедитесь, что вы можете набрать достаточное количество очков для её выполнения."
+ },
+ "PMCH_OL_TIME": {
+  "en": "Set a time limit for the objective. If this expires the team will fail the objective or the entire mission if 'Time Limit Expired Fails Team' is set.",
+  "zh_cn": "为目标设定时间限制。如果时间到期，团队将无法完成目标；如果设置了\"到达时间限制时团队失败\"，则整个任务将失败。",
+  "fr": "Définissez une limite de temps pour l'objectif. Si celle-ci expire, l'équipe ne validera pas l'objectif ou la mission entière si l'option \"Échec de l'équipe à l'expiration de la limite de temps\" est activée.",
+  "de": "Legt ein Zeitlimit für das Missionsziel fest. Wenn es abläuft, scheitert für das Team das Missionsziel oder auch die gesamte Mission, falls die Option \"Team scheitert bei Ablauf des Zeitlimits\" festgelegt ist.",
+  "pl": "Ustaw limit czasu dla celu misji. Jeśli czas ten się skończy, drużyna nie zaliczy celu misji lub też całej misji, jeśli ustawiona jest opcja \"Porażka drużyny przy upływie limitu czasu\".",
+  "ru": "Задать лимит времени, отведенного на выполнение задачи. При выборе \"Истечение времени провалит задачу\", команда полностью провалит задачу или все задание по истечении времени."
+ },
+ "PMCH_OL_TLC": {
+  "en": "Use the total number of points scored by this team instead of points scored on this objective to end this objective early.",
+  "zh_cn": "使用该团队的总得分而非本目标的得分来提前结束本目标。",
+  "fr": "Utilisez le total des points de l'équipe au lieu des points de cet objectif afin de terminer l'objectif en avance.",
+  "de": "Verwendet die Gesamtanzahl an Punkten dieses Teams anstatt die bei diesem Missionsziel erworbenen Punkte, um das Missionsziel vorzeitig zu beenden.",
+  "pl": "Aby wcześniej osiągnąć ten cel, użyj całkowitej sumy punktów zdobytych przez tę drużynę, a nie punktów zdobytych podczas realizacji tego celu.",
+  "ru": "Использовать общее число очков этой команды, а не число очков за эту задачу для досрочного завершения задачи."
+ },
+ "PMCH_OL_TO": {
+  "en": "If set to Yes, this will trigger a mission fail if this team's Time Limit expires. If set to No, the objective will fail but the mission will continue.",
+  "zh_cn": "若设置为是，当该团队的时间限制到期时，将触发任务失败。若设置为否，目标将失败但任务将继续进行。",
+  "fr": "Si défini sur Oui, la mission échouera lorsque la limite de temps de cette équipe expirera. Si défini sur Non, l'objectif échouera mais la mission continuera.",
+  "de": "Bei der Einstellung \"Ja\" scheitert die gesamte Mission bei Ablauf des Zeitlimits. Bei der Einstellung \"Nein\" scheitert nur das aktuelle Missionsziel, aber die Mission wird fortgesetzt.",
+  "pl": "Przy ustawieniu \"Tak\" spowoduje to porażkę misji po upłynięciu limitu czasu dla tej drużyny. Przy ustawieniu \"Nie\" cel nie zostanie zaliczony, ale misja będzie trwać dalej.",
+  "ru": "Если установлено значение \"Да\", то по истечении времени, отведенного этой команде, задание будет считаться проваленным. Если установлено значение \"Нет\", то задача будет провалена, но задание будет продолжаться."
+ },
+ "PMCH_OL_WANT": {
+  "en": "If set, the objective will pass when it becomes unblocked using the criteria set on the 'Lose Wanted' option in 'Objective Blockers'.~n~Players must have a Wanted Level as the objective starts or it will pass instantly.",
+  "zh_cn": "如果设置，目标将在解锁后根据\"目标阻碍条件\"中设定的\"消除通缉等级\"选项标准通过。~n~玩家必须在目标开始时拥有通缉等级，否则其将立即通过。",
+  "fr": "Si cette option est activée, l'objectif sera validé lorsqu'il sera débloqué selon les critères définis par l'option \"Perte de l'indice de recherche\" dans \"Bloqueurs d'objectif\".~n~Les joueurs doivent avoir un indice de recherche au début de l'objectif, sinon il sera immédiatement validé.",
+  "de": "Wenn aktiviert, wird das Missionsziel erfüllt, sobald die Blockierung gemäß der festgelegten Kriterien unter der \"Fahndungslevel loswerden\"-Option in \"Missionszielblocker\" aufgehoben wurde.~n~Spieler müssen beim Start des Missionsziels einen Fahndungslevel haben, um das Missionsziel nicht sofort zu erfüllen.",
+  "pl": "Po ustawieniu cel misji zostanie zaliczony, gdy zostanie odblokowany za pomocą kryteriów ustalonych w opcji \"Zgub pościg\" sekcji \"Blokady celu\".~n~Gdy rozpocznie się cel misji, gracze muszą mieć aktywny poziom pościgu albo cel zostanie natychmiast zaliczony.",
+  "ru": "В случае включения этого параметра задача будет выполнена после разблокировки согласно критериям, заданным в параметре \"Сбрасывание розыска\" в \"Ограничениях задачи\".~n~У игроков должен быть уровень розыска на момент начала задачи, иначе она будет сразу же выполнена."
+ },
+ "PMCH_OL_WANTF": {
+  "en": "If set, this team will fail if any players on the team gain a Wanted Level.",
+  "zh_cn": "如果设置，团队将在队内有任意玩家获得通缉等级时失败。",
+  "fr": "Si cette option est activée, l'équipe échouera si l'un de ses joueurs obtient un indice de recherche.",
+  "de": "Wenn aktiviert, scheitert das Team, sofern Spieler im Team einen Fahndungslevel erhalten.",
+  "pl": "Po ustawieniu drużyna poniesie porażkę, jeśli jakikolwiek gracz tej drużyny zdobędzie poziom pościgu.",
+  "ru": "В случае включения этого параметра команда провалит задание, как только любой член команды получит уровень розыска."
+ },
+ "PMCH_OMF": {
+  "en": "Options for setting, clearing, and configuring Mission Flags during this Objective.",
+  "zh_cn": "用于在此目标期间设置、清除和配置任务标志的选项。",
+  "fr": "Options permettant de définir, supprimer et configurer des conditions de mission pendant cet objectif.",
+  "de": "Optionen zum Festlegen, Löschen und Konfigurieren von Missionsflags während des Missionsziels.",
+  "pl": "Opcje ustawiania, zerowania oraz konfigurowania flag misji podczas tego celu misji.",
+  "ru": "Параметры, позволяющие установить, удалить и настроить флаги задания в ходе этой задачи."
+ },
+ "PMCH_OMF_BOC": {
+  "en": "If set, Mission Flags assigned to entities marked on this objective using the \"Set Mission Flag On Objective Complete\" option will be ignored.~n~You can use this if you have entities on multiple objectives and you only want these Mission Flags set on specific ones.",
+  "zh_cn": "若启用此选项，通过\"目标完成时设置任务标志\"选项为此目标中实体分配的任务标志将被忽略。~n~当同一实体存在于多个目标中，且仅需在特定目标触发任务标志时，可使用此功能。",
+  "fr": "Si cette option est activée, les conditions de mission attribuées à des entités marquées dans cet objectif à l'aide de l'option \"Définir la condition de missionµ: objectif atteint\" ne seront pas prises en compte.~n~Vous pouvez utiliser cette option si vous avez des entités dans plusieurs objectifs et que vous voulez seulement définir ces conditions de mission dans des objectifs spécifiques.",
+  "de": "Wenn aktiviert, werden Missionsflags ignoriert, die Entitäten zugewiesen worden sind, die für dieses Missionsziel mithilfe von \"Missionsflag bei Missionszielabschluss festlegen\" markiert sind.~n~Du kannst diese Option verwenden, wenn du Entitäten bei mehreren Missionszielen hast und nur diese Missionsflags für bestimmte Missionsziele festlegen willst.",
+  "pl": "Po włączeniu tej opcji ignorowane będą flagi misji przypisane do obiektów korzystających z opcji \"Ustaw flagę misji na ukończeniu celu\" oznaczonych na tym celu misji.~n~Możesz użyć tej funkcji, jeśli masz obiekty na wielu celach misji i chcesz te flagi misji ustawić tylko na konkretnych celach.",
+  "ru": "Если данная функция включена, то флаги задания, связанные с элементами, которые в данной задаче помечены с помощью опции \"Установить флаг задания на выполнение задачи\", будут проигнорированы.~n~Это можно использовать в тех случаях, когда у вас есть элементы в нескольких задачах, и вы хотите использовать флаги задания, установленные на конкретных задачах."
+ },
+ "PMCH_OMF_COM": {
+  "en": "Assign Mission Flags to clear when the objective midpoint is triggered.",
+  "zh_cn": "分配在此目标中点触发时清除的任务标志。",
+  "fr": "Attribuer des conditions de mission à supprimer au déclenchement du mi-parcours de l'objectif.",
+  "de": "Weist Missionsflags \"Löschen\" zu, wenn die Missionszielmitte ausgelöst wird.",
+  "pl": "Przypisz flagi misji, by były zerowane, gdy aktywowany jest środkowy punkt celu misji.",
+  "ru": "Выбрать флаги задания, которые должны быть удалены в середине задачи."
+ },
+ "PMCH_OMF_COO": {
+  "en": "Assign Mission Flags to clear when this objective starts.",
+  "zh_cn": "分配在此目标开始时清除的任务标志。",
+  "fr": "Attribuer des conditions de mission à supprimer au début de cet objectif.",
+  "de": "Weist Missionsflags \"Löschen\" zu, wenn dieses Missionsziel beginnt.",
+  "pl": "Przypisz flagi misji, by były zerowane, gdy rozpocznie się ten cel misji.",
+  "ru": "Выбрать флаги задания, которые должны быть удалены в начале задачи."
+ },
+ "PMCH_OMF_SOM": {
+  "en": "Assign Mission Flags to set when the objective midpoint is triggered.",
+  "zh_cn": "分配在此目标中点触发时设置的任务标志。",
+  "fr": "Attribuer des conditions de mission à définir au déclenchement du mi-parcours de l'objectif.",
+  "de": "Weist Missionsflags \"Festlegen\" zu, wenn die Missionszielmitte ausgelöst wird.",
+  "pl": "Przypisz flagi misji, by były ustawiane, gdy aktywowany jest środkowy punkt celu misji.",
+  "ru": "Выбрать флаги задания, которые должны быть установлены в середине задачи."
+ },
+ "PMCH_OMF_SOO": {
+  "en": "Assign Mission Flags to set when this objective starts.",
+  "zh_cn": "分配在此目标开始时设置的任务标志。",
+  "fr": "Attribuer des conditions de mission à définir au début de cet objectif.",
+  "de": "Weist Missionsflags \"Festlegen\" zu, wenn dieses Missionsziel beginnt.",
+  "pl": "Przypisz flagi misji, by były ustawiane, gdy rozpocznie się ten cel misji.",
+  "ru": "Выбрать флаги задания, которые должны быть установлены в начале задачи."
+ },
+ "PMCH_OPL_AFR": {
+  "en": "By default this objective will only pass if the team meets the exact criteria above. If this is set this objective will pass if the team has progressed past the criteria above.",
+  "zh_cn": "默认情况下，只有团队完全符合上述标准，此目标才会通过。如果设置了此选项，则团队的进度超出上述标准后，此目标才会通过。",
+  "fr": "Par défaut, cet objectif ne sera validé que si l'équipe remplit les conditions précisées ci-dessus. Si ce paramètre est définit, l'objectif sera réussi si l'équipe a progressé au-delà des conditions mentionnées ci-dessus.",
+  "de": "Standardmäßig muss das Team die oben angeführten Voraussetzungen exakt erfüllen, um dieses Missionsziel zu erreichen. Wenn aktiviert, gilt dieses Missionsziel auch als erreicht, wenn das Team Fortschritte über die Voraussetzungen hinaus gemacht hat.",
+  "pl": "Standardowo cel ten zostanie zaliczony tylko jeśli drużyna spełni tylko i wyłącznie podane wyżej kryteria. Przy aktywowaniu tej opcji, drużyna ukończy cel także przy spełnieniu dodatkowej liczby warunków.",
+  "ru": "Данная задача будет засчитана как \"выполнена\" по умолчанию, только если будут выполнены все вышеуказанные условия. Как только команда выполнит все условия, задача будет засчитана."
+ },
+ "PMCH_OPL_RL": {
+  "en": "Set which objective this team has to reach to pass this objective.",
+  "zh_cn": "设置该团队必须达到哪个目标才能通过该目标。",
+  "fr": "Définissez quel objectif cette équipe doit atteindre pour réussir cet objectif.",
+  "de": "Legt fest, welches Missionsziel dieses Team erreichen muss, um dieses Missionsziel zu erfüllen.",
+  "pl": "Ustaw, który cel musi zostać osiągnięty przez tę drużynę, aby dokonać postępu dla tego celu.",
+  "ru": "Указать задачу, которую команда должна выполнить, чтобы и эта задача была засчитана как \"выполнена\"."
+ },
+ "PMCH_OPL_TM": {
+  "en": "If set, the team will need to reach the midpoint of the objective before the objective passes.",
+  "zh_cn": "如果设置，团队将需要在目标通过之前到达目标的中点。",
+  "fr": "Si cette option est activée, l'équipe devra arriver à mi-parcours de l'objectif avant que l'objectif ne soit réussi.",
+  "de": "Wenn aktiviert, muss das Team den Mittelpunkt des Missionsziels erreichen, bevor das Ziel voranschreitet.",
+  "pl": "Opcja pozwalająca ustawić, czy drużyna będzie musiała osiągnąć środkowy punkt tego celu, aby go ukończyć.",
+  "ru": "Команда должна дойти до середины задачи, чтобы она была засчитана как \"выполнена\"."
+ },
+ "PMCH_PO_PRQQ": {
+  "en": "The Warp Point will also need this Mission Flag to be set before it can be used.",
+  "zh_cn": "传送点还需先设置此任务标志方可使用。",
+  "fr": "Le point de téléportation nécessitera également que cette condition de mission soit définie avant utilisation.",
+  "de": "Der Warp-Punkt erfordert ebenfalls, dass dieser Missionsflag gesetzt wurde, bevor er verwendet werden kann.",
+  "pl": "Punkt przenoszenia wymaga ustawienia tej flagi misji, aby można było go użyć.",
+  "ru": "Эту точку перемещения можно будет использовать только после того, как будет установлен данный флаг задания."
+ },
+ "PMCH_PRQ_CG": {
+  "en": "This Mission Flag will be cleared for all players.",
+  "zh_cn": "此任务标志将对所有玩家清除。",
+  "fr": "Cette condition de mission sera supprimée pour tous les joueurs.",
+  "de": "Dieser Missionsflag wird für alle Spieler gelöscht.",
+  "pl": "Ta flaga misji zostanie usunięta dla wszystkich graczy.",
+  "ru": "Этот флаг задания будет удален для всех игроков."
+ },
+ "PMCH_PRQ_CL": {
+  "en": "This Mission Flag will only be cleared for the player that causes it to be modified.",
+  "zh_cn": "此任务标志仅对触发其修改的玩家清除。",
+  "fr": "Cette condition de mission ne sera supprimée que pour le joueur causant sa modification.",
+  "de": "Dieser Missionsflag wird nur für den Spieler gelöscht, der dessen Modifikation auslöst.",
+  "pl": "Ta flaga misji zostanie usunięta tylko dla gracza, który spowoduje jej modyfikację.",
+  "ru": "Этот флаг задания будет удален только для игрока, внесшего изменения в этот флаг."
+ },
+ "PMCH_PRQ_SG": {
+  "en": "This Mission Flag will be set for all players.",
+  "zh_cn": "此任务标志将对所有玩家设置。",
+  "fr": "Cette condition de mission sera définie pour tous les joueurs.",
+  "de": "Dieser Missionsflag wird für alle Spieler festgelegt.",
+  "pl": "Ta flaga misji będzie ustawiona dla wszystkich graczy.",
+  "ru": "Этот флаг задания установлен для всех игроков."
+ },
+ "PMCH_PRQ_SL": {
+  "en": "This Mission Flag will only be set for the player that causes it to be modified.",
+  "zh_cn": "此任务标志仅对触发其修改的玩家设置。",
+  "fr": "Cette condition de mission ne sera définie que pour le joueur causant sa modification.",
+  "de": "Dieser Missionsflag wird nur für den Spieler festgelegt, der dessen Modifikation auslöst.",
+  "pl": "Ta flaga misji będzie ustawiona tylko dla gracza, który spowoduje jej modyfikację.",
+  "ru": "Этот флаг задания будет установлен только для игрока, внесшего изменения в этот флаг."
+ },
+ "PMCT_BNDS": {
+  "en": "Bounds",
+  "zh_cn": "边界",
+  "fr": "Limites",
+  "de": "Grenzen",
+  "pl": "Granice",
+  "ru": "Границы"
+ },
+ "PMCT_BNDS_CON": {
+  "en": "Bound Consequences",
+  "zh_cn": "边界结果",
+  "fr": "Conséquences des limites",
+  "de": "Konsequenzen von Grenzen",
+  "pl": "Konsekwencje przekroczenia granic",
+  "ru": "Последствия нарушения границ"
+ },
+ "PMCT_BNDS_INDEX": {
+  "en": "Bounds Zone ~1~",
+  "zh_cn": "边界区域µ~1~",
+  "fr": "Limites de zoneµ~1~",
+  "de": "Grenzzone ~1~",
+  "pl": "Strefa graniczna ~1~",
+  "ru": "Граничная зона ~1~"
+ },
+ "PMCT_BNDS_NOZNE": {
+  "en": "No Bounds Zones placed",
+  "zh_cn": "未放置边界区域",
+  "fr": "Aucune limite de zone placée",
+  "de": "Keine Grenzzonen platziert.",
+  "pl": "Nie umieszczono żadnych stref granicznych",
+  "ru": "Граничные зоны отсутствуют"
+ },
+ "PMCT_BNDS_T0": {
+  "en": "Disabled",
+  "zh_cn": "禁用",
+  "fr": "Désactivées",
+  "de": "Deaktiviert",
+  "pl": "Wył.",
+  "ru": "Выключены"
+ },
+ "PMCT_BNDS_T1": {
+  "en": "Play Area",
+  "zh_cn": "游戏区域",
+  "fr": "Zone de jeu",
+  "de": "Spielbereich",
+  "pl": "Teren rozgrywki",
+  "ru": "Игровая зона"
+ },
+ "PMCT_BNDS_T2": {
+  "en": "Exclude Area",
+  "zh_cn": "排除区域",
+  "fr": "Exclure la zone",
+  "de": "Bereich ausschließen",
+  "pl": "Wyklucz obszar",
+  "ru": "Исключить зону"
+ },
+ "PMCT_BNDS_TIME": {
+  "en": "Max Time Out Of Bounds",
+  "zh_cn": "超出边界最大时限",
+  "fr": "Temps maximal hors-limites",
+  "de": "Max. Zeit für Grenzüberschreitung",
+  "pl": "Maksymalny czas poza obszarem gry",
+  "ru": "Макс. время за границами"
+ },
+ "PMCT_BNDS_TIMEI": {
+  "en": "No Delay",
+  "zh_cn": "无延迟",
+  "fr": "Aucun délai",
+  "de": "Keine Verzögerung",
+  "pl": "Bez opóźnień",
+  "ru": "Без задержки"
+ },
+ "PMCT_BNDS_TYPE": {
+  "en": "Bounds",
+  "zh_cn": "边界",
+  "fr": "Limites",
+  "de": "Grenzen",
+  "pl": "Granice",
+  "ru": "Границы"
+ },
+ "PMCT_BNDS_ZNE": {
+  "en": "Specify Bounds Zones",
+  "zh_cn": "指定边界区域",
+  "fr": "Préciser les limites de la zone",
+  "de": "Grenzzonen festlegen",
+  "pl": "Określ strefy graniczne",
+  "ru": "Граничные зоны"
+ },
+ "PMCT_DBG_PRQ": {
+  "en": "Mission Flags",
+  "zh_cn": "任务标志",
+  "fr": "Conditions de mission",
+  "de": "Missionsflags",
+  "pl": "Flagi misji",
+  "ru": "Флаги задания"
+ },
+ "PMCT_EPR_OO": {
+  "en": "Set Mission Flag On Objective Complete",
+  "zh_cn": "目标完成时设置任务标志",
+  "fr": "Définir la condition de missionµ: objectif atteint",
+  "de": "Missionsflag bei Missionszielabschluss festlegen",
+  "pl": "Ustaw flagę misji na ukończeniu celu",
+  "ru": "Установить флаг задания на выполнение задачи"
+ },
+ "PMCT_GC_AGGRO": {
+  "en": "Require Team Aggro",
+  "zh_cn": "需触发团队激怒",
+  "fr": "Nécessite attaque sur l'équipe",
+  "de": "Aggressivität gegenüber Teams erforderlich",
+  "pl": "Wymagaj agresji wobec drużyny",
+  "ru": "Только при агрессии к команде"
+ },
+ "PMCT_GC_ALRTD": {
+  "en": "Require Alerted Actors",
+  "zh_cn": "需被惊动的演员",
+  "fr": "Nécessite des acteurs en alerte",
+  "de": "Alarmierte Akteure erforderlich",
+  "pl": "Wymagaj zaalarmowanych aktorów",
+  "ru": "Только при тревоге персонажа"
+ },
+ "PMCT_GC_BLOCK": {
+  "en": "Blocking Mission Flag",
+  "zh_cn": "阻止任务标志",
+  "fr": "Condition de mission bloquante",
+  "de": "Blockierende Missionsflag",
+  "pl": "Blokująca flaga misji",
+  "ru": "Блокирующие флаг задания"
+ },
+ "PMCT_GC_DELAY": {
+  "en": "Activation Delay",
+  "zh_cn": "启动延时",
+  "fr": "Temps d'activation",
+  "de": "Auslöseverzögerung",
+  "pl": "Opóźnienie aktywacji",
+  "ru": "Задержка активации"
+ },
+ "PMCT_GC_FLEEOBJ": {
+  "en": "Flee On Next Objective",
+  "zh_cn": "下一个目标时逃离",
+  "fr": "Fuir au prochain objectif",
+  "de": "Bei nächstem Missionsziel fliehen",
+  "pl": "Ucieczka przy następnym celu misji",
+  "ru": "Бегство при следующей задаче"
+ },
+ "PMCT_GC_I": {
+  "en": "Max Active",
+  "zh_cn": "最大激活数量",
+  "fr": "Unités actives max",
+  "de": "Max. aktiv",
+  "pl": "Maksymalna liczba aktywnych",
+  "ru": "Макс. активных"
+ },
+ "PMCT_GC_MID": {
+  "en": "Start On Midpoint",
+  "zh_cn": "从中点开始",
+  "fr": "Commencer à mi-parcours",
+  "de": "Ab der Mitte starten",
+  "pl": "Zacznij od środkowego punktu celu",
+  "ru": "Начать в середине задачи"
+ },
+ "PMCT_GC_ODIST": {
+  "en": "End Near Drop-off",
+  "zh_cn": "在投放点附近结束",
+  "fr": "Terminer près du point de livraison",
+  "de": "Beim Übergabeort aufhören",
+  "pl": "Zakończ w pobliżu dostawy",
+  "ru": "Прекращение у точки сброса"
+ },
+ "PMCT_GC_RDELAY": {
+  "en": "Respawn Delay",
+  "zh_cn": "重生延时",
+  "fr": "Délai de réapparition",
+  "de": "Respawn-Verzögerung",
+  "pl": "Opóźnienie odradzania",
+  "ru": "Задержка возрождения"
+ },
+ "PMCT_GC_T": {
+  "en": "Chase Units",
+  "zh_cn": "追逐单位",
+  "fr": "Unités de poursuite",
+  "de": "Verfolgungseinheiten",
+  "pl": "Jednostki pościgowe",
+  "ru": "Преследователи"
+ },
+ "PMCT_GC_UT": {
+  "en": "Unit",
+  "zh_cn": "单位",
+  "fr": "Unité",
+  "de": "Einheit",
+  "pl": "Jednostka",
+  "ru": "Группа"
+ },
+ "PMCT_GOTO_PRQ": {
+  "en": "Set Mission Flag On Follow Path Complete",
+  "zh_cn": "跟随路径完成后设置任务标志",
+  "fr": "Définir la condition de mission sur itinéraire à suivre terminé",
+  "de": "Missionsflag bei Routenabschluss festlegen",
+  "pl": "Ustaw flagę misji na ukończeniu podążania po ścieżce",
+  "ru": "Установить флаг задания на завершение действия \"Маршрут\""
+ },
+ "PMCT_HO": {
+  "en": "HUD",
+  "zh_cn": "HUD",
+  "fr": "ATH",
+  "de": "HUD",
+  "pl": "Interfejs",
+  "ru": "Интерфейс игрока"
+ },
+ "PMCT_HO_SC": {
+  "en": "Score HUD Color",
+  "zh_cn": "分数µHUDµ颜色",
+  "fr": "Couleur du score dans l'ATH",
+  "de": "Punktzahlfarbe im HUD",
+  "pl": "Kolor interfejsu wyniku",
+  "ru": "Цвет строки \"НЕОБХОДИМЫЙ СЧЕТ\""
+ },
+ "PMCT_HO_TAS": {
+  "en": "Disable Objective HUD",
+  "zh_cn": "禁用目标µHUD",
+  "fr": "Désactiver l'ATH de l'objectif",
+  "de": "Missionsziel-HUD deaktivieren",
+  "pl": "Wyłącz interfejs celu misji",
+  "ru": "Отключить интерфейс игрока"
+ },
+ "PMCT_HUD_HB": {
+  "en": "Show Health Bars",
+  "zh_cn": "显示生命值条",
+  "fr": "Afficher les jauges de santé",
+  "de": "Zustands-/Gesundheitsbalken anzeigen",
+  "pl": "Pokaż paski zdrowia",
+  "ru": "Показывать шкалы состояния"
+ },
+ "PMCT_LAW": {
+  "en": "Wanted Options",
+  "zh_cn": "通缉选项",
+  "fr": "Options de recherche",
+  "de": "Fahndungsleveloptionen",
+  "pl": "Opcje pościgu",
+  "ru": "Параметры розыска"
+ },
+ "PMCT_LAW_DELAY": {
+  "en": "Delay",
+  "zh_cn": "延迟",
+  "fr": "Retarder",
+  "de": "Verzögerung",
+  "pl": "Opóźnienie",
+  "ru": "Задержка"
+ },
+ "PMCT_LAW_HELI": {
+  "en": "Helicopter Units",
+  "zh_cn": "直升机单位",
+  "fr": "Unités hélicoptères",
+  "de": "Helikoptereinheiten",
+  "pl": "Śmigłowce",
+  "ru": "Вертолеты"
+ },
+ "PMCT_LAW_LVL": {
+  "en": "Set Level",
+  "zh_cn": "设置等级",
+  "fr": "Niveau défini",
+  "de": "Level festlegen",
+  "pl": "Ustaw poziom",
+  "ru": "Указать уровень"
+ },
+ "PMCT_LAW_LVL_-1": {
+  "en": "Clear",
+  "zh_cn": "清除",
+  "fr": "Aucun",
+  "de": "Kein Stern",
+  "pl": "Bez gwiazdek",
+  "ru": "Нет"
+ },
+ "PMCT_LAW_LVL_0": {
+  "en": "No Change",
+  "zh_cn": "不变",
+  "fr": "Aucun changement",
+  "de": "Kein Wechsel",
+  "pl": "Bez zmian",
+  "ru": "Без изменений"
+ },
+ "PMCT_LAW_LVL_1": {
+  "en": "1 Star",
+  "zh_cn": "1µ星",
+  "fr": "1 étoile",
+  "de": "1 Stern",
+  "pl": "1 gwiazdka",
+  "ru": "1 звезда"
+ },
+ "PMCT_LAW_LVL_2": {
+  "en": "2 Star",
+  "zh_cn": "2µ星",
+  "fr": "2 étoiles",
+  "de": "2 Sterne",
+  "pl": "2 gwiazdki",
+  "ru": "2 звезды"
+ },
+ "PMCT_LAW_LVL_3": {
+  "en": "3 Star",
+  "zh_cn": "3µ星",
+  "fr": "3 étoiles",
+  "de": "3 Sterne",
+  "pl": "3 gwiazdki",
+  "ru": "3 звезды"
+ },
+ "PMCT_LAW_LVL_4": {
+  "en": "4 Star",
+  "zh_cn": "4µ星",
+  "fr": "4 étoiles",
+  "de": "4 Sterne",
+  "pl": "4 gwiazdki",
+  "ru": "4 звезды"
+ },
+ "PMCT_LAW_LVL_5": {
+  "en": "5 Star",
+  "zh_cn": "5µ星",
+  "fr": "5 étoiles",
+  "de": "5 Sterne",
+  "pl": "5 gwiazdek",
+  "ru": "5 звезд"
+ },
+ "PMCT_LAW_LVL_6": {
+  "en": "1 Star Minimum",
+  "zh_cn": "最低µ1µ星",
+  "fr": "1µétoile minimum",
+  "de": "Mindestens 1 Stern",
+  "pl": "Co najmniej 1 gwiazdka",
+  "ru": "Минимум 1 звезда"
+ },
+ "PMCT_LAW_LVL_7": {
+  "en": "2 Star Minimum",
+  "zh_cn": "最低µ2µ星",
+  "fr": "2µétoiles minimum",
+  "de": "Mindestens 2 Sterne",
+  "pl": "Co najmniej 2 gwiazdki",
+  "ru": "Минимум 2 звезды"
+ },
+ "PMCT_LAW_LVL_8": {
+  "en": "3 Star Minimum",
+  "zh_cn": "最低µ3µ星",
+  "fr": "3µétoiles minimum",
+  "de": "Mindestens 3 Sterne",
+  "pl": "Co najmniej 3 gwiazdki",
+  "ru": "Минимум 3 звезды"
+ },
+ "PMCT_LAW_LVL_9": {
+  "en": "4 Star Minimum",
+  "zh_cn": "最低µ4µ星",
+  "fr": "4µétoiles minimum",
+  "de": "Mindestens 4 Sterne",
+  "pl": "Co najmniej 4 gwiazdki",
+  "ru": "Минимум 4 звезды"
+ },
+ "PMCT_LAW_NOLOSE": {
+  "en": "Can't Lose",
+  "zh_cn": "无法摆脱",
+  "fr": "Impossible de s'en défaire",
+  "de": "Permanent",
+  "pl": "Blokada pozbycia się",
+  "ru": "Не сбрасывается"
+ },
+ "PMCT_LAW_TRIG": {
+  "en": "Trigger Condition",
+  "zh_cn": "触发条件",
+  "fr": "Condition d'activation",
+  "de": "Auslöserbedingung",
+  "pl": "Warunek aktywacji",
+  "ru": "Условия триггера"
+ },
+ "PMCT_LAW_TRIG_0": {
+  "en": "Objective Start",
+  "zh_cn": "目标起点",
+  "fr": "Apparition au début",
+  "de": "Beginn des Missionsziels",
+  "pl": "Początek celu misji",
+  "ru": "В точке старта"
+ },
+ "PMCT_LAW_TRIG_1": {
+  "en": "Objective Midpoint",
+  "zh_cn": "目标中点",
+  "fr": "Apparition à mi-parcours",
+  "de": "Mitte des Missionsziels",
+  "pl": "Środkowy punkt celu misji",
+  "ru": "В середине задачи"
+ },
+ "PMCT_LAW_TRIG_2": {
+  "en": "On Team Aggro",
+  "zh_cn": "团队激怒时",
+  "fr": "En cas d'attaque sur l'équipe",
+  "de": "Bei Aggressivität gegenüber Teams",
+  "pl": "Przy agresji wobec drużyny",
+  "ru": "Агрессия в сторону команды"
+ },
+ "PMCT_LAW_TRIG_3": {
+  "en": "Objective Fail",
+  "zh_cn": "目标失败",
+  "fr": "Échec de l'objectif",
+  "de": "Missionsziel fehlgeschlagen",
+  "pl": "Niezaliczony cel misji",
+  "ru": "При провале задачи"
+ },
+ "PMCT_MR_TM_-1": {
+  "en": "Clear Timer",
+  "zh_cn": "清除计时器",
+  "fr": "Supprimer le chrono",
+  "de": "Timer entfernen",
+  "pl": "Wyzeruj licznik czasu",
+  "ru": "Сбросить таймер"
+ },
+ "PMCT_MR_TM_0": {
+  "en": "Default",
+  "zh_cn": "默认",
+  "fr": "Par défaut",
+  "de": "Standard",
+  "pl": "Domyślny",
+  "ru": "По умолчанию"
+ },
+ "PMCT_MR_TM_1": {
+  "en": "Set 10 Seconds",
+  "zh_cn": "设置µ10µ秒",
+  "fr": "10µsecondes",
+  "de": "Auf 10 Sekunden festlegen",
+  "pl": "10 sekund",
+  "ru": "10 секунд"
+ },
+ "PMCT_MR_TM_10": {
+  "en": "Set 5 Minutes",
+  "zh_cn": "设置µ5µ分钟",
+  "fr": "5 minutes",
+  "de": "Auf 5 Minuten festlegen",
+  "pl": "5 minut",
+  "ru": "5 минут"
+ },
+ "PMCT_MR_TM_11": {
+  "en": "Set 6 Minutes",
+  "zh_cn": "设置µ6µ分钟",
+  "fr": "6 minutes",
+  "de": "Auf 6 Minuten festlegen",
+  "pl": "6 minut",
+  "ru": "6 минут"
+ },
+ "PMCT_MR_TM_12": {
+  "en": "Set 7 Minutes",
+  "zh_cn": "设置µ7µ分钟",
+  "fr": "7 minutes",
+  "de": "Auf 7 Minuten festlegen",
+  "pl": "7 minut",
+  "ru": "7 минут"
+ },
+ "PMCT_MR_TM_13": {
+  "en": "Set 8 Minutes",
+  "zh_cn": "设置µ8µ分钟",
+  "fr": "8 minutes",
+  "de": "Auf 8 Minuten festlegen",
+  "pl": "8 minut",
+  "ru": "8 минут"
+ },
+ "PMCT_MR_TM_14": {
+  "en": "Set 9 Minutes",
+  "zh_cn": "设置µ9µ分钟",
+  "fr": "9 minutes",
+  "de": "Auf 9 Minuten festlegen",
+  "pl": "9 minut",
+  "ru": "9 минут"
+ },
+ "PMCT_MR_TM_15": {
+  "en": "Set 10 Minutes",
+  "zh_cn": "设置µ10µ分钟",
+  "fr": "10 minutes",
+  "de": "Auf 10 Minuten festlegen",
+  "pl": "10 minut",
+  "ru": "10 минут"
+ },
+ "PMCT_MR_TM_16": {
+  "en": "Set 15 Minutes",
+  "zh_cn": "设置µ15µ分钟",
+  "fr": "15 minutes",
+  "de": "Auf 15 Minuten festlegen",
+  "pl": "15 minut",
+  "ru": "15 минут"
+ },
+ "PMCT_MR_TM_17": {
+  "en": "Set 20 Minutes",
+  "zh_cn": "设置µ20µ分钟",
+  "fr": "20 minutes",
+  "de": "Auf 20 Minuten festlegen",
+  "pl": "20 minut",
+  "ru": "20 минут"
+ },
+ "PMCT_MR_TM_18": {
+  "en": "Set 25 Minutes",
+  "zh_cn": "设置µ25µ分钟",
+  "fr": "25 minutes",
+  "de": "Auf 25 Minuten festlegen",
+  "pl": "25 minut",
+  "ru": "25 минут"
+ },
+ "PMCT_MR_TM_19": {
+  "en": "Set 30 Minutes",
+  "zh_cn": "设置µ30µ分钟",
+  "fr": "30 minutes",
+  "de": "Auf 30 Minuten festlegen",
+  "pl": "30 minut",
+  "ru": "30 минут"
+ },
+ "PMCT_MR_TM_2": {
+  "en": "Set 20 Seconds",
+  "zh_cn": "设置µ20µ秒",
+  "fr": "20 secondes",
+  "de": "Auf 20 Sekunden festlegen",
+  "pl": "20 sekund",
+  "ru": "20 секунд"
+ },
+ "PMCT_MR_TM_3": {
+  "en": "Set 30 Seconds",
+  "zh_cn": "设置µ30µ秒",
+  "fr": "30 secondes",
+  "de": "Auf 30 Sekunden festlegen",
+  "pl": "30 sekund",
+  "ru": "30 секунд"
+ },
+ "PMCT_MR_TM_4": {
+  "en": "Set 40 Seconds",
+  "zh_cn": "设置µ40µ秒",
+  "fr": "40 secondes",
+  "de": "Auf 40 Sekunden festlegen",
+  "pl": "40 sekund",
+  "ru": "40 секунд"
+ },
+ "PMCT_MR_TM_5": {
+  "en": "Set 50 Seconds",
+  "zh_cn": "设置µ50µ秒",
+  "fr": "50 secondes",
+  "de": "Auf 50 Sekunden festlegen",
+  "pl": "50 sekund",
+  "ru": "50 секунд"
+ },
+ "PMCT_MR_TM_6": {
+  "en": "Set 1 Minute",
+  "zh_cn": "设置µ1µ分钟",
+  "fr": "1µminute",
+  "de": "Auf 1 Minute festlegen",
+  "pl": "1 minuta",
+  "ru": "1 минута"
+ },
+ "PMCT_MR_TM_7": {
+  "en": "Set 2 Minutes",
+  "zh_cn": "设置µ2µ分钟",
+  "fr": "2 minutes",
+  "de": "Auf 2 Minuten festlegen",
+  "pl": "2 minuty",
+  "ru": "2 минуты"
+ },
+ "PMCT_MR_TM_8": {
+  "en": "Set 3 Minutes",
+  "zh_cn": "设置µ3µ分钟",
+  "fr": "3 minutes",
+  "de": "Auf 3 Minuten festlegen",
+  "pl": "3 minuty",
+  "ru": "3 минуты"
+ },
+ "PMCT_MR_TM_9": {
+  "en": "Set 4 Minutes",
+  "zh_cn": "设置µ4µ分钟",
+  "fr": "4 minutes",
+  "de": "Auf 4 Minuten festlegen",
+  "pl": "4 minuty",
+  "ru": "4 минуты"
+ },
+ "PMCT_OB": {
+  "en": "Objective Blockers",
+  "zh_cn": "目标阻碍条件",
+  "fr": "Bloqueurs d'objectif",
+  "de": "Missionszielblocker",
+  "pl": "Blokady celu",
+  "ru": "Блокираторы задачи"
+ },
+ "PMCT_OBJ1": {
+  "en": "Objective Text 1",
+  "zh_cn": "目标文本 1",
+  "fr": "Texte objectif 1",
+  "de": "Zieltext 1",
+  "pl": "Treść 1 celu",
+  "ru": "Описание задачи 1"
+ },
+ "PMCT_OBJ_CAPT": {
+  "en": "Capture Time",
+  "zh_cn": "夺取时间",
+  "fr": "Temps de capture",
+  "de": "Eroberungszeit",
+  "pl": "Czas przechwycenia",
+  "ru": "Время захвата"
+ },
+ "PMCT_OB_CHASE": {
+  "en": "Active Chase Units",
+  "zh_cn": "追逐单位激活时",
+  "fr": "Unités de poursuite actives",
+  "de": "Aktive Verfolgungseinheiten",
+  "pl": "Aktywne jednostki pościgowe",
+  "ru": "При активных преследователях"
+ },
+ "PMCT_ODO": {
+  "en": "Disable Options",
+  "zh_cn": "禁用选项",
+  "fr": "Désactiver les options",
+  "de": "Optionen deaktivieren",
+  "pl": "Opcje do zablokowania",
+  "ru": "Отключить настройки"
+ },
+ "PMCT_ODO_MCH": {
+  "en": "Mechanic",
+  "zh_cn": "技工",
+  "fr": "Mécano",
+  "de": "Mechaniker",
+  "pl": "Mechanik",
+  "ru": "Механик"
+ },
+ "PMCT_ODO_NWEP": {
+  "en": "Player Weapons",
+  "zh_cn": "玩家武器",
+  "fr": "Armes joueur",
+  "de": "Spielerwaffen",
+  "pl": "Uzbrojenie gracza",
+  "ru": "Оружие игрока"
+ },
+ "PMCT_ODO_RDAR": {
+  "en": "Player Radar",
+  "zh_cn": "玩家雷达",
+  "fr": "Radar joueur",
+  "de": "Spielerradar",
+  "pl": "Radar gracza",
+  "ru": "Радар игрока"
+ },
+ "PMCT_OJT_ATL": {
+  "en": "Require All Team To Leave",
+  "zh_cn": "要求全队离开",
+  "fr": "Toute l'équipe doit partir",
+  "de": "Verlassen des ganzen Teams erforderlich",
+  "pl": "Wymagaj oddalenia się całej drużyny",
+  "ru": "Вся команда должна покинуть точку"
+ },
+ "PMCT_OJT_DEHT": {
+  "en": "Health Threshold Override",
+  "zh_cn": "生命值阈值覆盖",
+  "fr": "Paramétrage manuel de la santé",
+  "de": "Schadensgrenzwert der Entität überschreiben",
+  "pl": "Obejście progu zdrowia",
+  "ru": "Главный порог повреждений"
+ },
+ "PMCT_OJT_DOD": {
+  "en": "Drop Objects on Delivery",
+  "zh_cn": "送达时丢下物品",
+  "fr": "Lâcher les objets à la livraison",
+  "de": "Objekte bei Ablieferung ablegen",
+  "pl": "Upuść obiekty po dostarczeniu",
+  "ru": "Сбросить объекты при доставке"
+ },
+ "PMCT_OJT_L_OUT": {
+  "en": "Require Out of All Locations",
+  "zh_cn": "需离开所有地点",
+  "fr": "Nécessite En dehors de tous les lieux",
+  "de": "Außer Reichweite von Orten",
+  "pl": "Wymaga wyjścia poza wszystkie lokalizacje",
+  "ru": "Требуется: за пределами всех локаций"
+ },
+ "PMCT_OJT_L_REQ": {
+  "en": "Allow Players In Any Location",
+  "zh_cn": "允许玩家在任意地点",
+  "fr": "Autoriser les joueurs en tout lieu",
+  "de": "Spieler an allen Orten erlauben",
+  "pl": "Zezwól na graczy w dowolnej lokalizacji",
+  "ru": "Разрешить игроков в любой локации"
+ },
+ "PMCT_OJT_MOC": {
+  "en": "Max Carried Objects Per Player",
+  "zh_cn": "每位玩家可携带的最大物品数量",
+  "fr": "Nombre max d'objets portés par joueur",
+  "de": "Max. Anzahl an mitgeführten Objekten pro Spieler",
+  "pl": "Maks. liczba noszonych obiektów na gracza",
+  "ru": "Макс. число переносимых предметов"
+ },
+ "PMCT_OJT_OLP": {
+  "en": "Mission Flag Limit",
+  "zh_cn": "任务标志限制",
+  "fr": "Limite de condition de mission",
+  "de": "Missionsflag-Limit",
+  "pl": "Limit flagi misji",
+  "ru": "Лимит флагов задания"
+ },
+ "PMCT_OJT_OPL": {
+  "en": "Other Team Progress Limit",
+  "zh_cn": "其他团队进度限制",
+  "fr": "Limite de progression de l'autre équipe",
+  "de": "Fortschrittslimit für andere Teams",
+  "pl": "Limit postępu innej drużyny",
+  "ru": "Лимит прогресса других команд"
+ },
+ "PMCT_OJT_OVRNXT": {
+  "en": "Override Next Objective",
+  "zh_cn": "覆盖下一目标",
+  "fr": "Paramétrage manuel de l'objectif suivant",
+  "de": "Nächstes Missionsziel überschreiben",
+  "pl": "Nadpisz następny cel misji",
+  "ru": "Назначение следующей задачи"
+ },
+ "PMCT_OJT_TXC": {
+  "en": "Pass Condition",
+  "zh_cn": "通过条件",
+  "fr": "Condition de validation",
+  "de": "Erfüllungsbedingung",
+  "pl": "Warunek zaliczenia",
+  "ru": "Условие выполнения"
+ },
+ "PMCT_OJT_TXP": {
+  "en": "Team ~1~'s Progress Limit",
+  "zh_cn": "团队µ~1~µ的进度限制",
+  "fr": "Limite de progression de l'équipeµ~1~",
+  "de": "Fortschrittslimit für Team ~1~",
+  "pl": "Limit postępu drużyny: ~1~",
+  "ru": "Лимит прогресса команды ~1~"
+ },
+ "PMCT_OL": {
+  "en": "Objective Limits",
+  "zh_cn": "目标限制",
+  "fr": "Limites d'objectif",
+  "de": "Missionsziellimits",
+  "pl": "Limity celu",
+  "ru": "Ограничения задачи"
+ },
+ "PMCT_OL_MO": {
+  "en": "Mission Flag Limit Fails Team",
+  "zh_cn": "任务标志限制，团队失败",
+  "fr": "Échec de l'équipe lié à la limite de condition de mission",
+  "de": "Team scheitert nach Erreichen des Missionsflag-Limits",
+  "pl": "Porażka drużyny przy osiągnięciu limitu flagi misji",
+  "ru": "Активации всех флагов задания провалит задачу"
+ },
+ "PMCT_OL_MTIME": {
+  "en": "Cross-Objective Time Limit",
+  "zh_cn": "跨目标时间限制",
+  "fr": "Limite de temps multiobjectifs",
+  "de": "Missionszielübergreifendes Zeitlimit",
+  "pl": "Współdzielony limit czasu",
+  "ru": "Общий лимит времени задач"
+ },
+ "PMCT_OL_POINTS": {
+  "en": "Objective Score",
+  "zh_cn": "目标得分",
+  "fr": "Score de l'objectif",
+  "de": "Missionsziel-Punktzahl",
+  "pl": "Punkty celu",
+  "ru": "Счет задачи"
+ },
+ "PMCT_OL_SCORE": {
+  "en": "Score Limit",
+  "zh_cn": "分数限制",
+  "fr": "Limite de score",
+  "de": "Punktelimit",
+  "pl": "Limit punktów",
+  "ru": "Лимит очков"
+ },
+ "PMCT_OL_TIME": {
+  "en": "Time Limit",
+  "zh_cn": "时间限制",
+  "fr": "Limite de temps",
+  "de": "Zeitlimit",
+  "pl": "Limit czasowy",
+  "ru": "Лимит времени"
+ },
+ "PMCT_OL_TLSC": {
+  "en": "Use Team Total Score",
+  "zh_cn": "使用团队总得分",
+  "fr": "Utiliser le score total d'équipe",
+  "de": "Gesamtpunktzahl des Teams verwenden",
+  "pl": "Użyj całkowitego wyniku drużyny",
+  "ru": "Использовать общий командный счет"
+ },
+ "PMCT_OL_TO": {
+  "en": "Time Limit Expired Fails Team",
+  "zh_cn": "到达时间限制时团队失败",
+  "fr": "Échec de l'équipe lié à l'expiration de la limite de temps",
+  "de": "Team scheitert bei Ablauf des Zeitlimits",
+  "pl": "Porażka drużyny przy upływie limitu czasu",
+  "ru": "Истечение времени провалит задачу"
+ },
+ "PMCT_OL_WANT": {
+  "en": "Lose Wanted Limit",
+  "zh_cn": "消除通缉等级限制",
+  "fr": "Limite de perte de l'indice de recherche",
+  "de": "Fahndungslevellimit loswerden",
+  "pl": "Limit poziomu pościgu",
+  "ru": "Сбросить уровень розыска"
+ },
+ "PMCT_OL_WANTF": {
+  "en": "Gain Wanted Limit (Fail)",
+  "zh_cn": "通缉获得限制（失败）",
+  "fr": "Limite de recherche atteinte (échec)",
+  "de": "Fahndungslevel erhalten (Scheitern)",
+  "pl": "Porażka przy osiągnięciu poziomu pościgu",
+  "ru": "Получение уровня розыска (провал)"
+ },
+ "PMCT_OMF": {
+  "en": "Mission Flags",
+  "zh_cn": "任务标志",
+  "fr": "Conditions de mission",
+  "de": "Missionsflags",
+  "pl": "Flagi misji",
+  "ru": "Флаги задания"
+ },
+ "PMCT_OMF_BOC": {
+  "en": "Block On Objective Complete Mission Flags",
+  "zh_cn": "完成目标时阻止设置任务标志",
+  "fr": "Bloquer les conditions de missionµ: objectif atteint",
+  "de": "Missionsflag bei Missionszielabschluss blockieren",
+  "pl": "Blokuj flagi misji ustawiane na ukończeniu celu",
+  "ru": "Блокировать при флаге выполненной задачи"
+ },
+ "PMCT_OMF_COM": {
+  "en": "Clear Mission Flags on Objective Midpoint",
+  "zh_cn": "目标进行到中点时清除任务标志",
+  "fr": "Supprimer la condition de mission à mi-parcours de l'objectif",
+  "de": "Missionsflag bei Mitte des Missionsziels entfernen",
+  "pl": "Usuń flagi misji na środkowym punkcie celu",
+  "ru": "Удалить флаги в середине задачи"
+ },
+ "PMCT_OMF_COO": {
+  "en": "Clear Mission Flags on Objective Start",
+  "zh_cn": "目标开始时清除任务标志",
+  "fr": "Supprimer les conditions de mission au début de l'objectif",
+  "de": "Missionsflag bei Beginn des Missionsziels entfernen",
+  "pl": "Usuń flagi misji na rozpoczęciu celu",
+  "ru": "Удалить флаги в начале задачи"
+ },
+ "PMCT_OMF_SOM": {
+  "en": "Set Mission Flags on Objective Midpoint",
+  "zh_cn": "目标进行到中点时设置任务标志",
+  "fr": "Définir les conditions de mission à mi-parcours de l'objectif",
+  "de": "Missionsflag bei Mitte des Missionsziels setzen",
+  "pl": "Ustaw flagi misji na środkowym punkcie celu",
+  "ru": "Установить флаги в середине задачи"
+ },
+ "PMCT_OMF_SOO": {
+  "en": "Set Mission Flags on Objective Start",
+  "zh_cn": "目标开始时设置任务标志",
+  "fr": "Définir les conditions de mission au début de l'objectif",
+  "de": "Missionsflag bei Beginn des Missionsziels setzen",
+  "pl": "Ustaw flagi misji na rozpoczęciu celu",
+  "ru": "Установить флаги в начале задачи"
+ },
+ "PMCT_OPL_AFR": {
+  "en": "Consider Later Objectives",
+  "zh_cn": "考虑后续目标",
+  "fr": "Objectifs à envisager plus tard",
+  "de": "Spätere Missionsziele berücksichtigen",
+  "pl": "Rozważ późniejsze cele",
+  "ru": "Засчитывание других задач"
+ },
+ "PMCT_OPL_RL": {
+  "en": "Objective to Reach",
+  "zh_cn": "待完成的目标",
+  "fr": "Objectif à atteindre",
+  "de": "Zu erreichendes Missionsziel",
+  "pl": "Cel do osiągnięcia",
+  "ru": "Главная задача"
+ },
+ "PMCT_OPL_TM": {
+  "en": "Wait for Midpoint",
+  "zh_cn": "等待中点",
+  "fr": "Attendre d'être à mi-parcours",
+  "de": "Auf Missionszielmitte warten",
+  "pl": "Czekaj na środkowy punkt",
+  "ru": "Ожидание середины задачи"
+ },
+ "PMCT_PO_PRQQ": {
+  "en": "Required Mission Flag",
+  "zh_cn": "必要任务标志",
+  "fr": "Condition de mission requise",
+  "de": "Erforderlicher Missionsflag",
+  "pl": "Wymagana flaga misji",
+  "ru": "Необходимый флаг задания"
+ },
+ "PMCT_PRQ_NCH": {
+  "en": "Never checked",
+  "zh_cn": "从未检查",
+  "fr": "Jamais vérifiée",
+  "de": "Nicht überprüft",
+  "pl": "Nieprzetestowana",
+  "ru": "Не проверен"
+ },
+ "PMCT_PRQ_NS": {
+  "en": "Never set",
+  "zh_cn": "从未设置",
+  "fr": "Jamais définie",
+  "de": "Nie festgelegt",
+  "pl": "Nigdy nieustawiona",
+  "ru": "Не установлен"
+ },
+ "PMCT_PRQ_NU": {
+  "en": "Not used",
+  "zh_cn": "未使用",
+  "fr": "Inutilisée",
+  "de": "Nicht verwendet",
+  "pl": "Nieużywana",
+  "ru": "Не используется"
+ },
+ "PMCW_PO_NC": {
+  "en": "This Mission Flag is modified but never checked. It currently does nothing in the mission.",
+  "zh_cn": "此任务标志已修改但从未被检查。它目前在任务中无实际作用。",
+  "fr": "Cette condition de mission est modifiée mais jamais vérifiée. Elle n'a actuellement aucun effet sur la mission.",
+  "de": "Dieser Missionsflag wird modifiziert, aber niemals überprüft. Er ist in der Mission aktuell ohne Funktion.",
+  "pl": "Ta flaga misji jest zmodyfikowana, lecz nie została nigdy sprawdzona. Obecnie nie wykonuje w misji żadnego działania.",
+  "ru": "Этот флаг задания изменен, но не проверен. В данный момент он ни на что не влияет в этом задании."
+ },
+ "PMCW_PO_NM": {
+  "en": "This Mission Flag is checked but is not set anywhere. The functionality checking it will never do anything.",
+  "zh_cn": "此任务标志已检查但未在任何地方设置。功能检查将永远不会执行任何操作。",
+  "fr": "Cette condition de mission est vérifiée mais n'est définie nulle part. La fonctionnalité la vérifiant n'aura aucun effet.",
+  "de": "Dieser Missionsflag wird überprüft, aber nirgendwo festgelegt. Die Funktion zur Überprüfung wird niemals etwas auslösen.",
+  "pl": "Ta flaga misji jest sprawdzona, lecz nie została nigdzie ustawiona. Funkcja sprawdzająca nie wykona żadnego działania.",
+  "ru": "Этот флаг задания проверен, но нигде не установлен. Проверка его функциональности не внесет никаких изменений."
+ },
+ "PMC_BND_CON_0": {
+  "en": "Instruct Player",
+  "zh_cn": "指导玩家",
+  "fr": "Instructions au joueur",
+  "de": "Den Spieler anweisen",
+  "pl": "Poinstruuj gracza",
+  "ru": "Проинструктировать игрока"
+ },
+ "PMC_BND_CON_1": {
+  "en": "Kill Player",
+  "zh_cn": "击杀玩家",
+  "fr": "Tuer un joueur",
+  "de": " Spieler erledigen",
+  "pl": "Zabij gracza",
+  "ru": "Гибель игрока"
+ },
+ "PMC_BND_CON_2": {
+  "en": "Fail Mission",
+  "zh_cn": "任务失败",
+  "fr": "Échec de la mission",
+  "de": "Missionsfehlschlag",
+  "pl": "Zakończ misję niepowodzeniem",
+  "ru": "Провал задания"
+ },
+ "PMC_BS_AS_PRQ": {
+  "en": "~1~ Flags Assigned",
+  "zh_cn": "~1~µ个标志已分配",
+  "fr": "~1~ condition(s) de mission attribuée(s)",
+  "de": "Flags zugewiesen: ~1~",
+  "pl": "Przypisane flagi (~1~)",
+  "ru": "Флагов назначено: ~1~"
+ },
+ "PMC_BS_EMPT": {
+  "en": "Not Assigned",
+  "zh_cn": "未分配",
+  "fr": "Non attribué",
+  "de": "Nicht zugewiesen",
+  "pl": "Nieprzypisane",
+  "ru": "Не назначено"
+ },
+ "PMC_CLR_PRQ": {
+  "en": "Clear Mission Flag",
+  "zh_cn": "清除任务标志",
+  "fr": "Supprimer la condition de mission",
+  "de": "Missionsflag löschen",
+  "pl": "USUŃ FLAGĘ MISJI",
+  "ru": "Удалить флаг задания"
+ },
+ "PMC_HUDC_-1": {
+  "en": "Default",
+  "zh_cn": "默认",
+  "fr": "Par défaut",
+  "de": "Standard",
+  "pl": "Domyślny",
+  "ru": "По умолчанию"
+ },
+ "PMC_HUDC_0": {
+  "en": "Pure White",
+  "zh_cn": "纯白色",
+  "fr": "Blanc immaculé",
+  "de": "Pures Weiß",
+  "pl": "Czysta biel",
+  "ru": "Белоснежный"
+ },
+ "PMC_HUDC_1": {
+  "en": "White",
+  "zh_cn": "白色",
+  "fr": "Blanc",
+  "de": "Weiß",
+  "pl": "Biały",
+  "ru": "Белый"
+ },
+ "PMC_HUDC_10": {
+  "en": "Blue Light",
+  "zh_cn": "浅蓝",
+  "fr": "Bleu clair",
+  "de": "Hellblau",
+  "pl": "Jasnoniebieski",
+  "ru": "Светло-синий"
+ },
+ "PMC_HUDC_11": {
+  "en": "Blue Dark",
+  "zh_cn": "深蓝",
+  "fr": "Bleu foncé",
+  "de": "Dunkelblau",
+  "pl": "Ciemnoniebieski",
+  "ru": "Темно-синий"
+ },
+ "PMC_HUDC_12": {
+  "en": "Yellow",
+  "zh_cn": "黄色",
+  "fr": "Jaune",
+  "de": "Gelb",
+  "pl": "Żółty",
+  "ru": "Желтый"
+ },
+ "PMC_HUDC_13": {
+  "en": "Yellow Light",
+  "zh_cn": "浅黄",
+  "fr": "Jaune clair",
+  "de": "Hellgelb",
+  "pl": "Jasnożółty",
+  "ru": "Светло-желтый"
+ },
+ "PMC_HUDC_14": {
+  "en": "Yellow Dark",
+  "zh_cn": "深黄",
+  "fr": "Jaune foncé",
+  "de": "Dunkelgelb",
+  "pl": "Ciemnożółty",
+  "ru": "Темно-желтый"
+ },
+ "PMC_HUDC_15": {
+  "en": "Orange",
+  "zh_cn": "橙色",
+  "fr": "Orange",
+  "de": "Orange",
+  "pl": "Pomarańczowy",
+  "ru": "Оранжевый"
+ },
+ "PMC_HUDC_16": {
+  "en": "Orange Light",
+  "zh_cn": "浅橘",
+  "fr": "Orange clair",
+  "de": "Hellorange",
+  "pl": "Jasnopomarańczowy",
+  "ru": "Светло-оранжевый"
+ },
+ "PMC_HUDC_17": {
+  "en": "Orange Dark",
+  "zh_cn": "深橘",
+  "fr": "Orange foncé",
+  "de": "Dunkelorange",
+  "pl": "Ciemnopomarańczowy",
+  "ru": "Темно-оранжевый"
+ },
+ "PMC_HUDC_18": {
+  "en": "Green",
+  "zh_cn": "绿色",
+  "fr": "Vert",
+  "de": "Grün",
+  "pl": "Zielony",
+  "ru": "Зеленый"
+ },
+ "PMC_HUDC_19": {
+  "en": "Green Light",
+  "zh_cn": "浅绿",
+  "fr": "Vert clair",
+  "de": "Hellgrün",
+  "pl": "Jasnozielony",
+  "ru": "Светло-зеленый"
+ },
+ "PMC_HUDC_2": {
+  "en": "Black",
+  "zh_cn": "黑色",
+  "fr": "Noir",
+  "de": "Schwarz",
+  "pl": "Czarny",
+  "ru": "Черный"
+ },
+ "PMC_HUDC_20": {
+  "en": "Green Dark",
+  "zh_cn": "深绿",
+  "fr": "Vert foncé",
+  "de": "Dunkelgrün",
+  "pl": "Ciemnozielony",
+  "ru": "Темно-зеленый"
+ },
+ "PMC_HUDC_21": {
+  "en": "Purple",
+  "zh_cn": "紫色",
+  "fr": "Violet",
+  "de": "Violett",
+  "pl": "Fioletowy",
+  "ru": "Фиолетовый"
+ },
+ "PMC_HUDC_22": {
+  "en": "Purple Light",
+  "zh_cn": "浅紫",
+  "fr": "Violet clair",
+  "de": "Hellviolett",
+  "pl": "Jasnofioletowy",
+  "ru": "Светло-фиолетовый"
+ },
+ "PMC_HUDC_23": {
+  "en": "Purple Dark",
+  "zh_cn": "深紫",
+  "fr": "Violet foncé",
+  "de": "Dunkelviolett",
+  "pl": "Ciemnofioletowy",
+  "ru": "Темно-фиолетовый"
+ },
+ "PMC_HUDC_24": {
+  "en": "Pink",
+  "zh_cn": "粉色",
+  "fr": "Rose",
+  "de": "Pink",
+  "pl": "Różowy",
+  "ru": "Розовый"
+ },
+ "PMC_HUDC_3": {
+  "en": "Grey",
+  "zh_cn": "灰色",
+  "fr": "Gris",
+  "de": "Grau",
+  "pl": "Szary",
+  "ru": "Серый"
+ },
+ "PMC_HUDC_4": {
+  "en": "Grey Light",
+  "zh_cn": "浅灰",
+  "fr": "Gris clair",
+  "de": "Hellgrau",
+  "pl": "Jasnoszary",
+  "ru": "Светло-серый"
+ },
+ "PMC_HUDC_5": {
+  "en": "Grey Dark",
+  "zh_cn": "深灰",
+  "fr": "Gris foncé",
+  "de": "Dunkelgrau",
+  "pl": "Ciemnoszary",
+  "ru": "Темно-серый"
+ },
+ "PMC_HUDC_6": {
+  "en": "Red",
+  "zh_cn": "红色",
+  "fr": "Rouge",
+  "de": "Rot",
+  "pl": "Czerwony",
+  "ru": "Красный"
+ },
+ "PMC_HUDC_7": {
+  "en": "Red Light",
+  "zh_cn": "浅红",
+  "fr": "Rouge clair",
+  "de": "Hellrot",
+  "pl": "Jasnoczerwony",
+  "ru": "Светло-красный"
+ },
+ "PMC_HUDC_8": {
+  "en": "Red Dark",
+  "zh_cn": "深红",
+  "fr": "Rouge foncé",
+  "de": "Dunkelrot",
+  "pl": "Ciemnoczerwony",
+  "ru": "Темно-красный"
+ },
+ "PMC_HUDC_9": {
+  "en": "Blue",
+  "zh_cn": "蓝色",
+  "fr": "Bleu",
+  "de": "Blau",
+  "pl": "Niebieski",
+  "ru": "Синий"
+ },
+ "PMC_OJT_TXCN": {
+  "en": "Any Team",
+  "zh_cn": "任意团队",
+  "fr": "N'importe quelle équipe",
+  "de": "Beliebiges Team",
+  "pl": "Dowolna drużyna",
+  "ru": "Любая команда"
+ },
+ "PMC_OJT_TXCY": {
+  "en": "All Teams",
+  "zh_cn": "所有团队",
+  "fr": "Toutes les équipes",
+  "de": "Alle Teams",
+  "pl": "Wszystkie drużyny",
+  "ru": "Все команды"
+ },
+ "PMC_OL_MO_0": {
+  "en": "No",
+  "zh_cn": "否",
+  "fr": "Non",
+  "de": "Nein",
+  "pl": "Nie",
+  "ru": "Нет"
+ },
+ "PMC_OL_MO_1": {
+  "en": "Yes",
+  "zh_cn": "是",
+  "fr": "Oui",
+  "de": "Ja",
+  "pl": "Tak",
+  "ru": "Да"
+ },
+ "PMC_OL_TO_0": {
+  "en": "No",
+  "zh_cn": "否",
+  "fr": "Non",
+  "de": "Nein",
+  "pl": "Nie",
+  "ru": "Нет"
+ },
+ "PMC_OL_TO_1": {
+  "en": "Yes",
+  "zh_cn": "是",
+  "fr": "Oui",
+  "de": "Ja",
+  "pl": "Tak",
+  "ru": "Да"
+ },
+ "PMC_OPL_UF": {
+  "en": "None",
+  "zh_cn": "无",
+  "fr": "Aucun",
+  "de": "–",
+  "pl": "Brak",
+  "ru": "Нет"
+ },
+ "PMC_PRF_SLIDPRQ": {
+  "en": "Check Prop ~1~ Activate slide on Mission Flag",
+  "zh_cn": "检查道具µ~1~µ的按任务标志激活滑动",
+  "fr": "Vérifier la condition de mission pour activer le glissement de l'élément de décorµ~1~",
+  "de": "Missionsflag für Verschiebung von Zusatzelement ~1~ überprüfen",
+  "pl": "Sprawdź rekwizyt ~1~: Aktywacja przesunięcia na fladze misji",
+  "ru": "Проверить предмет ~1~: Активация по флагу задания"
+ },
+ "PMC_SEL_OFF": {
+  "en": "Off",
+  "zh_cn": "关闭",
+  "fr": "Sans",
+  "de": "Aus",
+  "pl": "Wył.",
+  "ru": "Выкл."
+ },
+ "PMC_SEL_ON": {
+  "en": "On",
+  "zh_cn": "开启",
+  "fr": "Avec",
+  "de": "Ein",
+  "pl": "Wł.",
+  "ru": "Вкл."
+ },
+ "PMC_SET_PRQ": {
+  "en": "Set Mission Flag",
+  "zh_cn": "设置任务标志",
+  "fr": "Définir la condition de mission",
+  "de": "Missionsflag festlegen",
+  "pl": "USTAW FLAGĘ MISJI",
+  "ru": "Установить флаг задания"
+ },
+ "PMC_SS_GB_0": {
+  "en": "Off",
+  "zh_cn": "关闭",
+  "fr": "Sans",
+  "de": "Aus",
+  "pl": "Wył.",
+  "ru": "Выкл."
+ },
+ "PMC_SS_GB_1": {
+  "en": "Merryweather",
+  "zh_cn": "梅利威瑟",
+  "fr": "Merryweather",
+  "de": "Merryweather",
+  "pl": "Merryweather",
+  "ru": "Мерриуэзер"
+ },
+ "PMC_SS_GB_10": {
+  "en": "O'Neil Bros.",
+  "zh_cn": "奥尼尔兄弟",
+  "fr": "Frères O'Neil",
+  "de": "O'Neil-Brüder",
+  "pl": "Bracia O'Neil",
+  "ru": "Братья О'Нил"
+ },
+ "PMC_SS_GB_14": {
+  "en": "Army (Mesa)",
+  "zh_cn": "军队（炎魔）",
+  "fr": "Armée (Mesa)",
+  "de": "Militär (Mesa)",
+  "pl": "Wojskowe (Mesa)",
+  "ru": "Военные (Mesa)"
+ },
+ "PMC_SS_GB_2": {
+  "en": "Lost",
+  "zh_cn": "失落摩托帮",
+  "fr": "Lost",
+  "de": "Lost",
+  "pl": "Lości",
+  "ru": "Пропащие"
+ },
+ "PMC_SS_GB_26": {
+  "en": "Professionals Frogger",
+  "zh_cn": "专业穿梭者",
+  "fr": "Frogger des professionnels",
+  "de": "Profis-Frogger",
+  "pl": "Frogger zawodowców",
+  "ru": "Frogger \"Профессионалов\""
+ },
+ "PMC_SS_GB_3": {
+  "en": "Vagos",
+  "zh_cn": "维戈斯帮",
+  "fr": "Vagos",
+  "de": "Vagos",
+  "pl": "Vagosi",
+  "ru": "Вагос"
+ },
+ "PMC_SS_GB_32": {
+  "en": "Merryweather Hunter",
+  "zh_cn": "梅利威瑟猎杀者",
+  "fr": "Hunter de Merryweather",
+  "de": "Merryweather-Hunter",
+  "pl": "Hunter Merryweather",
+  "ru": "Hunter \"Мерриуэзер\""
+ },
+ "PMC_SS_GB_36": {
+  "en": "Lazer Jets",
+  "zh_cn": "天煞飞机",
+  "fr": "Avions à réaction Lazer",
+  "de": "Lazer-Jets",
+  "pl": "Odrzutowce Lazer",
+  "ru": "Истребители Lazer"
+ },
+ "PMC_SS_GB_39": {
+  "en": "Bogdan Insurgent",
+  "zh_cn": "波格丹叛乱分子",
+  "fr": "Insurgent de Bogdan",
+  "de": "Bogdans Insurgent",
+  "pl": "Insurgent Bogdana",
+  "ru": "Insurgent Богдана"
+ },
+ "PMC_SS_GB_4": {
+  "en": "Families",
+  "zh_cn": "家族帮",
+  "fr": "Familles",
+  "de": "Families",
+  "pl": "Rodziny",
+  "ru": "\"Кенты\""
+ },
+ "PMC_SS_GB_41": {
+  "en": "Avon Buzzard",
+  "zh_cn": "埃万秃鹰直升机",
+  "fr": "Buzzard d'Avon",
+  "de": "Avons Buzzard",
+  "pl": "Buzzard Avona",
+  "ru": "Buzzard Эйвона"
+ },
+ "PMC_SS_GB_46": {
+  "en": "Hillbilly Caracara",
+  "zh_cn": "乡巴佬卡拉卡拉",
+  "fr": "Caracara de bouseux",
+  "de": "Hinterwäldler-Caracara",
+  "pl": "Wsiór Caracara",
+  "ru": "Caracara деревенщин"
+ },
+ "PMC_SS_GB_49": {
+  "en": "Config 1",
+  "zh_cn": "配置µ1",
+  "fr": "Configurationµ1",
+  "de": "Konfiguration 1",
+  "pl": "Konfiguracja 1",
+  "ru": "Конфигурация 1"
+ },
+ "PMC_SS_GB_5": {
+  "en": "Professionals",
+  "zh_cn": "专业人士",
+  "fr": "Professionnels",
+  "de": "Profis",
+  "pl": "Zawodowcy",
+  "ru": "Профессионалы"
+ },
+ "PMC_SS_GB_50": {
+  "en": "Config 2",
+  "zh_cn": "配置µ2",
+  "fr": "Configurationµ2",
+  "de": "Konfiguration 2",
+  "pl": "Konfiguracja 2",
+  "ru": "Конфигурация 2"
+ },
+ "PMC_SS_GB_51": {
+  "en": "Config 3",
+  "zh_cn": "配置µ3",
+  "fr": "Configurationµ3",
+  "de": "Konfiguration 3",
+  "pl": "Konfiguracja 3",
+  "ru": "Конфигурация 3"
+ },
+ "PMC_SS_GB_52": {
+  "en": "Config 4",
+  "zh_cn": "配置µ4",
+  "fr": "Configurationµ4",
+  "de": "Konfiguration 4",
+  "pl": "Konfiguracja 4",
+  "ru": "Конфигурация 4"
+ },
+ "PMC_SS_GB_6": {
+  "en": "Ballas",
+  "zh_cn": "巴勒帮",
+  "fr": "Ballas",
+  "de": "Ballas",
+  "pl": "Ballasi",
+  "ru": "Баллас"
+ },
+ "FMMC_SMSSTA_T": {
+  "en": "Send To All Teams",
+  "fr": "Envoyer à toutes les équipes",
+  "de": "An alle Teams senden",
+  "pl": "Wyślij wszystkim drużynom",
+  "ru": "Отправить всем командам",
+  "zh_cn": "发送到所有团队"
+ },
+ "FMMC_SMSPT": {
+  "en": "Points Required",
+  "fr": "Points requis",
+  "de": "Benötigte Punkte",
+  "pl": "Wymagane punkty",
+  "ru": "Очков требуется",
+  "zh_cn": "需要点数"
+ },
+ "FMMC_SMSDT": {
+  "en": "Trigger from Dialogue Trigger",
+  "fr": "Déclencheur du déclenchement dialogue",
+  "de": "Auslöser des Dialog-Auslösers",
+  "pl": "Wywzwalaj z Wyzwalacza dialogu",
+  "ru": "Запустить после запуска диалога",
+  "zh_cn": "触发从对话触发点"
+ },
+ "FMMC_ASSRL3_1": {
+  "en": "Objective Start",
+  "fr": "Apparition au début",
+  "de": "Beginn des Missionsziels",
+  "pl": "Początek celu misji",
+  "ru": "В точке старта",
+  "zh_cn": "目标起点"
+ },
+ "FMMC_ASSRL3_2": {
+  "en": "Objective Mid Point",
+  "fr": "Apparition à mi-chemin",
+  "de": "Mitte des Missionsziels",
+  "pl": "Środkowy punkt celu misji",
+  "ru": "Посередине",
+  "zh_cn": "目标中点"
+ },
+ "FMMC_SMS_UNK": {
+  "en": "Unknown Contact",
+  "fr": "Contact masqué",
+  "de": "Unbekannter Kontakt",
+  "pl": "Nieznany kontakt",
+  "ru": "Неизвестный номер",
+  "zh_cn": "未知联系人"
+ },
+ "FMMC_SS_RL_25": {
+  "en": "Time Delay",
+  "fr": "Délai",
+  "de": "Verzögerung",
+  "pl": "Opóźnienie",
+  "ru": "Задержка",
+  "zh_cn": "时间延迟"
+ },
+ "FMMC_SMS2": {
+  "en": "SMS Received",
+  "fr": "SMS reçu",
+  "de": "SMS erhalten",
+  "pl": "Otrzymano wiadomość SMS",
+  "ru": "Получено СМС",
+  "zh_cn": "收到短信息"
+ },
+ "PMCT_OOHCAM": {
+  "en": "Hint Cams",
+  "zh_cn": "提示镜头",
+  "fr": "Caméras d'astuce",
+  "de": "Hinweiskameras",
+  "pl": "Kamery pomocnicze",
+  "ru": "Фокус-камера"
+ },
+ "PMCH_OOHCAM": {
+  "en": "Set whether the Hint Cam is allowed on this Objective.",
+  "zh_cn": "设置是否允许在此目标上使用提示镜头。",
+  "fr": "Définissez si la caméra d'astuce est autorisée lors de cette mission.",
+  "de": "Legt fest, ob die Hinweiskamera bei diesem Missionsziel erlaubt ist.",
+  "pl": "Ustaw, czy przy tym celu misji można korzystać z kamer pomocniczych.",
+  "ru": "Указать, будет ли фокус-камера доступна при выполнении этой задачи."
+ }
+}

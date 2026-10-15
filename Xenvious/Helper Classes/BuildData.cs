@@ -37,6 +37,15 @@ namespace Xenvious
         private static readonly Lazy<RuleFields> ruleFieldsLegacy = new Lazy<RuleFields>(RuleFieldsLegacy);
         private static readonly Lazy<RuleFields> ruleFieldsEnhanced = new Lazy<RuleFields>(RuleFieldsEnhanced);
 
+        private static readonly Lazy<Dictionary<string, (int Bit, bool OnWhenClear)>> ruleOptionsLegacy =
+            new Lazy<Dictionary<string, (int Bit, bool OnWhenClear)>>(RuleOptionsLegacy);
+        private static readonly Lazy<Dictionary<string, (int Bit, bool OnWhenClear)>> ruleOptionsEnhanced =
+            new Lazy<Dictionary<string, (int Bit, bool OnWhenClear)>>(RuleOptionsEnhanced);
+
+        /// <summary>Bit numbers of the Rules page's yes/no options in the current edition (rule_options.json, RuleOptions).</summary>
+        public static Dictionary<string, (int Bit, bool OnWhenClear)> CurrentRuleOptions() =>
+            GameVariant.IsEnhanced ? ruleOptionsEnhanced.Value : ruleOptionsLegacy.Value;
+
         /// <summary>What moves with a rule in the current edition (rule_fields.json, RuleMover).</summary>
         public static RuleFields CurrentRuleFields() =>
             GameVariant.IsEnhanced ? ruleFieldsEnhanced.Value : ruleFieldsLegacy.Value;

@@ -1,0 +1,140 @@
+{
+ "GC_AGGRO": {
+  "key": "rl_aggro",
+  "field": 8648,
+  "bit": 17,
+  "on_when_clear": false
+ },
+ "GC_ALRTD": {
+  "key": "rl_chase",
+  "field": 8738,
+  "bit": 23,
+  "on_when_clear": false
+ },
+ "GC_FLEEOBJ": {
+  "key": "rl_chase",
+  "field": 8738,
+  "bit": 24,
+  "on_when_clear": false
+ },
+ "GC_ODIST": {
+  "key": "rl_chase",
+  "field": 8738,
+  "bit": 20,
+  "on_when_clear": true
+ },
+ "HO_TAS": {
+  "key": "irbs",
+  "field": 8432,
+  "bit": 0,
+  "on_when_clear": false
+ },
+ "HUD_HB": {
+  "key": "irbs",
+  "field": 8432,
+  "bit": 18,
+  "on_when_clear": false
+ },
+ "LAW_HELI": {
+  "key": "rl_heli",
+  "field": 8450,
+  "bit": 0,
+  "on_when_clear": true
+ },
+ "LAW_NOLOSE": {
+  "key": "irbs",
+  "field": 8432,
+  "bit": 2,
+  "on_when_clear": false
+ },
+ "OB_CHASE": {
+  "key": "rl_block",
+  "field": 8468,
+  "bit": 16,
+  "on_when_clear": false
+ },
+ "ODO_MCH": {
+  "key": "irbs",
+  "field": 8432,
+  "bit": 15,
+  "on_when_clear": true
+ },
+ "ODO_NWEP": {
+  "key": "rl_nwep",
+  "field": 8486,
+  "bit": 23,
+  "on_when_clear": true
+ },
+ "ODO_RDAR": {
+  "key": "rl_radar",
+  "field": 8702,
+  "bit": 11,
+  "on_when_clear": true
+ },
+ "OJT_ATL": {
+  "key": "rl_score",
+  "field": 8684,
+  "bit": 1,
+  "on_when_clear": false
+ },
+ "OJT_DOD": {
+  "key": "rl_dod",
+  "field": 8522,
+  "bit": 19,
+  "on_when_clear": true
+ },
+ "OJT_L_OUT": {
+  "key": "rl_lout",
+  "field": 8666,
+  "bit": 30,
+  "on_when_clear": false
+ },
+ "OJT_L_REQ": {
+  "key": "rl_lreq",
+  "field": 8576,
+  "bit": 5,
+  "on_when_clear": false
+ },
+ "OJT_TXC": {
+  "key": "rl_chase",
+  "field": 8738,
+  "bit": 28,
+  "on_when_clear": false
+ },
+ "OL_MO": {
+  "key": "rl_chase",
+  "field": 8738,
+  "bit": 10,
+  "on_when_clear": false
+ },
+ "OL_TLSC": {
+  "key": "rl_score",
+  "field": 8684,
+  "bit": 23,
+  "on_when_clear": false
+ },
+ "OL_WANT": {
+  "key": "irbs",
+  "field": 8432,
+  "bit": 3,
+  "on_when_clear": false
+ },
+ "OL_WANTF": {
+  "key": "irbs",
+  "field": 8432,
+  "bit": 23,
+  "on_when_clear": false
+ },
+ "OMF_BOC": {
+  "key": "rl_boc",
+  "field": 8720,
+  "bit": 24,
+  "on_when_clear": false
+ },
+ "OOHCAM": {
+  "key": "rl_aggro",
+  "field": 8648,
+  "bit": 0,
+  "on_when_clear": true
+ }
+}

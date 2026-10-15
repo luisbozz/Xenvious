@@ -317,6 +317,74 @@ namespace Xenvious
                 new Global(addr).SetInt(EncodeJump(ruleIndex));
         }
 
+        /// <summary>
+        /// Takes everything out of one rule: entities and player rules leave it (priority
+        /// PriorityNone, like an entity the creator never gave a rule), extra objectives on it are
+        /// removed and pass/fail jumps to it become "no jump". Rule data stays; the caller shrinks
+        /// nrl so the rule is no longer part of the job.
+        /// </summary>
+        public static void Unlink(int team, int rule)
+        {
+            if (!Ready)
+                return;
+            foreach (var s in Sources())
+            {
+                if (s.Number == 0 || s.Pri == 0)
+                    continue;
+                int n = new Global(s.Number).Get<int>();
+                for (int i = 0; i < n && i < 1000; i++)
+                {
+                    long at = team + i * s.Next;
+                    var pri = new Global(s.Pri + at);
+                    if (pri.Get<int>() == rule)
+                        pri.SetInt(PriorityNone);
+                    ClearJump(s.Pass == 0 ? 0 : s.Pass + at, rule);
+                    ClearJump(s.Fail == 0 ? 0 : s.Fail + at, rule);
+                }
+            }
+
+            if (GTA.Offsets.Editor.Kill.number != 0 && GTA.Offsets.Editor.Kill.pri != 0)
+            {
+                var number = new Global(GTA.Offsets.Editor.Kill.number + team);
+                int n = number.Get<int>();
+                for (int i = 0; i < n && i < MaxRules; i++)
+                {
+                    long at = team + i * GTA.Offsets.Editor.Kill.NEXT;
+                    var pri = new Global(GTA.Offsets.Editor.Kill.pri + at);
+                    if (pri.Get<int>() == rule)
+                        pri.SetInt(PriorityNone);
+                    ClearJump(GTA.Offsets.Editor.Kill.jtop == 0 ? 0 : GTA.Offsets.Editor.Kill.jtop + at, rule);
+                    ClearJump(GTA.Offsets.Editor.Kill.jtof == 0 ? 0 : GTA.Offsets.Editor.Kill.jtof + at, rule);
+                }
+                // Player rules left at the end without a rule are dropped from the count.
+                while (n > 0 && new Global(GTA.Offsets.Editor.Kill.pri + team + (n - 1) * GTA.Offsets.Editor.Kill.NEXT).Get<int>() == PriorityNone)
+                    n--;
+                number.SetInt(n);
+            }
+
+            for (int slot = 0; slot < ExtraObjectives.Slots; slot++)
+            {
+                if (ExtraObjectives.EntityId(slot) < 0)
+                    continue;
+                foreach (var extra in ExtraObjectives.Rules(slot, team))
+                    if (extra.Priority == rule)
+                        ExtraObjectives.Remove(slot, extra.Index, team);
+            }
+
+            SetFailsMission(team, rule, false);
+            if (GTA.Offsets.Editor.txt0 != 0)
+                SetText(team, rule, "");
+        }
+
+        private static void ClearJump(long addr, int rule)
+        {
+            if (addr == 0)
+                return;
+            var g = new Global(addr);
+            if (DecodeJump(g.Get<int>()) == rule)
+                g.SetInt(EncodeJump(-1));
+        }
+
         /// <summary>Every rule of the team with what points at it and its settings.</summary>
         public static List<Rule> Read(int team)
         {

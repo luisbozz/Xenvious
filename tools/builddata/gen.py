@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Generates Xenvious/Generated/*.g.cs from the build data in Xenvious/OfflineData/<edition>/.
 
-offsets.ini, scrpatches.json, prop_lists.json and rule_fields.json stay the files people and ysc-global-updater edit. Xenvious
+offsets.ini, scrpatches.json, prop_lists.json, rule_fields.json and rule_options.json stay the files people and ysc-global-updater edit. Xenvious
 does not read them at runtime any more: this turns them into C# with every value already a
 number (paths resolved with their array size slots, see builddata.py), so the start does no
 parsing and a key the code names but the files lack is a compile error instead of a silent 0.
@@ -290,16 +290,46 @@ def gen_rule_fields(fields, ed: str, Ed: str) -> str:
     return "\n".join(lines)
 
 
+def load_rule_options() -> dict:
+    out = {}
+    for ed, _ in EDITIONS:
+        path = DATA / ed / "rule_options.json"
+        out[ed] = json.loads(path.read_text(encoding="utf-8-sig")) if path.is_file() else {}
+    return out
+
+
+def gen_rule_options(options, inis, ed: str, Ed: str) -> str:
+    """rule_options.json as label -> (bit, on while clear). Each option's field must be the last
+    field of the offsets.ini key it names, or the bit would land in another field."""
+    ini = inis[ed]
+    lines = [HEADER, "using System.Collections.Generic;", "", "namespace Xenvious", "{", "    public sealed partial class BuildData", "    {",
+             f"        /// <summary>OfflineData/{ed}/rule_options.json: bit numbers of the Rules page's yes/no options (RuleOptions).</summary>",
+             f"        private static Dictionary<string, (int Bit, bool OnWhenClear)> RuleOptions{Ed}() => new Dictionary<string, (int, bool)>",
+             "        {"]
+    for label, e in options[ed].items():
+        path = ini.get(("OFFSETS", "offset_" + e["key"].lower()))
+        if path is None:
+            raise SystemExit(f"rule_options.json ({ed}): {label} names offsets.ini key {e['key']}, which is missing")
+        last = re.findall(r"\.f_(\d+)", path)
+        if not last or int(last[-1]) != e["field"]:
+            raise SystemExit(f"rule_options.json ({ed}): {label} edits f_{e['field']}, but OFFSET_{e['key']} is {path}")
+        lines.append(f'            ["{label}"] = ({e["bit"]}, {"true" if e["on_when_clear"] else "false"}),')
+    lines += ["        };", "    }", "}", ""]
+    return "\n".join(lines)
+
+
 def outputs() -> dict:
     inis = load_inis()
     lists = load_prop_lists()
     rules = load_rule_fields()
+    options = load_rule_options()
     out = {"BuildData.g.cs": gen_shape(inis), "PropLists.g.cs": gen_prop_lists_shape(lists)}
     for ed, Ed in EDITIONS:
         out[f"BuildData.{Ed}.g.cs"] = gen_edition(inis, ed, Ed)
         out[f"ScrPatches.{Ed}.g.cs"] = gen_patches(ed, Ed)
         out[f"PropLists.{Ed}.g.cs"] = gen_prop_lists(lists, ed, Ed)
         out[f"RuleFields.{Ed}.g.cs"] = gen_rule_fields(rules, ed, Ed)
+        out[f"RuleOptions.{Ed}.g.cs"] = gen_rule_options(options, inis, ed, Ed)
     return out
 
 

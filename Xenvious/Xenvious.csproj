@@ -189,6 +189,7 @@
     <Compile Include="Controls\GtaTextAssist.cs" />
     <Compile Include="Controls\RulesView.cs" />
     <Compile Include="Controls\RulesView.Flow.cs" />
+    <Compile Include="Controls\RulesView.Detail.cs" />
     <Compile Include="Controls\EntityRulesCard.cs" />
     <Compile Include="Controls\SectionCard.cs" />
     <Compile Include="Controls\HeadingSlider.cs" />
@@ -265,6 +266,7 @@
     <Compile Include="Creator Classes\EntityMover.cs" />
     <Compile Include="Creator Classes\EntityRules.cs" />
     <Compile Include="Creator Classes\RuleMover.cs" />
+    <Compile Include="Creator Classes\RuleOptions.cs" />
     <Compile Include="Creator Classes\RuleFlow.cs" />
     <Compile Include="Creator Classes\VisibilityGroups.cs" />
     <Compile Include="Creator Classes\ScriptThreadLog.cs" />
@@ -277,6 +279,7 @@
     <Compile Include="Creator Classes\ScrProgramScanner.cs" />
     <Compile Include="Creator Classes\PlayAreaOverlay.cs" />
     <Compile Include="Creator Classes\EntityMarks.cs" />
+    <Compile Include="Creator Classes\Sms.cs" />
     <Compile Include="Creator Classes\OnlineTest.cs" />
     <Compile Include="Creator Classes\ScriptDrawer.cs" />
     <Compile Include="Creator Classes\ScriptSpace.cs" />
@@ -332,6 +335,8 @@
     <Compile Include="Generated\PropLists.Enhanced.g.cs" />
     <Compile Include="Generated\RuleFields.Legacy.g.cs" />
     <Compile Include="Generated\RuleFields.Enhanced.g.cs" />
+    <Compile Include="Generated\RuleOptions.Legacy.g.cs" />
+    <Compile Include="Generated\RuleOptions.Enhanced.g.cs" />
     <Compile Include="Helper Classes\AobCache.cs" />
     <Compile Include="Helper Classes\BattlEye.cs" />
     <Compile Include="JSON\Converters\JsonDecimalConverter.cs" />
@@ -582,6 +587,7 @@
     <EmbeddedResource Include="OfflineData\vehicles.json" />
     <EmbeddedResource Include="OfflineData\placement_presets.json" />
     <EmbeddedResource Include="OfflineData\weapons.json" />
+    <EmbeddedResource Include="OfflineData\rule_option_texts.json" />
     <EmbeddedResource Include="OfflineData\actors.json" />
     <EmbeddedResource Include="OfflineData\menubits.json" />
     <EmbeddedResource Include="OfflineData\jobkeys.txt" />

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -104,6 +104,24 @@ namespace Xenvious
             int step = to > from ? 1 : -1;
             for (int r = from; r != to; r += step)
                 Swap(team, r, r + step);
+        }
+
+        /// <summary>
+        /// Deletes a rule: it moves to the end first, so every later rule and every reference
+        /// shifts down by one like a move, then it is emptied and nrl drops by one. A team keeps
+        /// at least one rule.
+        /// </summary>
+        public static bool Delete(int team, int rule)
+        {
+            if (!Available)
+                return false;
+            int count = Rules.Count(team);
+            if (count < 2 || rule < 0 || rule >= count)
+                return false;
+            Move(team, rule, count - 1);
+            Rules.Unlink(team, count - 1);
+            Rules.SetNrl(team, count - 1);
+            return true;
         }
 
         /// <summary>Swaps rules a and b of the team with everything that belongs to them.</summary>

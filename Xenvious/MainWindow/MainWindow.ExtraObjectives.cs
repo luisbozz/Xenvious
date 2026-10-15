@@ -44,6 +44,15 @@ namespace Xenvious
                 list.SelectedIndex = index;
         }
 
+        /// <summary>Opens the SMS page at one message.</summary>
+        public void OpenSms(int index)
+        {
+            BtnSectionMission_Click(null, null);
+            ClickButton(BtnSectionSMS);
+            if (index >= 0 && index < ddsmsno.Items.Count)
+                ddsmsno.SelectedIndex = index;
+        }
+
         /// <summary>Opens the rules page at a team's rule.</summary>
         public void OpenRules(int team, int rule)
         {
