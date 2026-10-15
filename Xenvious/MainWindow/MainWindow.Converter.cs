@@ -120,15 +120,8 @@ namespace Xenvious
                 _convSync = false;
             }
 
-            var set = new List<int>();
             for (int i = 0; i < 32; i++)
-            {
-                bool on = (v & (1u << i)) != 0;
-                _convBits[i].IsChecked = on;
-                if (on)
-                    set.Add(i + 1);
-            }
-            Lblconvbinarynums.Content = set.Count == 0 ? "" : TranslateOr("conv_setbits", "Set bits (Xenvious):") + " " + string.Join(", ", set);
+                _convBits[i].IsChecked = (v & (1u << i)) != 0;
             ShowConverterHit();
         }
 

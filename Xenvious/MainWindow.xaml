@@ -11343,7 +11343,6 @@
                                             <!-- Four bytes of eight tiles, filled in code, numbered by bit index (0-31). -->
                                             <UniformGrid x:Name="ConvBitsPanel" Columns="4"/>
                                             <TextBlock FontSize="12" Foreground="{DynamicResource FaintTextBrush}" Margin="2,8,0,0" TextWrapping="Wrap" Text="{Binding Translation[conv_bits_hint], FallbackValue='Bit number 0-31 as in the scripts. A click switches the bit.'}"/>
-                                            <Label x:Name="Lblconvbinarynums" Padding="2,6,0,0" FontSize="13" Foreground="{DynamicResource TextColor}"/>
                                         </StackPanel>
                                     </DockPanel>
                                 </Border>
