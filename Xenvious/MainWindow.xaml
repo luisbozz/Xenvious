@@ -4151,6 +4151,8 @@
 
                                                                     <Button x:Name="BtnMissionotzone" Style="{DynamicResource CustomButton}"  Height="45" Content="{Binding Translation[otzoneheader], FallbackValue=Overtime Zone}" Click="BtnMissionotzone_Click" FontSize="20" Background="{DynamicResource ButtonHoverBackgroundBrush}"/>
 
+                                                                    <Button x:Name="BtnSectionTest" Style="{DynamicResource CustomButton}" Height="45" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Click="BtnSectionTest_Click" FontSize="20" Content="{Binding Translation[olt_nav], FallbackValue=Test}"/>
+
                                                                 </StackPanel>
                                                             </ScrollViewer>
                                                         </Grid>
@@ -4169,8 +4171,6 @@
                                                                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                                                                         <local:MasonryPanel Margin="0,12,0,12">
                                                                             <StackPanel>
-                                                                                <!-- Solo start and controller choice for LTS / Capture, for testing combinations. -->
-                                                                                <local:SoloTestCard x:Name="SoloTestCard"/>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <DockPanel>
                                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -7267,6 +7267,13 @@
                                                                 <!-- A team's rules with what points at them, jumps and limits; Controls/RulesView.cs. -->
                                                                 <local:RulesView x:Name="rulesView" Margin="10,0"/>
                                                             </TabItem>
+                                                            <TabItem x:Name="PageInnerMissionTest" Header="Test">
+                                                                <!-- "Test like online" and the solo / controller card (Controls/OnlineTestView.cs). -->
+                                                                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                                                    <local:OnlineTestView x:Name="OnlineTestPage"/>
+                                                                </ScrollViewer>
+                                                            </TabItem>
+
                                                             <TabItem x:Name="PageInnerMissionGoto" Header="Goto" >
 
                                                                 <!-- Card layout (docs/handoff/auto_page.py): one card per old column, headings as sub titles. -->

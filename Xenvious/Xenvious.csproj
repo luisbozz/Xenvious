@@ -208,6 +208,7 @@
     <Compile Include="Controls\MenuBitsView.cs" />
     <Compile Include="Controls\MatchSettingsCard.cs" />
     <Compile Include="Controls\SoloTestCard.cs" />
+    <Compile Include="Controls\OnlineTestView.cs" />
     <Compile Include="Controls\RowDragger.cs" />
     <Compile Include="Controls\VisibilityCard.cs" />
     <Compile Include="Controls\ZoneTypeSettingsCard.cs" />
@@ -276,6 +277,7 @@
     <Compile Include="Creator Classes\ScrProgramScanner.cs" />
     <Compile Include="Creator Classes\PlayAreaOverlay.cs" />
     <Compile Include="Creator Classes\EntityMarks.cs" />
+    <Compile Include="Creator Classes\OnlineTest.cs" />
     <Compile Include="Creator Classes\ScriptDrawer.cs" />
     <Compile Include="Creator Classes\ScriptSpace.cs" />
     <Compile Include="Creator Classes\ScriptVars.cs" />

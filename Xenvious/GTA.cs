@@ -1786,6 +1786,7 @@ namespace Xenvious
                 public static long tmvds = 0;
                 public static long bdprt = 0;
                 public static long bdpst = 0;
+                public static long phone_state = 0;
                 public static long txt0 = 0;
                 public static long txt_NEXT = 0;
                 public static long NEXT_txt = 0;

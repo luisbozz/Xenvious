@@ -29,6 +29,9 @@ namespace Xenvious
         // Original bytes of every address this session or an earlier one patched in the running
         // game, kept in %AppData%\Xenvious so a restarted Xenvious can still take patches out.
         private static readonly string JournalPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Xenvious", "scrpatches-session.json");
+        // The program each patch was last written into. A pass skips the full scan of a patch
+        // that still sits there: the mission controller is 7 MB, scanned per pattern every 250 ms.
+        private static readonly Dictionary<ScrPatches, ulong> writtenProgram = new Dictionary<ScrPatches, ulong>();
         private static Dictionary<ulong, string> journal;
         private static string journalSession;
 
@@ -43,6 +46,7 @@ namespace Xenvious
         {
             int tick = 0;
             bool templatesWereActive = false;
+            var onlineTestWasActive = new HashSet<string>();
             while (true)
             {
                 // Precise templates reacts to the creator menu, so it ticks every 50 ms.
@@ -58,6 +62,15 @@ namespace Xenvious
                 {
                     RevertTriggered("templates");
                 }
+                // "Test like online": a switch that went off (or the creator was left) takes its
+                // patches out; one that went on gets a pass at once.
+                var onlineTestActive = new HashSet<string>(OnlineTest.Features.Where(OnlineTest.Active));
+                bool onlineTestChanged = !onlineTestActive.SetEquals(onlineTestWasActive);
+                if (onlineTestChanged)
+                    Log.Info("online test active: " + (onlineTestActive.Count == 0 ? "none" : string.Join(", ", onlineTestActive)), source: "OnlineTest");
+                foreach (string feature in onlineTestWasActive.Except(onlineTestActive))
+                    RevertTriggered(OnlineTest.TriggerPrefix + feature);
+                onlineTestWasActive = onlineTestActive;
 
                 // A pass scans the script bytecode for every patch's pattern,
                 // and a patch is only ever written once -- appliedPatches sees
@@ -65,12 +78,14 @@ namespace Xenvious
                 // been loaded, which is not something that happens hundreds of
                 // times a second: every 250 ms, or at once when a triggered
                 // patch set was switched on.
-                if (MainWindow.m.IsProcOpen && (tick % 5 == 0 || templatesChanged))
+                if (MainWindow.m.IsProcOpen && (tick % 5 == 0 || templatesChanged || onlineTestChanged))
                 {
                     try { ScriptSpace.Reserve(); }
                     catch (Exception ex) { Log.Debug("ScriptSpace: " + ex.Message, source: "ScrPatchesRunner"); }
                     ScrPatchesRunner.ApplyPatches(GTA.Editor.ScrPatchesDev);
                     ScrPatchesRunner.ApplyPatches(GTA.Editor.ScrPatches);
+                    try { OnlineTest.Tick(); }
+                    catch (Exception ex) { Log.Debug("OnlineTest: " + ex.Message, source: "OnlineTest"); }
                     // Same reason: a creator script that was just loaded gets the kept prop changes.
                     ModdedPropMemory.Tick();
                     // Same thread: "nrl fix" leaves nrl as it is, which must never be below 1 at save.
@@ -100,7 +115,8 @@ namespace Xenvious
                 case "templates":
                     return PreciseTemplates.Active;
                 default:
-                    return false;
+                    return trigger.StartsWith(OnlineTest.TriggerPrefix, StringComparison.Ordinal)
+                        && OnlineTest.Active(trigger.Substring(OnlineTest.TriggerPrefix.Length));
             }
         }
 
@@ -215,6 +231,9 @@ namespace Xenvious
                     if (scrProgramPtr == 0)
                         continue;
 
+                    if (StillWritten(patch, scrProgramPtr))
+                        continue;
+
                     // falls values vorhanden -> Platzhalter {{ n }} ersetzen
                     string finalBytesToPatch = patch.bytes_to_patch;
                     if (patch.values != null && patch.values.Count > 0)
@@ -270,6 +289,7 @@ namespace Xenvious
                             appliedPatches.Add(patchAddress);
                             lock (written)
                             {
+                                writtenProgram[patch] = scrProgramPtr;
                                 if (!written.TryGetValue(patch, out var perAddress))
                                     written[patch] = perAddress = new Dictionary<ulong, byte[]>();
                                 if (patch.original_bytes != null)
@@ -359,6 +379,23 @@ namespace Xenvious
             {
                 return false;
             }
+        }
+
+        // Written into this very program and every address still holds the patch: nothing to do.
+        // Only for patches without values, whose bytes are known without a scan.
+        private static bool StillWritten(ScrPatches patch, ulong scrProgramPtr)
+        {
+            if (patch.values != null && patch.values.Count > 0)
+                return false;
+            Dictionary<ulong, byte[]> perAddress;
+            lock (written)
+            {
+                if (!writtenProgram.TryGetValue(patch, out ulong program) || program != scrProgramPtr
+                    || !written.TryGetValue(patch, out perAddress) || perAddress.Count == 0)
+                    return false;
+                perAddress = new Dictionary<ulong, byte[]>(perAddress);
+            }
+            return perAddress.Keys.All(a => HasBytes(a, patch.bytes_to_patch));
         }
 
         // The script at this address was loaded again: what was written there is gone.
@@ -478,11 +515,17 @@ namespace Xenvious
                 written.Remove(patch);
             }
 
+            lock (written)
+                writtenProgram.Remove(patch);
+            // Put the original back only over our own bytes: a script that has ended since (the
+            // mission controller after a test) may have left that memory to something else.
+            bool known = patch.values == null || patch.values.Count == 0;
             foreach (var entry in perAddress)
             {
                 try
                 {
-                    MainWindow.m.memory(entry.Key.ToString("X")).SetBytes(entry.Value);
+                    if (!known || HasBytes(entry.Key, patch.bytes_to_patch))
+                        MainWindow.m.memory(entry.Key.ToString("X")).SetBytes(entry.Value);
                 }
                 catch (Exception)
                 {
