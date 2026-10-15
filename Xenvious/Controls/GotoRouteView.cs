@@ -16,6 +16,7 @@ namespace Xenvious
     {
         public float X, Y, Z;
         public int WaitMs, Bits;
+        public float Radius;      // arrival radius (agrd), 0 = none
         public bool IsSet => !float.IsNaN(X) && !float.IsNaN(Y) && (X != 0 || Y != 0 || Z != 0);
     }
 
@@ -290,14 +291,27 @@ namespace Xenvious
             if (w <= 0 || !_live())
                 return;
             var start = _start();
-            var pts = new List<(int Index, float X, float Y)> { (-1, start.X, start.Y) };
+            var pts = new List<(int Index, float X, float Y, float R)> { (-1, start.X, start.Y, 0f) };
             int n = Count();
-            pts.AddRange(Enumerable.Range(0, n).Select(i => { var p = _read(i); return (i, p.X, p.Y); }));
-            double minX = pts.Min(p => p.X), maxX = pts.Max(p => p.X), minY = pts.Min(p => p.Y), maxY = pts.Max(p => p.Y);
+            pts.AddRange(Enumerable.Range(0, n).Select(i => { var p = _read(i); return (i, p.X, p.Y, p.Radius > 0 && p.Radius < 1000 ? p.Radius : 0f); }));
+            // The arrival circles fit into the view too.
+            double minX = pts.Min(p => p.X - p.R), maxX = pts.Max(p => p.X + p.R), minY = pts.Min(p => p.Y - p.R), maxY = pts.Max(p => p.Y + p.R);
             double scale = Math.Min((w - 40) / Math.Max(maxX - minX, 10), (h - 40) / Math.Max(maxY - minY, 10));
             double cx = (minX + maxX) / 2, cy = (minY + maxY) / 2;
             Point P(float x, float y) => new Point(w / 2 + (x - cx) * scale, h / 2 - (y - cy) * scale);
             SatelliteTiles.Draw(_map, w, h, cx, cy, scale);
+
+            // Arrival radius in the colour the creator draws it in game (a translucent red sphere).
+            foreach (var p in pts.Where(p => p.R > 0))
+            {
+                var at = P(p.X, p.Y);
+                double r = p.R * scale;
+                var ring = new Ellipse { Width = 2 * r, Height = 2 * r, StrokeThickness = 1.5, IsHitTestVisible = false,
+                    Fill = new SolidColorBrush(Color.FromArgb(0x55, 0xE8, 0x70, 0x78)), Stroke = new SolidColorBrush(Color.FromArgb(0xC0, 0xE8, 0x70, 0x78)) };
+                Canvas.SetLeft(ring, at.X - r);
+                Canvas.SetTop(ring, at.Y - r);
+                _map.Children.Add(ring);
+            }
 
             var line = new Polyline { StrokeThickness = 2.5, StrokeDashArray = new DoubleCollection { 3, 2.5 } };
             line.SetResourceReference(Shape.StrokeProperty, "AccentBrush");

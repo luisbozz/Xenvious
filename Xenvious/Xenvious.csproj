@@ -489,6 +489,7 @@
     <Compile Include="MainWindow\MainWindow.Doors.cs" />
     <Compile Include="MainWindow\MainWindow.EntityMove.cs" />
     <Compile Include="MainWindow\MainWindow.EntityMarks.cs" />
+    <Compile Include="MainWindow\MainWindow.ActorGotoCopy.cs" />
     <Compile Include="MainWindow\MainWindow.DynamicProps.cs" />
     <Compile Include="MainWindow\MainWindow.Edit.cs" />
     <Compile Include="MainWindow\MainWindow.Fixtures.cs" />
