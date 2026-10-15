@@ -275,6 +275,7 @@
     <Compile Include="Creator Classes\PreciseTemplates.cs" />
     <Compile Include="Creator Classes\ScrProgramScanner.cs" />
     <Compile Include="Creator Classes\PlayAreaOverlay.cs" />
+    <Compile Include="Creator Classes\EntityMarks.cs" />
     <Compile Include="Creator Classes\ScriptDrawer.cs" />
     <Compile Include="Creator Classes\ScriptSpace.cs" />
     <Compile Include="Creator Classes\ScriptVars.cs" />
@@ -476,6 +477,7 @@
     <Compile Include="MainWindow\MainWindow.DeleteItems.cs" />
     <Compile Include="MainWindow\MainWindow.Doors.cs" />
     <Compile Include="MainWindow\MainWindow.EntityMove.cs" />
+    <Compile Include="MainWindow\MainWindow.EntityMarks.cs" />
     <Compile Include="MainWindow\MainWindow.DynamicProps.cs" />
     <Compile Include="MainWindow\MainWindow.Edit.cs" />
     <Compile Include="MainWindow\MainWindow.Fixtures.cs" />

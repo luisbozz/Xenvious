@@ -360,6 +360,7 @@ namespace Xenvious
             catch (Exception ex) { Log.Error("player layout: " + ex); }
             InitEntityPicker();
             InitEntityMove();
+            InitEntityMarks();
         }
 
         public bool globalPtrSanityCheck(long value)
