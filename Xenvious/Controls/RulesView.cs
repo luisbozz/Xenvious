@@ -56,6 +56,7 @@ namespace Xenvious
         {
             _team = Math.Max(0, team);
             _selected = Math.Max(0, rule);
+            _cp = -1;
             _shownKey = null;
             if (_built)
                 Reload(true);
@@ -183,6 +184,7 @@ namespace Xenvious
 
             _rules = Rules.Read(_team);
             if (_selected >= _rules.Count) _selected = Math.Max(0, _rules.Count - 1);
+            LoadCheckpoints();
             string key = Signature();
             if (!force && key == _shownKey)
                 return;
@@ -217,7 +219,7 @@ namespace Xenvious
         }
 
         private string Signature()
-            => _team + "|" + _selected + "|" + Rules.PublicCreator + "|" + string.Join(";", _rules.Select(r =>
+            => _team + "|" + _selected + "|" + _cp + "|" + Rules.PublicCreator + "|" + RestartCheckpoints.Signature(_team, _rules.Count) + "|" + string.Join(";", _rules.Select(r =>
                 $"{r.Text}/{r.NextRules}/{r.TargetScore}/{r.ObjectiveScore}/{r.TakeoverMs}/{r.TimeLimit}/{r.FailsMission}/{string.Join(".", r.DropZones)}/{r.DropRadius}/" +
                 string.Join(",", r.Links.Select(l => $"{l.Kind}{l.Index}:{l.Type}:{l.Extra}:{l.PassJump}:{l.FailJump}:{Rules.FailJumpBlocked(l, _team, out _)}"))));
 
@@ -231,7 +233,7 @@ namespace Xenvious
                 Cursor = System.Windows.Input.Cursors.Hand };
             row.SetResourceReference(Border.BackgroundProperty, "SectionBackgroundBrush");
             row.SetResourceReference(Border.BorderBrushProperty, selected ? "AccentBrush" : "LineBrush");
-            row.MouseLeftButtonUp += (_, __) => { _selected = rule.Index; _joinError = null; Reload(true); };
+            row.MouseLeftButtonUp += (_, __) => { _selected = rule.Index; _cp = -1; _joinError = null; Reload(true); };
 
             var grid = new Grid();
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(48) });
@@ -290,6 +292,7 @@ namespace Xenvious
             foreach (var twice in rule.Links.Where(l => l.Extra && rule.Links.Any(o => !o.Extra && o.Kind == l.Kind && o.Index == l.Index)))
                 chips.Children.Add(Chip(string.Format(CultureInfo.CurrentCulture, T("rl_extra_same", "{0}: extra objective on its own rule"), KindName(twice.Kind) + " " + (twice.Index + 1)),
                     ChipKind.Warn, T("rl_extra_same_tip", "The entity's extra objective sits on the same rule as its own objective. Give it a later rule, then the team gets it after this one.")));
+            AddRestartChips(chips, rule.Index);
             middle.Children.Add(chips);
             var flowChips = FlowChips(rule.Index);
             if (flowChips != null)
@@ -325,7 +328,7 @@ namespace Xenvious
                 foreach (var part in new UIElement[] { num, middle.Children[0], chips, side })
                     part.Opacity = 0.5;
             row.Child = grid;
-            return Indented(row, reach, selected);
+            return WithCheckpointLines(Indented(row, reach, selected), rule.Index);
         }
 
         /// <summary>What the move grip says: how to use it, or why it is greyed out.</summary>

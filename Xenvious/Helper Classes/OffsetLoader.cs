@@ -1005,6 +1005,16 @@ namespace Xenvious
             GTA.Offsets.Editor.tmvhp = d.OFFSETS.tmvhp;
             GTA.Offsets.Editor.teamrvbh = d.OFFSETS.teamrvbh;
             GTA.Offsets.Editor.tmvds = d.OFFSETS.tmvds;
+            GTA.Offsets.Editor.rcp_rule = d.OFFSETS.rcp_rule;
+            GTA.Offsets.Editor.rcp_rule_NEXT = d.OFFSETS.rcp_rule_NEXT;
+            GTA.Offsets.Editor.rcp_pos = d.OFFSETS.rcp_pos;
+            GTA.Offsets.Editor.rcp_pos_team_NEXT = d.OFFSETS.rcp_pos_team_NEXT;
+            GTA.Offsets.Editor.rcp_pos_cp_NEXT = d.OFFSETS.rcp_pos_cp_NEXT;
+            GTA.Offsets.Editor.rcp_head = d.OFFSETS.rcp_head;
+            GTA.Offsets.Editor.rcp_head_team_NEXT = d.OFFSETS.rcp_head_team_NEXT;
+            GTA.Offsets.Editor.rcp_head_cp_NEXT = d.OFFSETS.rcp_head_cp_NEXT;
+            GTA.Offsets.Editor.rcp_time = d.OFFSETS.rcp_time;
+            GTA.Offsets.Editor.rcp_time_NEXT = d.OFFSETS.rcp_time_NEXT;
             GTA.Offsets.Editor.bdprt = d.OFFSETS.bdprt;
             GTA.Offsets.Editor.bdpst = d.OFFSETS.bdpst;
             GTA.Offsets.Editor.phone_state = d.OFFSETS.phone_state;

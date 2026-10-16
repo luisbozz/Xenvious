@@ -188,6 +188,7 @@
     <Compile Include="Controls\TestVehicleTuneView.cs" />
     <Compile Include="Controls\GtaTextAssist.cs" />
     <Compile Include="Controls\RulesView.cs" />
+    <Compile Include="Controls\RulesView.Checkpoints.cs" />
     <Compile Include="Controls\RulesView.Flow.cs" />
     <Compile Include="Controls\RulesView.Detail.cs" />
     <Compile Include="Controls\EntityRulesCard.cs" />
@@ -270,6 +271,7 @@
     <Compile Include="Creator Classes\EntityRules.cs" />
     <Compile Include="Creator Classes\RuleMover.cs" />
     <Compile Include="Creator Classes\WeaponPickups.cs" />
+    <Compile Include="Creator Classes\RestartCheckpoints.cs" />
     <Compile Include="Creator Classes\RuleOptions.cs" />
     <Compile Include="Creator Classes\RuleFlow.cs" />
     <Compile Include="Creator Classes\VisibilityGroups.cs" />

@@ -47,6 +47,7 @@ namespace Xenvious
             if (_deleteButton == null)
                 return;
             bool can = RuleMover.Available && _selected >= 0 && _selected < _rules.Count && _rules.Count > 1;
+            _deleteButton.Visibility = Visibility.Visible;
             _deleteButton.IsEnabled = can;
             _deleteButton.Opacity = can ? 1 : 0.4;
             _deleteButton.ToolTip = can ? T("rl_delete_tip", "Delete this rule")
@@ -96,6 +97,13 @@ namespace Xenvious
             {
                 _detailTitle.Text = "";
                 _detailTeam.Text = "";
+                return;
+            }
+            if (_cp >= 0 && RestartCheckpoints.Available)
+            {
+                _loading = true;
+                try { ShowCheckpointDetail(); }
+                finally { _loading = false; }
                 return;
             }
             var rule = _rules[_selected];

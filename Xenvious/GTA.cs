@@ -1831,6 +1831,16 @@ namespace Xenvious
                 public static long tmvhp = 0;
                 public static long teamrvbh = 0;
                 public static long tmvds = 0;
+                public static long rcp_rule = 0;
+                public static long rcp_rule_NEXT = 0;
+                public static long rcp_pos = 0;
+                public static long rcp_pos_team_NEXT = 0;
+                public static long rcp_pos_cp_NEXT = 0;
+                public static long rcp_head = 0;
+                public static long rcp_head_team_NEXT = 0;
+                public static long rcp_head_cp_NEXT = 0;
+                public static long rcp_time = 0;
+                public static long rcp_time_NEXT = 0;
                 public static long bdprt = 0;
                 public static long bdpst = 0;
                 public static long phone_state = 0;

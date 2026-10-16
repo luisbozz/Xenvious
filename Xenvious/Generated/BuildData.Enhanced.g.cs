@@ -958,6 +958,16 @@ namespace Xenvious
             d.OFFSETS.beast_next = 9;
             d.OFFSETS.tmvhp = 4851325;
             d.OFFSETS.tmvds = 4851330;
+            d.OFFSETS.rcp_rule = 4919727;
+            d.OFFSETS.rcp_rule_NEXT = 8;
+            d.OFFSETS.rcp_pos = 4856473;
+            d.OFFSETS.rcp_pos_team_NEXT = 92;
+            d.OFFSETS.rcp_pos_cp_NEXT = 13;
+            d.OFFSETS.rcp_head = 4856842;
+            d.OFFSETS.rcp_head_team_NEXT = 36;
+            d.OFFSETS.rcp_head_cp_NEXT = 5;
+            d.OFFSETS.rcp_time = 4851377;
+            d.OFFSETS.rcp_time_NEXT = 5;
             d.OFFSETS.bdprt = 4736914;
             d.OFFSETS.bdpst = 4736932;
             d.OFFSETS.phone_state = 21667;
