@@ -1223,15 +1223,6 @@
         "trigger": "onlinetest_traffic"
     },
     {
-        "patch_name": "online test own property",
-        "script_name": "fm_mission_controller",
-        "pattern": "4F ? ? 47 F1 06 71 08 2A 56 07 00 71 5D ? ? ? 06 1F 2A",
-        "offset": 13,
-        "bytes_to_patch": "2B 71 00 00",
-        "dev": false,
-        "trigger": "onlinetest_prop"
-    },
-    {
         "patch_name": "online test own tints and looks",
         "script_name": "fm_mission_controller",
         "pattern": "06 2A 56 ? ? 71 5D ? ? ? 06 1F 56 ? ? 38 00 5D ? ? ?",
