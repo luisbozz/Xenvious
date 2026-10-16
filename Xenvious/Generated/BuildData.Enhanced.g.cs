@@ -299,6 +299,7 @@ namespace Xenvious
             d.OFFSETS.veh_vehbr = 5051976;
             d.OFFSETS.veh_vehwtci = 5052223;
             d.OFFSETS.veh_objt = 5051883;
+            d.OFFSETS.veh_gotor = 5051877;
             d.OFFSETS.veh_team = 5051884;
             d.OFFSETS.veh_spwn = 5051885;
             d.OFFSETS.veh_spsrc = 5051886;
@@ -482,6 +483,7 @@ namespace Xenvious
             d.OFFSETS.actor_frr = 5073904;
             d.OFFSETS.actor_pspdl = 5074427;
             d.OFFSETS.actor_foll = 5073998;
+            d.OFFSETS.actor_gotor = 5073999;
             d.OFFSETS.actor_folr = 5074638;
             d.OFFSETS.actor_tmflw = 5074449;
             d.OFFSETS.actor_iaim = 5073964;

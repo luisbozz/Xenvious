@@ -194,6 +194,7 @@
     <Compile Include="Controls\EntityRulesCard.cs" />
     <Compile Include="Controls\SectionCard.cs" />
     <Compile Include="Controls\HeadingSlider.cs" />
+    <Compile Include="Controls\GotoRangeCard.cs" />
     <Compile Include="Controls\GotoRouteView.cs" />
     <Compile Include="Controls\GroupCard.cs" />
     <Compile Include="Controls\PlayerRulesView.cs" />
@@ -255,6 +256,7 @@
       <DependentUpon>PlacementPreview3D.xaml</DependentUpon>
     </Compile>
     <Compile Include="Creator Classes\Gangs.cs" />
+    <Compile Include="Creator Classes\GotoRanges.cs" />
     <Compile Include="Creator Classes\GangTypes.cs" />
     <Compile Include="Creator Classes\ExtraObjectives.cs" />
     <Compile Include="Creator Classes\GamePatches.cs" />

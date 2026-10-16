@@ -15,6 +15,8 @@ namespace Xenvious
             InitVehicleLayout();
             ActorExtraRules.Attach(ddactorno, ExtraObjectives.TypePed);
             Help(ActorExtraRules);
+            VehGotoRange.Attach(ddvehno, VehExtraRules, Rules.Kind.Vehicle);
+            ActorGotoRange.Attach(ddactorno, ActorExtraRules, Rules.Kind.Ped);
             ObjExtraRules.Attach(ddobjno, ExtraObjectives.TypeObject);
             Help(ObjExtraRules);
             GotoExtraRules.Attach(ddgotono, ExtraObjectives.TypeGoTo);

@@ -323,6 +323,7 @@ namespace Xenvious
             GTA.Offsets.Editor.Vehicle.vehbso = d.OFFSETS.veh_vehbso;
             GTA.Offsets.Editor.Vehicle.vehwtci = d.OFFSETS.veh_vehwtci;
             GTA.Offsets.Editor.Vehicle.objt = d.OFFSETS.veh_objt;
+            GTA.Offsets.Editor.Vehicle.gotor = d.OFFSETS.veh_gotor;
             GTA.Offsets.Editor.Vehicle.team = d.OFFSETS.veh_team;
             GTA.Offsets.Editor.Vehicle.spwn = d.OFFSETS.veh_spwn;
             GTA.Offsets.Editor.Vehicle.spsrc = d.OFFSETS.veh_spsrc;
@@ -486,6 +487,7 @@ namespace Xenvious
             GTA.Offsets.Editor.Actor.frr = d.OFFSETS.actor_frr;
             GTA.Offsets.Editor.Actor.pspdl = d.OFFSETS.actor_pspdl;
             GTA.Offsets.Editor.Actor.foll = d.OFFSETS.actor_foll;
+            GTA.Offsets.Editor.Actor.gotor = d.OFFSETS.actor_gotor;
             GTA.Offsets.Editor.Actor.folr = d.OFFSETS.actor_folr;
             GTA.Offsets.Editor.Actor.tmflw = d.OFFSETS.actor_tmflw;
             GTA.Offsets.Editor.Actor.iaim = d.OFFSETS.actor_iaim;

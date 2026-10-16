@@ -2765,7 +2765,10 @@
                                                                     <ColumnDefinition Width="14"/>
                                                                     <ColumnDefinition Width="*"/>
                                                                 </Grid.ColumnDefinitions>
-                                                                <local:EntityRulesCard x:Name="VehExtraRules" VerticalAlignment="Top"/>
+                                                                <StackPanel VerticalAlignment="Top">
+                                                                    <local:EntityRulesCard x:Name="VehExtraRules"/>
+                                                                    <local:GotoRangeCard x:Name="VehGotoRange" Margin="0,12,0,0"/>
+                                                                </StackPanel>
                                                                 <local:SectionCard x:Name="VehLifecycle" Grid.Column="2" VerticalAlignment="Top" Title="{Binding Translation[lc_card], FallbackValue=Lifecycle}"
                                                                                    Icon="M3,12 L7,12 L10,5 L14,19 L17,12 L21,12">
                                                                     <StackPanel>
@@ -7616,6 +7619,7 @@
                                                                 <local:ModelCard x:Name="ActorModelCard" Margin="0,0,0,12"/>
                                                             </StackPanel>
 <local:EntityRulesCard x:Name="ActorExtraRules" VerticalAlignment="Top"/>
+                                                                <local:GotoRangeCard x:Name="ActorGotoRange" VerticalAlignment="Top"/>
                                                             <StackPanel>
                                                                 <Border Style="{StaticResource DashCard}">
                                                                     <DockPanel>

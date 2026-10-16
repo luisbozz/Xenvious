@@ -221,9 +221,11 @@ namespace Xenvious
         private string Signature()
             => _team + "|" + _selected + "|" + _cp + "|" + Rules.PublicCreator + "|" + RestartCheckpoints.Signature(_team, _rules.Count) + "|" + string.Join(";", _rules.Select(r =>
                 $"{r.Text}/{r.NextRules}/{r.TargetScore}/{r.ObjectiveScore}/{r.TakeoverMs}/{r.TimeLimit}/{r.FailsMission}/{string.Join(".", r.DropZones)}/{r.DropRadius}/" +
-                string.Join(",", r.Links.Select(l => $"{l.Kind}{l.Index}:{l.Type}:{l.Extra}:{l.PassJump}:{l.FailJump}:{Rules.FailJumpBlocked(l, _team, out _)}"))));
+                string.Join(",", r.Links.Select(l => $"{l.Kind}{l.Index}:{l.Type}:{l.Extra}:{l.PassJump}:{l.FailJump}:{Rules.FailJumpBlocked(l, _team, out _)}:{(IsRangedGoto(l) ? GotoRanges.Get(l.Kind, l.Index) : 0)}"))));
 
         // ----- the list -----
+
+        private static bool IsRangedGoto(Rules.Link link) => !link.Extra && link.Type == 4 && (link.Kind == Rules.Kind.Vehicle || link.Kind == Rules.Kind.Ped);
 
         private FrameworkElement RuleRow(Rules.Rule rule, out FrameworkElement numOut)
         {
@@ -284,6 +286,14 @@ namespace Xenvious
             if (sms.Count > 0)
                 chips.Children.Add(Chip("✉ " + string.Format(CultureInfo.CurrentCulture, T("rl_sms_chip", "SMS {0}"), string.Join(", ", sms.Select(i => i + 1))), ChipKind.Plain,
                     string.Join("\n", sms.Select(i => (i + 1).ToString(CultureInfo.CurrentCulture) + ": " + Sms.Text(i)))));
+            // Go-to targets with their own range (GotoRanges): reached from that far away.
+            foreach (var link in rule.Links.Where(IsRangedGoto))
+            {
+                int range = GotoRanges.Get(link.Kind, link.Index);
+                if (range > 0)
+                    chips.Children.Add(Chip("◎ " + string.Format(CultureInfo.CurrentCulture, T("rl_range_chip", "{0} up to {1} m"), KindName(link.Kind) + " " + (link.Index + 1), range), ChipKind.Plain,
+                        T("rl_range_tip", "Go-to range: the target counts as reached as soon as a player is this close. Set on the entity's page.")));
+            }
             if (Rules.PublicCreator && rule.DropZones.Count == 0 && rule.Links.Any(Rules.IsDelivery))
                 chips.Children.Add(Chip(T("rl_drop_none", "no drop-off zone"), ChipKind.Warn,
                     T("rl_drop_none_tip", "Collect & deliver needs a drop-off. In the creator: the rule's Specify Drop-off Zones.")));

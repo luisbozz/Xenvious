@@ -799,6 +799,7 @@ namespace Xenvious
                     public static long vehbso = 0;
                     public static long vehwtci = 0;
                     public static long objt = 0;
+                    public static long gotor = 0;
                     public static long team = 0;
                     public static long spwn = 0;
                     public static long spsrc = 0;
@@ -981,6 +982,7 @@ namespace Xenvious
                     public static long frr = 0;
                     public static long pspdl = 0;
                     public static long foll = 0;
+                    public static long gotor = 0;
                     public static long folr = 0;
                     public static long tmflw = 0;
                     public static long iaim = 0;

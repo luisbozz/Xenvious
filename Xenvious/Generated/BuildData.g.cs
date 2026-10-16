@@ -405,6 +405,7 @@ namespace Xenvious
             public long veh_vehbr;
             public long veh_vehwtci;
             public long veh_objt;
+            public long veh_gotor;
             public long veh_team;
             public long veh_spwn;
             public long veh_spsrc;
@@ -588,6 +589,7 @@ namespace Xenvious
             public long actor_frr;
             public long actor_pspdl;
             public long actor_foll;
+            public long actor_gotor;
             public long actor_folr;
             public long actor_tmflw;
             public long actor_iaim;
@@ -1550,6 +1552,7 @@ namespace Xenvious
                     case "veh_vehbr": return veh_vehbr;
                     case "veh_vehwtci": return veh_vehwtci;
                     case "veh_objt": return veh_objt;
+                    case "veh_gotor": return veh_gotor;
                     case "veh_team": return veh_team;
                     case "veh_spwn": return veh_spwn;
                     case "veh_spsrc": return veh_spsrc;
@@ -1733,6 +1736,7 @@ namespace Xenvious
                     case "actor_frr": return actor_frr;
                     case "actor_pspdl": return actor_pspdl;
                     case "actor_foll": return actor_foll;
+                    case "actor_gotor": return actor_gotor;
                     case "actor_folr": return actor_folr;
                     case "actor_tmflw": return actor_tmflw;
                     case "actor_iaim": return actor_iaim;
