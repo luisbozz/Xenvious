@@ -1022,6 +1022,11 @@ namespace Xenvious
             GTA.Offsets.Editor.phone_state = d.OFFSETS.phone_state;
             GTA.Offsets.Editor.txt0 = d.OFFSETS.txt0;
             GTA.Offsets.Editor.txt_NEXT = d.OFFSETS.txt_NEXT;
+            GTA.Offsets.Editor.txt1 = d.OFFSETS.txt1;
+            GTA.Offsets.Editor.txt2 = d.OFFSETS.txt2;
+            GTA.Offsets.Editor.txt_blip = d.OFFSETS.txt_blip;
+            GTA.Offsets.Editor.txt_target = d.OFFSETS.txt_target;
+            GTA.Offsets.Editor.txt_targets = d.OFFSETS.txt_targets;
             GTA.Offsets.Editor.NEXT_txt = d.OFFSETS.NEXT_txt;
             GTA.Offsets.Editor.tstrt = d.OFFSETS.tstrt;
             // Per-rule arrays sit behind two size slots (team array, rule array); the three team

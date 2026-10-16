@@ -975,6 +975,11 @@ namespace Xenvious
             d.OFFSETS.phone_state = 21667;
             d.OFFSETS.txt0 = 4737141;
             d.OFFSETS.txt_NEXT = 16;
+            d.OFFSETS.txt1 = 4737414;
+            d.OFFSETS.txt2 = 4737687;
+            d.OFFSETS.txt_blip = 4739052;
+            d.OFFSETS.txt_target = 4737960;
+            d.OFFSETS.txt_targets = 4738233;
             d.OFFSETS.NEXT_txt = 273;
             d.OFFSETS.tstrt = 4888106;
             d.OFFSETS.next_settings = 71;

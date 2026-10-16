@@ -377,7 +377,52 @@ namespace Xenvious
         private FrameworkElement TextBody(Rules.Rule rule)
         {
             var panel = new StackPanel();
-            var box = new TextBox { Text = rule.Text ?? "", MaxLength = 63, BorderThickness = new Thickness(0), Background = Brushes.Transparent, Padding = new Thickness(0), FontSize = 13.5 };
+            panel.Children.Add(TextLine(rule.Text ?? "", text =>
+            {
+                Rules.SetText(_team, rule.Index, text);
+                rule.Text = text;
+            }));
+            panel.Children.Add(Say(string.IsNullOrWhiteSpace(rule.Text)
+                ? T("rl_text_empty_hint2", "Empty: the game shows its default text. Select text for colours, Ctrl+Space for icons and codes.")
+                : T("rl_text_hint2", "Shown at the bottom of the screen while the team is on this rule. Select text for colours, Ctrl+Space for icons.")));
+
+            // The further texts of the Mission Creator's text menu; all creators save them.
+            var more = new (Rules.TextKind Kind, string Label, string Fallback, string Help)[]
+            {
+                (Rules.TextKind.Second, "PMCT_OBJ2", "Objective Text 2", T("rl_text2_help", "Once the team has the entity: \"Deliver the ...\", \"Keep control of ...\". Empty: default text.")),
+                (Rules.TextKind.Third, "PMCT_OBJ3", "Objective Text 3", T("rl_text3_help", "For team mates while another player has it: \"Help deliver ...\". Empty: default text.")),
+                (Rules.TextKind.Blip, "PMC_OBLIP", "Objective Blip Name", T("rl_blip_help", "Name of the targets' blips on the map.")),
+                (Rules.TextKind.Target, "PMC_TKRT", "Target Name", T("rl_target_name_help", "Put into the default texts for one target (\"Kill the ...\").")),
+                (Rules.TextKind.Targets, "PMC_PTKRT", "Plural Target Name", T("rl_targets_name_help", "The same for several targets.")),
+            };
+            bool any = more.Any(m => Rules.HasText(m.Kind));
+            if (!any)
+                return panel;
+            bool open = _openGroups.Contains("texts");
+            int set = more.Count(m => !string.IsNullOrEmpty(Rules.Text(m.Kind, _team, rule.Index)));
+            var toggle = new TextBlock { Text = (open ? "▾ " : "▸ ") + T("rl_more_texts", "More texts") + (set > 0 ? " · " + set.ToString(CultureInfo.CurrentCulture) : ""),
+                FontSize = 12.5, FontWeight = FontWeights.SemiBold, Cursor = System.Windows.Input.Cursors.Hand, Margin = new Thickness(0, 4, 0, 6) };
+            toggle.SetResourceReference(TextBlock.ForegroundProperty, "AccentBrush");
+            toggle.MouseLeftButtonUp += (_, __) => { if (!_openGroups.Remove("texts")) _openGroups.Add("texts"); ShowDetail(); };
+            panel.Children.Add(toggle);
+            if (!open)
+                return panel;
+            foreach (var m in more.Where(x => Rules.HasText(x.Kind)))
+            {
+                var kind = m.Kind;
+                var label = new TextBlock { Text = RuleOptions.GameText(m.Label, m.Fallback), FontSize = 12.5, Margin = new Thickness(0, 4, 0, 4) };
+                label.SetResourceReference(TextBlock.ForegroundProperty, "TextColor");
+                panel.Children.Add(label);
+                panel.Children.Add(TextLine(Rules.Text(kind, _team, rule.Index), text => Rules.SetText(kind, _team, rule.Index, text)));
+                AddIf(panel, HelpLine(m.Help));
+            }
+            return panel;
+        }
+
+        // One 63-character text field with the colour and icon helper, written when it loses focus.
+        private Border TextLine(string current, Action<string> write)
+        {
+            var box = new TextBox { Text = current, MaxLength = 63, BorderThickness = new Thickness(0), Background = Brushes.Transparent, Padding = new Thickness(0), FontSize = 13.5 };
             box.SetResourceReference(Control.ForegroundProperty, "TextColor");
             box.SetResourceReference(System.Windows.Controls.Primitives.TextBoxBase.CaretBrushProperty, "TextColor");
             GtaTextAssist.Attach(box);
@@ -389,9 +434,9 @@ namespace Xenvious
             box.TextChanged += (_, __) => Count();
             box.LostKeyboardFocus += (_, __) =>
             {
-                if (_loading || !Live || box.Text == (rule.Text ?? "")) return;
-                Rules.SetText(_team, rule.Index, box.Text);
-                rule.Text = box.Text;
+                if (_loading || !Live || box.Text == current) return;
+                write(box.Text);
+                current = box.Text;
                 Reread();
             };
             var line = new DockPanel();
@@ -401,11 +446,7 @@ namespace Xenvious
             var field = new Border { CornerRadius = new CornerRadius(5), BorderThickness = new Thickness(1), Padding = new Thickness(9, 6, 9, 6), Margin = new Thickness(0, 0, 0, 6), Child = line };
             field.SetResourceReference(Border.BackgroundProperty, "TextBoxBackground");
             field.SetResourceReference(Border.BorderBrushProperty, "TextBoxBorder");
-            panel.Children.Add(field);
-            panel.Children.Add(Say(string.IsNullOrWhiteSpace(rule.Text)
-                ? T("rl_text_empty_hint2", "Empty: the game shows its default text. Select text for colours, Ctrl+Space for icons and codes.")
-                : T("rl_text_hint2", "Shown at the bottom of the screen while the team is on this rule. Select text for colours, Ctrl+Space for icons.")));
-            return panel;
+            return field;
         }
 
         // ----- 2: tasks -----

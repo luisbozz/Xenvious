@@ -1081,6 +1081,11 @@ namespace Xenvious
             public long phone_state;
             public long txt0;
             public long txt_NEXT;
+            public long txt1;
+            public long txt2;
+            public long txt_blip;
+            public long txt_target;
+            public long txt_targets;
             public long NEXT_txt;
             public long tstrt;
             public long next_settings;
@@ -2228,6 +2233,11 @@ namespace Xenvious
                     case "phone_state": return phone_state;
                     case "txt0": return txt0;
                     case "txt_next": return txt_NEXT;
+                    case "txt1": return txt1;
+                    case "txt2": return txt2;
+                    case "txt_blip": return txt_blip;
+                    case "txt_target": return txt_target;
+                    case "txt_targets": return txt_targets;
                     case "next_txt": return NEXT_txt;
                     case "tstrt": return tstrt;
                     case "next_settings": return next_settings;

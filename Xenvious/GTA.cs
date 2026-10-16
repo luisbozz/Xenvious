@@ -1848,6 +1848,11 @@ namespace Xenvious
                 public static long phone_state = 0;
                 public static long txt0 = 0;
                 public static long txt_NEXT = 0;
+                public static long txt1 = 0;
+                public static long txt2 = 0;
+                public static long txt_blip = 0;
+                public static long txt_target = 0;
+                public static long txt_targets = 0;
                 public static long NEXT_txt = 0;
                 public static long tstrt = 0;
                 // Rule presets (OFFSET_rp_*): field number -> offset; "teambits1/2", "f2389" and

@@ -156,6 +156,37 @@ namespace Xenvious
                 new Global(TextAddr(team, rule)).SetString(text ?? "");
         }
 
+        /// <summary>
+        /// The rule's further texts (public_mission_creator's text menu, PMCT_HO): text 2 once the
+        /// team has the entity ("Deliver the ...", "Keep control of ..."), text 3 for team mates
+        /// while another player has it ("Help deliver ..."), the blip name and the target's name
+        /// (one / several) that the default texts put in. Same 64-byte slots as the main text.
+        /// </summary>
+        public enum TextKind { Second, Third, Blip, Target, Targets }
+
+        private static long TextBase(TextKind kind)
+        {
+            switch (kind)
+            {
+                case TextKind.Second: return GTA.Offsets.Editor.txt1;
+                case TextKind.Third: return GTA.Offsets.Editor.txt2;
+                case TextKind.Blip: return GTA.Offsets.Editor.txt_blip;
+                case TextKind.Target: return GTA.Offsets.Editor.txt_target;
+                default: return GTA.Offsets.Editor.txt_targets;
+            }
+        }
+
+        public static bool HasText(TextKind kind) => TextBase(kind) != 0 && GTA.Offsets.Editor.txt_NEXT != 0;
+
+        public static string Text(TextKind kind, int team, int rule) =>
+            HasText(kind) && MainWindow.m.IsProcOpen ? new Global(TextBase(kind) + Team(team) + rule * GTA.Offsets.Editor.txt_NEXT).GetString(63) : "";
+
+        public static void SetText(TextKind kind, int team, int rule, string text)
+        {
+            if (HasText(kind) && MainWindow.m.IsProcOpen)
+                new Global(TextBase(kind) + Team(team) + rule * GTA.Offsets.Editor.txt_NEXT).SetString(text ?? "");
+        }
+
         private static long RuleField(long offset, int team, int rule) => offset + Team(team) + rule;
 
         public static int GetField(long offset, int team, int rule) => offset == 0 ? 0 : new Global(RuleField(offset, team, rule)).Get<int>();
