@@ -1012,8 +1012,8 @@ namespace Xenvious
             d.OFFSETS.mf_dyn_cln = 5032353;
             d.OFFSETS.mf_weap_spawn = 5041110;
             d.OFFSETS.mf_door = 5030264;
-            d.OFFSETS.mf_zone_on = 4942415;
-            d.OFFSETS.mf_zone_off = 4942420;
+            d.OFFSETS.mf_zone_on = 4948915;
+            d.OFFSETS.mf_zone_off = 4948920;
             d.OFFSETS.NEXT_txt = 273;
             d.OFFSETS.tstrt = 4888106;
             d.OFFSETS.next_settings = 71;
