@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Documents;
 using System.Windows.Media.Animation;
@@ -10,13 +11,15 @@ using System.Windows.Threading;
 
 namespace Xenvious
 {
-    // Part of MainWindow: the Edit side list search also finds fields on the pages (their labels
-    // and card titles), opens the page and flashes the field.
+    // Part of MainWindow: the Edit side list search also finds fields on the pages (their labels,
+    // switches and card titles), and the settings of pages built in code (Rules detail groups,
+    // Test page, inventory sets), opens the page and flashes the field. Matching: SmartSearch.
     public partial class MainWindow
     {
         private sealed class FieldHit
         {
-            public TextBlock Label;
+            public FrameworkElement Label;  // a label, a switch or a card
+            public Func<string> Text;       // read at search time (language changes)
             public EditNavEntry Entry;
             public EditNavSub Sub;
         }
@@ -41,11 +44,19 @@ namespace Xenvious
             _fieldIndex = new List<FieldHit>();
             foreach (var entry in EditNav.Where(e => e.Group < 2 && e.Page != null))
             {
-                foreach (var label in LogicalDescendants(entry.Page).OfType<TextBlock>())
+                foreach (var element in LogicalDescendants(entry.Page).OfType<FrameworkElement>())
                 {
-                    if (!IsSearchableLabel(label))
+                    Func<string> text = null;
+                    if (element is TextBlock label && IsSearchableLabel(label))
+                        text = () => label.Text;
+                    // A switch with its own text (weapon chips are no settings).
+                    else if (element is ToggleButton toggle && toggle.Content is string && toggle.Style != TryFindResource("ChipToggle"))
+                        text = () => toggle.Content as string;
+                    else if (element is SectionCard card)
+                        text = () => card.Title as string;
+                    if (text == null)
                         continue;
-                    _fieldIndex.Add(new FieldHit { Label = label, Entry = entry, Sub = SubFor(entry, label) });
+                    _fieldIndex.Add(new FieldHit { Label = element, Text = text, Entry = entry, Sub = SubFor(entry, element) });
                 }
             }
             return _fieldIndex;
@@ -54,7 +65,8 @@ namespace Xenvious
         private bool IsSearchableLabel(TextBlock label)
         {
             var style = label.Style;
-            return style != null && (style == TryFindResource("FieldLabel") || style == TryFindResource("FormLabel") || style == TryFindResource("DashCardTitle"));
+            return style != null && (style == TryFindResource("FieldLabel") || style == TryFindResource("FormLabel") || style == TryFindResource("DashCardTitle")
+                || style == TryFindResource("PageSectionLabel"));
         }
 
         private static IEnumerable<DependencyObject> LogicalDescendants(DependencyObject root)
@@ -100,29 +112,81 @@ namespace Xenvious
                     yield return tab;
         }
 
-        /// <summary>Field hits for the side list search, at most <paramref name="max"/>.</summary>
+        /// <summary>Field hits for the side list search, best first, at most <paramref name="max"/>.</summary>
         private List<(string Title, string Path, Action Open)> SearchFields(string query, int max)
         {
-            var hits = new List<(string, string, Action)>();
+            var hits = new List<(int Score, string Title, string Path, Action Open)>();
             var seen = new HashSet<string>();
             foreach (var hit in FieldIndex())
             {
                 if (!EditNavFits(hit.Entry) || (hit.Sub?.Button != null && hit.Sub.Button.Visibility != Visibility.Visible))
                     continue;
-                string text = hit.Label.Text?.Trim();
-                if (string.IsNullOrEmpty(text) || !Matches(text, query))
+                string text = hit.Text()?.Trim();
+                if (string.IsNullOrEmpty(text))
                     continue;
                 string page = TranslateOr(hit.Entry.Key, hit.Entry.Fallback);
                 string path = hit.Sub != null && SubLabel(hit.Sub) != page ? page + "  ›  " + SubLabel(hit.Sub) : page;
+                int score = SmartSearch.Score(query, text, path, hit.Label.ToolTip as string);
                 // The same label on the same page (e.g. "X" "Y" "Z" rows) shows once.
-                if (!seen.Add(text + "|" + path))
+                if (score == 0 || !seen.Add(text + "|" + path))
                     continue;
                 var target = hit;
-                hits.Add((text, path, () => RevealField(target)));
-                if (hits.Count >= max)
-                    break;
+                hits.Add((score, text, path, () => RevealField(target)));
             }
-            return hits;
+            foreach (var code in CodeSettings())
+            {
+                int score = SmartSearch.Score(query, code.Title, code.Path, code.Keywords);
+                if (score > 0 && seen.Add(code.Title + "|" + code.Path))
+                    hits.Add((score, code.Title, code.Path, code.Open));
+            }
+            return hits.OrderByDescending(h => h.Score).Take(max).Select(h => (h.Title, h.Path, h.Open)).ToList();
+        }
+
+        // Settings of pages that are built in code when shown, so the logical tree does not have
+        // them: the Rules page's detail groups and options, the Test page, the inventory sets.
+        private IEnumerable<(string Title, string Path, string Keywords, Action Open)> CodeSettings()
+        {
+            var mission = EditNav.FirstOrDefault(e => e.Key == "mission");
+            if (mission == null || !EditNavFits(mission))
+                yield break;
+            string missionName = TranslateOr("mission", "Mission");
+            string rules = missionName + "  ›  " + TranslateOr("rl_page", "Rules");
+            Action Rule(string group) => () => { OpenRules(); rulesView.RevealGroup(group); };
+
+            var groups = new List<(string Key, string Title, IEnumerable<string> Options)>
+            {
+                ("sms", TranslateOr("rl_g_sms", "Text messages"), new[] { "SMS" }),
+                ("teams", RuleOptions.GameText("PMCT_OJT_OPL", "Other Team Progress Limit"), new string[0]),
+                ("flags", RuleOptions.GameText("PMCT_OMF", "Mission Flags"), new[] { RuleOptions.GameText("PMCT_OJT_OLP", "Mission Flag Limit"), RuleOptions.GameText("PMCT_OMF_SOO", "Set On Start"), RuleOptions.GameText("PMCT_OMF_COO", "Clear On Start") }),
+                ("bounds", RuleOptions.GameText("PMCT_BNDS", "Bounds"), new string[0]),
+                ("wanted", TranslateOr("rl_g_wanted", "Wanted level"), RuleOptions.MoreGroups[0].Options.Select(RuleOptions.Title)),
+                ("drop", TranslateOr("dof_title", "Drop-off"), new[] { TranslateOr("dof_radius", "Radius"), TranslateOr("dof_shape", "Shape"), RuleOptions.GameText("PMCT_OJT_DOZ", "Specify Drop-off Zones") }),
+                ("beast", TranslateOr("rl_g_beast", "Beast mode"), new[] { "BST_HELTH", "BST_DMG", "BST_MOV", "BST_JMP", "BST_SPD", "BST_STELO", "AB_BSTS_ON" }.Select(l => RuleOptions.GameText("PMCT_" + l, l))),
+                ("texts", TranslateOr("rl_more_texts", "More texts"), new[] { RuleOptions.GameText("PMCT_OBJ2", "Objective Text 2"), RuleOptions.GameText("PMCT_OBJ3", "Objective Text 3"), RuleOptions.GameText("PMC_OBLIP", "Blip Name"), RuleOptions.GameText("PMC_TKRT", "Ticker Name"), RuleOptions.GameText("PMC_PTKRT", "Plural Ticker Name") }),
+                ("checkpoints", TranslateOr("rcp_title", "Restart checkpoints"), new[] { TranslateOr("rcp_roles", "Minimum players per role"), TranslateOr("rcp_b_test", "Test from this checkpoint"), TranslateOr("rcp_time", "Least time left after the restart"), TranslateOr("rcp_b_spawn", "Spawn points after the restart") }),
+            };
+            foreach (var g in RuleOptions.MoreGroups.Skip(1))
+                groups.Add((g.Key, TranslateOr(g.Key, g.Fallback), g.Options.Select(RuleOptions.Title)));
+            foreach (var g in groups)
+            {
+                var options = g.Options.Where(o => !string.IsNullOrWhiteSpace(o)).ToList();
+                yield return (g.Title, rules, string.Join(" ", options), Rule(g.Key));
+                foreach (string option in options)
+                    yield return (option, rules + "  ›  " + g.Title, null, Rule(g.Key));
+            }
+            foreach (var o in RuleOptions.EndOptions.Where(RuleOptions.Available))
+                yield return (RuleOptions.Title(o), rules + "  ›  " + TranslateOr("rl_b_end", "When the rule ends"), RuleOptions.Help(o), (Action)OpenRules);
+
+            string test = missionName + "  ›  " + TranslateOr("olt_title", "Test like online");
+            foreach (var e in OnlineTestView.SearchEntries())
+            {
+                string key = e.Key;
+                yield return (e.Name, test, e.Help, () => { BtnSectionMission_Click(null, null); ClickButton(BtnSectionTest); OnlineTestPage.Reveal(key); });
+            }
+
+            string inventory = missionName + "  ›  " + TranslateOr("inv_title", "Inventory");
+            foreach (string name in new[] { RuleOptions.GameText("PMCT_INV_TS_MM", "Secondary Inventory"), RuleOptions.GameText("PMCT_INV_TS_MM2", "Tertiary Inventory"), TranslateOr("inv_given", "Given when") })
+                yield return (name, inventory, TranslateOr("inv_mid_hint", ""), () => { BtnSectionMission_Click(null, null); ClickButton(BtnSectionInventory); });
         }
 
         private void RevealField(FieldHit hit)
@@ -134,7 +198,7 @@ namespace Xenvious
             Dispatcher.BeginInvoke(new Action(() =>
             {
                 hit.Label.BringIntoView();
-                FlashOutline.Show(hit.Label, InputFor(hit.Label));
+                FlashOutline.Show(hit.Label, hit.Label is TextBlock label ? InputFor(label) : null);
             }), DispatcherPriority.Loaded);
         }
 

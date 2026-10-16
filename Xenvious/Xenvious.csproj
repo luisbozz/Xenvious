@@ -532,6 +532,7 @@
     <Compile Include="MainWindow\MainWindow.Mission.cs" />
     <Compile Include="MainWindow\MainWindow.ModdedProps.cs" />
     <Compile Include="Helper Classes\OffsetLoader.cs" />
+    <Compile Include="Helper Classes\SmartSearch.cs" />
     <Compile Include="MainWindow\MainWindow.OnlineEnabler.cs" />
     <Compile Include="MainWindow\MainWindow.Props.cs" />
     <Compile Include="MainWindow\MainWindow.Race.cs" />

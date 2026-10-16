@@ -50,6 +50,30 @@ namespace Xenvious
             ("pv", T("olt_pv", "Personal vehicle like online"), T("olt_pv_help", "Jobs with \"Use Personal Vehicle\" or respawn in the personal vehicle use yours, as online. Only when the creator has your vehicle data loaded; not tested yet.")),
         };
 
+        /// <summary>Everything this page can be searched for: key, name, help (side list search).</summary>
+        public static IEnumerable<(string Key, string Name, string Help)> SearchEntries() =>
+            Switches.Concat(new[]
+            {
+                ("invincible", T("olt_invincible", "Invincible in the test"), T("olt_invincible_help", "")),
+                ("master", T("olt_title", "Test like online"), T("olt_hint", "")),
+            });
+
+        /// <summary>Scrolls to a switch of <see cref="SearchEntries"/> and flashes it.</summary>
+        public void Reveal(string key)
+        {
+            Build();
+            FrameworkElement target = key == "invincible" ? _invincible?.Parent as FrameworkElement
+                : key == "master" ? _master?.Parent as FrameworkElement
+                : _rows.TryGetValue(key, out var row) ? row.Row : null;
+            if (target == null)
+                return;
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                target.BringIntoView();
+                FlashOutline.Show(target, null);
+            }), DispatcherPriority.Loaded);
+        }
+
         private Border Card(string key, string fallback, UIElement content)
         {
             var title = new TextBlock { Text = T(key, fallback) };

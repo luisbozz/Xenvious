@@ -238,12 +238,39 @@ namespace Xenvious
         }
 
         // A box that opens and closes; closed it shows one line of what is set.
+        private readonly Dictionary<string, Border> _groupBoxes = new Dictionary<string, Border>();
+
+        /// <summary>For the side list search: opens a group of the rule detail (or "checkpoints") and flashes it.</summary>
+        public void RevealGroup(string key)
+        {
+            if (key == "checkpoints")
+            {
+                if (_cp < 0) PickCheckpoint(0);
+            }
+            else
+            {
+                _cp = -1;
+                _openGroups.Add(key);
+                _shownKey = null;
+                Reload(true);
+            }
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                FrameworkElement target = key == "checkpoints" ? (FrameworkElement)_detail : _groupBoxes.TryGetValue(key, out var box) ? box : null;
+                if (target == null)
+                    return;
+                target.BringIntoView();
+                FlashOutline.Show(target, null);
+            }), DispatcherPriority.Loaded);
+        }
+
         private Border Group(string key, string icon, string title, string summary, Func<FrameworkElement> body)
         {
             bool open = _openGroups.Contains(key);
             var right = new TextBlock { Text = (summary ?? "") + (open ? "  ▾" : "  ▸"), FontSize = 12, TextTrimming = TextTrimming.CharacterEllipsis, MaxWidth = 260 };
             right.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
             var box = Box(icon, title, right, open ? body() : new Border());
+            _groupBoxes[key] = box;
             var head = (DockPanel)((StackPanel)box.Child).Children[0];
             if (!open)
                 head.Margin = new Thickness(0);
