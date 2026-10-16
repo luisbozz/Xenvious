@@ -36,16 +36,21 @@
             ("vis_playarea", "Play areas (custom)"),
             ("vis_gangchase", "Gang chase areas (custom)"),
             ("vis_entitymarks", "Entity numbers (custom, LTS and Capture)"),
+            ("vis_checkpoints", "Restart checkpoint spawns (custom)"),
+            ("vis_gotorange", "Vehicle and actor go-to ranges (custom)"),
         };
 
         public const int PlayAreaBit = 7;
         public const int GangChaseBit = 8;
         // Stored inverted (set = off), so configs written before it existed have it on.
         public const int EntityMarkBit = 9;
+        // Also inverted: new switches start on.
+        public const int CheckpointBit = 10;
+        public const int GotoRangeBit = 11;
 
         private const int Mask = (1 << 7) - 1;
-        private const int AllBits = (1 << 10) - 1;
-        private const int Inverted = 1 << EntityMarkBit;
+        private const int AllBits = (1 << 12) - 1;
+        private const int Inverted = 1 << EntityMarkBit | 1 << CheckpointBit | 1 << GotoRangeBit;
         private static int? _wanted;
 
         public static int Wanted

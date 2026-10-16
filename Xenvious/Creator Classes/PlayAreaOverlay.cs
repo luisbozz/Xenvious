@@ -76,6 +76,7 @@ namespace Xenvious
             }
             // The selected entity's cone first, so a full drawer drops play areas, not it.
             bool marks = EntityMarks.ForCreator(script) && VisibilityGroups.IsOn(VisibilityGroups.EntityMarkBit);
+            shapes.InsertRange(0, RuleOverlay.Shapes());
             if (marks)
                 shapes.InsertRange(0, EntityMarks.Shapes());
             ScriptDrawer.Show(script, shapes);
