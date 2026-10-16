@@ -1133,6 +1133,24 @@
         "trigger": "onlinetest_phone"
     },
     {
+        "patch_name": "test without invincibility",
+        "script_name": "fm_lts_creator",
+        "pattern": "2C 01 ? ? 71 2C 08 ? ? 2C 01 ? ? 72 71 2C 0C ? ?",
+        "offset": 13,
+        "bytes_to_patch": "71",
+        "dev": false,
+        "trigger": "onlinetest_mortal"
+    },
+    {
+        "patch_name": "test without invincibility",
+        "script_name": "fm_capture_creator",
+        "pattern": "2C 01 ? ? 71 2C 08 ? ? 2C 01 ? ? 72 71 2C 0C ? ?",
+        "offset": 13,
+        "bytes_to_patch": "71",
+        "dev": false,
+        "trigger": "onlinetest_mortal"
+    },
+    {
         "patch_name": "online test inventory",
         "script_name": "fm_mission_controller",
         "pattern": "51 46 13 71 5D ? ? ? 06 56 ? ?",

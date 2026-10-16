@@ -17,7 +17,8 @@ namespace Xenvious
     {
         private readonly DispatcherTimer _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
         private readonly Dictionary<string, (CheckBox Toggle, TextBlock Badge, FrameworkElement Row)> _rows = new Dictionary<string, (CheckBox, TextBlock, FrameworkElement)>();
-        private CheckBox _master;
+        private CheckBox _master, _invincible;
+        private TextBlock _invincibleBadge;
         private WrapPanel _status;
         private FrameworkElement _body, _page;
         private bool _built, _sync;
@@ -41,7 +42,7 @@ namespace Xenvious
             ("inv", T("olt_inv", "Inventory like online"), T("olt_inv_help", "The team inventory with \"Remove Weapons before Spawn\" and Lock Weapons, instead of only the start weapon or the fixed test loadout.")),
             ("looks", T("olt_looks", "Own tints & outfit"), T("olt_looks_help", "Weapon tints and looks from your account when the job sets none. Only read, nothing is written.")),
             ("phone", T("olt_phone", "Phone & SMS"), T("olt_phone_help", "The phone opens and the job's text messages arrive.")),
-            ("death", T("olt_death", "Death by play area, zones & rules"), T("olt_death_help", "An expired play area timer, kill zones, gas and drowning (team option) kill like online. Invincibility from the test stays, so check it with it off.")),
+            ("death", T("olt_death", "Death by play area, zones & rules"), T("olt_death_help2", "An expired play area timer, kill zones, gas and drowning (team option) kill like online. To die from them, switch off \"Invincible in the test\" too.")),
             ("celeb", T("olt_celeb", "End screen"), T("olt_celeb_help", "The end cutscene and the celebration screen with the result, instead of only fading out. Experimental: if the test does not end afterwards, switch it off.")),
             ("time", T("olt_time", "Job time limit"), T("olt_time_help", "The job's overall time limit counts, not only the rule's.")),
             ("pick", T("olt_pick", "Weapon pickups like online"), T("olt_pick_help", "LTS and Capture pickups choose their weapon like online instead of using the raw type.")),
@@ -137,9 +138,27 @@ namespace Xenvious
             players.Children.Add(ph);
 
             var keep = new StackPanel { Margin = new Thickness(14, 12, 14, 8) };
+            // Invincibility has its own switch, independent of "Test like online".
+            var inv = new DockPanel { Margin = new Thickness(14, 12, 14, 12) };
+            _invincible = Toggle();
+            _invincible.Click += (_, __) => { if (!_sync) { OnlineTest.Invincible = _invincible.IsChecked == true; Refresh(); } };
+            DockPanel.SetDock(_invincible, Dock.Right);
+            inv.Children.Add(_invincible);
+            var invText = new StackPanel { Margin = new Thickness(0, 0, 12, 0) };
+            var invLine = new StackPanel { Orientation = Orientation.Horizontal };
+            invLine.Children.Add(Text(T("olt_invincible", "Invincible in the test"), 13, "TextColor"));
+            _invincibleBadge = Text("", 11, "FaintTextBrush");
+            _invincibleBadge.Margin = new Thickness(8, 1, 0, 0);
+            invLine.Children.Add(_invincibleBadge);
+            invText.Children.Add(invLine);
+            var invHelp = Text(T("olt_invincible_help", "On: as the creator does it, you cannot die. Off: the creator no longer makes you invincible when the test starts, so you take damage and die as online. Takes effect at the next test start."), 12, "FaintTextBrush");
+            invHelp.Margin = new Thickness(0, 2, 0, 0);
+            invText.Children.Add(invHelp);
+            inv.Children.Add(invText);
+            // Outside the switches' grid, which is greyed out while "Test like online" is off.
+            var healthCard = Card("olt_card_health", "Health in the test", inv);
             foreach (var (k, f) in new[]
             {
-                ("olt_keep_health", "Invincible: health and proofs as in the test."),
                 ("olt_keep_stats", "No XP, RP, stats or unlocks: a test writes nothing into your account."),
                 ("olt_keep_teams", "Team minimum players are not checked; alone your team would be out at once."),
             })
@@ -170,6 +189,7 @@ namespace Xenvious
 
             var page = new StackPanel();
             page.Children.Add(masterCard);
+            page.Children.Add(healthCard);
             page.Children.Add(grid);
             // Solo start and controller choice, moved here from General.
             page.Children.Add(new SoloTestCard());
@@ -191,6 +211,10 @@ namespace Xenvious
             try
             {
                 _master.IsChecked = on;
+                _invincible.IsChecked = OnlineTest.Invincible;
+                bool mortal = OnlineTest.AppliedCount("mortal") > 0;
+                _invincibleBadge.Text = mortal ? T("olt_badge_active", "active") : T("olt_badge_creator", "creator");
+                _invincibleBadge.SetResourceReference(TextBlock.ForegroundProperty, mortal ? "OkBrush" : "FaintTextBrush");
                 _body.IsEnabled = on;
                 _body.Opacity = on ? 1 : 0.5;
                 foreach (var entry in _rows)
@@ -225,8 +249,9 @@ namespace Xenvious
                     Chip(T("olt_status_classic", "Only the classic controller has these changes so far"), "WarnBrush");
                 else if (on)
                 {
-                    int active = OnlineTest.Features.Count(f => OnlineTest.IsOn(f) && OnlineTest.AppliedCount(f) > 0);
-                    int wanted = OnlineTest.Features.Count(OnlineTest.IsOn);
+                    var switches = OnlineTest.Features.Where(f => f != "mortal").ToList();
+                    int active = switches.Count(f => OnlineTest.IsOn(f) && OnlineTest.AppliedCount(f) > 0);
+                    int wanted = switches.Count(OnlineTest.IsOn);
                     Chip(string.Format(CultureInfo.CurrentCulture, T("olt_status_count", "{0} of {1} active"), active, wanted), "OkBrush");
                 }
             }
