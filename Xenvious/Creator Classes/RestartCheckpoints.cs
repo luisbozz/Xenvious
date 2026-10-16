@@ -147,6 +147,37 @@ namespace Xenvious
                 TimeField(team, cp).SetInt(Math.Max(0, ms));
         }
 
+        // ----- minimum players per role (trcmn) -----
+
+        public const int Roles = 4;
+        private const int RolesBit = 6;   // menubs3 bit 6, FMMC_MC_RLE "Roles"
+
+        public static bool RolesAvailable => MainWindow.m != null && MainWindow.m.IsProcOpen
+            && GTA.Offsets.Editor.rcp_minrole != 0 && GTA.Offsets.Editor.rcp_minrole_NEXT != 0 && GTA.Offsets.Editor.menubs3 != 0;
+
+        /// <summary>
+        /// The job option "Roles": players pick a role in the lobby (Global_1925996). Only then the
+        /// classic controller counts players per role and fails a team below trcmn (func_806).
+        /// </summary>
+        public static bool RolesOn => RolesAvailable && Functions.Read.checkbinary(RolesBit, GTA.Offsets.Editor.menubs3);
+
+        public static void SetRolesOn(bool on)
+        {
+            if (RolesAvailable)
+                Functions.Write.writebinary(RolesBit, GTA.Offsets.Editor.menubs3, on);
+        }
+
+        private static Global RoleField(int team, int role) =>
+            new Global(GTA.Offsets.Editor.rcp_minrole + team * GTA.Offsets.Editor.rcp_minrole_NEXT + role);
+
+        public static int MinPlayers(int team, int role) => RolesAvailable ? RoleField(team, role).Get<int>() : 0;
+
+        public static void SetMinPlayers(int team, int role, int players)
+        {
+            if (RolesAvailable)
+                RoleField(team, role).SetInt(Math.Max(0, Math.Min(32, players)));
+        }
+
         // ----- test from a checkpoint -----
 
         /// <summary>
@@ -195,6 +226,8 @@ namespace Xenvious
                     parts.Add(slot == null ? "-" : string.Format(CultureInfo.InvariantCulture, "{0:0.00},{1:0.00},{2:0.00},{3:0.0}", slot.Value.Pos.X, slot.Value.Pos.Y, slot.Value.Pos.Z, slot.Value.Heading));
                 }
             }
+            if (RolesAvailable)
+                parts.Add((RolesOn ? "R" : "r") + string.Join(",", Enumerable.Range(0, Roles).Select(r => MinPlayers(team, r))));
             return string.Join(";", parts) + "|t" + TestCheckpoint();
         }
     }

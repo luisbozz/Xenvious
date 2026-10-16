@@ -976,6 +976,8 @@ namespace Xenvious
             d.OFFSETS.rcp_time = 4851377;
             d.OFFSETS.rcp_time_NEXT = 5;
             d.OFFSETS.rcp_test = 2690055;
+            d.OFFSETS.rcp_minrole = 4915262;
+            d.OFFSETS.rcp_minrole_NEXT = 5;
             d.OFFSETS.bdprt = 4736914;
             d.OFFSETS.bdpst = 4736932;
             d.OFFSETS.phone_state = 21667;

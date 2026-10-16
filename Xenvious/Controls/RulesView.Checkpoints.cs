@@ -118,7 +118,42 @@ namespace Xenvious
             for (int cp = 0; cp < RestartCheckpoints.Count; cp++)
                 tiles.Children.Add(CheckpointTile(cp));
             stack.Children.Add(tiles);
+            if (RestartCheckpoints.RolesAvailable)
+                stack.Children.Add(RolesRow());
             return stack;
+        }
+
+        // Minimum players per role (trcmn); greyed out while the job's Roles option is off.
+        private FrameworkElement RolesRow()
+        {
+            int team = _team;
+            bool on = RestartCheckpoints.RolesOn;
+            var panel = new StackPanel { Margin = new Thickness(0, 12, 0, 0) };
+            var head = new DockPanel();
+            var toggle = new CheckBox { IsChecked = on, VerticalAlignment = VerticalAlignment.Center, ToolTip = T("rcp_roles_tip", "Job option \"Roles\" (menubs3 bit 6): players pick a role in the lobby.") };
+            toggle.SetResourceReference(StyleProperty, "FormToggle");
+            toggle.Click += (_, __) => { if (Live) { RestartCheckpoints.SetRolesOn(toggle.IsChecked == true); Reread(); } };
+            DockPanel.SetDock(toggle, Dock.Right);
+            head.Children.Add(toggle);
+            var title = new TextBlock { Text = T("rcp_roles", "Minimum players per role"), FontSize = 13.5, FontWeight = FontWeights.SemiBold, VerticalAlignment = VerticalAlignment.Center };
+            title.SetResourceReference(TextBlock.ForegroundProperty, "TextColor");
+            head.Children.Add(title);
+            panel.Children.Add(head);
+            panel.Children.Add(Faint(T("rcp_roles_hint", "With the job option Roles on, a team with fewer players in a role than set here is out. 0 = no limit. Classic controller only."), 12));
+            var boxes = new UniformGrid { Columns = RestartCheckpoints.Roles, Margin = new Thickness(-3, 6, -3, 0), Opacity = on ? 1 : 0.5 };
+            for (int r = 0; r < RestartCheckpoints.Roles; r++)
+            {
+                int role = r;
+                var cell = new StackPanel { Margin = new Thickness(3, 0, 3, 0) };
+                var label = new TextBlock { Text = string.Format(CultureInfo.CurrentCulture, T("rcp_role_n", "Role {0}"), r + 1), FontSize = 11.5, Margin = new Thickness(0, 0, 0, 3) };
+                label.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
+                cell.Children.Add(label);
+                var box = NumberBox(RestartCheckpoints.MinPlayers(team, role), null, v => RestartCheckpoints.SetMinPlayers(team, role, v));
+                cell.Children.Add(box);
+                boxes.Children.Add(cell);
+            }
+            panel.Children.Add(boxes);
+            return panel;
         }
 
         private FrameworkElement CheckpointTile(int cp)
