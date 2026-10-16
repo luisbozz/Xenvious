@@ -393,9 +393,9 @@ namespace Xenvious
             {
                 (Rules.TextKind.Second, "PMCT_OBJ2", "Objective Text 2", T("rl_text2_help", "Once the team has the entity: \"Deliver the ...\", \"Keep control of ...\". Empty: default text.")),
                 (Rules.TextKind.Third, "PMCT_OBJ3", "Objective Text 3", T("rl_text3_help", "For team mates while another player has it: \"Help deliver ...\". Empty: default text.")),
-                (Rules.TextKind.Blip, "PMC_OBLIP", "Objective Blip Name", T("rl_blip_help", "Name of the targets' blips on the map.")),
-                (Rules.TextKind.Target, "PMC_TKRT", "Target Name", T("rl_target_name_help", "Put into the default texts for one target (\"Kill the ...\").")),
-                (Rules.TextKind.Targets, "PMC_PTKRT", "Plural Target Name", T("rl_targets_name_help", "The same for several targets.")),
+                (Rules.TextKind.Blip, "PMC_OBLIP", "Blip Name", T("rl_blip_help", "Name of the targets' blips on the map.")),
+                (Rules.TextKind.Target, "PMC_TKRT", "Ticker Name", RuleOptions.GameText("PMCH_TKRT", T("rl_ticker_help", "Ticker text for one entity: \"a gold bar\" shows as \"Player1 collected a gold bar.\""))),
+                (Rules.TextKind.Targets, "PMC_PTKRT", "Plural Ticker Name", RuleOptions.GameText("PMCH_PTKRT", T("rl_tickers_help", "Ticker text for several entities: \"gold bars\" shows as \"Player1 delivered 5 gold bars.\""))),
             };
             bool any = more.Any(m => Rules.HasText(m.Kind));
             if (!any)
@@ -415,16 +415,17 @@ namespace Xenvious
                 var label = new TextBlock { Text = RuleOptions.GameText(m.Label, m.Fallback), FontSize = 12.5, Margin = new Thickness(0, 4, 0, 4) };
                 label.SetResourceReference(TextBlock.ForegroundProperty, "TextColor");
                 panel.Children.Add(label);
-                panel.Children.Add(TextLine(Rules.Text(kind, _team, rule.Index), text => Rules.SetText(kind, _team, rule.Index, text)));
+                // The creator refuses blip names over 23 characters (PMC_FOBLIP).
+                panel.Children.Add(TextLine(Rules.Text(kind, _team, rule.Index), text => Rules.SetText(kind, _team, rule.Index, text), kind == Rules.TextKind.Blip ? 23 : 63));
                 AddIf(panel, HelpLine(m.Help));
             }
             return panel;
         }
 
-        // One 63-character text field with the colour and icon helper, written when it loses focus.
-        private Border TextLine(string current, Action<string> write)
+        // One text field (63 characters unless less) with the colour and icon helper, written when it loses focus.
+        private Border TextLine(string current, Action<string> write, int maxLength = 63)
         {
-            var box = new TextBox { Text = current, MaxLength = 63, BorderThickness = new Thickness(0), Background = Brushes.Transparent, Padding = new Thickness(0), FontSize = 13.5 };
+            var box = new TextBox { Text = current, MaxLength = maxLength, BorderThickness = new Thickness(0), Background = Brushes.Transparent, Padding = new Thickness(0), FontSize = 13.5 };
             box.SetResourceReference(Control.ForegroundProperty, "TextColor");
             box.SetResourceReference(System.Windows.Controls.Primitives.TextBoxBase.CaretBrushProperty, "TextColor");
             GtaTextAssist.Attach(box);

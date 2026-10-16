@@ -159,8 +159,8 @@ namespace Xenvious
         /// <summary>
         /// The rule's further texts (public_mission_creator's text menu, PMCT_HO): text 2 once the
         /// team has the entity ("Deliver the ...", "Keep control of ..."), text 3 for team mates
-        /// while another player has it ("Help deliver ..."), the blip name and the target's name
-        /// (one / several) that the default texts put in. Same 64-byte slots as the main text.
+        /// while another player has it ("Help deliver ..."), the blip name and the ticker names
+        /// (one / several entities: "Player1 collected a gold bar"). Same 64-byte slots as the main text.
         /// </summary>
         public enum TextKind { Second, Third, Blip, Target, Targets }
 
