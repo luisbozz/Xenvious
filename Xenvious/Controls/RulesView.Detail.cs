@@ -120,6 +120,8 @@ namespace Xenvious
                 _detail.Children.Add(Box("→", T("rl_b_next", "Where it goes next"), null, NextBody(rule)));
                 if (ShowsDropOff(rule))
                     _detail.Children.Add(Group("drop", "⌖", T("dof_title", "Drop-off"), DropSummary(rule), () => DropBody(rule)));
+                if (BeastAvailable)
+                    _detail.Children.Add(Group("beast", "✦", T("rl_g_beast", "Beast mode"), BeastSummary(rule), () => BeastBody(rule)));
                 if (Sms.Ready)
                     _detail.Children.Add(Group("sms", "✉", T("rl_g_sms", "Text messages"), SmsSummary(rule), () => SmsBody(rule)));
                 if (Rules.Teams() > 1 && RuleOptions.OtherTeamsAvailable)

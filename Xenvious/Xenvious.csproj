@@ -188,6 +188,7 @@
     <Compile Include="Controls\TestVehicleTuneView.cs" />
     <Compile Include="Controls\GtaTextAssist.cs" />
     <Compile Include="Controls\RulesView.cs" />
+    <Compile Include="Controls\RulesView.Beast.cs" />
     <Compile Include="Controls\RulesView.Checkpoints.cs" />
     <Compile Include="Controls\RulesView.DropOff.cs" />
     <Compile Include="Controls\RulesView.Flow.cs" />
