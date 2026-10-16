@@ -189,6 +189,7 @@
     <Compile Include="Controls\GtaTextAssist.cs" />
     <Compile Include="Controls\RulesView.cs" />
     <Compile Include="Controls\RulesView.Checkpoints.cs" />
+    <Compile Include="Controls\RulesView.DropOff.cs" />
     <Compile Include="Controls\RulesView.Flow.cs" />
     <Compile Include="Controls\RulesView.Detail.cs" />
     <Compile Include="Controls\EntityRulesCard.cs" />
@@ -286,6 +287,7 @@
     <Compile Include="Creator Classes\PreciseTemplates.cs" />
     <Compile Include="Creator Classes\ScrProgramScanner.cs" />
     <Compile Include="Creator Classes\PlayAreaOverlay.cs" />
+    <Compile Include="Creator Classes\DropOffs.cs" />
     <Compile Include="Creator Classes\EntityMarks.cs" />
     <Compile Include="Creator Classes\Sms.cs" />
     <Compile Include="Creator Classes\OnlineTest.cs" />
