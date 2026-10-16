@@ -1069,14 +1069,23 @@ namespace Xenvious
                     if (block >= 0)
                         (waited.TryGetValue(block, out var b) ? b : waited[block] = new List<string>()).Add(where + " " + T("rl_fl_chase", "(chase)"));
                 }
+            // Entities, doors and zones (MissionFlagUses): the ones that set a flag count as switching it.
+            var entityUses = MissionFlagUses.All(T);
+            foreach (var pair in entityUses)
+                foreach (var use in pair.Value)
+                {
+                    string text = use.Entity + " " + T(use.Key, use.Fallback);
+                    var target = use.Sets ? changed : waited;
+                    (target.TryGetValue(pair.Key, out var l) ? l : target[pair.Key] = new List<string>()).Add(text);
+                }
             var panel = new StackPanel { Margin = new Thickness(0, 8, 0, 0) };
-            var head = new TextBlock { Text = T("rl_fl_overview", "Where each flag is used (all rules)"), FontSize = 13, FontWeight = FontWeights.SemiBold, Margin = new Thickness(0, 0, 0, 4) };
+            var head = new TextBlock { Text = T("rl_fl_overview2", "Where each flag is used (rules, entities, doors, zones)"), FontSize = 13, FontWeight = FontWeights.SemiBold, Margin = new Thickness(0, 0, 0, 4) };
             head.SetResourceReference(TextBlock.ForegroundProperty, "TextColor");
             panel.Children.Add(head);
             var used = changed.Keys.Union(waited.Keys).OrderBy(f => f).ToList();
             if (used.Count == 0)
             {
-                panel.Children.Add(Say(T("rl_fl_none", "No rule uses Mission Flags yet.")));
+                panel.Children.Add(Say(T("rl_fl_none2", "Nothing uses Mission Flags yet.")));
                 return panel;
             }
             foreach (int f in used)
@@ -1089,10 +1098,10 @@ namespace Xenvious
                 t.TextWrapping = TextWrapping.Wrap;
                 t.Margin = new Thickness(0, 0, 0, 3);
                 panel.Children.Add(t);
-                // The creator's own warnings, for rules; entities, doors and zones may still use the flag.
+                // The creator's own warnings; interactables and cutscenes are not looked at.
                 if (!changed.ContainsKey(f) || !waited.ContainsKey(f))
                 {
-                    var warn = Faint("   ⚠ " + RuleOptions.GameText(changed.ContainsKey(f) ? "PMCW_PO_NC" : "PMCW_PO_NM", "") + " " + T("rl_fl_rulesonly", "(Only rules are looked at; entities, doors and zones may use it too.)"), 11.5);
+                    var warn = Faint("   ⚠ " + RuleOptions.GameText(changed.ContainsKey(f) ? "PMCW_PO_NC" : "PMCW_PO_NM", "") + " " + T("rl_fl_notall", "(Interactables and cutscenes are not looked at.)"), 11.5);
                     warn.TextWrapping = TextWrapping.Wrap;
                     warn.SetResourceReference(TextBlock.ForegroundProperty, "WarnBrush");
                     warn.Margin = new Thickness(0, 0, 0, 4);

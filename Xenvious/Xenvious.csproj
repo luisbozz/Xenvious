@@ -296,6 +296,7 @@
     <Compile Include="Creator Classes\ScriptSpace.cs" />
     <Compile Include="Creator Classes\ScriptVars.cs" />
     <Compile Include="Creator Classes\ModdedPropSource.cs" />
+    <Compile Include="Creator Classes\MissionFlagUses.cs" />
     <Compile Include="Creator Classes\ModdedPropMemory.cs" />
     <Compile Include="Creator Classes\ModdedPropTable.cs" />
     <Compile Include="Creator Classes\nrcidcopy.cs" />
