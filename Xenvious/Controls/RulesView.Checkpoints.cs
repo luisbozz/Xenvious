@@ -132,6 +132,8 @@ namespace Xenvious
             var name = new TextBlock { FontWeight = FontWeights.Bold, FontSize = 13 };
             name.Inlines.Add(new System.Windows.Documents.Run("⚑ ") { Foreground = on ? CpBrush : (Brush)FindResource("FaintTextBrush") });
             name.Inlines.Add(new System.Windows.Documents.Run("CP " + (cp + 1)));
+            if (RestartCheckpoints.TestCheckpoint() == cp)
+                name.Inlines.Add(new System.Windows.Documents.Run("  ▶") { Foreground = (Brush)FindResource("OkBrush"), ToolTip = T("rcp_test_chip", "next test") });
             name.SetResourceReference(TextBlock.ForegroundProperty, on ? "TextColor" : "MutedTextBrush");
             stack.Children.Add(name);
             void Line(string text)
@@ -211,7 +213,25 @@ namespace Xenvious
                 null, string.Format(CultureInfo.CurrentCulture, T("rcp_time_tip", "{0}cmrt{1}: with less time left the team gets this much. 0 = as it is."), cp + 1, team));
             _detail.Children.Add(Box("⏱", T("rcp_b_time", "Time"), null, time));
 
-            _detail.Children.Add(Faint(T("rcp_note", "Only a real job offers the restart; the creator test ends at a fail. The creator saves these values with the job."), 12));
+            if (RestartCheckpoints.TestAvailable)
+            {
+                var test = new StackPanel();
+                bool armed = RestartCheckpoints.TestCheckpoint() == cp;
+                test.Children.Add(Say(armed
+                    ? T("rcp_test_armed", "The next creator test starts at this checkpoint: the rules before it are done and the team spawns at its points. It is used up once the test ends.")
+                    : T("rcp_test_hint", "Start the next creator test as after a restart from this checkpoint.")));
+                var row = new WrapPanel();
+                row.Children.Add(TextButton(armed ? T("rcp_test_off", "Start from the beginning again") : T("rcp_test_on", "Next test starts here"), null, () =>
+                {
+                    RestartCheckpoints.SetTestCheckpoint(armed ? -1 : cp);
+                    Reread();
+                }));
+                test.Children.Add(row);
+                _detail.Children.Add(Box("▶", T("rcp_b_test", "Test from this checkpoint"),
+                    armed ? EntityRulesCard.SummaryChip(T("rcp_test_chip", "next test"), "ok") : null, test));
+            }
+
+            _detail.Children.Add(Faint(T("rcp_note2", "A real job offers the restart after a fail; the creator test ends there. The creator saves these values with the job."), 12));
         }
 
         private FrameworkElement SpawnBody(int team, int cp)

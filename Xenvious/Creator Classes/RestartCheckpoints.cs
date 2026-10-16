@@ -147,6 +147,39 @@ namespace Xenvious
                 TimeField(team, cp).SetInt(Math.Max(0, ms));
         }
 
+        // ----- test from a checkpoint -----
+
+        /// <summary>
+        /// The reached checkpoints of the running job (Global_2686119.f_3930, bits 0-6; the
+        /// controller sets them, func_18950, and clears them when it cleans up, func_156). Set
+        /// before a creator test, the controller starts as after a restart: it completes the rules
+        /// before (func_948) and spawns at the checkpoint (func_16980). The Mission Creator's
+        /// "Test from checkpoint" does the same through public_mission_controller.
+        /// </summary>
+        public static bool TestAvailable => MainWindow.m != null && MainWindow.m.IsProcOpen && GTA.Offsets.Editor.rcp_test != 0;
+
+        /// <summary>The checkpoint the next test starts at, or -1.</summary>
+        public static int TestCheckpoint()
+        {
+            if (!TestAvailable)
+                return -1;
+            int v = new Global(GTA.Offsets.Editor.rcp_test).Get<int>();
+            for (int cp = Count - 1; cp >= 0; cp--)
+                if ((v & (1 << cp)) != 0)
+                    return cp;
+            return -1;
+        }
+
+        /// <summary>Lets the next test start at this checkpoint; -1 = from the start again.</summary>
+        public static void SetTestCheckpoint(int cp)
+        {
+            if (!TestAvailable)
+                return;
+            var g = new Global(GTA.Offsets.Editor.rcp_test);
+            int v = g.Get<int>() & ~((1 << Count) - 1);
+            g.SetInt(cp >= 0 && cp < Count ? v | (1 << cp) : v);
+        }
+
         /// <summary>For change detection on the Rules page.</summary>
         public static string Signature(int team, int rules)
         {
@@ -162,7 +195,7 @@ namespace Xenvious
                     parts.Add(slot == null ? "-" : string.Format(CultureInfo.InvariantCulture, "{0:0.00},{1:0.00},{2:0.00},{3:0.0}", slot.Value.Pos.X, slot.Value.Pos.Y, slot.Value.Pos.Z, slot.Value.Heading));
                 }
             }
-            return string.Join(";", parts);
+            return string.Join(";", parts) + "|t" + TestCheckpoint();
         }
     }
 }

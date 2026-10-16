@@ -1848,6 +1848,7 @@ namespace Xenvious
                 public static long rcp_head_cp_NEXT = 0;
                 public static long rcp_time = 0;
                 public static long rcp_time_NEXT = 0;
+                public static long rcp_test = 0;
                 public static long bdprt = 0;
                 public static long bdpst = 0;
                 public static long phone_state = 0;
