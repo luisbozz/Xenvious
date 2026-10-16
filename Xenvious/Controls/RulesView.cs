@@ -303,6 +303,15 @@ namespace Xenvious
                 chips.Children.Add(Chip(string.Format(CultureInfo.CurrentCulture, T("rl_extra_same", "{0}: extra objective on its own rule"), KindName(twice.Kind) + " " + (twice.Index + 1)),
                     ChipKind.Warn, T("rl_extra_same_tip", "The entity's extra objective sits on the same rule as its own objective. Give it a later rule, then the team gets it after this one.")));
             AddRestartChips(chips, rule.Index);
+            // Mid-mission inventories given when this team reaches this rule (InventoryView).
+            for (int t = 0; t < Rules.Teams(); t++)
+                for (int set = 1; set <= 2; set++)
+                {
+                    var trig = InventoryView.Trigger(t, set);
+                    if (trig.Team == _team && trig.Rule == rule.Index)
+                        chips.Children.Add(Chip("⚔ " + string.Format(CultureInfo.CurrentCulture, T("rl_inv_chip", "Team {0} gets weapons"), t + 1), ChipKind.Plain,
+                            T("rl_inv_chip_tip", "A mid-mission inventory is given here. Set on Mission › Inventory.")));
+                }
             middle.Children.Add(chips);
             var flowChips = FlowChips(rule.Index);
             if (flowChips != null)

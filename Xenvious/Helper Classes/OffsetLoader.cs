@@ -848,6 +848,11 @@ namespace Xenvious
             GTA.Offsets.Editor.minv2 = d.OFFSETS.minv2;
             GTA.Offsets.Editor.minv3 = d.OFFSETS.minv3;
             GTA.Offsets.Editor.minv4 = d.OFFSETS.minv4;
+            GTA.Offsets.Editor.inv_mm = d.OFFSETS.inv_mm;
+            GTA.Offsets.Editor.inv_mm_team = d.OFFSETS.inv_mm_team;
+            GTA.Offsets.Editor.inv_mm_rule = d.OFFSETS.inv_mm_rule;
+            GTA.Offsets.Editor.inv_mm2_team = d.OFFSETS.inv_mm2_team;
+            GTA.Offsets.Editor.inv_mm2_rule = d.OFFSETS.inv_mm2_rule;
             GTA.Offsets.Editor.teambal = d.OFFSETS.teambal;
             GTA.Offsets.Editor.clrovr = d.OFFSETS.clrovr;
             GTA.Offsets.Editor.nrl = d.OFFSETS.nrl;

@@ -809,6 +809,11 @@ namespace Xenvious
             d.OFFSETS.minv2 = 4723081;
             d.OFFSETS.minv3 = 4723082;
             d.OFFSETS.minv4 = 4723083;
+            d.OFFSETS.inv_mm = 4722785;
+            d.OFFSETS.inv_mm_team = 4723075;
+            d.OFFSETS.inv_mm_rule = 4723076;
+            d.OFFSETS.inv_mm2_team = 4723370;
+            d.OFFSETS.inv_mm2_rule = 4723371;
             d.OFFSETS.nrl = 4722491;
             d.OFFSETS.plyl = 4722469;
             d.OFFSETS.plvrl = 4722472;

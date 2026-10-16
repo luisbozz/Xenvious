@@ -1670,6 +1670,11 @@ namespace Xenvious
                 public static long minv2 = 0;
                 public static long minv3 = 0;
                 public static long minv4 = 0;
+                public static long inv_mm = 0;
+                public static long inv_mm_team = 0;
+                public static long inv_mm_rule = 0;
+                public static long inv_mm2_team = 0;
+                public static long inv_mm2_rule = 0;
                 public static long teambal = 0;
                 public static long clrovr = 0;
                 public static long nrl = 0;

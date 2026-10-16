@@ -915,6 +915,11 @@ namespace Xenvious
             public long minv2;
             public long minv3;
             public long minv4;
+            public long inv_mm;
+            public long inv_mm_team;
+            public long inv_mm_rule;
+            public long inv_mm2_team;
+            public long inv_mm2_rule;
             public long nrl;
             public long plyl;
             public long plvrl;
@@ -2067,6 +2072,11 @@ namespace Xenvious
                     case "minv2": return minv2;
                     case "minv3": return minv3;
                     case "minv4": return minv4;
+                    case "inv_mm": return inv_mm;
+                    case "inv_mm_team": return inv_mm_team;
+                    case "inv_mm_rule": return inv_mm_rule;
+                    case "inv_mm2_team": return inv_mm2_team;
+                    case "inv_mm2_rule": return inv_mm2_rule;
                     case "nrl": return nrl;
                     case "plyl": return plyl;
                     case "plvrl": return plvrl;

@@ -16,6 +16,9 @@ namespace Xenvious
     /// one bit per weapon (Weapons.cs), so a whole category or a preset is only bits: each category
     /// is a row with a switch for all of it and its weapons as chips, plus presets and a search.
     /// The team comes from the page's team box; the tabs in the header pick it too.
+    /// Besides the start inventory a team has two mid-mission inventories (sinv f_354.. and minv
+    /// f_649.., same bits), which fm_mission_controller gives when a team reaches a rule
+    /// (invtm / invrl = f_644 / f_645, inv2tm / inv2rl = f_939 / f_940; -1 = never).
     /// </summary>
     public class InventoryView : SectionCard
     {
@@ -27,6 +30,9 @@ namespace Xenvious
         private readonly DispatcherTimer _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
         private string _shown;
         private bool _loading;
+        private int _set;
+        private readonly StackPanel _sets = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 0, 0, 10) };
+        private readonly StackPanel _trigger = new StackPanel();
 
         private static string T(string key, string fallback) => MainWindow.Instance?.TranslateOr(key, fallback) ?? fallback;
 
@@ -52,6 +58,8 @@ namespace Xenvious
             _search.SetResourceReference(StyleProperty, "Watermark");
             _search.ToolTip = T("inv_search", "Search weapon …");
             _search.TextChanged += (_, __) => Refresh(true);
+            _body.Children.Add(_sets);
+            _body.Children.Add(_trigger);
             _body.Children.Add(Presets());
             var searchLabel = new TextBlock { Text = T("inv_search", "Search weapon …") };
             searchLabel.SetResourceReference(StyleProperty, "FieldLabel");
@@ -67,30 +75,127 @@ namespace Xenvious
         private int Team => Math.Max(0, Math.Min(_teamBox.SelectedIndex, 3));
         private static bool Live => MainWindow.m != null && MainWindow.m.IsProcOpen && GTA.Offsets.Editor.inv != 0 && GTA.Offsets.Editor.team_NEXT != 0;
 
-        private static long Field(WeaponInventory w, int team)
+        private long Field(WeaponInventory w, int team)
         {
+            int word = (int)w.InventoryOffset;
             long field;
-            switch (w.InventoryOffset)
+            if (_set == 1)
+                field = GTA.Offsets.Editor.inv_mm == 0 ? 0 : GTA.Offsets.Editor.inv_mm + word;
+            else if (_set == 2)
+                field = GTA.Offsets.Editor.minv == 0 ? 0 : GTA.Offsets.Editor.minv + word;
+            else
             {
-                case InventoryOffset._1: field = GTA.Offsets.Editor.inv; break;
-                case InventoryOffset._2: field = GTA.Offsets.Editor.inv2; break;
-                case InventoryOffset._3: field = GTA.Offsets.Editor.inv3; break;
-                default: field = GTA.Offsets.Editor.inv4; break;
+                switch (w.InventoryOffset)
+                {
+                    case InventoryOffset._1: field = GTA.Offsets.Editor.inv; break;
+                    case InventoryOffset._2: field = GTA.Offsets.Editor.inv2; break;
+                    case InventoryOffset._3: field = GTA.Offsets.Editor.inv3; break;
+                    default: field = GTA.Offsets.Editor.inv4; break;
+                }
             }
             return field == 0 ? 0 : field + team * GTA.Offsets.Editor.team_NEXT;
         }
 
-        private static bool Has(WeaponInventory w, int team)
+        private bool Has(WeaponInventory w, int team)
         {
             long at = Field(w, team);
             return at != 0 && Functions.Read.checkbinary(w.Bit, at);
         }
 
-        private static void Set(WeaponInventory w, int team, bool on)
+        private void Set(WeaponInventory w, int team, bool on)
         {
             long at = Field(w, team);
             if (at != 0)
                 Functions.Write.writebinary(w.Bit, at, on);
+        }
+
+        // ----- mid-mission inventories -----
+
+        private static long TriggerTeam(int set) => set == 1 ? GTA.Offsets.Editor.inv_mm_team : GTA.Offsets.Editor.inv_mm2_team;
+        private static long TriggerRule(int set) => set == 1 ? GTA.Offsets.Editor.inv_mm_rule : GTA.Offsets.Editor.inv_mm2_rule;
+        private static bool MidAvailable => GTA.Offsets.Editor.inv_mm != 0 && GTA.Offsets.Editor.minv != 0
+            && GTA.Offsets.Editor.inv_mm_team != 0 && GTA.Offsets.Editor.inv_mm_rule != 0 && GTA.Offsets.Editor.inv_mm2_team != 0 && GTA.Offsets.Editor.inv_mm2_rule != 0;
+
+        /// <summary>(team whose rule counts, rule) of a mid-mission inventory; -1 = never given.</summary>
+        public static (int Team, int Rule) Trigger(int team, int set)
+        {
+            if (!MidAvailable || set < 1 || set > 2 || MainWindow.m == null || !MainWindow.m.IsProcOpen)
+                return (-1, -1);
+            return (new Global(TriggerTeam(set) + team * GTA.Offsets.Editor.team_NEXT).Get<int>(), new Global(TriggerRule(set) + team * GTA.Offsets.Editor.team_NEXT).Get<int>());
+        }
+
+        private static void SetTrigger(int team, int set, int byTeam, int rule)
+        {
+            if (!MidAvailable || !MainWindow.m.IsProcOpen)
+                return;
+            new Global(TriggerTeam(set) + team * GTA.Offsets.Editor.team_NEXT).SetInt(rule < 0 ? -1 : byTeam);
+            new Global(TriggerRule(set) + team * GTA.Offsets.Editor.team_NEXT).SetInt(byTeam < 0 ? -1 : rule);
+        }
+
+        private void ShowSets(int team)
+        {
+            _sets.Children.Clear();
+            _trigger.Children.Clear();
+            if (!MidAvailable)
+                return;
+            var tabs = new StackPanel { Orientation = Orientation.Horizontal };
+            for (int i = 0; i < 3; i++)
+            {
+                int set = i;
+                var trig = Trigger(team, set);
+                string name = set == 0 ? T("inv_set_start", "At the start")
+                    : trig.Team < 0 || trig.Rule < 0 ? string.Format(CultureInfo.CurrentCulture, T("inv_set_mid_off", "Mid-mission {0}"), set)
+                    : string.Format(CultureInfo.CurrentCulture, T("inv_set_mid", "From rule {0}"), trig.Rule + 1) + (trig.Team != team ? " · T" + (trig.Team + 1) : "");
+                var tab = new ToggleButton { Content = name, IsChecked = set == _set, Padding = new Thickness(10, 0, 10, 0) };
+                tab.SetResourceReference(StyleProperty, "NavTab");
+                tab.Click += (_, __) => { _set = set; Refresh(true); };
+                tabs.Children.Add(tab);
+            }
+            var group = new Border { Child = tabs };
+            group.SetResourceReference(StyleProperty, "NavGroup");
+            _sets.Children.Add(group);
+            if (_set == 0)
+                return;
+
+            var now = Trigger(team, _set);
+            int teams = Math.Max(1, Rules.Teams());
+            var byTeam = new ComboBox { Height = 28, MinWidth = 110, Margin = new Thickness(0, 0, 8, 0) };
+            byTeam.Items.Add(new ComboBoxItem { Content = T("inv_never", "never"), Tag = -1 });
+            for (int t = 0; t < teams; t++)
+                byTeam.Items.Add(new ComboBoxItem { Content = T("dash_team", "Team") + " " + (t + 1), Tag = t });
+            byTeam.SelectedItem = byTeam.Items.Cast<ComboBoxItem>().FirstOrDefault(i => (int)i.Tag == now.Team) ?? byTeam.Items[0];
+            var rule = new ComboBox { Height = 28, MinWidth = 110, IsEnabled = now.Team >= 0 };
+            int rules = now.Team >= 0 ? Rules.Read(now.Team).Count : 0;
+            for (int r = 0; r < Math.Max(rules, now.Rule + 1); r++)
+                rule.Items.Add(new ComboBoxItem { Content = string.Format(CultureInfo.CurrentCulture, T("rl_rule_n", "Rule {0}"), r + 1), Tag = r });
+            rule.SelectedItem = rule.Items.Cast<ComboBoxItem>().FirstOrDefault(i => (int)i.Tag == now.Rule);
+            int set_ = _set;
+            byTeam.SelectionChanged += (_, __) =>
+            {
+                if (_loading || !(byTeam.SelectedItem is ComboBoxItem item)) return;
+                int t = (int)item.Tag;
+                SetTrigger(team, set_, t, t < 0 ? -1 : Math.Max(0, now.Rule));
+                Refresh(true);
+            };
+            rule.SelectionChanged += (_, __) =>
+            {
+                if (_loading || !(rule.SelectedItem is ComboBoxItem item)) return;
+                SetTrigger(team, set_, now.Team, (int)item.Tag);
+                Refresh(true);
+            };
+            var row = new WrapPanel { Margin = new Thickness(0, 0, 0, 6) };
+            var label = new TextBlock { Text = T("inv_given", "Given when"), VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(0, 0, 8, 0), FontSize = 13 };
+            label.SetResourceReference(TextBlock.ForegroundProperty, "TextColor");
+            row.Children.Add(label);
+            row.Children.Add(byTeam);
+            var reaches = new TextBlock { Text = T("inv_reaches", "reaches"), VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(0, 0, 8, 0), FontSize = 13 };
+            reaches.SetResourceReference(TextBlock.ForegroundProperty, "TextColor");
+            row.Children.Add(reaches);
+            row.Children.Add(rule);
+            _trigger.Children.Add(row);
+            _trigger.Children.Add(Faint(T("inv_mid_hint", "The team gets these weapons as soon as the chosen team reaches the rule (classic controller). \"Never\": this set is not used."), 11.5));
+            var gap = new Border { Height = 8 };
+            _trigger.Children.Add(gap);
         }
 
         private static IEnumerable<WeaponInventory> All => Categories.SelectMany(c => c.List());
@@ -108,11 +213,14 @@ namespace Xenvious
             int team = Team;
             var state = All.Select(w => Has(w, team)).ToList();
             string filter = _search.Text?.Trim() ?? "";
-            string key = team + "|" + Rules.Teams() + "|" + filter + "|" + string.Join(",", _open) + "|" + string.Concat(state.Select(b => b ? '1' : '0'));
+            string key = team + "|" + _set + "|" + Trigger(team, 1) + Trigger(team, 2) + "|" + Rules.Teams() + "|" + filter + "|" + string.Join(",", _open) + "|" + string.Concat(state.Select(b => b ? '1' : '0'));
             if (!force && key == _shown)
                 return;
             _shown = key;
             Title = string.Format(CultureInfo.CurrentCulture, T("inv_title_team", "Inventory · team {0}"), team + 1);
+            _loading = true;
+            ShowSets(team);
+            _loading = false;
             Summary = string.Format(CultureInfo.CurrentCulture, T("inv_sum", "{0} of {1} weapons"), state.Count(b => b), state.Count);
             HeaderRight = TeamTabs(team);
 
@@ -121,7 +229,7 @@ namespace Xenvious
             // No bit set: the team has no inventory of its own, the controllers then leave the
             // players their own weapons (DOES_TEAM_HAVE_AN_FMMC_GIVEN_INVENTORY), and a test in the
             // creator gives its test weapons. Nothing of that is in the job.
-            if (!state.Any(b => b))
+            if (!state.Any(b => b) && _set == 0)
                 _rows.Children.Add(Notice(T("inv_default", "No inventory of its own: players keep their own weapons (in a creator test: the creator's test weapons). Switch on a weapon or a preset to give the team a fixed inventory.")));
             foreach (var cat in Categories)
             {
