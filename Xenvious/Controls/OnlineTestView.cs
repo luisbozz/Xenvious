@@ -47,6 +47,7 @@ namespace Xenvious
             ("pick", T("olt_pick", "Weapon pickups like online"), T("olt_pick_help", "LTS and Capture pickups choose their weapon like online instead of using the raw type.")),
             ("traffic", T("olt_traffic", "Traffic & pedestrians"), T("olt_traffic_help", "The density the job sets, not the fixed test density.")),
             ("pv", T("olt_pv", "Personal vehicle like online"), T("olt_pv_help", "Jobs with \"Use Personal Vehicle\" or respawn in the personal vehicle use yours, as online. Only when the creator has your vehicle data loaded; not tested yet.")),
+            ("prop", T("olt_prop", "Own property like online"), T("olt_prop_help", "The controller looks up your apartment or garage as online (Local f_2690) instead of a fixed value; jobs that start or end at the player's property use it. Only read, nothing is written.")),
         };
 
         private Border Card(string key, string fallback, UIElement content)

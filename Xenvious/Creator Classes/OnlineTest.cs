@@ -22,7 +22,7 @@ namespace Xenvious
         public const string TriggerPrefix = "onlinetest_";
 
         /// <summary>The switches, in the order the page shows them.</summary>
-        public static readonly string[] Features = { "inv", "looks", "phone", "death", "celeb", "time", "pick", "traffic", "pv" };
+        public static readonly string[] Features = { "inv", "looks", "phone", "death", "celeb", "time", "pick", "traffic", "pv", "prop" };
 
         public static readonly string[] Controllers = { "fm_mission_controller", "fm_mission_controller_2020", "fm_mission_controller_v3" };
 
