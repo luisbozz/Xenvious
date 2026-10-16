@@ -8,38 +8,44 @@ namespace Xenvious
 {
     // Part of RulesView: the team's beast abilities on the selected rule, as the Mission Creator's
     // team abilities menu sets them (public_mission_creator func_4997 / func_4999): per rule bits
-    // in irbs5 (f_8504: 7 abilities on, 11 health, 19 damage, 13 jump, 12 speed, 14 stealth) and
-    // f_8720 bit 27 (movement), the values in the team's beast struct per rule (f_5064[rule]).
+    // in irbs5 (f_8504) and f_8720, numbers from rule_options.json (1.73: 7 active, 11 health,
+    // 19 damage, 27 movement in f_8720, 13 jump, 12 speed, 14 invisibility), the values in the
+    // team's beast struct per rule (f_5064[rule]).
     // All three controllers read them. Mission › Team Settings shows the same values.
     public partial class RulesView
     {
-        private static readonly (string Label, string Fallback, int Bit, bool Move)[] BeastAbilities =
+        // Label (rule_options.json, read from the Mission Creator by ysc-global-updater), fallback,
+        // and whether the bit is in f_8720 (rl_boc) instead of irbs5.
+        private static readonly (string Label, string Fallback, bool Move)[] BeastAbilities =
         {
-            ("PMCT_BST_HELTH", "Health", 11, false),
-            ("PMCT_BST_DMG", "Damage", 19, false),
-            ("PMCT_BST_MOV", "Movement", 27, true),
-            ("PMCT_BST_JMP", "Jump", 13, false),
-            ("PMCT_BST_SPD", "Speed", 12, false),
-            ("PMCT_BST_STELO", "Stealth", 14, false),
+            ("BST_HELTH", "Increased Health", false),
+            ("BST_DMG", "Increased Damage", false),
+            ("BST_MOV", "Beast Movement", true),
+            ("BST_JMP", "Super Jump", false),
+            ("BST_SPD", "Increased Speed", false),
+            ("BST_STELO", "Invisibility", false),
         };
+
+        private static int BeastBitOf(string label) => BuildData.CurrentRuleOptions().TryGetValue(label, out var b) ? b.Bit : -1;
 
         // Job options the older Team Settings page switches together with beast mode; Rockstar's
         // beast jobs have them on.
         private static readonly int[] BeastJobBits = { 2, 19, 23, 26 };
 
-        private bool BeastAvailable => GTA.Offsets.Editor.irbs5 != 0 && GTA.Offsets.Editor.rl_boc != 0 && GTA.Offsets.Editor.team_NEXT != 0
+        private bool BeastAvailable => BeastBitOf("AB_BSTS_ON") >= 0 && GTA.Offsets.Editor.irbs5 != 0 && GTA.Offsets.Editor.rl_boc != 0 && GTA.Offsets.Editor.team_NEXT != 0
             && GTA.Offsets.Editor.bmmxh != 0 && GTA.Offsets.Editor.beast_next != 0;
 
         private long BeastBits(int rule, bool move) => (move ? GTA.Offsets.Editor.rl_boc : GTA.Offsets.Editor.irbs5) + _team * GTA.Offsets.Editor.team_NEXT + rule;
         private long BeastValue(long field, int rule) => field + _team * GTA.Offsets.Editor.team_NEXT + rule * GTA.Offsets.Editor.beast_next;
 
-        private bool BeastBit(int rule, int bit, bool move) => Functions.Read.checkbinary(bit, BeastBits(rule, move));
+        private bool BeastBit(int rule, int bit, bool move) => bit >= 0 && Functions.Read.checkbinary(bit, BeastBits(rule, move));
+        private bool BeastOn(int rule) => BeastBit(rule, BeastBitOf("AB_BSTS_ON"), false);
 
         private string BeastSummary(Rules.Rule rule)
         {
-            if (!BeastBit(rule.Index, 7, false))
+            if (!BeastOn(rule.Index))
                 return T("rl_beast_off", "off");
-            int n = BeastAbilities.Count(a => BeastBit(rule.Index, a.Bit, a.Move));
+            int n = BeastAbilities.Count(a => BeastBit(rule.Index, BeastBitOf(a.Label), a.Move));
             return string.Format(CultureInfo.CurrentCulture, T("rl_beast_on", "on · {0} abilities"), n);
         }
 
@@ -47,9 +53,10 @@ namespace Xenvious
         {
             var panel = new StackPanel();
             int r = rule.Index;
-            OptionRow(panel, RuleOptions.GameText("PMCT_AB_BSTS_ON", "Beast Abilities"),
-                Toggle(BeastBit(r, 7, false), on => Functions.Write.writebinary(7, BeastBits(r, false), on)), RuleOptions.Help("AB_BSTS_ON"));
-            if (!BeastBit(r, 7, false))
+            int active = BeastBitOf("AB_BSTS_ON");
+            OptionRow(panel, RuleOptions.GameText("PMCT_AB_BSTS_ON", "Active Objectives"),
+                Toggle(BeastOn(r), on => Functions.Write.writebinary(active, BeastBits(r, false), on)), RuleOptions.Help("AB_BSTS_ON"));
+            if (!BeastOn(r))
             {
                 panel.Children.Add(Say(T("rl_beast_hint", "The team becomes the beast on this rule: more health, damage, jump and speed, as in Rockstar's Hunting Pack and Beast jobs.")));
                 return panel;
@@ -57,9 +64,12 @@ namespace Xenvious
             foreach (var a in BeastAbilities)
             {
                 var ability = a;
-                OptionRow(panel, RuleOptions.GameText(ability.Label, ability.Fallback),
-                    Toggle(BeastBit(r, ability.Bit, ability.Move), on => Functions.Write.writebinary(ability.Bit, BeastBits(r, ability.Move), on)),
-                    RuleOptions.Help(ability.Label.Substring(5)));
+                int bit = BeastBitOf(ability.Label);
+                if (bit < 0)
+                    continue;
+                OptionRow(panel, RuleOptions.GameText("PMCT_" + ability.Label, ability.Fallback),
+                    Toggle(BeastBit(r, bit, ability.Move), on => Functions.Write.writebinary(bit, BeastBits(r, ability.Move), on)),
+                    RuleOptions.Help(ability.Label));
             }
             OptionRow(panel, T("beastmodehealth", "Health"),
                 NumberBox(new Global(BeastValue(GTA.Offsets.Editor.bmmxh, r)).Get<int>(), null, v => new Global(BeastValue(GTA.Offsets.Editor.bmmxh, r)).SetInt(v)), null);

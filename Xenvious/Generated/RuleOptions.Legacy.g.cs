@@ -12,6 +12,13 @@ namespace Xenvious
         /// <summary>OfflineData/legacy/rule_options.json: bit numbers of the Rules page's yes/no options (RuleOptions).</summary>
         private static Dictionary<string, (int Bit, bool OnWhenClear)> RuleOptionsLegacy() => new Dictionary<string, (int, bool)>
         {
+            ["AB_BSTS_ON"] = (7, false),
+            ["BST_DMG"] = (19, false),
+            ["BST_HELTH"] = (11, false),
+            ["BST_JMP"] = (13, false),
+            ["BST_MOV"] = (27, false),
+            ["BST_SPD"] = (12, false),
+            ["BST_STELO"] = (14, false),
             ["GC_AGGRO"] = (17, false),
             ["GC_ALRTD"] = (23, false),
             ["GC_FLEEOBJ"] = (24, false),
