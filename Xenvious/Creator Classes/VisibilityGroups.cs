@@ -26,10 +26,10 @@
         };
 
         /// <summary>
-        /// Two more switches that are not creator groups but Xenvious' injected custom functions
-        /// (customfuncs fn3 / fn4 in LTS, Capture and Race): the play area of every team and rule,
-        /// and the gang chase areas. They only draw while the experimental script features are on,
-        /// because the injected code is a dev patch. Kept in the same config value, bits 7 and 8.
+        /// More switches that are not creator groups but drawn by Xenvious' injected drawer
+        /// (ScriptDrawer, PlayAreaOverlay): the play area of every team and rule, the gang chase
+        /// areas and so on. They only draw while the experimental script features are on, because
+        /// the injected code is a dev patch. Kept in the same config value, bits 7 and up.
         /// </summary>
         public static readonly (string Key, string Name)[] Extra =
         {

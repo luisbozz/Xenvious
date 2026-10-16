@@ -618,18 +618,16 @@ namespace Xenvious
         // makes the race creator flicker, so it is only set inside the other creators (and
         // outside a creator it waits until one is known, so the race creator never runs a
         // frame with it).
-        // Bits 2 and 3 (customfuncs fn3 play areas, fn4 gang chase areas) also follow their
-        // switches on the "Show in game" card, and stay off while the creator's drawer runs:
-        // PlayAreaOverlay draws the same areas through it then.
+        // Bits 2 and 3 (customfuncs fn3 play areas, fn4 gang chase areas, the old box drawing)
+        // stay off for good: PlayAreaOverlay draws the same areas through the drawer, and the old
+        // boxes came back whenever the drawer's heartbeat was missed for a moment.
         private static void WriteScriptFeatureBits(bool enable)
         {
             string creator = GTA.CurrentCreatorName();
-            bool drawer = ScriptDrawer.Running(creator);
             for (int bit = 1; bit <= 5; bit++)
             {
                 bool wanted = enable && (bit != 5 || (creator != "" && creator != "fm_race_creator"))
-                    && (bit != 2 || (VisibilityGroups.IsOn(VisibilityGroups.PlayAreaBit) && !drawer))
-                    && (bit != 3 || (VisibilityGroups.IsOn(VisibilityGroups.GangChaseBit) && !drawer));
+                    && bit != 2 && bit != 3;
                 ScriptVars.SetBit(bit, wanted);
             }
             ScriptVars.FeaturesOn = enable;
