@@ -4856,6 +4856,14 @@
                                                                                                 <ColumnDefinition Width="*"/>
                                                                                                 <ColumnDefinition Width="46"/>
                                                                                             </Grid.ColumnDefinitions>
+                                                                                            <TextBlock Style="{StaticResource FormLabel}"><Run Text="{Binding Translation[missionextnohintcam], FallbackValue='No Hint Cams (controllers 2020 / v3)', Mode=OneWay}"/></TextBlock>
+                                                                                            <CheckBox x:Name="cbmissionextnohintcam" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" Grid.Column="1" Style="{StaticResource FormToggle}"/>
+                                                                                        </Grid>
+                                                                                        <Grid Style="{StaticResource FormRow}">
+                                                                                            <Grid.ColumnDefinitions>
+                                                                                                <ColumnDefinition Width="*"/>
+                                                                                                <ColumnDefinition Width="46"/>
+                                                                                            </Grid.ColumnDefinitions>
                                                                                             <TextBlock Style="{StaticResource FormLabel}"><Run Text="{Binding Translation[missionextconvroofdown], FallbackValue='Convertible Roof Down', Mode=OneWay}"/></TextBlock>
                                                                                             <CheckBox x:Name="cbmissionextconvroofdown" Checked="cbMissionExtra_Checked" Unchecked="cbMissionExtra_Checked" Grid.Column="1" Style="{StaticResource FormToggle}"/>
                                                                                         </Grid>
