@@ -715,11 +715,25 @@ namespace Xenvious
             RenderEditNav();
         }
 
-        private void RenderFavorites()
-        {
-            var favorites = EditNavFavorites.Select(FromFavoriteId)
+        private List<(EditNavEntry Entry, EditNavSub Sub)> ShownFavorites()
+            => EditNavFavorites.Select(FromFavoriteId)
                 .Where(f => f.Entry != null && EditNavFits(f.Entry) && (f.Sub?.Button == null || f.Sub.Button.Visibility == Visibility.Visible))
                 .ToList();
+
+        /// <summary>The first time Edit opens: the first favourite, so the list starts where the
+        /// player works. Without favourites the props page shows, its sub-pages folded.</summary>
+        private void OpenFirstEditPage()
+        {
+            if (_editNavEntry != null)
+                return;
+            var first = ShownFavorites().FirstOrDefault();
+            if (first.Entry != null)
+                OpenEditNav(first.Entry, first.Sub, rememberBack: false);
+        }
+
+        private void RenderFavorites()
+        {
+            var favorites = ShownFavorites();
             if (favorites.Count == 0)
                 return;
             if (!_editNavCollapsed)
