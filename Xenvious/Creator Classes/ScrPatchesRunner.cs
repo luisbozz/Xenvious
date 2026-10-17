@@ -89,6 +89,8 @@ namespace Xenvious
                     // After the patch pass, which sets up the data page the rule note goes into.
                     try { RuleNotes.Tick(); }
                     catch (Exception ex) { Log.Debug("RuleNotes: " + ex.Message, source: "RuleNotes"); }
+                    try { SaveResult.Tick(); }
+                    catch (Exception ex) { Log.Debug("SaveResult: " + ex.Message, source: "SaveResult"); }
                     // Same reason: a creator script that was just loaded gets the kept prop changes.
                     ModdedPropMemory.Tick();
                     // Same thread: "nrl fix" leaves nrl as it is, which must never be below 1 at save.

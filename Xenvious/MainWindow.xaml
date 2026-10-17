@@ -11829,7 +11829,13 @@
                 <Border x:Name="DialogBox" CornerRadius="8" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Padding="26,22" MinWidth="380" MaxWidth="560" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Border.Effect><DropShadowEffect BlurRadius="18" ShadowDepth="4" Opacity="0.75" Color="{DynamicResource ShadowColor}"/></Border.Effect>
                     <StackPanel>
-                        <TextBlock x:Name="DialogTitle" FontSize="19" FontWeight="Bold" Foreground="{DynamicResource TextColor}" TextWrapping="Wrap"/>
+                        <!-- The round mark before the title: only error cards (MainWindow.CloudError.cs) show it. -->
+                        <DockPanel>
+                            <Border x:Name="DialogIcon" DockPanel.Dock="Left" Visibility="Collapsed" Width="32" Height="32" CornerRadius="16" Margin="0,0,12,0" VerticalAlignment="Top">
+                                <TextBlock x:Name="DialogIconText" Text="!" FontSize="17" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <TextBlock x:Name="DialogTitle" FontSize="19" FontWeight="Bold" Foreground="{DynamicResource TextColor}" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                        </DockPanel>
                         <TextBlock x:Name="DialogText" FontSize="13" Foreground="{DynamicResource MutedTextBrush}" Margin="0,8,0,0" TextWrapping="Wrap"/>
                         <!-- Longer text such as release notes; scrolls instead of growing the dialog. -->
                         <ScrollViewer x:Name="DialogDetailsScroll" MaxHeight="320" Margin="0,12,0,0" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">

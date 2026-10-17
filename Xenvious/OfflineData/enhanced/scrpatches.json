@@ -780,6 +780,36 @@
         "needs_page": true
     },
     {
+        "patch_name": "save result",
+        "category": "customfuncs",
+        "script_name": "fm_lts_creator",
+        "pattern": "2E 83 01 55 11 00 2C 01 ? ? 39 ? 38 00 76 5D ? ? ? 2C 00",
+        "offset": 6,
+        "bytes_to_patch": "5D 55 0B 2E",
+        "dev": true,
+        "needs_page": true
+    },
+    {
+        "patch_name": "publish result",
+        "category": "customfuncs",
+        "script_name": "fm_lts_creator",
+        "pattern": "2E 04 01 55 12 00 2C 01 ? ? 39 06 38 00 25 09 5D",
+        "offset": 6,
+        "bytes_to_patch": "5D 76 0B 2E",
+        "dev": true,
+        "needs_page": true
+    },
+    {
+        "patch_name": "update result",
+        "category": "customfuncs",
+        "script_name": "fm_lts_creator",
+        "pattern": "2E 06 01 55 12 00 2C 01 ? ? 39 08 38 00 25 09 5D",
+        "offset": 6,
+        "bytes_to_patch": "5D 97 0B 2E",
+        "dev": true,
+        "needs_page": true
+    },
+    {
         "patch_name": "nop some func for custom funcs",
         "category": "customfuncs",
         "script_name": "fm_capture_creator",
@@ -803,6 +833,36 @@
         "pattern": "61 ? ? ? 64 ? ? ? 3F 34 C2 7A 7A 7A 7A 7A 7A 28 00 00 80 BF 38 ? 71 38 ? 5D ? ? ?",
         "offset": 27,
         "bytes_to_patch": "5D 3F 0D 2E",
+        "dev": true,
+        "needs_page": true
+    },
+    {
+        "patch_name": "save result",
+        "category": "customfuncs",
+        "script_name": "fm_capture_creator",
+        "pattern": "2E 83 01 55 11 00 2C 01 ? ? 39 ? 38 00 76 5D ? ? ? 2C 00",
+        "offset": 6,
+        "bytes_to_patch": "5D 2B 0B 2E",
+        "dev": true,
+        "needs_page": true
+    },
+    {
+        "patch_name": "publish result",
+        "category": "customfuncs",
+        "script_name": "fm_capture_creator",
+        "pattern": "2E 04 01 55 12 00 2C 01 ? ? 39 06 38 00 25 09 5D",
+        "offset": 6,
+        "bytes_to_patch": "5D 4C 0B 2E",
+        "dev": true,
+        "needs_page": true
+    },
+    {
+        "patch_name": "update result",
+        "category": "customfuncs",
+        "script_name": "fm_capture_creator",
+        "pattern": "2E 06 01 55 12 00 2C 01 ? ? 39 08 38 00 25 09 5D",
+        "offset": 6,
+        "bytes_to_patch": "5D 6D 0B 2E",
         "dev": true,
         "needs_page": true
     },
@@ -834,6 +894,36 @@
         "needs_page": true
     },
     {
+        "patch_name": "save result",
+        "category": "customfuncs",
+        "script_name": "fm_race_creator",
+        "pattern": "2E 83 01 55 11 00 2C 01 ? ? 39 ? 38 00 76 5D ? ? ? 2C 00",
+        "offset": 6,
+        "bytes_to_patch": "5D F6 8F 57",
+        "dev": true,
+        "needs_page": true
+    },
+    {
+        "patch_name": "publish result",
+        "category": "customfuncs",
+        "script_name": "fm_race_creator",
+        "pattern": "2E 04 01 55 12 00 2C 01 ? ? 39 06 38 00 25 09 5D",
+        "offset": 6,
+        "bytes_to_patch": "5D 17 90 57",
+        "dev": true,
+        "needs_page": true
+    },
+    {
+        "patch_name": "update result",
+        "category": "customfuncs",
+        "script_name": "fm_race_creator",
+        "pattern": "2E 06 01 55 12 00 2C 01 ? ? 39 08 38 00 25 09 5D",
+        "offset": 6,
+        "bytes_to_patch": "5D 38 90 57",
+        "dev": true,
+        "needs_page": true
+    },
+    {
         "patch_name": "nop some func for custom funcs",
         "category": "customfuncs",
         "script_name": "fm_survival_creator",
@@ -849,6 +939,36 @@
                 "bytes_to_read": 4
             }
         ]
+    },
+    {
+        "patch_name": "save result",
+        "category": "customfuncs",
+        "script_name": "fm_survival_creator",
+        "pattern": "2E 83 01 55 11 00 2C 01 ? ? 39 ? 38 00 76 5D ? ? ? 2C 00",
+        "offset": 6,
+        "bytes_to_patch": "5D BF CA 2E",
+        "dev": true,
+        "needs_page": true
+    },
+    {
+        "patch_name": "publish result",
+        "category": "customfuncs",
+        "script_name": "fm_survival_creator",
+        "pattern": "2E 04 01 55 12 00 2C 01 ? ? 39 06 38 00 25 09 5D",
+        "offset": 6,
+        "bytes_to_patch": "5D E0 CA 2E",
+        "dev": true,
+        "needs_page": true
+    },
+    {
+        "patch_name": "update result",
+        "category": "customfuncs",
+        "script_name": "fm_survival_creator",
+        "pattern": "2E 06 01 55 12 00 2C 01 ? ? 39 08 38 00 25 09 5D",
+        "offset": 6,
+        "bytes_to_patch": "5D 01 CB 2E",
+        "dev": true,
+        "needs_page": true
     },
     {
         "patch_name": "nop some func for custom funcs",
@@ -874,6 +994,36 @@
         "pattern": "61 ? ? ? 64 ? ? ? 3F 34 C2 7A 7A 7A 7A 7A 7A 28 00 00 80 BF 38 ? 71 38 ? 5D ? ? ?",
         "offset": 27,
         "bytes_to_patch": "5D E4 8C 39",
+        "dev": true,
+        "needs_page": true
+    },
+    {
+        "patch_name": "save result",
+        "category": "customfuncs",
+        "script_name": "fm_deathmatch_creator",
+        "pattern": "2E 83 01 55 11 00 2C 01 ? ? 39 ? 38 00 76 5D ? ? ? 2C 00",
+        "offset": 6,
+        "bytes_to_patch": "5D BF 8A 39",
+        "dev": true,
+        "needs_page": true
+    },
+    {
+        "patch_name": "publish result",
+        "category": "customfuncs",
+        "script_name": "fm_deathmatch_creator",
+        "pattern": "2E 04 01 55 12 00 2C 01 ? ? 39 06 38 00 25 09 5D",
+        "offset": 6,
+        "bytes_to_patch": "5D E0 8A 39",
+        "dev": true,
+        "needs_page": true
+    },
+    {
+        "patch_name": "update result",
+        "category": "customfuncs",
+        "script_name": "fm_deathmatch_creator",
+        "pattern": "2E 06 01 55 12 00 2C 01 ? ? 39 08 38 00 25 09 5D",
+        "offset": 6,
+        "bytes_to_patch": "5D 01 8B 39",
         "dev": true,
         "needs_page": true
     },

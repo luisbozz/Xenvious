@@ -286,6 +286,7 @@
     <Compile Include="Creator Classes\GlobalFreezer.cs" />
     <Compile Include="Creator Classes\FreezeItem.cs" />
     <Compile Include="Creator Classes\RuleNotes.cs" />
+    <Compile Include="Creator Classes\SaveResult.cs" />
     <Compile Include="Helper Classes\EditorValue.cs" />
     <Compile Include="Creator Classes\JobTime.cs" />
     <Compile Include="Creator Classes\ScrPatchesRunner.cs" />
@@ -543,6 +544,7 @@
     <Compile Include="MainWindow\MainWindow.Props.cs" />
     <Compile Include="MainWindow\MainWindow.PropTiming.cs" />
     <Compile Include="MainWindow\MainWindow.ViewOnly.cs" />
+    <Compile Include="MainWindow\MainWindow.CloudError.cs" />
     <Compile Include="MainWindow\MainWindow.Publish.cs" />
     <Compile Include="MainWindow\MainWindow.Race.cs" />
     <Compile Include="MainWindow\MainWindow.ScreenMessage.cs" />

@@ -205,7 +205,7 @@ namespace Xenvious
             }
         }
 
-        private static string CreatorDisplayName(string script)
+        internal static string CreatorDisplayName(string script)
         {
             switch (script)
             {
