@@ -1084,6 +1084,8 @@ namespace Xenvious
             public long rcp_time;
             public long rcp_time_NEXT;
             public long rcp_test;
+            public long rcp_restart;
+            public long rcp_keep_pos;
             public long rcp_minrole;
             public long rcp_minrole_NEXT;
             public long bdprt;
@@ -2272,6 +2274,8 @@ namespace Xenvious
                     case "rcp_time": return rcp_time;
                     case "rcp_time_next": return rcp_time_NEXT;
                     case "rcp_test": return rcp_test;
+                    case "rcp_restart": return rcp_restart;
+                    case "rcp_keep_pos": return rcp_keep_pos;
                     case "rcp_minrole": return rcp_minrole;
                     case "rcp_minrole_next": return rcp_minrole_NEXT;
                     case "bdprt": return bdprt;

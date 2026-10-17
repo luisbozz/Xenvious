@@ -1890,6 +1890,8 @@ namespace Xenvious
                 public static long rcp_time = 0;
                 public static long rcp_time_NEXT = 0;
                 public static long rcp_test = 0;
+                public static long rcp_restart = 0;
+                public static long rcp_keep_pos = 0;
                 public static long rcp_minrole = 0;
                 public static long rcp_minrole_NEXT = 0;
                 public static long bdprt = 0;

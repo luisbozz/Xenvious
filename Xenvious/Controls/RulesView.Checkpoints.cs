@@ -253,7 +253,7 @@ namespace Xenvious
                 var test = new StackPanel();
                 bool armed = RestartCheckpoints.TestCheckpoint() == cp;
                 test.Children.Add(Say(armed
-                    ? T("rcp_test_armed", "The next creator test starts at this checkpoint: the rules before it are done and the team spawns at its points. It is used up once the test ends.")
+                    ? T("rcp_test_kept", "The next creator test starts at this checkpoint: the rules before it are done and the team spawns at its points. It stays on until you switch it off or leave this creator.")
                     : T("rcp_test_hint", "Start the next creator test as after a restart from this checkpoint.")));
                 var row = new WrapPanel();
                 row.Children.Add(TextButton(armed ? T("rcp_test_off", "Start from the beginning again") : T("rcp_test_on", "Next test starts here"), null, () =>

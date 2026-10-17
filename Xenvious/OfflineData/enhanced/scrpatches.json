@@ -1535,6 +1535,24 @@
         "trigger": "test_oneteam"
     },
     {
+        "patch_name": "checkpoint test spawn",
+        "script_name": "fm_mission_controller",
+        "pattern": "50 ? ? 5D ? ? ? 2A 06 56 ? ? 50 ? ? 5D ? ? ? 20 56 ? ? 5D ? ? ? 56 ? ? 5D ? ? ? 39 ? 50 ? ? 4F ? ? 49 26 01 41 01 39 ? 38 ? 4F ? ? 46 ? ? 72 5D",
+        "offset": 3,
+        "bytes_to_patch": "5D 5F AA 5D",
+        "dev": false,
+        "trigger": "rcp_test"
+    },
+    {
+        "patch_name": "checkpoint test spawn warp",
+        "script_name": "fm_mission_controller",
+        "pattern": "41 05 72 82 56 ? ? 74 61 ? ? ? 32 74 37 ? 33 61 ? ? ? 41 05 39",
+        "offset": 2,
+        "bytes_to_patch": "2B 00 00 00 00",
+        "dev": false,
+        "trigger": "rcp_test"
+    },
+    {
         "patch_name": "load content check passes",
         "script_name": "fm_race_creator",
         "pattern": "2D 00 02 00 00 62 ? ? ? 73 09 2A 56 ? ? 62 ? ? ? 71 09 1F 2A 56 ? ? 62 ? ? ? 72 09 1F 2A 56 ? ? 62 ? ? ? 74 09 1F",

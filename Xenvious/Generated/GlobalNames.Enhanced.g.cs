@@ -827,6 +827,8 @@ namespace Xenvious
             ("rcp_head", "Global_4718592.f_138247[i /*36*/][i /*5*/][i]", ""),
             ("rcp_time", "Global_4718592.f_132783[i /*5*/][i]", ""),
             ("rcp_test", "Global_2686124.f_3931", ""),
+            ("rcp_restart", "Global_1574954", ""),
+            ("rcp_keep_pos", "Global_2685155.f_46.f_4", ""),
             ("rcp_minrole", "Global_4718592.f_196668[i /*5*/][i]", ""),
             ("bdprt", "Global_4718592.f_3838[i /*26988*/].f_14482[i]", ""),
             ("bdpst", "Global_4718592.f_3838[i /*26988*/].f_14500[i]", ""),

@@ -182,10 +182,13 @@ namespace Xenvious
 
         /// <summary>
         /// The reached checkpoints of the running job (Global_2686119.f_3930, bits 0-6; the
-        /// controller sets them, func_18950, and clears them when it cleans up, func_156). Set
-        /// before a creator test, the controller starts as after a restart: it completes the rules
-        /// before (func_948) and spawns at the checkpoint (func_16980). The Mission Creator's
-        /// "Test from checkpoint" does the same through public_mission_controller.
+        /// controller sets them when the job ends and clears them when it cleans up). Set before a
+        /// creator test, the controller spawns the team at the checkpoint's points
+        /// (fm_mission_controller_2020 func_794). The restart rule and the rules before it only
+        /// count when the job also runs as a restart (rcp_restart bit 4, func_626 in func_789), so
+        /// both are set, as the Mission Creator's "Test from checkpoint" does
+        /// (public_mission_controller func_22055 and func_22217). Checkpoints only apply at the
+        /// start: a death during the job respawns the normal way.
         /// </summary>
         public static bool TestAvailable => MainWindow.m != null && MainWindow.m.IsProcOpen && GTA.Offsets.Editor.rcp_test != 0;
 
@@ -208,7 +211,76 @@ namespace Xenvious
                 return;
             var g = new Global(GTA.Offsets.Editor.rcp_test);
             int v = g.Get<int>() & ~((1 << Count) - 1);
-            g.SetInt(cp >= 0 && cp < Count ? v | (1 << cp) : v);
+            bool on = cp >= 0 && cp < Count;
+            g.SetInt(on ? v | (1 << cp) : v);
+            SetRestart(on);
+            _armedIn = on ? Creator() : null;
+        }
+
+        // The creator the checkpoint was armed in. The bits and the checkpoint positions are
+        // globals: armed in Capture, a test in LTS would start at a Capture job's checkpoint.
+        private static string _armedIn;
+
+        private static string Creator() =>
+            GTA.IsScriptRunning("fm_capture_creator") ? "fm_capture_creator"
+            : GTA.IsScriptRunning("fm_lts_creator") ? "fm_lts_creator"
+            : null;
+
+        private const int RestartBit = 4;
+        private static bool _restartSet;
+
+        private static void SetRestart(bool on)
+        {
+            if (GTA.Offsets.Editor.rcp_restart == 0)
+                return;
+            var g = new Global(GTA.Offsets.Editor.rcp_restart);
+            int v = g.Get<int>();
+            g.SetInt(on ? v | (1 << RestartBit) : v & ~(1 << RestartBit));
+            _restartSet = on;
+        }
+
+        /// <summary>
+        /// Clears what this class armed once it no longer applies: the restart bit when no
+        /// checkpoint is armed, both when the player left or switched the creator. The LTS and Capture
+        /// creators and the controller in a creator test never clear them (only the launcher and
+        /// the Mission Creator do), and the next job online would start at the checkpoint.
+        /// </summary>
+        public static void Tick()
+        {
+            // The controller keeps running in the creator between two tests, so only a running
+            // test is left alone.
+            if (!TestAvailable || MainWindow.Instance?.CurrentGameState == MainWindow.GameState.Testing)
+                return;
+            string creator = Creator();
+            if (creator != null)
+                ClearKeepPosition();
+            if (TestCheckpoint() < 0)
+            {
+                if (_restartSet)
+                    SetRestart(false);
+                _armedIn = null;
+                return;
+            }
+            // Armed before Xenvious started: it belongs to the creator that is open now.
+            if (_armedIn == null && creator != null && !_restartSet)
+                _armedIn = creator;
+            if (_armedIn != null && creator != _armedIn)
+            {
+                Logging.Log.Info($"test checkpoint cleared: armed in {_armedIn}, now {creator ?? "no creator"}", source: "RestartCheckpoints");
+                SetTestCheckpoint(-1);
+            }
+        }
+
+        // Every job end sets the keep-position bit and only the launcher clears it, so without
+        // this every creator test after the first starts where the player stood.
+        private static void ClearKeepPosition()
+        {
+            if (GTA.Offsets.Editor.rcp_keep_pos == 0)
+                return;
+            var g = new Global(GTA.Offsets.Editor.rcp_keep_pos);
+            int v = g.Get<int>();
+            if ((v & 1) != 0)
+                g.SetInt(v & ~1);
         }
 
         /// <summary>For change detection on the Rules page.</summary>

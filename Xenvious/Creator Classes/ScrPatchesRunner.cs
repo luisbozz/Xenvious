@@ -48,6 +48,7 @@ namespace Xenvious
             bool templatesWereActive = false;
             var onlineTestWasActive = new HashSet<string>();
             bool oneTeamWasActive = false;
+            bool testCheckpointWasActive = false;
             while (true)
             {
                 // Precise templates reacts to the creator menu, so it ticks every 50 ms.
@@ -78,6 +79,12 @@ namespace Xenvious
                     RevertTriggered("test_oneteam");
                 bool oneTeamChanged = oneTeamActive != oneTeamWasActive;
                 oneTeamWasActive = oneTeamActive;
+                // Test from a checkpoint: the controller keeps running between tests, so its
+                // spawn patches must come out again before a test from the start.
+                bool testCheckpointActive = TriggerActive("rcp_test");
+                if (testCheckpointWasActive && !testCheckpointActive)
+                    RevertTriggered("rcp_test");
+                testCheckpointWasActive = testCheckpointActive;
 
                 // A pass scans the script bytecode for every patch's pattern,
                 // and a patch is only ever written once -- appliedPatches sees
@@ -98,6 +105,8 @@ namespace Xenvious
                     catch (Exception ex) { Log.Debug("RuleNotes: " + ex.Message, source: "RuleNotes"); }
                     try { SaveResult.Tick(); }
                     catch (Exception ex) { Log.Debug("SaveResult: " + ex.Message, source: "SaveResult"); }
+                    try { RestartCheckpoints.Tick(); }
+                    catch (Exception ex) { Log.Debug("RestartCheckpoints: " + ex.Message, source: "RestartCheckpoints"); }
                     // Same reason: a creator script that was just loaded gets the kept prop changes.
                     ModdedPropMemory.Tick();
                     // Same thread: "nrl fix" leaves nrl as it is, which must never be below 1 at save.
@@ -131,6 +140,11 @@ namespace Xenvious
                 // Capture creator runs, so a real job stays as Rockstar made it.
                 case "test_oneteam":
                     return MainWindow.m.IsProcOpen && OnlineTest.InCreator();
+                // A creator test armed to start at a restart checkpoint: in the creator test the
+                // classic controller sends the player to the team start and skips its restart branch
+                // (func_17931); the patches take that branch and use its warp to the checkpoint.
+                case "rcp_test":
+                    return MainWindow.m.IsProcOpen && OnlineTest.InCreator() && RestartCheckpoints.TestCheckpoint() >= 0;
                 default:
                     return trigger.StartsWith(OnlineTest.TriggerPrefix, StringComparison.Ordinal)
                         && OnlineTest.Active(trigger.Substring(OnlineTest.TriggerPrefix.Length));

@@ -1025,6 +1025,8 @@ namespace Xenvious
             GTA.Offsets.Editor.rcp_time = d.OFFSETS.rcp_time;
             GTA.Offsets.Editor.rcp_time_NEXT = d.OFFSETS.rcp_time_NEXT;
             GTA.Offsets.Editor.rcp_test = d.OFFSETS.rcp_test;
+            GTA.Offsets.Editor.rcp_restart = d.OFFSETS.rcp_restart;
+            GTA.Offsets.Editor.rcp_keep_pos = d.OFFSETS.rcp_keep_pos;
             GTA.Offsets.Editor.rcp_minrole = d.OFFSETS.rcp_minrole;
             GTA.Offsets.Editor.rcp_minrole_NEXT = d.OFFSETS.rcp_minrole_NEXT;
             GTA.Offsets.Editor.bdprt = d.OFFSETS.bdprt;
