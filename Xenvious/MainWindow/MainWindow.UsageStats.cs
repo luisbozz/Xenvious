@@ -1,4 +1,4 @@
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
 namespace Xenvious
@@ -56,9 +56,6 @@ namespace Xenvious
             switch (entryKey)
             {
                 case "actor": return "actors";
-                case "jobsubtype_mission_capture": return "capture";
-                case "editnav_menubits": return "menubits";
-                case "editnav_interiors": return "interiors";
                 default: return entryKey;
             }
         }
@@ -99,8 +96,13 @@ namespace Xenvious
             if (entry == null)
                 return;
             string key = EditNavStatKey(entry.Key);
+            // Pages that moved into Mission keep the keys they had as entries of their own.
+            if (sub?.Id == "ipl" || sub?.Id == "menubs")
+                key = sub.Id == "ipl" ? "interiors" : "menubits";
+            else if (sub?.Page == PageCapture)
+                key = "capture." + EditNavSubStatKey(sub.Button);
             // Sub-pages without a button of their own: Rules (Mission) and Fixtures (Props).
-            if (sub != null && sub.Button == null && sub.Open != null)
+            else if (sub != null && sub.Button == null && sub.Open != null)
                 key = key == "props" ? "fixtures" : key + ".rules";
             else if (sub != null && EditNavSubStatKey(sub.Button) is string subKey)
                 key += "." + subKey;

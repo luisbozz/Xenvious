@@ -24,7 +24,7 @@ namespace Xenvious
             public string Key;
             public string Fallback;
             public string Icon;
-            public int Group;               // 0 place, 1 job type, 2 more options
+            public int Group;               // 0 place, 1 job type
             public string Creators;
             public TabItem Page;
             public Action Open;
@@ -39,6 +39,7 @@ namespace Xenvious
             public TabItem Page;            // for Open: the page that counts as this sub-page
             public Func<int> Count;         // entries of this sub-page in the job, shown as a badge
             public string Icon;             // geometry key; null: no icon (the parent's in favourites)
+            public string Id;               // Mission: place in the layouts below, and the favourite id
         }
 
         private List<EditNavEntry> _editNav;
@@ -64,7 +65,13 @@ namespace Xenvious
                 return entry;
             }
             EditNavSub Sub(Button button, string icon = null) => new EditNavSub { Button = button, Icon = icon };
-            EditNavSub Counted(Button button, Func<int> count, string icon) => new EditNavSub { Button = button, Count = count, Icon = icon };
+            EditNavSub Mission(string id, Button button, string icon, Func<int> count = null) => new EditNavSub { Id = id, Button = button, Icon = icon, Count = count };
+            EditNavSub CapturePage(string id, Button button, string key, string fallback) => new EditNavSub
+            {
+                Id = id, Button = button, Page = PageCapture, Icon = "EditIconCapture",
+                Label = key == null ? null : TranslateOr(key, fallback),
+                Open = () => { BtnSectionObj_Click(null, null); ClickButton(button); },
+            };
 
             return new List<EditNavEntry>
             {
@@ -81,27 +88,28 @@ namespace Xenvious
                 Page("zones", "Zones", "EditIconZone", 0, AllCreators, PageZone, () => BtnSectionZone_Click(null, null)),
 
                 Page("mission", "Mission", "EditIconMission", 1, "LCM", PageMission, () => BtnSectionMission_Click(null, null),
-                    new EditNavSub { Label = TranslateOr("rl_page", "Rules"), Open = OpenRules, Page = PageMission, Icon = "EditIconRules" },
-                    Sub(BtnMissionGeneral, "EditIconGeneral"), Sub(BtnMissionTeamSettings, "EditIconTeams"), Sub(BtnMissionPlayerSettings, "EditIconPlayer"),
-                    Sub(BtnMissionPA, "EditIconPlayArea"), Sub(BtnMissionTPM, "EditIconTeleportMarker"),
-                    Counted(BtnMissionKill, () => GlobalCount(GTA.Offsets.Editor.Kill.number), "EditIconKill"), Counted(BtnMissionGC, GangChaseRuleCount, "EditIconGangChase"),
-                    Counted(BtnMissionotzone, () => GlobalCount(GTA.Offsets.Editor.otzone.number), "EditIconOvertime"),
-                    Counted(BtnMissionBlips, () => GlobalCount(GTA.Offsets.Editor.ddblip.number), "EditIconBlip"),
-                    Sub(BtnSectionInventory, "EditIconInventory"), Counted(BtnSectionSMS, SmsCount, "EditIconSms"),
-                    Counted(BtnSectionGoto, () => GlobalCount(GTA.Offsets.Editor.Locations.number), "EditIconGoto"),
-                    Sub(BtnSectionTest, "EditIconTest")),
-                Page("jobsubtype_mission_capture", "Capture", "EditIconCapture", 1, "C", PageCapture, () => BtnSectionObj_Click(null, null),
-                    Sub(BtnCaptureGeneral), Sub(BtnCaptureObjects), Sub(BtnCaptureDelivery)),
+                    new EditNavSub { Id = "rules", Label = TranslateOr("rl_page", "Rules"), Open = OpenRules, Page = PageMission, Icon = "EditIconRules" },
+                    Mission("general", BtnMissionGeneral, "EditIconGeneral"), Mission("teams", BtnMissionTeamSettings, "EditIconTeams"),
+                    Mission("players", BtnMissionPlayerSettings, "EditIconPlayer"),
+                    Mission("pa", BtnMissionPA, "EditIconPlayArea"), Mission("tp", BtnMissionTPM, "EditIconTeleportMarker"),
+                    Mission("kill", BtnMissionKill, "EditIconKill", () => GlobalCount(GTA.Offsets.Editor.Kill.number)),
+                    Mission("gc", BtnMissionGC, "EditIconGangChase", GangChaseRuleCount),
+                    Mission("ot", BtnMissionotzone, "EditIconOvertime", () => GlobalCount(GTA.Offsets.Editor.otzone.number)),
+                    Mission("blips", BtnMissionBlips, "EditIconBlip", () => GlobalCount(GTA.Offsets.Editor.ddblip.number)),
+                    Mission("inv", BtnSectionInventory, "EditIconInventory"), Mission("sms", BtnSectionSMS, "EditIconSms", SmsCount),
+                    Mission("goto", BtnSectionGoto, "EditIconGoto", () => GlobalCount(GTA.Offsets.Editor.Locations.number)),
+                    Mission("test", BtnSectionTest, "EditIconTest"),
+                    // The capture objects work in the LTS and mission controllers too, so the
+                    // Capture page is part of Mission instead of a page of its own.
+                    CapturePage("capture", BtnCaptureGeneral, "editnav_capture_settings", "Capture Settings"),
+                    CapturePage("objects", BtnCaptureObjects, "editnav_objects", "Objects"),
+                    CapturePage("delivery", BtnCaptureDelivery, null, null),
+                    new EditNavSub { Id = "ipl", Button = BtnMissionInterior, Icon = "EditIconInterior", Label = TranslateOr("editnav_interiors", "Interiors (IPL)") },
+                    new EditNavSub { Id = "menubs", Button = BtnMissionMenubs, Icon = "EditIconBits", Label = TranslateOr("editnav_menubits", "Menu bits (raw)") }),
                 Page("race", "Race", "EditIconRace", 1, "R", PageRace, () => BtnSectionRace_Click(null, null),
                     Sub(BtnRaceGeneral), Sub(BtnRaceCheckpoints), Sub(BtnRaceAVEH), Sub(BtnRaceTune, "EditIconVehicle"), Sub(BtnRaceArena)),
                 Page("deathmatch", "Deathmatch", "EditIconDeathmatch", 1, "D", PageDeathmatch, () => BtnSectionDeathmatch_Click(null, null)),
                 Page("survival", "Survival", "EditIconSurvival", 1, "S", PageSurvival, () => BtnSectionSurvival_Click(null, null)),
-
-                // Raw data and special pages.
-                Page("editnav_menubits", "Menu bits (raw)", "EditIconBits", 2, "LCM", PageMission,
-                    () => { BtnSectionMission_Click(null, null); ClickButton(BtnMissionMenubs); }),
-                Page("editnav_interiors", "Interiors (IPL)", "EditIconInterior", 2, "LCM", PageMission,
-                    () => { BtnSectionMission_Click(null, null); ClickButton(BtnMissionInterior); }),
             };
         }
 
@@ -169,6 +177,7 @@ namespace Xenvious
                 return;
             }
             _editNavCreator = creator;
+            _editNavUnusedOpen = false;
             OpenOwnJobType(creator);
             HideInnerSwitchers();
             RenderEditNav();
@@ -238,7 +247,6 @@ namespace Xenvious
             {
                 TranslateOr("editnav_grp_place", "Place"),
                 TranslateOr("editnav_grp_rules", "Job type"),
-                TranslateOr("editnav_grp_more", "More options"),
             };
             RenderFavorites();
             for (int group = 0; group < groups.Length; group++)
@@ -325,13 +333,86 @@ namespace Xenvious
             return icon;
         }
 
+        // Mission per creator: the pages that make this job type first, the rest by task, and
+        // the pages that are not part of this job type folded away at the end (still usable).
+        private sealed class MissionLayout
+        {
+            public string[] Key;
+            public (string Title, string[] Ids)[] Sections;
+            public string[] Unused;
+        }
+
+        private MissionLayout MissionLayoutFor(string letter)
+        {
+            (string, string[]) Section(string key, string fallback, params string[] ids) => (TranslateOr(key, fallback), ids);
+            // Setup: the job as a whole. Flow: what happens per rule. Objectives: what the
+            // players do. Map: places and markers. Advanced: testing and raw data.
+            var setup = Section("editnav_sec_setup", "Setup", "general", "ipl", "teams", "players", "inv");
+            var flow = Section("editnav_sec_flow", "Flow", "rules", "gc", "sms");
+            var map = Section("editnav_sec_map", "Map", "pa", "ot", "blips", "tp");
+            var advanced = Section("editnav_sec_advanced", "Advanced", "test", "menubs");
+            switch (letter)
+            {
+                case "L":
+                    return new MissionLayout
+                    {
+                        Key = new[] { "kill", "pa", "teams" },
+                        Sections = new[] { setup, flow, Section("editnav_sec_goals", "Objectives", "kill", "objects", "delivery", "goto"), map, advanced },
+                        // The capture index only exists in the capture creator.
+                        Unused = new[] { "capture" },
+                    };
+                case "C":
+                    return new MissionLayout
+                    {
+                        Key = new[] { "capture", "objects", "delivery" },
+                        Sections = new[] { setup, flow, Section("editnav_sec_goals", "Objectives", "capture", "objects", "delivery", "goto"), map, advanced },
+                        // The capture creator does not force a kill rule.
+                        Unused = new[] { "kill" },
+                    };
+                case "M":
+                    return new MissionLayout
+                    {
+                        // Rules lead the Flow section; one page alone on top would only split it off.
+                        Key = new string[0],
+                        Sections = new[]
+                        {
+                            setup, flow, Section("editnav_sec_goals", "Objectives", "objects", "delivery", "goto"),
+                            Section("editnav_sec_map", "Map", "blips", "tp"), Section("editnav_sec_advanced", "Advanced", "menubs"),
+                        },
+                        // public_mission_controller reads rule bounds instead of the team play areas,
+                        // and the test patches only exist for the LTS and capture controllers.
+                        Unused = new[] { "pa", "ot", "test", "capture", "kill" },
+                    };
+                default:
+                    // Outside a creator (and in race, deathmatch, survival): every page, by task.
+                    return new MissionLayout
+                    {
+                        Key = new string[0],
+                        Sections = new[] { setup, flow, Section("editnav_sec_goals", "Objectives", "kill", "capture", "objects", "delivery", "goto"), map, advanced },
+                        Unused = new string[0],
+                    };
+            }
+        }
+
+        private bool _editNavUnusedOpen;
+
+        // The sub-pages in the order the side list shows them; the first one opens with the page.
+        private List<EditNavSub> OrderedSubs(EditNavEntry entry)
+        {
+            var visible = entry.Subs.Where(s => s.Button == null || s.Button.Visibility == Visibility.Visible).ToList();
+            if (entry.Key != "mission")
+                return visible;
+            var layout = MissionLayoutFor(CreatorLetter(_editNavCreator ?? ""));
+            var ids = layout.Key.Concat(layout.Sections.SelectMany(x => x.Ids)).Concat(layout.Unused).Distinct();
+            return ids.Select(id => visible.FirstOrDefault(s => s.Id == id)).Where(s => s != null).ToList();
+        }
+
         private FrameworkElement NavSubList(EditNavEntry entry)
         {
             var list = new StackPanel { Margin = new Thickness(28, 0, 0, 6) };
-            foreach (var sub in entry.Subs)
+            var visible = OrderedSubs(entry);
+            void Add(EditNavSub sub, bool unused = false)
             {
-                if (sub.Button != null && sub.Button.Visibility != Visibility.Visible)
-                    continue;
                 var button = new Button
                 {
                     Style = (Style)FindResource("SideNavButton"),
@@ -340,8 +421,54 @@ namespace Xenvious
                     Content = SubContent(sub),
                     Tag = sub == _editNavSub ? "active" : null,
                 };
+                if (unused)
+                {
+                    button.Opacity = 0.5;
+                    button.ToolTip = TranslateOr("editnav_unused_tip", "Not part of this job type; the values stay in the job.");
+                }
                 button.Click += (_, __) => OpenEditNav(entry, sub, rememberBack: false);
                 list.Children.Add(WithStar(button, FavoriteId(entry, sub)));
+            }
+            if (entry.Key != "mission")
+            {
+                foreach (var sub in visible)
+                    Add(sub);
+                return list;
+            }
+
+            var layout = MissionLayoutFor(CreatorLetter(_editNavCreator ?? ""));
+            EditNavSub ById(string id) => visible.FirstOrDefault(s => s.Id == id);
+            foreach (var sub in layout.Key.Select(ById).Where(s => s != null))
+                Add(sub);
+            foreach (var (title, ids) in layout.Sections)
+            {
+                var subs = ids.Where(id => !layout.Key.Contains(id)).Select(ById).Where(s => s != null).ToList();
+                if (subs.Count == 0)
+                    continue;
+                var header = new TextBlock { Text = title.ToUpper(CultureInfo.CurrentCulture), FontSize = 11, FontWeight = FontWeights.Bold,
+                    Margin = new Thickness(10, 12, 0, 3) };
+                header.SetResourceReference(TextBlock.ForegroundProperty, "AccentBrush");
+                list.Children.Add(header);
+                foreach (var sub in subs)
+                    Add(sub);
+            }
+            var unusedSubs = layout.Unused.Select(ById).Where(s => s != null).ToList();
+            if (unusedSubs.Count > 0)
+            {
+                var more = new Button
+                {
+                    Style = (Style)FindResource("SideNavButton"),
+                    FontSize = 12,
+                    Padding = new Thickness(10, 6, 10, 4),
+                    Margin = new Thickness(0, 6, 0, 0),
+                    Content = new TextBlock { Text = (_editNavUnusedOpen ? "\u25BE " : "\u25B8 ") + string.Format(CultureInfo.CurrentCulture,
+                        TranslateOr("editnav_unused", "Not used here ({0})"), unusedSubs.Count), Foreground = (Brush)FindResource("NavMutedBrush") },
+                };
+                more.Click += (_, __) => { _editNavUnusedOpen = !_editNavUnusedOpen; RenderEditNav(); };
+                list.Children.Add(more);
+                // The open page stays in sight even when the fold is closed.
+                foreach (var sub in unusedSubs.Where(s => _editNavUnusedOpen || s == _editNavSub))
+                    Add(sub, unused: true);
             }
             return list;
         }
@@ -437,13 +564,14 @@ namespace Xenvious
 
             _editNavEntry = entry;
             _editNavOpen.Add(entry);
-            _editNavSub = sub ?? entry.Subs.FirstOrDefault(s => s.Button != null && s.Button.Visibility == Visibility.Visible);
+            _editNavSub = sub ?? OrderedSubs(entry).FirstOrDefault();
             CountEditNav(entry, _editNavSub);
             _openingFromNav = true;
             try
             {
-                if (sub?.Open != null)
-                    sub.Open();
+                // The first sub-page can be one of its own too (Rules, the capture pages).
+                if (_editNavSub?.Open != null)
+                    _editNavSub.Open();
                 else
                 {
                     entry.Open();
@@ -468,7 +596,7 @@ namespace Xenvious
             foreach (var entry in EditNav)
             {
                 var sub = entry.Subs.FirstOrDefault(s => subButton != null ? s.Button == subButton : s.Page == page && s.Open != null);
-                if (sub != null || (subButton == null && entry.Page == page && entry.Group < 2))
+                if (sub != null || (subButton == null && entry.Page == page))
                 {
                     OpenEditNav(entry, sub, false);
                     return;
@@ -485,7 +613,7 @@ namespace Xenvious
             if (_openingFromNav)
                 return;
             var page = EditPages.SelectedItem as TabItem;
-            var entry = EditNav.FirstOrDefault(e => e.Page == page && e.Group < 2)
+            var entry = EditNav.FirstOrDefault(e => e.Page == page)
                 ?? EditNav.FirstOrDefault(e => e.Subs.Any(s => s.Page == page));
             if (entry == null)
                 return;
@@ -542,15 +670,29 @@ namespace Xenvious
                 if (_editNavFavorites == null)
                 {
                     string raw = new ini_reader(Functions.getRoamingConfigFilePath()).ReadString("Settings", "editnavfav", "");
-                    _editNavFavorites = raw.Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                    _editNavFavorites = raw.Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries)
+                        .Select(id => OldFavoriteIds.TryGetValue(id, out string now) ? now : id).Distinct().ToList();
                 }
                 return _editNavFavorites;
             }
         }
 
-        // Entry key, or entry key + "#" + sub index (labels change with the language, indices do not).
+        // Entry key, or entry key + "#" + sub id or index (labels change with the language, these do not).
         private static string FavoriteId(EditNavEntry entry, EditNavSub sub)
-            => sub == null ? entry.Key : entry.Key + "#" + entry.Subs.IndexOf(sub).ToString(CultureInfo.InvariantCulture);
+            => sub == null ? entry.Key : entry.Key + "#" + (sub.Id ?? entry.Subs.IndexOf(sub).ToString(CultureInfo.InvariantCulture));
+
+        // Favourites saved before Mission had sub ids, and of the pages that moved into Mission.
+        private static readonly Dictionary<string, string> OldFavoriteIds = new Dictionary<string, string>
+        {
+            { "mission#0", "mission#rules" }, { "mission#1", "mission#general" }, { "mission#2", "mission#teams" },
+            { "mission#3", "mission#players" }, { "mission#4", "mission#pa" }, { "mission#5", "mission#tp" },
+            { "mission#6", "mission#kill" }, { "mission#7", "mission#gc" }, { "mission#8", "mission#ot" },
+            { "mission#9", "mission#blips" }, { "mission#10", "mission#inv" }, { "mission#11", "mission#sms" },
+            { "mission#12", "mission#goto" }, { "mission#13", "mission#test" },
+            { "jobsubtype_mission_capture", "mission#capture" }, { "jobsubtype_mission_capture#0", "mission#capture" },
+            { "jobsubtype_mission_capture#1", "mission#objects" }, { "jobsubtype_mission_capture#2", "mission#delivery" },
+            { "editnav_interiors", "mission#ipl" }, { "editnav_menubits", "mission#menubs" },
+        };
 
         private (EditNavEntry Entry, EditNavSub Sub) FromFavoriteId(string id)
         {
@@ -558,6 +700,9 @@ namespace Xenvious
             var entry = EditNav.FirstOrDefault(e => e.Key == parts[0]);
             if (entry == null || parts.Length == 1)
                 return (entry, null);
+            var byId = entry.Subs.FirstOrDefault(sub => sub.Id == parts[1]);
+            if (byId != null)
+                return (entry, byId);
             return int.TryParse(parts[1], NumberStyles.Integer, CultureInfo.InvariantCulture, out int i) && i >= 0 && i < entry.Subs.Count
                 ? (entry, entry.Subs[i]) : (null, null);
         }
