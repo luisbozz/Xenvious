@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Globalization;
 using System.Linq;
 using System.Numerics;
@@ -303,18 +303,21 @@ namespace Xenvious
                 stack.Children.Add(SlotRow(team, cp, s, DrawMap));
 
             var buttons = new WrapPanel { Margin = new Thickness(0, 6, 0, 0) };
-            buttons.Children.Add(TextButton(T("rcp_ring", "4 points around me"), T("rcp_ring_tip", "Four points 2.5 m around your position, facing where you look."), () =>
+            void Ring(Vector3? center)
             {
-                var me = PlayerPosition();
-                if (me == null) return;
+                if (center == null) return;
                 float heading = CameraHeading();
                 for (int s = 0; s < RestartCheckpoints.Slots; s++)
                 {
                     double a = s * Math.PI / 2;
-                    RestartCheckpoints.SetSlot(team, cp, s, new Vector3(me.Value.X + (float)(Math.Cos(a) * 2.5), me.Value.Y + (float)(Math.Sin(a) * 2.5), me.Value.Z), heading);
+                    RestartCheckpoints.SetSlot(team, cp, s, new Vector3(center.Value.X + (float)(Math.Cos(a) * 2.5), center.Value.Y + (float)(Math.Sin(a) * 2.5), center.Value.Z), heading);
                 }
                 SpawnsChanged(team, cp);
-            }));
+            }
+            buttons.Children.Add(TextButton(T("rcp_ring_cursor", "4 points at the cursor"), T("rcp_ring_cursor_tip", "Four points 2.5 m around the creator cursor, facing where the camera looks."),
+                () => Ring(CursorPosition())));
+            buttons.Children.Add(TextButton(T("rcp_ring", "4 points around me"), T("rcp_ring_tip", "Four points 2.5 m around your position, facing where you look."),
+                () => Ring(PlayerPosition())));
             buttons.Children.Add(TextButton(T("rcp_copy_start", "Copy team start points"), T("rcp_copy_start_tip", "The team's first four start points with their headings."), () =>
             {
                 if (!StartPoints.Ready) return;
