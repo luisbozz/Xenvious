@@ -188,6 +188,7 @@ namespace Xenvious
             public long job_save_stage;
             public long job_save_upload_state;
             public long job_save_uploaded;
+            public long job_save_content_id;
             public long current_creator_worker_offset_menu;
             public long current_creator_worker_offset_test_state;
             public long current_creator_worker_pos;
@@ -1374,6 +1375,7 @@ namespace Xenvious
                     case "job_save_stage": return job_save_stage;
                     case "job_save_upload_state": return job_save_upload_state;
                     case "job_save_uploaded": return job_save_uploaded;
+                    case "job_save_content_id": return job_save_content_id;
                     case "current_creator_worker_offset_menu": return current_creator_worker_offset_menu;
                     case "current_creator_worker_offset_test_state": return current_creator_worker_offset_test_state;
                     case "current_creator_worker_pos": return current_creator_worker_pos;

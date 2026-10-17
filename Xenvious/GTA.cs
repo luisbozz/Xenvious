@@ -1558,6 +1558,8 @@ namespace Xenvious
                 public static long job_save_stage = 0;
                 public static long job_save_upload_state = 0;
                 public static long job_save_uploaded = 0;
+                // The open job's content id in the save struct (TEXT_LABEL); a publish names it as the base.
+                public static long job_save_content_id = 0;
                 public static long creator_quit_flag = 0;
                 public static long OFFSET_current_creator_worker_offset_menu = 0x0;
                 public static long OFFSET_current_creator_worker_offset_test_state = 0x0;

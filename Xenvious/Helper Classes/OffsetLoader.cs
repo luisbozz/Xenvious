@@ -88,6 +88,7 @@ namespace Xenvious
             GTA.Offsets.Editor.job_save_stage = d.OFFSETS.job_save_stage;
             GTA.Offsets.Editor.job_save_upload_state = d.OFFSETS.job_save_upload_state;
             GTA.Offsets.Editor.job_save_uploaded = d.OFFSETS.job_save_uploaded;
+            GTA.Offsets.Editor.job_save_content_id = d.OFFSETS.job_save_content_id;
             GTA.Offsets.Editor.creator_quit_flag = d.OFFSETS.creator_quit_flag;
             GTA.Offsets.Editor.OFFSET_current_creator_worker_offset_menu = d.OFFSETS.current_creator_worker_offset_menu;
             GTA.Offsets.Editor.OFFSET_current_creator_worker_offset_test_state = d.OFFSETS.current_creator_worker_offset_test_state;

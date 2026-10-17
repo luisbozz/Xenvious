@@ -56,7 +56,7 @@ namespace Xenvious
 
         // ---- availability ---------------------------------------------------------------
 
-        private static long SaveOffset(string creator)
+        internal static long SaveOffset(string creator)
         {
             switch (creator)
             {

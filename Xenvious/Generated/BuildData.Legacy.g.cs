@@ -87,6 +87,7 @@ namespace Xenvious
             d.OFFSETS.job_save_stage = 11515;
             d.OFFSETS.job_save_upload_state = 11519;
             d.OFFSETS.job_save_uploaded = 24637;
+            d.OFFSETS.job_save_content_id = 24631;
             d.OFFSETS.current_creator_worker_offset_menu = 533;
             d.OFFSETS.current_creator_worker_offset_test_state = 642;
             d.OFFSETS.current_creator_worker_pos = 4;

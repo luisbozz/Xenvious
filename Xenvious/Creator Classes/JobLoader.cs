@@ -144,6 +144,7 @@ namespace Xenvious
                     {
                         // Loaded as someone else's published job; make it a new one.
                         CreatorMap.WriteLocal(worker + GTA.Offsets.Editor.OFFSET_current_creator_worker_offset_editing_published, 0);
+                        ForgetContentId(creator);
                         Log.Info($"load job {contentId}: loaded after {(DateTime.UtcNow - started).TotalSeconds:0.0} s", source: "copyjob");
                         return Result.Loaded;
                     }
@@ -163,6 +164,20 @@ namespace Xenvious
                     CreatorMap.WriteLocal(loader + GTA.Offsets.Editor.load_job_loader_language, -1);
                 }
             }
+        }
+
+        // The creator keeps the loaded job's content id (Global jobid, copied into its save
+        // struct) and names it as the base of the next publish: UGC_PUBLISH(new id, base id).
+        // With someone else's job (a Rockstar one) as the base the cloud refuses the publish
+        // without a code (UGC_GET_MODIFY_RESULT -1). Empty, as with a job made from scratch,
+        // the save and the publish create the player's own job.
+        private static void ForgetContentId(string creator)
+        {
+            long save = JobDatafile.SaveOffset(creator);
+            if (save != 0 && GTA.Offsets.Editor.job_save_content_id != 0)
+                CreatorMap.WriteLocal(save + GTA.Offsets.Editor.job_save_content_id, 0);
+            if (GTA.Offsets.Editor.jobid != 0)
+                new Global(GTA.Offsets.Editor.jobid).SetInt(0);
         }
 
         private static void HoldSubtype(CancellationToken stop)
