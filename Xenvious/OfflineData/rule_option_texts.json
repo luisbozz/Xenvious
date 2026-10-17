@@ -2454,5 +2454,213 @@
   "de": "Tickername",
   "pl": "Nazwa telegramu",
   "ru": "Название бегущей строки"
+ },
+ "CELL_CAS_TTR_N": {
+  "en": "Tao's Translator",
+  "fr": "Interprète de Tao",
+  "de": "Taos Übersetzer",
+  "pl": "Tłumacz Tao",
+  "ru": "Переводчик Тао",
+  "zh_cn": "陶的翻译员"
+ },
+ "CELL_CELEB_N": {
+  "en": "Yung Ancestor",
+  "fr": "Yung Ancestor",
+  "de": "Yung Ancestor",
+  "pl": "Yung Ancestor",
+  "ru": "Янг Ансестор",
+  "zh_cn": "YungµAncestor"
+ },
+ "CELL_YACHT": {
+  "en": "Captain",
+  "fr": "Capitaine",
+  "de": "Kapitän",
+  "pl": "Kapitan",
+  "ru": "Капитан",
+  "zh_cn": "船长"
+ },
+ "CELL_PAVEL_N": {
+  "en": "Pavel",
+  "fr": "Pavel",
+  "de": "Pavel",
+  "pl": "Pavel",
+  "ru": "Павел",
+  "zh_cn": "帕维尔"
+ },
+ "CELL_CAS_MAN_N": {
+  "en": "Ms. Baker",
+  "fr": "Mme Baker",
+  "de": "Ms. Baker",
+  "pl": "Pani Baker",
+  "ru": "Мисс Бейкер",
+  "zh_cn": "贝克女士"
+ },
+ "CELL_ARTU": {
+  "en": "Unknown",
+  "fr": "Inconnu",
+  "de": "Unbekannt",
+  "pl": "Nieznane",
+  "ru": "Неизв.",
+  "zh_cn": "未知"
+ },
+ "CELL_133": {
+  "en": "Cheng Jr.",
+  "fr": "Cheng Jr.",
+  "de": "Cheng Jr.",
+  "pl": "Cheng Jr.",
+  "ru": "Чен-младший",
+  "zh_cn": "陈陶"
+ },
+ "CELL_195": {
+  "en": "Unknown",
+  "fr": "Inconnu",
+  "de": "Unbekannt",
+  "pl": "Zastrzeżony",
+  "ru": "Неизв.",
+  "zh_cn": "未知"
+ },
+ "CELL_MM_N": {
+  "en": "Moodymann",
+  "fr": "Moodymann",
+  "de": "Moodymann",
+  "pl": "Moodymann",
+  "ru": "Moodymann",
+  "zh_cn": "穆迪曼"
+ },
+ "CELL_111": {
+  "en": "Lester",
+  "fr": "Lester",
+  "de": "Lester",
+  "pl": "Lester",
+  "ru": "Лестер",
+  "zh_cn": "莱斯特"
+ },
+ "CELL_144": {
+  "en": "Martin",
+  "fr": "Martin",
+  "de": "Martin",
+  "pl": "Martin",
+  "ru": "Мартин",
+  "zh_cn": "马丁"
+ },
+ "CELL_MIGEL_N": {
+  "en": "Miguel Madrazo",
+  "fr": "Miguel Madrazo",
+  "de": "Miguel Madrazo",
+  "pl": "Miguel Madrazo",
+  "ru": "Мигель Мадрасо",
+  "zh_cn": "米盖尔·玛德拉索"
+ },
+ "CELL_CHARLIE_N": {
+  "en": "Charlie",
+  "fr": "Charlie",
+  "de": "Charlie",
+  "pl": "Charlie",
+  "ru": "Чарли",
+  "zh_cn": "查理"
+ },
+ "CELL_KDJ_N": {
+  "en": "KDJ",
+  "fr": "KDJ",
+  "de": "KDJ",
+  "pl": "KDJ",
+  "ru": "KDJ",
+  "zh_cn": "KDJ"
+ },
+ "CELL_MAI_N1": {
+  "en": "Angel",
+  "fr": "Angel",
+  "de": "Angel",
+  "pl": "Angel",
+  "ru": "Энджел",
+  "zh_cn": "安琪尔"
+ },
+ "CELL_AVI_SCH_N": {
+  "en": "Avi Schwartzman",
+  "fr": "Avi Schwartzman",
+  "de": "Avi Schwartzman",
+  "pl": "Avi Schwartzman",
+  "ru": "Ави Шварцман",
+  "zh_cn": "阿维·施瓦茨曼"
+ },
+ "CELL_MAI_N2": {
+  "en": "Haviland",
+  "fr": "Haviland",
+  "de": "Haviland",
+  "pl": "Haviland",
+  "ru": "Хавиланд",
+  "zh_cn": "哈维兰"
+ },
+ "CELL_DAX_N": {
+  "en": "Dax",
+  "fr": "Dax",
+  "de": "Dax",
+  "pl": "Dax",
+  "ru": "Дакс",
+  "zh_cn": "达克斯"
+ },
+ "CELL_VINCENT_N": {
+  "en": "Vincent",
+  "fr": "Vincent",
+  "de": "Vincent",
+  "pl": "Vincent",
+  "ru": "Винсент",
+  "zh_cn": "文森特"
+ },
+ "CELL_OSCAR_G_N": {
+  "en": "Oscar",
+  "fr": "Oscar",
+  "de": "Oscar",
+  "pl": "Oscar",
+  "ru": "Оскар",
+  "zh_cn": "奥斯卡"
+ },
+ "CELL_FRA_IMA_N": {
+  "en": "Agency Conference",
+  "fr": "Agence (conférence)",
+  "de": "Agenturkonferenz",
+  "pl": "Konferencja w agencji",
+  "ru": "Агентство (конференция)",
+  "zh_cn": "事务所会议"
+ },
+ "CELL_ULP_N": {
+  "en": "Agent ULP",
+  "fr": "Agent ULP",
+  "de": "Agent ULP",
+  "pl": "Agent ULP",
+  "ru": "Агент ОСГ",
+  "zh_cn": "ULPµ探员"
+ },
+ "CELL_JENETTE_N": {
+  "en": "Jenette",
+  "fr": "Jenette",
+  "de": "Jenette",
+  "pl": "Jenette",
+  "ru": "Дженетт",
+  "zh_cn": "珍妮特"
+ },
+ "CELL_MAI_N3": {
+  "en": "OG",
+  "fr": "OG",
+  "de": "OG",
+  "pl": "OG",
+  "ru": "Гангста",
+  "zh_cn": "OG"
+ },
+ "CELL_RAF_N": {
+  "en": "Raf",
+  "fr": "Raf",
+  "de": "Raf",
+  "pl": "Raf",
+  "ru": "Раф",
+  "zh_cn": "拉夫"
+ },
+ "CELL_SES_N": {
+  "en": "Sessanta",
+  "fr": "Sessanta",
+  "de": "Sessanta",
+  "pl": "Sessanta",
+  "ru": "Сессанта",
+  "zh_cn": "席桑达"
  }
 }
