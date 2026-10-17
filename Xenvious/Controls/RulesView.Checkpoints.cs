@@ -261,6 +261,15 @@ namespace Xenvious
                     RestartCheckpoints.SetTestCheckpoint(armed ? -1 : cp);
                     Reread();
                 }));
+                // Arms this checkpoint and starts the test as its team, like Test on the dashboard.
+                row.Children.Add(TextButton(T("rcp_test_now", "Test now"),
+                    string.Format(CultureInfo.CurrentCulture, T("rcp_test_now_tip", "Starts the creator test as team {0} at this checkpoint."), team + 1), () =>
+                {
+                    if (!armed)
+                        RestartCheckpoints.SetTestCheckpoint(cp);
+                    MainWindow.Instance?.StartCreatorTest(team);
+                    Reread();
+                }));
                 test.Children.Add(row);
                 _detail.Children.Add(Box("▶", T("rcp_b_test", "Test from this checkpoint"),
                     armed ? EntityRulesCard.SummaryChip(T("rcp_test_chip", "next test"), "ok") : null, test));

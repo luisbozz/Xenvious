@@ -847,6 +847,18 @@ namespace Xenvious
                 m.memory(state.ToString("X")).SetInt(10);
         }
 
+        /// <summary>Starts the creator test as <paramref name="team"/> (0-based); does nothing while a test runs.</summary>
+        public void StartCreatorTest(int team)
+        {
+            if (!m.IsProcOpen || _testRunning)
+                return;
+            ddteamtest.SelectedIndex = team;
+            foreach (var child in DashTeamButtons.Children)
+                if (child is System.Windows.Controls.Primitives.ToggleButton button)
+                    button.IsChecked = DashTeamButtons.Children.IndexOf(button) == team;
+            BtnTestMain_Click(null, null);
+        }
+
         private void BtnTestMain_Click(object sender, RoutedEventArgs e)
         {
             if (m.IsProcOpen && _testRunning)
