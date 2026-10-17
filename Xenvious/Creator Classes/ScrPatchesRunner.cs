@@ -67,7 +67,7 @@ namespace Xenvious
                 var onlineTestActive = new HashSet<string>(OnlineTest.Features.Where(OnlineTest.Active));
                 bool onlineTestChanged = !onlineTestActive.SetEquals(onlineTestWasActive);
                 if (onlineTestChanged)
-                    Log.Info("online test active: " + (onlineTestActive.Count == 0 ? "none" : string.Join(", ", onlineTestActive)), source: "OnlineTest");
+                    Log.Debug("online test active: " + (onlineTestActive.Count == 0 ? "none" : string.Join(", ", onlineTestActive)), source: "OnlineTest");
                 foreach (string feature in onlineTestWasActive.Except(onlineTestActive))
                     RevertTriggered(OnlineTest.TriggerPrefix + feature);
                 onlineTestWasActive = onlineTestActive;
@@ -269,6 +269,7 @@ namespace Xenvious
                     }
 
                     // Patches anwenden
+                    int wrote = 0;
                     foreach (var addr in foundAddrs)
                     {
                         ulong patchAddress = addr + (ulong)patch.offset;
@@ -286,6 +287,7 @@ namespace Xenvious
                         bool success = PatchScrProgramBytecode(patchAddress, finalBytesToPatch);
                         if (success)
                         {
+                            wrote++;
                             appliedPatches.Add(patchAddress);
                             lock (written)
                             {
@@ -300,6 +302,9 @@ namespace Xenvious
                             }
                         }
                     }
+                    // Switched patches are the ones testers ask about ("is it on?").
+                    if (wrote > 0 && !string.IsNullOrEmpty(patch.trigger))
+                        Log.Debug($"'{patch.patch_name}' written in {patch.script_name} ({wrote}x)", source: "ScrPatchesRunner");
                 }
             }
         }

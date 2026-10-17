@@ -111,7 +111,7 @@ namespace Xenvious
             }
             new Global(GTA.Offsets.Editor.load_job_flag).SetInt(1);
             CreatorMap.WriteLocal(state, StateStart);
-            Log.Info($"load job {contentId}: creator restarted ({creator}, {(direct ? $"file version {version}, language {language}" : "search")})", source: "copyjob");
+            Log.Debug($"load job {contentId}: creator restarted ({creator}, {(direct ? $"file version {version}, language {language}" : "search")})", source: "copyjob");
 
             var started = DateTime.UtcNow;
             bool left = false;

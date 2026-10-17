@@ -458,7 +458,7 @@ namespace Xenvious
             // game is running yet the detection defaults to Legacy and the
             // timer below reloads once a game appears.
             GameVariant.Detect();
-            Log.Info($"Offline data for GTA {GameVariant.DisplayName(GameVariant.Current)}",
+            Log.Debug($"Offline data for GTA {GameVariant.DisplayName(GameVariant.Current)}",
                 source: "startup");
 
             // Load the embedded offline data (offsets + detail lists).

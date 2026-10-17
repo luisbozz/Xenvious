@@ -310,7 +310,7 @@ namespace Xenvious
             if (addy == 0 && AobCache.TryGetStored(GTA.Offsets.Editor.AOB_devptr, out ulong stored)
                 && MainWindow.m.memory(stored.ToString("X")).Get<int>() == DevPatched)
             {
-                Log.Info("AOB_devptr: developer mode still on from an earlier run, found at its stored site.", source: "GTA");
+                Log.Debug("AOB_devptr: developer mode still on from an earlier run, found at its stored site.", source: "GTA");
                 addy = stored;
             }
 

@@ -551,7 +551,7 @@ namespace Xenvious
                     if (exported == JobDatafile.Result.Done)
                         SaveJsonUndo(current);
                     else
-                        Log.Info($"whole job load: no undo, export {exported}", source: "mapbackup");
+                        Log.Debug($"whole job load: no undo, export {exported}", source: "mapbackup");
                 }
 
                 tbMapStatus.Text = TranslateOr("job_file_importing", "Der Creator lädt den Job …");

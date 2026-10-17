@@ -49,7 +49,7 @@ namespace Xenvious
             string pattern = _pattern();
             if (string.IsNullOrWhiteSpace(pattern))
             {
-                Log.Info($"No {Name} pattern for GTA {GameVariant.DisplayName(GameVariant.Current)}; the switch stays unavailable.", source: "GamePatches");
+                Log.Debug($"No {Name} pattern for GTA {GameVariant.DisplayName(GameVariant.Current)}; the switch stays unavailable.", source: "GamePatches");
                 return;
             }
             ulong hit = GTA.ScanModule(pattern, buffer);
@@ -83,7 +83,7 @@ namespace Xenvious
                 {
                     _address = (long)at;
                     _original = stored;
-                    Log.Info($"{Name} found again at its stored site ({(now.SequenceEqual(_patch) ? "still patched" : "original")}).", source: "GamePatches");
+                    Log.Debug($"{Name} found again at its stored site ({(now.SequenceEqual(_patch) ? "still patched" : "original")}).", source: "GamePatches");
                     return;
                 }
             }

@@ -129,7 +129,7 @@ namespace Xenvious
                     try
                     {
                         string saved = await SaveCurrentMapAsync(null);
-                        Log.Info($"copy job: open map saved first ({saved})", source: "copyjob");
+                        Log.Debug($"copy job: open map saved first ({saved})", source: "copyjob");
                     }
                     catch (System.Exception ex)
                     {
@@ -206,7 +206,7 @@ namespace Xenvious
             }
 
             bool rebuilt = !rebuild || await CreatorMap.RebuildAsync();
-            Log.Info($"copy job: rebuild {(rebuilt ? "ok" : "not done")}, then {mode}", source: "copyjob");
+            Log.Debug($"copy job: rebuild {(rebuilt ? "ok" : "not done")}, then {mode}", source: "copyjob");
             if (!rebuilt)
             {
                 SetCopyStatus(TranslateOr("copy_done_norebuild", "Kopiert. Der Creator hat die Map nicht neu aufgebaut; lade den Job neu, um sie zu sehen."), true);

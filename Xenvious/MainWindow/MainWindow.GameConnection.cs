@@ -39,7 +39,7 @@ namespace Xenvious
             // follow the process rather than stay at whatever was loaded first.
             if (GameVariant.DetectChanged())
             {
-                Log.Info($"Reloading offline data for GTA {GameVariant.DisplayName(GameVariant.Current)}",
+                Log.Debug($"Reloading offline data for GTA {GameVariant.DisplayName(GameVariant.Current)}",
                     source: "timercheckgta");
                 pid = 0;
                 OffsetLoader.Load();
@@ -84,7 +84,7 @@ namespace Xenvious
                     }
                     if (pid == 0)
                     {
-                        Log.Info("First Init", source: "timercheckgta");
+                        Log.Debug("First Init", source: "timercheckgta");
                     }
                     OnlineEnable.isInjected();
                     ScriptSpace.Reset();
@@ -92,11 +92,11 @@ namespace Xenvious
                     // so skip reading the whole module; the getters answer from the cache.
                     bool fromCache = GTA.AllPatternsCached();
                     byte[] buff = fromCache ? null : m.memory(mainmodule.BaseAddress.ToInt64().ToString("X")).GetBytes(mainmodule.ModuleMemorySize);
-                    Log.Info(fromCache ? "AOB: all patterns from cache, module not read" : "AOB: scanning module", source: "timercheckgta");
+                    Log.Debug(fromCache ? "AOB: all patterns from cache, module not read" : "AOB: scanning module", source: "timercheckgta");
                     long globalptr = GTA.getGlobalPointer(buff).ToInt64();
                     if (!globalPtrSanityCheck(globalptr))
                     {
-                        Log.Info($"Wait with init because too early! GlobalPTR={globalptr.ToString("X")}", source: "timercheckgta");
+                        Log.Debug($"Wait with init because too early! GlobalPTR={globalptr.ToString("X")}", source: "timercheckgta");
                         return;
                     }
                     if (buff == null || buff.Length > 0)

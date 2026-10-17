@@ -95,7 +95,7 @@ namespace Xenvious
         public async Task<bool> GetJobInfo()
         {
             var watch = System.Diagnostics.Stopwatch.StartNew();
-            void Step(string what) => Log.Info($"copy job: {what} ({watch.ElapsedMilliseconds} ms)", source: "copyjob");
+            void Step(string what) => Log.Debug($"copy job: {what} ({watch.ElapsedMilliseconds} ms)", source: "copyjob");
             try
             {
                 string rootid;

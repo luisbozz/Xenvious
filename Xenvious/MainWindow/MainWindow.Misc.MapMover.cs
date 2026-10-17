@@ -105,7 +105,7 @@ namespace Xenvious
                 {
                     _mapOriginX = ox; _mapUnitsPerPxX = ux;
                     _mapOriginY = oy; _mapUnitsPerPxY = uy;
-                    Log.Info("Map Mover: Kalibrierung aus config.ini geladen");
+                    Log.Debug("Map Mover: Kalibrierung aus config.ini geladen");
                 }
             }
             catch (Exception ex)
@@ -533,7 +533,7 @@ namespace Xenvious
             }
 
             tbStuffTestOutput.Text = sb.ToString();
-            Log.Info("Map Mover Diagnose:\n" + sb);
+            Log.Debug("Map Mover Diagnose:\n" + sb);
         }
 
         // The creator thread, found by its own name instead of by a pointer.
@@ -742,7 +742,7 @@ namespace Xenvious
                     _creatorHashAddr = hit;
                     _creatorStatics = statics;
                     _creatorScript = name;
-                    Log.Info($"Creator-Thread gefunden: {name}, Thread 0x{hit - 0x10:X}, Statics 0x{statics:X} (Hash+0x{at:X})");
+                    Log.Debug($"Creator-Thread gefunden: {name}, Thread 0x{hit - 0x10:X}, Statics 0x{statics:X} (Hash+0x{at:X})");
                     return true;
                 }
             }
@@ -850,7 +850,7 @@ namespace Xenvious
             }
 
             tbStuffTestOutput.Text = sb.ToString();
-            Log.Info("Pointer-Herleitung:\n" + sb);
+            Log.Debug("Pointer-Herleitung:\n" + sb);
         }
 
         // Same derivation for the job image. Legacy reads it as

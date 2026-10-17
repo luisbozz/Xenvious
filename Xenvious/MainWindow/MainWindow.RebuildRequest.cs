@@ -45,7 +45,7 @@ namespace Xenvious
             if (RebuildForced())
             {
                 AnswerRebuild(true);
-                Log.Info("rebuild with --force: closing", source: "startup");
+                Log.Debug("rebuild with --force: closing", source: "startup");
                 Close();
                 return;
             }

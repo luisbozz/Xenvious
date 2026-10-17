@@ -243,7 +243,7 @@ namespace Xenvious
                 : GTA.IsScriptRunning("flow_controller") ? (GTA.IsScriptRunning("startup_positioning") ? GameState.Loading : GameState.StoryMode)
                 : GameState.MainMenu;
             if (state != CurrentGameState)
-                Log.Info($"game state: {CurrentGameState} -> {state}", source: "dashboard");
+                Log.Debug($"game state: {CurrentGameState} -> {state}", source: "dashboard");
             CurrentGameState = state;
         }
 
@@ -283,7 +283,7 @@ namespace Xenvious
             LaunchCreator();
             _launchPhase = LaunchPhase.Requested;
             _launchStarted = DateTime.UtcNow;
-            Log.Info("Launch creator requested", source: "dashboard");
+            Log.Debug("Launch creator requested", source: "dashboard");
             UpdateDashboardStatus();
         }
 
@@ -384,7 +384,7 @@ namespace Xenvious
                 if (worker != 0 && CreatorMap.ReadLocal(state) == CreatorMap.StateEditing)
                 {
                     CreatorMap.WriteLocal(state, CreatorStateExit);
-                    Log.Info($"leave creator: exit requested ({creator})", source: "dashboard");
+                    Log.Debug($"leave creator: exit requested ({creator})", source: "dashboard");
                     if (await WaitForCreatorGoneAsync())
                         return;
                 }
@@ -399,9 +399,9 @@ namespace Xenvious
                     return;
 
                 new Global(GTA.Offsets.Editor.creator_quit_flag).SetInt(1);
-                Log.Info($"leave creator: quit flag set ({creator})", source: "dashboard");
+                Log.Debug($"leave creator: quit flag set ({creator})", source: "dashboard");
                 bool gone = await WaitForCreatorGoneAsync();
-                Log.Info($"leave creator: {(gone ? "creator ended" : "creator still running")}", source: "dashboard");
+                Log.Debug($"leave creator: {(gone ? "creator ended" : "creator still running")}", source: "dashboard");
                 if (!gone)
                 {
                     await ConfirmAsync(TranslateOr("leave_failed_title", "Creator läuft noch"),
