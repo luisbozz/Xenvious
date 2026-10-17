@@ -1910,91 +1910,118 @@
                                                                                             </Button>
                                                                                         </Border>
                                                                                         <Border x:Name="haslistcontainer" Background="Transparent" CornerRadius="5" BorderThickness="1" BorderBrush="{DynamicResource ComboBoxBorderInner}" Visibility="Collapsed" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,6,0,0">
+                                                                                            <Border.Resources>
+                                                                                                <!-- Small tick for the timing list rows; three states for the header (some ticked). -->
+                                                                                                <Style x:Key="RowCheck" TargetType="{x:Type CheckBox}">
+                                                                                                    <Setter Property="OverridesDefaultStyle" Value="True"/>
+                                                                                                    <Setter Property="Cursor" Value="Hand"/>
+                                                                                                    <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                                                                                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                                                                                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                                                                                                    <Setter Property="Template">
+                                                                                                        <Setter.Value>
+                                                                                                            <ControlTemplate TargetType="{x:Type CheckBox}">
+                                                                                                                <Border x:Name="box" Width="14" Height="14" CornerRadius="3" BorderThickness="1" BorderBrush="{DynamicResource MutedTextBrush}" Background="Transparent">
+                                                                                                                    <Grid>
+                                                                                                                        <Path x:Name="tick" Data="M2,6.5 L5,9.5 L10.5,3" Stroke="White" StrokeThickness="1.8" StrokeEndLineCap="Round" StrokeStartLineCap="Round" StrokeLineJoin="Round" Visibility="Collapsed"/>
+                                                                                                                        <Rectangle x:Name="dash" Width="7" Height="2" Fill="White" Visibility="Collapsed"/>
+                                                                                                                    </Grid>
+                                                                                                                </Border>
+                                                                                                                <ControlTemplate.Triggers>
+                                                                                                                    <Trigger Property="IsChecked" Value="True">
+                                                                                                                        <Setter TargetName="box" Property="Background" Value="{DynamicResource AccentBrush}"/>
+                                                                                                                        <Setter TargetName="box" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                                                                                                                        <Setter TargetName="tick" Property="Visibility" Value="Visible"/>
+                                                                                                                    </Trigger>
+                                                                                                                    <Trigger Property="IsChecked" Value="{x:Null}">
+                                                                                                                        <Setter TargetName="box" Property="Background" Value="{DynamicResource AccentBrush}"/>
+                                                                                                                        <Setter TargetName="box" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                                                                                                                        <Setter TargetName="dash" Property="Visibility" Value="Visible"/>
+                                                                                                                    </Trigger>
+                                                                                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                                                                                        <Setter TargetName="box" Property="BorderBrush" Value="{DynamicResource TextColor}"/>
+                                                                                                                    </Trigger>
+                                                                                                                </ControlTemplate.Triggers>
+                                                                                                            </ControlTemplate>
+                                                                                                        </Setter.Value>
+                                                                                                    </Setter>
+                                                                                                </Style>
+                                                                                            </Border.Resources>
                                                                                             <Grid Margin="5">
                                                                                                 <Grid.RowDefinitions>
-                                                                                                    <RowDefinition Height="70"/>
-                                                                                                    <RowDefinition Height="auto"/>
-                                                                                                    <RowDefinition Height="30"/>
+                                                                                                    <RowDefinition Height="Auto"/>
+                                                                                                    <RowDefinition Height="Auto"/>
+                                                                                                    <RowDefinition Height="Auto"/>
+                                                                                                    <RowDefinition Height="Auto"/>
+                                                                                                    <RowDefinition Height="Auto"/>
+                                                                                                    <RowDefinition Height="Auto"/>
                                                                                                 </Grid.RowDefinitions>
 
-
-
-                                                                                                <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                                                                                                <!-- Title with the select row under it, the numbers on the right only as wide as they need. -->
+                                                                                                <Grid Grid.Row="0">
                                                                                                     <Grid.ColumnDefinitions>
-                                                                                                        <ColumnDefinition Width="0.5*"/>
-                                                                                                        <ColumnDefinition Width="0.5*"/>
+                                                                                                        <ColumnDefinition Width="*"/>
+                                                                                                        <ColumnDefinition Width="Auto"/>
                                                                                                     </Grid.ColumnDefinitions>
-                                                                                                    <Grid.RowDefinitions>
-                                                                                                        <RowDefinition Height="40"/>
-                                                                                                        <RowDefinition Height="auto"/>
-                                                                                                    </Grid.RowDefinitions>
-                                                                                                    <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Top" Foreground="{DynamicResource TextColor}" FontSize="16" Text="{Binding Translation[prophasexpandheader], FallbackValue=Timing List of Prop Hiding}" FontWeight="Bold" TextWrapping="Wrap"/>
-
-                                                                                                    <Grid Grid.Row="0" Grid.Column="1" Margin="20,0,0,0">
-                                                                                                        <Grid.ColumnDefinitions>
-                                                                                                            <ColumnDefinition Width="0.6*"/>
-                                                                                                            <ColumnDefinition Width="0.5*"/>
-                                                                                                        </Grid.ColumnDefinitions>
-                                                                                                        <Grid.RowDefinitions>
-                                                                                                            <RowDefinition Height="0.5*"/>
-                                                                                                            <RowDefinition Height="0.5*"/>
-                                                                                                        </Grid.RowDefinitions>
-
-                                                                                                        <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="10" TextAlignment="Center" Foreground="Gray" Text="{Binding Translation[prophasexpandhp], FallbackValue=Highest Prop}"/>
-                                                                                                        <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="10" TextAlignment="Center" Foreground="Gray" Text="{Binding Translation[prophasexpandlp], FallbackValue=Lowest Prop}"/>
-
-                                                                                                        <Viewbox VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="0" Grid.Column="1">
-                                                                                                            <Label x:Name="Lblpropshasmax" VerticalAlignment="Center" HorizontalAlignment="Center" Content="0" ContentStringFormat="{}{0} sec" Foreground="Red"/>
-                                                                                                        </Viewbox>
-                                                                                                        <Viewbox VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="1" Grid.Column="1">
-                                                                                                            <Label x:Name="Lblpropshasmin" VerticalAlignment="Center" HorizontalAlignment="Center" Content="0" ContentStringFormat="{}{0} sec" Foreground="Red"/>
-                                                                                                        </Viewbox>
-                                                                                                    </Grid>
-
-                                                                                                    <Grid Grid.Row="2" Grid.ColumnSpan="2">
-                                                                                                        <Grid.RowDefinitions>
-                                                                                                            <RowDefinition Height="15"/>
-                                                                                                            <RowDefinition Height="12"/>
-                                                                                                        </Grid.RowDefinitions>
-                                                                                                        <Grid.ColumnDefinitions>
-                                                                                                            <ColumnDefinition Width="0.2*"/>
-                                                                                                            <ColumnDefinition Width="0.3*"/>
-                                                                                                            <ColumnDefinition Width="0.38*"/>
-                                                                                                        </Grid.ColumnDefinitions>
-
-                                                                                                        <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" FontSize="10" TextAlignment="Left" Foreground="Gray" Text="{Binding Translation[timings], FallbackValue=Timings}"/>
-
-                                                                                                        <TextBox x:Name="tbpropshasinc" Grid.Row="0" Grid.Column="2" Grid.RowSpan="3" Style="{StaticResource Watermark}" VerticalAlignment="Center" Tag="{Binding Translation[prophasedit], FallbackValue='Edit Value'}" KeyDown="FormatTextForInteger"  FontSize="12" Text="10" TextAlignment="Center" Height="27" TextWrapping="Wrap" Panel.ZIndex="2"/>
-
-
-                                                                                                        <Grid Grid.Row="1" Grid.ColumnSpan="3" Panel.ZIndex="1">
+                                                                                                    <StackPanel>
+                                                                                                        <TextBlock Foreground="{DynamicResource TextColor}" FontSize="16" Text="{Binding Translation[prophasexpandheader], FallbackValue=Timing List of Prop Hiding}" FontWeight="Bold" TextTrimming="CharacterEllipsis"/>
+                                                                                                        <Grid Margin="0,6,0,0">
                                                                                                             <Grid.ColumnDefinitions>
-                                                                                                                <ColumnDefinition Width="0.15*"/>
-                                                                                                                <ColumnDefinition Width="0.25*"/>
-                                                                                                                <ColumnDefinition Width="0.60*"/>
+                                                                                                                <ColumnDefinition Width="*"/>
+                                                                                                                <ColumnDefinition Width="Auto"/>
                                                                                                             </Grid.ColumnDefinitions>
-
-                                                                                                            <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" FontSize="10" TextAlignment="Left" Foreground="Gray" Text="{Binding Translation[propno], FallbackValue=Prop #}"/>
-                                                                                                            <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" FontSize="10" TextAlignment="Left" Foreground="Gray" Text="{Binding Translation[time], FallbackValue=Time(sec)}"/>
-                                                                                                            <TextBlock Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" FontSize="10" TextAlignment="Left" Foreground="Gray" Text="{Binding Translation[name], FallbackValue=Name}"/>
-
+                                                                                                            <TextBox x:Name="tbpropshassel" Style="{StaticResource Watermark}" Tag="{Binding Translation[phs_select], FallbackValue='Select props'}" ToolTip="{Binding Translation[phs_select_help], FallbackValue='Prop numbers as in the list (from 1): 1-10, 1,2,5,7,123 or 1-5, 123'}" TextChanged="tbpropshassel_TextChanged" FontSize="12" Height="30"/>
+                                                                                                            <Button x:Name="Btnpropshasall" Grid.Column="1" Style="{StaticResource FormButton}" Height="30" Margin="6,0,0,0" Content="{Binding Translation[phs_all], FallbackValue=All}" FontSize="12" Padding="10,0" Click="Btnpropshasall_Click"/>
                                                                                                         </Grid>
+                                                                                                    </StackPanel>
+                                                                                                    <Grid Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+                                                                                                        <Grid.ColumnDefinitions>
+                                                                                                            <ColumnDefinition Width="Auto"/>
+                                                                                                            <ColumnDefinition Width="Auto"/>
+                                                                                                        </Grid.ColumnDefinitions>
+                                                                                                        <Grid.RowDefinitions>
+                                                                                                            <RowDefinition Height="18"/>
+                                                                                                            <RowDefinition Height="18"/>
+                                                                                                            <RowDefinition Height="18"/>
+                                                                                                        </Grid.RowDefinitions>
+                                                                                                        <TextBlock Grid.Row="0" VerticalAlignment="Center" FontSize="10" Foreground="Gray" Text="{Binding Translation[prophasexpandhp], FallbackValue=Highest Prop}"/>
+                                                                                                        <TextBlock Grid.Row="1" VerticalAlignment="Center" FontSize="10" Foreground="Gray" Text="{Binding Translation[prophasexpandlp], FallbackValue=Lowest Prop}"/>
+                                                                                                        <TextBlock Grid.Row="2" VerticalAlignment="Center" FontSize="10" Foreground="Gray" Text="{Binding Translation[phs_count], FallbackValue=Props with timing}"/>
+                                                                                                        <TextBlock x:Name="Lblpropshasmax" Grid.Row="0" Grid.Column="1" Margin="8,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="12" Foreground="{DynamicResource TextColor}" Text="0 sec"/>
+                                                                                                        <TextBlock x:Name="Lblpropshasmin" Grid.Row="1" Grid.Column="1" Margin="8,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="12" Foreground="{DynamicResource TextColor}" Text="0 sec"/>
+                                                                                                        <TextBlock x:Name="Lblpropshascount" Grid.Row="2" Grid.Column="1" Margin="8,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="12" Foreground="{DynamicResource TextColor}" Text="0"/>
                                                                                                     </Grid>
-
                                                                                                 </Grid>
 
-                                                                                                <ListBox x:Name="PropHASList" Grid.Row="1" ItemsSource="{Binding .}" IsEnabled="true" Background="{DynamicResource SectionBackgroundBrush}" BorderThickness="0" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  MaxHeight="200">
+                                                                                                <Border Grid.Row="1" Height="1" Margin="-5,8,-5,6" Background="{DynamicResource LineBrush}"/>
+
+                                                                                                <Grid Grid.Row="2" Margin="2,0,2,2">
+                                                                                                    <Grid.ColumnDefinitions>
+                                                                                                        <ColumnDefinition Width="22"/>
+                                                                                                        <ColumnDefinition Width="0.15*"/>
+                                                                                                        <ColumnDefinition Width="0.25*"/>
+                                                                                                        <ColumnDefinition Width="0.60*"/>
+                                                                                                    </Grid.ColumnDefinitions>
+                                                                                                    <CheckBox x:Name="cbpropshasall" Style="{StaticResource RowCheck}" IsThreeState="True" Click="cbpropshasall_Click"/>
+                                                                                                    <TextBlock Grid.Column="1" VerticalAlignment="Center" FontSize="10" Foreground="Gray" Text="{Binding Translation[propno], FallbackValue=Prop #}"/>
+                                                                                                    <TextBlock Grid.Column="2" VerticalAlignment="Center" FontSize="10" Foreground="Gray" Text="{Binding Translation[time], FallbackValue=Time(sec)}"/>
+                                                                                                    <TextBlock Grid.Column="3" VerticalAlignment="Center" FontSize="10" Foreground="Gray" Text="{Binding Translation[name], FallbackValue=Name}"/>
+                                                                                                </Grid>
+
+                                                                                                <ListBox x:Name="PropHASList" Grid.Row="3" SelectionMode="Extended" Background="{DynamicResource SectionBackgroundBrush}" BorderThickness="0" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MaxHeight="200" SelectionChanged="PropHASList_SelectionChanged">
                                                                                                     <ListBox.ItemTemplate>
                                                                                                         <DataTemplate>
-                                                                                                            <Grid x:Name="Grid">
+                                                                                                            <Grid>
                                                                                                                 <Grid.ColumnDefinitions>
+                                                                                                                    <ColumnDefinition Width="22"/>
                                                                                                                     <ColumnDefinition Width="0.15*"/>
                                                                                                                     <ColumnDefinition Width="0.25*"/>
                                                                                                                     <ColumnDefinition Width="0.60*"/>
                                                                                                                 </Grid.ColumnDefinitions>
-                                                                                                                <TextBlock Grid.Column="0" FontSize="12" Foreground="{DynamicResource TextColor}" TextTrimming="CharacterEllipsis" Text="{Binding Id}" />
-                                                                                                                <TextBlock Grid.Column="1" FontSize="12" Foreground="{DynamicResource TextColor}" TextTrimming="CharacterEllipsis" Text="{Binding Time}" />
-                                                                                                                <TextBlock Grid.Column="2" FontSize="12" Foreground="{DynamicResource TextColor}" TextTrimming="CharacterEllipsis" Text="{Binding Name}" ToolTip="{Binding Prop}"/>
+                                                                                                                <CheckBox Style="{StaticResource RowCheck}" Focusable="False" IsChecked="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}, Mode=TwoWay}"/>
+                                                                                                                <TextBlock Grid.Column="1" FontSize="12" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" TextTrimming="CharacterEllipsis" Text="{Binding Number}"/>
+                                                                                                                <TextBlock Grid.Column="2" FontSize="12" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" TextTrimming="CharacterEllipsis" Text="{Binding Time}"/>
+                                                                                                                <TextBlock Grid.Column="3" FontSize="12" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" TextTrimming="CharacterEllipsis" Text="{Binding Name}" ToolTip="{Binding Prop}"/>
                                                                                                             </Grid>
                                                                                                         </DataTemplate>
                                                                                                     </ListBox.ItemTemplate>
@@ -2006,7 +2033,7 @@
                                                                                                                 <Setter.Value>
                                                                                                                     <ControlTemplate TargetType="ListBoxItem">
                                                                                                                         <Border Name="_Border" Padding="2" SnapsToDevicePixels="true">
-                                                                                                                            <ContentPresenter />
+                                                                                                                            <ContentPresenter/>
                                                                                                                         </Border>
                                                                                                                         <ControlTemplate.Triggers>
                                                                                                                             <Trigger Property="IsSelected" Value="true">
@@ -2029,43 +2056,24 @@
                                                                                                                 </Setter.Value>
                                                                                                             </Setter>
                                                                                                         </Style>
-
                                                                                                     </ListBox.ItemContainerStyle>
                                                                                                 </ListBox>
-                                                                                                <!--<local:PropHASList x:Name="prophasList" Grid.Row="2" Visibility="Visible" Background="Transparent" Foreground="{DynamicResource TextColor}" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" DataContext="{Binding .}" MaxHeight="200"/>-->
 
-                                                                                                <Grid Grid.Row="2" Grid.ColumnSpan="3">
+                                                                                                <TextBlock x:Name="Lblpropshassel" Grid.Row="4" Margin="2,4,2,4" FontSize="11" Foreground="Gray" TextWrapping="Wrap" Text=""/>
+
+                                                                                                <Grid Grid.Row="5">
                                                                                                     <Grid.ColumnDefinitions>
-                                                                                                        <ColumnDefinition Width="0.2*"/>
-                                                                                                        <ColumnDefinition Width="0.2*"/>
-                                                                                                        <ColumnDefinition Width="0.60*"/>
+                                                                                                        <ColumnDefinition Width="1.3*"/>
+                                                                                                        <ColumnDefinition Width="40"/>
+                                                                                                        <ColumnDefinition Width="40"/>
+                                                                                                        <ColumnDefinition Width="*"/>
+                                                                                                        <ColumnDefinition Width="*"/>
                                                                                                     </Grid.ColumnDefinitions>
-
-
-
-                                                                                                    <Border Grid.Column="0" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="3">
-                                                                                                        <Border.Effect>
-                                                                                                            <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>                                                
-                                                                                                        </Border.Effect>
-                                                                                                        <Button x:Name="Btnpropshasplus" Style="{DynamicResource CustomButton}" Click="Btnpropshasplus_Click">
-                                                                                                            <Image Source="{DynamicResource plus}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
-                                                                                                        </Button>
-                                                                                                    </Border>
-                                                                                                    <Border  Grid.Column="1" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="3">
-                                                                                                        <Border.Effect>
-                                                                                                            <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>                                                
-                                                                                                        </Border.Effect>
-                                                                                                        <Button x:Name="Btnpropshasminus" Style="{DynamicResource CustomButton}" Click="Btnpropshasminus_Click">
-                                                                                                            <Image Source="{DynamicResource minus}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
-                                                                                                        </Button>
-                                                                                                    </Border>
-                                                                                                    <Border  Grid.Column="2" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="3">
-                                                                                                        <Border.Effect>
-                                                                                                            <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>                                                
-                                                                                                        </Border.Effect>
-                                                                                                        <Button x:Name="BtnPropsHasNV" Style="{DynamicResource CustomButton}" FontSize="10" Content="{Binding Translation[newvalue], FallbackValue=New Value}" local:CornerRadiusSetter.CornerRadius="5" ToolTip="{Binding Translation[newvalue], FallbackValue=New Value}" Click="BtnPropsHasNV_Click" Height="25"/>
-                                                                                                    </Border>
-
+                                                                                                    <TextBox x:Name="tbpropshasinc" Style="{StaticResource Watermark}" VerticalAlignment="Center" Tag="{Binding Translation[prophasedit], FallbackValue='Edit Value'}" KeyDown="FormatTextForInteger" FontSize="12" Text="10" TextAlignment="Center" Height="30"/>
+                                                                                                    <Button x:Name="Btnpropshasplus" Grid.Column="1" Style="{StaticResource FormButton}" Height="30" Margin="6,0,0,0" Content="+" FontSize="18" Padding="0" ToolTip="{Binding Translation[phs_plus_help], FallbackValue='Add the value to every selected prop'}" Click="Btnpropshasplus_Click"/>
+                                                                                                    <Button x:Name="Btnpropshasminus" Grid.Column="2" Style="{StaticResource FormButton}" Height="30" Margin="6,0,0,0" Content="−" FontSize="18" Padding="0" ToolTip="{Binding Translation[phs_minus_help], FallbackValue='Subtract the value from every selected prop (not below 0)'}" Click="Btnpropshasminus_Click"/>
+                                                                                                    <Button x:Name="Btnpropshasset" Grid.Column="3" Style="{StaticResource FormButton}" Height="30" Margin="6,0,0,0" Content="{Binding Translation[phs_set], FallbackValue=Set to value}" FontSize="12" Padding="10,0" Click="Btnpropshasset_Click"/>
+                                                                                                    <Button x:Name="Btnpropshaszero" Grid.Column="4" Style="{StaticResource FormButtonDanger}" Height="30" Margin="6,0,0,0" Content="{Binding Translation[phs_zero], FallbackValue=Set to 0}" FontSize="12" Padding="10,0" Click="Btnpropshaszero_Click"/>
                                                                                                 </Grid>
                                                                                             </Grid>
                                                                                         </Border>

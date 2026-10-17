@@ -540,6 +540,7 @@
     <Compile Include="Helper Classes\SmartSearch.cs" />
     <Compile Include="MainWindow\MainWindow.OnlineEnabler.cs" />
     <Compile Include="MainWindow\MainWindow.Props.cs" />
+    <Compile Include="MainWindow\MainWindow.PropTiming.cs" />
     <Compile Include="MainWindow\MainWindow.ViewOnly.cs" />
     <Compile Include="MainWindow\MainWindow.Publish.cs" />
     <Compile Include="MainWindow\MainWindow.Race.cs" />
