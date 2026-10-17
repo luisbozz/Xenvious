@@ -180,6 +180,7 @@ namespace Xenvious
             public long load_job_loader_language;
             public long load_job_loader_state;
             public long load_job_loader_read_stage;
+            public long mc_team_rule;
             public long job_save_race;
             public long job_save_lts;
             public long job_save_capture;
@@ -1367,6 +1368,7 @@ namespace Xenvious
                     case "load_job_loader_language": return load_job_loader_language;
                     case "load_job_loader_state": return load_job_loader_state;
                     case "load_job_loader_read_stage": return load_job_loader_read_stage;
+                    case "mc_team_rule": return mc_team_rule;
                     case "job_save_race": return job_save_race;
                     case "job_save_lts": return job_save_lts;
                     case "job_save_capture": return job_save_capture;

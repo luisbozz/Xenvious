@@ -74,6 +74,7 @@ namespace Xenvious
             d.OFFSETS.load_job_loader_language = 24;
             d.OFFSETS.load_job_loader_state = 3;
             d.OFFSETS.load_job_loader_read_stage = 35;
+            d.OFFSETS.mc_team_rule = 29326;
             d.OFFSETS.job_save_race = 11698;
             d.OFFSETS.job_save_lts = 17979;
             d.OFFSETS.job_save_capture = 17616;

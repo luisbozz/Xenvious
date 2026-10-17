@@ -74,6 +74,7 @@ namespace Xenvious
             GTA.Offsets.Editor.load_job_loader_race = d.OFFSETS.load_job_loader_race;
             GTA.Offsets.Editor.load_job_loader_lts = d.OFFSETS.load_job_loader_lts;
             GTA.Offsets.Editor.load_job_loader_capture = d.OFFSETS.load_job_loader_capture;
+            GTA.Offsets.Editor.mc_team_rule = d.OFFSETS.mc_team_rule;
             GTA.Offsets.Editor.load_job_loader_dm = d.OFFSETS.load_job_loader_dm;
             GTA.Offsets.Editor.load_job_loader_survival = d.OFFSETS.load_job_loader_survival;
             GTA.Offsets.Editor.load_job_loader_version = d.OFFSETS.load_job_loader_version;

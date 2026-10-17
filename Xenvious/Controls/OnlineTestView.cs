@@ -17,7 +17,7 @@ namespace Xenvious
     {
         private readonly DispatcherTimer _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
         private readonly Dictionary<string, (CheckBox Toggle, TextBlock Badge, FrameworkElement Row)> _rows = new Dictionary<string, (CheckBox, TextBlock, FrameworkElement)>();
-        private CheckBox _master, _invincible;
+        private CheckBox _master, _invincible, _ruleNotes;
         private TextBlock _invincibleBadge;
         private WrapPanel _status;
         private FrameworkElement _body, _page;
@@ -55,6 +55,7 @@ namespace Xenvious
             Switches.Concat(new[]
             {
                 ("invincible", T("olt_invincible", "Invincible in the test"), T("olt_invincible_help", "")),
+                ("rulenotes", T("olt_rulenotes", "Show rule changes in the game"), T("olt_rulenotes_help", "")),
                 ("master", T("olt_title", "Test like online"), T("olt_hint", "")),
             });
 
@@ -63,6 +64,7 @@ namespace Xenvious
         {
             Build();
             FrameworkElement target = key == "invincible" ? _invincible?.Parent as FrameworkElement
+                : key == "rulenotes" ? _ruleNotes?.Parent as FrameworkElement
                 : key == "master" ? _master?.Parent as FrameworkElement
                 : _rows.TryGetValue(key, out var row) ? row.Row : null;
             if (target == null)
@@ -181,6 +183,20 @@ namespace Xenvious
             inv.Children.Add(invText);
             // Outside the switches' grid, which is greyed out while "Test like online" is off.
             var healthCard = Card("olt_card_health", "Health in the test", inv);
+
+            // Rule changes in the game (RuleNotes), also outside "Test like online".
+            var notes = new DockPanel { Margin = new Thickness(14, 12, 14, 12) };
+            _ruleNotes = Toggle();
+            _ruleNotes.Click += (_, __) => { if (!_sync) OnlineTest.RuleNotesOn = _ruleNotes.IsChecked == true; };
+            DockPanel.SetDock(_ruleNotes, Dock.Right);
+            notes.Children.Add(_ruleNotes);
+            var notesText = new StackPanel { Margin = new Thickness(0, 0, 12, 0) };
+            notesText.Children.Add(Text(T("olt_rulenotes", "Show rule changes in the game"), 13, "TextColor"));
+            var notesHelp = Text(T("olt_rulenotes_help", "Bottom left above the radar, one line per change for 6 s: which rule the team has reached and what it reads, e.g. \"Team 1  Rule 1 done > Rule 2: Go to the vehicle\". LTS and Capture with the classic controller; needs the script features on."), 12, "FaintTextBrush");
+            notesHelp.Margin = new Thickness(0, 2, 0, 0);
+            notesText.Children.Add(notesHelp);
+            notes.Children.Add(notesText);
+            var notesCard = Card("olt_card_notes", "Notes in the test", notes);
             foreach (var (k, f) in new[]
             {
                 ("olt_keep_stats", "No XP, RP, stats or unlocks: a test writes nothing into your account."),
@@ -214,6 +230,7 @@ namespace Xenvious
             var page = new StackPanel();
             page.Children.Add(masterCard);
             page.Children.Add(healthCard);
+            page.Children.Add(notesCard);
             page.Children.Add(grid);
             // Solo start and controller choice, moved here from General.
             page.Children.Add(new SoloTestCard());
@@ -236,6 +253,7 @@ namespace Xenvious
             {
                 _master.IsChecked = on;
                 _invincible.IsChecked = OnlineTest.Invincible;
+                _ruleNotes.IsChecked = OnlineTest.RuleNotesOn;
                 bool mortal = OnlineTest.AppliedCount("mortal") > 0;
                 _invincibleBadge.Text = mortal ? T("olt_badge_active", "active") : T("olt_badge_creator", "creator");
                 _invincibleBadge.SetResourceReference(TextBlock.ForegroundProperty, mortal ? "OkBrush" : "FaintTextBrush");

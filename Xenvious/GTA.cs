@@ -1544,6 +1544,7 @@ namespace Xenvious
                 public static long load_job_loader_race = 0;
                 public static long load_job_loader_lts = 0;
                 public static long load_job_loader_capture = 0;
+                public static long mc_team_rule = 0;
                 public static long load_job_loader_dm = 0;
                 public static long load_job_loader_survival = 0;
                 public static long load_job_loader_version = 0;

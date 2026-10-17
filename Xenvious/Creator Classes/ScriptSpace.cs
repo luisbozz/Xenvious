@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using Xenvious.Logging;
 
@@ -48,6 +49,12 @@ namespace Xenvious
     /// table" makes return at once. One whole 16 KB code page of it is the data page, the payload
     /// and the string page array sit in another part of it. Nothing is set up before that patch
     /// is in, so the game never runs the table while it holds our bytes.
+    ///
+    /// Both editions get 64 KB more for the drawer: memory Xenvious allocates in the game process
+    /// (VirtualAllocEx), reached as string pages 59 to 62 (<see cref="ExtraStringPage"/>). It is
+    /// only data to the VM, so read and write access is enough. The game never frees it; one
+    /// block per script is kept for the whole game process and used again when the script loads
+    /// anew, and a Xenvious started later finds it in the string page array.
     /// </summary>
     public static class ScriptSpace
     {
@@ -58,6 +65,9 @@ namespace Xenvious
         private const int StringArray = 0x3E00;
         /// <summary>String page index of the data page; STRING index = DataStringPage &lt;&lt; 14 + offset.</summary>
         public const int DataStringPage = 63;
+        /// <summary>First string page of the allocated drawer space (<see cref="ExtraPages"/> of them, in a row).</summary>
+        public const int ExtraStringPage = 59;
+        public const int ExtraPages = 4;
         private const long PageMapCount = 0x8, PageMapEntries = 0x10;
 
         private class Reservation
@@ -85,6 +95,8 @@ namespace Xenvious
             public List<long> Pages = new List<long>();
             /// <summary>Address of the data page (string page <see cref="DataStringPage"/>).</summary>
             public long Data;
+            /// <summary>Address of the allocated drawer space (string page <see cref="ExtraStringPage"/> on); 0 without it.</summary>
+            public long Extra;
             /// <summary>
             /// Whether this Xenvious process set the space up for the loaded program. When not, an
             /// earlier session did, and its payload and the hooks that CALL into it may be of
@@ -161,7 +173,10 @@ namespace Xenvious
         {
             scriptPack = 0;
             lock (Gate)
+            {
                 setUp.Clear();
+                extra.Clear();
+            }
             if (reservations == null)
                 return;
             foreach (var r in reservations)
@@ -280,6 +295,7 @@ namespace Xenvious
                 // returns, so it never runs with the script's own string array.
                 if (!SwitchStrings(script, prog, array + StringArray, space.Data))
                     return null;
+                space.Extra = SwitchExtra(script, array + StringArray, space.Data);
                 space.OwnSetup = setUp.Contains(prog);
 
                 long blocks = Read<long>(prog + ProgramCodeBlocks);
@@ -329,6 +345,7 @@ namespace Xenvious
                 var space = new Space { Base = v.Code, End = v.Strings, Data = At(v.Data), CodePages = codePages };
                 if (!SwitchStrings(v.Script, prog, At(v.Strings), space.Data))
                     return null;
+                space.Extra = SwitchExtra(v.Script, At(v.Strings), space.Data);
                 space.OwnSetup = setUp.Contains(prog);
                 return space;
             }
@@ -352,7 +369,8 @@ namespace Xenvious
                 return true;
             setUp.Add(prog);
             int stringPages = (Read<int>(prog + ProgramStringsSize) + PageSize - 1) / PageSize;
-            if (stringPages >= DataStringPage)
+            // The script's own strings must end before the drawer space.
+            if (stringPages >= ExtraStringPage)
                 return false;
             MainWindow.m.memory(data.ToString("X")).SetBytes(new byte[PageSize]);
             var table = new byte[(DataStringPage + 1) * 8];
@@ -363,6 +381,50 @@ namespace Xenvious
             MainWindow.m.memory((prog + ProgramStrings).ToString("X")).SetBytes(BitConverter.GetBytes(array));
             Log.Debug($"{script}: data page at string page {DataStringPage}", source: "ScriptSpace");
             return true;
+        }
+
+        // The allocated drawer space of each script in this game process.
+        private static readonly Dictionary<string, long> extra = new Dictionary<string, long>();
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern IntPtr VirtualAllocEx(IntPtr process, IntPtr address, UIntPtr size, uint type, uint protect);
+
+        // Points string pages ExtraStringPage.. at the script's allocated drawer space and returns
+        // its address; 0 when it cannot be allocated. SwitchStrings filled those entries with the
+        // data page, so an entry that differs is the space set up before (also by an earlier
+        // Xenvious). It is never freed: a program still pointing at it would read freed memory.
+        private static long SwitchExtra(string script, long array, long data)
+        {
+            long entries = array + ExtraStringPage * 8;
+            byte[] now = MainWindow.m.memory(entries.ToString("X")).GetBytes(ExtraPages * 8);
+            long first = BitConverter.ToInt64(now, 0);
+            if (first != data && first != 0)
+            {
+                extra[script] = first;
+                return first;
+            }
+            if (!extra.TryGetValue(script, out long space))
+            {
+                IntPtr at = VirtualAllocEx(MainWindow.m.getModuleHandle(), IntPtr.Zero, (UIntPtr)(uint)(ExtraPages * PageSize), 0x3000, 0x04);
+                if (at == IntPtr.Zero)
+                {
+                    Log.Warn($"{script}: could not allocate the drawer space (error {Marshal.GetLastWin32Error()})", source: "ScriptSpace");
+                    return 0;
+                }
+                space = at.ToInt64();
+                extra[script] = space;
+            }
+            else
+            {
+                // A new load of the script: the old program's shapes would show for a moment.
+                MainWindow.m.memory(space.ToString("X")).SetBytes(new byte[ExtraPages * PageSize]);
+            }
+            var table = new byte[ExtraPages * 8];
+            for (int i = 0; i < ExtraPages; i++)
+                Array.Copy(BitConverter.GetBytes(space + i * PageSize), 0, table, i * 8, 8);
+            MainWindow.m.memory(entries.ToString("X")).SetBytes(table);
+            Log.Debug($"{script}: drawer space at string page {ExtraStringPage}", source: "ScriptSpace");
+            return space;
         }
 
         // Chunk sizes the flags describe, in layout order: base << 8 down to base << 0, with

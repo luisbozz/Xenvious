@@ -86,6 +86,9 @@ namespace Xenvious
                     ScrPatchesRunner.ApplyPatches(GTA.Editor.ScrPatches);
                     try { OnlineTest.Tick(); }
                     catch (Exception ex) { Log.Debug("OnlineTest: " + ex.Message, source: "OnlineTest"); }
+                    // After the patch pass, which sets up the data page the rule note goes into.
+                    try { RuleNotes.Tick(); }
+                    catch (Exception ex) { Log.Debug("RuleNotes: " + ex.Message, source: "RuleNotes"); }
                     // Same reason: a creator script that was just loaded gets the kept prop changes.
                     ModdedPropMemory.Tick();
                     // Same thread: "nrl fix" leaves nrl as it is, which must never be below 1 at save.
@@ -369,6 +372,7 @@ namespace Xenvious
             });
         }
 
+        // Whether the bytes at the address already are the patch ("?" matches any byte).
         private static bool HasBytes(ulong address, string bytes)
         {
             try

@@ -285,6 +285,7 @@
     <Compile Include="Creator Classes\LocalFreezer.cs" />
     <Compile Include="Creator Classes\GlobalFreezer.cs" />
     <Compile Include="Creator Classes\FreezeItem.cs" />
+    <Compile Include="Creator Classes\RuleNotes.cs" />
     <Compile Include="Helper Classes\EditorValue.cs" />
     <Compile Include="Creator Classes\JobTime.cs" />
     <Compile Include="Creator Classes\ScrPatchesRunner.cs" />

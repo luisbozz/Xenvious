@@ -32,6 +32,7 @@ namespace Xenvious
 
         private static volatile bool _enabled;
         private static volatile bool _invincible = true;
+        private static volatile bool _ruleNotes = true;
         private static readonly HashSet<string> _off = new HashSet<string>();
         private static bool _loaded;
 
@@ -46,6 +47,13 @@ namespace Xenvious
         {
             get { Load(); return _invincible; }
             set { Load(); _invincible = value; Save(); }
+        }
+
+        /// <summary>Show each team's rule change in the test (<see cref="RuleNotes"/>).</summary>
+        public static bool RuleNotesOn
+        {
+            get { Load(); return _ruleNotes; }
+            set { Load(); _ruleNotes = value; Save(); }
         }
 
         public static bool IsOn(string feature)
@@ -147,6 +155,7 @@ namespace Xenvious
                 var ini = new ini_reader(Functions.getRoamingConfigFilePath());
                 _enabled = ini.ReadBoolean("OnlineTest", "enabled", false);
                 _invincible = ini.ReadBoolean("OnlineTest", "invincible", true);
+                _ruleNotes = ini.ReadBoolean("OnlineTest", "rulenotes", true);
                 string off = ini.ReadString("OnlineTest", "off", "");
                 lock (_off)
                     foreach (string f in off.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
@@ -165,6 +174,7 @@ namespace Xenvious
                 var ini = new ini_reader(Functions.getRoamingConfigFilePath());
                 ini.Write("OnlineTest", "enabled", _enabled);
                 ini.Write("OnlineTest", "invincible", _invincible);
+                ini.Write("OnlineTest", "rulenotes", _ruleNotes);
                 lock (_off)
                     ini.Write("OnlineTest", "off", string.Join(",", _off));
             }
