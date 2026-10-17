@@ -293,6 +293,22 @@ namespace Xenvious
             return job?["mission"]?["gen"] is JObject ? job : null;
         }
 
+        /// <summary>
+        /// A mission the Capture Creator only takes as a capture (<see cref="JobLoader.LoadsAsCapture"/>)
+        /// with subtype 6, on a copy; every other job as it is.
+        /// </summary>
+        private static JObject AsCapture(JObject job)
+        {
+            var gen = job["mission"]?["gen"];
+            int type = gen?["type"]?.Type == JTokenType.Integer ? (int)gen["type"] : -1;
+            int subtype = gen?["subtype"]?.Type == JTokenType.Integer ? (int)gen["subtype"] : 0;
+            if (!JobLoader.LoadsAsCapture(type, subtype))
+                return job;
+            var copy = (JObject)job.DeepClone();
+            copy["mission"]["gen"]["subtype"] = 6;
+            return copy;
+        }
+
         /// <summary>The creator script the job file belongs in, or null.</summary>
         public static string CreatorOf(JObject job)
         {
@@ -342,7 +358,7 @@ namespace Xenvious
             if (probed == null)
                 return Result.Unsupported;
             var builder = new TreeBuilder(probed.Vtables);
-            builder.Add(job);
+            builder.Add(AsCapture(job));
             long memory = Allocate(builder.Size);
             if (memory == 0)
                 return Result.Failed;

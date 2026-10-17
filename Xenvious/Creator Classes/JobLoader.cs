@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using System.Threading;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Xenvious.Logging;
@@ -21,6 +22,11 @@ namespace Xenvious
     /// Race, Deathmatch, LTS, Capture and Survival creator; all five load in state 0 and
     /// edit in state 3. Afterwards the job counts as a new one, so saving it creates a job
     /// in the player's account instead of trying to update the original.
+    ///
+    /// Other missions (type 0, e.g. Rockstar's contact missions, subtype 2) have no creator of
+    /// their own that loads this way; the Public Mission Creator loads outside its start state.
+    /// They load into the Capture Creator: it reads every mission section, and with the
+    /// subtype held at 6 while it loads, it takes the job as a capture.
     /// </summary>
     public static class JobLoader
     {
@@ -48,10 +54,15 @@ namespace Xenvious
                 return "fm_survival_creator";
             if (type == 0 && subtype == 5)
                 return "fm_lts_creator";
-            if (type == 0 && subtype == 6)
+            if (type == 0 && subtype >= 0)
                 return "fm_capture_creator";
             return null;
         }
+
+        /// <summary>A mission that only loads as a capture: the subtype is forced to 6 while it loads.</summary>
+        public static bool LoadsAsCapture(int type, int subtype) => type == 0 && subtype >= 0 && subtype != 5 && subtype != 6;
+
+        private const int SubtypeCapture = 6;
 
         // The creator's language numbers (fm_*_creator.c turns them into game languages),
         // by the language part of the job file name.
@@ -84,7 +95,7 @@ namespace Xenvious
         public static string LanguageCode(int language) =>
             language >= 0 && language < FileLanguages.Length ? FileLanguages[language] : null;
 
-        public static async Task<Result> LoadAsync(string contentId, string jobFile = null)
+        public static async Task<Result> LoadAsync(string contentId, string jobFile = null, bool asCapture = false)
         {
             string creator = CreatorMap.CurrentCreator();
             if (!CanLoad(creator) || string.IsNullOrEmpty(contentId))
@@ -115,6 +126,12 @@ namespace Xenvious
 
             var started = DateTime.UtcNow;
             bool left = false;
+            // The creator reads the job's own subtype from the file and leaves a mission that is
+            // no capture; held at 6 from a thread (a frame is ~16 ms, the 100 ms loop below is
+            // too slow), it goes on as with a capture.
+            var hold = new CancellationTokenSource();
+            if (asCapture && GTA.Offsets.Editor.subtype != 0)
+                new Thread(() => HoldSubtype(hold.Token)) { IsBackground = true, Name = "JobLoader subtype" }.Start();
             try
             {
                 while (DateTime.UtcNow - started < Timeout)
@@ -136,6 +153,7 @@ namespace Xenvious
             }
             finally
             {
+                hold.Cancel();
                 // Left set, the creator loads the job again on its next start.
                 new Global(GTA.Offsets.Editor.load_job_flag).SetInt(0);
                 // Left set, its next load would fetch this file instead of the job it asks for.
@@ -144,6 +162,25 @@ namespace Xenvious
                     CreatorMap.WriteLocal(loader + GTA.Offsets.Editor.load_job_loader_version, -1);
                     CreatorMap.WriteLocal(loader + GTA.Offsets.Editor.load_job_loader_language, -1);
                 }
+            }
+        }
+
+        private static void HoldSubtype(CancellationToken stop)
+        {
+            var subtype = new Global(GTA.Offsets.Editor.subtype);
+            while (!stop.IsCancellationRequested && MainWindow.m.IsProcOpen)
+            {
+                try
+                {
+                    if (subtype.Get<int>() != SubtypeCapture)
+                        subtype.SetInt(SubtypeCapture);
+                }
+                catch (Exception ex)
+                {
+                    Log.Debug("load job: holding the subtype: " + ex.Message, source: "copyjob");
+                    return;
+                }
+                Thread.Sleep(5);
             }
         }
     }
