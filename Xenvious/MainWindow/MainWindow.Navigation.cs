@@ -14,6 +14,7 @@ namespace Xenvious
         private void BtnEdit_Click(object sender, RoutedEventArgs e)
         {
             MainPages.SelectedItem = PageEdit;
+            OpenFirstEditPage();
         }
 
 

@@ -32,6 +32,7 @@ namespace Xenvious
             { "BtnMissionTPM", "PageInnerMissionTeleportMarkers" },
             { "BtnMissionGC", "PageInnerMissionGang" },
             { "BtnRaceCheckpoints", "PageInnerRaceCP" },
+            { "BtnMissionInterior", "PageInnerMissionIPL" },
         };
 
         // Labels of every page, collected once from the logical tree (pages that were never
@@ -42,9 +43,11 @@ namespace Xenvious
             if (_fieldIndex != null)
                 return _fieldIndex;
             _fieldIndex = new List<FieldHit>();
-            foreach (var entry in EditNav.Where(e => e.Group < 2 && e.Page != null))
+            foreach (var entry in EditNav.Where(e => e.Page != null))
             {
-                foreach (var element in LogicalDescendants(entry.Page).OfType<FrameworkElement>())
+                // Sub-pages on a page of their own (fixtures, the capture pages) are searched too.
+                var pages = new[] { entry.Page }.Concat(entry.Subs.Select(s => s.Page)).Where(p => p != null).Distinct();
+                foreach (var element in pages.SelectMany(p => LogicalDescendants(p)).OfType<FrameworkElement>())
                 {
                     Func<string> text = null;
                     if (element is TextBlock label && IsSearchableLabel(label))
