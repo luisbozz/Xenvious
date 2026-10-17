@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.73.6](https://github.com/luisbozz/Xenvious/compare/v1.73.5...v1.73.6) (2026-10-17)
+
+
+### Features
+
+* **editnav:** group Mission pages per creator, merge Capture in ([b9a55b6](https://github.com/luisbozz/Xenvious/commit/b9a55b67a720ce00c4b04398b250ce704965e129))
+* **editnav:** open the first favourite when Edit opens ([b9a55b6](https://github.com/luisbozz/Xenvious/commit/b9a55b67a720ce00c4b04398b250ce704965e129))
+* **rules:** add 4 restart spawn points at the creator cursor ([b9a55b6](https://github.com/luisbozz/Xenvious/commit/b9a55b67a720ce00c4b04398b250ce704965e129))
+
+
+### Bug Fixes
+
+* **dialog:** queue dialogs by priority instead of replacing them ([#38](https://github.com/luisbozz/Xenvious/issues/38)) ([0f79e65](https://github.com/luisbozz/Xenvious/commit/0f79e65f86d3e2de16e066fc84af53982c4665c9))
+
 ## [1.73.5](https://github.com/luisbozz/Xenvious/compare/v1.73.4...v1.73.5) (2026-10-17)
 
 
