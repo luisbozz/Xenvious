@@ -62,7 +62,6 @@
             </ControlTemplate>
             <local:ColorToShadowColorConverter x:Key="ColorConverter"/>
             <local:IsCheckedConverter x:Key="IsCheckedConverter"/>
-            <local:FreezeValueConverter x:Key="FreezeValueConverter"/>
             <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
 
 
@@ -161,6 +160,32 @@
                 <Setter Property="FontWeight" Value="Bold"/>
                 <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
                 <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
+            <!-- A bit of a number as a toggle tile: the Converter and the Global Editor. -->
+            <Style x:Key="ConvBit" TargetType="{x:Type ToggleButton}">
+                <Setter Property="Height" Value="40"/>
+                <Setter Property="Margin" Value="2"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="Foreground" Value="{DynamicResource FaintTextBrush}"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ToggleButton}">
+                            <Border x:Name="bd" CornerRadius="4" BorderThickness="1" Background="{DynamicResource ComboBoxBackground}" BorderBrush="{DynamicResource ComboBoxBorder}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Setter TargetName="bd" Property="Background" Value="{DynamicResource AccentSoftBrush}"/>
+                                    <Setter TargetName="bd" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="bd" Property="BorderBrush" Value="{DynamicResource TextColor}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
             </Style>
             <!-- Entity page cards (Controls/SectionCard.cs): icon tile, title, summary, fold arrow; hero cards get an accent frame. -->
             <Style TargetType="{x:Type local:SectionCard}">
@@ -11270,33 +11295,6 @@
                              model the value stands for, if it is in one of our lists. MainWindow.Converter.cs. -->
                         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                             <StackPanel x:Name="ConverterMain" Margin="20,16,20,16" MaxWidth="1000">
-                                <StackPanel.Resources>
-                                    <Style x:Key="ConvBit" TargetType="{x:Type ToggleButton}">
-                                        <Setter Property="Height" Value="40"/>
-                                        <Setter Property="Margin" Value="2"/>
-                                        <Setter Property="Cursor" Value="Hand"/>
-                                        <Setter Property="Foreground" Value="{DynamicResource FaintTextBrush}"/>
-                                        <Setter Property="Template">
-                                            <Setter.Value>
-                                                <ControlTemplate TargetType="{x:Type ToggleButton}">
-                                                    <Border x:Name="bd" CornerRadius="4" BorderThickness="1" Background="{DynamicResource ComboBoxBackground}" BorderBrush="{DynamicResource ComboBoxBorder}">
-                                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                    </Border>
-                                                    <ControlTemplate.Triggers>
-                                                        <Trigger Property="IsChecked" Value="True">
-                                                            <Setter TargetName="bd" Property="Background" Value="{DynamicResource AccentSoftBrush}"/>
-                                                            <Setter TargetName="bd" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
-                                                            <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
-                                                        </Trigger>
-                                                        <Trigger Property="IsMouseOver" Value="True">
-                                                            <Setter TargetName="bd" Property="BorderBrush" Value="{DynamicResource TextColor}"/>
-                                                        </Trigger>
-                                                    </ControlTemplate.Triggers>
-                                                </ControlTemplate>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </Style>
-                                </StackPanel.Resources>
 
                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                     <DockPanel>
@@ -11455,319 +11453,244 @@
                     </TabItem>
 
                     <TabItem x:Name="PageGEditor" Header="Global Editor">
-                        <!-- Read and write one global or script local, and the freeze lists. MainWindow.GlobalLocalEditor.cs. -->
-                        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                        <!-- Read and write one global or script local, its bits (or its text), and the freeze lists. MainWindow.GlobalLocalEditor.cs. -->
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" IsVisibleChanged="GeEditor_IsVisibleChanged">
                             <StackPanel Margin="20,16,20,16" Width="900" HorizontalAlignment="Center">
-                            <UniformGrid Columns="2">
-                                <Border Margin="0,0,6,0" Style="{StaticResource DashCard}">
-                                    <DockPanel>
-                                        <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
-                                            <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[ge_global], FallbackValue='Global'}"/>
-                                        </Border>
-                                        <StackPanel Margin="14,12,14,8">
-                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[ge_index], FallbackValue='Global (Global_N.f_M or number)'}"/>
-                                            <TextBox x:Name="tbgeglobal" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,10"/>
-                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[ge_value], FallbackValue='Value'}"/>
-                                            <TextBox x:Name="tbgeglobalvalue" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,10"/>
-                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[ge_type], FallbackValue=Type}"/>
-                                            <ComboBox x:Name="ddgechangemode" FontFamily="{DynamicResource Volte}" Height="30" Margin="0,0,0,12">
-                                                <ComboBoxItem Content="Byte"/>
-                                                <ComboBoxItem Content="Short"/>
-                                                <ComboBoxItem Content="Integer" Selector.IsSelected="True"/>
-                                                <ComboBoxItem Content="Long"/>
-                                                <ComboBoxItem Content="Float"/>
-                                                <ComboBoxItem Content="Double"/>
-                                                <ComboBoxItem Content="String"/>
-                                            </ComboBox>
-                                            <WrapPanel>
-                                                <Button x:Name="Btngereadglobal" Style="{StaticResource FormButton}" Height="32" Padding="12,0" Margin="0,0,6,6" Click="Btngereadglobal_Click" Content="{Binding Translation[ge_read], FallbackValue='Read'}"/>
-                                                <Button x:Name="Btngewriteglobal" Style="{StaticResource FormButtonPrimary}" Height="32" Padding="12,0" Margin="0,0,6,6" Click="Btngewriteglobal_Click" Content="{Binding Translation[ge_write], FallbackValue='Write'}"/>
-                                                <Button x:Name="Btngecopyaddy" Style="{StaticResource FormButton}" Height="32" Padding="12,0" Margin="0,0,6,6" Click="Btngecopyaddy_Click" Content="{Binding Translation[ge_copy], FallbackValue='Copy address'}"/>
-                                                <Button x:Name="Btngeadd2f" Style="{StaticResource FormButton}" Height="32" Padding="12,0" Margin="0,0,6,6" Click="Btngeadd2f_Click" Content="{Binding Translation[ge_add2f], FallbackValue='Add to freeze list'}"/>
-                                            </WrapPanel>
-                                        </StackPanel>
-                                    </DockPanel>
-                                </Border>
-                                <Border Margin="6,0,0,0" Style="{StaticResource DashCard}">
-                                    <DockPanel>
-                                        <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
-                                            <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[ge_local], FallbackValue='Local'}"/>
-                                        </Border>
-                                        <StackPanel Margin="14,12,14,8">
-                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[ge_script], FallbackValue='Script'}"/>
-                                            <TextBox x:Name="tblelocalscript" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,10" Text="fm_capture_creator"/>
-                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[ge_localidx], FallbackValue='Local'}"/>
-                                            <TextBox x:Name="tblelocal" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,10"/>
-                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[ge_value], FallbackValue='Value'}"/>
-                                            <TextBox x:Name="tblelocalvalue" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,10"/>
-                                            <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[ge_type], FallbackValue=Type}"/>
-                                            <ComboBox x:Name="ddlechangemode" FontFamily="{DynamicResource Volte}" Height="30" Margin="0,0,0,12" SelectionChanged="ddlechangemode_SelectionChanged">
-                                                <ComboBoxItem Content="Byte"/>
-                                                <ComboBoxItem Content="Short"/>
-                                                <ComboBoxItem Content="Integer" Selector.IsSelected="True"/>
-                                                <ComboBoxItem Content="Long"/>
-                                                <ComboBoxItem Content="Float"/>
-                                                <ComboBoxItem Content="Double"/>
-                                                <ComboBoxItem Content="String"/>
-                                            </ComboBox>
-                                            <WrapPanel>
-                                                <Button x:Name="Btnlereadglobal" Style="{StaticResource FormButton}" Height="32" Padding="12,0" Margin="0,0,6,6" Click="Btnlereadglobal_Click" Content="{Binding Translation[ge_read], FallbackValue='Read'}"/>
-                                                <Button x:Name="Btnlewriteglobal" Style="{StaticResource FormButtonPrimary}" Height="32" Padding="12,0" Margin="0,0,6,6" Click="Btnlewriteglobal_Click" Content="{Binding Translation[ge_write], FallbackValue='Write'}"/>
-                                                <Button x:Name="Btnlecopyaddy" Style="{StaticResource FormButton}" Height="32" Padding="12,0" Margin="0,0,6,6" Click="Btnlecopyaddy_Click" Content="{Binding Translation[ge_copy], FallbackValue='Copy address'}"/>
-                                                <Button x:Name="Btnleadd2f" Style="{StaticResource FormButton}" Height="32" Padding="12,0" Margin="0,0,6,6" Click="Btnleadd2f_Click" Content="{Binding Translation[ge_add2f], FallbackValue='Add to freeze list'}"/>
-                                            </WrapPanel>
-                                        </StackPanel>
-                                    </DockPanel>
-                                </Border>
-                            </UniformGrid>
-                                    <!-- Global and local freeze list share one card; the header switches between them. -->
-                                    <Border Style="{StaticResource DashCard}" Margin="0,12,0,0">
-
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="*"/>
-                                            </Grid.RowDefinitions>
-
-                                            <Border Grid.Row="0" Style="{StaticResource DashCardHeader}">
+                                <StackPanel.Resources>
+                                    <!-- One height for every header, so the fields of both cards line up. -->
+                                    <Style x:Key="GeHeader" TargetType="{x:Type Border}" BasedOn="{StaticResource DashCardHeader}">
+                                        <Setter Property="Height" Value="46"/>
+                                        <Setter Property="Padding" Value="14,0"/>
+                                    </Style>
+                                    <Style x:Key="GeFreezeItem" TargetType="{x:Type ListBoxItem}">
+                                        <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="ListBoxItem">
+                                                    <Border Name="_Border" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource LineBrush}" SnapsToDevicePixels="true">
+                                                        <ContentPresenter/>
+                                                    </Border>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsSelected" Value="true">
+                                                            <Setter TargetName="_Border" Property="Background" Value="{DynamicResource SelectedBackgroundBrush}"/>
+                                                        </Trigger>
+                                                        <MultiTrigger>
+                                                            <MultiTrigger.Conditions>
+                                                                <Condition Property="IsMouseOver" Value="true"/>
+                                                                <Condition Property="IsSelected" Value="false"/>
+                                                            </MultiTrigger.Conditions>
+                                                            <Setter TargetName="_Border" Property="Background" Value="{DynamicResource HoverBackgroundBrush}"/>
+                                                        </MultiTrigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                    <!-- A freeze list row: name over where it goes, type, value, freeze switch, delete. -->
+                                    <DataTemplate x:Key="GeFreezeRow">
+                                        <Grid Margin="12,5,8,5" Background="Transparent">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="64"/>
+                                                <ColumnDefinition Width="150"/>
+                                                <ColumnDefinition Width="56"/>
+                                                <ColumnDefinition Width="30"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel VerticalAlignment="Center" Margin="0,0,10,0">
+                                                <TextBlock Text="{Binding Name}" FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource TextColor}" TextTrimming="CharacterEllipsis"/>
+                                                <TextBlock Text="{Binding Path}" ToolTip="{Binding Path}" FontSize="11" FontFamily="Consolas" Foreground="{DynamicResource FaintTextBrush}" TextTrimming="CharacterEllipsis"/>
+                                            </StackPanel>
+                                            <Border Grid.Column="1" Background="{DynamicResource ComboBoxBackground}" CornerRadius="3" Padding="6,2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding TypeName}" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource NavMutedBrush}"/>
+                                            </Border>
+                                            <TextBox Grid.Column="2" Height="28" FontSize="13" Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center">
+                                                <TextBox.Style>
+                                                    <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource Watermark}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Invalid}" Value="True">
+                                                                <Setter Property="BorderBrush" Value="{DynamicResource BadBrush}"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBox.Style>
+                                            </TextBox>
+                                            <CheckBox Grid.Column="3" Style="{StaticResource FormToggle}" HorizontalAlignment="Center" IsChecked="{Binding IsFrozen, Mode=TwoWay}"/>
+                                            <Button Grid.Column="4" Style="{StaticResource FormButton}" Content="×" FontSize="15" Width="26" Height="26" Padding="0" VerticalAlignment="Center" Click="GeFreezeDelete_Click"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </StackPanel.Resources>
+                                <UniformGrid Columns="2" Margin="0,0,0,12">
+                                    <Border Margin="0,0,6,0" Style="{StaticResource DashCard}" PreviewGotKeyboardFocus="GeGlobalCard_Focus">
+                                        <DockPanel>
+                                            <Border DockPanel.Dock="Top" Style="{StaticResource GeHeader}">
+                                                <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[ge_global], FallbackValue='Global'}"/>
+                                            </Border>
+                                            <StackPanel Margin="14,12,14,8">
+                                                <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[ge_index], FallbackValue='Global (Global_N.f_M or number)'}"/>
+                                                <TextBox x:Name="tbgeglobal" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,10" TextChanged="GeSource_Changed" PreviewKeyDown="tbgeglobal_PreviewKeyDown" LostKeyboardFocus="tbgeglobal_LostKeyboardFocus"/>
+                                                <!-- Names from offsets.ini while a name is typed instead of a path. -->
+                                                <Popup x:Name="GeSuggestPopup" PlacementTarget="{Binding ElementName=tbgeglobal}" Placement="Bottom" VerticalOffset="-8" AllowsTransparency="True" StaysOpen="True"
+                                                       Width="{Binding ActualWidth, ElementName=tbgeglobal}">
+                                                    <Border Background="{DynamicResource SectionBackgroundBrush}" BorderBrush="{DynamicResource LineBrush}" BorderThickness="1" CornerRadius="5" Margin="0,0,8,8">
+                                                        <Border.Effect>
+                                                            <DropShadowEffect BlurRadius="14" ShadowDepth="3" Opacity="0.45"/>
+                                                        </Border.Effect>
+                                                        <DockPanel>
+                                                            <TextBlock DockPanel.Dock="Bottom" Margin="10,5" FontSize="11" Foreground="{DynamicResource FaintTextBrush}" TextWrapping="Wrap"
+                                                                       Text="{Binding Translation[ge_suggest_hint], FallbackValue='↑↓ choose · Enter takes it · arrays get [0] for every [i], change it after · Esc closes'}"/>
+                                                            <ListBox x:Name="GeSuggestList" MaxHeight="280" Background="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                                                     PreviewMouseLeftButtonUp="GeSuggestList_Click">
+                                                                <ListBox.ItemContainerStyle>
+                                                                    <Style TargetType="{x:Type ListBoxItem}">
+                                                                        <Setter Property="Template">
+                                                                            <Setter.Value>
+                                                                                <ControlTemplate TargetType="ListBoxItem">
+                                                                                    <Border Name="_Border" Padding="10,5" Background="Transparent" Cursor="Hand">
+                                                                                        <ContentPresenter/>
+                                                                                    </Border>
+                                                                                    <ControlTemplate.Triggers>
+                                                                                        <Trigger Property="IsSelected" Value="true">
+                                                                                            <Setter TargetName="_Border" Property="Background" Value="{DynamicResource SeactionHeaderBackgroundBrush}"/>
+                                                                                        </Trigger>
+                                                                                        <Trigger Property="IsMouseOver" Value="true">
+                                                                                            <Setter TargetName="_Border" Property="Background" Value="{DynamicResource HoverBackgroundBrush}"/>
+                                                                                        </Trigger>
+                                                                                    </ControlTemplate.Triggers>
+                                                                                </ControlTemplate>
+                                                                            </Setter.Value>
+                                                                        </Setter>
+                                                                    </Style>
+                                                                </ListBox.ItemContainerStyle>
+                                                                <ListBox.ItemTemplate>
+                                                                    <DataTemplate>
+                                                                        <StackPanel>
+                                                                            <DockPanel>
+                                                                                <TextBlock DockPanel.Dock="Right" Text="{Binding Index}" FontFamily="Consolas" FontSize="11" Foreground="{DynamicResource MutedTextBrush}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                                                                                <TextBlock Text="{Binding Key}" FontSize="13" FontWeight="SemiBold" Foreground="{DynamicResource TextColor}" TextTrimming="CharacterEllipsis"/>
+                                                                            </DockPanel>
+                                                                            <TextBlock Text="{Binding Detail}" ToolTip="{Binding Detail}" FontFamily="Consolas" FontSize="11" Foreground="{DynamicResource FaintTextBrush}" TextTrimming="CharacterEllipsis"/>
+                                                                        </StackPanel>
+                                                                    </DataTemplate>
+                                                                </ListBox.ItemTemplate>
+                                                            </ListBox>
+                                                        </DockPanel>
+                                                    </Border>
+                                                </Popup>
+                                                <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[ge_value], FallbackValue='Value'}"/>
+                                                <TextBox x:Name="tbgeglobalvalue" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,10"/>
+                                                <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[ge_type], FallbackValue=Type}"/>
+                                                <ComboBox x:Name="ddgechangemode" FontFamily="{DynamicResource Volte}" Height="30" Margin="0,0,0,12" SelectionChanged="GeType_Changed">
+                                                    <ComboBoxItem Content="Byte"/>
+                                                    <ComboBoxItem Content="Short"/>
+                                                    <ComboBoxItem Content="Integer" Selector.IsSelected="True"/>
+                                                    <ComboBoxItem Content="Long"/>
+                                                    <ComboBoxItem Content="Float"/>
+                                                    <ComboBoxItem Content="Double"/>
+                                                    <ComboBoxItem Content="String"/>
+                                                </ComboBox>
+                                                <WrapPanel>
+                                                    <Button x:Name="Btngereadglobal" Style="{StaticResource FormButton}" Height="32" Padding="12,0" Margin="0,0,6,6" Click="Btngereadglobal_Click" Content="{Binding Translation[ge_read], FallbackValue='Read'}"/>
+                                                    <Button x:Name="Btngewriteglobal" Style="{StaticResource FormButtonPrimary}" Height="32" Padding="12,0" Margin="0,0,6,6" Click="Btngewriteglobal_Click" Content="{Binding Translation[ge_write], FallbackValue='Write'}"/>
+                                                    <Button x:Name="Btngecopyaddy" Style="{StaticResource FormButton}" Height="32" Padding="12,0" Margin="0,0,6,6" Click="Btngecopyaddy_Click" Content="{Binding Translation[ge_copy], FallbackValue='Copy address'}"/>
+                                                    <Button x:Name="Btngeadd2f" Style="{StaticResource FormButton}" Height="32" Padding="12,0" Margin="0,0,6,6" Click="Btngeadd2f_Click" Content="{Binding Translation[ge_add2f], FallbackValue='Add to freeze list'}"/>
+                                                </WrapPanel>
+                                            </StackPanel>
+                                        </DockPanel>
+                                    </Border>
+                                    <Border Margin="6,0,0,0" Style="{StaticResource DashCard}" PreviewGotKeyboardFocus="GeLocalCard_Focus">
+                                        <DockPanel>
+                                            <Border DockPanel.Dock="Top" Style="{StaticResource GeHeader}">
                                                 <DockPanel>
-                                                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
-                                                        <Button x:Name="BtnFreezeListGlobal" Style="{StaticResource FormButtonPrimary}" Content="{Binding Translation[ge_global], FallbackValue=Global}" Height="28" Padding="12,0" Margin="0,0,6,0" Click="BtnFreezeListGlobal_Click"/>
-                                                        <Button x:Name="BtnFreezeListLocal" Style="{StaticResource FormButton}" Content="{Binding Translation[ge_local], FallbackValue=Local}" Height="28" Padding="12,0" Click="BtnFreezeListLocal_Click"/>
-                                                    </StackPanel>
-                                                    <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[ge_freeze], FallbackValue='Freeze list'}"/>
+                                                    <ComboBox x:Name="cbLocalScript" DockPanel.Dock="Right" IsEditable="True" Width="250" Height="28" VerticalAlignment="Center" FontFamily="{DynamicResource Volte}"
+                                                              DropDownOpened="cbLocalScript_DropDownOpened" SelectionChanged="cbLocalScript_SelectionChanged"/>
+                                                    <TextBlock DockPanel.Dock="Right" Text="{Binding Translation[ge_script], FallbackValue='Script'}" Foreground="{DynamicResource MutedTextBrush}" FontSize="13" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                                    <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[ge_local], FallbackValue='Local'}"/>
                                                 </DockPanel>
                                             </Border>
-
-                                            <Grid x:Name="gridFreezeGlobal" Grid.Row="1" Margin="14,12,14,12">
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="30"/>
-                                                    <RowDefinition Height="*"/>
-                                                    <RowDefinition Height="50"/>
-                                                </Grid.RowDefinitions>
-                                                <Grid Grid.Row="0" >
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="0.41*"/>
-                                                        <ColumnDefinition Width="0.41*"/>
-                                                        <ColumnDefinition Width="0.16*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <TextBlock Grid.Column="0" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource FaintTextBrush}" TextTrimming="CharacterEllipsis" Text="{Binding Translation[name], FallbackValue=Name}" />
-                                                    <TextBlock Grid.Column="1" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource FaintTextBrush}" TextTrimming="CharacterEllipsis" Text="{Binding Translation[ge_value], FallbackValue=Value}" />
-                                                    <TextBlock Grid.Column="2" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource FaintTextBrush}" TextTrimming="CharacterEllipsis" Text="{Binding Translation[cdeffreeze], FallbackValue=Freeze}" HorizontalAlignment="Right" />
-                                                </Grid>
-                                                <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" VerticalContentAlignment="Stretch">
-                                                    <Grid VerticalAlignment="Stretch" Height="300">
-                                                        <ListBox x:Name="freezeList"  ItemsSource="{Binding .}" IsEnabled="true" Background="{DynamicResource SectionBackgroundBrush}" BorderThickness="0" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  Height="{Binding RelativeSource={RelativeSource Self},Path=Parent.ActualHeight}" MouseDoubleClick="freezeList_MouseDoubleClick">
-                                                            <ListBox.ItemTemplate>
-                                                                <DataTemplate>
-                                                                    <Grid x:Name="Grid" ToolTip="{Binding GlobalName}">
-                                                                        <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="0.41*"/>
-                                                                            <ColumnDefinition Width="0.41*"/>
-                                                                            <ColumnDefinition Width="0.08*"/>
-                                                                        </Grid.ColumnDefinitions>
-                                                                        <TextBlock Grid.Column="0" FontSize="14" Foreground="{DynamicResource TextColor}" TextTrimming="CharacterEllipsis" Text="{Binding Name}" VerticalAlignment="Center" />
-                                                                        <TextBox x:Name="tbgevalue" Style="{StaticResource Watermark}"  Grid.Column="1" FontSize="14" Foreground="{DynamicResource TextColor}" Text="{Binding val, Converter={StaticResource FreezeValueConverter}}">
-                                                                            <i:Interaction.Triggers>
-                                                                                <i:EventTrigger EventName="TextChanged">
-                                                                                    <i:InvokeCommandAction Command="{Binding DataContext.ChangeValue, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}}"
-                                                                                                           CommandParameter="{Binding ElementName=tbgevalue,Path=Text}">
-                                                                                    </i:InvokeCommandAction>
-                                                                                </i:EventTrigger>
-                                                                            </i:Interaction.Triggers>
-                                                                        </TextBox>
-                                                                        <CheckBox x:Name="cbgefreeze" Grid.Column="2" MaxHeight="40">
-                                                                            <i:Interaction.Triggers>
-                                                                                <i:EventTrigger EventName="Checked">
-                                                                                    <i:InvokeCommandAction Command="{Binding DataContext.CheckedChanged, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}}" >
-                                                                                    </i:InvokeCommandAction>
-                                                                                </i:EventTrigger>
-                                                                                <i:EventTrigger EventName="Unchecked">
-                                                                                    <i:InvokeCommandAction Command="{Binding DataContext.CheckedChanged, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}}" >
-                                                                                    </i:InvokeCommandAction>
-                                                                                </i:EventTrigger>
-                                                                            </i:Interaction.Triggers>
-                                                                        </CheckBox>
-                                                                    </Grid>
-                                                                </DataTemplate>
-                                                            </ListBox.ItemTemplate>
-                                                            <ListBox.ItemContainerStyle>
-                                                                <Style TargetType="{x:Type ListBoxItem}">
-                                                                    <Setter Property="FontSize" Value="14"/>
-                                                                    <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
-                                                                    <Setter Property="Template">
-                                                                        <Setter.Value>
-                                                                            <ControlTemplate TargetType="ListBoxItem">
-                                                                                <Border Name="_Border" Padding="2" SnapsToDevicePixels="true">
-                                                                                    <ContentPresenter />
-                                                                                </Border>
-                                                                                <ControlTemplate.Triggers>
-                                                                                    <Trigger Property="IsSelected" Value="true">
-                                                                                        <Setter TargetName="_Border" Property="Background" Value="{DynamicResource SelectedBackgroundBrush}"/>
-                                                                                    </Trigger>
-                                                                                    <Trigger Property="IsEnabled" Value="false">
-                                                                                        <Setter Property="Foreground" Value="#888"/>
-                                                                                    </Trigger>
-                                                                                    <MultiTrigger>
-                                                                                        <MultiTrigger.Conditions>
-                                                                                            <Condition Property="IsMouseOver" Value="true"/>
-                                                                                            <Condition Property="IsSelected" Value="false"/>
-                                                                                        </MultiTrigger.Conditions>
-                                                                                        <MultiTrigger.Setters>
-                                                                                            <Setter TargetName="_Border" Property="Background" Value="{DynamicResource HoverBackgroundBrush}"/>
-                                                                                        </MultiTrigger.Setters>
-                                                                                    </MultiTrigger>
-                                                                                </ControlTemplate.Triggers>
-                                                                            </ControlTemplate>
-                                                                        </Setter.Value>
-                                                                    </Setter>
-                                                                </Style>
-                                                            </ListBox.ItemContainerStyle>
-                                                        </ListBox>
-                                                    </Grid>
-                                                </ScrollViewer>
-                                                <Button Grid.Row="2" x:Name="Btngefreezelistdel" Style="{StaticResource FormButton}" Content="{Binding Translation[delete], FallbackValue=Delete}" Height="32" Padding="14,0" Margin="0,10,0,0" HorizontalAlignment="Left" Click="Btngefreezelistdel_Click"/>
-                                            </Grid>
-                                            <Grid x:Name="gridFreezeLocal" Grid.Row="1" Margin="14,12,14,12" Visibility="Collapsed">
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="30"/>
-                                                    <RowDefinition Height="*"/>
-                                                    <RowDefinition Height="50"/>
-                                                </Grid.RowDefinitions>
-                                                <Grid Grid.Row="0" >
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="0.61*"/>
-                                                        <ColumnDefinition Width="0.41*"/>
-                                                        <ColumnDefinition Width="0.20*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <TextBlock Grid.Column="0" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource FaintTextBrush}" TextTrimming="CharacterEllipsis" Text="{Binding Translation[ge_name_script], FallbackValue=Name/Script}" />
-                                                    <TextBlock Grid.Column="1" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource FaintTextBrush}" TextTrimming="CharacterEllipsis" Text="{Binding Translation[ge_value], FallbackValue=Value}" />
-                                                    <TextBlock Grid.Column="2" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource FaintTextBrush}" TextTrimming="CharacterEllipsis" Text="{Binding Translation[cdeffreeze], FallbackValue=Freeze}" HorizontalAlignment="Right" />
-                                                </Grid>
-                                                <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" VerticalContentAlignment="Stretch">
-                                                    <Grid VerticalAlignment="Stretch" Height="300">
-                                                        <ListBox x:Name="localfreezeList"  ItemsSource="{Binding .}" IsEnabled="true" Background="{DynamicResource SectionBackgroundBrush}" BorderThickness="0" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  Height="{Binding RelativeSource={RelativeSource Self},Path=Parent.ActualHeight}" MouseDoubleClick="localfreezeList_MouseDoubleClick">
-                                                            <ListBox.ItemTemplate>
-                                                                <DataTemplate>
-                                                                    <Grid x:Name="Grid">
-                                                                        <Grid.ToolTip>
-                                                                            <Grid MaxWidth="500" MaxHeight="200">
-                                                                                <Grid.ColumnDefinitions>
-                                                                                    <ColumnDefinition Width="0.5*"/>
-                                                                                    <ColumnDefinition Width="0.5*"/>
-                                                                                </Grid.ColumnDefinitions>
-                                                                                <Grid.RowDefinitions>
-                                                                                    <RowDefinition Height="20"/>
-                                                                                    <RowDefinition Height="20"/>
-                                                                                    <RowDefinition Height="20"/>
-                                                                                    <RowDefinition Height="20"/>
-                                                                                    <RowDefinition Height="20"/>
-                                                                                </Grid.RowDefinitions>
-
-                                                                                <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Foreground="{DynamicResource FaintTextBrush}" FontSize="10" Text="{Binding Translation[name], FallbackValue=Name}"/>
-                                                                                <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Foreground="{DynamicResource FaintTextBrush}" FontSize="10" Text="{Binding Translation[ge_scriptname], FallbackValue=Scriptname}"/>
-                                                                                <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Foreground="{DynamicResource FaintTextBrush}" FontSize="10" Text="{Binding Translation[ge_local_value], FallbackValue=Local value}"/>
-                                                                                <TextBlock Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Foreground="{DynamicResource FaintTextBrush}" FontSize="10" Text="{Binding Translation[ge_calc_local], FallbackValue=Calculated local value}"/>
-                                                                                <TextBlock Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Foreground="{DynamicResource FaintTextBrush}" FontSize="10" Text="{Binding Translation[ge_value_write], FallbackValue=Value to write}"/>
-
-                                                                                <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Foreground="{DynamicResource FaintTextBrush}" FontSize="10" Text="{Binding Path=Name}" TextAlignment="Right" TextTrimming="CharacterEllipsis"/>
-                                                                                <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Foreground="{DynamicResource FaintTextBrush}" FontSize="10" Text="{Binding Path=Script}" TextAlignment="Right" TextTrimming="CharacterEllipsis"/>
-                                                                                <TextBlock Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Foreground="{DynamicResource FaintTextBrush}" FontSize="10" Text="{Binding Path=LocalName}" TextAlignment="Right" TextTrimming="CharacterEllipsis"/>
-                                                                                <TextBlock Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Foreground="{DynamicResource FaintTextBrush}" FontSize="10" Text="{Binding Path=LocalValue}" TextAlignment="Right" TextTrimming="CharacterEllipsis"/>
-                                                                                <TextBlock Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Foreground="{DynamicResource FaintTextBrush}" FontSize="10" Text="{Binding Path=val, Converter={StaticResource FreezeValueConverter}}" TextAlignment="Right" TextTrimming="CharacterEllipsis"/>
-
-
-                                                                            </Grid>
-                                                                            <!--<TextBlock>
-                                                                                <MultiBinding StringFormat="{}Name: {0}&#x0d;&#x0a;Scriptname: {1}&#x0d;&#x0a;Value: {2}">
-                                                                                    <Binding Path="Name" />
-                                                                                    <Binding Path="Script" />
-                                                                                    <Binding Path="val" Converter="{StaticResource FreezeValueConverter}" />
-                                                                                </MultiBinding>
-                                                                                <Run Text="{Binding Name, Mode=OneTime}" />
-                                                                                <LineBreak/>
-                                                                                <Run Text="{Binding Exception, Mode=OneTime, TargetNullValue='', StringFormat={}&#x0d;&#x0a;{0}}"  />
-                                                                            </TextBlock>-->
-                                                                        </Grid.ToolTip>
-                                                                        <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="0.41*"/>
-                                                                            <ColumnDefinition Width="0.41*"/>
-                                                                            <ColumnDefinition Width="0.08*"/>
-                                                                        </Grid.ColumnDefinitions>
-                                                                        <TextBlock Grid.Column="0" FontSize="14" Foreground="{DynamicResource TextColor}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center">
-                                                                            <TextBlock.Text>
-                                                                                <MultiBinding StringFormat="{}{0}/{1}">
-                                                                                    <Binding Path="Name" />
-                                                                                    <Binding Path="Script" />
-                                                                                </MultiBinding>
-                                                                            </TextBlock.Text>
-                                                                        </TextBlock>
-                                                                        <TextBox x:Name="tblevalue" Style="{StaticResource Watermark}"  Grid.Column="1" FontSize="14" Foreground="{DynamicResource TextColor}" Text="{Binding val, Converter={StaticResource FreezeValueConverter}}">
-                                                                            <i:Interaction.Triggers>
-                                                                                <i:EventTrigger EventName="TextChanged">
-                                                                                    <i:InvokeCommandAction Command="{Binding DataContext.ChangeValue, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}}"
-                                                                                                           CommandParameter="{Binding ElementName=tblevalue,Path=Text}">
-                                                                                    </i:InvokeCommandAction>
-                                                                                </i:EventTrigger>
-                                                                            </i:Interaction.Triggers>
-                                                                        </TextBox>
-                                                                        <CheckBox x:Name="cblefreeze" Grid.Column="2" MaxHeight="40">
-                                                                            <i:Interaction.Triggers>
-                                                                                <i:EventTrigger EventName="Checked">
-                                                                                    <i:InvokeCommandAction Command="{Binding DataContext.CheckedChanged, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}}" >
-                                                                                    </i:InvokeCommandAction>
-                                                                                </i:EventTrigger>
-                                                                                <i:EventTrigger EventName="Unchecked">
-                                                                                    <i:InvokeCommandAction Command="{Binding DataContext.CheckedChanged, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}}" >
-                                                                                    </i:InvokeCommandAction>
-                                                                                </i:EventTrigger>
-                                                                            </i:Interaction.Triggers>
-                                                                        </CheckBox>
-                                                                    </Grid>
-                                                                </DataTemplate>
-                                                            </ListBox.ItemTemplate>
-                                                            <ListBox.ItemContainerStyle>
-                                                                <Style TargetType="{x:Type ListBoxItem}">
-                                                                    <Setter Property="FontSize" Value="14"/>
-                                                                    <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
-                                                                    <Setter Property="Template">
-                                                                        <Setter.Value>
-                                                                            <ControlTemplate TargetType="ListBoxItem">
-                                                                                <Border Name="_Border" Padding="2" SnapsToDevicePixels="true">
-                                                                                    <ContentPresenter />
-                                                                                </Border>
-                                                                                <ControlTemplate.Triggers>
-                                                                                    <Trigger Property="IsSelected" Value="true">
-                                                                                        <Setter TargetName="_Border" Property="Background" Value="{DynamicResource SelectedBackgroundBrush}"/>
-                                                                                    </Trigger>
-                                                                                    <Trigger Property="IsEnabled" Value="false">
-                                                                                        <Setter Property="Foreground" Value="#888"/>
-                                                                                    </Trigger>
-                                                                                    <MultiTrigger>
-                                                                                        <MultiTrigger.Conditions>
-                                                                                            <Condition Property="IsMouseOver" Value="true"/>
-                                                                                            <Condition Property="IsSelected" Value="false"/>
-                                                                                        </MultiTrigger.Conditions>
-                                                                                        <MultiTrigger.Setters>
-                                                                                            <Setter TargetName="_Border" Property="Background" Value="{DynamicResource HoverBackgroundBrush}"/>
-                                                                                        </MultiTrigger.Setters>
-                                                                                    </MultiTrigger>
-                                                                                </ControlTemplate.Triggers>
-                                                                            </ControlTemplate>
-                                                                        </Setter.Value>
-                                                                    </Setter>
-                                                                </Style>
-                                                            </ListBox.ItemContainerStyle>
-                                                        </ListBox>
-                                                    </Grid>
-                                                </ScrollViewer>
-                                                <Button Grid.Row="2" x:Name="Btnlefreezelistdel" Style="{StaticResource FormButton}" Content="{Binding Translation[delete], FallbackValue=Delete}" Height="32" Padding="14,0" Margin="0,10,0,0" HorizontalAlignment="Left" Click="Btnlefreezelistdel_Click"/>
-                                            </Grid>
-                                        </Grid>
+                                            <StackPanel Margin="14,12,14,8">
+                                                <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[ge_localidx], FallbackValue='Local'}"/>
+                                                <TextBox x:Name="tblelocal" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,10" TextChanged="GeSource_Changed"/>
+                                                <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[ge_value], FallbackValue='Value'}"/>
+                                                <TextBox x:Name="tblelocalvalue" Style="{StaticResource Watermark}" Height="30" Margin="0,0,0,10"/>
+                                                <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[ge_type], FallbackValue=Type}"/>
+                                                <ComboBox x:Name="ddlechangemode" FontFamily="{DynamicResource Volte}" Height="30" Margin="0,0,0,12" SelectionChanged="GeType_Changed">
+                                                    <ComboBoxItem Content="Byte"/>
+                                                    <ComboBoxItem Content="Short"/>
+                                                    <ComboBoxItem Content="Integer" Selector.IsSelected="True"/>
+                                                    <ComboBoxItem Content="Long"/>
+                                                    <ComboBoxItem Content="Float"/>
+                                                    <ComboBoxItem Content="Double"/>
+                                                    <ComboBoxItem Content="String"/>
+                                                </ComboBox>
+                                                <WrapPanel>
+                                                    <Button x:Name="Btnlereadglobal" Style="{StaticResource FormButton}" Height="32" Padding="12,0" Margin="0,0,6,6" Click="Btnlereadglobal_Click" Content="{Binding Translation[ge_read], FallbackValue='Read'}"/>
+                                                    <Button x:Name="Btnlewriteglobal" Style="{StaticResource FormButtonPrimary}" Height="32" Padding="12,0" Margin="0,0,6,6" Click="Btnlewriteglobal_Click" Content="{Binding Translation[ge_write], FallbackValue='Write'}"/>
+                                                    <Button x:Name="Btnlecopyaddy" Style="{StaticResource FormButton}" Height="32" Padding="12,0" Margin="0,0,6,6" Click="Btnlecopyaddy_Click" Content="{Binding Translation[ge_copy], FallbackValue='Copy address'}"/>
+                                                    <Button x:Name="Btnleadd2f" Style="{StaticResource FormButton}" Height="32" Padding="12,0" Margin="0,0,6,6" Click="Btnleadd2f_Click" Content="{Binding Translation[ge_add2f], FallbackValue='Add to freeze list'}"/>
+                                                </WrapPanel>
+                                            </StackPanel>
+                                        </DockPanel>
                                     </Border>
+                                </UniformGrid>
 
+                                <!-- Bits of the global or local above, read live; a click flips a bit and writes it. For a string: the text, large. -->
+                                <Border Style="{StaticResource DashCard}">
+                                    <DockPanel>
+                                        <Border DockPanel.Dock="Top" Style="{StaticResource GeHeader}">
+                                            <DockPanel>
+                                                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                                                    <Button x:Name="BtnGeBitsGlobal" Style="{StaticResource FormButtonPrimary}" Content="{Binding Translation[ge_global], FallbackValue=Global}" Height="28" Padding="12,0" Margin="0,0,6,0" Click="BtnGeBitsGlobal_Click"/>
+                                                    <Button x:Name="BtnGeBitsLocal" Style="{StaticResource FormButton}" Content="{Binding Translation[ge_local], FallbackValue=Local}" Height="28" Padding="12,0" Click="BtnGeBitsLocal_Click"/>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock x:Name="GeBitsTitle" Style="{StaticResource DashCardTitle}" Text="Bits"/>
+                                                    <TextBlock x:Name="GeBitsLive" Text="{Binding Translation[ge_live], FallbackValue='reads live'}" Foreground="{DynamicResource OkBrush}" FontSize="12" VerticalAlignment="Center" Margin="12,2,0,0"/>
+                                                </StackPanel>
+                                            </DockPanel>
+                                        </Border>
+                                        <StackPanel Margin="14,10,14,12">
+                                            <DockPanel x:Name="GeBitsInfo" Margin="0,0,0,8">
+                                                <TextBlock x:Name="GeBitsValue" FontSize="14" FontWeight="SemiBold" FontFamily="Consolas" Foreground="{DynamicResource TextColor}" VerticalAlignment="Center"/>
+                                                <TextBlock x:Name="GeBitsType" FontSize="12" Foreground="{DynamicResource MutedTextBrush}" Margin="12,0,0,0" VerticalAlignment="Center"/>
+                                                <TextBlock x:Name="GeBitsPath" FontSize="12" FontFamily="Consolas" Foreground="{DynamicResource FaintTextBrush}" Margin="12,0,0,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                                            </DockPanel>
+                                            <UniformGrid x:Name="GeBitsPanel" Columns="4"/>
+                                            <TextBox x:Name="GeTextBox" Style="{StaticResource Watermark}" Visibility="Collapsed" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="150"
+                                                     VerticalContentAlignment="Top" FontFamily="Consolas" FontSize="14" TextChanged="GeTextBox_TextChanged"/>
+                                            <TextBlock x:Name="GeBitsHint" FontSize="12" Foreground="{DynamicResource FaintTextBrush}" TextWrapping="Wrap" Margin="0,8,0,0"/>
+                                        </StackPanel>
+                                    </DockPanel>
+                                </Border>
 
-
+                                <!-- Global and local freeze list share one card; the header switches between them. -->
+                                <Border Style="{StaticResource DashCard}">
+                                    <DockPanel>
+                                        <Border DockPanel.Dock="Top" Style="{StaticResource GeHeader}">
+                                            <DockPanel>
+                                                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                                                    <Button x:Name="BtnFreezeListGlobal" Style="{StaticResource FormButtonPrimary}" Height="28" Padding="12,0" Margin="0,0,6,0" Click="BtnFreezeListGlobal_Click"/>
+                                                    <Button x:Name="BtnFreezeListLocal" Style="{StaticResource FormButton}" Height="28" Padding="12,0" Click="BtnFreezeListLocal_Click"/>
+                                                </StackPanel>
+                                                <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[ge_freeze], FallbackValue='Freeze list'}"/>
+                                            </DockPanel>
+                                        </Border>
+                                        <Border DockPanel.Dock="Bottom" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource LineBrush}" Padding="14,8">
+                                            <DockPanel>
+                                                <TextBlock x:Name="GeFrozenCount" DockPanel.Dock="Right" FontSize="12" Foreground="{DynamicResource FaintTextBrush}" Margin="12,0,0,0"/>
+                                                <TextBlock FontSize="12" Foreground="{DynamicResource FaintTextBrush}" TextWrapping="Wrap"
+                                                           Text="{Binding Translation[ge_freeze_hint], FallbackValue='Double-click a row: loads it into the editor above. Value changes apply at once.'}"/>
+                                            </DockPanel>
+                                        </Border>
+                                        <Grid>
+                                            <ListBox x:Name="freezeList" MaxHeight="210" Background="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                                     ItemTemplate="{StaticResource GeFreezeRow}" ItemContainerStyle="{StaticResource GeFreezeItem}" MouseDoubleClick="freezeList_MouseDoubleClick"/>
+                                            <ListBox x:Name="localfreezeList" MaxHeight="210" Visibility="Collapsed" Background="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                                     ItemTemplate="{StaticResource GeFreezeRow}" ItemContainerStyle="{StaticResource GeFreezeItem}" MouseDoubleClick="localfreezeList_MouseDoubleClick"/>
+                                            <TextBlock x:Name="GeFreezeEmpty" Margin="14,14" FontSize="13" Foreground="{DynamicResource FaintTextBrush}" TextWrapping="Wrap"
+                                                       Text="{Binding Translation[ge_freeze_empty], FallbackValue='Nothing here yet. Add a value with &quot;Add to freeze list&quot;.'}"/>
+                                        </Grid>
+                                    </DockPanel>
+                                </Border>
                             </StackPanel>
                         </ScrollViewer>
                     </TabItem>

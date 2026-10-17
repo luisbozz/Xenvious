@@ -175,7 +175,8 @@ namespace Xenvious
                 cbsettingsoldcreatorrefresh.IsChecked = ini.ReadBoolean("Settings", "oldcreatorrefresh");
                 tbgeglobal.Text = ini.ReadString("Settings", "geglobal");
                 tblelocal.Text = ini.ReadString("Settings", "lelocal");
-                tblelocalscript.Text = ini.ReadString("Settings", "lelocalscript");
+                cbLocalScript.Text = ini.ReadString("Settings", "lelocalscript");
+                LoadRecentScripts(ini.ReadString("Settings", "lelocalscripts"));
                 cbsettingsexpscrfeat.IsChecked = ini.ReadBoolean("Settings", "expscrfeat");
                 cbsettingsswitchcamkey.IsChecked = ini.ReadBoolean("Settings", "switchcamkey");
                 cbsettingswritelogstofile.IsChecked = ini.ReadBoolean("Settings", "writelogstofile");
@@ -265,56 +266,10 @@ namespace Xenvious
             try
             {
                 // A fresh config has no list yet.
-                string decrypted = ConfigText.Decode(ini.ReadString("Settings", "gefreeze"));
-                var entries = string.IsNullOrWhiteSpace(decrypted) ? new List<GlobalFreezeEntry>()
-                    : System.Text.Json.JsonSerializer.Deserialize<List<GlobalFreezeEntry>>(decrypted) ?? new List<GlobalFreezeEntry>();
-                foreach (var e in entries)
-                {
-                    switch (e.Type)
-                    {
-                        case "int":
-                            freezeList.Items.Add(
-                                new GlobalFreezeer(e.Name, e.GlobalName, int.Parse(e.ValueString!, CultureInfo.InvariantCulture)));
-                            break;
-
-                        case "long":
-                            freezeList.Items.Add(
-                                new GlobalFreezeer(e.Name, e.GlobalName, long.Parse(e.ValueString!, CultureInfo.InvariantCulture)));
-                            break;
-
-                        case "float":
-                            freezeList.Items.Add(
-                                new GlobalFreezeer(e.Name, e.GlobalName, float.Parse(e.ValueString!, CultureInfo.InvariantCulture)));
-                            break;
-
-                        case "double":
-                            freezeList.Items.Add(
-                                new GlobalFreezeer(e.Name, e.GlobalName, double.Parse(e.ValueString!, CultureInfo.InvariantCulture)));
-                            break;
-
-                        case "short":
-                            freezeList.Items.Add(
-                                new GlobalFreezeer(e.Name, e.GlobalName, short.Parse(e.ValueString!, CultureInfo.InvariantCulture)));
-                            break;
-
-                        case "string":
-                            freezeList.Items.Add(
-                                new GlobalFreezeer(e.Name, e.GlobalName, e.ValueString ?? string.Empty));
-                            break;
-
-                        case "bytes":
-                            var bytes = string.IsNullOrEmpty(e.ValueBase64)
-                                        ? Array.Empty<byte>()
-                                        : Convert.FromBase64String(e.ValueBase64);
-                            freezeList.Items.Add(
-                                new GlobalFreezeer(e.Name, e.GlobalName, bytes));
-                            break;
-
-                        default:
-                            // unbekannter Typ -> überspringen oder loggen
-                            break;
-                    }
-                }
+                string text = ConfigText.Decode(ini.ReadString("Settings", "gefreeze"));
+                if (!string.IsNullOrWhiteSpace(text))
+                    foreach (var e in System.Text.Json.JsonSerializer.Deserialize<List<GlobalFreezeEntry>>(text) ?? new List<GlobalFreezeEntry>())
+                        GlobalFreezes.Add(GlobalFreezeer.FromEntry(e));
             }
             catch (Exception e)
             {
@@ -323,57 +278,10 @@ namespace Xenvious
 
             try
             {
-                string decrypted = ConfigText.Decode(ini.ReadString("Settings", "lefreeze"));
-                List<LocalFreezeEntry> entries = string.IsNullOrWhiteSpace(decrypted) ? new List<LocalFreezeEntry>()
-                    : System.Text.Json.JsonSerializer.Deserialize<List<LocalFreezeEntry>>(decrypted) ?? new List<LocalFreezeEntry>();
-
-                foreach (var e in entries)
-                {
-                    switch (e.Type)
-                    {
-                        case "int":
-                            localfreezeList.Items.Add(
-                                new LocalFreezeer(e.Name, e.Script, e.LocalName, int.Parse(e.ValueString!, CultureInfo.InvariantCulture)));
-                            break;
-
-                        case "long":
-                            localfreezeList.Items.Add(
-                                new LocalFreezeer(e.Name, e.Script, e.LocalName, long.Parse(e.ValueString!, CultureInfo.InvariantCulture)));
-                            break;
-
-                        case "float":
-                            localfreezeList.Items.Add(
-                                new LocalFreezeer(e.Name, e.Script, e.LocalName, float.Parse(e.ValueString!, CultureInfo.InvariantCulture)));
-                            break;
-
-                        case "double":
-                            localfreezeList.Items.Add(
-                                new LocalFreezeer(e.Name, e.Script, e.LocalName, double.Parse(e.ValueString!, CultureInfo.InvariantCulture)));
-                            break;
-
-                        case "short":
-                            localfreezeList.Items.Add(
-                                new LocalFreezeer(e.Name, e.Script, e.LocalName, short.Parse(e.ValueString!, CultureInfo.InvariantCulture)));
-                            break;
-
-                        case "string":
-                            localfreezeList.Items.Add(
-                                new LocalFreezeer(e.Name, e.Script, e.LocalName, e.ValueString ?? string.Empty));
-                            break;
-
-                        case "bytes":
-                            var bytes = string.IsNullOrEmpty(e.ValueBase64)
-                                        ? Array.Empty<byte>()
-                                        : Convert.FromBase64String(e.ValueBase64);
-                            localfreezeList.Items.Add(
-                                new LocalFreezeer(e.Name, e.Script, e.LocalName, bytes));
-                            break;
-
-                        default:
-                            // unbekannter Typ -> ggf. loggen
-                            break;
-                    }
-                }
+                string text = ConfigText.Decode(ini.ReadString("Settings", "lefreeze"));
+                if (!string.IsNullOrWhiteSpace(text))
+                    foreach (var e in System.Text.Json.JsonSerializer.Deserialize<List<LocalFreezeEntry>>(text) ?? new List<LocalFreezeEntry>())
+                        LocalFreezes.Add(LocalFreezeer.FromEntry(e));
             }
             catch (Exception e)
             {
@@ -387,136 +295,13 @@ namespace Xenvious
             {
                 ini_reader ini = new ini_reader(Functions.getRoamingConfigFilePath());
 
-                var geentries = new List<GlobalFreezeEntry>();
-
-                foreach (var item in freezeList.Items)
-                {
-                    var obj = (GlobalFreezeer)item;
-                    var type = obj.val?.GetType();
-
-                    var e = new GlobalFreezeEntry
-                    {
-                        Name = obj.Name,
-                        GlobalName = obj.GlobalName
-                    };
-
-                    if (type == typeof(byte[]))
-                    {
-                        e.Type = "bytes";
-                        e.ValueBase64 = Convert.ToBase64String(obj.Value ?? Array.Empty<byte>());
-                    }
-                    else if (type == typeof(string))
-                    {
-                        e.Type = "string";
-                        e.ValueString = (string)obj.val;
-                    }
-                    else if (type == typeof(int))
-                    {
-                        e.Type = "int";
-                        e.ValueString = ((int)obj.val).ToString(CultureInfo.InvariantCulture);
-                    }
-                    else if (type == typeof(long))
-                    {
-                        e.Type = "long";
-                        e.ValueString = ((long)obj.val).ToString(CultureInfo.InvariantCulture);
-                    }
-                    else if (type == typeof(float))
-                    {
-                        e.Type = "float";
-                        e.ValueString = ((float)obj.val).ToString(CultureInfo.InvariantCulture);
-                    }
-                    else if (type == typeof(double))
-                    {
-                        e.Type = "double";
-                        e.ValueString = ((double)obj.val).ToString(CultureInfo.InvariantCulture);
-                    }
-                    else if (type == typeof(short))
-                    {
-                        e.Type = "short";
-                        e.ValueString = ((short)obj.val).ToString(CultureInfo.InvariantCulture);
-                    }
-                    else
-                    {
-                        // Fallback: nimm die Bytes aus obj.Value
-                        e.Type = "bytes";
-                        e.ValueBase64 = Convert.ToBase64String(obj.Value ?? Array.Empty<byte>());
-                    }
-
-                    geentries.Add(e);
-                }
-
-                var gejson = System.Text.Json.JsonSerializer.Serialize(geentries, new System.Text.Json.JsonSerializerOptions
+                var json = new System.Text.Json.JsonSerializerOptions
                 {
                     WriteIndented = false,
                     DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
-                });
-                ini.Write("Settings", "gefreeze", ConfigText.Encode(gejson));
-
-                var leentries = new List<LocalFreezeEntry>();
-
-                foreach (var item in localfreezeList.Items)
-                {
-                    var obj = (LocalFreezeer)item;
-                    var type = obj.val?.GetType();
-
-                    var e = new LocalFreezeEntry
-                    {
-                        Name = obj.Name,
-                        Script = obj.Script,
-                        LocalName = obj.LocalName
-                    };
-
-                    if (type == typeof(byte[]))
-                    {
-                        e.Type = "bytes";
-                        e.ValueBase64 = Convert.ToBase64String(obj.Value ?? Array.Empty<byte>());
-                    }
-                    else if (type == typeof(string))
-                    {
-                        e.Type = "string";
-                        e.ValueString = (string)obj.val;
-                    }
-                    else if (type == typeof(int))
-                    {
-                        e.Type = "int";
-                        e.ValueString = ((int)obj.val).ToString(CultureInfo.InvariantCulture);
-                    }
-                    else if (type == typeof(long))
-                    {
-                        e.Type = "long";
-                        e.ValueString = ((long)obj.val).ToString(CultureInfo.InvariantCulture);
-                    }
-                    else if (type == typeof(float))
-                    {
-                        e.Type = "float";
-                        e.ValueString = ((float)obj.val).ToString(CultureInfo.InvariantCulture);
-                    }
-                    else if (type == typeof(double))
-                    {
-                        e.Type = "double";
-                        e.ValueString = ((double)obj.val).ToString(CultureInfo.InvariantCulture);
-                    }
-                    else if (type == typeof(short))
-                    {
-                        e.Type = "short";
-                        e.ValueString = ((short)obj.val).ToString(CultureInfo.InvariantCulture);
-                    }
-                    else
-                    {
-                        // Fallback: nimm die Bytes, falls val-Typ unbekannt
-                        e.Type = "bytes";
-                        e.ValueBase64 = Convert.ToBase64String(obj.Value ?? Array.Empty<byte>());
-                    }
-
-                    leentries.Add(e);
-                }
-
-                var lejson = System.Text.Json.JsonSerializer.Serialize(leentries, new System.Text.Json.JsonSerializerOptions
-                {
-                    WriteIndented = false,
-                    DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
-                });
-                ini.Write("Settings", "lefreeze", ConfigText.Encode(lejson));
+                };
+                ini.Write("Settings", "gefreeze", ConfigText.Encode(System.Text.Json.JsonSerializer.Serialize(GlobalFreezes.Select(f => f.ToEntry()).ToList(), json)));
+                ini.Write("Settings", "lefreeze", ConfigText.Encode(System.Text.Json.JsonSerializer.Serialize(LocalFreezes.Select(f => f.ToEntry()).ToList(), json)));
 
                 SaveMenuPresets(ini);
 
@@ -526,7 +311,8 @@ namespace Xenvious
                 ini.Write("Settings", "oldcreatorrefresh", cbsettingsoldcreatorrefresh.IsChecked ?? true);
                 ini.Write("Settings", "geglobal", tbgeglobal.Text);
                 ini.Write("Settings", "lelocal", tblelocal.Text);
-                ini.Write("Settings", "lelocalscript", tblelocalscript.Text);
+                ini.Write("Settings", "lelocalscript", cbLocalScript.Text);
+                ini.Write("Settings", "lelocalscripts", string.Join(",", RecentScripts));
                 ini.Write("Settings", "expscrfeat", cbsettingsexpscrfeat.IsChecked ?? true);
                 ini.Write("Settings", "switchcamkey", cbsettingsswitchcamkey.IsChecked ?? true);
                 ini.Write("Settings", "writelogstofile", cbsettingswritelogstofile.IsChecked ?? true);

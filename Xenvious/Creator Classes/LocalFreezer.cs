@@ -1,153 +1,51 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using System;
-using System.Globalization;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using Xenvious.Helper_Classes;
 
 namespace Xenvious
 {
-    public partial class LocalFreezeer : ObservableObject, IDisposable
+    /// <summary>A local of a running script in the freeze list.</summary>
+    public class LocalFreezeer : FreezeItem
     {
-        public string Name { get; set; }
-        public long LocalValue { get; set; }
-        public string LocalName { get; set; }
-        public string Script { get; set; }
-        public long Address { get; set; }
-        public byte[] Value { get; set; } = Array.Empty<byte>();
-        public object val { get; set; }
-
-        private bool _isChecked;
-        private readonly Type _type;
-        private CancellationTokenSource? _cts;
-
-        public IRelayCommand CheckedChanged { get; }
-        public IRelayCommand<object?> ChangeValue { get; }
-
-        public LocalFreezeer(string name, string script, string local, object value)
+        public LocalFreezeer(string name, string script, string local, EditorKind kind, string text) : base(name, kind, text)
         {
-            Name = name;
             Script = script;
             LocalName = local;
-
-            // Falls dein Local-Offset anders ermittelt wird, hier ggf. anpassen:
             LocalValue = GlobalPath.Evaluate(local);
-
-            val = value;
-            _type = value.GetType();
-            ChangeValueFunc(value);
-
-            CheckedChanged = new RelayCommand(ToggleFreeze);
-            ChangeValue = new RelayCommand<object?>(s => ChangeValueFunc(s!));
         }
 
-        private void ToggleFreeze()
+        public string Script { get; }
+        public string LocalName { get; }
+        public long LocalValue { get; }
+        public override string Path => Script + " · " + LocalName;
+
+        internal override long Resolve()
         {
-            _isChecked = !_isChecked;
-
-            if (_isChecked)
-            {
-                if (!MainWindow.m.IsProcOpen)
-                {
-                    _isChecked = false;
-                    return;
-                }
-
-                long[]? scriptptr = GTA.getLocalScriptAddy(Script);
-                if (scriptptr == null || scriptptr.Length < 2)
-                {
-                    _isChecked = false;
-                    return;
-                }
-
-                // Adresse einmalig berechnen
-                Address = MainWindow.m
-                    .memory(scriptptr[0], new long[] {
-                        scriptptr[1],
-                        GTA.Offsets.Editor.OFFSET_script_local_start,
-                        LocalValue * 8
-                    })
-                    .GetAddress();
-
-                _cts = new CancellationTokenSource();
-                _ = Task.Run(() => FreezeLocalAsync(_cts.Token));
-            }
-            else
-            {
-                _cts?.Cancel();
-            }
+            long[] thread = GTA.getLocalScriptAddy(Script);
+            if (thread == null)
+                return 0;
+            return MainWindow.m.memory(thread[0], new long[] { thread[1], GTA.Offsets.Editor.OFFSET_script_local_start, LocalValue * 8 }).GetAddress();
         }
 
-        private async Task FreezeLocalAsync(CancellationToken ct)
+        public LocalFreezeEntry ToEntry() => new LocalFreezeEntry
         {
-            while (!ct.IsCancellationRequested)
-            {
-                MainWindow.m.memory(Address.ToString("X")).SetBytes(Value);
-                // Minimales Yield, vermeidet 100% CPU
-                await Task.Delay(1, ct);
-            }
-        }
+            Name = Name, Script = Script, LocalName = LocalName, Type = EditorValue.ConfigName(Kind), ValueString = Text
+        };
 
-        private void ChangeValueFunc(object value)
+        public static LocalFreezeer FromEntry(LocalFreezeEntry e) =>
+            new LocalFreezeer(e.Name, e.Script, e.LocalName, EditorValue.FromConfig(e.Type), FreezeEntryText.Of(e.Type, e.ValueString, e.ValueBase64));
+    }
+
+    internal static class FreezeEntryText
+    {
+        // Older versions saved a byte as Base64 bytes; its first byte is the value.
+        public static string Of(string type, string value, string base64)
         {
-            var s = value?.ToString();
-            if (string.IsNullOrEmpty(s))
-                return;
-
-            try
+            if (type == "bytes" && string.IsNullOrEmpty(value) && !string.IsNullOrEmpty(base64))
             {
-                // Für Float/Double: InvariantCulture -> '.' statt ',' erzwingen
-                var inv = CultureInfo.InvariantCulture;
-
-                if (_type == typeof(byte[]))
-                {
-                    Value = (byte[])value;
-                }
-                else if (_type == typeof(string))
-                {
-                    Value = Encoding.UTF8.GetBytes(Convert.ToString(value)!);
-                }
-                else if (_type == typeof(short))
-                {
-                    if (short.TryParse(s, NumberStyles.Integer, inv, out var si))
-                        Value = BitConverter.GetBytes(si);
-                    else
-                        Value = BitConverter.GetBytes(ushort.Parse(s, inv));
-                }
-                else if (_type == typeof(int))
-                {
-                    if (int.TryParse(s, NumberStyles.Integer, inv, out var ii))
-                        Value = BitConverter.GetBytes(ii);
-                    else
-                        Value = BitConverter.GetBytes(uint.Parse(s, inv));
-                }
-                else if (_type == typeof(long))
-                {
-                    if (long.TryParse(s, NumberStyles.Integer, inv, out var li))
-                        Value = BitConverter.GetBytes(li);
-                    else
-                        Value = BitConverter.GetBytes(ulong.Parse(s, inv));
-                }
-                else if (_type == typeof(float))
-                {
-                    Value = BitConverter.GetBytes(float.Parse(s, inv));
-                }
-                else if (_type == typeof(double))
-                {
-                    Value = BitConverter.GetBytes(double.Parse(s, inv));
-                }
+                byte[] b = Convert.FromBase64String(base64);
+                return b.Length > 0 ? b[0].ToString(System.Globalization.CultureInfo.InvariantCulture) : "0";
             }
-            catch
-            {
-                // optional: Logging
-            }
-        }
-
-        public void Dispose()
-        {
-            _cts?.Cancel();
-            _cts?.Dispose();
+            return value ?? "";
         }
     }
 }

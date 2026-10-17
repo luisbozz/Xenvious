@@ -283,6 +283,8 @@
     <Compile Include="Creator Classes\ScriptThreadLog.cs" />
     <Compile Include="Creator Classes\LocalFreezer.cs" />
     <Compile Include="Creator Classes\GlobalFreezer.cs" />
+    <Compile Include="Creator Classes\FreezeItem.cs" />
+    <Compile Include="Helper Classes\EditorValue.cs" />
     <Compile Include="Creator Classes\JobTime.cs" />
     <Compile Include="Creator Classes\ScrPatchesRunner.cs" />
     <Compile Include="Creator Classes\CreatorMap.cs" />
@@ -350,6 +352,8 @@
     <Compile Include="Generated\RuleFields.Enhanced.g.cs" />
     <Compile Include="Generated\RuleOptions.Legacy.g.cs" />
     <Compile Include="Generated\RuleOptions.Enhanced.g.cs" />
+    <Compile Include="Generated\GlobalNames.Legacy.g.cs" />
+    <Compile Include="Generated\GlobalNames.Enhanced.g.cs" />
     <Compile Include="Helper Classes\AobCache.cs" />
     <Compile Include="Helper Classes\BattlEye.cs" />
     <Compile Include="JSON\Converters\JsonDecimalConverter.cs" />
@@ -607,6 +611,7 @@
     <EmbeddedResource Include="OfflineData\actors.json" />
     <EmbeddedResource Include="OfflineData\menubits.json" />
     <EmbeddedResource Include="OfflineData\jobkeys.txt" />
+    <EmbeddedResource Include="OfflineData\script_names.txt" />
     <None Include=".manifest" />
     <Resource Include="Fonts\Nunito\Nunito-Black.ttf" />
     <Resource Include="Fonts\Nunito\Nunito-BlackItalic.ttf" />

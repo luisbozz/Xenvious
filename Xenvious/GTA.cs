@@ -552,6 +552,44 @@ namespace Xenvious
             return hashes;
         }
 
+        private static Dictionary<uint, string> _scriptNamesByHash;
+
+        /// <summary>
+        /// Names of all scripts with a live thread, sorted, for the Global Editor's script list.
+        /// Legacy threads carry their name; Enhanced ones only the hash, named from the list of
+        /// the game's scripts (a hash missing there is left out).
+        /// </summary>
+        public static List<string> LiveScriptNames()
+        {
+            var names = new SortedSet<string>(StringComparer.Ordinal);
+            long localaddy = getLocalPointer().ToInt64();
+            if (GTA.Offsets.Editor.OFFSET_script_hash != 0)
+            {
+                if (_scriptNamesByHash == null)
+                {
+                    var map = new Dictionary<uint, string>();
+                    foreach (string line in OfflineData.ScriptNames.Split('\n'))
+                    {
+                        string name = line.Trim();
+                        if (name.Length > 0)
+                            map[MainWindow.Joaat(name)] = name;
+                    }
+                    _scriptNamesByHash = map;
+                }
+                foreach (uint hash in LiveScriptHashes())
+                    if (_scriptNamesByHash.TryGetValue(hash, out string name))
+                        names.Add(name);
+                return names.ToList();
+            }
+            for (int d = 0; d < 0x800; d += 0x8)
+            {
+                string name = ReadScriptName(localaddy, d);
+                if (name.Length > 0 && IsLiveThread(localaddy, d))
+                    names.Add(name);
+            }
+            return names.ToList();
+        }
+
         public static long[] getLocalScriptAddy(string scriptname)
         {
             long localaddy = getLocalPointer().ToInt64();

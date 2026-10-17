@@ -95,6 +95,12 @@ namespace Xenvious
         public static string JobKeys => LoadShared("jobkeys.txt");
 
         /// <summary>
+        /// Names of the game's scripts, one per line (the .ysc files of Enhanced). Enhanced threads
+        /// keep only the hash of their name; the Global Editor names running scripts from this list.
+        /// </summary>
+        public static string ScriptNames => LoadShared("script_names.txt");
+
+        /// <summary>
         /// The game's default objective texts (label -> language -> text), taken from the labels
         /// the Mission Controller shows when a rule has no own text (global.gxt2 of the game).
         /// </summary>
