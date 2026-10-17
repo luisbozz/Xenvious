@@ -268,7 +268,10 @@ namespace Xenvious
                 TranslateOr("launch_story_title", "Story Mode erkannt"),
                 TranslateOr("launch_story_text3", "Soll Xenvious den Creator direkt starten? Xenvious meldet sich, sobald der Creator läuft."),
                 TranslateOr("launch_button", "Creator starten"),
-                TranslateOr("launch_not_now", "Nicht jetzt"));
+                TranslateOr("launch_not_now", "Nicht jetzt"),
+                // It may wait behind an update dialog; only offer it while it still fits.
+                level: DialogLevel.Low,
+                stillWanted: () => _launchPhase == LaunchPhase.None && CurrentGameState == GameState.StoryMode);
             if (start)
                 StartLaunch();
         }

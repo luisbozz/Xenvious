@@ -30,7 +30,7 @@ namespace Xenvious
             bool browse = await ConfirmAsync(TranslateOr("be_title", "BattlEye is on"),
                 TranslateOr("be_text", "GTA runs with BattlEye. Xenvious does not connect while BattlEye is on. Close GTA and start it without BattlEye, then Xenvious connects by itself.")
                     + "\n\n" + TranslateOr("be_browse_text", "You can still look through the pages. Nothing is read from or written to the game."),
-                TranslateOr("vo_browse", "Browse pages only"), TranslateOr("be_ok", "OK"));
+                TranslateOr("vo_browse", "Browse pages only"), TranslateOr("be_ok", "OK"), level: DialogLevel.Critical);
             if (browse)
                 EnterViewOnly(true);
         }

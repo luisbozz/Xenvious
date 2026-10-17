@@ -42,14 +42,16 @@ namespace Xenvious
             }
 
             var closed = ChooseAsync(title, message, confirmText, TranslateOr("img_screenshot", "Screenshot from the game"),
-                TranslateOr("dialog_cancel", "Cancel"));
-            DialogImage.Source = null;
-            DialogImageHint.Visibility = Visibility.Visible;
-            DialogImageBox.Visibility = Visibility.Visible;
-            DialogConfirm.IsEnabled = true;
-            _dialogPaste = () => Show(ImageFrom(Clipboard.GetDataObject()));
-            _dialogDrop = data => Show(ImageFrom(data));
-            _dialogAltAction = async () => Show(await GameScreenshotAsync());
+                TranslateOr("dialog_cancel", "Cancel"), onShown: () =>
+                {
+                    DialogImage.Source = null;
+                    DialogImageHint.Visibility = Visibility.Visible;
+                    DialogImageBox.Visibility = Visibility.Visible;
+                    DialogConfirm.IsEnabled = true;
+                    _dialogPaste = () => Show(ImageFrom(Clipboard.GetDataObject()));
+                    _dialogDrop = data => Show(ImageFrom(data));
+                    _dialogAltAction = async () => Show(await GameScreenshotAsync());
+                });
 
             if (await closed != DialogChoice.Confirm)
                 return (false, null);
