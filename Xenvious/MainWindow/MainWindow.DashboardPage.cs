@@ -236,7 +236,8 @@ namespace Xenvious
 
         private void tb_minp_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(tb_minp.Text))
+            // Only what the user types, not the worker's refresh (see tb_maxp_TextChanged).
+            if (!tb_minp.IsKeyboardFocusWithin || string.IsNullOrWhiteSpace(tb_minp.Text))
                 return;
             if (IsValidInt(tb_minp.Text, false) && m.IsProcOpen)
             {
@@ -246,7 +247,10 @@ namespace Xenvious
 
         private void tb_maxp_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(tb_maxp.Text))
+            // Only what the user types: the worker fills the box from the game every tick, and
+            // written back while a job loads (type and creator flag change under it) the max
+            // players gained one on every load.
+            if (!tb_maxp.IsKeyboardFocusWithin || string.IsNullOrWhiteSpace(tb_maxp.Text))
                 return;
             if (IsValidInt(tb_maxp.Text, false) && m.IsProcOpen)
             {
