@@ -276,6 +276,7 @@
     <Compile Include="Creator Classes\RuleMover.cs" />
     <Compile Include="Creator Classes\WeaponPickups.cs" />
     <Compile Include="Creator Classes\RestartCheckpoints.cs" />
+    <Compile Include="Creator Classes\PublishMode.cs" />
     <Compile Include="Creator Classes\RuleOptions.cs" />
     <Compile Include="Creator Classes\RuleOverlay.cs" />
     <Compile Include="Creator Classes\RuleFlow.cs" />
@@ -539,6 +540,7 @@
     <Compile Include="Helper Classes\SmartSearch.cs" />
     <Compile Include="MainWindow\MainWindow.OnlineEnabler.cs" />
     <Compile Include="MainWindow\MainWindow.Props.cs" />
+    <Compile Include="MainWindow\MainWindow.Publish.cs" />
     <Compile Include="MainWindow\MainWindow.Race.cs" />
     <Compile Include="MainWindow\MainWindow.ScreenMessage.cs" />
     <Compile Include="MainWindow\MainWindow.Settings.cs" />

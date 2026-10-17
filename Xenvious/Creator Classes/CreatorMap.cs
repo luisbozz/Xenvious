@@ -264,6 +264,10 @@ namespace Xenvious
 
         internal static void WriteLocal(long index, int value) => MainWindow.m.memory(LocalAddress(index).ToString("X")).SetInt(value);
 
+        internal static byte[] ReadLocalBytes(long index, int length) => MainWindow.m.memory(LocalAddress(index).ToString("X")).GetBytes(length);
+
+        internal static void WriteLocalBytes(long index, byte[] value) => MainWindow.m.memory(LocalAddress(index).ToString("X")).SetBytes(value);
+
         // ---- snapshots ---------------------------------------------------------------
 
         public static Snapshot Capture(string name)

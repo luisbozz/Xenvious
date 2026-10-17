@@ -978,6 +978,11 @@
                                                 <Rectangle Height="1" Fill="{DynamicResource LineBrush}" Margin="0,2,8,8"/>
                                                 <Button x:Name="BtnSaveMain" Style="{StaticResource DashButton}" Click="BtnSaveMain_Click" Content="{Binding Translation[save], FallbackValue=Save}"/>
                                                 <Button x:Name="BtnPublishMain" Style="{StaticResource DashButton}" Click="BtnPublishMain_Click" Content="{Binding Translation[publish], FallbackValue=Publish}"/>
+                                                <!-- What Publish does: a new job (orange) or an update of the published one (green), read from the creator. -->
+                                                <StackPanel x:Name="DashPublishMode" Orientation="Horizontal" Margin="2,-4,8,8" Visibility="Collapsed">
+                                                    <Ellipse x:Name="DashPublishDot" Width="7" Height="7" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                                    <TextBlock x:Name="DashPublishText" FontSize="11.5" Foreground="{DynamicResource MutedTextBrush}" TextTrimming="CharacterEllipsis" MaxWidth="170"/>
+                                                </StackPanel>
                                                 <Rectangle Height="1" Fill="{DynamicResource LineBrush}" Margin="0,2,8,8"/>
                                                 <Button x:Name="BtnSkipTest" Style="{StaticResource DashButton}" Click="BtnSkipTest_Click" Content="{Binding Translation[skiptest], FallbackValue='Skip Testing'}"/>
                                                 <Rectangle Height="1" Fill="{DynamicResource LineBrush}" Margin="0,2,8,8"/>

@@ -922,13 +922,6 @@ namespace Xenvious
             }
         }
 
-        private void BtnPublishMain_Click(object sender, RoutedEventArgs e)
-        {
-            if (m.IsProcOpen)
-            {
-                publishJob();
-            }
-        }
 
         private void BtnTryFixBlackScreen_Click(object sender, RoutedEventArgs e)
         {

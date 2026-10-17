@@ -145,6 +145,7 @@ namespace Xenvious
                         // Loaded as someone else's published job; make it a new one.
                         CreatorMap.WriteLocal(worker + GTA.Offsets.Editor.OFFSET_current_creator_worker_offset_editing_published, 0);
                         ForgetContentId(creator);
+                        PublishMode.LastLoadedId = contentId;
                         Log.Info($"load job {contentId}: loaded after {(DateTime.UtcNow - started).TotalSeconds:0.0} s", source: "copyjob");
                         return Result.Loaded;
                     }

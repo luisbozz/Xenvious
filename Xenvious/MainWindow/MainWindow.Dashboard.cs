@@ -56,6 +56,7 @@ namespace Xenvious
                 bool creatorMenu = globals && !inCreator && GTA.IsScriptRunning("creator");
                 // Before the game state: it needs the test and creator script it finds.
                 UpdateTestButton(globals);
+                UpdatePublishMode(inCreator);
                 UpdateGameState(game, globals, inCreator, creatorMenu);
                 if (inCreator)
                     VisibilityGroups.Apply();
