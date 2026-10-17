@@ -172,6 +172,7 @@ namespace Xenvious
                 new GTA.ScrPatches { patch_name = "online test end screen", script_name = "fm_mission_controller", pattern = "1F 56 ? ? 71 5D ? ? ? 06 56 ? ? 50 B9 4A", offset = 5, bytes_to_patch = "2B 71 00 00", dev = false, trigger = "onlinetest_celeb" },
                 new GTA.ScrPatches { patch_name = "online test end screen", script_name = "fm_mission_controller", pattern = "2A 56 ? ? 71 5D ? ? ? 06 1F 56 ? ? 2C 01 05 87", offset = 5, bytes_to_patch = "2B 71 00 00", dev = false, trigger = "onlinetest_celeb" },
                 new GTA.ScrPatches { patch_name = "online test personal vehicle", script_name = "fm_mission_controller", pattern = "1F 2A 56 ? ? 71 5D ? ? ? 06 1F 2A 56 ? ? 61 ? ? ?", offset = 6, bytes_to_patch = "2B 71 00 00", dev = false, trigger = "onlinetest_pv" },
+                new GTA.ScrPatches { patch_name = "test with one team", script_name = "fm_mission_controller", pattern = "2D 00 02 00 00 61 00 00 48 47 BD 0E 72 57 04 00 72 2E 00 01 4F ? ? 47 E2 03", offset = 12, bytes_to_patch = "70", dev = false, trigger = "test_oneteam" },
             };
         }
 

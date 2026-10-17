@@ -47,6 +47,7 @@ namespace Xenvious
             int tick = 0;
             bool templatesWereActive = false;
             var onlineTestWasActive = new HashSet<string>();
+            bool oneTeamWasActive = false;
             while (true)
             {
                 // Precise templates reacts to the creator menu, so it ticks every 50 ms.
@@ -71,6 +72,12 @@ namespace Xenvious
                 foreach (string feature in onlineTestWasActive.Except(onlineTestActive))
                     RevertTriggered(OnlineTest.TriggerPrefix + feature);
                 onlineTestWasActive = onlineTestActive;
+                // "test with one team": out again once the creator is left.
+                bool oneTeamActive = TriggerActive("test_oneteam");
+                if (oneTeamWasActive && !oneTeamActive)
+                    RevertTriggered("test_oneteam");
+                bool oneTeamChanged = oneTeamActive != oneTeamWasActive;
+                oneTeamWasActive = oneTeamActive;
 
                 // A pass scans the script bytecode for every patch's pattern,
                 // and a patch is only ever written once -- appliedPatches sees
@@ -78,7 +85,7 @@ namespace Xenvious
                 // been loaded, which is not something that happens hundreds of
                 // times a second: every 250 ms, or at once when a triggered
                 // patch set was switched on.
-                if (MainWindow.m.IsProcOpen && (tick % 5 == 0 || templatesChanged || onlineTestChanged))
+                if (MainWindow.m.IsProcOpen && (tick % 5 == 0 || templatesChanged || onlineTestChanged || oneTeamChanged))
                 {
                     try { ScriptSpace.Reserve(); }
                     catch (Exception ex) { Log.Debug("ScriptSpace: " + ex.Message, source: "ScrPatchesRunner"); }
@@ -119,6 +126,11 @@ namespace Xenvious
                     return true;
                 case "templates":
                     return PreciseTemplates.Active;
+                // The classic controller ends a job with one team at once (func_893: "tnum == 1"),
+                // in the creator test too; the patch asks for tnum -1 instead. Only while the LTS or
+                // Capture creator runs, so a real job stays as Rockstar made it.
+                case "test_oneteam":
+                    return MainWindow.m.IsProcOpen && OnlineTest.InCreator();
                 default:
                     return trigger.StartsWith(OnlineTest.TriggerPrefix, StringComparison.Ordinal)
                         && OnlineTest.Active(trigger.Substring(OnlineTest.TriggerPrefix.Length));

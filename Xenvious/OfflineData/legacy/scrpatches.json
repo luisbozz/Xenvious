@@ -1667,5 +1667,14 @@
         "bytes_to_patch": "2B 71 00 00",
         "dev": false,
         "trigger": "onlinetest_pv"
+    },
+    {
+        "patch_name": "test with one team",
+        "script_name": "fm_mission_controller",
+        "pattern": "2D 00 02 00 00 61 00 00 48 47 BD 0E 72 57 04 00 72 2E 00 01 4F ? ? 47 E2 03",
+        "offset": 12,
+        "bytes_to_patch": "70",
+        "dev": false,
+        "trigger": "test_oneteam"
     }
 ]
