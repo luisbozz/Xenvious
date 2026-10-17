@@ -50,6 +50,11 @@ namespace Xenvious
             PageInnerMission.SelectedItem = PageInnerMissionGoto;
         }
 
+        private void BtnSectionTest_Click(object sender, RoutedEventArgs e)
+        {
+            PageInnerMission.SelectedItem = PageInnerMissionTest;
+        }
+
 
 
 

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -53,6 +53,7 @@ namespace Xenvious
             if (!ScriptVars.FeaturesOn)
             {
                 ScriptDrawer.Show(script, groups.Values.Select(g => g.Shape).ToList());
+                ScriptDrawer.SetLabels(script, new List<ScriptDrawer.Label>());
                 return;
             }
             if (VisibilityGroups.IsOn(VisibilityGroups.PlayAreaBit) && PlayAreas.Ready)
@@ -73,7 +74,12 @@ namespace Xenvious
                 s.Text = g.Name + " - " + Who(g.Rules);
                 shapes.Add(s);
             }
+            // The selected entity's cone first, so a full drawer drops play areas, not it.
+            bool marks = EntityMarks.ForCreator(script) && VisibilityGroups.IsOn(VisibilityGroups.EntityMarkBit);
+            if (marks)
+                shapes.InsertRange(0, EntityMarks.Shapes());
             ScriptDrawer.Show(script, shapes);
+            ScriptDrawer.SetLabels(script, marks ? EntityMarks.Labels() : new List<ScriptDrawer.Label>());
         }
 
         private static void AddPlayAreas(Dictionary<string, Group> groups, int area, string name, byte alpha)

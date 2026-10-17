@@ -3393,6 +3393,7 @@
                                                         <local:MasonryPanel Margin="0,12,0,12">
                                                             <StackPanel>
                                                                 <local:ModelCard x:Name="WeapModelCard" Margin="0,0,0,12"/>
+                                                                <ContentControl x:Name="WeapKindHost"/>
                                                             </StackPanel>
                                                             <StackPanel>
                                                                 <Border Style="{StaticResource DashCard}">
@@ -3547,41 +3548,11 @@
                                                                             <CheckBox x:Name="cb_weap_civ" Checked="cb_weap_civ_Checked" Unchecked="cb_weap_civ_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
                                                                         </Grid>
                                                                         <Rectangle Height="1" Fill="{DynamicResource SeactionHeaderBackgroundBrush}" Margin="0,4,0,12"/>
-                                                                        <Grid Style="{StaticResource FormRow}">
-                                                                            <Grid.ColumnDefinitions>
-                                                                                <ColumnDefinition Width="*"/>
-                                                                                <ColumnDefinition Width="46"/>
-                                                                            </Grid.ColumnDefinitions>
-                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[weapbrest1], FallbackValue=Hide for Team 1}" IsEnabled="{Binding ElementName=cb_weap_brest1, Path=IsEnabled}"/>
-                                                                            <CheckBox x:Name="cb_weap_brest1" Checked="cb_weap_brest1_Checked" Unchecked="cb_weap_brest1_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                        </Grid>
-                                                                        <Grid Style="{StaticResource FormRow}">
-                                                                            <Grid.ColumnDefinitions>
-                                                                                <ColumnDefinition Width="*"/>
-                                                                                <ColumnDefinition Width="46"/>
-                                                                            </Grid.ColumnDefinitions>
-                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[weapbrest2], FallbackValue=Hide for Team 2}" IsEnabled="{Binding ElementName=cb_weap_brest2, Path=IsEnabled}"/>
-                                                                            <CheckBox x:Name="cb_weap_brest2" Checked="cb_weap_brest2_Checked" Unchecked="cb_weap_brest2_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                        </Grid>
-                                                                        <Grid Style="{StaticResource FormRow}">
-                                                                            <Grid.ColumnDefinitions>
-                                                                                <ColumnDefinition Width="*"/>
-                                                                                <ColumnDefinition Width="46"/>
-                                                                            </Grid.ColumnDefinitions>
-                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[weapbrest3], FallbackValue=Hide for Team 3}" IsEnabled="{Binding ElementName=cb_weap_brest3, Path=IsEnabled}"/>
-                                                                            <CheckBox x:Name="cb_weap_brest3" Checked="cb_weap_brest3_Checked" Unchecked="cb_weap_brest3_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                        </Grid>
-                                                                        <Grid Style="{StaticResource FormRow}">
-                                                                            <Grid.ColumnDefinitions>
-                                                                                <ColumnDefinition Width="*"/>
-                                                                                <ColumnDefinition Width="46"/>
-                                                                            </Grid.ColumnDefinitions>
-                                                                            <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[weapbrest4], FallbackValue=Hide for Team 4}" IsEnabled="{Binding ElementName=cb_weap_brest4, Path=IsEnabled}"/>
-                                                                            <CheckBox x:Name="cb_weap_brest4" Checked="cb_weap_brest4_Checked" Unchecked="cb_weap_brest4_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                        </Grid>
+                                                                        <ContentControl x:Name="WeapHideHost"/>
                                                                         </StackPanel>
                                                                     </DockPanel>
                                                                 </Border>
+                                                                <local:WeaponPickupCard x:Name="WeapPickupCard" Margin="0,12,0,0"/>
                                                             </StackPanel>
                                                             <StackPanel>
                                                                 <Border Style="{StaticResource DashCard}">
@@ -4151,6 +4122,8 @@
 
                                                                     <Button x:Name="BtnMissionotzone" Style="{DynamicResource CustomButton}"  Height="45" Content="{Binding Translation[otzoneheader], FallbackValue=Overtime Zone}" Click="BtnMissionotzone_Click" FontSize="20" Background="{DynamicResource ButtonHoverBackgroundBrush}"/>
 
+                                                                    <Button x:Name="BtnSectionTest" Style="{DynamicResource CustomButton}" Height="45" Background="{DynamicResource SeactionHeaderBackgroundBrush}" Click="BtnSectionTest_Click" FontSize="20" Content="{Binding Translation[olt_nav], FallbackValue=Test}"/>
+
                                                                 </StackPanel>
                                                             </ScrollViewer>
                                                         </Grid>
@@ -4169,8 +4142,6 @@
                                                                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                                                                         <local:MasonryPanel Margin="0,12,0,12">
                                                                             <StackPanel>
-                                                                                <!-- Solo start and controller choice for LTS / Capture, for testing combinations. -->
-                                                                                <local:SoloTestCard x:Name="SoloTestCard"/>
                                                                                 <Border Style="{StaticResource DashCard}" Margin="0,0,0,12">
                                                                                     <DockPanel>
                                                                                         <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
@@ -7062,7 +7033,7 @@
                                                                                             <UniformGrid Columns="2">
                                                                                                 <StackPanel Margin="0,0,6,0"><TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[smsdestination], FallbackValue='Destination Team'}"/>
                                                                     <ComboBox x:Name="ddSMSteam" IsEnabled="False" SelectionChanged="ddSMSteam_SelectionChanged" Height="30" Margin="0,0,0,10">
-<ComboBoxItem Content="{Binding Translation[all], FallbackValue=All}"/>
+<ComboBoxItem Content="{Binding Translation[sms_team_none], FallbackValue=None (not sent)}"/>
 <ComboBoxItem Content="1" Selector.IsSelected="True"/>
 <ComboBoxItem Content="2"/>
 <ComboBoxItem Content="3"/>
@@ -7080,11 +7051,6 @@
                                                                                                 <StackPanel Margin="6,0,0,0"><TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[smsdelay], FallbackValue='Delay in Seconds'}"/>
                                                                     <TextBox x:Name="tbSMSdelay" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbSMSdelay_TextChanged" KeyDown="FormatTextForInteger" Height="30" Margin="0,0,0,10"/></StackPanel>
                                                                                             </UniformGrid>
-                                                                                            <Grid Style="{StaticResource FormRow}">
-                                                                        <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="46"/></Grid.ColumnDefinitions>
-                                                                        <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[sndall], FallbackValue='Send to All Teams'}"/>
-                                                                        <CheckBox x:Name="cbSMSsndall" Checked="cbSMSsndall_Checked" Unchecked="cb_props_ignorevscheck_Checked" IsEnabled="False" Grid.Column="1" Style="{StaticResource FormToggle}"/>
-                                                                    </Grid>
                                                                                             <ComboBox x:Name="ddSMScontact" IsEnabled="False" Visibility="Collapsed" SelectionChanged="ddSMScontact_SelectionChanged" Height="30" Margin="0,0,0,10">
 <ComboBoxItem Content="{Binding Translation[smscontact1], FallbackValue=Ms Baker}"/>
 <ComboBoxItem Content="{Binding Translation[smscontact2], FallbackValue=Cheng Jr.}"/>
@@ -7114,7 +7080,7 @@
                                                                                     </DockPanel>
                                                                                 </Border>
                                                                                 <Border Style="{StaticResource DashCard}">
-                                                                                    <Expander Style="{StaticResource CardExpander}" IsExpanded="True" Header="{Binding Translation[advanced], FallbackValue=Advanced}">
+                                                                                    <Expander Style="{StaticResource CardExpander}" IsExpanded="False" Header="{Binding Translation[gr_raw], FallbackValue=Raw values}">
                                                                                         <StackPanel Margin="14,12,14,4">
                                                                                             <TextBlock Style="{StaticResource FieldLabel}" Text="{Binding Translation[smspreq], FallbackValue='Points Required'}"/>
                                                                     <TextBox x:Name="tbSMSpreq" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbSMSpreq_TextChanged" KeyDown="FormatTextForModel" Height="30" Margin="0,0,0,10"/>
@@ -7128,17 +7094,20 @@
                                                                                     </Expander>
                                                                                 </Border>
                                                                             </StackPanel>
-                                                                            <Border Grid.Column="2" Style="{StaticResource DashCard}" VerticalAlignment="Top">
+                                                                            <StackPanel Grid.Column="2">
+                                                                            <Border Style="{StaticResource DashCard}" VerticalAlignment="Top">
                                                                                 <DockPanel>
                                                                                     <Border DockPanel.Dock="Top" Style="{StaticResource DashCardHeader}">
                                                                                         <TextBlock Style="{StaticResource DashCardTitle}" Text="{Binding Translation[smsmsg], FallbackValue='SMS Message'}"/>
                                                                                     </Border>
                                                                                     <StackPanel Margin="14,12,14,14">
-                                                                                        <TextBox x:Name="tbSMSmsg" FontSize="17" MinHeight="260" TextWrapping="Wrap" AcceptsReturn="False" Padding="10,8" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbSMSmsg_TextChanged" PreviewTextInput="tbSMSmsg_PreviewTextInput" VerticalContentAlignment="Top"/>
+                                                                                        <TextBox x:Name="tbSMSmsg" FontSize="17" MinHeight="120" TextWrapping="Wrap" AcceptsReturn="False" Padding="10,8" Style="{StaticResource Watermark}" IsEnabled="False" TextChanged="tbSMSmsg_TextChanged" PreviewTextInput="tbSMSmsg_PreviewTextInput" VerticalContentAlignment="Top"/>
                                                                                         <TextBlock FontSize="12" Margin="2,6,0,0" Foreground="{DynamicResource FaintTextBrush}" Text="{Binding Text.Length, ElementName=tbSMSmsg, StringFormat='{}{0} / 126', FallbackValue=''}"/>
                                                                                     </StackPanel>
                                                                                 </DockPanel>
                                                                             </Border>
+                                                                            <local:SmsOptionsCard x:Name="SmsOptions"/>
+                                                                            </StackPanel>
                                                                         </Grid>
                                                                     </ScrollViewer>
                                                                 </DockPanel>
@@ -7267,6 +7236,13 @@
                                                                 <!-- A team's rules with what points at them, jumps and limits; Controls/RulesView.cs. -->
                                                                 <local:RulesView x:Name="rulesView" Margin="10,0"/>
                                                             </TabItem>
+                                                            <TabItem x:Name="PageInnerMissionTest" Header="Test">
+                                                                <!-- "Test like online" and the solo / controller card (Controls/OnlineTestView.cs). -->
+                                                                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                                                    <local:OnlineTestView x:Name="OnlineTestPage"/>
+                                                                </ScrollViewer>
+                                                            </TabItem>
+
                                                             <TabItem x:Name="PageInnerMissionGoto" Header="Goto" >
 
                                                                 <!-- Card layout (docs/handoff/auto_page.py): one card per old column, headings as sub titles. -->
@@ -9059,6 +9035,7 @@
                                                                     <local:MasonryPanel Margin="0,12,0,12">
                                                                         <StackPanel>
                                                                             <local:ModelCard x:Name="ObjModelCard" Margin="0,0,0,12"/>
+                                                                            <local:ObjectTransformCard x:Name="ObjTransformCard"/>
                                                                         </StackPanel>
                                                                         <local:EntityRulesCard x:Name="ObjExtraRules" VerticalAlignment="Top"/>
                                                                         <StackPanel>
@@ -11366,7 +11343,6 @@
                                             <!-- Four bytes of eight tiles, filled in code, numbered by bit index (0-31). -->
                                             <UniformGrid x:Name="ConvBitsPanel" Columns="4"/>
                                             <TextBlock FontSize="12" Foreground="{DynamicResource FaintTextBrush}" Margin="2,8,0,0" TextWrapping="Wrap" Text="{Binding Translation[conv_bits_hint], FallbackValue='Bit number 0-31 as in the scripts. A click switches the bit.'}"/>
-                                            <Label x:Name="Lblconvbinarynums" Padding="2,6,0,0" FontSize="13" Foreground="{DynamicResource TextColor}"/>
                                         </StackPanel>
                                     </DockPanel>
                                 </Border>

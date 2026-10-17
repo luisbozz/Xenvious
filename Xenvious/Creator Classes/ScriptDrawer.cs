@@ -16,7 +16,8 @@ namespace Xenvious
     ///
     /// Data page (byte offsets): 0x00 "STRING" (the text label BEGIN_TEXT_COMMAND_DISPLAY_TEXT
     /// needs), 0x08 entry count, 0x10 a heartbeat the drawer counts up every frame, 0x18 the
-    /// customfuncs variables (ScriptVars), 0x800 the entries, 0x100 bytes each, 0x3700 the entity mover
+    /// customfuncs variables (ScriptVars), 0x800 the entries, 0x100 bytes each, 0x2700 the compact
+    /// labels (SetLabels: a count, then 0x30 bytes each from 0x2710), 0x3700 the entity mover
     /// request (EntityMover), 0x3800 the zone type
     /// names for the zone labels (SetZoneNames), 0x3F88 the teleport request (GTA.Teleport), 0x3FC8
     /// the datafile probe (JobDatafile). An entry is 8 byte slots with the value in the low 4 bytes:
@@ -26,7 +27,9 @@ namespace Xenvious
     /// </summary>
     public static class ScriptDrawer
     {
-        public const int MaxShapes = 47;   // the 48th entry's space holds the entity mover (EntityMover)
+        public const int MaxShapes = 31;   // 0x800..0x2700; the labels follow
+        public const int MaxLabels = 80;
+        private const int LabelCountAt = 0x2700, LabelsAt = 0x2710, LabelSize = 0x30, LabelText = 24;
         private const int CountAt = 0x08, BeatAt = 0x10, EntriesAt = 0x800, EntrySize = 0x100;
         // Zone type names (zonelabel in customfuncs): a count, then entries of a type and its name.
         private const int NamesAt = 0x3800, NameEntry = 0x40, MaxNames = 30;
@@ -134,13 +137,13 @@ namespace Xenvious
 
         // UTF-8, cut at a character border so the last byte of the field always stays NUL. "~"
         // starts a format code in game text.
-        private static byte[] TextBytesOf(string text)
+        private static byte[] TextBytesOf(string text, int bytes = TextBytes)
         {
             if (string.IsNullOrEmpty(text))
                 return new byte[0];
             text = text.Replace('~', '-');
             byte[] all = Encoding.UTF8.GetBytes(text);
-            int n = Math.Min(all.Length, TextBytes - 1);
+            int n = Math.Min(all.Length, bytes - 1);
             while (n > 0 && n < all.Length && (all[n] & 0xC0) == 0x80)
                 n--;
             var cut = new byte[n];
@@ -153,6 +156,7 @@ namespace Xenvious
         private static byte[][] written = new byte[MaxShapes][];
         private static int writtenCount;
         private static byte[] writtenNames;
+        private static byte[] writtenLabels;
         private static bool warnedFull;
         private static int lastBeat;
         private static DateTime beatSeen;
@@ -181,9 +185,11 @@ namespace Xenvious
                     written = new byte[MaxShapes][];
                     writtenCount = 0;
                     writtenNames = null;
+                    writtenLabels = null;
                     lastBeat = 0;
                     Write(page, Header);
                     Write(page + CountAt, BitConverter.GetBytes(0));
+                    Write(page + LabelCountAt, BitConverter.GetBytes(0L));
                 }
 
                 int n = Math.Min(shapes.Count, MaxShapes);
@@ -263,6 +269,57 @@ namespace Xenvious
             {
                 Log.Debug("SetZoneNames " + script + ": " + ex.Message, source: "ScriptDrawer");
                 writtenNames = null;
+            }
+        }
+
+        /// <summary>A short text in the game world (entity numbers); the drawer shows it in the label font, centred.</summary>
+        public struct Label
+        {
+            public Vector3 Position;
+            public Color Colour;
+            public string Text;
+        }
+
+        /// <summary>
+        /// Gives the drawer these compact labels (at most <see cref="MaxLabels"/>, text up to 23
+        /// bytes). Call after <see cref="Show"/>, which sets up the page.
+        /// </summary>
+        public static void SetLabels(string script, IList<Label> labels)
+        {
+            if (!MainWindow.m.IsProcOpen || page == 0 || ScriptSpace.Get(script)?.Data != page)
+                return;
+            int n = Math.Min(labels.Count, MaxLabels);
+            var table = new byte[8 + n * LabelSize];
+            Array.Copy(BitConverter.GetBytes((long)n), table, 8);
+            for (int i = 0; i < n; i++)
+            {
+                int at = 8 + i * LabelSize;
+                var l = labels[i];
+                Array.Copy(BitConverter.GetBytes(l.Position.X), 0, table, at, 4);
+                Array.Copy(BitConverter.GetBytes(l.Position.Y), 0, table, at + 4, 4);
+                Array.Copy(BitConverter.GetBytes(l.Position.Z), 0, table, at + 8, 4);
+                Array.Copy(BitConverter.GetBytes((int)l.Colour.R), 0, table, at + 12, 4);
+                Array.Copy(BitConverter.GetBytes((int)l.Colour.G), 0, table, at + 16, 4);
+                Array.Copy(BitConverter.GetBytes((int)l.Colour.B), 0, table, at + 20, 4);
+                byte[] text = TextBytesOf(l.Text, LabelSize - LabelText);
+                Array.Copy(text, 0, table, at + LabelText, text.Length);
+            }
+            if (Same(writtenLabels, table))
+                return;
+            try
+            {
+                // Count to 0 first, so the drawer never reads a label being rewritten. The labels
+                // start 8 bytes after the count's slot (0x2708 is padding).
+                Write(page + LabelCountAt, BitConverter.GetBytes(0L));
+                if (n > 0)
+                    Write(page + LabelsAt, table.Skip(8).ToArray());
+                Write(page + LabelCountAt, table.Take(8).ToArray());
+                writtenLabels = table;
+            }
+            catch (Exception ex)
+            {
+                Log.Debug("SetLabels " + script + ": " + ex.Message, source: "ScriptDrawer");
+                writtenLabels = null;
             }
         }
 

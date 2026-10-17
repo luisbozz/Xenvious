@@ -135,6 +135,7 @@ namespace Xenvious
             var vehSpeed = CellOf(tbactoractvvehspeed, "gr_vehspeed", "Vehicle speed (whole route)");
             var sizeCell = CellOf(tbactoractvsize, "gr_radius", "Arrival radius");
             routeOptions.Children.Add(Pair(vehSpeed, null));
+            routeOptions.Children.Add(BuildGotoCopyPanel(() => _actorRoute?.Refresh()));
 
             TextBlock Heading(string key, string fallback)
             {
@@ -178,6 +179,7 @@ namespace Xenvious
                     Z = new Global(Point(GTA.Offsets.Editor.Actor.actvz, i)).Get<float>(),
                     WaitMs = new Global(Point(GTA.Offsets.Editor.Actor.awt, i)).Get<int>(),
                     Bits = new Global(Point(GTA.Offsets.Editor.Actor.actv_bs, i)).Get<int>(),
+                    Radius = GTA.Offsets.Editor.Actor.agrd == 0 ? 0f : new Global(Point(GTA.Offsets.Editor.Actor.agrd, i)).Get<float>(),
                 },
                 () => (new Global(GTA.Offsets.Editor.Actor.locx + GTA.Offsets.Editor.Actor.NEXT * ddactorno.SelectedIndex).Get<float>(),
                        new Global(GTA.Offsets.Editor.Actor.locy + GTA.Offsets.Editor.Actor.NEXT * ddactorno.SelectedIndex).Get<float>()),
@@ -228,7 +230,18 @@ namespace Xenvious
                 IsExpanded = false,
                 Margin = new Thickness(0, 0, 0, 12),
             };
-            _actorRoute.Changed += n => gotoSection.Summary = n == 0 ? TranslateOr("gr_none", "none") : string.Format(TranslateOr("gr_count", "{0} points"), n);
+            // Another actor: the card opens when it has goto points and closes when not; while the
+            // same actor stays, the user's choice holds.
+            int routeActor = -2;
+            _actorRoute.Changed += n =>
+            {
+                gotoSection.Summary = n == 0 ? TranslateOr("gr_none", "none") : string.Format(TranslateOr("gr_count", "{0} points"), n);
+                if (m.IsProcOpen && ddactorno.SelectedIndex != routeActor)
+                {
+                    routeActor = ddactorno.SelectedIndex;
+                    gotoSection.IsExpanded = n > 0;
+                }
+            };
 
             // Combat like the mockup: style as tiles, accuracy and health as stepped sliders.
             TextBlock LabelOf(ComboBox box) => box.Parent is Panel p && p.Children.IndexOf(box) > 0 ? p.Children[p.Children.IndexOf(box) - 1] as TextBlock : null;

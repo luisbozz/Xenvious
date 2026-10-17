@@ -189,6 +189,7 @@
     <Compile Include="Controls\GtaTextAssist.cs" />
     <Compile Include="Controls\RulesView.cs" />
     <Compile Include="Controls\RulesView.Flow.cs" />
+    <Compile Include="Controls\RulesView.Detail.cs" />
     <Compile Include="Controls\EntityRulesCard.cs" />
     <Compile Include="Controls\SectionCard.cs" />
     <Compile Include="Controls\HeadingSlider.cs" />
@@ -208,6 +209,10 @@
     <Compile Include="Controls\MenuBitsView.cs" />
     <Compile Include="Controls\MatchSettingsCard.cs" />
     <Compile Include="Controls\SoloTestCard.cs" />
+    <Compile Include="Controls\WeaponPickupCard.cs" />
+    <Compile Include="Controls\ObjectTransformCard.cs" />
+    <Compile Include="Controls\SmsOptionsCard.cs" />
+    <Compile Include="Controls\OnlineTestView.cs" />
     <Compile Include="Controls\RowDragger.cs" />
     <Compile Include="Controls\VisibilityCard.cs" />
     <Compile Include="Controls\ZoneTypeSettingsCard.cs" />
@@ -264,6 +269,8 @@
     <Compile Include="Creator Classes\EntityMover.cs" />
     <Compile Include="Creator Classes\EntityRules.cs" />
     <Compile Include="Creator Classes\RuleMover.cs" />
+    <Compile Include="Creator Classes\WeaponPickups.cs" />
+    <Compile Include="Creator Classes\RuleOptions.cs" />
     <Compile Include="Creator Classes\RuleFlow.cs" />
     <Compile Include="Creator Classes\VisibilityGroups.cs" />
     <Compile Include="Creator Classes\ScriptThreadLog.cs" />
@@ -275,6 +282,9 @@
     <Compile Include="Creator Classes\PreciseTemplates.cs" />
     <Compile Include="Creator Classes\ScrProgramScanner.cs" />
     <Compile Include="Creator Classes\PlayAreaOverlay.cs" />
+    <Compile Include="Creator Classes\EntityMarks.cs" />
+    <Compile Include="Creator Classes\Sms.cs" />
+    <Compile Include="Creator Classes\OnlineTest.cs" />
     <Compile Include="Creator Classes\ScriptDrawer.cs" />
     <Compile Include="Creator Classes\ScriptSpace.cs" />
     <Compile Include="Creator Classes\ScriptVars.cs" />
@@ -329,6 +339,8 @@
     <Compile Include="Generated\PropLists.Enhanced.g.cs" />
     <Compile Include="Generated\RuleFields.Legacy.g.cs" />
     <Compile Include="Generated\RuleFields.Enhanced.g.cs" />
+    <Compile Include="Generated\RuleOptions.Legacy.g.cs" />
+    <Compile Include="Generated\RuleOptions.Enhanced.g.cs" />
     <Compile Include="Helper Classes\AobCache.cs" />
     <Compile Include="Helper Classes\BattlEye.cs" />
     <Compile Include="JSON\Converters\JsonDecimalConverter.cs" />
@@ -476,6 +488,8 @@
     <Compile Include="MainWindow\MainWindow.DeleteItems.cs" />
     <Compile Include="MainWindow\MainWindow.Doors.cs" />
     <Compile Include="MainWindow\MainWindow.EntityMove.cs" />
+    <Compile Include="MainWindow\MainWindow.EntityMarks.cs" />
+    <Compile Include="MainWindow\MainWindow.ActorGotoCopy.cs" />
     <Compile Include="MainWindow\MainWindow.DynamicProps.cs" />
     <Compile Include="MainWindow\MainWindow.Edit.cs" />
     <Compile Include="MainWindow\MainWindow.Fixtures.cs" />
@@ -578,6 +592,8 @@
     <EmbeddedResource Include="OfflineData\vehicles.json" />
     <EmbeddedResource Include="OfflineData\placement_presets.json" />
     <EmbeddedResource Include="OfflineData\weapons.json" />
+    <EmbeddedResource Include="OfflineData\weapon_components.json" />
+    <EmbeddedResource Include="OfflineData\rule_option_texts.json" />
     <EmbeddedResource Include="OfflineData\actors.json" />
     <EmbeddedResource Include="OfflineData\menubits.json" />
     <EmbeddedResource Include="OfflineData\jobkeys.txt" />
@@ -616,6 +632,39 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\pickups\radar_boost.png" />
+    <Resource Include="Images\pickups\radar_cash_pickup.png" />
+    <Resource Include="Images\pickups\radar_ex_vech_3.png" />
+    <Resource Include="Images\pickups\radar_ex_vech_4.png" />
+    <Resource Include="Images\pickups\radar_hacking_device.png" />
+    <Resource Include="Images\pickups\radar_nhp_bag.png" />
+    <Resource Include="Images\pickups\radar_pickup_accelerator.png" />
+    <Resource Include="Images\pickups\radar_pickup_armoured.png" />
+    <Resource Include="Images\pickups\radar_pickup_beast.png" />
+    <Resource Include="Images\pickups\radar_pickup_bomb.png" />
+    <Resource Include="Images\pickups\radar_pickup_deadline.png" />
+    <Resource Include="Images\pickups\radar_pickup_detonator.png" />
+    <Resource Include="Images\pickups\radar_pickup_dtb_blast_decrease.png" />
+    <Resource Include="Images\pickups\radar_pickup_dtb_blast_increase.png" />
+    <Resource Include="Images\pickups\radar_pickup_dtb_bomb_decrease.png" />
+    <Resource Include="Images\pickups\radar_pickup_dtb_bomb_increase.png" />
+    <Resource Include="Images\pickups\radar_pickup_dtb_health.png" />
+    <Resource Include="Images\pickups\radar_pickup_ghost.png" />
+    <Resource Include="Images\pickups\radar_pickup_hidden.png" />
+    <Resource Include="Images\pickups\radar_pickup_jump.png" />
+    <Resource Include="Images\pickups\radar_pickup_machinegun.png" />
+    <Resource Include="Images\pickups\radar_pickup_random.png" />
+    <Resource Include="Images\pickups\radar_pickup_repair.png" />
+    <Resource Include="Images\pickups\radar_pickup_slow_time.png" />
+    <Resource Include="Images\pickups\radar_pickup_swap.png" />
+    <Resource Include="Images\pickups\radar_pickup_thermal.png" />
+    <Resource Include="Images\pickups\radar_pickup_weed.png" />
+    <Resource Include="Images\pickups\radar_pickup_zoned.png" />
+    <Resource Include="Images\pickups\radar_rockets.png" />
+    <Resource Include="Images\pickups\radar_steeringwheel.png" />
+    <Resource Include="Images\pickups\radar_testosterone.png" />
+    <Resource Include="Images\pickups\radar_weapon_ammo.png" />
+    <Resource Include="Images\pickups\radar_weapon_lives.png" />
     <Resource Include="Images\blips\radar_elevator.png" />
     <Resource Include="Images\blips\radar_laptop.png" />
     <Resource Include="Images\blips\radar_level.png" />

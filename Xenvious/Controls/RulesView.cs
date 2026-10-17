@@ -99,7 +99,8 @@ namespace Xenvious
             var grid = new Grid();
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(14) });
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(380) });
+            // The detail column grows with the window: its boxes need room for labels and editors.
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star), MinWidth = 430, MaxWidth = 640 });
 
             var listHint = new TextBlock { Text = "pri / rule · endcon.txt", FontSize = 11.5, VerticalAlignment = VerticalAlignment.Center };
             listHint.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
@@ -107,7 +108,7 @@ namespace Xenvious
             grid.Children.Add(listCard);
 
             _detailTeam.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
-            var detailCard = Card(_detailTitle, _detailTeam, new ScrollViewer { VerticalScrollBarVisibility = ScrollBarVisibility.Auto, HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled, Content = _detail });
+            var detailCard = Card(_detailTitle, DetailHeaderRight(), new ScrollViewer { VerticalScrollBarVisibility = ScrollBarVisibility.Auto, HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled, Content = _detail });
             detailCard.VerticalAlignment = VerticalAlignment.Top;
             Grid.SetColumn(detailCard, 2);
             grid.Children.Add(detailCard);
@@ -276,6 +277,11 @@ namespace Xenvious
             if (rule.DropRadius > 0)
                 chips.Children.Add(DropChip(string.Format(CultureInfo.CurrentCulture, T("rl_drop_point", "Drop-off point · {0} m"), rule.DropRadius.ToString("0.#", CultureInfo.CurrentCulture)),
                     T("rl_drop_point_tip", "Drop-off point of this rule and its radius.")));
+            // Text messages this rule sends; the tooltip shows their texts.
+            var sms = Sms.ForRule(_team, rule.Index);
+            if (sms.Count > 0)
+                chips.Children.Add(Chip("✉ " + string.Format(CultureInfo.CurrentCulture, T("rl_sms_chip", "SMS {0}"), string.Join(", ", sms.Select(i => i + 1))), ChipKind.Plain,
+                    string.Join("\n", sms.Select(i => (i + 1).ToString(CultureInfo.CurrentCulture) + ": " + Sms.Text(i)))));
             if (Rules.PublicCreator && rule.DropZones.Count == 0 && rule.Links.Any(Rules.IsDelivery))
                 chips.Children.Add(Chip(T("rl_drop_none", "no drop-off zone"), ChipKind.Warn,
                     T("rl_drop_none_tip", "Collect & deliver needs a drop-off. In the creator: the rule's Specify Drop-off Zones.")));
@@ -473,160 +479,7 @@ namespace Xenvious
 
         // ----- the selected rule -----
 
-        private void ShowDetail()
-        {
-            _detail.Children.Clear();
-            if (_selected < 0 || _selected >= _rules.Count)
-            {
-                _detailTitle.Text = "";
-                _detailTeam.Text = "";
-                return;
-            }
-            var rule = _rules[_selected];
-            _detailTitle.Text = string.Format(CultureInfo.CurrentCulture, T("rl_rule_n", "Rule {0}"), rule.Index + 1);
-            _detailTeam.Text = T("dash_team", "Team") + " " + (_team + 1);
-            _loading = true;
-            try
-            {
-                TextSection(rule);
-                LinksSection(rule);
-                NextSection(rule);
-                LimitsSection(rule);
-                OrderSection();
-            }
-            finally { _loading = false; }
-        }
-
-        private void Section(string text)
-        {
-            var t = new TextBlock { Text = text, FontSize = 12, Margin = new Thickness(0, _detail.Children.Count == 0 ? 0 : 14, 0, 6) };
-            t.SetResourceReference(TextBlock.ForegroundProperty, "MutedTextBrush");
-            _detail.Children.Add(t);
-        }
-
-        private void Hint(string text)
-        {
-            var t = Faint(text, 12);
-            t.Margin = new Thickness(0, 4, 0, 0);
-            _detail.Children.Add(t);
-        }
-
-        private static Border Field(UIElement child)
-        {
-            var b = new Border { CornerRadius = new CornerRadius(6), BorderThickness = new Thickness(1), Padding = new Thickness(9, 6, 9, 6), Margin = new Thickness(0, 0, 0, 6), Child = child };
-            b.SetResourceReference(Border.BackgroundProperty, "DeepBrush");
-            b.SetResourceReference(Border.BorderBrushProperty, "LineBrush");
-            return b;
-        }
-
-        private void TextSection(Rules.Rule rule)
-        {
-            Section(T("rl_text", "Objective text"));
-            var box = new TextBox { Text = rule.Text ?? "", MaxLength = 63, BorderThickness = new Thickness(0), Background = Brushes.Transparent, Padding = new Thickness(0), FontSize = 13.5 };
-            box.SetResourceReference(Control.ForegroundProperty, "TextColor");
-            box.SetResourceReference(TextBoxBase.CaretBrushProperty, "TextColor");
-            GtaTextAssist.Attach(box);
-            // Codes count against the game's limit, so the length stays in view.
-            var count = Faint("", 11.5);
-            count.VerticalAlignment = VerticalAlignment.Center;
-            count.Margin = new Thickness(8, 0, 0, 0);
-            void Count() => count.Text = box.Text.Length + "/" + box.MaxLength;
-            Count();
-            box.TextChanged += (_, __) => Count();
-            var line = new DockPanel();
-            DockPanel.SetDock(count, Dock.Right);
-            line.Children.Add(count);
-            line.Children.Add(box);
-            box.LostKeyboardFocus += (_, __) =>
-            {
-                if (_loading || !Live || box.Text == (rule.Text ?? "")) return;
-                Rules.SetText(_team, rule.Index, box.Text);
-                rule.Text = box.Text;
-                _shownKey = null;
-                Dispatcher.BeginInvoke(new Action(() => Reload(true)), DispatcherPriority.Background);
-            };
-            _detail.Children.Add(Field(line));
-            Hint(string.IsNullOrWhiteSpace(rule.Text)
-                ? T("rl_text_empty_hint", "Empty: the game shows its default text for this objective. Select text for colours, Ctrl+Space for icons and codes.")
-                : T("rl_text_hint", "Select text for colours and font, Ctrl+Space for icons and codes. Saved when you leave the field."));
-        }
-
         // Shown under "What points at this rule" while the "?" is on.
-        private bool _extraHelp;
-
-        private void LinksSection(Rules.Rule rule)
-        {
-            string types = string.Join(", ", rule.Links.Select(TypeName).Distinct());
-            var head = new DockPanel { Margin = new Thickness(0, _detail.Children.Count == 0 ? 0 : 14, 0, 6) };
-            var help = new ToggleButton { Style = (Style)FindResource("DashTeamButton"), Content = "?", Width = 22, Height = 22, Padding = new Thickness(0), FontSize = 12,
-                IsChecked = _extraHelp, ToolTip = T("eo_help_tip", "How extra rules work"), VerticalAlignment = VerticalAlignment.Center };
-            help.Click += (_, __) => { _extraHelp = help.IsChecked == true; ShowDetail(); };
-            DockPanel.SetDock(help, Dock.Right);
-            head.Children.Add(help);
-            var title = new TextBlock { Text = T("rl_links", "What points at this rule") + (types.Length > 0 ? " · " + types : ""), FontSize = 12, VerticalAlignment = VerticalAlignment.Center,
-                TextTrimming = TextTrimming.CharacterEllipsis };
-            title.SetResourceReference(TextBlock.ForegroundProperty, "MutedTextBrush");
-            head.Children.Add(title);
-            _detail.Children.Add(head);
-            if (_extraHelp)
-            {
-                var text = Faint(T("eo_help_text", ""), 12);
-                text.Margin = new Thickness(0, 0, 0, 8);
-                _detail.Children.Add(Field(text));
-            }
-
-            if (rule.Links.Count == 0)
-                Hint(T("rl_links_none", "Nothing points at this rule. The game reaches it only through a jump or the next-objective override, otherwise the team gets stuck here."));
-            foreach (var link in rule.Links)
-            {
-                var row = new DockPanel();
-                var right = new StackPanel { Orientation = Orientation.Horizontal, VerticalAlignment = VerticalAlignment.Center };
-                if (link.HasPass) right.Children.Add(JumpBox(link, true));
-                if (link.HasFail) right.Children.Add(JumpBox(link, false));
-                int type = EoType(link.Kind);
-                if (link.Extra && !EntityRules.UsesRuleList)
-                    right.Children.Add(ExtraTypeBox(rule, link, type));
-                else if (right.Children.Count == 0)
-                {
-                    var t = Faint(TypeName(link), 12);
-                    t.VerticalAlignment = VerticalAlignment.Center;
-                    right.Children.Add(t);
-                }
-                if (type != 0)
-                {
-                    right.Children.Add(IconButton("M5,3 H1 V11 H9 V7 M7,1 H11 V5 M11,1 L5,7", T("rl_open_entity", "Open its page"),
-                        () => MainWindow.Instance?.OpenEntity(type, link.Index)));
-                    // The Mission Creator's rule list decides own and extra rules; elsewhere only extras are separate entries.
-                    if (EntityRules.UsesRuleList || link.Extra)
-                        right.Children.Add(IconButton("M2,2 L10,10 M10,2 L2,10", T("rl_leave_rule", "Take it out of this rule"), () => LeaveRule(rule, link, type)));
-                }
-                DockPanel.SetDock(right, Dock.Right);
-                row.Children.Add(right);
-                if (link.Extra)
-                {
-                    var chip = ExtraChip();
-                    DockPanel.SetDock(chip, Dock.Left);
-                    row.Children.Add(chip);
-                }
-                var name = new TextBlock { Text = EntityName(link), FontSize = 13, TextTrimming = TextTrimming.CharacterEllipsis, VerticalAlignment = VerticalAlignment.Center,
-                    ToolTip = EntityName(link) + " · " + TypeName(link) + (link.Extra ? " (" + T("rl_extra", "extra objective") + ")" : "") };
-                name.SetResourceReference(TextBlock.ForegroundProperty, "TextColor");
-                row.Children.Add(name);
-                _detail.Children.Add(Field(row));
-            }
-            JoinRow(rule);
-            if (rule.Links.Any(l => l.HasPass || l.HasFail))
-                Hint(Rules.PublicCreator
-                    ? T("rl_jump_hint_pmc", "✓ / ✗: where the team goes when this objective is passed or failed. The Mission Creator only jumps forward.")
-                    : T("rl_jump_hint", "✓ / ✗: where the team goes when this objective is passed or failed."));
-            foreach (int to in rule.Links.Where(l => Rules.FailJumpBlocked(l, _team, out _)).Select(l => l.FailJump).Distinct())
-            {
-                var warn = Faint("⚠ " + CriticalTip(rule, to), 12);
-                warn.Margin = new Thickness(0, 6, 0, 0);
-                warn.SetResourceReference(TextBlock.ForegroundProperty, "WarnBrush");
-                _detail.Children.Add(warn);
-            }
-        }
 
         private static int EoType(Rules.Kind kind)
         {
@@ -709,71 +562,6 @@ namespace Xenvious
             Dispatcher.BeginInvoke(new Action(() => Reload(true)), DispatcherPriority.Background);
         }
 
-        // Adds an entity to the rule. In the Mission Creator it joins the rule list (the first rule
-        // of an entity is its own, later ones become extra objectives); elsewhere it becomes an
-        // extra objective of the entity.
-        private void JoinRow(Rules.Rule rule)
-        {
-            bool list = EntityRules.UsesRuleList;
-            int cls = list ? EntityRules.ClassOf(EntityRules.RuleSelection(_team, rule.Index)) : 0;
-            if (list && (cls < ExtraObjectives.TypePed || cls > ExtraObjectives.TypeGoTo))
-                return;
-
-            var kinds = new ComboBox { Height = 28, Width = 92, FontSize = 12, Margin = new Thickness(0, 0, 6, 0), Visibility = list ? Visibility.Collapsed : Visibility.Visible };
-            foreach (var (t, key, fallback) in new[] { (ExtraObjectives.TypePed, "eo_k_ped", "Actor"), (ExtraObjectives.TypeVehicle, "eo_k_veh", "Vehicle"),
-                (ExtraObjectives.TypeObject, "eo_k_obj", "Object"), (ExtraObjectives.TypeGoTo, "rl_k_loc", "Location") })
-                kinds.Items.Add(new ComboBoxItem { Content = T(key, fallback), Tag = t });
-            kinds.SelectedIndex = list ? cls - 1 : 1;
-            var entities = new ComboBox { Height = 28, FontSize = 12, Margin = new Thickness(0, 0, 6, 0) };
-            var types = new ComboBox { Height = 28, Width = 110, FontSize = 12, Margin = new Thickness(0, 0, 6, 0), Visibility = list ? Visibility.Collapsed : Visibility.Visible };
-            int Kind() => kinds.SelectedItem is ComboBoxItem k ? (int)k.Tag : 0;
-            void Fill()
-            {
-                int type = Kind();
-                entities.Items.Clear();
-                var taken = new HashSet<int>(rule.Links.Where(l => EoType(l.Kind) == type).Select(l => l.Index));
-                for (int i = 0; i < EntityPicker.Count(type); i++)
-                    if (!taken.Contains(i))
-                        entities.Items.Add(new ComboBoxItem { Content = EntityPicker.Label(type, i), Tag = i });
-                entities.SelectedIndex = entities.Items.Count > 0 ? 0 : -1;
-                types.Items.Clear();
-                foreach (var r in ExtraObjectives.RuleTypesFor(type))
-                    types.Items.Add(new ComboBoxItem { Content = T("eo_r_" + r.Value, r.Name), Tag = r.Value });
-                types.SelectedIndex = 0;
-            }
-            Fill();
-            kinds.SelectionChanged += (_, __) => Fill();
-            var add = new Button { Style = (Style)FindResource("FormButton"), Height = 28, Padding = new Thickness(10, 0, 10, 0), Content = "+ " + T("eo_add", "Add") };
-            add.Click += (_, __) =>
-            {
-                if (!Live || !(entities.SelectedItem is ComboBoxItem e))
-                    return;
-                int type = Kind(), index = (int)e.Tag;
-                Changed(list ? EntityRules.SetMember(type, index, _team, rule.Index, true)
-                    : types.SelectedItem is ComboBoxItem t ? ExtraObjectives.Add(type, index, _team, rule.Index, (int)t.Tag) : null);
-            };
-            var row = new DockPanel { Margin = new Thickness(0, 2, 0, 0) };
-            DockPanel.SetDock(add, Dock.Right);
-            row.Children.Add(add);
-            DockPanel.SetDock(kinds, Dock.Left);
-            row.Children.Add(kinds);
-            DockPanel.SetDock(types, Dock.Right);
-            row.Children.Add(types);
-            row.Children.Add(entities);
-            _detail.Children.Add(row);
-            if (_joinError != null)
-            {
-                var error = Faint(T(_joinError, _joinError), 12);
-                error.Margin = new Thickness(0, 4, 0, 0);
-                error.SetResourceReference(TextBlock.ForegroundProperty, "BadBrush");
-                _detail.Children.Add(error);
-            }
-            Hint((list
-                ? T("rl_join_hint_pmc", "Adds an entity to this rule. Its first rule is its own, later ones become extra objectives, as in the creator's rules menu.")
-                : T("rl_join_hint", "Adds an extra objective. It only runs when the entity's own rule comes earlier."))
-                + " " + string.Format(CultureInfo.CurrentCulture, T("er_slots", "Extra objectives: {0} of 30 entities"), ExtraObjectives.UsedSlots()));
-        }
-
         private FrameworkElement JumpBox(Rules.Link link, bool pass)
         {
             var panel = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(8, 0, 0, 0) };
@@ -802,99 +590,6 @@ namespace Xenvious
             return panel;
         }
 
-        private void NextSection(Rules.Rule rule)
-        {
-            Section(T("rl_next", "Next objective"));
-            var tiles = new WrapPanel();
-            // The Mission Creator only accepts later rules, and none from rule 16 on.
-            bool pmc = Rules.PublicCreator;
-            for (int r = 0; r < _rules.Count; r++)
-            {
-                if (pmc && (r <= rule.Index || rule.Index >= 15))
-                    continue;
-                int bit = r;
-                var tile = new ToggleButton { Style = (Style)FindResource("DashTeamButton"), Content = (r + 1).ToString(CultureInfo.CurrentCulture), FontSize = 13,
-                    Margin = new Thickness(0, 0, 3, 3), IsChecked = (rule.NextRules & (1 << r)) != 0 };
-                tile.Click += (_, __) =>
-                {
-                    if (!Live) return;
-                    int v = Rules.GetField(GTA.Offsets.Editor.nxtrulb, _team, rule.Index);
-                    v = tile.IsChecked == true ? v | (1 << bit) : v & ~(1 << bit);
-                    Rules.SetField(GTA.Offsets.Editor.nxtrulb, _team, rule.Index, v);
-                    _shownKey = null;
-                    Dispatcher.BeginInvoke(new Action(() => Reload(true)), DispatcherPriority.Background);
-                };
-                tiles.Children.Add(tile);
-            }
-            if (tiles.Children.Count == 0)
-            {
-                Hint(T("rl_next_none", "No later rule to pick."));
-                return;
-            }
-            var holder = new Border { CornerRadius = new CornerRadius(5), Padding = new Thickness(3, 3, 0, 0), Child = tiles, HorizontalAlignment = HorizontalAlignment.Left };
-            holder.SetResourceReference(Border.BackgroundProperty, "TextBoxBackground");
-            _detail.Children.Add(holder);
-            Hint(T("rl_next_hint", "Normally the team goes on with the next rule. Pick one rule to go there instead, or several to pick one at random."));
-            if (rule.NextRules != 0 && rule.Links.Any(l => l.PassJump > rule.Index))
-            {
-                var warn = Faint(T("rl_flow_noeffect_tip", "A ✓ jump is set on this rule. In the game the jump wins, so the next objective does nothing."), 12);
-                warn.Margin = new Thickness(0, 4, 0, 0);
-                warn.SetResourceReference(TextBlock.ForegroundProperty, "WarnBrush");
-                _detail.Children.Add(warn);
-            }
-        }
-
-        private void LimitsSection(Rules.Rule rule)
-        {
-            Section(T("rl_limits", "Objective limits"));
-            var grid = new Grid();
-            grid.ColumnDefinitions.Add(new ColumnDefinition());
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(120) });
-            int row = 0;
-            void Row(string key, string fallback, FrameworkElement editor, string tipKey = null, string tipFallback = null)
-            {
-                grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-                var label = new TextBlock { Text = T(key, fallback), FontSize = 13, VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(0, 0, 8, 6), TextWrapping = TextWrapping.Wrap };
-                if (tipKey != null) label.ToolTip = T(tipKey, tipFallback);
-                label.SetResourceReference(TextBlock.ForegroundProperty, "TextColor");
-                Grid.SetRow(label, row);
-                grid.Children.Add(label);
-                editor.Margin = new Thickness(0, 0, 0, 6);
-                Grid.SetRow(editor, row);
-                Grid.SetColumn(editor, 1);
-                grid.Children.Add(editor);
-                row++;
-            }
-            Row("rl_target", "Needed to pass (0 = all)", IntBox(GTA.Offsets.Editor.tsc, rule.Index, rule.TargetScore), "rl_target_hint", "How many of the objective's entities must be done, e.g. destroy 6 of 10.");
-            Row("rl_points", "Points per objective", IntBox(GTA.Offsets.Editor.tms, rule.Index, rule.ObjectiveScore));
-            Row("rl_takeover", "Capture / hack time (ms)", IntBox(GTA.Offsets.Editor.ttime, rule.Index, rule.TakeoverMs));
-
-            var time = new ComboBox { Height = 28 };
-            foreach (var (sel, sec) in Rules.TimeLimits)
-                time.Items.Add(new ComboBoxItem { Content = sel == 0 ? T("rl_time_off", "No limit") : TimeLabel(sec), Tag = sel });
-            time.SelectedItem = time.Items.Cast<ComboBoxItem>().FirstOrDefault(i => (int)i.Tag == rule.TimeLimit);
-            time.SelectionChanged += (_, __) =>
-            {
-                if (_loading || !Live || !(time.SelectedItem is ComboBoxItem item)) return;
-                Rules.SetField(GTA.Offsets.Editor.tmt, _team, rule.Index, (int)item.Tag);
-                _shownKey = null;
-                Dispatcher.BeginInvoke(new Action(() => Reload(true)), DispatcherPriority.Background);
-            };
-            Row("rl_time", "Time limit", time);
-
-            var fail = new CheckBox { Style = (Style)FindResource("FormToggle"), IsChecked = rule.FailsMission };
-            fail.Click += (_, __) =>
-            {
-                if (!Live) return;
-                Rules.SetFailsMission(_team, rule.Index, fail.IsChecked == true);
-                _shownKey = null;
-                Dispatcher.BeginInvoke(new Action(() => Reload(true)), DispatcherPriority.Background);
-            };
-            Row("rl_failmission", "Failing this rule ends the mission", fail);
-            _detail.Children.Add(grid);
-            Hint(T("rl_limits_hint", "A rule nothing completes on its own (no entities, no needed count) needs a time limit, or the team stays on it."));
-        }
-
         private FrameworkElement IntBox(long offset, int rule, int value)
         {
             var box = new TextBox { Height = 28, Text = value.ToString(CultureInfo.InvariantCulture), IsEnabled = offset != 0 };
@@ -908,25 +603,6 @@ namespace Xenvious
                 }
             };
             return box;
-        }
-
-        private void OrderSection()
-        {
-            Section(T("rl_order", "Order (later)"));
-            var acts = new WrapPanel();
-            foreach (var (key, fallback) in new[] { ("", "↑"), ("", "↓"), ("rl_insert", "Insert before"), ("rl_delete", "Delete") })
-            {
-                // Bordered like the mockup's buttons; disabled until reordering renumbers every pointer.
-                var t = new TextBlock { Text = key.Length == 0 ? fallback : T(key, fallback), FontWeight = FontWeights.Bold, FontSize = 13, VerticalAlignment = VerticalAlignment.Center };
-                t.SetResourceReference(TextBlock.ForegroundProperty, "TextColor");
-                var b = new Border { Height = 30, Padding = new Thickness(11, 0, 11, 0), Margin = new Thickness(0, 0, 6, 6), CornerRadius = new CornerRadius(6), BorderThickness = new Thickness(1),
-                    Child = t, Opacity = 0.45, ToolTip = T("rl_order_later", "Comes later: every jump and link has to be renumbered") };
-                b.SetResourceReference(Border.BackgroundProperty, "DeepBrush");
-                b.SetResourceReference(Border.BorderBrushProperty, "LineBrush");
-                ToolTipService.SetShowOnDisabled(b, true);
-                acts.Children.Add(b);
-            }
-            _detail.Children.Add(acts);
         }
 
         // ----- names -----

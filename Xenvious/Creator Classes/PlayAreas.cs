@@ -42,7 +42,16 @@ namespace Xenvious
         private static long LeaveBits(int area) => area == 2 ? GTA.Offsets.Editor.PlayArea.leavebs2 : GTA.Offsets.Editor.PlayArea.leavebs;
         private static long SpawnBits(int area) => area == 2 ? GTA.Offsets.Editor.PlayArea.spawnbs2 : GTA.Offsets.Editor.PlayArea.spawnbs;
         private static long WantedBits(int area) => area == 2 ? GTA.Offsets.Editor.PlayArea.wantedbs2 : GTA.Offsets.Editor.PlayArea.wantedbs;
+        // patm/patm2: the team's default for new rules only. The controller counts down from the
+        // rule's own value (bdprt / bdpst, ms); the launcher fills it from the default when a job
+        // has none.
         public static long Timer(int area, int team) => (area == 2 ? GTA.Offsets.Editor.PlayArea.timer2 : GTA.Offsets.Editor.PlayArea.timer) + team * GTA.Offsets.Editor.team_NEXT;
+
+        public static long RuleTimer(int area, int team, int rule)
+        {
+            long b = area == 2 ? GTA.Offsets.Editor.bdpst : GTA.Offsets.Editor.bdprt;
+            return b == 0 ? 0 : b + team * GTA.Offsets.Editor.team_NEXT + rule;
+        }
 
         public static bool RuleBitsReady => GTA.Offsets.Editor.PlayArea.playbs != 0 && GTA.Offsets.Editor.PlayArea.playbs2 != 0;
 
@@ -98,6 +107,8 @@ namespace Xenvious
                 SetBit(WantedBits(area), to, rule, Bit(WantedBits(area), from, rule));
             }
             new Global(Timer(area, to)).SetInt(new Global(Timer(area, from)).Get<int>());
+            if (RuleTimer(area, to, rule) != 0)
+                new Global(RuleTimer(area, to, rule)).SetInt(new Global(RuleTimer(area, from, rule)).Get<int>());
         }
 
         /// <summary>The (team, rule) pairs a change goes to.</summary>

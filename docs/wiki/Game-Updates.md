@@ -64,6 +64,29 @@ path is used in the old script, the same lines (numbers ignored) are looked up
 in the new script, and the path at that place is the second answer. Two answers
 that agree are taken; anything else goes to the review with both places shown.
 
+Besides offsets.ini, the lists step writes data read out of the scripts:
+`prop_lists.json` (with `capture_object_models` and `weapon_pickup_models`),
+`rule_fields.json` (what moves with a rule) and `rule_options.json` (the bit
+of each yes/no option on the Rules page, read from the Mission Creator's
+objective menu). `tools/builddata/gen.py` checks every rule option's field
+against the offsets.ini key it names.
+
+## Data from the game files
+
+Some data does not come from the scripts but from the game's archives and
+texts, and changes only when a DLC adds weapons or texts:
+`weapon_components.json`, `rule_option_texts.json` (the Mission Creator's
+option titles and help texts in six languages) and the pickup icons in
+`Images/pickups`. Rebuild them on Windows with CodeWalker:
+
+```sh
+python3 tools/gamedata/refresh.py --game '<GTA V folder>' \
+    --codewalker '<path to CodeWalker.Core.dll>' \
+    --xenvious /opt/xenvious --script scripts/<build>/fm_deathmatch_creator.c [--icons]
+```
+
+(in ysc-global-updater).
+
 ## Legacy and Enhanced
 
 Both editions share the script content and the Online version number but are

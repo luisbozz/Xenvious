@@ -144,15 +144,7 @@ namespace Xenvious
             else if (category != null)
                 result = result.Where(i => i.Category == category);
             if (query.Length > 0)
-            {
-                string hex = query.StartsWith("0x", StringComparison.OrdinalIgnoreCase) ? query.Substring(2) : query;
-                result = result.Where(i =>
-                    i.Name.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0
-                    || (i.Native ?? "").IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0
-                    || i.Hash.ToString(CultureInfo.InvariantCulture) == query
-                    || i.Int32.ToString(CultureInfo.InvariantCulture) == query
-                    || i.Hash.ToString("X8", CultureInfo.InvariantCulture).Equals(hex.PadLeft(8, '0'), StringComparison.OrdinalIgnoreCase));
-            }
+                result = Matches(result, query);
             var list = result.ToList();
             // Keep the selected model when it is still in the list, otherwise select the first,
             // so the preview and Take always have something after switching the category.
@@ -164,6 +156,47 @@ namespace Xenvious
                 ItemList.ScrollIntoView(ItemList.SelectedItem);
             }
             HitCount.Text = string.Format(CultureInfo.CurrentCulture, Translate("catalog_hits", "{0} models"), list.Count);
+
+            // Nothing found in a category: say how many "All" has and offer the switch.
+            int inAll = 0;
+            if (list.Count == 0 && query.Length > 0 && category != null)
+                inAll = Matches(_items, query).Count();
+            AllHint.Visibility = inAll > 0 ? Visibility.Visible : Visibility.Collapsed;
+            if (inAll > 0)
+            {
+                AllHintText.Text = string.Format(CultureInfo.CurrentCulture, Translate("catalog_inall", "Not in this category. \"All\" has {0}."), inAll) + " ";
+                AllHintLink.Text = Translate("catalog_toall", "Search in All");
+            }
+        }
+
+        private void AllHint_Click(object sender, RoutedEventArgs e) => CategoryList.SelectedIndex = 0;
+
+        private void PreviewNative_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount != 2 || !(ItemList.SelectedItem is CatalogItem item) || string.IsNullOrEmpty(item.Native))
+                return;
+            try
+            {
+                Clipboard.SetText(item.Native);
+            }
+            catch (System.Runtime.InteropServices.COMException)
+            {
+                // Another program holds the clipboard; a second try usually works.
+                return;
+            }
+            HitCount.Text = Translate("catalog_copied", "Copied:") + " " + item.Native;
+            e.Handled = true;
+        }
+
+        private static IEnumerable<CatalogItem> Matches(IEnumerable<CatalogItem> items, string query)
+        {
+            string hex = query.StartsWith("0x", StringComparison.OrdinalIgnoreCase) ? query.Substring(2) : query;
+            return items.Where(i =>
+                i.Name.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0
+                || (i.Native ?? "").IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0
+                || i.Hash.ToString(CultureInfo.InvariantCulture) == query
+                || i.Int32.ToString(CultureInfo.InvariantCulture) == query
+                || i.Hash.ToString("X8", CultureInfo.InvariantCulture).Equals(hex.PadLeft(8, '0'), StringComparison.OrdinalIgnoreCase));
         }
 
         private void SearchBox_TextChanged(object sender, TextChangedEventArgs e) => Filter();

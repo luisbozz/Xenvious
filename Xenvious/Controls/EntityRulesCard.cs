@@ -236,7 +236,7 @@ namespace Xenvious
             _footer.Children.Add(foot);
             _footer.Children.Add(Faint(list
                 ? T("er_hint_list", "Mission Creator: the rule decides the type. The first rule an entity is in is its own rule, later ones become extra objectives, like in the creator's rules menu.")
-                : T("er_hint_direct", "Extra objectives run after the own rule, one after the other. On the own rule itself the game skips them."), 12).Also(t => t.Margin = new Thickness(0, 8, 0, 0)));
+                : T("er_hint_direct", "Once the entity's own rule is done, each extra objective becomes a task of its rule, at the same time as that rule's other tasks. For \"after that\", use a later rule of its own."), 12).Also(t => t.Margin = new Thickness(0, 8, 0, 0)));
             Refreshed?.Invoke(this, EventArgs.Empty);
         }
 
@@ -416,22 +416,29 @@ namespace Xenvious
             railHolder.Children.Add(rail);
             grid.Children.Add(railHolder);
 
-            var dock = new DockPanel { Margin = new Thickness(8, 6, 8, 6) };
+            // Number | text | controls | open | grip. When the card is narrow the controls go under
+            // the text, else they squeeze the text to a column of single letters.
+            var dock = new Grid { Margin = new Thickness(8, 6, 8, 6) };
+            foreach (var width in new[] { GridLength.Auto, new GridLength(1, GridUnitType.Star), GridLength.Auto, GridLength.Auto, GridLength.Auto })
+                dock.ColumnDefinitions.Add(new ColumnDefinition { Width = width });
+            dock.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            dock.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            void Place(UIElement e, int column, int rowSpan = 2)
+            {
+                Grid.SetColumn(e, column);
+                Grid.SetRowSpan(e, rowSpan);
+                dock.Children.Add(e);
+            }
             var num = NumberCircle(r, kind);
-            DockPanel.SetDock(num, Dock.Left);
-            dock.Children.Add(num);
+            Place(num, 0);
             if (rule != null)
             {
                 var grip = _dragger.Grip(r, RuleMover.Available, RulesView.MoveTip());
                 grip.Margin = new Thickness(4, 0, 0, 0);
-                DockPanel.SetDock(grip, Dock.Right);
-                dock.Children.Add(grip);
-                var open = ShowInRules(r);
-                DockPanel.SetDock(open, Dock.Right);
-                dock.Children.Add(open);
+                Place(grip, 4);
+                Place(ShowInRules(r), 3);
             }
-            DockPanel.SetDock(right, Dock.Right);
-            dock.Children.Add(right);
+            Place(right, 2, 1);
             var middle = new StackPanel { Margin = new Thickness(10, 0, 10, 0), VerticalAlignment = VerticalAlignment.Center };
             if (rule == null)
                 middle.Children.Add(Faint(T("er_norule", "This rule does not exist"), 13).Also(t => t.FontStyle = FontStyles.Italic));
@@ -440,11 +447,36 @@ namespace Xenvious
             string sub = rule == null ? string.Format(CultureInfo.CurrentCulture, T("er_only_rules", "The team has {0} rules"), RuleCount)
                 : (type.Length > 0 ? type : T("er_empty_rule", "nothing points at it"));
             middle.Children.Add(Faint(sub, 11.5));
-            dock.Children.Add(middle);
+            Place(middle, 1, 1);
+            StackWhenNarrow(dock, middle, (FrameworkElement)right);
             if (kind == RowKind.Faded)
                 dock.Opacity = 0.5;
             grid.Children.Add(dock);
             return grid;
+        }
+
+        private const double MinTextWidth = 180;
+
+        // Moves the controls under the text when the text column gets narrower than
+        // MinTextWidth, and back beside it once there is room for both again.
+        private static void StackWhenNarrow(Grid grid, FrameworkElement text, FrameworkElement controls)
+        {
+            bool stacked = false;
+            grid.SizeChanged += (_, __) =>
+            {
+                double column = grid.ColumnDefinitions[1].ActualWidth;
+                bool stack = stacked
+                    ? column - controls.ActualWidth - 20 < MinTextWidth
+                    : column < MinTextWidth;
+                if (stack == stacked)
+                    return;
+                stacked = stack;
+                Grid.SetRow(controls, stack ? 1 : 0);
+                Grid.SetColumn(controls, stack ? 1 : 2);
+                controls.HorizontalAlignment = stack ? HorizontalAlignment.Left : HorizontalAlignment.Stretch;
+                controls.Margin = stack ? new Thickness(10, 6, 0, 0) : new Thickness(0);
+                text.VerticalAlignment = stack ? VerticalAlignment.Top : VerticalAlignment.Center;
+            };
         }
 
         private static UIElement NumberCircle(int r, RowKind kind)

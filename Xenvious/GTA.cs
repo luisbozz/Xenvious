@@ -830,6 +830,9 @@ namespace Xenvious
                 public class Objects
                 {
                     public static long model = 0;
+                    // Vehicle the carrier turns into (objtvi: placed vehicle index, tl63vts: model name).
+                    public static long tvi = 0;
+                    public static long tvs = 0;
                     public static long loc = 0;
                     public static long head = 0;
                     public static long vrot = 0;
@@ -1086,6 +1089,9 @@ namespace Xenvious
                     public static long vclnrl = 0;
                     public static long iptnp = 0;
                     public static long wcpm = 0;
+                    // Six weapon components given with the pickup (comps0..5).
+                    public static long comps = 0;
+                    public static long vbmbl = 0;
                     public static long number = 0;
                     public static long time = 0;
                     public static long pal = 0;
@@ -1701,6 +1707,47 @@ namespace Xenvious
                 public static long tms = 0;
                 public static long nxtrulb = 0;
                 public static long ttime = 0;
+                // Per-rule options of the Mission Creator's objective menu (RuleOptions).
+                public static long rl_radar = 0;
+                public static long rl_nwep = 0;
+                public static long rl_heli = 0;
+                public static long rl_chase = 0;
+                public static long rl_aggro = 0;
+                public static long rl_block = 0;
+                public static long rl_score = 0;
+                public static long rl_dod = 0;
+                public static long rl_lout = 0;
+                public static long rl_lreq = 0;
+                public static long rl_gcunit = 0;
+                public static long rl_gcmax = 0;
+                public static long rl_gcrdelay = 0;
+                public static long rl_gcdelay = 0;
+                public static long rl_gcmid = 0;
+                public static long rl_hudcol = 0;
+                public static long rl_wdelay = 0;
+                public static long rl_wlvl = 0;
+                public static long rl_wlvlx = 0;
+                public static long rl_wtrig1 = 0;
+                public static long rl_wtrig2 = 0;
+                public static long rl_mtime = 0;
+                public static long rl_moc = 0;
+                public static long rl_deht = 0;
+                public static long rl_opl = 0;
+                public static long rl_oplbs = 0;
+                public static long rl_flset = 0;
+                public static long rl_flclr = 0;
+                public static long rl_flmset = 0;
+                public static long rl_flmclr = 0;
+                public static long rl_fllimit = 0;
+                public static long rl_boc = 0;
+                public static long rl_gcblock = 0;
+                public static long rl_bnd = 0;
+                public static long rl_flset_NEXT = 0;
+                public static long rl_flclr_NEXT = 0;
+                public static long rl_flmset_NEXT = 0;
+                public static long rl_flmclr_NEXT = 0;
+                public static long rl_fllimit_NEXT = 0;
+                public static long rl_bnd_NEXT = 0;
                 public static long teamfail = 0;
                 public static long rulelist = 0;
                 public static long rulelist_count = 0;
@@ -1785,6 +1832,8 @@ namespace Xenvious
                 public static long teamrvbh = 0;
                 public static long tmvds = 0;
                 public static long bdprt = 0;
+                public static long bdpst = 0;
+                public static long phone_state = 0;
                 public static long txt0 = 0;
                 public static long txt_NEXT = 0;
                 public static long NEXT_txt = 0;
@@ -1819,6 +1868,9 @@ namespace Xenvious
                 public static long drpr = 0;
                 public static long drph = 0;
                 public static long dlcrel = 0;
+                // Seconds as Ruiner 2000 / Ramp Buggy after a vehicle pickup (vwp15, vwp16); 0 turns back at once.
+                public static long vwp15 = 0;
+                public static long vwp16 = 0;
                 public static long abits = 0;
                 public static long sdobs = 0;
                 public static long edobs = 0;
@@ -1882,6 +1934,8 @@ namespace Xenvious
             public static List<string> prop_model_blacklisted = new List<string>();
             // Models a capture object keeps when a job loads; others become prop_security_case_01.
             public static List<string> capture_object_models = new List<string>();
+            // Pickup types a weapon keeps when a job loads; others become a pistol (marksman rifle: sniper rifle).
+            public static List<string> weapon_pickup_models = new List<string>();
             // IS_PROP_A_RACE_ONLY_PROP: outside races a loaded job gets these as the fence.
             public static List<string> prop_model_raceonly = new List<string>();
             public static List<string> dprop_model_activationtimer = new List<string>();

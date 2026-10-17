@@ -33,27 +33,39 @@ namespace Xenvious
             tbSMSsmsei.IsEnabled = index < 0 ? false : true;
             tbSMSsmstl.IsEnabled = index < 0 ? false : true;
             tbSMSsmspwo.IsEnabled = index < 0 ? false : true;
-            cbSMSsndall.IsEnabled = index < 0 ? false : true;
             tbSMSmsg.IsEnabled = index < 0 ? false : true;
 
             if (m.IsProcOpen && index > -1)
             {
                 if (!tbSMSmsg.IsFocused || ignore_focus)
                 {
-                    string temptxt = new Global(GTA.Offsets.Editor.SMS.txt + GTA.Offsets.Editor.SMS.NEXT * ddsmsno.SelectedIndex).GetString();
-                    temptxt += new Global(GTA.Offsets.Editor.SMS.txt + GTA.Offsets.Editor.txt_NEXT + GTA.Offsets.Editor.SMS.NEXT * ddsmsno.SelectedIndex).GetString();
-                    tbSMSmsg.Text = temptxt;
+                    // Showing the text must never write it: TextChanged writes, and a text read
+                    // a moment off would replace the message in the job.
+                    string temptxt = ReadSmsText(ddsmsno.SelectedIndex);
+                    if (tbSMSmsg.Text != temptxt)
+                    {
+                        _smsTextLoading = true;
+                        try { tbSMSmsg.Text = temptxt; }
+                        finally { _smsTextLoading = false; }
+                    }
                 }
                 if (!tbSMSdelay.IsFocused || ignore_focus) tbSMSdelay.Text = new Global((GTA.Offsets.Editor.SMS.delay + GTA.Offsets.Editor.SMS.NEXT * ddsmsno.SelectedIndex)).Get<int>().ToString();
                 if (!tbSMSrule.IsFocused || ignore_focus) tbSMSrule.Text = new Global((GTA.Offsets.Editor.SMS.rule + GTA.Offsets.Editor.SMS.NEXT * ddsmsno.SelectedIndex)).Get<int>().ToString();
                 if (!tbSMSpreq.IsFocused || ignore_focus) tbSMSpreq.Text = new Global((GTA.Offsets.Editor.SMS.ptsreq + GTA.Offsets.Editor.SMS.NEXT * ddsmsno.SelectedIndex)).Get<int>().ToString();
                 if (!ddSMStrigger.IsFocused || ignore_focus) ddSMStrigger.SelectedIndex = new Global((GTA.Offsets.Editor.SMS.time + GTA.Offsets.Editor.SMS.NEXT * ddsmsno.SelectedIndex)).Get<int>();
                 if (!ddSMSteam.IsFocused || ignore_focus) ddSMSteam.SelectedIndex = new Global((GTA.Offsets.Editor.SMS.team + GTA.Offsets.Editor.SMS.NEXT * ddsmsno.SelectedIndex)).Get<int>() + 1;
-                if (!tbSMSsmsei.IsFocused || ignore_focus) tbSMSsmsei.Text = new Global((GTA.Offsets.Editor.SMS.ptsreq + GTA.Offsets.Editor.SMS.NEXT * ddsmsno.SelectedIndex)).Get<int>().ToString();
+                if (!tbSMSsmsei.IsFocused || ignore_focus) tbSMSsmsei.Text = new Global((GTA.Offsets.Editor.SMS.smsei + GTA.Offsets.Editor.SMS.NEXT * ddsmsno.SelectedIndex)).Get<int>().ToString();
                 if (!tbSMSsmstl.IsFocused || ignore_focus) tbSMSsmstl.Text = new Global((GTA.Offsets.Editor.SMS.smstl + GTA.Offsets.Editor.SMS.NEXT * ddsmsno.SelectedIndex)).Get<int>().ToString();
                 if (!tbSMSsmspwo.IsFocused || ignore_focus) tbSMSsmspwo.Text = new Global((GTA.Offsets.Editor.SMS.smspwo + GTA.Offsets.Editor.SMS.NEXT * ddsmsno.SelectedIndex)).Get<int>().ToString();
-                Functions.Read.checkbinary(31, GTA.Offsets.Editor.SMS.sndall + GTA.Offsets.Editor.SMS.NEXT * ddsmsno.SelectedIndex, cbSMSsndall);
             }
+            // Job-wide switches (FMMC_SMS_UNK, FMMC_SMS_RST); they were written but never shown.
+            if (m.IsProcOpen)
+            {
+                Functions.Read.checkbinary(31, GTA.Offsets.Editor.menubs2, cbSMSuc);
+                Functions.Read.checkbinary(19, GTA.Offsets.Editor.menubs19, cbSMSrt);
+            }
+            SmsOptions.Bind(() => ddsmsno.SelectedIndex);
+            SmsOptions.Refresh(ignore_focus);
         }
 
         private void tbSMSsmsei_TextChanged(object sender, TextChangedEventArgs e)
@@ -74,16 +86,30 @@ namespace Xenvious
                 new Global((GTA.Offsets.Editor.SMS.smspwo + GTA.Offsets.Editor.SMS.NEXT * ddsmsno.SelectedIndex)).SetInt(tbSMSsmspwo.Text);
         }
 
-        private void cbSMSsndall_Checked(object sender, RoutedEventArgs e)
+
+        private bool _smsTextLoading;
+
+        // The text is two 64 byte text labels (f_6[0], f_6[1]); each part is read up to its own
+        // NUL and at most 63 bytes, so a part never runs into the next one.
+        private static string ReadSmsText(int index)
         {
-            Functions.Write.writebinary(31, GTA.Offsets.Editor.SMS.sndall + GTA.Offsets.Editor.SMS.NEXT * ddsmsno.SelectedIndex, cbSMSsndall);
+            var sb = new StringBuilder();
+            for (int part = 0; part < 2; part++)
+            {
+                byte[] b = new Global(GTA.Offsets.Editor.SMS.txt + GTA.Offsets.Editor.txt_NEXT * part + GTA.Offsets.Editor.SMS.NEXT * index).GetBytes(64);
+                if (b == null)
+                    break;
+                int n = Array.IndexOf(b, (byte)0);
+                sb.Append(Encoding.UTF8.GetString(b, 0, n < 0 ? 63 : Math.Min(n, 63)));
+            }
+            return sb.ToString();
         }
 
         private void tbSMSmsg_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (m.IsProcOpen)
             {
-                if (m == null || !m.IsProcOpen)
+                if (_smsTextLoading || ddsmsno.SelectedIndex < 0 || ReadSmsText(ddsmsno.SelectedIndex) == tbSMSmsg.Text)
                     return;
 
                 const int ChunkSize = 63;      // Nutzbytes pro Segment
@@ -153,8 +179,9 @@ namespace Xenvious
         {
             if (ddSMSteam.SelectedIndex > -1)
             {
-                new Global((GTA.Offsets.Editor.SMS.sndall + GTA.Offsets.Editor.SMS.NEXT * ddsmsno.SelectedIndex)).SetInt(ddSMSteam.SelectedIndex == 0 ? 1 : 0);
-                new Global((GTA.Offsets.Editor.SMS.team + GTA.Offsets.Editor.SMS.NEXT * ddsmsno.SelectedIndex)).SetInt(ddSMSteam.SelectedIndex == 0 ? -1 : ddSMSteam.SelectedIndex - 1);
+                // -1 = unused slot: the controllers only send for a team (team > -1). "Send to all
+                // teams" is its own option (f_39) on the card below.
+                new Global((GTA.Offsets.Editor.SMS.team + GTA.Offsets.Editor.SMS.NEXT * ddsmsno.SelectedIndex)).SetInt(ddSMSteam.SelectedIndex - 1);
             }
         }
 

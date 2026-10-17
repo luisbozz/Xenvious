@@ -116,6 +116,30 @@ namespace Xenvious
             RefreshChips();
         }
 
+        // Double-click takes the whole line (native name or hash), not just the word between the
+        // underscores, and copies it.
+        private void DetailText_PreviewMouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            int at = DetailText.GetCharacterIndexFromPoint(e.GetPosition(DetailText), true);
+            if (at < 0)
+                return;
+            // The text's own lines; a long native name may wrap on screen.
+            string all = DetailText.Text;
+            int start = all.LastIndexOf('\n', Math.Max(0, Math.Min(at, all.Length) - 1)) + 1;
+            int end = all.IndexOf('\n', start);
+            string text = all.Substring(start, (end < 0 ? all.Length : end) - start);
+            DetailText.Select(start, text.Length);
+            e.Handled = true;
+            try
+            {
+                System.Windows.Clipboard.SetText(text);
+            }
+            catch (System.Runtime.InteropServices.COMException)
+            {
+                // Another program holds the clipboard; the line stays selected for Ctrl+C.
+            }
+        }
+
         /// <summary>Rebuilds the recent and favourite chips (after a pick or a favourite change).</summary>
         public void RefreshChips()
         {

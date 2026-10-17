@@ -35,13 +35,17 @@
         {
             ("vis_playarea", "Play areas (custom)"),
             ("vis_gangchase", "Gang chase areas (custom)"),
+            ("vis_entitymarks", "Entity numbers (custom, LTS and Capture)"),
         };
 
         public const int PlayAreaBit = 7;
         public const int GangChaseBit = 8;
+        // Stored inverted (set = off), so configs written before it existed have it on.
+        public const int EntityMarkBit = 9;
 
         private const int Mask = (1 << 7) - 1;
-        private const int AllBits = (1 << 9) - 1;
+        private const int AllBits = (1 << 10) - 1;
+        private const int Inverted = 1 << EntityMarkBit;
         private static int? _wanted;
 
         public static int Wanted
@@ -49,7 +53,7 @@
             get
             {
                 if (_wanted == null)
-                    _wanted = new ini_reader(Functions.getRoamingConfigFilePath()).ReadInteger("Settings", "showingame", AllBits) & AllBits;
+                    _wanted = (new ini_reader(Functions.getRoamingConfigFilePath()).ReadInteger("Settings", "showingame", AllBits & ~Inverted) ^ Inverted) & AllBits;
                 return _wanted.Value;
             }
         }
@@ -59,7 +63,7 @@
         public static void Set(int bit, bool on)
         {
             _wanted = on ? Wanted | (1 << bit) : Wanted & ~(1 << bit);
-            new ini_reader(Functions.getRoamingConfigFilePath()).Write("Settings", "showingame", _wanted.Value);
+            new ini_reader(Functions.getRoamingConfigFilePath()).Write("Settings", "showingame", _wanted.Value ^ Inverted);
             Apply();
             if (bit >= PlayAreaBit)
                 MainWindow.Instance?.RefreshScriptFeatureBits();

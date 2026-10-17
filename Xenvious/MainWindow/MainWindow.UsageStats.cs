@@ -84,6 +84,7 @@ namespace Xenvious
                 case "BtnSectionInventory": return "inventory";
                 case "BtnSectionSMS": return "sms";
                 case "BtnSectionGoto": return "goto";
+                case "BtnSectionTest": return "test";
                 case "BtnCaptureGeneral": return "general";
                 case "BtnCaptureObjects": return "objects";
                 case "BtnCaptureDelivery": return "delivery";

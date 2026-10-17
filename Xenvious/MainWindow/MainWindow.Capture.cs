@@ -381,6 +381,8 @@ namespace Xenvious
                 if (!tbobjmodel.IsFocused || ignore_focus) tbobjmodel.Text = model.ToString();
                 ObjModelCard.SetModel(unchecked((uint)model));
                 UpdateObjModelWarning(model);
+                ObjTransformCard.Bind(() => ddobjno.SelectedIndex);
+                ObjTransformCard.Refresh(ignore_focus);
                 if (!tbobjlocx.IsFocused || ignore_focus) tbobjlocx.Text = new Global((GTA.Offsets.Editor.Objects.loc + 0 + GTA.Offsets.Editor.Objects.NEXT * index)).Get<float>().ToString();
                 if (!tbobjlocy.IsFocused || ignore_focus) tbobjlocy.Text = new Global((GTA.Offsets.Editor.Objects.loc + 1 + GTA.Offsets.Editor.Objects.NEXT * index)).Get<float>().ToString();
                 if (!tbobjlocz.IsFocused || ignore_focus) tbobjlocz.Text = new Global((GTA.Offsets.Editor.Objects.loc + 2 + GTA.Offsets.Editor.Objects.NEXT * index)).Get<float>().ToString();
