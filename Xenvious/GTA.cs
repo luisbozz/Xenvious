@@ -310,7 +310,7 @@ namespace Xenvious
             if (addy == 0 && AobCache.TryGetStored(GTA.Offsets.Editor.AOB_devptr, out ulong stored)
                 && MainWindow.m.memory(stored.ToString("X")).Get<int>() == DevPatched)
             {
-                Log.Info("AOB_devptr: developer mode still on from an earlier run, found at its stored site.", source: "GTA");
+                Log.Debug("AOB_devptr: developer mode still on from an earlier run, found at its stored site.", source: "GTA");
                 addy = stored;
             }
 
@@ -550,6 +550,44 @@ namespace Xenvious
                 catch { }
             }
             return hashes;
+        }
+
+        private static Dictionary<uint, string> _scriptNamesByHash;
+
+        /// <summary>
+        /// Names of all scripts with a live thread, sorted, for the Global Editor's script list.
+        /// Legacy threads carry their name; Enhanced ones only the hash, named from the list of
+        /// the game's scripts (a hash missing there is left out).
+        /// </summary>
+        public static List<string> LiveScriptNames()
+        {
+            var names = new SortedSet<string>(StringComparer.Ordinal);
+            long localaddy = getLocalPointer().ToInt64();
+            if (GTA.Offsets.Editor.OFFSET_script_hash != 0)
+            {
+                if (_scriptNamesByHash == null)
+                {
+                    var map = new Dictionary<uint, string>();
+                    foreach (string line in OfflineData.ScriptNames.Split('\n'))
+                    {
+                        string name = line.Trim();
+                        if (name.Length > 0)
+                            map[MainWindow.Joaat(name)] = name;
+                    }
+                    _scriptNamesByHash = map;
+                }
+                foreach (uint hash in LiveScriptHashes())
+                    if (_scriptNamesByHash.TryGetValue(hash, out string name))
+                        names.Add(name);
+                return names.ToList();
+            }
+            for (int d = 0; d < 0x800; d += 0x8)
+            {
+                string name = ReadScriptName(localaddy, d);
+                if (name.Length > 0 && IsLiveThread(localaddy, d))
+                    names.Add(name);
+            }
+            return names.ToList();
         }
 
         public static long[] getLocalScriptAddy(string scriptname)
@@ -799,6 +837,7 @@ namespace Xenvious
                     public static long vehbso = 0;
                     public static long vehwtci = 0;
                     public static long objt = 0;
+                    public static long gotor = 0;
                     public static long team = 0;
                     public static long spwn = 0;
                     public static long spsrc = 0;
@@ -981,6 +1020,7 @@ namespace Xenvious
                     public static long frr = 0;
                     public static long pspdl = 0;
                     public static long foll = 0;
+                    public static long gotor = 0;
                     public static long folr = 0;
                     public static long tmflw = 0;
                     public static long iaim = 0;
@@ -1504,6 +1544,7 @@ namespace Xenvious
                 public static long load_job_loader_race = 0;
                 public static long load_job_loader_lts = 0;
                 public static long load_job_loader_capture = 0;
+                public static long mc_team_rule = 0;
                 public static long load_job_loader_dm = 0;
                 public static long load_job_loader_survival = 0;
                 public static long load_job_loader_version = 0;
@@ -1518,6 +1559,8 @@ namespace Xenvious
                 public static long job_save_stage = 0;
                 public static long job_save_upload_state = 0;
                 public static long job_save_uploaded = 0;
+                // The open job's content id in the save struct (TEXT_LABEL); a publish names it as the base.
+                public static long job_save_content_id = 0;
                 public static long creator_quit_flag = 0;
                 public static long OFFSET_current_creator_worker_offset_menu = 0x0;
                 public static long OFFSET_current_creator_worker_offset_test_state = 0x0;
@@ -1668,6 +1711,11 @@ namespace Xenvious
                 public static long minv2 = 0;
                 public static long minv3 = 0;
                 public static long minv4 = 0;
+                public static long inv_mm = 0;
+                public static long inv_mm_team = 0;
+                public static long inv_mm_rule = 0;
+                public static long inv_mm2_team = 0;
+                public static long inv_mm2_rule = 0;
                 public static long teambal = 0;
                 public static long clrovr = 0;
                 public static long nrl = 0;
@@ -1831,11 +1879,57 @@ namespace Xenvious
                 public static long tmvhp = 0;
                 public static long teamrvbh = 0;
                 public static long tmvds = 0;
+                public static long rcp_rule = 0;
+                public static long rcp_rule_NEXT = 0;
+                public static long rcp_pos = 0;
+                public static long rcp_pos_team_NEXT = 0;
+                public static long rcp_pos_cp_NEXT = 0;
+                public static long rcp_head = 0;
+                public static long rcp_head_team_NEXT = 0;
+                public static long rcp_head_cp_NEXT = 0;
+                public static long rcp_time = 0;
+                public static long rcp_time_NEXT = 0;
+                public static long rcp_test = 0;
+                public static long rcp_restart = 0;
+                public static long rcp_keep_pos = 0;
+                public static long rcp_minrole = 0;
+                public static long rcp_minrole_NEXT = 0;
                 public static long bdprt = 0;
                 public static long bdpst = 0;
                 public static long phone_state = 0;
                 public static long txt0 = 0;
                 public static long txt_NEXT = 0;
+                public static long txt1 = 0;
+                public static long txt2 = 0;
+                public static long txt_blip = 0;
+                public static long txt_target = 0;
+                public static long txt_targets = 0;
+                public static long mf_ped_spawn = 0;
+                public static long mf_ped_hbr = 0;
+                public static long mf_ped_o = 0;
+                public static long mf_ped_d = 0;
+                public static long mf_ped_cln = 0;
+                public static long mf_veh_spawn = 0;
+                public static long mf_veh_hbr = 0;
+                public static long mf_veh_drs = 0;
+                public static long mf_veh_o = 0;
+                public static long mf_veh_d = 0;
+                public static long mf_veh_cln = 0;
+                public static long mf_obj_spawn = 0;
+                public static long mf_obj_hbr = 0;
+                public static long mf_obj_drs = 0;
+                public static long mf_obj_mf = 0;
+                public static long mf_obj_o = 0;
+                public static long mf_obj_d = 0;
+                public static long mf_obj_cln = 0;
+                public static long mf_prop_spawn = 0;
+                public static long mf_prop_slide = 0;
+                public static long mf_dyn_spawn = 0;
+                public static long mf_dyn_cln = 0;
+                public static long mf_weap_spawn = 0;
+                public static long mf_door = 0;
+                public static long mf_zone_on = 0;
+                public static long mf_zone_off = 0;
                 public static long NEXT_txt = 0;
                 public static long tstrt = 0;
                 // Rule presets (OFFSET_rp_*): field number -> offset; "teambits1/2", "f2389" and

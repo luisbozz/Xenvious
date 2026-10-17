@@ -47,6 +47,8 @@ namespace Xenvious
             int tick = 0;
             bool templatesWereActive = false;
             var onlineTestWasActive = new HashSet<string>();
+            bool oneTeamWasActive = false;
+            bool testCheckpointWasActive = false;
             while (true)
             {
                 // Precise templates reacts to the creator menu, so it ticks every 50 ms.
@@ -67,10 +69,22 @@ namespace Xenvious
                 var onlineTestActive = new HashSet<string>(OnlineTest.Features.Where(OnlineTest.Active));
                 bool onlineTestChanged = !onlineTestActive.SetEquals(onlineTestWasActive);
                 if (onlineTestChanged)
-                    Log.Info("online test active: " + (onlineTestActive.Count == 0 ? "none" : string.Join(", ", onlineTestActive)), source: "OnlineTest");
+                    Log.Debug("online test active: " + (onlineTestActive.Count == 0 ? "none" : string.Join(", ", onlineTestActive)), source: "OnlineTest");
                 foreach (string feature in onlineTestWasActive.Except(onlineTestActive))
                     RevertTriggered(OnlineTest.TriggerPrefix + feature);
                 onlineTestWasActive = onlineTestActive;
+                // "test with one team": out again once the creator is left.
+                bool oneTeamActive = TriggerActive("test_oneteam");
+                if (oneTeamWasActive && !oneTeamActive)
+                    RevertTriggered("test_oneteam");
+                bool oneTeamChanged = oneTeamActive != oneTeamWasActive;
+                oneTeamWasActive = oneTeamActive;
+                // Test from a checkpoint: the controller keeps running between tests, so its
+                // spawn patches must come out again before a test from the start.
+                bool testCheckpointActive = TriggerActive("rcp_test");
+                if (testCheckpointWasActive && !testCheckpointActive)
+                    RevertTriggered("rcp_test");
+                testCheckpointWasActive = testCheckpointActive;
 
                 // A pass scans the script bytecode for every patch's pattern,
                 // and a patch is only ever written once -- appliedPatches sees
@@ -78,7 +92,7 @@ namespace Xenvious
                 // been loaded, which is not something that happens hundreds of
                 // times a second: every 250 ms, or at once when a triggered
                 // patch set was switched on.
-                if (MainWindow.m.IsProcOpen && (tick % 5 == 0 || templatesChanged || onlineTestChanged))
+                if (MainWindow.m.IsProcOpen && (tick % 5 == 0 || templatesChanged || onlineTestChanged || oneTeamChanged))
                 {
                     try { ScriptSpace.Reserve(); }
                     catch (Exception ex) { Log.Debug("ScriptSpace: " + ex.Message, source: "ScrPatchesRunner"); }
@@ -86,6 +100,13 @@ namespace Xenvious
                     ScrPatchesRunner.ApplyPatches(GTA.Editor.ScrPatches);
                     try { OnlineTest.Tick(); }
                     catch (Exception ex) { Log.Debug("OnlineTest: " + ex.Message, source: "OnlineTest"); }
+                    // After the patch pass, which sets up the data page the rule note goes into.
+                    try { RuleNotes.Tick(); }
+                    catch (Exception ex) { Log.Debug("RuleNotes: " + ex.Message, source: "RuleNotes"); }
+                    try { SaveResult.Tick(); }
+                    catch (Exception ex) { Log.Debug("SaveResult: " + ex.Message, source: "SaveResult"); }
+                    try { RestartCheckpoints.Tick(); }
+                    catch (Exception ex) { Log.Debug("RestartCheckpoints: " + ex.Message, source: "RestartCheckpoints"); }
                     // Same reason: a creator script that was just loaded gets the kept prop changes.
                     ModdedPropMemory.Tick();
                     // Same thread: "nrl fix" leaves nrl as it is, which must never be below 1 at save.
@@ -114,6 +135,16 @@ namespace Xenvious
                     return true;
                 case "templates":
                     return PreciseTemplates.Active;
+                // The classic controller ends a job with one team at once (func_893: "tnum == 1"),
+                // in the creator test too; the patch asks for tnum -1 instead. Only while the LTS or
+                // Capture creator runs, so a real job stays as Rockstar made it.
+                case "test_oneteam":
+                    return MainWindow.m.IsProcOpen && OnlineTest.InCreator();
+                // A creator test armed to start at a restart checkpoint: in the creator test the
+                // classic controller sends the player to the team start and skips its restart branch
+                // (func_17931); the patches take that branch and use its warp to the checkpoint.
+                case "rcp_test":
+                    return MainWindow.m.IsProcOpen && OnlineTest.InCreator() && RestartCheckpoints.TestCheckpoint() >= 0;
                 default:
                     return trigger.StartsWith(OnlineTest.TriggerPrefix, StringComparison.Ordinal)
                         && OnlineTest.Active(trigger.Substring(OnlineTest.TriggerPrefix.Length));
@@ -269,6 +300,7 @@ namespace Xenvious
                     }
 
                     // Patches anwenden
+                    int wrote = 0;
                     foreach (var addr in foundAddrs)
                     {
                         ulong patchAddress = addr + (ulong)patch.offset;
@@ -286,6 +318,7 @@ namespace Xenvious
                         bool success = PatchScrProgramBytecode(patchAddress, finalBytesToPatch);
                         if (success)
                         {
+                            wrote++;
                             appliedPatches.Add(patchAddress);
                             lock (written)
                             {
@@ -300,6 +333,9 @@ namespace Xenvious
                             }
                         }
                     }
+                    // Switched patches are the ones testers ask about ("is it on?").
+                    if (wrote > 0 && !string.IsNullOrEmpty(patch.trigger))
+                        Log.Debug($"'{patch.patch_name}' written in {patch.script_name} ({wrote}x)", source: "ScrPatchesRunner");
                 }
             }
         }
@@ -364,6 +400,7 @@ namespace Xenvious
             });
         }
 
+        // Whether the bytes at the address already are the patch ("?" matches any byte).
         private static bool HasBytes(ulong address, string bytes)
         {
             try

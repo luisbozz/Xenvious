@@ -46,7 +46,7 @@ namespace Xenvious
             try
             {
                 var live = await Task.Run(() => GTA.LiveScriptHashes());
-                Log.Info("story mode: live scripts " + string.Join(" ", live.Select(h => h.ToString("X8"))), source: "dashboard");
+                Log.Debug("story mode: live scripts " + string.Join(" ", live.Select(h => h.ToString("X8"))), source: "dashboard");
 
                 if (GTA.Offsets.Editor.launch_creator_local_3 != 0)
                     new Global(GTA.Offsets.Editor.launch_creator_local_3).SetInt(-1);
@@ -56,15 +56,15 @@ namespace Xenvious
                     if (GTA.Offsets.Editor.endtest != 0 && TestControllers.Any(GTA.IsScriptRunning))
                     {
                         new Global(GTA.Offsets.Editor.endtest).SetInt(1);
-                        Log.Info("story mode: test end requested", source: "dashboard");
+                        Log.Debug("story mode: test end requested", source: "dashboard");
                     }
                     if (GTA.Offsets.Editor.creator_quit_flag != 0)
                     {
                         new Global(GTA.Offsets.Editor.creator_quit_flag).SetInt(1);
-                        Log.Info("story mode: quit flag set", source: "dashboard");
+                        Log.Debug("story mode: quit flag set", source: "dashboard");
                     }
                     bool ended = await WaitGoneAsync(() => !StoryModeBlockers.Any(GTA.IsScriptRunning));
-                    Log.Info($"story mode: {(ended ? "creator scripts ended" : "creator scripts still running")}", source: "dashboard");
+                    Log.Debug($"story mode: {(ended ? "creator scripts ended" : "creator scripts still running")}", source: "dashboard");
                 }
 
                 bool done = false;
@@ -73,10 +73,10 @@ namespace Xenvious
                     long stage = await Task.Run(() => HubLocal(GTA.Offsets.Editor.OFFSET_creator_hub_stage));
                     if (stage != 0)
                     {
-                        Log.Info($"story mode: hub stage {m.memory(stage.ToString("X")).Get<int>()} -> {HubStageQuit}", source: "dashboard");
+                        Log.Debug($"story mode: hub stage {m.memory(stage.ToString("X")).Get<int>()} -> {HubStageQuit}", source: "dashboard");
                         m.memory(stage.ToString("X")).SetInt(HubStageQuit);
                         done = await WaitGoneAsync(() => !GTA.IsScriptRunning("creator"));
-                        Log.Info($"story mode: {(done ? "hub ended" : "hub still running")}", source: "dashboard");
+                        Log.Debug($"story mode: {(done ? "hub ended" : "hub still running")}", source: "dashboard");
                     }
                     else
                     {
@@ -90,9 +90,9 @@ namespace Xenvious
                     // starts maintransition, which, in the creator game mode, quits the creator and
                     // goes to the joining game mode set above.
                     new Global(GTA.Offsets.Editor.OFFSET_transition_menu_trigger).SetInt(1);
-                    Log.Info("story mode: no hub, transition requested", source: "dashboard");
+                    Log.Debug("story mode: no hub, transition requested", source: "dashboard");
                     done = await WaitGoneAsync(() => GTA.IsScriptRunning("maintransition"));
-                    Log.Info($"story mode: {(done ? "transition started" : "no transition")}", source: "dashboard");
+                    Log.Debug($"story mode: {(done ? "transition started" : "no transition")}", source: "dashboard");
                 }
                 else
                 {

@@ -27,9 +27,12 @@ namespace Xenvious
                 return;
             _battlEyeWarned = gamePid;
             Log.Warn("BattlEye is running (" + process + "); Xenvious does not connect to GTA.", source: "timercheckgta");
-            await ConfirmAsync(TranslateOr("be_title", "BattlEye is on"),
-                TranslateOr("be_text", "GTA runs with BattlEye. Xenvious does not connect while BattlEye is on. Close GTA and start it without BattlEye, then Xenvious connects by itself."),
-                TranslateOr("be_ok", "OK"), null);
+            bool browse = await ConfirmAsync(TranslateOr("be_title", "BattlEye is on"),
+                TranslateOr("be_text", "GTA runs with BattlEye. Xenvious does not connect while BattlEye is on. Close GTA and start it without BattlEye, then Xenvious connects by itself.")
+                    + "\n\n" + TranslateOr("be_browse_text", "You can still look through the pages. Nothing is read from or written to the game."),
+                TranslateOr("vo_browse", "Browse pages only"), TranslateOr("be_ok", "OK"));
+            if (browse)
+                EnterViewOnly(true);
         }
 
         private async void Timercheckgta_Tick(object sender, EventArgs e)
@@ -39,7 +42,7 @@ namespace Xenvious
             // follow the process rather than stay at whatever was loaded first.
             if (GameVariant.DetectChanged())
             {
-                Log.Info($"Reloading offline data for GTA {GameVariant.DisplayName(GameVariant.Current)}",
+                Log.Debug($"Reloading offline data for GTA {GameVariant.DisplayName(GameVariant.Current)}",
                     source: "timercheckgta");
                 pid = 0;
                 OffsetLoader.Load();
@@ -49,6 +52,9 @@ namespace Xenvious
             var p = Process.GetProcessesByName(GameVariant.ProcessName);
             if (p.Length > 0)
             {
+                // View-only mode never connects, BattlEye or not (MainWindow.ViewOnly.cs).
+                if (ViewOnly)
+                    return;
                 // With BattlEye on, Xenvious must not touch the game at all: no handle, no scan.
                 string battlEye = m.IsProcOpen ? null : BattlEye.RunningProcess();
                 if (battlEye != null)
@@ -84,7 +90,7 @@ namespace Xenvious
                     }
                     if (pid == 0)
                     {
-                        Log.Info("First Init", source: "timercheckgta");
+                        Log.Debug("First Init", source: "timercheckgta");
                     }
                     OnlineEnable.isInjected();
                     ScriptSpace.Reset();
@@ -92,11 +98,11 @@ namespace Xenvious
                     // so skip reading the whole module; the getters answer from the cache.
                     bool fromCache = GTA.AllPatternsCached();
                     byte[] buff = fromCache ? null : m.memory(mainmodule.BaseAddress.ToInt64().ToString("X")).GetBytes(mainmodule.ModuleMemorySize);
-                    Log.Info(fromCache ? "AOB: all patterns from cache, module not read" : "AOB: scanning module", source: "timercheckgta");
+                    Log.Debug(fromCache ? "AOB: all patterns from cache, module not read" : "AOB: scanning module", source: "timercheckgta");
                     long globalptr = GTA.getGlobalPointer(buff).ToInt64();
                     if (!globalPtrSanityCheck(globalptr))
                     {
-                        Log.Info($"Wait with init because too early! GlobalPTR={globalptr.ToString("X")}", source: "timercheckgta");
+                        Log.Debug($"Wait with init because too early! GlobalPTR={globalptr.ToString("X")}", source: "timercheckgta");
                         return;
                     }
                     if (buff == null || buff.Length > 0)

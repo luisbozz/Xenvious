@@ -2150,5 +2150,517 @@
   "de": "Legt fest, ob die Hinweiskamera bei diesem Missionsziel erlaubt ist.",
   "pl": "Ustaw, czy przy tym celu misji można korzystać z kamer pomocniczych.",
   "ru": "Указать, будет ли фокус-камера доступна при выполнении этой задачи."
+ },
+ "PCMT_INV_MM_TT": {
+  "en": "Trigger Team",
+  "zh_cn": "触发团队",
+  "fr": "Équipe concernée",
+  "de": "Auslösendes Team",
+  "pl": "Drużyna aktywująca",
+  "ru": "Команда-инициатор"
+ },
+ "PMCH_AB_BSTS_ON": {
+  "en": "Set whether Beasts are active on this Objective.",
+  "zh_cn": "设置野兽是否可用于此目标。",
+  "fr": "Activez ou désactivez Proies pour cet objectif.",
+  "de": "Legt fest, ob Bestien bei diesem Missionsziel aktiv sind.",
+  "pl": "Ustaw, czy przy tym celu misji bestie będą aktywne.",
+  "ru": "Указать, будут ли активны звери при выполнении этой задачи."
+ },
+ "PMCH_BST_DJMP": {
+  "en": "Set how much health Beasts will lose from using their jump ability.",
+  "zh_cn": "设置野兽使用跳跃能力时会损失多少生命值。",
+  "fr": "Définissez la quantité de santé perdue par les proies en utilisant leur compétence de saut.",
+  "de": "Legt fest, wie viel Gesundheit Bestien verlieren, wenn sie ihre Sprungfähigkeit einsetzt.",
+  "pl": "Ustaw, ile zdrowia stracą bestie przy użyciu zdolności skoku.",
+  "ru": "Количество здоровья, которое теряют звери, используя свою способность прыгать."
+ },
+ "PMCH_BST_DMG": {
+  "en": "Increases the melee damage of Beasts.",
+  "zh_cn": "提升野兽的近战伤害。",
+  "fr": "Augmente les dégâts d'attaques au corps à corps des proies.",
+  "de": "Erhöht den Nahkampfschaden von Bestien.",
+  "pl": "Zwiększa wartość obrażeń zadawanych w walce wręcz przez bestie.",
+  "ru": "Повышает урон, который звери наносят в ближнем бою."
+ },
+ "PMCH_BST_HELTH": {
+  "en": "Increases the health of Beasts.",
+  "zh_cn": "提升野兽的生命值。",
+  "fr": "Améliore la santé des proies.",
+  "de": "Erhöht die Gesundheit von Bestien.",
+  "pl": "Zwiększa wartość zdrowia bestii.",
+  "ru": "Повышает уровень здоровья зверей."
+ },
+ "PMCH_BST_JMP": {
+  "en": "Improves the jump ability of Beasts.",
+  "zh_cn": "提升野兽的跳跃能力。",
+  "fr": "Améliore la compétence Super saut des proies.",
+  "de": "Verbessert die Sprungfähigkeit von Bestien.",
+  "pl": "Ulepsza skok bestii.",
+  "ru": "Улучшает прыжок зверей."
+ },
+ "PMCH_BST_MOV": {
+  "en": "Enables Beast movement animations.",
+  "zh_cn": "启用野兽移动动画。",
+  "fr": "Permet d'activer les animations des mouvements de la proie.",
+  "de": "Aktiviert die Animationen für Bestienbewegungen.",
+  "pl": "Włącza animacje ruchu bestii.",
+  "ru": "Включает анимацию передвижения зверя."
+ },
+ "PMCH_BST_SPD": {
+  "en": "Increases the movement speed of Beasts.",
+  "zh_cn": "提升野兽的移动速度。",
+  "fr": "Améliore la vitesse des mouvements des proies.",
+  "de": "Steigert die Bewegungsgeschwindigkeit von Bestien.",
+  "pl": "Zwiększa prędkość ruchu bestii.",
+  "ru": "Повышает скорость перемещения зверя."
+ },
+ "PMCH_BST_SPDVAR": {
+  "en": "Set how much faster players should move when Increased Speed is enabled.",
+  "zh_cn": "设置开启加速时玩家移动速度提升幅度。",
+  "fr": "Définissez le degré d'accélération du déplacement des joueurs quand la vitesse augmentée est activée.",
+  "de": "Legt fest, wie viel schneller Spieler sich bewegen können, wenn \"Geschwindigkeitssteigerung\" aktiviert ist.",
+  "pl": "Ustaw, o ile szybciej powinni poruszać się gracze po włączeniu zwiększonej prędkości.",
+  "ru": "Выбрать, насколько повышается скорость при включении функции \"Повышенная скорость\"."
+ },
+ "PMCH_BST_STELO": {
+  "en": "Set what Objectives Invisibility should be enabled on.",
+  "zh_cn": "设置应在哪些目标上开启隐身能力。",
+  "fr": "Définissez dans quels objectifs Invisibilité doit être activée.",
+  "de": "Legt fest, bei welchen Missionszielen Unsichtbarkeit aktiviert sein soll.",
+  "pl": "Ustaw, przy jakich celach misji niewidzialność powinna być włączona.",
+  "ru": "Выбрать задачи, в которых должна быть включена функция \"Невидимость\"."
+ },
+ "PMCH_DOZ_N": {
+  "en": "Set this Drop-off Zone to be used during this Collect & Deliver Objective.",
+  "zh_cn": "设置此投放区域用于本次\"取得并运送目标\"。",
+  "fr": "Définissez cette zone de livraison de façon à ce qu'elle soit utilisée pendant cet objectif Récupérer et livrer.",
+  "de": "Legt die Ablieferzone fest, die für das Missionsziel des Typs \"Abholen & abliefern\" verwendet wird.",
+  "pl": "Ustaw punkt dostawy do użycia w trakcie tego celu typu Odbierz i dostarcz.",
+  "ru": "Использовать эту зона сброса в ходе задачи \"Забрать и доставить\"."
+ },
+ "PMCH_INV_MM_TO": {
+  "en": "Select which objective the selected team must reach to trigger giving this inventory.",
+  "zh_cn": "选择所选团队必须达到哪个目标才能触发提供此物品栏。",
+  "fr": "Sélectionnez l'objectif à valider pour que l'équipe sélectionnée obtienne cet inventaire.",
+  "de": "Legt fest, welches Missionsziel das ausgewählte Team erreichen muss, um die Vergabe dieses Inventars auszulösen.",
+  "pl": "Wybierz, jaki cel musi osiągnąć wybrana drużyna, aby aktywować przekazanie tego ekwipunku.",
+  "ru": "Выбрать задачу, которую должна выполнить выбранная команда, чтобы инициировать отдачу этого инвентаря."
+ },
+ "PMCH_INV_MM_TT": {
+  "en": "Select which team will trigger giving this inventory.",
+  "zh_cn": "选择哪个团队将触发提供此物品栏。",
+  "fr": "Sélectionnez l'équipe concernée par cet inventaire.",
+  "de": "Legt fest, welches Team die Vergabe dieses Inventars auslöst.",
+  "pl": "Wybierz, która drużyna aktywuje przekazanie tego ekwipunku.",
+  "ru": "Выбрать команду, которая инициирует отдачу этого инвентаря."
+ },
+ "PMCH_OGF_HCAM_D": {
+  "en": "Hint Cams will not be allowed in this mission.",
+  "zh_cn": "本次任务中不允许使用提示镜头。",
+  "fr": "Les caméras d'astuce ne seront pas autorisées lors de cette mission.",
+  "de": "Hinweiskameras sind in dieser Mission nicht erlaubt.",
+  "pl": "Kamery pomocnicze nie będą dostępne podczas misji.",
+  "ru": "Фокус-камеры будут недоступны в этом задании."
+ },
+ "PMCH_OGF_HCAM_E": {
+  "en": "Unless specified in the overrides, Hint Cams will be allowed throughout the mission.",
+  "zh_cn": "任务期间将可使用提示镜头，除非在覆盖设置中另有指定。",
+  "fr": "Sauf indication contraire dans les paramétrages manuels, les caméras d'astuce seront autorisées pendant toute la mission.",
+  "de": "Sofern nicht durch Überschreibungen anders vorgegeben, sind Hinweiskameras während der gesamten Mission erlaubt.",
+  "pl": "O ile nie jest to ustawione inaczej w funkcjach nadpisujących, kamery pomocnicze będą dozwolone przez cały czas trwania misji.",
+  "ru": "Если в настройках не указано обратное, фокус-камеры будут разрешены во время выполнения задания."
+ },
+ "PMCH_PTKRT": {
+  "en": "Enter the text to display for an objective with multiple entities. A ticker with the text \"gold bars\", will show as \"Player1 delivered 5 gold bars.\"",
+  "zh_cn": "为包含多个实体的目标输入显示文本。例如，如果即时动态显示文本\"金条\"，提示将显示为：\"玩家µ1µ送达了µ5µ根金条。\"",
+  "fr": "Saisissez le texte à afficher pour un objectif avec plusieurs entités. Le texte \"lingots d'or\" s'affichera dans le fil d'infos comme ceciµ: \"Joueur1 a livré 5µlingots d'or\".",
+  "de": "Gib den Text ein, der für ein Missionsziel mit einer mehreren Entitäten angezeigt werden soll. Ein Ticker mit dem Text \"Goldmünzen\" wird als \"Spieler1 hat 5 Goldmünzen abgeliefert\" angezeigt.",
+  "pl": "Wpisz wyświetlany tekst dla celu zawierającego wiele obiektów. Telegram o treści \"szt. sztab złota\" będzie wyświetlony jako \"Gracz1 dostarcza 5 szt. sztab złota\".",
+  "ru": "Позволяет ввести текст задачи с несколькими элементами."
+ },
+ "PMCH_TEST_CHKP": {
+  "en": "Set which checkpoint to begin testing the mission at.",
+  "zh_cn": "设置从哪个检查点开始测试任务。",
+  "fr": "Définissez le point de passage où commencer le test de la mission.",
+  "de": "Legt fest, an welchem Kontrollpunkt der Test für die Mission beginnt.",
+  "pl": "Ustaw, w którym punkcie kontrolnym ma się rozpocząć testowanie misji.",
+  "ru": "Выберите контрольную точку, с которой начнется тестирование задания."
+ },
+ "PMCH_TKRT": {
+  "en": "Enter the text to display for an objective with a single entity. A ticker with the text \"a gold bar\", will show as \"Player1 collected a gold bar.\"",
+  "zh_cn": "为包含单个实体的目标输入显示文本。例如，如果即时动态显示文本\"一根金条\"，提示将显示为：\"玩家µ1µ取得了一根金条。\"",
+  "fr": "Saisissez le texte à afficher pour un objectif avec une seule entité. Le texte \"un lingot d'or\" s'affichera dans le fil d'infos comme ceciµ: \"Joueur1 a récupéré un lingot d'or\".",
+  "de": "Gib den Text ein, der für ein Missionsziel mit einer einzigen Entität angezeigt werden soll. Ein Ticker mit dem Text \"eine Goldmünze\" wird als \"Spieler1 hat eine Goldmünze eingesammelt\" angezeigt.",
+  "pl": "Wpisz wyświetlany tekst dla celu zawierającego jeden obiekt. Telegram o treści: \"sztabę złota\" będzie wyświetlony jako: \"Gracz1 zabiera sztabę złota\".",
+  "ru": "Позволяет ввести текст задачи с одним элементом. Строка с текстом \"золотой слиток\" отобразится в ленте как \"Игрок 1 забрал золотой слиток\"."
+ },
+ "PMCT_AB_BSTS_ON": {
+  "en": "Active Objectives",
+  "zh_cn": "启用目标",
+  "fr": "Objectifs actifs",
+  "de": "Aktive Missionsziele",
+  "pl": "Aktywne cele",
+  "ru": "Активные задачи"
+ },
+ "PMCT_BST_DJMP": {
+  "en": "Damage On Jump",
+  "zh_cn": "跳跃伤害",
+  "fr": "Dégâts sur saut",
+  "de": "Schaden bei Sprung",
+  "pl": "Obrażenia od skoku",
+  "ru": "Урон при прыжке"
+ },
+ "PMCT_BST_DMG": {
+  "en": "Increased Damage",
+  "zh_cn": "伤害增加",
+  "fr": "Dégâts augmentés",
+  "de": "Schadenssteigerung",
+  "pl": "Zwiększone obrażenia",
+  "ru": "Повышенный урон"
+ },
+ "PMCT_BST_HELTH": {
+  "en": "Increased Health",
+  "zh_cn": "生命值增加",
+  "fr": "Santé améliorée",
+  "de": "Gesundheitssteigerung",
+  "pl": "Zwiększone zdrowie",
+  "ru": "Повышенный уровень здоровья"
+ },
+ "PMCT_BST_JMP": {
+  "en": "Super Jump",
+  "zh_cn": "超级跳跃",
+  "fr": "Super saut",
+  "de": "Supersprung",
+  "pl": "Superskok",
+  "ru": "Суперпрыжок"
+ },
+ "PMCT_BST_MOV": {
+  "en": "Beast Movement",
+  "zh_cn": "野兽移动",
+  "fr": "Mouvements de la proie",
+  "de": "Bestienbewegungen",
+  "pl": "Ruch bestii",
+  "ru": "Передвижение зверя"
+ },
+ "PMCT_BST_SPD": {
+  "en": "Increased Speed",
+  "zh_cn": "加速",
+  "fr": "Vitesse augmentée",
+  "de": "Geschwindigkeitssteigerung",
+  "pl": "Zwiększona prędkość",
+  "ru": "Повышенная скорость"
+ },
+ "PMCT_BST_SPDVAR": {
+  "en": "Increased Speed Amount",
+  "zh_cn": "加速数值",
+  "fr": "Valeur de vitesse augmentée",
+  "de": "Höhe der Geschwindigkeitssteigerung",
+  "pl": "Wartość zwiększenia prędkości",
+  "ru": "Степень повышения скорости"
+ },
+ "PMCT_BST_STELO": {
+  "en": "Invisibility Objective Overrides",
+  "zh_cn": "隐身能力目标覆盖",
+  "fr": "Paramétrage manuel des objectifs Invisibilité",
+  "de": "Unsichtbarkeit durch Missionsziele überschreiben",
+  "pl": "Cele misji nadpisujące niewidzialność",
+  "ru": "Настройки невидимости для задачи"
+ },
+ "PMCT_INV_MM_TO": {
+  "en": "Trigger Objective",
+  "zh_cn": "触发目标",
+  "fr": "Objectif de l'inventaire",
+  "de": "Auslösendes Missionsziel",
+  "pl": "Cel ekwipunku",
+  "ru": "Задача-инициатор"
+ },
+ "PMCT_INV_TS_MM": {
+  "en": "Secondary Inventory",
+  "zh_cn": "副物品栏",
+  "fr": "Inventaire secondaire",
+  "de": "Sekundäres Inventar",
+  "pl": "Dodatkowy ekwipunek",
+  "ru": "Дополнительный инвентарь"
+ },
+ "PMCT_INV_TS_MM2": {
+  "en": "Tertiary Inventory",
+  "zh_cn": "三级物品栏",
+  "fr": "Inventaire tertiaire",
+  "de": "Tertiäres Inventar",
+  "pl": "Drugi dodatkowy ekwipunek",
+  "ru": "Третичный инвентарь"
+ },
+ "PMCT_OBJ2": {
+  "en": "Objective Text 2",
+  "zh_cn": "目标文本 2",
+  "fr": "Texte objectif 2",
+  "de": "Zieltext 2",
+  "pl": "Treść 2 celu",
+  "ru": "Описание задачи 2"
+ },
+ "PMCT_OBJ3": {
+  "en": "Objective Text 3",
+  "zh_cn": "目标文本 3",
+  "fr": "Texte objectif 3",
+  "de": "Zieltext 3",
+  "pl": "Treść 3 celu",
+  "ru": "Описание задачи 3"
+ },
+ "PMCT_OGF_HCAM": {
+  "en": "Hint Cams",
+  "zh_cn": "提示镜头",
+  "fr": "Caméras d'astuce",
+  "de": "Hinweiskameras",
+  "pl": "Kamery pomocnicze",
+  "ru": "Фокус-камера"
+ },
+ "PMCT_OJT_DOZ": {
+  "en": "Specify Drop-off Zones",
+  "zh_cn": "指定投放区域",
+  "fr": "Spécifier des zones de livraison",
+  "de": "Ablieferzonen festlegen",
+  "pl": "Określ punkty dostawy",
+  "ru": "Зоны сброса"
+ },
+ "PMCT_TEST_CHKP": {
+  "en": "Checkpoint To Start At",
+  "zh_cn": "起始检查点",
+  "fr": "Point de passage initial",
+  "de": "Startkontrollpunkt",
+  "pl": "Punkt kontrolny do rozpoczęcia",
+  "ru": "Стартовая контрольная точка"
+ },
+ "PMC_OBLIP": {
+  "en": "Blip Name",
+  "zh_cn": "标记点名称",
+  "fr": "Nom de l'icône",
+  "de": "Markierungsname",
+  "pl": "Nazwa znacznika",
+  "ru": "Название метки"
+ },
+ "PMC_PTKRT": {
+  "en": "Plural Ticker Name",
+  "zh_cn": "复数形式的即时动态名称",
+  "fr": "Pluriel du nom dans le fil d'infos",
+  "de": "Tickername (Plural)",
+  "pl": "Nazwa telegramu w l. mnogiej",
+  "ru": "Бегущие строки (мн. ч.)"
+ },
+ "PMC_TKRT": {
+  "en": "Ticker Name",
+  "zh_cn": "即时动态名称",
+  "fr": "Nom dans le fil d'infos",
+  "de": "Tickername",
+  "pl": "Nazwa telegramu",
+  "ru": "Название бегущей строки"
+ },
+ "CELL_CAS_TTR_N": {
+  "en": "Tao's Translator",
+  "fr": "Interprète de Tao",
+  "de": "Taos Übersetzer",
+  "pl": "Tłumacz Tao",
+  "ru": "Переводчик Тао",
+  "zh_cn": "陶的翻译员"
+ },
+ "CELL_CELEB_N": {
+  "en": "Yung Ancestor",
+  "fr": "Yung Ancestor",
+  "de": "Yung Ancestor",
+  "pl": "Yung Ancestor",
+  "ru": "Янг Ансестор",
+  "zh_cn": "YungµAncestor"
+ },
+ "CELL_YACHT": {
+  "en": "Captain",
+  "fr": "Capitaine",
+  "de": "Kapitän",
+  "pl": "Kapitan",
+  "ru": "Капитан",
+  "zh_cn": "船长"
+ },
+ "CELL_PAVEL_N": {
+  "en": "Pavel",
+  "fr": "Pavel",
+  "de": "Pavel",
+  "pl": "Pavel",
+  "ru": "Павел",
+  "zh_cn": "帕维尔"
+ },
+ "CELL_CAS_MAN_N": {
+  "en": "Ms. Baker",
+  "fr": "Mme Baker",
+  "de": "Ms. Baker",
+  "pl": "Pani Baker",
+  "ru": "Мисс Бейкер",
+  "zh_cn": "贝克女士"
+ },
+ "CELL_ARTU": {
+  "en": "Unknown",
+  "fr": "Inconnu",
+  "de": "Unbekannt",
+  "pl": "Nieznane",
+  "ru": "Неизв.",
+  "zh_cn": "未知"
+ },
+ "CELL_133": {
+  "en": "Cheng Jr.",
+  "fr": "Cheng Jr.",
+  "de": "Cheng Jr.",
+  "pl": "Cheng Jr.",
+  "ru": "Чен-младший",
+  "zh_cn": "陈陶"
+ },
+ "CELL_195": {
+  "en": "Unknown",
+  "fr": "Inconnu",
+  "de": "Unbekannt",
+  "pl": "Zastrzeżony",
+  "ru": "Неизв.",
+  "zh_cn": "未知"
+ },
+ "CELL_MM_N": {
+  "en": "Moodymann",
+  "fr": "Moodymann",
+  "de": "Moodymann",
+  "pl": "Moodymann",
+  "ru": "Moodymann",
+  "zh_cn": "穆迪曼"
+ },
+ "CELL_111": {
+  "en": "Lester",
+  "fr": "Lester",
+  "de": "Lester",
+  "pl": "Lester",
+  "ru": "Лестер",
+  "zh_cn": "莱斯特"
+ },
+ "CELL_144": {
+  "en": "Martin",
+  "fr": "Martin",
+  "de": "Martin",
+  "pl": "Martin",
+  "ru": "Мартин",
+  "zh_cn": "马丁"
+ },
+ "CELL_MIGEL_N": {
+  "en": "Miguel Madrazo",
+  "fr": "Miguel Madrazo",
+  "de": "Miguel Madrazo",
+  "pl": "Miguel Madrazo",
+  "ru": "Мигель Мадрасо",
+  "zh_cn": "米盖尔·玛德拉索"
+ },
+ "CELL_CHARLIE_N": {
+  "en": "Charlie",
+  "fr": "Charlie",
+  "de": "Charlie",
+  "pl": "Charlie",
+  "ru": "Чарли",
+  "zh_cn": "查理"
+ },
+ "CELL_KDJ_N": {
+  "en": "KDJ",
+  "fr": "KDJ",
+  "de": "KDJ",
+  "pl": "KDJ",
+  "ru": "KDJ",
+  "zh_cn": "KDJ"
+ },
+ "CELL_MAI_N1": {
+  "en": "Angel",
+  "fr": "Angel",
+  "de": "Angel",
+  "pl": "Angel",
+  "ru": "Энджел",
+  "zh_cn": "安琪尔"
+ },
+ "CELL_AVI_SCH_N": {
+  "en": "Avi Schwartzman",
+  "fr": "Avi Schwartzman",
+  "de": "Avi Schwartzman",
+  "pl": "Avi Schwartzman",
+  "ru": "Ави Шварцман",
+  "zh_cn": "阿维·施瓦茨曼"
+ },
+ "CELL_MAI_N2": {
+  "en": "Haviland",
+  "fr": "Haviland",
+  "de": "Haviland",
+  "pl": "Haviland",
+  "ru": "Хавиланд",
+  "zh_cn": "哈维兰"
+ },
+ "CELL_DAX_N": {
+  "en": "Dax",
+  "fr": "Dax",
+  "de": "Dax",
+  "pl": "Dax",
+  "ru": "Дакс",
+  "zh_cn": "达克斯"
+ },
+ "CELL_VINCENT_N": {
+  "en": "Vincent",
+  "fr": "Vincent",
+  "de": "Vincent",
+  "pl": "Vincent",
+  "ru": "Винсент",
+  "zh_cn": "文森特"
+ },
+ "CELL_OSCAR_G_N": {
+  "en": "Oscar",
+  "fr": "Oscar",
+  "de": "Oscar",
+  "pl": "Oscar",
+  "ru": "Оскар",
+  "zh_cn": "奥斯卡"
+ },
+ "CELL_FRA_IMA_N": {
+  "en": "Agency Conference",
+  "fr": "Agence (conférence)",
+  "de": "Agenturkonferenz",
+  "pl": "Konferencja w agencji",
+  "ru": "Агентство (конференция)",
+  "zh_cn": "事务所会议"
+ },
+ "CELL_ULP_N": {
+  "en": "Agent ULP",
+  "fr": "Agent ULP",
+  "de": "Agent ULP",
+  "pl": "Agent ULP",
+  "ru": "Агент ОСГ",
+  "zh_cn": "ULPµ探员"
+ },
+ "CELL_JENETTE_N": {
+  "en": "Jenette",
+  "fr": "Jenette",
+  "de": "Jenette",
+  "pl": "Jenette",
+  "ru": "Дженетт",
+  "zh_cn": "珍妮特"
+ },
+ "CELL_MAI_N3": {
+  "en": "OG",
+  "fr": "OG",
+  "de": "OG",
+  "pl": "OG",
+  "ru": "Гангста",
+  "zh_cn": "OG"
+ },
+ "CELL_RAF_N": {
+  "en": "Raf",
+  "fr": "Raf",
+  "de": "Raf",
+  "pl": "Raf",
+  "ru": "Раф",
+  "zh_cn": "拉夫"
+ },
+ "CELL_SES_N": {
+  "en": "Sessanta",
+  "fr": "Sessanta",
+  "de": "Sessanta",
+  "pl": "Sessanta",
+  "ru": "Сессанта",
+  "zh_cn": "席桑达"
  }
 }

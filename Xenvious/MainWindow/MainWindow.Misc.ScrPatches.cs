@@ -668,7 +668,7 @@ namespace Xenvious
                     if (!bool.TryParse(ini.ReadString(ScrPatchSection, group.Name), out bool on) || on == group.Enabled)
                         continue;
                     group.Enabled = on;
-                    Log.Info($"Script patch {group.Name} {(on ? "on" : "off")} (remembered)", source: "scrpatches");
+                    Log.Debug($"Script patch {group.Name} {(on ? "on" : "off")} (remembered)", source: "scrpatches");
                 }
             }
             catch (Exception e)
@@ -688,7 +688,7 @@ namespace Xenvious
                     if (!bool.TryParse(ini.ReadString(GamePatchSection, key), out bool on))
                         continue;
                     RememberedGamePatch(key)(on);
-                    Log.Info($"Game patch {key} {(on ? "on" : "off")} (remembered)", source: "scrpatches");
+                    Log.Debug($"Game patch {key} {(on ? "on" : "off")} (remembered)", source: "scrpatches");
                 }
             }
             catch (Exception e)
@@ -733,7 +733,7 @@ namespace Xenvious
         {
             if (!enabled)
                 ScrPatchesRunner.Revert(patch);
-            Log.Info($"Patch {(enabled ? "on" : "off")}: {patch.patch_name} [{patch.script_name}]",
+            Log.Debug($"Patch {(enabled ? "on" : "off")}: {patch.patch_name} [{patch.script_name}]",
                 source: "scrpatches");
             Dispatcher.BeginInvoke(new Action(() => { _patchesShownKey = null; RenderPatchesPage(); }));
         }

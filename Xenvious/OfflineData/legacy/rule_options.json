@@ -1,4 +1,46 @@
 {
+ "AB_BSTS_ON": {
+  "key": "irbs5",
+  "field": 8504,
+  "bit": 7,
+  "on_when_clear": false
+ },
+ "BST_DMG": {
+  "key": "irbs5",
+  "field": 8504,
+  "bit": 19,
+  "on_when_clear": false
+ },
+ "BST_HELTH": {
+  "key": "irbs5",
+  "field": 8504,
+  "bit": 11,
+  "on_when_clear": false
+ },
+ "BST_JMP": {
+  "key": "irbs5",
+  "field": 8504,
+  "bit": 13,
+  "on_when_clear": false
+ },
+ "BST_MOV": {
+  "key": "rl_boc",
+  "field": 8720,
+  "bit": 27,
+  "on_when_clear": false
+ },
+ "BST_SPD": {
+  "key": "irbs5",
+  "field": 8504,
+  "bit": 12,
+  "on_when_clear": false
+ },
+ "BST_STELO": {
+  "key": "irbs5",
+  "field": 8504,
+  "bit": 14,
+  "on_when_clear": false
+ },
  "GC_AGGRO": {
   "key": "rl_aggro",
   "field": 8648,

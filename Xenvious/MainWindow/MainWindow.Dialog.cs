@@ -40,6 +40,7 @@ namespace Xenvious
             DialogContent.Content = null;
             DialogContent.Visibility = Visibility.Collapsed;
             DialogBox.MaxWidth = 560;
+            DialogIcon.Visibility = Visibility.Collapsed;
 
             DialogTitle.Text = title ?? "";
             DialogText.Text = message ?? "";

@@ -97,7 +97,7 @@ namespace Xenvious
                 return null;
             if (newest.Version <= CurrentVersion)
             {
-                Log.Info($"update check: {CurrentVersion} is current (newest {newest.Version})", source: "updater");
+                Log.Debug($"update check: {CurrentVersion} is current (newest {newest.Version})", source: "updater");
                 return null;
             }
             Log.Info($"update check: {newest.Version}{(newest.Nightly ? " (nightly)" : "")} available (running {CurrentVersion})", source: "updater");
@@ -123,7 +123,7 @@ namespace Xenvious
                     string body = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                     if (!response.IsSuccessStatusCode)
                     {
-                        Log.Info($"update check ({which}): HTTP {(int)response.StatusCode}", source: "updater");
+                        Log.Debug($"update check ({which}): HTTP {(int)response.StatusCode}", source: "updater");
                         return null;
                     }
 
@@ -134,7 +134,7 @@ namespace Xenvious
                     string named = nightly ? Regex.Match((string)release["name"] ?? "", @"\d+\.\d+\.\d+\.\d+").Value : tag;
                     if (!TryParseTag(named, out var version))
                     {
-                        Log.Info($"update check: release '{tag}' has no version", source: "updater");
+                        Log.Debug($"update check: release '{tag}' has no version", source: "updater");
                         return null;
                     }
 
@@ -159,7 +159,7 @@ namespace Xenvious
             }
             catch (Exception ex)
             {
-                Log.Info($"update check ({which}) failed: " + ex.Message, source: "updater");
+                Log.Debug($"update check ({which}) failed: " + ex.Message, source: "updater");
                 return null;
             }
         }

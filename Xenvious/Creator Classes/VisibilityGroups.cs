@@ -26,26 +26,31 @@
         };
 
         /// <summary>
-        /// Two more switches that are not creator groups but Xenvious' injected custom functions
-        /// (customfuncs fn3 / fn4 in LTS, Capture and Race): the play area of every team and rule,
-        /// and the gang chase areas. They only draw while the experimental script features are on,
-        /// because the injected code is a dev patch. Kept in the same config value, bits 7 and 8.
+        /// More switches that are not creator groups but drawn by Xenvious' injected drawer
+        /// (ScriptDrawer, PlayAreaOverlay): the play area of every team and rule, the gang chase
+        /// areas and so on. They only draw while the experimental script features are on, because
+        /// the injected code is a dev patch. Kept in the same config value, bits 7 and up.
         /// </summary>
         public static readonly (string Key, string Name)[] Extra =
         {
             ("vis_playarea", "Play areas (custom)"),
             ("vis_gangchase", "Gang chase areas (custom)"),
             ("vis_entitymarks", "Entity numbers (custom, LTS and Capture)"),
+            ("vis_checkpoints", "Restart checkpoint spawns (custom)"),
+            ("vis_gotorange", "Vehicle and actor go-to ranges (custom)"),
         };
 
         public const int PlayAreaBit = 7;
         public const int GangChaseBit = 8;
         // Stored inverted (set = off), so configs written before it existed have it on.
         public const int EntityMarkBit = 9;
+        // Also inverted: new switches start on.
+        public const int CheckpointBit = 10;
+        public const int GotoRangeBit = 11;
 
         private const int Mask = (1 << 7) - 1;
-        private const int AllBits = (1 << 10) - 1;
-        private const int Inverted = 1 << EntityMarkBit;
+        private const int AllBits = (1 << 12) - 1;
+        private const int Inverted = 1 << EntityMarkBit | 1 << CheckpointBit | 1 << GotoRangeBit;
         private static int? _wanted;
 
         public static int Wanted

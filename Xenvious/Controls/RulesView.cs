@@ -56,6 +56,7 @@ namespace Xenvious
         {
             _team = Math.Max(0, team);
             _selected = Math.Max(0, rule);
+            _cp = -1;
             _shownKey = null;
             if (_built)
                 Reload(true);
@@ -183,6 +184,7 @@ namespace Xenvious
 
             _rules = Rules.Read(_team);
             if (_selected >= _rules.Count) _selected = Math.Max(0, _rules.Count - 1);
+            LoadCheckpoints();
             string key = Signature();
             if (!force && key == _shownKey)
                 return;
@@ -217,11 +219,13 @@ namespace Xenvious
         }
 
         private string Signature()
-            => _team + "|" + _selected + "|" + Rules.PublicCreator + "|" + string.Join(";", _rules.Select(r =>
+            => _team + "|" + _selected + "|" + _cp + "|" + Rules.PublicCreator + "|" + RestartCheckpoints.Signature(_team, _rules.Count) + "|" + string.Join(";", _rules.Select(r =>
                 $"{r.Text}/{r.NextRules}/{r.TargetScore}/{r.ObjectiveScore}/{r.TakeoverMs}/{r.TimeLimit}/{r.FailsMission}/{string.Join(".", r.DropZones)}/{r.DropRadius}/" +
-                string.Join(",", r.Links.Select(l => $"{l.Kind}{l.Index}:{l.Type}:{l.Extra}:{l.PassJump}:{l.FailJump}:{Rules.FailJumpBlocked(l, _team, out _)}"))));
+                string.Join(",", r.Links.Select(l => $"{l.Kind}{l.Index}:{l.Type}:{l.Extra}:{l.PassJump}:{l.FailJump}:{Rules.FailJumpBlocked(l, _team, out _)}:{(IsRangedGoto(l) ? GotoRanges.Get(l.Kind, l.Index) : 0)}"))));
 
         // ----- the list -----
+
+        private static bool IsRangedGoto(Rules.Link link) => !link.Extra && link.Type == 4 && (link.Kind == Rules.Kind.Vehicle || link.Kind == Rules.Kind.Ped);
 
         private FrameworkElement RuleRow(Rules.Rule rule, out FrameworkElement numOut)
         {
@@ -231,7 +235,7 @@ namespace Xenvious
                 Cursor = System.Windows.Input.Cursors.Hand };
             row.SetResourceReference(Border.BackgroundProperty, "SectionBackgroundBrush");
             row.SetResourceReference(Border.BorderBrushProperty, selected ? "AccentBrush" : "LineBrush");
-            row.MouseLeftButtonUp += (_, __) => { _selected = rule.Index; _joinError = null; Reload(true); };
+            row.MouseLeftButtonUp += (_, __) => { _selected = rule.Index; _cp = -1; _joinError = null; Reload(true); };
 
             var grid = new Grid();
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(48) });
@@ -282,6 +286,14 @@ namespace Xenvious
             if (sms.Count > 0)
                 chips.Children.Add(Chip("✉ " + string.Format(CultureInfo.CurrentCulture, T("rl_sms_chip", "SMS {0}"), string.Join(", ", sms.Select(i => i + 1))), ChipKind.Plain,
                     string.Join("\n", sms.Select(i => (i + 1).ToString(CultureInfo.CurrentCulture) + ": " + Sms.Text(i)))));
+            // Go-to targets with their own range (GotoRanges): reached from that far away.
+            foreach (var link in rule.Links.Where(IsRangedGoto))
+            {
+                int range = GotoRanges.Get(link.Kind, link.Index);
+                if (range > 0)
+                    chips.Children.Add(Chip("◎ " + string.Format(CultureInfo.CurrentCulture, T("rl_range_chip", "{0} up to {1} m"), KindName(link.Kind) + " " + (link.Index + 1), range), ChipKind.Plain,
+                        T("rl_range_tip", "Go-to range: the target counts as reached as soon as a player is this close. Set on the entity's page.")));
+            }
             if (Rules.PublicCreator && rule.DropZones.Count == 0 && rule.Links.Any(Rules.IsDelivery))
                 chips.Children.Add(Chip(T("rl_drop_none", "no drop-off zone"), ChipKind.Warn,
                     T("rl_drop_none_tip", "Collect & deliver needs a drop-off. In the creator: the rule's Specify Drop-off Zones.")));
@@ -290,6 +302,16 @@ namespace Xenvious
             foreach (var twice in rule.Links.Where(l => l.Extra && rule.Links.Any(o => !o.Extra && o.Kind == l.Kind && o.Index == l.Index)))
                 chips.Children.Add(Chip(string.Format(CultureInfo.CurrentCulture, T("rl_extra_same", "{0}: extra objective on its own rule"), KindName(twice.Kind) + " " + (twice.Index + 1)),
                     ChipKind.Warn, T("rl_extra_same_tip", "The entity's extra objective sits on the same rule as its own objective. Give it a later rule, then the team gets it after this one.")));
+            AddRestartChips(chips, rule.Index);
+            // Mid-mission inventories given when this team reaches this rule (InventoryView).
+            for (int t = 0; t < Rules.Teams(); t++)
+                for (int set = 1; set <= 2; set++)
+                {
+                    var trig = InventoryView.Trigger(t, set);
+                    if (trig.Team == _team && trig.Rule == rule.Index)
+                        chips.Children.Add(Chip("⚔ " + string.Format(CultureInfo.CurrentCulture, T("rl_inv_chip", "Team {0} gets weapons"), t + 1), ChipKind.Plain,
+                            T("rl_inv_chip_tip", "A mid-mission inventory is given here. Set on Mission › Inventory.")));
+                }
             middle.Children.Add(chips);
             var flowChips = FlowChips(rule.Index);
             if (flowChips != null)
@@ -325,7 +347,7 @@ namespace Xenvious
                 foreach (var part in new UIElement[] { num, middle.Children[0], chips, side })
                     part.Opacity = 0.5;
             row.Child = grid;
-            return Indented(row, reach, selected);
+            return WithCheckpointLines(Indented(row, reach, selected), rule.Index);
         }
 
         /// <summary>What the move grip says: how to use it, or why it is greyed out.</summary>

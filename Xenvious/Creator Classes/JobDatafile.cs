@@ -56,7 +56,7 @@ namespace Xenvious
 
         // ---- availability ---------------------------------------------------------------
 
-        private static long SaveOffset(string creator)
+        internal static long SaveOffset(string creator)
         {
             switch (creator)
             {
@@ -218,7 +218,7 @@ namespace Xenvious
             CreatorMap.WriteLocal(save + GTA.Offsets.Editor.job_save_upload_state, UploadFinished);
             CreatorMap.WriteLocal(save + GTA.Offsets.Editor.job_save_uploaded, 0);
             CreatorMap.WriteLocal(state, CreatorStateSave);
-            Log.Info($"job file export: save started without upload ({creator})", source: "jobfile");
+            Log.Debug($"job file export: save started without upload ({creator})", source: "jobfile");
 
             if (!await WaitForEditingAsync(state, save).ConfigureAwait(true))
             {
@@ -236,7 +236,7 @@ namespace Xenvious
                 Log.Warn($"job file export: datafile 0 holds no job, keys: {string.Join(", ", job?.Properties().Select(p => p.Name) ?? new string[0])}", source: "jobfile");
                 return (Result.NoJob, null);
             }
-            Log.Info($"job file export: {reader.Nodes} nodes, {reader.UnknownKeys} keys without a name", source: "jobfile");
+            Log.Debug($"job file export: {reader.Nodes} nodes, {reader.UnknownKeys} keys without a name", source: "jobfile");
             return (Result.Done, job);
         }
 
@@ -262,7 +262,7 @@ namespace Xenvious
                     string trace = $"state {now}, stage {stage}, upload {CreatorMap.ReadLocal(save + GTA.Offsets.Editor.job_save_upload_state)}, "
                         + $"uploaded {CreatorMap.ReadLocal(save + GTA.Offsets.Editor.job_save_uploaded)}";
                     if (trace != last)
-                        Log.Info($"job file export: {trace} after {(DateTime.UtcNow - started).TotalMilliseconds:0} ms", source: "jobfile");
+                        Log.Debug($"job file export: {trace} after {(DateTime.UtcNow - started).TotalMilliseconds:0} ms", source: "jobfile");
                     last = trace;
                     if (stage != 0)
                         left = true;
@@ -291,6 +291,22 @@ namespace Xenvious
             };
             var job = JsonConvert.DeserializeObject<JToken>(text, settings) as JObject;
             return job?["mission"]?["gen"] is JObject ? job : null;
+        }
+
+        /// <summary>
+        /// A mission the Capture Creator only takes as a capture (<see cref="JobLoader.LoadsAsCapture"/>)
+        /// with subtype 6, on a copy; every other job as it is.
+        /// </summary>
+        private static JObject AsCapture(JObject job)
+        {
+            var gen = job["mission"]?["gen"];
+            int type = gen?["type"]?.Type == JTokenType.Integer ? (int)gen["type"] : -1;
+            int subtype = gen?["subtype"]?.Type == JTokenType.Integer ? (int)gen["subtype"] : 0;
+            if (!JobLoader.LoadsAsCapture(type, subtype))
+                return job;
+            var copy = (JObject)job.DeepClone();
+            copy["mission"]["gen"]["subtype"] = 6;
+            return copy;
         }
 
         /// <summary>The creator script the job file belongs in, or null.</summary>
@@ -342,7 +358,7 @@ namespace Xenvious
             if (probed == null)
                 return Result.Unsupported;
             var builder = new TreeBuilder(probed.Vtables);
-            builder.Add(job);
+            builder.Add(AsCapture(job));
             long memory = Allocate(builder.Size);
             if (memory == 0)
                 return Result.Failed;
@@ -365,7 +381,7 @@ namespace Xenvious
                 hung = true;
                 new Global(GTA.Offsets.Editor.load_job_flag).SetInt(1);
                 CreatorMap.WriteLocal(state, CreatorStateLoad);
-                Log.Info($"job file import: {builder.Nodes} nodes, {builder.Size} bytes, creator restarted ({creator})", source: "jobfile");
+                Log.Debug($"job file import: {builder.Nodes} nodes, {builder.Size} bytes, creator restarted ({creator})", source: "jobfile");
 
                 if (!await WaitForEditingAsync(state).ConfigureAwait(true))
                 {

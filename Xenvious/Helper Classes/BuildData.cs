@@ -46,6 +46,15 @@ namespace Xenvious
         public static Dictionary<string, (int Bit, bool OnWhenClear)> CurrentRuleOptions() =>
             GameVariant.IsEnhanced ? ruleOptionsEnhanced.Value : ruleOptionsLegacy.Value;
 
+        private static readonly Lazy<(string Key, string Path, string Note)[]> globalNamesLegacy =
+            new Lazy<(string Key, string Path, string Note)[]>(GlobalNamesLegacy);
+        private static readonly Lazy<(string Key, string Path, string Note)[]> globalNamesEnhanced =
+            new Lazy<(string Key, string Path, string Note)[]>(GlobalNamesEnhanced);
+
+        /// <summary>The globals of offsets.ini by name in the current edition, for the Global Editor's suggestions.</summary>
+        public static (string Key, string Path, string Note)[] CurrentGlobalNames() =>
+            GameVariant.IsEnhanced ? globalNamesEnhanced.Value : globalNamesLegacy.Value;
+
         /// <summary>What moves with a rule in the current edition (rule_fields.json, RuleMover).</summary>
         public static RuleFields CurrentRuleFields() =>
             GameVariant.IsEnhanced ? ruleFieldsEnhanced.Value : ruleFieldsLegacy.Value;

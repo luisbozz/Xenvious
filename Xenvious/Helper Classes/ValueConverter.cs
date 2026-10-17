@@ -54,31 +54,6 @@ namespace Xenvious
         }
     }
 
-    public class FreezeValueConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            if (value is int || value is float || value is long || value is double || value is short)
-            {
-                return value.ToString();
-            }
-            else if (value is byte[])
-            {
-                return string.Join(", ", (value as byte[]).Select(x => x.ToString("X")));
-            }
-            else if (value is string)
-            {
-                return value;
-            }
-            return "empty";
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            return value;
-        }
-    }
-
     public class ColorToShadowColorConverter : IValueConverter
     {
 

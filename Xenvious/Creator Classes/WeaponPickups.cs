@@ -163,6 +163,24 @@ namespace Xenvious
                 new Global(GTA.Offsets.Editor.dlcrel).SetInt(1);
         }
 
+        /// <summary>
+        /// Job option menubs9 bit 5 (FMMC_VWO_ENB, vehicle weapon options). The classic controller
+        /// loads the vehicle pickup models (func_17597), the power play effects and the vehicle
+        /// weapon controls only with it (or with "disable vehicle weapons: pickups"). Without, the
+        /// pickup is created before its model is in memory and shows the pickup type's own model,
+        /// which looks like a health pack. Rockstar's jobs with these pickups have it on.
+        /// </summary>
+        public static bool VehiclePickupsLoaded() =>
+            GTA.Offsets.Editor.menubs9 == 0 || !MainWindow.m.IsProcOpen
+            || Functions.Read.checkbinary(5, GTA.Offsets.Editor.menubs9)
+            || GTA.Offsets.Editor.menubs13 != 0 && Functions.Read.checkbinary(4, GTA.Offsets.Editor.menubs13);
+
+        public static void LoadVehiclePickups()
+        {
+            if (GTA.Offsets.Editor.menubs9 != 0 && MainWindow.m.IsProcOpen)
+                Functions.Write.writebinary(5, GTA.Offsets.Editor.menubs9, true);
+        }
+
         // ----- the selected weapon in memory -----
 
         private static long At(long field, int index) => field + (long)index * GTA.Offsets.Editor.Weapon.NEXT;

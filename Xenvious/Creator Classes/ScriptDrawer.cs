@@ -16,21 +16,23 @@ namespace Xenvious
     ///
     /// Data page (byte offsets): 0x00 "STRING" (the text label BEGIN_TEXT_COMMAND_DISPLAY_TEXT
     /// needs), 0x08 entry count, 0x10 a heartbeat the drawer counts up every frame, 0x18 the
-    /// customfuncs variables (ScriptVars), 0x800 the entries, 0x100 bytes each, 0x2700 the compact
-    /// labels (SetLabels: a count, then 0x30 bytes each from 0x2710), 0x3700 the entity mover
+    /// customfuncs variables (ScriptVars), 0x2700 the count of the compact labels, 0x3700 the entity mover
     /// request (EntityMover), 0x3800 the zone type
     /// names for the zone labels (SetZoneNames), 0x3F88 the teleport request (GTA.Teleport), 0x3FC8
-    /// the datafile probe (JobDatafile). An entry is 8 byte slots with the value in the low 4 bytes:
+    /// the datafile probe (JobDatafile).
+    /// The entries and the compact labels themselves lie in the drawer space Xenvious allocates
+    /// (ScriptSpace.Extra, string pages 59 to 62, 64 KB): 0x0000 the entries, 0x100 bytes each,
+    /// 0x8000 the labels, 0x30 bytes each. An entry is 8 byte slots with the value in the low 4 bytes:
     /// 0 kind, 1 parts, 2..9 prism corners (x, y) or marker type, position and scale, 10/11 prism
     /// bottom and top, 12..16 r, g, b, fill alpha, line alpha, 17..19 label position, 20 label
     /// scale, 21..24 label r, g, b, a, 25..31 the label (56 bytes, NUL terminated).
     /// </summary>
     public static class ScriptDrawer
     {
-        public const int MaxShapes = 31;   // 0x800..0x2700; the labels follow
-        public const int MaxLabels = 80;
-        private const int LabelCountAt = 0x2700, LabelsAt = 0x2710, LabelSize = 0x30, LabelText = 24;
-        private const int CountAt = 0x08, BeatAt = 0x10, EntriesAt = 0x800, EntrySize = 0x100;
+        public const int MaxShapes = 128;  // drawer space 0x0000..0x8000; the labels follow
+        public const int MaxLabels = 640;  // 0x8000..0xF800
+        private const int LabelCountAt = 0x2700, LabelsAt = 0x8000, LabelSize = 0x30, LabelText = 24;
+        private const int CountAt = 0x08, BeatAt = 0x10, EntriesAt = 0x0000, EntrySize = 0x100;
         // Zone type names (zonelabel in customfuncs): a count, then entries of a type and its name.
         private const int NamesAt = 0x3800, NameEntry = 0x40, MaxNames = 30;
         private const int TextAt = 25 * 8, TextBytes = 56;
@@ -152,7 +154,7 @@ namespace Xenvious
         }
 
         // What the data page holds, so unchanged entries are not written again.
-        private static long page;
+        private static long page, space;
         private static byte[][] written = new byte[MaxShapes][];
         private static int writtenCount;
         private static byte[] writtenNames;
@@ -170,8 +172,8 @@ namespace Xenvious
         {
             if (!MainWindow.m.IsProcOpen || string.IsNullOrEmpty(script))
                 return false;
-            var space = ScriptSpace.Get(script);
-            if (space == null || space.Data == 0)
+            var got = ScriptSpace.Get(script);
+            if (got == null || got.Data == 0 || got.Extra == 0)
             {
                 running = "";
                 return false;
@@ -179,9 +181,10 @@ namespace Xenvious
             try
             {
                 // Another script, or a page that was set up again (its header is gone): start over.
-                if (space.Data != page || !Same(Read(space.Data, Header.Length), Header))
+                if (got.Data != page || got.Extra != space || !Same(Read(got.Data, Header.Length), Header))
                 {
-                    page = space.Data;
+                    page = got.Data;
+                    space = got.Extra;
                     written = new byte[MaxShapes][];
                     writtenCount = 0;
                     writtenNames = null;
@@ -208,7 +211,7 @@ namespace Xenvious
                     byte[] entry = shapes[i].ToBytes();
                     if (written[i] != null && Same(written[i], entry))
                         continue;
-                    Write(page + EntriesAt + i * EntrySize, entry);
+                    Write(space + EntriesAt + i * EntrySize, entry);
                     written[i] = entry;
                 }
                 if (n != writtenCount)
@@ -231,6 +234,7 @@ namespace Xenvious
             {
                 Log.Debug("Show " + script + ": " + ex.Message, source: "ScriptDrawer");
                 page = 0;
+                space = 0;
                 running = "";
                 return false;
             }
@@ -308,11 +312,10 @@ namespace Xenvious
                 return;
             try
             {
-                // Count to 0 first, so the drawer never reads a label being rewritten. The labels
-                // start 8 bytes after the count's slot (0x2708 is padding).
+                // Count to 0 first, so the drawer never reads a label being rewritten.
                 Write(page + LabelCountAt, BitConverter.GetBytes(0L));
                 if (n > 0)
-                    Write(page + LabelsAt, table.Skip(8).ToArray());
+                    Write(space + LabelsAt, table.Skip(8).ToArray());
                 Write(page + LabelCountAt, table.Take(8).ToArray());
                 writtenLabels = table;
             }

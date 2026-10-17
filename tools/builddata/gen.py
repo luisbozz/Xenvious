@@ -318,6 +318,28 @@ def gen_rule_options(options, inis, ed: str, Ed: str) -> str:
     return "\n".join(lines)
 
 
+GLOBAL_LINE = re.compile(r'^\s*OFFSET_(\w+)\s*=\s*"(Global_[^"]*)"\s*(?:;(.*))?$')
+
+
+def gen_global_names(ed: str, Ed: str) -> str:
+    """The [OFFSETS] keys that are globals, with their path and the comment after them, for the
+    Global Editor's suggestions. Read from the text, as the parsed ini drops the comments."""
+    lines = [HEADER, "namespace Xenvious", "{", "    public sealed partial class BuildData", "    {",
+             f"        /// <summary>OfflineData/{ed}/offsets.ini: the globals by name (key, path, comment), for the Global Editor.</summary>",
+             f"        private static (string Key, string Path, string Note)[] GlobalNames{Ed}() => new[]",
+             "        {"]
+    section = ""
+    for raw in (DATA / ed / "offsets.ini").read_text(encoding="utf-8-sig").splitlines():
+        if raw.startswith("["):
+            section = raw.strip()
+            continue
+        m = GLOBAL_LINE.match(raw) if section == "[OFFSETS]" else None
+        if m:
+            lines.append(f"            ({cs_string(m.group(1))}, {cs_string(m.group(2))}, {cs_string((m.group(3) or '').strip())}),")
+    lines += ["        };", "    }", "}", ""]
+    return "\n".join(lines)
+
+
 def outputs() -> dict:
     inis = load_inis()
     lists = load_prop_lists()
@@ -330,6 +352,7 @@ def outputs() -> dict:
         out[f"PropLists.{Ed}.g.cs"] = gen_prop_lists(lists, ed, Ed)
         out[f"RuleFields.{Ed}.g.cs"] = gen_rule_fields(rules, ed, Ed)
         out[f"RuleOptions.{Ed}.g.cs"] = gen_rule_options(options, inis, ed, Ed)
+        out[f"GlobalNames.{Ed}.g.cs"] = gen_global_names(ed, Ed)
     return out
 
 

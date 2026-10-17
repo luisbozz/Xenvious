@@ -10,9 +10,9 @@ namespace Xenvious
     /// <summary>
     /// Draws the play areas (area 1 and 2) and the gang chase areas of every team and rule in the
     /// creator, labelled with team and rules, through the injected drawer (ScriptDrawer). Works in
-    /// every creator with a data page, the Mission Creator included; there it replaces customfuncs
-    /// fn3/fn4, which draw only area 1 and only as boxes (WriteScriptFeatureBits leaves their bits
-    /// off while the drawer runs). Follows the two switches on the "Show in game" card.
+    /// every creator with a data page, the Mission Creator included. It replaces customfuncs
+    /// fn3/fn4, which drew only area 1 and only as boxes; WriteScriptFeatureBits keeps their bits
+    /// off. Follows the two switches on the "Show in game" card.
     /// </summary>
     public static class PlayAreaOverlay
     {
@@ -76,6 +76,7 @@ namespace Xenvious
             }
             // The selected entity's cone first, so a full drawer drops play areas, not it.
             bool marks = EntityMarks.ForCreator(script) && VisibilityGroups.IsOn(VisibilityGroups.EntityMarkBit);
+            shapes.InsertRange(0, RuleOverlay.Shapes());
             if (marks)
                 shapes.InsertRange(0, EntityMarks.Shapes());
             ScriptDrawer.Show(script, shapes);

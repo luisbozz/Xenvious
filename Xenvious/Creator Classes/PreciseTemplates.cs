@@ -52,7 +52,7 @@ namespace Xenvious
             }
             if (active != Active || reason != _lastReason)
             {
-                Logging.Log.Info($"precise templates {(active ? "on" : "off")}: {reason}", source: "templates");
+                Logging.Log.Debug($"precise templates {(active ? "on" : "off")}: {reason}", source: "templates");
                 _lastReason = reason;
             }
             Active = active;

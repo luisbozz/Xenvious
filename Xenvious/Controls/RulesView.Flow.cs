@@ -61,6 +61,8 @@ namespace Xenvious
             _rows.Children.Add(end);
             _parts.Add((end, endNum));
             _list.Children.Add(_flowGrid);
+            if (RestartCheckpoints.Available)
+                _list.Children.Add(CheckpointTiles());
             Dispatcher.BeginInvoke(new Action(DrawArrows), DispatcherPriority.Loaded);
         }
 

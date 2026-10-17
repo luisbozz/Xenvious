@@ -54,6 +54,9 @@ namespace Xenvious
             tbCopyScopeHint.Text = CopyCompleteJob
                 ? TranslateOr("copy_scope_full_hint", "GTA lädt den Job selbst in den offenen Creator, mit allem, was dazugehört. Der Creator muss zum Job passen (Race, Deathmatch, LTS, Capture oder Survival).")
                 : TranslateOr("copy_scope_parts_hint", "Xenvious schreibt nur die angehakten Teile in den Job, der gerade offen ist.");
+            // The creator a job needs depends on the scope (a mission loads as a capture only completely).
+            if (jobjson?.Mission != null)
+                FillCopyChecks(jobjson.Mission);
             UpdateCopyRoute();
         }
 
@@ -129,7 +132,7 @@ namespace Xenvious
                     try
                     {
                         string saved = await SaveCurrentMapAsync(null);
-                        Log.Info($"copy job: open map saved first ({saved})", source: "copyjob");
+                        Log.Debug($"copy job: open map saved first ({saved})", source: "copyjob");
                     }
                     catch (System.Exception ex)
                     {
@@ -140,7 +143,8 @@ namespace Xenvious
                 }
 
                 SetCopyStatus(TranslateOr("copy_full_loading", "GTA lädt den Job …"), false);
-                var result = await JobLoader.LoadAsync(copyJobContentId, full_link);
+                bool asCapture = JobLoader.LoadsAsCapture(ToInt(jobjson?.Mission?.Gen?.Type), ToInt(jobjson?.Mission?.Gen?.Subtype));
+                var result = await JobLoader.LoadAsync(copyJobContentId, full_link, asCapture);
                 switch (result)
                 {
                     case JobLoader.Result.Loaded:
@@ -206,7 +210,7 @@ namespace Xenvious
             }
 
             bool rebuilt = !rebuild || await CreatorMap.RebuildAsync();
-            Log.Info($"copy job: rebuild {(rebuilt ? "ok" : "not done")}, then {mode}", source: "copyjob");
+            Log.Debug($"copy job: rebuild {(rebuilt ? "ok" : "not done")}, then {mode}", source: "copyjob");
             if (!rebuilt)
             {
                 SetCopyStatus(TranslateOr("copy_done_norebuild", "Kopiert. Der Creator hat die Map nicht neu aufgebaut; lade den Job neu, um sie zu sehen."), true);

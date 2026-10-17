@@ -236,7 +236,8 @@ namespace Xenvious
 
         private void tb_minp_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(tb_minp.Text))
+            // Only what the user types, not the worker's refresh (see tb_maxp_TextChanged).
+            if (!tb_minp.IsKeyboardFocusWithin || string.IsNullOrWhiteSpace(tb_minp.Text))
                 return;
             if (IsValidInt(tb_minp.Text, false) && m.IsProcOpen)
             {
@@ -246,7 +247,10 @@ namespace Xenvious
 
         private void tb_maxp_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(tb_maxp.Text))
+            // Only what the user types: the worker fills the box from the game every tick, and
+            // written back while a job loads (type and creator flag change under it) the max
+            // players gained one on every load.
+            if (!tb_maxp.IsKeyboardFocusWithin || string.IsNullOrWhiteSpace(tb_maxp.Text))
                 return;
             if (IsValidInt(tb_maxp.Text, false) && m.IsProcOpen)
             {
@@ -843,6 +847,18 @@ namespace Xenvious
                 m.memory(state.ToString("X")).SetInt(10);
         }
 
+        /// <summary>Starts the creator test as <paramref name="team"/> (0-based); does nothing while a test runs.</summary>
+        public void StartCreatorTest(int team)
+        {
+            if (!m.IsProcOpen || _testRunning)
+                return;
+            ddteamtest.SelectedIndex = team;
+            foreach (var child in DashTeamButtons.Children)
+                if (child is System.Windows.Controls.Primitives.ToggleButton button)
+                    button.IsChecked = DashTeamButtons.Children.IndexOf(button) == team;
+            BtnTestMain_Click(null, null);
+        }
+
         private void BtnTestMain_Click(object sender, RoutedEventArgs e)
         {
             if (m.IsProcOpen && _testRunning)
@@ -922,13 +938,6 @@ namespace Xenvious
             }
         }
 
-        private void BtnPublishMain_Click(object sender, RoutedEventArgs e)
-        {
-            if (m.IsProcOpen)
-            {
-                publishJob();
-            }
-        }
 
         private void BtnTryFixBlackScreen_Click(object sender, RoutedEventArgs e)
         {

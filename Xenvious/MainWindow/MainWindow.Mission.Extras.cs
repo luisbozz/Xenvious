@@ -42,6 +42,9 @@ namespace Xenvious
                         (cbmissionextnoheadlights, () => GTA.Offsets.Editor.menubs19, 20),
                         (cbmissionextnovehexpdmg, () => GTA.Offsets.Editor.menubs21, 12),
                         (cbmissionextnostuckdestroy, () => GTA.Offsets.Editor.menubs23, 15),
+                        // Mission Creator "Hint Cams" (PMCT_OGF_HCAM): set = off. Only the 2020 and v3 controllers read it;
+                        // the per-rule Hint Cam (irbs13 bit 0) works in all three.
+                        (cbmissionextnohintcam, () => GTA.Offsets.Editor.menubs27, 15),
                         (cbmissionextnothrowweap, () => GTA.Offsets.Editor.menubs31, 25),
                         // The same two world options on the dashboard.
                         (cbdashmuteambience, () => GTA.Offsets.Editor.menubs15, 6),

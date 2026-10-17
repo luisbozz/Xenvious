@@ -64,8 +64,8 @@ namespace Xenvious
             // Sender: -1 the job's contact, 0..24 the controller's character list.
             var sender = new ComboBox { Height = 28 };
             sender.Items.Add(new ComboBoxItem { Content = T("sms_sender_job", "Job contact (default)"), Tag = -1 });
-            for (int c = 0; c <= 24; c++)
-                sender.Items.Add(new ComboBoxItem { Content = T("sms_sender_n", "Character") + " " + c.ToString(CultureInfo.CurrentCulture), Tag = c });
+            for (int c = 0; c < SenderNames.Length; c++)
+                sender.Items.Add(new ComboBoxItem { Content = SenderName(c), Tag = c });
             Select(sender, Sms.Get(GTA.Offsets.Editor.SMS.smsc, i));
             sender.SelectionChanged += (_, __) => { if (!_loading && sender.SelectedItem is ComboBoxItem it) Sms.Set(GTA.Offsets.Editor.SMS.smsc, i, (int)it.Tag); };
             Row(T("sms_sender", "Sender"), sender, T("sms_sender_help", "Unknown Contact (below, for all messages) wins over this. Characters 4 and up only in the 2020 mission controller."));
@@ -117,6 +117,25 @@ namespace Xenvious
             Row(T("sms_flag", "Mission flag while it is open"), flag, T("sms_flag_help", "On while a player has this message open on the phone, off again when they close it. Rules can wait for it (Rules page, Mission Flags). 2020 mission controller only."));
         }
 
+        // The phone contact behind each sender number: the controller turns the number into a
+        // character (2020 controller func_20609, v3 func_21077: 0 = 157, 1 = 21, 2 = 163 ...), the
+        // character sheet (Global_2349[char].f_3) names its label. The classic controller knows
+        // 0 to 3 and sends every higher number as Lester (char 12).
+        private static readonly (string Label, string Fallback)[] SenderNames =
+        {
+            ("CELL_CAS_MAN_N", "Ms. Baker"), ("CELL_133", "Cheng Jr."), ("CELL_CAS_TTR_N", "Tao's Translator"), ("CELL_CELEB_N", "Yung Ancestor"),
+            ("CELL_YACHT", "Captain"), ("CELL_195", "Unknown"), ("CELL_MIGEL_N", "Miguel Madrazo"), ("CELL_PAVEL_N", "Pavel"),
+            ("CELL_MM_N", "Moodymann"), ("CELL_SES_N", "Sessanta"), ("CELL_KDJ_N", "KDJ"), ("CELL_FRA_IMA_N", "Agency Conference"),
+            ("CELL_ULP_N", "Agent ULP"), ("CELL_DAX_N", "Dax"), ("CELL_CHARLIE_N", "Charlie"), ("CELL_VINCENT_N", "Vincent"),
+            ("CELL_JENETTE_N", "Jenette"), ("CELL_OSCAR_G_N", "Oscar"), ("CELL_RAF_N", "Raf"), ("CELL_144", "Martin"),
+            ("CELL_MAI_N1", "Angel"), ("CELL_AVI_SCH_N", "Avi Schwartzman"), ("CELL_MAI_N2", "Haviland"), ("CELL_MAI_N3", "OG"),
+            ("CELL_AVI_SCH_N", "Avi Schwartzman"),
+        };
+
+        // 24 is Avi again with another picture; the number tells the two apart.
+        private static string SenderName(int c) =>
+            RuleOptions.GameText(SenderNames[c].Label, SenderNames[c].Fallback) + (c == 24 ? " (2)" : "");
+
         private static void Select(ComboBox box, int value)
         {
             foreach (ComboBoxItem it in box.Items)
@@ -141,7 +160,7 @@ namespace Xenvious
             var row = new DockPanel { Margin = new Thickness(0, 0, 0, 2) };
             editor.VerticalAlignment = VerticalAlignment.Center;
             if (!(editor is CheckBox))
-                editor.Width = 150;
+                editor.Width = 210;
             DockPanel.SetDock(editor, Dock.Right);
             row.Children.Add(editor);
             var l = new TextBlock { Text = label, FontSize = 13, TextWrapping = TextWrapping.Wrap, VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(0, 0, 10, 0) };

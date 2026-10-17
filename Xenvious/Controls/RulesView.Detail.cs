@@ -47,6 +47,7 @@ namespace Xenvious
             if (_deleteButton == null)
                 return;
             bool can = RuleMover.Available && _selected >= 0 && _selected < _rules.Count && _rules.Count > 1;
+            _deleteButton.Visibility = Visibility.Visible;
             _deleteButton.IsEnabled = can;
             _deleteButton.Opacity = can ? 1 : 0.4;
             _deleteButton.ToolTip = can ? T("rl_delete_tip", "Delete this rule")
@@ -98,6 +99,13 @@ namespace Xenvious
                 _detailTeam.Text = "";
                 return;
             }
+            if (_cp >= 0 && RestartCheckpoints.Available)
+            {
+                _loading = true;
+                try { ShowCheckpointDetail(); }
+                finally { _loading = false; }
+                return;
+            }
             var rule = _rules[_selected];
             _detailTitle.Text = string.Format(CultureInfo.CurrentCulture, T("rl_rule_of", "Rule {0} of {1}"), rule.Index + 1, _rules.Count);
             _detailTeam.Text = T("dash_team", "Team") + " " + (_team + 1);
@@ -110,6 +118,10 @@ namespace Xenvious
                     rule.Links.Count > 1 ? Faint(T("rl_b_tasks_same", "all at the same time"), 12) : null, TasksBody(rule)));
                 _detail.Children.Add(Box("⏱", T("rl_b_end", "When the rule ends"), null, EndBody(rule)));
                 _detail.Children.Add(Box("→", T("rl_b_next", "Where it goes next"), null, NextBody(rule)));
+                if (ShowsDropOff(rule))
+                    _detail.Children.Add(Group("drop", "⌖", T("dof_title", "Drop-off"), DropSummary(rule), () => DropBody(rule)));
+                if (BeastAvailable)
+                    _detail.Children.Add(Group("beast", "✦", T("rl_g_beast", "Beast mode"), BeastSummary(rule), () => BeastBody(rule)));
                 if (Sms.Ready)
                     _detail.Children.Add(Group("sms", "✉", T("rl_g_sms", "Text messages"), SmsSummary(rule), () => SmsBody(rule)));
                 if (Rules.Teams() > 1 && RuleOptions.OtherTeamsAvailable)
@@ -226,12 +238,39 @@ namespace Xenvious
         }
 
         // A box that opens and closes; closed it shows one line of what is set.
+        private readonly Dictionary<string, Border> _groupBoxes = new Dictionary<string, Border>();
+
+        /// <summary>For the side list search: opens a group of the rule detail (or "checkpoints") and flashes it.</summary>
+        public void RevealGroup(string key)
+        {
+            if (key == "checkpoints")
+            {
+                if (_cp < 0) PickCheckpoint(0);
+            }
+            else
+            {
+                _cp = -1;
+                _openGroups.Add(key);
+                _shownKey = null;
+                Reload(true);
+            }
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                FrameworkElement target = key == "checkpoints" ? (FrameworkElement)_detail : _groupBoxes.TryGetValue(key, out var box) ? box : null;
+                if (target == null)
+                    return;
+                target.BringIntoView();
+                FlashOutline.Show(target, null);
+            }), DispatcherPriority.Loaded);
+        }
+
         private Border Group(string key, string icon, string title, string summary, Func<FrameworkElement> body)
         {
             bool open = _openGroups.Contains(key);
             var right = new TextBlock { Text = (summary ?? "") + (open ? "  ▾" : "  ▸"), FontSize = 12, TextTrimming = TextTrimming.CharacterEllipsis, MaxWidth = 260 };
             right.SetResourceReference(TextBlock.ForegroundProperty, "FaintTextBrush");
             var box = Box(icon, title, right, open ? body() : new Border());
+            _groupBoxes[key] = box;
             var head = (DockPanel)((StackPanel)box.Child).Children[0];
             if (!open)
                 head.Margin = new Thickness(0);
@@ -367,7 +406,53 @@ namespace Xenvious
         private FrameworkElement TextBody(Rules.Rule rule)
         {
             var panel = new StackPanel();
-            var box = new TextBox { Text = rule.Text ?? "", MaxLength = 63, BorderThickness = new Thickness(0), Background = Brushes.Transparent, Padding = new Thickness(0), FontSize = 13.5 };
+            panel.Children.Add(TextLine(rule.Text ?? "", text =>
+            {
+                Rules.SetText(_team, rule.Index, text);
+                rule.Text = text;
+            }));
+            panel.Children.Add(Say(string.IsNullOrWhiteSpace(rule.Text)
+                ? T("rl_text_empty_hint2", "Empty: the game shows its default text. Select text for colours, Ctrl+Space for icons and codes.")
+                : T("rl_text_hint2", "Shown at the bottom of the screen while the team is on this rule. Select text for colours, Ctrl+Space for icons.")));
+
+            // The further texts of the Mission Creator's text menu; all creators save them.
+            var more = new (Rules.TextKind Kind, string Label, string Fallback, string Help)[]
+            {
+                (Rules.TextKind.Second, "PMCT_OBJ2", "Objective Text 2", T("rl_text2_help", "Once the team has the entity: \"Deliver the ...\", \"Keep control of ...\". Empty: default text.")),
+                (Rules.TextKind.Third, "PMCT_OBJ3", "Objective Text 3", T("rl_text3_help", "For team mates while another player has it: \"Help deliver ...\". Empty: default text.")),
+                (Rules.TextKind.Blip, "PMC_OBLIP", "Blip Name", T("rl_blip_help", "Name of the targets' blips on the map.")),
+                (Rules.TextKind.Target, "PMC_TKRT", "Ticker Name", RuleOptions.GameText("PMCH_TKRT", T("rl_ticker_help", "Ticker text for one entity: \"a gold bar\" shows as \"Player1 collected a gold bar.\""))),
+                (Rules.TextKind.Targets, "PMC_PTKRT", "Plural Ticker Name", RuleOptions.GameText("PMCH_PTKRT", T("rl_tickers_help", "Ticker text for several entities: \"gold bars\" shows as \"Player1 delivered 5 gold bars.\""))),
+            };
+            bool any = more.Any(m => Rules.HasText(m.Kind));
+            if (!any)
+                return panel;
+            bool open = _openGroups.Contains("texts");
+            int set = more.Count(m => !string.IsNullOrEmpty(Rules.Text(m.Kind, _team, rule.Index)));
+            var toggle = new TextBlock { Text = (open ? "▾ " : "▸ ") + T("rl_more_texts", "More texts") + (set > 0 ? " · " + set.ToString(CultureInfo.CurrentCulture) : ""),
+                FontSize = 12.5, FontWeight = FontWeights.SemiBold, Cursor = System.Windows.Input.Cursors.Hand, Margin = new Thickness(0, 4, 0, 6) };
+            toggle.SetResourceReference(TextBlock.ForegroundProperty, "AccentBrush");
+            toggle.MouseLeftButtonUp += (_, __) => { if (!_openGroups.Remove("texts")) _openGroups.Add("texts"); ShowDetail(); };
+            panel.Children.Add(toggle);
+            if (!open)
+                return panel;
+            foreach (var m in more.Where(x => Rules.HasText(x.Kind)))
+            {
+                var kind = m.Kind;
+                var label = new TextBlock { Text = RuleOptions.GameText(m.Label, m.Fallback), FontSize = 12.5, Margin = new Thickness(0, 4, 0, 4) };
+                label.SetResourceReference(TextBlock.ForegroundProperty, "TextColor");
+                panel.Children.Add(label);
+                // The creator refuses blip names over 23 characters (PMC_FOBLIP).
+                panel.Children.Add(TextLine(Rules.Text(kind, _team, rule.Index), text => Rules.SetText(kind, _team, rule.Index, text), kind == Rules.TextKind.Blip ? 23 : 63));
+                AddIf(panel, HelpLine(m.Help));
+            }
+            return panel;
+        }
+
+        // One text field (63 characters unless less) with the colour and icon helper, written when it loses focus.
+        private Border TextLine(string current, Action<string> write, int maxLength = 63)
+        {
+            var box = new TextBox { Text = current, MaxLength = maxLength, BorderThickness = new Thickness(0), Background = Brushes.Transparent, Padding = new Thickness(0), FontSize = 13.5 };
             box.SetResourceReference(Control.ForegroundProperty, "TextColor");
             box.SetResourceReference(System.Windows.Controls.Primitives.TextBoxBase.CaretBrushProperty, "TextColor");
             GtaTextAssist.Attach(box);
@@ -379,9 +464,9 @@ namespace Xenvious
             box.TextChanged += (_, __) => Count();
             box.LostKeyboardFocus += (_, __) =>
             {
-                if (_loading || !Live || box.Text == (rule.Text ?? "")) return;
-                Rules.SetText(_team, rule.Index, box.Text);
-                rule.Text = box.Text;
+                if (_loading || !Live || box.Text == current) return;
+                write(box.Text);
+                current = box.Text;
                 Reread();
             };
             var line = new DockPanel();
@@ -391,11 +476,7 @@ namespace Xenvious
             var field = new Border { CornerRadius = new CornerRadius(5), BorderThickness = new Thickness(1), Padding = new Thickness(9, 6, 9, 6), Margin = new Thickness(0, 0, 0, 6), Child = line };
             field.SetResourceReference(Border.BackgroundProperty, "TextBoxBackground");
             field.SetResourceReference(Border.BorderBrushProperty, "TextBoxBorder");
-            panel.Children.Add(field);
-            panel.Children.Add(Say(string.IsNullOrWhiteSpace(rule.Text)
-                ? T("rl_text_empty_hint2", "Empty: the game shows its default text. Select text for colours, Ctrl+Space for icons and codes.")
-                : T("rl_text_hint2", "Shown at the bottom of the screen while the team is on this rule. Select text for colours, Ctrl+Space for icons.")));
-            return panel;
+            return field;
         }
 
         // ----- 2: tasks -----
@@ -1016,14 +1097,23 @@ namespace Xenvious
                     if (block >= 0)
                         (waited.TryGetValue(block, out var b) ? b : waited[block] = new List<string>()).Add(where + " " + T("rl_fl_chase", "(chase)"));
                 }
+            // Entities, doors and zones (MissionFlagUses): the ones that set a flag count as switching it.
+            var entityUses = MissionFlagUses.All(T);
+            foreach (var pair in entityUses)
+                foreach (var use in pair.Value)
+                {
+                    string text = use.Entity + " " + T(use.Key, use.Fallback);
+                    var target = use.Sets ? changed : waited;
+                    (target.TryGetValue(pair.Key, out var l) ? l : target[pair.Key] = new List<string>()).Add(text);
+                }
             var panel = new StackPanel { Margin = new Thickness(0, 8, 0, 0) };
-            var head = new TextBlock { Text = T("rl_fl_overview", "Where each flag is used (all rules)"), FontSize = 13, FontWeight = FontWeights.SemiBold, Margin = new Thickness(0, 0, 0, 4) };
+            var head = new TextBlock { Text = T("rl_fl_overview2", "Where each flag is used (rules, entities, doors, zones)"), FontSize = 13, FontWeight = FontWeights.SemiBold, Margin = new Thickness(0, 0, 0, 4) };
             head.SetResourceReference(TextBlock.ForegroundProperty, "TextColor");
             panel.Children.Add(head);
             var used = changed.Keys.Union(waited.Keys).OrderBy(f => f).ToList();
             if (used.Count == 0)
             {
-                panel.Children.Add(Say(T("rl_fl_none", "No rule uses Mission Flags yet.")));
+                panel.Children.Add(Say(T("rl_fl_none2", "Nothing uses Mission Flags yet.")));
                 return panel;
             }
             foreach (int f in used)
@@ -1036,10 +1126,10 @@ namespace Xenvious
                 t.TextWrapping = TextWrapping.Wrap;
                 t.Margin = new Thickness(0, 0, 0, 3);
                 panel.Children.Add(t);
-                // The creator's own warnings, for rules; entities, doors and zones may still use the flag.
+                // The creator's own warnings; interactables and cutscenes are not looked at.
                 if (!changed.ContainsKey(f) || !waited.ContainsKey(f))
                 {
-                    var warn = Faint("   ⚠ " + RuleOptions.GameText(changed.ContainsKey(f) ? "PMCW_PO_NC" : "PMCW_PO_NM", "") + " " + T("rl_fl_rulesonly", "(Only rules are looked at; entities, doors and zones may use it too.)"), 11.5);
+                    var warn = Faint("   ⚠ " + RuleOptions.GameText(changed.ContainsKey(f) ? "PMCW_PO_NC" : "PMCW_PO_NM", "") + " " + T("rl_fl_notall", "(Interactables and cutscenes are not looked at.)"), 11.5);
                     warn.TextWrapping = TextWrapping.Wrap;
                     warn.SetResourceReference(TextBlock.ForegroundProperty, "WarnBrush");
                     warn.Margin = new Thickness(0, 0, 0, 4);

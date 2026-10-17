@@ -719,19 +719,22 @@ namespace Xenvious
             if (query.Length == 0)
                 return;
 
-            var hits = new List<(string Title, string Path, EditNavEntry Entry, EditNavSub Sub)>();
+            var ranked = new List<(int Score, string Title, string Path, EditNavEntry Entry, EditNavSub Sub)>();
             foreach (var entry in EditNav.Where(EditNavFits))
             {
                 string page = TranslateOr(entry.Key, entry.Fallback);
-                if (Matches(page, query))
-                    hits.Add((page, "", entry, null));
+                int score = SmartSearch.Score(query, page);
+                if (score > 0)
+                    ranked.Add((score, page, "", entry, null));
                 foreach (var sub in entry.Subs.Where(s => s.Button == null || s.Button.Visibility == Visibility.Visible))
                 {
                     string label = SubLabel(sub);
-                    if (Matches(label, query))
-                        hits.Add((label, page, entry, sub));
+                    score = SmartSearch.Score(query, label, page);
+                    if (score > 0)
+                        ranked.Add((score, label, page, entry, sub));
                 }
             }
+            var hits = ranked.OrderByDescending(h => h.Score).Select(h => (h.Title, h.Path, h.Entry, h.Sub)).ToList();
 
             var fields = SearchFields(query, 25);
             if (hits.Count == 0 && fields.Count == 0)
@@ -784,24 +787,22 @@ namespace Xenvious
             }
         }
 
-        private static bool Matches(string text, string query)
-        {
-            return text.IndexOf(query, StringComparison.CurrentCultureIgnoreCase) >= 0;
-        }
 
         // The matching part in the accent colour.
         private TextBlock Highlighted(string text, string query)
         {
             var block = new TextBlock { FontSize = 14, FontWeight = FontWeights.Bold, Foreground = (Brush)FindResource("TextColor") };
-            int at = text.IndexOf(query, StringComparison.CurrentCultureIgnoreCase);
-            if (at < 0)
+            // Every query word that appears as typed; typo and umlaut matches stay plain.
+            int pos = 0;
+            foreach (var (start, length) in SmartSearch.Spans(text, query))
             {
-                block.Text = text;
-                return block;
+                if (start < pos)
+                    continue;
+                block.Inlines.Add(new System.Windows.Documents.Run(text.Substring(pos, start - pos)));
+                block.Inlines.Add(new System.Windows.Documents.Run(text.Substring(start, length)) { Foreground = DotWarn });
+                pos = start + length;
             }
-            block.Inlines.Add(new System.Windows.Documents.Run(text.Substring(0, at)));
-            block.Inlines.Add(new System.Windows.Documents.Run(text.Substring(at, query.Length)) { Foreground = DotWarn });
-            block.Inlines.Add(new System.Windows.Documents.Run(text.Substring(at + query.Length)));
+            block.Inlines.Add(new System.Windows.Documents.Run(text.Substring(pos)));
             return block;
         }
 

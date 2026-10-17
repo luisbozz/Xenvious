@@ -316,7 +316,7 @@ namespace Xenvious
             WriteFloat(page + HeadingAt, p.Heading);
             int state = await Request(page, 20).ConfigureAwait(true);
             if (state == 3)
-                Log.Info($"entity mover: {script} {kind} {index}: handle {handle} is no entity", source: "EntityMover");
+                Log.Debug($"entity mover: {script} {kind} {index}: handle {handle} is no entity", source: "EntityMover");
             return state == 2;
         }
 

@@ -188,11 +188,15 @@
     <Compile Include="Controls\TestVehicleTuneView.cs" />
     <Compile Include="Controls\GtaTextAssist.cs" />
     <Compile Include="Controls\RulesView.cs" />
+    <Compile Include="Controls\RulesView.Beast.cs" />
+    <Compile Include="Controls\RulesView.Checkpoints.cs" />
+    <Compile Include="Controls\RulesView.DropOff.cs" />
     <Compile Include="Controls\RulesView.Flow.cs" />
     <Compile Include="Controls\RulesView.Detail.cs" />
     <Compile Include="Controls\EntityRulesCard.cs" />
     <Compile Include="Controls\SectionCard.cs" />
     <Compile Include="Controls\HeadingSlider.cs" />
+    <Compile Include="Controls\GotoRangeCard.cs" />
     <Compile Include="Controls\GotoRouteView.cs" />
     <Compile Include="Controls\GroupCard.cs" />
     <Compile Include="Controls\PlayerRulesView.cs" />
@@ -254,6 +258,7 @@
       <DependentUpon>PlacementPreview3D.xaml</DependentUpon>
     </Compile>
     <Compile Include="Creator Classes\Gangs.cs" />
+    <Compile Include="Creator Classes\GotoRanges.cs" />
     <Compile Include="Creator Classes\GangTypes.cs" />
     <Compile Include="Creator Classes\ExtraObjectives.cs" />
     <Compile Include="Creator Classes\GamePatches.cs" />
@@ -270,18 +275,26 @@
     <Compile Include="Creator Classes\EntityRules.cs" />
     <Compile Include="Creator Classes\RuleMover.cs" />
     <Compile Include="Creator Classes\WeaponPickups.cs" />
+    <Compile Include="Creator Classes\RestartCheckpoints.cs" />
+    <Compile Include="Creator Classes\PublishMode.cs" />
     <Compile Include="Creator Classes\RuleOptions.cs" />
+    <Compile Include="Creator Classes\RuleOverlay.cs" />
     <Compile Include="Creator Classes\RuleFlow.cs" />
     <Compile Include="Creator Classes\VisibilityGroups.cs" />
     <Compile Include="Creator Classes\ScriptThreadLog.cs" />
     <Compile Include="Creator Classes\LocalFreezer.cs" />
     <Compile Include="Creator Classes\GlobalFreezer.cs" />
+    <Compile Include="Creator Classes\FreezeItem.cs" />
+    <Compile Include="Creator Classes\RuleNotes.cs" />
+    <Compile Include="Creator Classes\SaveResult.cs" />
+    <Compile Include="Helper Classes\EditorValue.cs" />
     <Compile Include="Creator Classes\JobTime.cs" />
     <Compile Include="Creator Classes\ScrPatchesRunner.cs" />
     <Compile Include="Creator Classes\CreatorMap.cs" />
     <Compile Include="Creator Classes\PreciseTemplates.cs" />
     <Compile Include="Creator Classes\ScrProgramScanner.cs" />
     <Compile Include="Creator Classes\PlayAreaOverlay.cs" />
+    <Compile Include="Creator Classes\DropOffs.cs" />
     <Compile Include="Creator Classes\EntityMarks.cs" />
     <Compile Include="Creator Classes\Sms.cs" />
     <Compile Include="Creator Classes\OnlineTest.cs" />
@@ -289,6 +302,7 @@
     <Compile Include="Creator Classes\ScriptSpace.cs" />
     <Compile Include="Creator Classes\ScriptVars.cs" />
     <Compile Include="Creator Classes\ModdedPropSource.cs" />
+    <Compile Include="Creator Classes\MissionFlagUses.cs" />
     <Compile Include="Creator Classes\ModdedPropMemory.cs" />
     <Compile Include="Creator Classes\ModdedPropTable.cs" />
     <Compile Include="Creator Classes\nrcidcopy.cs" />
@@ -341,6 +355,8 @@
     <Compile Include="Generated\RuleFields.Enhanced.g.cs" />
     <Compile Include="Generated\RuleOptions.Legacy.g.cs" />
     <Compile Include="Generated\RuleOptions.Enhanced.g.cs" />
+    <Compile Include="Generated\GlobalNames.Legacy.g.cs" />
+    <Compile Include="Generated\GlobalNames.Enhanced.g.cs" />
     <Compile Include="Helper Classes\AobCache.cs" />
     <Compile Include="Helper Classes\BattlEye.cs" />
     <Compile Include="JSON\Converters\JsonDecimalConverter.cs" />
@@ -523,8 +539,13 @@
     <Compile Include="MainWindow\MainWindow.Mission.cs" />
     <Compile Include="MainWindow\MainWindow.ModdedProps.cs" />
     <Compile Include="Helper Classes\OffsetLoader.cs" />
+    <Compile Include="Helper Classes\SmartSearch.cs" />
     <Compile Include="MainWindow\MainWindow.OnlineEnabler.cs" />
     <Compile Include="MainWindow\MainWindow.Props.cs" />
+    <Compile Include="MainWindow\MainWindow.PropTiming.cs" />
+    <Compile Include="MainWindow\MainWindow.ViewOnly.cs" />
+    <Compile Include="MainWindow\MainWindow.CloudError.cs" />
+    <Compile Include="MainWindow\MainWindow.Publish.cs" />
     <Compile Include="MainWindow\MainWindow.Race.cs" />
     <Compile Include="MainWindow\MainWindow.ScreenMessage.cs" />
     <Compile Include="MainWindow\MainWindow.Settings.cs" />
@@ -597,6 +618,7 @@
     <EmbeddedResource Include="OfflineData\actors.json" />
     <EmbeddedResource Include="OfflineData\menubits.json" />
     <EmbeddedResource Include="OfflineData\jobkeys.txt" />
+    <EmbeddedResource Include="OfflineData\script_names.txt" />
     <None Include=".manifest" />
     <Resource Include="Fonts\Nunito\Nunito-Black.ttf" />
     <Resource Include="Fonts\Nunito\Nunito-BlackItalic.ttf" />

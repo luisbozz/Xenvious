@@ -95,13 +95,14 @@ namespace Xenvious
         public async Task<bool> GetJobInfo()
         {
             var watch = System.Diagnostics.Stopwatch.StartNew();
-            void Step(string what) => Log.Info($"copy job: {what} ({watch.ElapsedMilliseconds} ms)", source: "copyjob");
+            void Step(string what) => Log.Debug($"copy job: {what} ({watch.ElapsedMilliseconds} ms)", source: "copyjob");
             try
             {
                 string rootid;
                 string details;
                 string link = (tbCopyJobLink.Text ?? "").Trim();
-                var directJson = Regex.Match(link, @"prod\.cloud\.rockstargames\.com\/ugc\/gta5mission\/\d{4}\/(.{22})\/\d+_\d+_[\w-]+\.json$");
+                // Player jobs sit in a numbered folder (gta5mission/1234/<id>/), Rockstar's own jobs without one.
+                var directJson = Regex.Match(link, @"prod\.cloud\.rockstargames\.com\/ugc\/gta5mission\/(?:\d{4}\/)?([\w-]{22})\/\d+_\d+_[\w-]+\.json$");
                 // A Social Club job link with or without https://, or the bare 22-character job id.
                 var socialClub = Regex.Match(link, @"socialclub\.rockstargames\.com\/job\/gtav\/([\w-]{22})");
                 if (!socialClub.Success)
@@ -515,7 +516,12 @@ namespace Xenvious
                 AddCheck(DotWarn, string.Format(CultureInfo.CurrentCulture,
                     TranslateOr("copy_check_dynamic", "{0} dynamic props: the creator keeps only 32."), dynamic));
 
-            string needed = CreatorForJob(mission);
+            int type = ToInt(mission.Gen?.Type), subtype = ToInt(mission.Gen?.Subtype);
+            if (JobLoader.LoadsAsCapture(type, subtype))
+                AddCheck(DotWarn, string.Format(CultureInfo.CurrentCulture,
+                    TranslateOr("copy_check_ascapture", "Mission with subtype {0} (e.g. a Rockstar job): it has no creator of its own. \"Complete job\" loads it as a capture into the Capture Creator."), subtype));
+
+            string needed = CopyCompleteJob ? JobLoader.CreatorFor(type, subtype) ?? CreatorForJob(mission) : CreatorForJob(mission);
             string open = m != null && m.IsProcOpen && IsInCreator() ? GTA.CurrentCreatorName() : "";
             if (open.Length == 0)
                 AddCheck(DotWarn, string.Format(CultureInfo.CurrentCulture,

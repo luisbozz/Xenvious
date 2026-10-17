@@ -157,7 +157,7 @@ namespace Xenvious
 
             string state = string.Join(",", index, WeaponPickups.Model(index), WeaponPickups.ScriptType(index), WeaponPickups.VehicleType(index),
                 WeaponPickups.Variant(index), WeaponPickups.Clip(index), WeaponPickups.AmmoForAll(index),
-                WeaponPickups.Lowers(index, 17), WeaponPickups.Lowers(index, 18), WeaponPickups.ControllerRelease(), WeaponPickups.SpecialSeconds(15), WeaponPickups.SpecialSeconds(16), string.Join(".", WeaponPickups.Components(index)), Language());
+                WeaponPickups.Lowers(index, 17), WeaponPickups.Lowers(index, 18), WeaponPickups.ControllerRelease(), WeaponPickups.SpecialSeconds(15), WeaponPickups.SpecialSeconds(16), WeaponPickups.VehiclePickupsLoaded(), string.Join(".", WeaponPickups.Components(index)), Language());
             if (!force && (state == _shown || IsKeyboardFocusWithin || _body.Children.OfType<FrameworkElement>().Any(Busy)))
                 return;
             _shown = state;
@@ -243,6 +243,8 @@ namespace Xenvious
                     (current == 17 || current == 18) && WeaponPickups.Lowers(index, current)));
             }
             _body.Children.Add(EffectNote(WeaponPickups.VehicleTypes.FirstOrDefault(t => t.Value == current)));
+            if (WeaponPickups.ClassicController() && !WeaponPickups.VehiclePickupsLoaded())
+                _body.Children.Add(LoadNote());
             if (current >= 14 && current <= 16)
             {
                 var row = Columns(2);
@@ -456,6 +458,32 @@ namespace Xenvious
             }
             row.Children.Add(stack);
             var box = new Border { Child = row, CornerRadius = new CornerRadius(6), Padding = new Thickness(10, 8, 10, 0), Margin = new Thickness(0, 0, 0, 10) };
+            box.SetResourceReference(Border.BackgroundProperty, "DeepBrush");
+            return box;
+        }
+
+        // Classic controller without the job option that loads the vehicle pickup models: the pickup
+        // shows the default model of its type (a health pack) and its effect does not run.
+        private FrameworkElement LoadNote()
+        {
+            var row = new DockPanel { Margin = new Thickness(0, 0, 0, 10) };
+            var mark = new TextBlock { Text = "!", FontWeight = FontWeights.Bold, FontSize = 14, Width = 18, VerticalAlignment = VerticalAlignment.Top };
+            mark.SetResourceReference(TextBlock.ForegroundProperty, "WarnBrush");
+            DockPanel.SetDock(mark, Dock.Left);
+            row.Children.Add(mark);
+            var stack = new StackPanel();
+            var t = new TextBlock { FontSize = 12, TextWrapping = TextWrapping.Wrap,
+                Text = T("wp_load_no", "The controller only loads vehicle pickup models with the job option \"vehicle weapon options\". Without it the pickup looks like a health pack and does nothing.") };
+            t.SetResourceReference(TextBlock.ForegroundProperty, "TextColor");
+            stack.Children.Add(t);
+            var fix = new Button { Content = T("wp_load_fix", "Turn on vehicle weapon options"), Height = 28, Padding = new Thickness(10, 0, 10, 0),
+                Margin = new Thickness(0, 6, 0, 0), HorizontalAlignment = HorizontalAlignment.Left,
+                ToolTip = T("wp_load_fix_tip", "Job option menubs9 bit 5, on in Rockstar's jobs with these pickups. It also loads the power play effects and lets vehicle weapons from pickups fire.") };
+            fix.SetResourceReference(StyleProperty, "FormButton");
+            fix.Click += (_, __) => { WeaponPickups.LoadVehiclePickups(); Redraw(); };
+            stack.Children.Add(fix);
+            row.Children.Add(stack);
+            var box = new Border { Child = row, CornerRadius = new CornerRadius(6), Padding = new Thickness(10, 8, 10, 8), Margin = new Thickness(0, 0, 0, 10) };
             box.SetResourceReference(Border.BackgroundProperty, "DeepBrush");
             return box;
         }
