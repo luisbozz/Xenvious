@@ -27,16 +27,24 @@ namespace Xenvious
         /// </summary>
         private async Task StartupUpdateCheckAsync()
         {
-            Updater.DeleteLeftovers();
-            ShowUpdateVersion();
-            await ShowWhatsNewAsync();
+            try
+            {
+                Updater.DeleteLeftovers();
+                ShowUpdateVersion();
+                await ShowWhatsNewAsync();
 
-            var ini = new ini_reader(Functions.getRoamingConfigFilePath());
-            if (!ini.ReadBoolean("Settings", SettingCheckUpdates, true))
-                return;
-            var update = await Updater.CheckAsync(NightlyEnabled);
-            if (update != null)
-                await OfferUpdateAsync(update);
+                var ini = new ini_reader(Functions.getRoamingConfigFilePath());
+                if (!ini.ReadBoolean("Settings", SettingCheckUpdates, true))
+                    return;
+                var update = await Updater.CheckAsync(NightlyEnabled);
+                if (update != null)
+                    await OfferUpdateAsync(update);
+            }
+            finally
+            {
+                // The automatic offers held back so far (start the creator, ...) come now.
+                ReleaseLowDialogs();
+            }
         }
 
         private void ShowUpdateVersion()
@@ -70,7 +78,7 @@ namespace Xenvious
                 return;
             await ConfirmAsync(
                 string.Format(CultureInfo.CurrentCulture, TranslateOr("update_whatsnew_title", "Neu in Xenvious {0}"), current),
-                null, "OK", null, details: lines);
+                null, "OK", null, details: lines, level: DialogLevel.High);
         }
 
         private async Task OfferUpdateAsync(UpdateInfo update)
@@ -81,7 +89,7 @@ namespace Xenvious
                     : string.Format(CultureInfo.CurrentCulture, TranslateOr("update_available_title", "Xenvious {0} ist verfügbar"), update.Version),
                 string.Format(CultureInfo.CurrentCulture, TranslateOr("update_available_text", "Du hast {0}. Xenvious lädt die neue Version, prüft sie und startet neu."), Updater.CurrentVersion),
                 TranslateOr("update_install", "Jetzt aktualisieren"), TranslateOr("update_later", "Später"),
-                details: ChangelogText.Parse(update.Notes));
+                details: ChangelogText.Parse(update.Notes), level: DialogLevel.High);
             if (install)
                 await InstallUpdateAsync(update);
         }
@@ -91,9 +99,10 @@ namespace Xenvious
             if (_updateRunning)
                 return;
             _updateRunning = true;
+            Task busy = null;
             try
             {
-                ShowBusyDialog(
+                busy = ShowBusyDialog(
                     string.Format(CultureInfo.CurrentCulture, TranslateOr("update_downloading", "Lade Xenvious {0} …"), update.Version),
                     null);
                 var progress = new Progress<double>(SetDialogProgress);
@@ -106,10 +115,10 @@ namespace Xenvious
             catch (Exception ex)
             {
                 Log.Error("update failed", ex, "updater");
-                CloseDialog(false);
+                CancelDialog(busy);
                 await ConfirmAsync(TranslateOr("update_failed_title", "Update fehlgeschlagen"),
                     TranslateOr("update_failed_text", "Xenvious bleibt auf der bisherigen Version. Grund:") + " " + ex.Message,
-                    "OK", null, danger: true);
+                    "OK", null, danger: true, level: DialogLevel.Critical);
             }
             finally
             {

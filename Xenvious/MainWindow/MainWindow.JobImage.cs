@@ -156,14 +156,16 @@ namespace Xenvious
             var closed = ChooseAsync(TranslateOr("jobimg_title", "Change job image"),
                 TranslateOr("jobimg_text", "Paste an image with Ctrl+V, drop one here or choose a file."),
                 TranslateOr("jobimg_use", "Use image"), TranslateOr("jobimg_file", "Choose from file"),
-                TranslateOr("dialog_cancel", "Cancel"));
-            DialogImage.Source = null;
-            DialogImageHint.Visibility = Visibility.Visible;
-            DialogImageBox.Visibility = Visibility.Visible;
-            DialogConfirm.IsEnabled = false;
-            _dialogPaste = () => Show(ImageFrom(Clipboard.GetDataObject()));
-            _dialogDrop = data => Show(ImageFrom(data));
-            _dialogAltAction = () => Show(FileImage());
+                TranslateOr("dialog_cancel", "Cancel"), onShown: () =>
+                {
+                    DialogImage.Source = null;
+                    DialogImageHint.Visibility = Visibility.Visible;
+                    DialogImageBox.Visibility = Visibility.Visible;
+                    DialogConfirm.IsEnabled = false;
+                    _dialogPaste = () => Show(ImageFrom(Clipboard.GetDataObject()));
+                    _dialogDrop = data => Show(ImageFrom(data));
+                    _dialogAltAction = () => Show(FileImage());
+                });
 
             if (await closed != DialogChoice.Confirm || picked == null)
                 return;
