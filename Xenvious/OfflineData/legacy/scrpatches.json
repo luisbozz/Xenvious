@@ -1730,5 +1730,53 @@
         "bytes_to_patch": "70",
         "dev": false,
         "trigger": "test_oneteam"
+    },
+    {
+        "patch_name": "load content check passes",
+        "script_name": "fm_race_creator",
+        "pattern": "2D 00 02 00 00 62 ? ? ? 73 09 2A 56 ? ? 62 ? ? ? 71 09 1F 2A 56 ? ? 62 ? ? ? 72 09 1F 2A 56 ? ? 62 ? ? ? 74 09 1F",
+        "offset": 5,
+        "bytes_to_patch": "71 2E 00 01",
+        "dev": false
+    },
+    {
+        "patch_name": "load content check passes",
+        "script_name": "fm_lts_creator",
+        "pattern": "2D 00 02 00 00 62 ? ? ? 73 09 2A 56 ? ? 62 ? ? ? 71 09 1F 2A 56 ? ? 62 ? ? ? 72 09 1F 2A 56 ? ? 62 ? ? ? 74 09 1F",
+        "offset": 5,
+        "bytes_to_patch": "71 2E 00 01",
+        "dev": false
+    },
+    {
+        "patch_name": "load content check passes",
+        "script_name": "fm_capture_creator",
+        "pattern": "2D 00 02 00 00 62 ? ? ? 73 09 2A 56 ? ? 62 ? ? ? 71 09 1F 2A 56 ? ? 62 ? ? ? 72 09 1F 2A 56 ? ? 62 ? ? ? 74 09 1F",
+        "offset": 5,
+        "bytes_to_patch": "71 2E 00 01",
+        "dev": false
+    },
+    {
+        "patch_name": "load content check passes",
+        "script_name": "fm_deathmatch_creator",
+        "pattern": "2D 00 02 00 00 62 ? ? ? 73 09 2A 56 ? ? 62 ? ? ? 71 09 1F 2A 56 ? ? 62 ? ? ? 72 09 1F 2A 56 ? ? 62 ? ? ? 74 09 1F",
+        "offset": 5,
+        "bytes_to_patch": "71 2E 00 01",
+        "dev": false
+    },
+    {
+        "patch_name": "load content check passes",
+        "script_name": "fm_survival_creator",
+        "pattern": "2D 00 02 00 00 62 ? ? ? 73 09 2A 56 ? ? 62 ? ? ? 71 09 1F 2A 56 ? ? 62 ? ? ? 72 09 1F 2A 56 ? ? 62 ? ? ? 74 09 1F",
+        "offset": 5,
+        "bytes_to_patch": "71 2E 00 01",
+        "dev": false
+    },
+    {
+        "patch_name": "load content check passes",
+        "script_name": "public_mission_creator",
+        "pattern": "2D 00 02 00 00 62 ? ? ? 73 09 2A 56 ? ? 62 ? ? ? 71 09 1F 2A 56 ? ? 62 ? ? ? 72 09 1F 2A 56 ? ? 62 ? ? ? 74 09 1F",
+        "offset": 5,
+        "bytes_to_patch": "71 2E 00 01",
+        "dev": false
     }
 ]
