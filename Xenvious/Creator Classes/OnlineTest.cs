@@ -13,10 +13,14 @@ namespace Xenvious
     /// - all others: places where fm_mission_controller asks "is this a creator test?"
     ///   (func_18070 in 1.73, Global_1575066 / Enhanced 1575068) get "no". Online that question
     ///   is answered "no" anyway, so a patch that ever ran in a real job would change nothing.
-    /// - mortal: the creator makes the player invincible when it starts the test
-    ///   (SET_ENTITY_INVINCIBLE(PLAYER_PED_ID(), true) in its launch code); the patch passes false.
-    ///   The controller leaves invincibility alone in a test (func_13055 checks the test flag),
-    ///   so without it the player can die as online. Its own switch, not part of the master.
+    /// - mortal: the creator makes the player invincible in three places, the patches pass
+    ///   false to each: SET_ENTITY_INVINCIBLE and SET_ENTITY_PROOFS (bullet, fire, explosion,
+    ///   collision, melee) in its launch code, and SET_PLAYER_INVINCIBLE every frame while the
+    ///   controller runs ("if not invincible: make invincible"). The LTS creator also sets
+    ///   SET_ENTITY_INVINCIBLE and the proofs again every frame of the test (func_41 > func_94,
+    ///   for a mission-type job with f_2 5); Capture has no such call. The controller leaves
+    ///   invincibility alone in a test (func_13055 checks the test flag), so without them the
+    ///   player can die as online. Its own switch, not part of the master.
     /// What stays as in the test, on purpose: XP / RP / stats and unlocks (the stat writers check
     /// the test flag themselves), and the team minimum players.
     /// Only the classic controller (dlcrel below 2) has patches so far.

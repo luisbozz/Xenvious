@@ -177,7 +177,7 @@ namespace Xenvious
             _invincibleBadge.Margin = new Thickness(8, 1, 0, 0);
             invLine.Children.Add(_invincibleBadge);
             invText.Children.Add(invLine);
-            var invHelp = Text(T("olt_invincible_help", "On: as the creator does it, you cannot die. Off: the creator no longer makes you invincible when the test starts, so you take damage and die as online. Takes effect at the next test start."), 12, "FaintTextBrush");
+            var invHelp = Text(T("olt_invincible_help", "On: as the creator does it, you cannot die. Off: the creator no longer makes you invincible when the test starts, so you take damage and die as online. Takes effect at the next test start. Dead for 3 s, Xenvious brings you back where you died (needs the script features on)."), 12, "FaintTextBrush");
             invHelp.Margin = new Thickness(0, 2, 0, 0);
             invText.Children.Add(invHelp);
             inv.Children.Add(invText);

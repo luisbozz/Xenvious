@@ -1301,6 +1301,60 @@
         "trigger": "onlinetest_mortal"
     },
     {
+        "patch_name": "test without proofs",
+        "script_name": "fm_lts_creator",
+        "pattern": "71 2C 0C ? ? 2C 01 ? ? 71 2C 08 ? ? 2C 01 ? ? 72 72 72 72 72 71 71 71 2C 24 ? ?",
+        "offset": 18,
+        "bytes_to_patch": "71 71 71 71 71",
+        "dev": false,
+        "trigger": "onlinetest_mortal"
+    },
+    {
+        "patch_name": "test without per-frame player invincibility",
+        "script_name": "fm_lts_creator",
+        "pattern": "72 2C 08 ? ? 55 ? ? 2C 01 ? ? 2C 05 ? ? 06 56 ? ? 2C 01 ? ? 72 2C 08 ? ?",
+        "offset": 24,
+        "bytes_to_patch": "71",
+        "dev": false,
+        "trigger": "onlinetest_mortal"
+    },
+    {
+        "patch_name": "test without proofs",
+        "script_name": "fm_capture_creator",
+        "pattern": "71 2C 0C ? ? 2C 01 ? ? 71 2C 08 ? ? 2C 01 ? ? 72 72 72 72 72 71 71 71 2C 24 ? ?",
+        "offset": 18,
+        "bytes_to_patch": "71 71 71 71 71",
+        "dev": false,
+        "trigger": "onlinetest_mortal"
+    },
+    {
+        "patch_name": "test without per-frame player invincibility",
+        "script_name": "fm_capture_creator",
+        "pattern": "72 2C 08 ? ? 55 ? ? 2C 01 ? ? 2C 05 ? ? 06 56 ? ? 2C 01 ? ? 72 2C 08 ? ?",
+        "offset": 24,
+        "bytes_to_patch": "71",
+        "dev": false,
+        "trigger": "onlinetest_mortal"
+    },
+    {
+        "patch_name": "test without invincibility every frame",
+        "script_name": "fm_lts_creator",
+        "pattern": "5D ? ? ? 56 ? ? 2C 01 ? ? 2C 05 ? ? 56 ? ? 2C 01 ? ? 72 71 2C 0C ? ?",
+        "offset": 22,
+        "bytes_to_patch": "71",
+        "dev": false,
+        "trigger": "onlinetest_mortal"
+    },
+    {
+        "patch_name": "test without proofs every frame",
+        "script_name": "fm_lts_creator",
+        "pattern": "2C 05 ? ? 56 ? ? 2C 01 ? ? ? 71 2C 0C ? ? 2C 01 ? ? 72 72 72 72 72 71 71 71 2C 24 ? ?",
+        "offset": 21,
+        "bytes_to_patch": "71 71 71 71 71",
+        "dev": false,
+        "trigger": "onlinetest_mortal"
+    },
+    {
         "patch_name": "online test inventory",
         "script_name": "fm_mission_controller",
         "pattern": "51 46 13 71 5D ? ? ? 06 56 ? ?",
