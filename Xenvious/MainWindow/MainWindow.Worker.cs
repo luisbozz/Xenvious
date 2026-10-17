@@ -25,8 +25,9 @@ namespace Xenvious
             {
                 if (Process.GetProcessesByName(GameVariant.ProcessName).Length > 0)
                 {
-                    // Never open a game that runs with BattlEye (MainWindow.GameConnection.cs warns).
-                    if (!m.IsProcOpen && BattlEye.RunningProcess() == null)
+                    // Never open a game that runs with BattlEye (MainWindow.GameConnection.cs warns),
+                    // nor in view-only mode.
+                    if (!m.IsProcOpen && !ViewOnly && BattlEye.RunningProcess() == null)
                     {
                         m.OpenProcess(GameVariant.ProcessName);
                     }

@@ -37,6 +37,20 @@ namespace Xenvious
         private static Theme T(string key, string nameKey, string fallback, bool light, params string[] hex)
             => new Theme { Key = key, NameKey = nameKey, Fallback = fallback, Light = light, Colors = Tokens.Zip(hex, (t, h) => (t, h)).ToDictionary(p => p.t, p => p.h) };
 
+        /// <summary>
+        /// The colours of view-only mode (MainWindow.ViewOnly.cs): purple whatever theme is chosen,
+        /// so a window that is not connected to GTA is never mistaken for one that is. Not offered
+        /// in Settings.
+        /// </summary>
+        public static readonly Theme ViewOnly = T("viewonly", "theme_viewonly", "View only", false,
+            "#241F2C", "#2F2839", "#372F43", "#1F1A26", "#43394F",
+            "#1F1A26", "#2B2534", "#3A3146", "#3D3449",
+            "#372F43", "#312A3B", "#15111A", "#1F1A26",
+            "#312A3B", "#15111A", "#1F1A26", "#463B54", "#3D3449", "#FFFFFF",
+            "#FFFFFF", "#FFFFFF", "#B0A6BE", "#B0A6BE", "#7D7389", "#8C8496",
+            "#5E536C", "#E3E5E8", "#241F2C", "#FAC828", "#241F2C",
+            "#54476A", "#43B581", "#FAA61A", "#F04747", "#A27BE8");
+
         public static readonly IReadOnlyList<Theme> All = new[]
         {
             T("gray", "theme_dark", "Dark", false,

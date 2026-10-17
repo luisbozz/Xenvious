@@ -55,17 +55,17 @@ namespace Xenvious
             if (MainPages.SelectedItem == PageSettings && IsLoaded)
                 UpdateModelCacheSettings();
 
-            if (!m.IsProcOpen && SGTAMessage != null)
-            {
-                if (HideGtaMessage() || MainPages.SelectedItem == PageSettings || MainPages.SelectedItem == PageConverter || MainPages.SelectedItem == PageMod || MainPages.SelectedItem == PageCopyJobs)
-                {
-                    SGTAMessage.Visibility = Visibility.Collapsed;
-                }
-                else
-                {
-                    SGTAMessage.Visibility = Visibility.Visible;
-                }
-            }
+            UpdateGtaMessage();
+        }
+
+        // The "Start GTA" overlay while not connected; pages that need no game never get it.
+        private void UpdateGtaMessage()
+        {
+            if (m.IsProcOpen || SGTAMessage == null)
+                return;
+            bool noGame = MainPages.SelectedItem == PageSettings || MainPages.SelectedItem == PageConverter
+                || MainPages.SelectedItem == PageMod || MainPages.SelectedItem == PageCopyJobs;
+            SGTAMessage.Visibility = HideGtaMessage() || noGame ? Visibility.Collapsed : Visibility.Visible;
         }
 
         private void BtnGEditor_Click(object sender, RoutedEventArgs e)

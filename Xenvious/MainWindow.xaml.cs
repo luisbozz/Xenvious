@@ -423,7 +423,7 @@ namespace Xenvious
 
         private bool HideGtaMessage()
         {
-            return _hideGtaMessageThisLaunch || (cbsettingshidegtamessage != null && (cbsettingshidegtamessage.IsChecked ?? false));
+            return ViewOnly || _hideGtaMessageThisLaunch || (cbsettingshidegtamessage != null && (cbsettingshidegtamessage.IsChecked ?? false));
         }
 
 

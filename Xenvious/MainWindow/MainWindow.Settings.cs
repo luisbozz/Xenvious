@@ -39,7 +39,11 @@ namespace Xenvious
                 return;
             var theme = Themes.All[ddcolor.SelectedIndex];
             new ini_reader(Functions.getRoamingConfigFilePath()).Write("Settings", "color", theme.Key);
-            ApplyTheme(theme);
+            // View-only mode keeps its own colours; the choice applies when it ends.
+            if (ViewOnly)
+                _themeBeforeViewOnly = theme;
+            else
+                ApplyTheme(theme);
         }
 
         private void InitializeTranslation(ini_reader ini)

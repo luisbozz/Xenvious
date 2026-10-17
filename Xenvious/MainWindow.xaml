@@ -685,6 +685,25 @@
 
                 </Grid>
 
+                <!-- View-only mode (MainWindow.ViewOnly.cs): Xenvious does not connect to GTA. -->
+                <Border x:Name="ViewOnlyBanner" Grid.Row="1" VerticalAlignment="Top" Height="38" Margin="5,4,5,0" CornerRadius="5" Background="{DynamicResource SeactionHeaderBackgroundBrush}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Visibility="Collapsed" Panel.ZIndex="5">
+                    <Grid Margin="12,0,4,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Foreground="{DynamicResource AccentBrush}" Text="{Binding Translation[vo_title], FallbackValue=View only}"/>
+                        <TextBlock x:Name="ViewOnlyBannerText" Grid.Column="1" Margin="12,0" VerticalAlignment="Center" FontSize="13" Foreground="{DynamicResource MutedTextBrush}" TextTrimming="CharacterEllipsis"/>
+                        <Border Grid.Column="2" CornerRadius="5" Background="{DynamicResource SectionBackgroundBrush}" Margin="4" VerticalAlignment="Center">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="{DynamicResource ShadowColor}"/>
+                            </Border.Effect>
+                            <Button x:Name="BtnLeaveViewOnly" Style="{DynamicResource CustomButton}" FontSize="13" Height="28" Padding="12,0" local:CornerRadiusSetter.CornerRadius="5" Content="{Binding Translation[vo_leave], FallbackValue=Leave view-only}" Click="BtnLeaveViewOnly_Click"/>
+                        </Border>
+                    </Grid>
+                </Border>
+
                 <TabControl x:Name="MainPages" Grid.Row="1" BorderThickness="0" Margin="5" Background="Transparent" Focusable="False" SelectionChanged="MainPages_SelectionChanged">
                     <!--<TabControl.ItemContainerStyle>
                         <Style TargetType="TabItem">
@@ -10279,6 +10298,14 @@
                                                 </Grid.ColumnDefinitions>
                                                 <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[hidegtamessage], FallbackValue=Hide Start GTA Message}"/>
                                                 <CheckBox x:Name="cbsettingshidegtamessage" Grid.Column="1" Style="{StaticResource FormToggle}" Checked="cbsettingshidegtamessage_Checked" Unchecked="cbsettingshidegtamessage_Checked"/>
+                                            </Grid>
+                                            <Grid Style="{StaticResource FormRow}" ToolTip="{Binding Translation[vo_setting_help], FallbackValue='Xenvious does not connect to GTA until you switch this off. For looking at the pages while you play.'}">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="46"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Style="{StaticResource FormLabel}" Text="{Binding Translation[vo_setting], FallbackValue=View only: never connect to GTA}"/>
+                                                <CheckBox x:Name="cbsettingsviewonly" Grid.Column="1" Style="{StaticResource FormToggle}" Click="cbsettingsviewonly_Click"/>
                                             </Grid>
                                         </StackPanel>
                                     </DockPanel>
