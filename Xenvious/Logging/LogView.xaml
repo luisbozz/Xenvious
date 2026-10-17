@@ -69,7 +69,7 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="120"/>
                                 <ColumnDefinition Width="70"/>
-                                <ColumnDefinition Width="130"/>
+                                <ColumnDefinition Width="190"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="{Binding Timestamp, StringFormat=HH:mm:ss.fff}" Opacity="0.8"/>
