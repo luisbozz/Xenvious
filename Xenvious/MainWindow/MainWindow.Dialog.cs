@@ -226,6 +226,27 @@ namespace Xenvious
 
         private void DialogCancel_Click(object sender, RoutedEventArgs e) => CloseDialog(false);
 
+        // The overlay covers the title bar, so the dialog's background and the dimmed area
+        // around it move the window instead; buttons, fields and custom content keep their clicks.
+        private void DialogOverlay_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            for (var d = e.OriginalSource as DependencyObject; d != null && d != DialogOverlay;
+                 d = d is Visual || d is System.Windows.Media.Media3D.Visual3D ? VisualTreeHelper.GetParent(d) : LogicalTreeHelper.GetParent(d))
+            {
+                if (d is System.Windows.Controls.Primitives.ButtonBase || d is System.Windows.Controls.Primitives.TextBoxBase || d is System.Windows.Controls.Primitives.ScrollBar
+                    || d == DialogContent || d == DialogImageBox || d == DialogButtons)
+                    return;
+            }
+            try
+            {
+                DragMove();
+            }
+            catch (System.InvalidOperationException)
+            {
+                // The button was already released.
+            }
+        }
+
         private void DialogOverlay_KeyDown(object sender, KeyEventArgs e)
         {
             if (_dialogBusy)
