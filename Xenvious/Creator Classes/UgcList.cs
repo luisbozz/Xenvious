@@ -91,7 +91,7 @@ namespace Xenvious
 
             // The cloud answers within a second or two; ul_main waits for a query of the creator's own first.
             var until = DateTime.UtcNow.AddSeconds(10);
-            long state;
+            int state;
             while ((state = Read(page + State)) != Done && state != Failed)
             {
                 if (DateTime.UtcNow > until || DataPage() != page)
@@ -106,8 +106,8 @@ namespace Xenvious
                 Log.Warn($"job list: query failed (kind {kind}, offset {offset})", source: "ugclist");
                 return null;
             }
-            int got = (int)Math.Min(Read(page + Got), PageSize);
-            int total = (int)Read(page + Total);
+            int got = Math.Min(Read(page + Got), PageSize);
+            int total = Read(page + Total);
             var jobs = new List<Job>(got);
             byte[] all = MainWindow.m.memory((page + Results).ToString("X")).GetBytes(got * Size);
             for (int i = 0; i < got; i++)
@@ -146,7 +146,8 @@ namespace Xenvious
             return Encoding.UTF8.GetString(b, at, (end < 0 ? at + size : end) - at);
         }
 
-        private static long Read(long at) => BitConverter.ToInt64(MainWindow.m.memory(at.ToString("X")).GetBytes(8), 0);
+        // Script ints use the low half of their 8-byte slot; the high half can hold anything.
+        private static int Read(long at) => BitConverter.ToInt32(MainWindow.m.memory(at.ToString("X")).GetBytes(4), 0);
 
         private static void Write(long at, byte[] bytes) => MainWindow.m.memory(at.ToString("X")).SetBytes(bytes);
     }
