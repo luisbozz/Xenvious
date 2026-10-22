@@ -39,6 +39,7 @@ namespace Xenvious
             d.OFFSETS.launch_creator_local_4 = 1574944;
             d.OFFSETS.launch_creator_local_5 = 1575023;
             d.OFFSETS.transitionState = 2697047;
+            d.OFFSETS.skyswoop_stage = 1574653;
             d.OFFSETS.tp_player_loc = "8,30,50";
             d.OFFSETS.tp_playerveh_loc = "8,DD0,30,50";
             d.OFFSETS.tp_playervehcam_loc = "8,DD0,90";

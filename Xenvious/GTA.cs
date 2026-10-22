@@ -1502,6 +1502,7 @@ namespace Xenvious
                 public static long launch_creator_local_4 = 0x0;
                 public static long launch_creator_local_5 = 0x0;
                 public static long transitionState = 0x0;
+                public static long skyswoop_stage = 0x0;
                 public static int[] OFFSET_player_loc;
                 public static int[] OFFSET_playerveh_loc;
                 public static int[] OFFSET_playervehcam_loc;

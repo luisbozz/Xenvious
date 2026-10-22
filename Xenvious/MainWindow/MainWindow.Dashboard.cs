@@ -19,10 +19,15 @@ namespace Xenvious
     /// </summary>
     public partial class MainWindow
     {
-        private enum LaunchPhase { None, Requested, ScriptLoaded, Failed }
+        private enum LaunchPhase { None, Waiting, Requested, ScriptLoaded, Failed }
 
         private static readonly TimeSpan LaunchTimeout = TimeSpan.FromSeconds(120);
         private static readonly TimeSpan FailureShownFor = TimeSpan.FromSeconds(20);
+        // Story mode needs a moment after the loading screen: a launch right after it (or during
+        // the scene the game plays on arrival) ends in the game's main menu instead of the creator.
+        private static readonly TimeSpan StorySettle = TimeSpan.FromSeconds(5);
+        // How long the main menu may show a dropped launch before Xenvious calls it failed.
+        private static readonly TimeSpan BounceWait = TimeSpan.FromSeconds(2);
 
         // Status dots in the theme's colours.
         private static Brush DotOk => ThemeBrush("OkBrush");
@@ -34,6 +39,9 @@ namespace Xenvious
         private LaunchPhase _launchPhase = LaunchPhase.None;
         private DateTime _launchStarted;
         private DateTime _launchFailedAt;
+        private DateTime _storySince;
+        private DateTime? _bouncedSince;
+        private bool _launchBounced;
 
         private void StartDashboardStatus()
         {
@@ -94,6 +102,10 @@ namespace Xenvious
             string modeLabel = TranslateOr("dash_mode_label", "Modus");
             switch (_launchPhase)
             {
+                case LaunchPhase.Waiting:
+                    ShowStatus(TranslateOr("dash_launch_label", "Creator-Start"), string.Format(CultureInfo.CurrentCulture, "{0} · {1} s",
+                        TranslateOr("launch_waiting", "Wartet, bis das Spiel bereit ist"), seconds), DotWarn);
+                    break;
                 case LaunchPhase.Requested:
                 case LaunchPhase.ScriptLoaded:
                     ShowStatus(TranslateOr("dash_launch_label", "Creator-Start"), string.Format(CultureInfo.CurrentCulture, "{0} · {1} s",
@@ -103,7 +115,9 @@ namespace Xenvious
                         seconds), DotWarn);
                     break;
                 case LaunchPhase.Failed:
-                    ShowStatus(TranslateOr("dash_launch_label", "Creator-Start"), TranslateOr("launch_failed_short2", "Fehlgeschlagen"), DotBad);
+                    ShowStatus(TranslateOr("dash_launch_label", "Creator-Start"), _launchBounced
+                        ? TranslateOr("launch_failed_menu", "Im Hauptmenü gelandet, Story laden und erneut starten")
+                        : TranslateOr("launch_failed_short2", "Fehlgeschlagen"), DotBad);
                     break;
                 default:
                     // Where the game is right now, from UpdateGameState: the creator tiles only say
@@ -238,13 +252,20 @@ namespace Xenvious
                 // In a test the creator does not count as open (IsInCreator); every creator test
                 // runs a controller script (TestControllers).
                 : _testRunning ? GameState.Testing
+                // The sky camera between modes: the creator hub already runs while the camera is
+                // still up and only takes input once it is down again (stage 0).
+                : SkyStage() != 0 ? GameState.Loading
                 : creatorMenu ? GameState.CreatorMenu
                 : GTA.IsScriptRunning("freemode") ? GameState.Online
                 // startup_positioning places the player while the loading screen is still up.
                 : GTA.IsScriptRunning("flow_controller") ? (GTA.IsScriptRunning("startup_positioning") ? GameState.Loading : GameState.StoryMode)
                 : GameState.MainMenu;
             if (state != CurrentGameState)
+            {
                 Log.Debug($"game state: {CurrentGameState} -> {state}", source: "dashboard");
+                if (state == GameState.StoryMode)
+                    _storySince = DateTime.UtcNow;
+            }
             CurrentGameState = state;
         }
 
@@ -281,17 +302,71 @@ namespace Xenvious
         {
             if (!m.IsProcOpen)
                 return;
+            _launchStarted = DateTime.UtcNow;
+            _bouncedSince = null;
+            _launchBounced = false;
+            if (ReadyToLaunch())
+                SendLaunch();
+            else
+            {
+                _launchPhase = LaunchPhase.Waiting;
+                Log.Debug($"Launch creator waits for the game ({CurrentGameState})", source: "dashboard");
+            }
+            UpdateDashboardStatus();
+        }
+
+        private bool ReadyToLaunch() => CurrentGameState == GameState.MainMenu || CurrentGameState == GameState.Online
+            || CurrentGameState == GameState.StoryMode && DateTime.UtcNow - _storySince >= StorySettle;
+
+        private void SendLaunch()
+        {
             LaunchCreator();
             _launchPhase = LaunchPhase.Requested;
-            _launchStarted = DateTime.UtcNow;
             Log.Debug("Launch creator requested", source: "dashboard");
-            UpdateDashboardStatus();
+        }
+
+        private static int SkyStage() => GTA.Offsets.Editor.skyswoop_stage != 0
+            ? new Global(GTA.Offsets.Editor.skyswoop_stage).Get<int>() : 0;
+
+        /// <summary>
+        /// A launch the game drops (a scene or the idle camera in story mode) leaves it in the
+        /// main menu: the transition stays at 3 but the launch target is cleared again. In a
+        /// launch that works the target stays until the creator hub runs. Writing the launch
+        /// again from there does nothing (tested): no script runs in the main menu to read it.
+        /// Seen every time in a story session that began by leaving a creator.
+        /// </summary>
+        private bool LaunchBounced()
+        {
+            if (CurrentGameState != GameState.MainMenu || GTA.Offsets.Editor.launch_creator_local_5 == 0)
+            {
+                _bouncedSince = null;
+                return false;
+            }
+            if (new Global(GTA.Offsets.Editor.launch_creator_local_5).Get<int>() != 0)
+            {
+                _bouncedSince = null;
+                return false;
+            }
+            _bouncedSince ??= DateTime.UtcNow;
+            return DateTime.UtcNow - _bouncedSince >= BounceWait;
         }
 
         private void AdvanceLaunch(bool game, bool inCreator)
         {
             switch (_launchPhase)
             {
+                case LaunchPhase.Waiting:
+                    if (!game || inCreator || CurrentGameState == GameState.CreatorMenu)
+                        _launchPhase = LaunchPhase.None;
+                    else if (ReadyToLaunch())
+                        SendLaunch();
+                    else if (DateTime.UtcNow - _launchStarted > LaunchTimeout)
+                    {
+                        Log.Warn($"Game not ready for the creator within {LaunchTimeout.TotalSeconds:0} s ({CurrentGameState})", source: "dashboard");
+                        _launchPhase = LaunchPhase.Failed;
+                        _launchFailedAt = DateTime.UtcNow;
+                    }
+                    break;
                 case LaunchPhase.Requested:
                 case LaunchPhase.ScriptLoaded:
                     if (!game)
@@ -306,6 +381,14 @@ namespace Xenvious
                         _launchPhase = LaunchPhase.None;
                         double took = (DateTime.UtcNow - _launchStarted).TotalSeconds;
                         Log.Info($"{(inCreator ? "Creator" : "Creator menu")} ready after {took:0.0} s", source: "dashboard");
+                        return;
+                    }
+                    if (LaunchBounced())
+                    {
+                        Log.Warn("Creator launch dropped in the main menu", source: "dashboard");
+                        _launchBounced = true;
+                        _launchPhase = LaunchPhase.Failed;
+                        _launchFailedAt = DateTime.UtcNow;
                         return;
                     }
                     if (_launchPhase == LaunchPhase.Requested && GTA.getCurrentCreatorAddy() != null)

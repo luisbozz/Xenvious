@@ -30,6 +30,7 @@ namespace Xenvious
             GTA.Offsets.Editor.launch_creator_local_4 = d.OFFSETS.launch_creator_local_4;
             GTA.Offsets.Editor.launch_creator_local_5 = d.OFFSETS.launch_creator_local_5;
             GTA.Offsets.Editor.transitionState = d.OFFSETS.transitionState;
+            GTA.Offsets.Editor.skyswoop_stage = d.OFFSETS.skyswoop_stage;
             GTA.Offsets.Editor.OFFSET_player_loc = d.OFFSETS.tp_player_loc.Split(',').ToList().Select(x => int.Parse(x, NumberStyles.HexNumber)).ToArray();
             GTA.Offsets.Editor.OFFSET_playerveh_loc = d.OFFSETS.tp_playerveh_loc.Split(',').ToList().Select(x => int.Parse(x, NumberStyles.HexNumber)).ToArray();
             GTA.Offsets.Editor.OFFSET_playervehcam_loc = d.OFFSETS.tp_playervehcam_loc.Split(',').ToList().Select(x => int.Parse(x, NumberStyles.HexNumber)).ToArray();

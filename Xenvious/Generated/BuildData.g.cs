@@ -146,6 +146,7 @@ namespace Xenvious
             public long launch_creator_local_4;
             public long launch_creator_local_5;
             public long transitionState;
+            public long skyswoop_stage;
             public string tp_player_loc = "";
             public string tp_playerveh_loc = "";
             public string tp_playervehcam_loc = "";
@@ -1341,6 +1342,7 @@ namespace Xenvious
                     case "launch_creator_local_4": return launch_creator_local_4;
                     case "launch_creator_local_5": return launch_creator_local_5;
                     case "transitionstate": return transitionState;
+                    case "skyswoop_stage": return skyswoop_stage;
                     case "creator_cam_loc": return creator_cam_loc;
                     case "script_name": return script_name;
                     case "script_local_start": return script_local_start;

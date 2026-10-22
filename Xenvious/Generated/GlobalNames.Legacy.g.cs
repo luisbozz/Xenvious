@@ -14,6 +14,7 @@ namespace Xenvious
             ("launch_creator_local_4", "Global_1574944", ""),
             ("launch_creator_local_5", "Global_1575021", ""),
             ("transitionState", "Global_2697030", ""),
+            ("skyswoop_stage", "Global_1574635.f_18", ""),
             ("load_job_flag", "Global_1926841", ""),
             ("creator_quit_flag", "Global_1574607", ""),
             ("load_job_id", "Global_1926843", ""),
