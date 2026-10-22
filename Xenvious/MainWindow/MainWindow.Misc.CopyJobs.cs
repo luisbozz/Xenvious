@@ -291,6 +291,15 @@ namespace Xenvious
                 await LoadCopyJobAsync();
         }
 
+        /// <summary>Copy Job with this job file loaded (My Jobs).</summary>
+        internal async void OpenInCopyJob(string jobFileUrl)
+        {
+            MainPages.SelectedItem = PageCopyJobs;
+            FillCopyJobModes();
+            tbCopyJobLink.Text = jobFileUrl;
+            await LoadCopyJobAsync();
+        }
+
         private async void BtnCopyJobLoad_Click(object sender, RoutedEventArgs e)
         {
             await LoadCopyJobAsync();

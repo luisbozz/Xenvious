@@ -51,6 +51,15 @@ namespace Xenvious
         private readonly Canvas _tiles = new Canvas { IsHitTestVisible = false };
         private readonly Canvas _dots = new Canvas();
         private List<Marker> _markers = new List<Marker>();
+        // Zoom and pan on top of the fitted view (Interactive only): 1 = fitted, pan in surface pixels.
+        private double _zoom = 1;
+        private Vector _pan;
+        private Point? _dragFrom;
+
+        /// <summary>Mouse wheel zooms, dragging moves the map.</summary>
+        public bool Interactive { get; set; }
+
+        public double Zoom => _zoom;
 
         public JobMap()
         {
@@ -62,6 +71,34 @@ namespace Xenvious
             _surface.Children.Add(_dots);
             SatelliteTiles.TileLoaded += () => Dispatcher.BeginInvoke(new Action(() => { if (IsVisible) Redraw(); }), System.Windows.Threading.DispatcherPriority.Background);
             Child = _surface;
+            MouseWheel += (_, e) =>
+            {
+                if (!Interactive)
+                    return;
+                ZoomBy(e.Delta > 0 ? 1.25 : 0.8);
+                e.Handled = true;
+            };
+            MouseLeftButtonDown += (_, e) =>
+            {
+                if (!Interactive)
+                    return;
+                _dragFrom = e.GetPosition(this);
+                CaptureMouse();
+            };
+            MouseMove += (_, e) =>
+            {
+                if (_dragFrom == null)
+                    return;
+                var at = e.GetPosition(this);
+                _pan -= (at - _dragFrom.Value) / _lastScale;
+                _dragFrom = at;
+                Redraw();
+            };
+            MouseLeftButtonUp += (_, __) =>
+            {
+                _dragFrom = null;
+                ReleaseMouseCapture();
+            };
             SizeChanged += (_, __) =>
             {
                 // CornerRadius only rounds the background; the map on top is cut to the same shape.
@@ -70,11 +107,32 @@ namespace Xenvious
             };
         }
 
-        public void SetMarkers(IEnumerable<Marker> markers)
+        public void SetMarkers(IEnumerable<Marker> markers, bool keepView = false)
         {
             _markers = markers?.ToList() ?? new List<Marker>();
+            if (!keepView)
+            {
+                _zoom = 1;
+                _pan = new Vector();
+            }
             Redraw();
         }
+
+        public void ZoomBy(double factor)
+        {
+            _zoom = Math.Max(1, Math.Min(60, _zoom * factor));
+            Redraw();
+        }
+
+        /// <summary>Back to the view that shows all markers.</summary>
+        public void Fit()
+        {
+            _zoom = 1;
+            _pan = new Vector();
+            Redraw();
+        }
+
+        private double _lastScale = 1;
 
         private void Redraw()
         {
@@ -94,9 +152,10 @@ namespace Xenvious
             var points = _markers.Select(m => MainWindow.WorldToMap(m.X, m.Y)).ToList();
             double minX = points.Min(p => p.X), maxX = points.Max(p => p.X);
             double minY = points.Min(p => p.Y), maxY = points.Max(p => p.Y);
-            double span = Math.Max(MinSpan, Math.Max(maxX - minX, maxY - minY)) * 1.25;
-            double cx = (minX + maxX) / 2, cy = (minY + maxY) / 2;
+            double span = Math.Max(MinSpan, Math.Max(maxX - minX, maxY - minY)) * 1.25 / _zoom;
+            double cx = (minX + maxX) / 2 + _pan.X, cy = (minY + maxY) / 2 + _pan.Y;
             double scale = ApplyView(cx - span / 2, cy - span / 2, span, span, width, height);
+            _lastScale = scale;
             double offsetX = (width - span * scale) / 2 - (cx - span / 2) * scale;
             double offsetY = (height - span * scale) / 2 - (cy - span / 2) * scale;
             DrawTiles(width, height, cx, cy, scale);

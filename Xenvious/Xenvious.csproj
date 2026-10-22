@@ -176,6 +176,7 @@
     <Compile Include="AES\AES.cs" />
     <Compile Include="Controls\ComboBoxHelper.cs" />
     <Compile Include="Controls\JobMap.cs" />
+    <Compile Include="Controls\MyJobsView.cs" />
     <Compile Include="Controls\MasonryPanel.cs" />
     <Compile Include="Controls\SearchableCombo.cs" />
     <Compile Include="Controls\AreaEditor.cs" />
@@ -269,6 +270,7 @@
     <Compile Include="Creator Classes\RulePresets.cs" />
     <Compile Include="Creator Classes\StartPoints.cs" />
     <Compile Include="Creator Classes\TestReturn.cs" />
+    <Compile Include="Creator Classes\UgcList.cs" />
     <Compile Include="Creator Classes\SatelliteTiles.cs" />
     <Compile Include="Creator Classes\Rules.cs" />
     <Compile Include="Creator Classes\EntityMover.cs" />

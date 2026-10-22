@@ -10546,6 +10546,9 @@
                                                 <Button x:Name="BtnModMapBackup" Style="{StaticResource SideNavButton}" Click="BtnModMapBackup_Click">
                                                     <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[map_backup], FallbackValue='Job Backup'}"/>
                                                 </Button>
+                                                <Button x:Name="BtnModMyJobs" Style="{StaticResource SideNavButton}" Click="BtnModMyJobs_Click">
+                                                    <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[mj_page], FallbackValue='My Jobs'}"/>
+                                                </Button>
                                                 <Button x:Name="BtnModJobLinks" Style="{StaticResource SideNavButton}" Click="BtnModJobLinks_Click">
                                                     <TextBlock Style="{StaticResource NavLabel}" Text="{Binding Translation[misc_jobslots], FallbackValue='Job Slots'}"/>
                                                 </Button>
@@ -10735,6 +10738,11 @@
 
                                                 </StackPanel>
                                             </Grid>
+                                        </TabItem>
+
+                                        <TabItem x:Name="PageInnerModMyJobs" Header="My Jobs">
+                                            <!-- Built in code: Controls/MyJobsView.cs. -->
+                                            <local:MyJobsView x:Name="myJobsView" Margin="0,0,0,5"/>
                                         </TabItem>
 
                                         <TabItem x:Name="PageInnerModJL" Header="Job Links">

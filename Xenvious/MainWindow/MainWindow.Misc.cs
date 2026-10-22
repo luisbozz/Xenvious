@@ -10,6 +10,11 @@ namespace Xenvious
     // Part of MainWindow: Misc page.
     public partial class MainWindow
     {
+        private void BtnModMyJobs_Click(object sender, RoutedEventArgs e)
+        {
+            PageInnerMod.SelectedItem = PageInnerModMyJobs;
+        }
+
         private void BtnModJobLinks_Click(object sender, RoutedEventArgs e)
         {
             PageInnerMod.SelectedItem = PageInnerModJL;
@@ -42,7 +47,7 @@ namespace Xenvious
                 return;
             var pages = new (Button Button, TabItem Page)[]
             {
-                (BtnModMapBackup, PageInnerModMapBackup), (BtnModJobLinks, PageInnerModJL), (BtnModMapMover, PageInnerModMapMover),
+                (BtnModMapBackup, PageInnerModMapBackup), (BtnModMyJobs, PageInnerModMyJobs), (BtnModJobLinks, PageInnerModJL), (BtnModMapMover, PageInnerModMapMover),
                 (BtnModMS, PageMenuSwitcher), (BtnModScrPatches, PageInnerModScrPatches), (BtnModTools, PageInnerModTools),
                 (BtnModLogs, PageInnerModLogs), (BtnModStuff, PageInnerModStuff),
             };
