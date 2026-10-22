@@ -160,6 +160,7 @@ namespace Xenvious
 
                 byte[] bytes = Encoding.Default.GetBytes(jobjson.Mission.Gen.Nm);
                 tbCopyName.Text = Encoding.UTF8.GetString(bytes);
+                RememberCopyJob(rootid, tbCopyName.Text, img?.content);
                 bytes = Encoding.Default.GetBytes(string.Join("", jobjson.Mission.Gen.Dec));
                 tbCopyDesc.Text = Encoding.UTF8.GetString(bytes);
 
@@ -292,6 +293,23 @@ namespace Xenvious
         }
 
         /// <summary>Copy Job with this job file loaded (My Jobs).</summary>
+        // Shows up under My Jobs › Recent searches.
+        private void RememberCopyJob(string contentId, string name, JSON.META.Content meta)
+        {
+            const string cloud = "https://prod.cloud.rockstargames.com";
+            var created = meta?.createdDate ?? default;
+            RecentJobs.Add(new UgcList.Job
+            {
+                ContentId = contentId,
+                Name = name,
+                Path0 = full_link != null && full_link.StartsWith(cloud, StringComparison.OrdinalIgnoreCase) ? full_link.Substring(cloud.Length) : null,
+                Flags = UgcList.JobFlags.Published | (string.IsNullOrEmpty(meta?.imgSrc) ? 0 : UgcList.JobFlags.HiResPhoto),
+                Updated = created == default ? null : new[] { created.Year, created.Month, created.Day, created.Hour, created.Minute, created.Second, 0 },
+                RatingCount = (meta?.likeCount ?? 0) + (meta?.dislikeCount ?? 0),
+                Positive = meta?.likeCount ?? 0,
+            });
+        }
+
         internal async void OpenInCopyJob(string jobFileUrl)
         {
             MainPages.SelectedItem = PageCopyJobs;

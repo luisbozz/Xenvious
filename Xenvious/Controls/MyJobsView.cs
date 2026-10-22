@@ -36,16 +36,19 @@ namespace Xenvious
             ("R", "Race", "OkBrush"), ("D", "Deathmatch", "BadBrush"), ("S", "Survival", "CheckpointBrush"),
         };
 
-        // Map layers: section of the job file, its position key, label key, brush.
-        private static readonly (string Section, string Pos, string Key, string Fallback, string Brush)[] Layers =
+        // Map layers: section of the job file, its position key, its model key (none for
+        // checkpoints), label key, brush. Actors sit under loc0 in the creators with teams.
+        private static readonly (string Id, string Section, string Pos, string Model, string Key, string Fallback, string Brush)[] Layers =
         {
-            ("prop", "loc", "map_part_prop", "Props", "PropBrush"),
-            ("dprop", "loc", "dash_dynprops", "Dynamic Props", "DynamicPropBrush"),
-            ("dhprop", "pos", "editnav_fixtures", "Fixtures", "FixtureBrush"),
-            ("veh", "loc", "rl_m_vehs", "Vehicles", "VehicleBrush"),
-            ("weap", "loc", "missionrspweapons", "Weapons", "WeaponBrush"),
-            ("obj", "loc", "mj_objects", "Objects", "ZoneBrush"),
-            ("ene", "loc", "dash_actors", "Actors", "ActorBrush"),
+            ("prop", "prop", "loc", "model", "map_part_prop", "Props", "PropBrush"),
+            ("dprop", "dprop", "loc", "model", "dash_dynprops", "Dynamic Props", "DynamicPropBrush"),
+            ("dhprop", "dhprop", "pos", "mn", "editnav_fixtures", "Fixtures", "FixtureBrush"),
+            ("veh", "veh", "loc", "model", "rl_m_vehs", "Vehicles", "VehicleBrush"),
+            ("weap", "weap", "loc", "type", "missionrspweapons", "Weapons", "WeaponBrush"),
+            ("obj", "obj", "loc", "model", "mj_objects", "Objects", "ZoneBrush"),
+            ("ene", "ene", "loc|loc0", "model", "dash_actors", "Actors", "ActorBrush"),
+            ("chl", "race", "chl", null, "mj_checkpoints", "Checkpoints", "CheckpointBrush"),
+            ("sndchk", "race", "sndchk", null, "mj_checkpoints2", "Secondary checkpoints", "CheckpointBrush"),
         };
 
         private sealed class Entry
@@ -126,9 +129,25 @@ namespace Xenvious
             Loaded += (_, __) => Build();
             IsVisibleChanged += async (_, __) =>
             {
-                if (IsVisible && _lists.Count == 0)
+                if (IsVisible && !_lists.ContainsKey("pub"))
                     await ReloadAsync();
             };
+            RecentJobs.Changed += () => Dispatcher.BeginInvoke(new Action(() =>
+            {
+                SyncRecent();
+                RenderSources();
+                if (_source == SearchId)
+                    RenderRows();
+            }));
+            SyncRecent();
+        }
+
+        // Recent searches come from RecentJobs; an entry keeps its loaded type and photo.
+        private void SyncRecent()
+        {
+            var old = _lists.TryGetValue(SearchId, out var l) ? l.ToDictionary(e => e.Job.ContentId) : new Dictionary<string, Entry>();
+            _lists[SearchId] = RecentJobs.All.Select(j => old.TryGetValue(j.ContentId, out var e) && e.Job.Path0 == j.Path0 ? e : new Entry { Job = j }).ToList();
+            _paging[SearchId] = new Paging { Done = true };
         }
 
         private bool _built;
@@ -298,17 +317,17 @@ namespace Xenvious
             {
                 SetStatus(T("mj_id_searching", "Searching …"));
                 var job = await UgcList.ByIdAsync(match.Groups[1].Value);
-                var list = _lists.TryGetValue(SearchId, out var l) ? l : new List<Entry>();
-                if (job != null && !list.Any(x => x.Job.ContentId == job.ContentId))
-                    list.Insert(0, new Entry { Job = job });
-                _lists[SearchId] = list;
                 _source = SearchId;
                 if (job != null)
-                    Select(list.First(x => x.Job.ContentId == job.ContentId));
+                {
+                    RecentJobs.Add(job);
+                    SyncRecent();
+                    Select(_lists[SearchId].First(x => x.Job.ContentId == job.ContentId));
+                }
                 SetStatus(job == null ? T("mj_id_none", "The cloud has no job with this id.") : "");
                 RenderSources();
                 RenderRows();
-                _ = LoadTypesAsync(list);
+                _ = LoadTypesAsync(_lists[SearchId]);
             }
             finally
             {
@@ -488,8 +507,7 @@ namespace Xenvious
             find.SetResourceReference(StyleProperty, "FormButton");
             find.Click += async (_, __) => await FindByIdAsync();
             _sources.Children.Add(find);
-            if (_lists.ContainsKey(SearchId))
-                Item(T("mj_src_found", "Found"), SearchId, () => { _source = SearchId; RenderSources(); RenderRows(); });
+            Item(T("mj_src_recent", "Recent searches"), SearchId, () => { _source = SearchId; RenderSources(); RenderRows(); _ = LoadTypesAsync(_lists[SearchId]); });
 
             _sources.Children.Add(Header(T("mj_actions", "Actions")));
             var reload = new Button { Style = (Style)FindResource("SideNavButton"), Content = new TextBlock { Text = "↻  " + T("mj_reload", "Reload"), Style = (Style)FindResource("NavLabel"), Margin = new Thickness(0) } };
@@ -922,26 +940,52 @@ namespace Xenvious
             {
                 foreach (var layer in Layers)
                 {
-                    if (_layersOff.Contains(layer.Section))
+                    if (_layersOff.Contains(layer.Id))
                         continue;
-                    foreach (var p in Points(mission, layer.Section, layer.Pos))
-                        markers.Add(new JobMap.Marker(p.X, p.Y, B(layer.Brush), 4));
+                    string name = T(layer.Key, layer.Fallback);
+                    var points = Points(mission, layer).ToList();
+                    // The last checkpoint is the finish line; in a race with laps it is also where
+                    // the race starts (it sits at the grid, the job files show).
+                    int last = layer.Section == "race" && points.Count > 0 ? points.Max(p => p.Index) : -1;
+                    bool laps = ((int?)mission["race"]?["lap"] ?? 0) > 0;
+                    foreach (var p in points)
+                    {
+                        string tip;
+                        if (layer.Model != null)
+                            tip = $"{name} #{p.Index}\n{T("mj_hash", "Hash")} {p.Model} (0x{unchecked((uint)p.Model):X8})";
+                        else if (p.Index == last && layer.Id == "chl")
+                            tip = $"{(laps ? T("mj_start_finish", "Start / finish") : T("mj_finish", "Finish"))} · {name} {p.Index + 1}";
+                        else
+                            tip = $"{name} {p.Index + 1}";
+                        markers.Add(new JobMap.Marker(p.X, p.Y, B(layer.Brush), layer.Model == null ? 9 : 6, tip));
+                    }
                 }
                 if (mission["gen"]?["start"] is JObject start)
-                    markers.Add(new JobMap.Marker((double)start["x"], (double)start["y"], B("StartPointBrush"), 9));
+                    markers.Add(new JobMap.Marker((double)start["x"], (double)start["y"], B("StartPointBrush"), 12, T("mj_start", "Start")));
             }
             _map.SetMarkers(markers, keepView);
         }
 
-        private static IEnumerable<Point> Points(JObject mission, string section, string key)
+        // Positions of one layer with their index in the job file (the creator's id) and model.
+        private static IEnumerable<(int Index, double X, double Y, int Model)> Points(JObject mission, (string Id, string Section, string Pos, string Model, string Key, string Fallback, string Brush) layer)
         {
-            if (!(mission[section]?[key] is JArray list))
+            if (!(mission[layer.Section] is JObject section))
                 yield break;
-            foreach (var item in list.OfType<JObject>())
+            var list = layer.Pos.Split('|').Select(k => section[k] as JArray).FirstOrDefault(a => a != null);
+            if (list == null)
+                yield break;
+            var models = layer.Model == null ? null : section[layer.Model] as JArray;
+            for (int i = 0; i < list.Count; i++)
             {
+                if (!(list[i] is JObject item))
+                    continue;
                 double x = (double?)item["x"] ?? 0, y = (double?)item["y"] ?? 0;
-                if (x != 0 || y != 0)
-                    yield return new Point(x, y);
+                if (x == 0 && y == 0)
+                    continue;
+                int model = 0;
+                if (models != null && i < models.Count && models[i].Type == JTokenType.Integer)
+                    model = unchecked((int)(long)models[i]);
+                yield return (i, x, y, model);
             }
         }
 
@@ -969,31 +1013,42 @@ namespace Xenvious
             var e = _current;
             foreach (var l in Layers)
             {
-                int count = Points(e?.Mission ?? new JObject(), l.Section, l.Pos).Count();
+                int count = e?.Mission == null ? 0 : Points(e.Mission, l).Count();
                 if (count == 0)
                     continue;
-                var box = new CheckBox { IsChecked = !_layersOff.Contains(l.Section), FontSize = big ? 13 : 11.5, Margin = new Thickness(0, 1, 0, 1) };
-                box.Content = new StackPanel
+                string id = l.Id;
+                var box = new CheckBox { IsChecked = !_layersOff.Contains(id), VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(0, 0, 6, 0) };
+                var row = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 1, 0, 1), Background = Brushes.Transparent, Cursor = System.Windows.Input.Cursors.Hand };
+                row.Children.Add(box);
+                row.Children.Add(new Ellipse { Width = 8, Height = 8, Fill = B(l.Brush), Margin = new Thickness(0, 0, 6, 0), VerticalAlignment = VerticalAlignment.Center });
+                row.Children.Add(new TextBlock { Text = $"{T(l.Key, l.Fallback)} {count}", Foreground = Brushes.White, FontSize = big ? 13 : 11.5, VerticalAlignment = VerticalAlignment.Center });
+                void Toggle()
                 {
-                    Orientation = Orientation.Horizontal,
-                    Children =
-                    {
-                        new Ellipse { Width = 8, Height = 8, Fill = B(l.Brush), Margin = new Thickness(0, 0, 5, 0), VerticalAlignment = VerticalAlignment.Center },
-                        new TextBlock { Text = $"{T(l.Key, l.Fallback)} {count}", Foreground = Brushes.White },
-                    }
-                };
-                string section = l.Section;
-                box.Click += (_, __) =>
-                {
-                    if (box.IsChecked == true) _layersOff.Remove(section); else _layersOff.Add(section);
+                    if (box.IsChecked == true) _layersOff.Remove(id); else _layersOff.Add(id);
                     if (_current != null)
                         FillMap(_current, keepView: true);
+                }
+                box.Click += (_, __) => Toggle();
+                row.MouseLeftButtonUp += (_, ev) =>
+                {
+                    if (ev.OriginalSource is DependencyObject d && IsInside(d, box))
+                        return;
+                    box.IsChecked = box.IsChecked != true;
+                    Toggle();
                 };
-                legend.Children.Add(box);
+                legend.Children.Add(row);
             }
             if (legend.Children.Count > 0)
                 layer.Children.Add(legendCard);
             return layer;
+        }
+
+        private static bool IsInside(DependencyObject d, DependencyObject parent)
+        {
+            for (; d != null; d = d is Visual ? VisualTreeHelper.GetParent(d) : LogicalTreeHelper.GetParent(d))
+                if (d == parent)
+                    return true;
+            return false;
         }
 
         private void ExpandMap(bool big)

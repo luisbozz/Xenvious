@@ -16,16 +16,19 @@ namespace Xenvious
     /// </summary>
     public class JobMap : Border
     {
-        /// <summary>One dot: world X/Y and its colour.</summary>
+        /// <summary>One dot: world X/Y, its colour and, when set, a tooltip.</summary>
         public readonly struct Marker
         {
-            public Marker(double x, double y, Brush fill, double size = 4)
+            public Marker(double x, double y, Brush fill, double size = 4, string tip = null)
             {
                 X = x;
                 Y = y;
                 Fill = fill;
                 Size = size;
+                Tip = tip;
             }
+
+            public string Tip { get; }
 
             public double X { get; }
             public double Y { get; }
@@ -64,6 +67,9 @@ namespace Xenvious
         public JobMap()
         {
             Background = MainWindow.ThemeBrush("DeepBrush");
+            // The built-in image is only for when the map tiles are off; under tiles still loading
+            // it showed through as a second, blurrier map.
+            _image.Visibility = SatelliteTiles.Enabled ? Visibility.Collapsed : Visibility.Visible;
             CornerRadius = new CornerRadius(8);
             RenderOptions.SetBitmapScalingMode(_image, BitmapScalingMode.HighQuality);
             _surface.Children.Add(_image);
@@ -118,11 +124,20 @@ namespace Xenvious
             Redraw();
         }
 
+        // The sharpest map tiles have about 11 pixels per metre; twice that is as far as a zoom
+        // still shows something useful.
+        private const double MaxPixelsPerMetre = 24;
+
         public void ZoomBy(double factor)
         {
-            _zoom = Math.Max(1, Math.Min(60, _zoom * factor));
+            if (factor > 1 && _lastPixelsPerMetre > 0)
+                factor = Math.Min(factor, MaxPixelsPerMetre / _lastPixelsPerMetre);
+            if (factor > 1 || factor < 1)
+                _zoom = Math.Max(1, Math.Min(60, _zoom * factor));
             Redraw();
         }
+
+        private double _lastPixelsPerMetre;
 
         /// <summary>Back to the view that shows all markers.</summary>
         public void Fit()
@@ -163,10 +178,21 @@ namespace Xenvious
             for (int i = 0; i < points.Count; i++)
             {
                 var marker = _markers[i];
+                double x = points[i].X * scale + offsetX, y = points[i].Y * scale + offsetY;
+                if (x < -10 || y < -10 || x > width + 10 || y > height + 10)
+                    continue;
                 var dot = new Ellipse { Width = marker.Size, Height = marker.Size, Fill = marker.Fill };
-                Canvas.SetLeft(dot, points[i].X * scale + offsetX - marker.Size / 2);
-                Canvas.SetTop(dot, points[i].Y * scale + offsetY - marker.Size / 2);
-                _dots.Children.Add(dot);
+                FrameworkElement element = dot;
+                if (marker.Tip != null)
+                {
+                    // A few pixels around the dot catch the mouse too.
+                    double hit = Math.Max(marker.Size, 10);
+                    element = new Border { Width = hit, Height = hit, Background = Brushes.Transparent, Child = dot, ToolTip = marker.Tip };
+                    ToolTipService.SetInitialShowDelay(element, 0);
+                }
+                Canvas.SetLeft(element, x - element.Width / 2);
+                Canvas.SetTop(element, y - element.Height / 2);
+                _dots.Children.Add(element);
             }
         }
 
@@ -178,6 +204,7 @@ namespace Xenvious
             double kx = (step.X - origin.X) / 1000, ky = (step.Y - origin.Y) / 1000;
             if (kx <= 0 || ky <= 0)
                 return;
+            _lastPixelsPerMetre = scale * kx;
             double worldX = (surfaceX - origin.X) / kx, worldY = -(surfaceY - origin.Y) / ky;
             SatelliteTiles.Draw(_tiles, width, height, worldX, worldY, scale * kx, 0);
         }
