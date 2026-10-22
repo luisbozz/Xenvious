@@ -64,6 +64,24 @@ namespace Xenvious
             // Coarser tiles for a wide view: no more than about two tile pixels per screen pixel.
             while (z > 0 && MetresPerPixel(z) * scale < 0.5)
                 z--;
+            // Coarser tiles first where the sharp ones are still loading, so a zoom never shows a
+            // hole; two levels up is cheap (a sixteenth of the tiles) and is asked for too.
+            bool any = false;
+            for (int level = Math.Max(0, z - 3); level <= z; level++)
+                any |= DrawLevel(canvas, w, h, cx, cy, scale, level, request: level == z || level == z - 2);
+            if (!any)
+                return false;
+            if (wash > 0)
+                canvas.Children.Add(new System.Windows.Shapes.Rectangle { Width = w, Height = h, Fill = new SolidColorBrush(Color.FromArgb((byte)(wash * 255), 0, 0, 0)), IsHitTestVisible = false });
+            var credit = new TextBlock { Text = "© Pleb Masters Forge", FontSize = 9.5, Foreground = Brushes.White, Opacity = 0.8, IsHitTestVisible = false };
+            Canvas.SetLeft(credit, 6);
+            Canvas.SetBottom(credit, 4);
+            canvas.Children.Add(credit);
+            return true;
+        }
+
+        private static bool DrawLevel(Canvas canvas, double w, double h, double cx, double cy, double scale, int z, bool request)
+        {
             var tl = ToPixel(cx - w / 2 / scale, cy + h / 2 / scale, z);
             var br = ToPixel(cx + w / 2 / scale, cy - h / 2 / scale, z);
             int x0 = (int)Math.Floor(tl.X / TileSize), x1 = (int)Math.Floor(br.X / TileSize);
@@ -76,7 +94,7 @@ namespace Xenvious
             for (int ty = y0; ty <= y1; ty++)
                 for (int tx = x0; tx <= x1; tx++)
                 {
-                    var tile = Get(z, tx, ty);
+                    var tile = request ? Get(z, tx, ty) : Peek(z, tx, ty);
                     if (tile == null)
                         continue;
                     var corner = ToWorld(tx * TileSize, ty * TileSize, z);
@@ -87,16 +105,10 @@ namespace Xenvious
                     canvas.Children.Add(image);
                     any = true;
                 }
-            if (!any)
-                return false;
-            if (wash > 0)
-                canvas.Children.Add(new System.Windows.Shapes.Rectangle { Width = w, Height = h, Fill = new SolidColorBrush(Color.FromArgb((byte)(wash * 255), 0, 0, 0)), IsHitTestVisible = false });
-            var credit = new TextBlock { Text = "© Pleb Masters Forge", FontSize = 9.5, Foreground = Brushes.White, Opacity = 0.8, IsHitTestVisible = false };
-            Canvas.SetLeft(credit, 6);
-            Canvas.SetBottom(credit, 4);
-            canvas.Children.Add(credit);
-            return true;
+            return any;
         }
+
+        private static ImageSource Peek(int z, int x, int y) => Loaded.TryGetValue(z + "/" + x + "_" + y, out var image) ? image : null;
 
         /// <summary>Tile pixel (at zoom z) of a world position.</summary>
         public static (double X, double Y) ToPixel(double x, double y, int z)
