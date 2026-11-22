@@ -294,7 +294,7 @@ namespace Xenvious
         {
             if (hash == 0)
                 return null;
-            return GTA.Editor.Vehiclenames.FirstOrDefault(x => Functions.int_parse(Functions.joaat(x).ToString()) == hash);
+            return GTA.Editor.VehicleName(hash);
         }
     }
 }

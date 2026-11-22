@@ -27,19 +27,7 @@ namespace Xenvious
     // Part of MainWindow: ModdedProps page.
     public partial class MainWindow
     {
-        [System.Diagnostics.DebuggerHidden()]
-        public static bool ExistsInPropList(int integer)
-        {
-            try
-            {
-                GTA.Editor.PropList.Where(x => x.Integer == integer).Select(x => x.Name).First();
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
+        public static bool ExistsInPropList(int integer) => GTA.Editor.FindProp(integer) != null;
 
         public enum PropCategory : int
         {
@@ -142,7 +130,7 @@ namespace Xenvious
 
             entry.IntegerValue = value;
 
-            var propInfo = GTA.Editor.PropList.FirstOrDefault(x => x.Integer == value);
+            var propInfo = GTA.Editor.FindProp(value);
             entry.Name = propInfo?.Name ?? string.Empty;
         }
 
@@ -1055,7 +1043,7 @@ namespace Xenvious
             var item = PropCatalog.FirstOrDefault(c => c.Int32 == hash);
             if (item != null)
                 return item.Name;
-            var info = GTA.Editor.PropList?.FirstOrDefault(p => p.Integer == hash);
+            var info = GTA.Editor.FindProp(hash);
             return string.IsNullOrWhiteSpace(info?.Name) ? "0x" + hash.ToString("X8", CultureInfo.InvariantCulture) : info.Name;
         }
 
@@ -1065,7 +1053,7 @@ namespace Xenvious
             var item = PropCatalog.FirstOrDefault(c => c.Int32 == hash);
             if (!string.IsNullOrWhiteSpace(item?.Native))
                 return item.Native;
-            var info = GTA.Editor.PropList?.FirstOrDefault(p => p.Integer == hash);
+            var info = GTA.Editor.FindProp(hash);
             return string.IsNullOrWhiteSpace(info?.Name) ? MPHex(hash) : info.Name;
         }
 

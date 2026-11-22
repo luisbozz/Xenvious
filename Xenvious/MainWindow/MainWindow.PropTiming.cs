@@ -10,13 +10,23 @@ namespace Xenvious
 {
     public partial class MainWindow
     {
-        // The list shows only props whose timing is above 0. The ticked rows and the numbers typed
-        // into "Select props" are kept by prop number, because the worker reads the list again
-        // every tick and a new ItemsSource would drop the ListBox selection.
+        // The list shows only props whose timing is above 0. It is read when it opens, when the
+        // selected prop or the prop count changes and after an edit, not on every worker tick:
+        // with 200 props that froze the app. The ticked rows and the numbers typed into
+        // "Select props" are kept by prop number, because a new ItemsSource drops the ListBox
+        // selection.
         private List<PropHAS> _hasList = new List<PropHAS>();
         private HashSet<int> _hasTicked = new HashSet<int>();
         private HashSet<int> _hasTyped = new HashSet<int>();
         private bool _hasUpdating;
+        private int _hasPropCount = -1;
+
+        /// <summary>Reads the timing list again when it is open.</summary>
+        public void RefreshPropHasList()
+        {
+            if (haslistcontainer.Visibility == Visibility.Visible)
+                initializePropHasList();
+        }
 
         public void initializePropHasList()
         {
@@ -25,19 +35,18 @@ namespace Xenvious
             try
             {
                 int count = new Global(GTA.Offsets.Editor.Props.number).Get<int>();
-                var list = new List<PropHAS>();
+                var raw = new List<(int Id, int Time, int Model)>();
                 for (int i = 0; i < count; i++)
                 {
                     int has = new Global(GTA.Offsets.Editor.Props.fcuat + i * GTA.Offsets.Editor.Props.NEXT).Get<int>();
                     if (has > 0)
-                    {
-                        int model = new Global(GTA.Offsets.Editor.Props.model + i * GTA.Offsets.Editor.Props.NEXT).Get<int>();
-                        list.Add(new PropHAS(i, has, model));
-                    }
+                        raw.Add((i, has, new Global(GTA.Offsets.Editor.Props.model + i * GTA.Offsets.Editor.Props.NEXT).Get<int>()));
                 }
 
-                bool same = list.Count == _hasList.Count
-                    && list.Zip(_hasList, (a, b) => a.Id == b.Id && a.Time == b.Time && a.Prop == b.Prop).All(x => x);
+                // Rows are only built (with their names) when something changed.
+                bool same = raw.Count == _hasList.Count
+                    && raw.Zip(_hasList, (a, b) => a.Id == b.Id && a.Time == b.Time && a.Model == b.Prop).All(x => x);
+                var list = same ? _hasList : raw.Select(r => new PropHAS(r.Id, r.Time, r.Model)).ToList();
                 if (!same)
                 {
                     _hasList = list;

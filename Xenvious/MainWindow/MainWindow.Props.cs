@@ -215,6 +215,7 @@ namespace Xenvious
         private void ddpropno_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             GetProps(false, true);
+            RefreshPropHasList();
 
             SelectActiveTextBox();
         }
@@ -515,7 +516,10 @@ namespace Xenvious
         private void tbpropshas_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (m.IsProcOpen && IsValidInt(tbpropshas.Text))
+            {
                 new Global((GTA.Offsets.Editor.Props.fcuat + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex)).SetInt(tbpropshas.Text);
+                RefreshPropHasList();
+            }
         }
 
         private void tbpropsmodel_TextChanged(object sender, TextChangedEventArgs e)
@@ -849,6 +853,7 @@ namespace Xenvious
             {
                 pathpropshasexpand.Data = Geometry.Parse("M 0 0 L 6 6 L 12 0 Z");
                 haslistcontainer.Visibility = Visibility.Visible;
+                RefreshPropHasList();
             }
             else
             {
@@ -947,24 +952,8 @@ namespace Xenvious
     
 
 
-        private Dictionary<int, GTA.Prop> _propsByModel;
-
         /// <summary>The prop list entry of a model, null when unknown.</summary>
-        private GTA.Prop FindProp(int model)
-        {
-            if (_propsByModel == null || _propsByModel.Count == 0)
-            {
-                if (GTA.Editor.PropList == null || GTA.Editor.PropList.Count == 0)
-                    return null;
-                _propsByModel = new Dictionary<int, GTA.Prop>();
-                foreach (GTA.Prop p in GTA.Editor.PropList)
-                {
-                    if (string.IsNullOrEmpty(p.Native)) continue;
-                    _propsByModel[p.Integer] = p;
-                }
-            }
-            return _propsByModel.TryGetValue(model, out GTA.Prop prop) ? prop : null;
-        }
+        private static GTA.Prop FindProp(int model) => GTA.Editor.FindProp(model);
 
         /// <summary>Readable name of a prop model ("Giant Wooden Block"), "" when unknown.</summary>
         private string PropDisplayName(int model)

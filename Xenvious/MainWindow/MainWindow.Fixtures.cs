@@ -50,15 +50,11 @@ namespace Xenvious
 
                 if (!tbcdefbulk.IsFocused || ignore_focus)
                 {
-                    try
-                    {
-                        native = GTA.Editor.PropList.Where(x => x.Integer == model).FirstOrDefault().Native;
-                        tbcdefbulk.Text = $"{native}: 99999: X:{locx} Y:{locy} Z:{locz}";
-                    }
-                    catch (Exception)
-                    {
-                        tbcdefbulk.Text = "couldn't load the centitydef string";
-                    }
+                    // No exception for unknown models: this runs on every worker tick.
+                    native = GTA.Editor.FindProp(model)?.Native;
+                    tbcdefbulk.Text = native != null
+                        ? $"{native}: 99999: X:{locx} Y:{locy} Z:{locz}"
+                        : "couldn't load the centitydef string";
                 }
 
                 if (!tbcdefmodel.IsFocused || ignore_focus) tbcdefmodel.Text = model.ToString();
@@ -93,7 +89,7 @@ namespace Xenvious
         {
             if (model == 0)
                 return "";
-            var prop = GTA.Editor.PropList.FirstOrDefault(x => x.Integer == model);
+            var prop = GTA.Editor.FindProp(model);
             return prop == null ? "" : (string.IsNullOrEmpty(prop.Name) ? prop.Native : prop.Name);
         }
 

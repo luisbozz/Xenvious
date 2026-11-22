@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace Xenvious
+﻿namespace Xenvious
 {
     public class PropHAS
     {
@@ -16,7 +14,7 @@ namespace Xenvious
             Id = id;
             Time = time;
             Prop = prop;
-            Name = MainWindow.ExistsInPropList(Prop) ? GTA.Editor.PropList.Where(x => x.Integer == Prop).Select(x => x.Name).First() : Prop.ToString();
+            Name = GTA.Editor.FindProp(prop)?.Name ?? prop.ToString();
         }
 
         public override string ToString()
