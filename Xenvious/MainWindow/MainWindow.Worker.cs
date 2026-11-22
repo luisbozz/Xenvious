@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -19,6 +21,23 @@ namespace Xenvious
     // Part of MainWindow: The main polling loop that keeps the UI in sync with the game.
     public partial class MainWindow
     {
+        // "None" and "1. adder", "2. 1234567" for each placed vehicle. A new ItemsSource every
+        // tick rebuilt the dropdown's items, so it is only set when the list changed.
+        private void SetVehicleChoices(ComboBox box)
+        {
+            var items = new List<string> { TranslateOr("none", "None") };
+            int count = new Global(GTA.Offsets.Editor.Vehicle.number).Get<int>();
+            for (int i = 0; i < count; i++)
+            {
+                int model = new Global(GTA.Offsets.Editor.Vehicle.model + i * GTA.Offsets.Editor.Vehicle.NEXT).Get<int>();
+                if (model != 0)
+                    items.Add(items.Count + ". " + (GTA.Editor.VehicleName(model) ?? model.ToString(CultureInfo.InvariantCulture)));
+            }
+            box.IsEnabled = items.Count > 1;
+            if (!(box.ItemsSource is IEnumerable<string> old && old.SequenceEqual(items)))
+                box.ItemsSource = new ObservableCollection<string>(items);
+        }
+
         private void worker_DoWork(object sender, DoWorkEventArgs e)
         {
             Action<int> workMethod = async delegate
@@ -250,6 +269,13 @@ namespace Xenvious
                                     {
                                         int propnum = new Global(GTA.Offsets.Editor.Props.number).Get<int>();
 
+                                        // Not tied to ddpropno: above 200 props its count never matches.
+                                        if (propnum != _hasPropCount)
+                                        {
+                                            _hasPropCount = propnum;
+                                            RefreshPropHasList();
+                                        }
+
                                         if (ddpropno.Items.Count != propnum)
                                         {
                                             if (propnum <= 0)
@@ -278,11 +304,6 @@ namespace Xenvious
                                         }
 
                                         GetProps(true);
-
-                                        if (haslistcontainer.Visibility == Visibility.Visible)
-                                        {
-                                            initializePropHasList();
-                                        }
                                     }
                                     else if (PageInnerProps.SelectedItem == PageInnerDynamicProps)
                                     {
@@ -424,35 +445,7 @@ namespace Xenvious
                                     }
 
                                     if (!ddActorcar.IsDropDownOpen)
-                                    {
-                                        int counter = 0;
-                                        ObservableCollection<string> temp = new ObservableCollection<string>();
-                                        temp.Add(_Translation.Where(x => x.Key == "none").First().Value);
-                                        for (int i = 0; i < new Global(GTA.Offsets.Editor.Vehicle.number).Get<int>(); i++)
-                                        {
-                                            //get the memory hadnle for the right addy
-                                            Global vehicle = new Global(GTA.Offsets.Editor.Vehicle.model + i * GTA.Offsets.Editor.Vehicle.NEXT);
-                                            if (vehicle.Get<int>() != 0)
-                                            {
-                                                //calculate the number
-                                                counter++;
-                                                try
-                                                {
-                                                    //try to get vehicle name
-                                                    temp.Add(counter.ToString() + ". " + GTA.Editor.Vehiclenames.Where(x => (Functions.int_parse(Functions.joaat(x).ToString()) == vehicle.Get<int>())).FirstOrDefault());
-                                                }
-                                                catch (Exception)
-                                                {
-                                                    //if vehicle name could not be found, use integer
-                                                    temp.Add(counter.ToString() + ". " + vehicle.Get<int>().ToString());
-                                                }
-                                            }
-                                        }
-
-                                        ddActorcar.IsEnabled = counter > 0 ? true : false;
-
-                                        ddActorcar.ItemsSource = temp;
-                                    }
+                                        SetVehicleChoices(ddActorcar);
                                     GetActorValues(true);
                                     GetActorACTVValues();
                                 }
@@ -664,38 +657,7 @@ namespace Xenvious
                                         refreshPLYRCount();
 
                                         if (!ddplyrveh.IsDropDownOpen)
-                                        {
-                                            int counter = 0;
-                                            ObservableCollection<string> temp = new ObservableCollection<string>();
-
-                                            temp.Add(_Translation.Where(x => x.Key == "none").First().Value);
-
-                                            for (int i = 0; i < new Global(GTA.Offsets.Editor.Vehicle.number).Get<int>(); i++)
-                                            {
-                                                //get the memory hadnle for the right addy
-                                                Global vehicle = new Global(GTA.Offsets.Editor.Vehicle.model + i * GTA.Offsets.Editor.Vehicle.NEXT);
-                                                if (vehicle.Get<int>() != 0)
-                                                {
-                                                    //calculate the number
-                                                    counter++;
-                                                    try
-                                                    {
-                                                        //try to get vehicle name
-                                                        temp.Add(counter.ToString() + ". " + GTA.Editor.Vehiclenames.Where(x => (Functions.int_parse(Functions.joaat(x).ToString()) == vehicle.Get<int>())).FirstOrDefault());
-                                                    }
-                                                    catch (Exception)
-                                                    {
-                                                        //if vehicle name could not be found, use integer
-                                                        temp.Add(counter.ToString() + ". " + vehicle.Get<int>().ToString());
-                                                    }
-                                                }
-                                            }
-
-                                            ddplyrveh.IsEnabled = counter > 0 ? true : false;
-                                            ddplyrveh.ItemsSource = temp;
-
-
-                                        }
+                                            SetVehicleChoices(ddplyrveh);
 
 
                                         GetPlyrValues();

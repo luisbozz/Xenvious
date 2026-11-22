@@ -168,6 +168,8 @@ namespace Xenvious
 
         private void ddpropscolor_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (_propsLoading)
+                return;
             if (ddpropscolor.SelectedIndex > -1 && m.IsProcOpen)
             {
 
@@ -186,6 +188,8 @@ namespace Xenvious
 
         private void ddpropsboosterspeed_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (_propsLoading)
+                return;
             if (ddpropsboosterspeed.SelectedIndex > -1 && m.IsProcOpen)
                 new Global((GTA.Offsets.Editor.Props.prpsba + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex)).SetInt(ddpropsboosterspeed.SelectedIndex + 1);
         }
@@ -207,7 +211,8 @@ namespace Xenvious
         {
             if (propModelList.SelectedIndex > -1 && m.IsProcOpen)
             {
-                new Global(GTA.Offsets.Editor.Props.model + ddpropno.SelectedIndex * GTA.Offsets.Editor.Props.NEXT).SetInt((propModelList.SelectedItem as GTA.Prop).Integer);
+                if (!_propsLoading)
+                    new Global(GTA.Offsets.Editor.Props.model + ddpropno.SelectedIndex * GTA.Offsets.Editor.Props.NEXT).SetInt((propModelList.SelectedItem as GTA.Prop).Integer);
                 Lbl_props_blinfo.Visibility = GTA.Editor.prop_model_blacklisted.Contains((propModelList.SelectedItem as GTA.Prop).Integer.ToString()) ? Visibility.Visible : Visibility.Collapsed;
             }
         }
@@ -215,11 +220,31 @@ namespace Xenvious
         private void ddpropno_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             GetProps(false, true);
+            RefreshPropHasList();
 
             SelectActiveTextBox();
         }
 
+        // True while GetProps fills the fields. Their TextChanged and SelectionChanged handlers
+        // write to the game, so without it showing a prop wrote it back: floats rounded by
+        // ToString(), and the heading copied into rotation Z. The creator only shows that after
+        // a rebuild (Enter in any field), so props seemed to turn on their own.
+        private bool _propsLoading;
+
         public void GetProps(bool skipcategorymodel = false, bool ignore_focus = false)
+        {
+            _propsLoading = true;
+            try
+            {
+                ReadProps(skipcategorymodel, ignore_focus);
+            }
+            finally
+            {
+                _propsLoading = false;
+            }
+        }
+
+        private void ReadProps(bool skipcategorymodel, bool ignore_focus)
         {
             int index = ddpropno.SelectedIndex;
 
@@ -463,36 +488,48 @@ namespace Xenvious
 
         private void tbpropslocx_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if (_propsLoading)
+                return;
             if (m.IsProcOpen)
                 new Global((GTA.Offsets.Editor.Props.loc + 0 + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex)).SetFloat(tbpropslocx.Text);
         }
 
         private void tbpropslocy_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if (_propsLoading)
+                return;
             if (m.IsProcOpen)
                 new Global((GTA.Offsets.Editor.Props.loc + 1 + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex)).SetFloat(tbpropslocy.Text);
         }
 
         private void tbpropslocz_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if (_propsLoading)
+                return;
             if (m.IsProcOpen)
                 new Global((GTA.Offsets.Editor.Props.loc + 2 + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex)).SetFloat(tbpropslocz.Text);
         }
 
         private void tbpropsrotx_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if (_propsLoading)
+                return;
             if (m.IsProcOpen)
                 new Global((GTA.Offsets.Editor.Props.vrot + 0 + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex)).SetFloat(tbpropsrotx.Text);
         }
 
         private void tbpropsroty_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if (_propsLoading)
+                return;
             if (m.IsProcOpen)
                 new Global((GTA.Offsets.Editor.Props.vrot + 1 + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex)).SetFloat(tbpropsroty.Text);
         }
 
         private void tbpropsrotz_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if (_propsLoading)
+                return;
             if (m.IsProcOpen)
                 new Global((GTA.Offsets.Editor.Props.vrot + 2 + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex)).SetFloat(tbpropsrotz.Text);
             // Typed rotation Z is the heading too.
@@ -502,20 +539,30 @@ namespace Xenvious
 
         private void tbpropshead_TextChanged(object sender, TextChangedEventArgs e)
         {
+            // Only a typed heading: a shown one copied into rotation Z broke tilted props.
+            if (_propsLoading || !tbpropshead.IsKeyboardFocusWithin)
+                return;
             WriteHeading(GTA.Offsets.Editor.Props.head + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex,
                 GTA.Offsets.Editor.Props.vrot + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex, tbpropshead.Text);
         }
 
         private void tbpropsrender_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if (_propsLoading)
+                return;
             if (m.IsProcOpen && IsValidInt(tbpropsrender.Text))
                 new Global((GTA.Offsets.Editor.Props.ploddist + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex)).SetInt(tbpropsrender.Text);
         }
 
         private void tbpropshas_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if (_propsLoading)
+                return;
             if (m.IsProcOpen && IsValidInt(tbpropshas.Text))
+            {
                 new Global((GTA.Offsets.Editor.Props.fcuat + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex)).SetInt(tbpropshas.Text);
+                RefreshPropHasList();
+            }
         }
 
         private void tbpropsmodel_TextChanged(object sender, TextChangedEventArgs e)
@@ -525,7 +572,8 @@ namespace Xenvious
                 if (m.IsProcOpen)
                 {
                     int model = Functions.int_parse(tbpropsmodel.Text);
-                    new Global(GTA.Offsets.Editor.Props.model + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex).SetInt(model);
+                    if (!_propsLoading)
+                        new Global(GTA.Offsets.Editor.Props.model + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex).SetInt(model);
                     int modelindex = GTA.Editor.PropListID.IndexOf(model);
                     lblpropsmodelnm.Text = modelindex > -1 ? GTA.Editor.PropList[modelindex].Name : "idk";
                     Lbl_props_blinfo.Visibility = GTA.Editor.prop_model_blacklisted.Contains(Functions.int_parse(tbpropsmodel.Text).ToString()) ? Visibility.Visible : Visibility.Collapsed;
@@ -538,12 +586,16 @@ namespace Xenvious
 
         private void tbpropssettings2_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if (_propsLoading)
+                return;
             if (m.IsProcOpen && IsValidInt(tbpropssettings2.Text))
                 new Global((GTA.Offsets.Editor.Props.prpbs2 + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex)).SetInt(tbpropssettings2.Text);
         }
 
         private void tbpropssettings1_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if (_propsLoading)
+                return;
             if (m.IsProcOpen && IsValidInt(tbpropssettings1.Text))
                 new Global((GTA.Offsets.Editor.Props.prpbs + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex)).SetInt(tbpropssettings1.Text);
         }
@@ -737,6 +789,8 @@ namespace Xenvious
 
         private void tbpropsprpcr_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if (_propsLoading)
+                return;
             if (IsValidInt(tbpropsprpcr.Text))
             {
                 new Global((GTA.Offsets.Editor.Props.prpcr + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex)).SetInt(tbpropsprpcr.Text);
@@ -745,6 +799,8 @@ namespace Xenvious
 
         private void tbpropsprpct_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if (_propsLoading)
+                return;
             if (IsValidInt(tbpropsprpct.Text))
             {
                 new Global((GTA.Offsets.Editor.Props.prpct + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex)).SetInt(tbpropsprpct.Text);
@@ -849,6 +905,7 @@ namespace Xenvious
             {
                 pathpropshasexpand.Data = Geometry.Parse("M 0 0 L 6 6 L 12 0 Z");
                 haslistcontainer.Visibility = Visibility.Visible;
+                RefreshPropHasList();
             }
             else
             {
@@ -859,11 +916,15 @@ namespace Xenvious
 
         private void ddpropsteamclear_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (_propsLoading)
+                return;
             new Global((GTA.Offsets.Editor.Props.prpct + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex)).SetInt(ddpropsteamclear.SelectedIndex - 1);
         }
 
         private void tbpropsclearrule_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if (_propsLoading)
+                return;
             if (IsValidInt(tbpropsclearrule.Text))
             {
                 new Global((GTA.Offsets.Editor.Props.prpcr + GTA.Offsets.Editor.Props.NEXT * ddpropno.SelectedIndex)).SetInt(tbpropsclearrule.Text);
@@ -947,24 +1008,8 @@ namespace Xenvious
     
 
 
-        private Dictionary<int, GTA.Prop> _propsByModel;
-
         /// <summary>The prop list entry of a model, null when unknown.</summary>
-        private GTA.Prop FindProp(int model)
-        {
-            if (_propsByModel == null || _propsByModel.Count == 0)
-            {
-                if (GTA.Editor.PropList == null || GTA.Editor.PropList.Count == 0)
-                    return null;
-                _propsByModel = new Dictionary<int, GTA.Prop>();
-                foreach (GTA.Prop p in GTA.Editor.PropList)
-                {
-                    if (string.IsNullOrEmpty(p.Native)) continue;
-                    _propsByModel[p.Integer] = p;
-                }
-            }
-            return _propsByModel.TryGetValue(model, out GTA.Prop prop) ? prop : null;
-        }
+        private static GTA.Prop FindProp(int model) => GTA.Editor.FindProp(model);
 
         /// <summary>Readable name of a prop model ("Giant Wooden Block"), "" when unknown.</summary>
         private string PropDisplayName(int model)
