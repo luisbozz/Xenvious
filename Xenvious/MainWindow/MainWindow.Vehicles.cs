@@ -113,6 +113,9 @@ namespace Xenvious
 
         private void tbvehhead_TextChanged(object sender, TextChangedEventArgs e)
         {
+            // Only a typed heading: a shown one was copied into rotation Z.
+            if (!tbvehhead.IsKeyboardFocusWithin)
+                return;
             WriteHeading(GTA.Offsets.Editor.Vehicle.head + GTA.Offsets.Editor.Vehicle.NEXT * ddvehno.SelectedIndex,
                 GTA.Offsets.Editor.Vehicle.vrot + GTA.Offsets.Editor.Vehicle.NEXT * ddvehno.SelectedIndex, tbvehhead.Text);
         }

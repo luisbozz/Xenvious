@@ -70,6 +70,9 @@ namespace Xenvious
 
         private void tbdpropshead_TextChanged(object sender, TextChangedEventArgs e)
         {
+            // Only a typed heading: a shown one was copied into rotation Z.
+            if (!tbdpropshead.IsKeyboardFocusWithin)
+                return;
             WriteHeading(GTA.Offsets.Editor.DProps.head + GTA.Offsets.Editor.DProps.NEXT * dddpropno.SelectedIndex,
                 GTA.Offsets.Editor.DProps.vrot + GTA.Offsets.Editor.DProps.NEXT * dddpropno.SelectedIndex, tbdpropshead.Text);
         }
